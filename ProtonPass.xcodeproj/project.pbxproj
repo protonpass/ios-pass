@@ -455,6 +455,8 @@
 		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855AB82A0A79400091992F /* PasswordTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB12A0A677E0091992F /* PasswordTypesView.swift */; };
 		35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
+		35855ABB2A0A88B30091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
+		35855ABC2A0A8B4E0091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
 		3586477929F7D109003487B1 /* CurrentDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477829F7D109003487B1 /* CurrentDateProvider.swift */; };
 		3586477C29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477B29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift */; };
 		3586477E29F7D5F5003487B1 /* TelemetrySchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477D29F7D5F5003487B1 /* TelemetrySchedulerTests.swift */; };
@@ -1124,6 +1126,7 @@
 		35855AB12A0A677E0091992F /* PasswordTypesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTypesView.swift; sourceTree = "<group>"; };
 		35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+NavigationTitleText.swift"; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
+		35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSeparatorsView.swift; sourceTree = "<group>"; };
 		3586477829F7D109003487B1 /* CurrentDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProvider.swift; sourceTree = "<group>"; };
 		3586477B29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepositoryTests.swift; sourceTree = "<group>"; };
 		3586477D29F7D5F5003487B1 /* TelemetrySchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetrySchedulerTests.swift; sourceTree = "<group>"; };
@@ -2071,6 +2074,7 @@
 				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
 				35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */,
 				35855AB12A0A677E0091992F /* PasswordTypesView.swift */,
+				35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */,
 			);
 			path = "Password generator";
 			sourceTree = "<group>";
@@ -3589,6 +3593,7 @@
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				355694A029D4619C005DD2EB /* MoveVaultListViewModel.swift in Sources */,
+				35855ABC2A0A8B4E0091992F /* WordSeparatorsView.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
@@ -3709,6 +3714,7 @@
 				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
+				35855ABB2A0A88B30091992F /* WordSeparatorsView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,

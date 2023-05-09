@@ -41,6 +41,8 @@ struct GeneratePasswordView: View {
 
                 passwordTypeRow
 
+                wordSeparatorRow
+
                 PassDivider()
 
                 HStack {
@@ -124,6 +126,28 @@ struct GeneratePasswordView: View {
             Button(action: viewModel.changeType) {
                 HStack {
                     Text(viewModel.type.title)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    Image(uiImage: IconProvider.chevronDownFilled)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(Color(uiColor: PassColor.textHint))
+                        .frame(width: 16)
+                }
+                .animationsDisabled()
+            }
+        }
+    }
+
+    private var wordSeparatorRow: some View {
+        HStack {
+            Text("Word separator")
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+            Spacer()
+
+            Button(action: viewModel.changeWordSeparator) {
+                HStack {
+                    Text(viewModel.wordSeparator.title)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                     Image(uiImage: IconProvider.chevronDownFilled)
                         .resizable()
