@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Core
 import SwiftUI
 import UIComponents
@@ -41,7 +40,8 @@ enum PasswordUtils {
             var color = Color(uiColor: PassColor.textNorm)
             if AllowedCharacter.digit.rawValue.contains(char) {
                 color = Color(uiColor: PassColor.loginInteractionNormMajor2)
-            } else if AllowedCharacter.special.rawValue.contains(char) {
+            } else if AllowedCharacter.special.rawValue.contains(char) ||
+                        AllowedCharacter.separator.rawValue.contains(char) {
                 color = Color(uiColor: PassColor.aliasInteractionNormMajor2)
             }
             texts.append(Text(String(char)).foregroundColor(color))
@@ -54,57 +54,53 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     let mode: GeneratePasswordViewMode
+    let wordProvider: WordProviderProtocol
 
     @Published private(set) var password = ""
-    @Published private(set) var texts: [Text] = []
     @Published private(set) var type: PasswordType = .random
     @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
 
     // Random password options
-    @Published var characterCount: Double = 16 // Slider expects Double instead of Int
-    @Published var hasSpecialCharacters = true
-    @Published var hasCapitalCharacters = true
-    @Published var hasNumberCharacters = true
+    @Published var characterCount: Double = 16 {
+        didSet {
+            if characterCount != oldValue { regenerate() }
+        }
+    }
+    @Published var hasSpecialCharacters = true { didSet { regenerate() } }
+    @Published var hasCapitalCharacters = true { didSet { regenerate() } }
+    @Published var hasNumberCharacters = true { didSet { regenerate() } }
 
     // Memorable password options
-    @Published private(set) var wordSeparator: WordSeparator = .hyphens
-    @Published var wordCount: Double = 4
-    @Published var capitalizingWords = false
-    @Published var includingNumbers = false
+    @Published private(set) var wordSeparator: WordSeparator = .hyphens { didSet { regenerate() } }
+    @Published var wordCount: Double = 4 {
+        didSet {
+            if wordCount != oldValue { regenerate() }
+        }
+    }
+    @Published var capitalizingWords = false { didSet { regenerate() } }
+    @Published var includingNumbers = false { didSet { regenerate() } }
 
-    private var cancellables = Set<AnyCancellable>()
     weak var delegate: GeneratePasswordViewModelDelegate?
     weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
 
-    init(mode: GeneratePasswordViewMode) {
+    var texts: [Text] { PasswordUtils.generateColoredPasswords(password) }
+
+    init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
         self.mode = mode
+        self.wordProvider = wordProvider
         self.regenerate()
-
-        $password
-            .sink { [unowned self] newPassword in
-                texts = PasswordUtils.generateColoredPasswords(newPassword)
-            }
-            .store(in: &cancellables)
-
-        $characterCount
-            .removeDuplicates()
-            .sink { [unowned self] newValue in
-                regenerate(length: newValue, hasSpecialCharacters: hasSpecialCharacters)
-            }
-            .store(in: &cancellables)
-
-        $hasSpecialCharacters
-            .sink { [unowned self] newValue in
-                regenerate(length: characterCount, hasSpecialCharacters: newValue)
-            }
-            .store(in: &cancellables)
     }
 }
 
 // MARK: - Public APIs
 extension GeneratePasswordViewModel {
     func regenerate() {
-        regenerate(length: characterCount, hasSpecialCharacters: hasSpecialCharacters)
+        switch type {
+        case .random:
+            regenerateRandomPassword()
+        case .memorable:
+            regenerateMemorablePassword()
+        }
     }
 
     func changeType() {
@@ -122,12 +118,24 @@ extension GeneratePasswordViewModel {
 
 // MARK: - Private APIs
 private extension GeneratePasswordViewModel {
-    func regenerate(length: Double, hasSpecialCharacters: Bool) {
-        var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
-        if hasSpecialCharacters {
-            allowedCharacters.append(.special)
+    func regenerateRandomPassword() {
+        var allowedCharacters: [AllowedCharacter] = [.lowercase]
+        if hasSpecialCharacters { allowedCharacters.append(.special) }
+        if hasCapitalCharacters { allowedCharacters.append(.uppercase) }
+        if hasNumberCharacters { allowedCharacters.append(.digit) }
+        password = .random(allowedCharacters: allowedCharacters, length: Int(characterCount))
+    }
+
+    func regenerateMemorablePassword() {
+        var words = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
+        if capitalizingWords { words = words.map { $0.capitalized } }
+        if includingNumbers {
+            if let randomIndex = words.indices.randomElement(),
+               let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
+                words[randomIndex] = words[randomIndex] + String(randomNumber)
+            }
         }
-        password = .random(allowedCharacters: allowedCharacters, length: Int(length))
+        password = words.joined(separator: wordSeparator.value)
     }
 
     func requestHeightUpdate() {
@@ -142,6 +150,7 @@ extension GeneratePasswordViewModel: PasswordTypesViewModelDelegate {
     func passwordTypesViewModelDidSelect(type: PasswordType) {
         self.type = type
         self.isShowingAdvancedOptions = false
+        regenerate()
         requestHeightUpdate()
     }
 }

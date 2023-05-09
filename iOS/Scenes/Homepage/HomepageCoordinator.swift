@@ -71,6 +71,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var currentItemDetailViewModel: BaseItemDetailViewModel?
     private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private weak var searchViewModel: SearchViewModel?
+
+    private var wordProvider: WordProviderProtocol?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var cancellables = Set<AnyCancellable>()
@@ -437,11 +439,25 @@ private extension HomepageCoordinator {
 
     func presentGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?,
                                      mode: GeneratePasswordViewMode) {
-        let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
-                                                      mode: mode)
-        coordinator.delegate = self
-        coordinator.start()
-        generatePasswordCoordinator = coordinator
+        if let wordProvider {
+            let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
+                                                          mode: mode,
+                                                          wordProvider: wordProvider)
+            coordinator.delegate = self
+            coordinator.start()
+            generatePasswordCoordinator = coordinator
+        } else {
+            Task { @MainActor in
+                do {
+                    let wordProvider = try await WordProvider()
+                    self.wordProvider = wordProvider
+                    presentGeneratePasswordView(delegate: delegate, mode: mode)
+                } catch {
+                    logger.error(error)
+                    bannerManager.displayTopErrorMessage(error)
+                }
+            }
+        }
     }
 
     func presentSortTypeList(selectedSortType: SortType,

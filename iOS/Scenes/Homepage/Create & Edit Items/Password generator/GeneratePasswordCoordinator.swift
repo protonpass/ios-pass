@@ -34,7 +34,7 @@ enum PasswordType: CaseIterable {
 }
 
 enum WordSeparator: CaseIterable {
-    case hyphens, spaces, periods, commas, underscores, numbers, numbersAndSymbols
+    case hyphens, spaces, periods, commas, underscores, numbers, symbols
 }
 
 protocol GeneratePasswordCoordinatorDelegate: AnyObject {
@@ -46,15 +46,18 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
 
     private weak var generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?
     private let mode: GeneratePasswordViewMode
+    private let wordProvider: WordProviderProtocol
     weak var delegate: GeneratePasswordCoordinatorDelegate?
 
     private var generatePasswordViewModel: GeneratePasswordViewModel?
     private var sheetPresentationController: UISheetPresentationController?
 
     init(generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?,
-         mode: GeneratePasswordViewMode) {
+         mode: GeneratePasswordViewMode,
+         wordProvider: WordProviderProtocol) {
         self.generatePasswordViewModelDelegate = generatePasswordViewModelDelegate
         self.mode = mode
+        self.wordProvider = wordProvider
     }
 
     func start() {
@@ -63,7 +66,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
             return
         }
 
-        let viewModel = GeneratePasswordViewModel(mode: mode)
+        let viewModel = GeneratePasswordViewModel(mode: mode, wordProvider: wordProvider)
         viewModel.delegate = generatePasswordViewModelDelegate
         viewModel.uiDelegate = self
         let view = GeneratePasswordView(viewModel: viewModel)
@@ -206,8 +209,35 @@ extension WordSeparator {
             return "Underscores"
         case .numbers:
             return "Numbers"
-        case .numbersAndSymbols:
-            return "Numbers and Symbols"
+        case .symbols:
+            return "Symbols"
+        }
+    }
+
+    var value: String {
+        switch self {
+        case .hyphens:
+            return "-"
+        case .spaces:
+            return " "
+        case .periods:
+            return "."
+        case .commas:
+            return ","
+        case .underscores:
+            return "_"
+        case .numbers:
+            if let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
+                return String(randomNumber)
+            } else {
+                return "0"
+            }
+        case .symbols:
+            if let specialCharacter = AllowedCharacter.special.rawValue.randomElement() {
+                return String(specialCharacter)
+            } else {
+                return "&"
+            }
         }
     }
 }
