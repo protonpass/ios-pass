@@ -39,6 +39,8 @@ struct GeneratePasswordView: View {
                     .frame(maxHeight: .infinity, alignment: .center)
                     .animationsDisabled()
 
+                passwordTypeRow
+
                 PassDivider()
 
                 HStack {
@@ -110,5 +112,27 @@ struct GeneratePasswordView: View {
             }
         }
         .navigationViewStyle(.stack)
+    }
+
+    private var passwordTypeRow: some View {
+        HStack {
+            Text("Type")
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+            Spacer()
+
+            Button(action: viewModel.changeType) {
+                HStack {
+                    Text(viewModel.type.title)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    Image(uiImage: IconProvider.chevronDownFilled)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(Color(uiColor: PassColor.textHint))
+                        .frame(width: 16)
+                }
+                .animationsDisabled()
+            }
+        }
     }
 }

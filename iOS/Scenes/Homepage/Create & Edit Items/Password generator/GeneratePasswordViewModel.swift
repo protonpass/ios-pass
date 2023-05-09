@@ -27,20 +27,11 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
     func generatePasswordViewModelDidConfirm(password: String)
 }
 
-enum GeneratePasswordViewMode {
-    /// View is shown as part of create login process
-    case createLogin
-    /// View is shown indepently without any context
-    case random
-
-    var confirmTitle: String {
-        switch self {
-        case .createLogin:
-            return "Confirm"
-        case .random:
-            return "Copy and close"
-        }
-    }
+protocol GeneratePasswordViewModelUiDelegate: AnyObject {
+    func generatePasswordViewModelWantsToChangePasswordType(currentType: PasswordType)
+    func generatePasswordViewModelWantsToChangeMemorableMode(currentMode: MemorablePasswordMode)
+    func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
+                                                           memorablePasswordMode: MemorablePasswordMode)
 }
 
 enum PasswordUtils {
@@ -66,11 +57,14 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     @Published private(set) var password = ""
     @Published private(set) var texts: [Text] = []
+    @Published private(set) var type: PasswordType = .random
+    @Published private(set) var memorableMode: MemorablePasswordMode = .regular
     @Published var length: Double = 16
     @Published var hasSpecialCharacters = true
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: GeneratePasswordViewModelDelegate?
+    weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
 
     init(mode: GeneratePasswordViewMode) {
         self.mode = mode
@@ -95,11 +89,29 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
     }
+}
 
+// MARK: - Public APIs
+extension GeneratePasswordViewModel {
     func regenerate() {
         regenerate(length: length, hasSpecialCharacters: hasSpecialCharacters)
     }
 
+    func changeType() {
+        uiDelegate?.generatePasswordViewModelWantsToChangePasswordType(currentType: type)
+    }
+
+    func changeMemorableMode() {
+        uiDelegate?.generatePasswordViewModelWantsToChangeMemorableMode(currentMode: memorableMode)
+    }
+
+    func confirm() {
+        delegate?.generatePasswordViewModelDidConfirm(password: password)
+    }
+}
+
+// MARK: - Private APIs
+extension GeneratePasswordViewModel {
     private func regenerate(length: Double, hasSpecialCharacters: Bool) {
         var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
         if hasSpecialCharacters {
@@ -107,8 +119,13 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
         }
         password = .random(allowedCharacters: allowedCharacters, length: Int(length))
     }
+}
 
-    func confirm() {
-        delegate?.generatePasswordViewModelDidConfirm(password: password)
+// MARK: PasswordTypesViewModelDelegate
+extension GeneratePasswordViewModel: PasswordTypesViewModelDelegate {
+    func passwordTypesViewModelDidSelect(type: PasswordType) {
+        self.type = type
+        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: type,
+                                                                      memorablePasswordMode: memorableMode)
     }
 }
