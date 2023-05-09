@@ -40,56 +40,47 @@ struct GeneratePasswordView: View {
                     .animationsDisabled()
 
                 passwordTypeRow
-
-                wordSeparatorRow
-
-                if !viewModel.isShowingAdvancedOptions {
-                    AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.isShowingAdvancedOptions)
-                }
-
                 PassDivider()
 
-                HStack {
-                    Text("\(Int(viewModel.length)) characters")
-                        .frame(minWidth: 120, alignment: .leading)
-                        .animationsDisabled()
-                    Slider(value: $viewModel.length,
-                           in: 4...64,
-                           step: 1)
-                    .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+                switch viewModel.type {
+                case .random:
+                    characterCountRow
+                    PassDivider()
+
+                    toggle(title: "Special characters", isOn: $viewModel.hasSpecialCharacters)
+                    PassDivider()
+
+                    if viewModel.isShowingAdvancedOptions {
+                        toggle(title: "Capital letters", isOn: $viewModel.hasCapitalCharacters)
+                        PassDivider()
+
+                        toggle(title: "Include numbers", isOn: $viewModel.hasNumberCharacters)
+                        PassDivider()
+                    } else {
+                        advancedOptionsRow
+                    }
+
+                case .memorable:
+                    wordCountRow
+                    PassDivider()
+                    if viewModel.isShowingAdvancedOptions {
+                        wordSeparatorRow
+                        PassDivider()
+
+                        capitalizingWordsRow
+                        PassDivider()
+
+                        toggle(title: "Include numbers", isOn: $viewModel.includingNumbers)
+                        PassDivider()
+                    } else {
+                        capitalizingWordsRow
+                        PassDivider()
+
+                        advancedOptionsRow
+                    }
                 }
-                .padding(.horizontal)
 
-                PassDivider()
-
-                Toggle(isOn: $viewModel.hasSpecialCharacters) {
-                    Text("Special characters")
-                }
-                .toggleStyle(SwitchToggleStyle.pass)
-                .padding(.horizontal, 16)
-
-                PassDivider()
-
-                HStack {
-                    CapsuleTextButton(title: "Cancel",
-                                      titleColor: PassColor.textWeak,
-                                      backgroundColor: PassColor.textDisabled,
-                                      height: 44,
-                                      action: dismiss.callAsFunction)
-
-                    CapsuleTextButton(
-                        title: viewModel.mode.confirmTitle,
-                        titleColor: PassColor.textInvert,
-                        backgroundColor: PassColor.loginInteractionNormMajor1,
-                        height: 44,
-                        action: {
-                            viewModel.confirm()
-                            if case .createLogin = viewModel.mode {
-                                dismiss()
-                            }
-                        })
-                }
-                .padding(.vertical)
+                ctaButtons
             }
             .padding(.horizontal)
             .background(Color(uiColor: PassColor.backgroundWeak))
@@ -107,7 +98,8 @@ struct GeneratePasswordView: View {
                 }
 
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Generate password")
+                    Text("Generate password")
+                        .navigationTitleText()
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -143,6 +135,71 @@ struct GeneratePasswordView: View {
         }
     }
 
+    private var advancedOptionsRow: some View {
+        AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.isShowingAdvancedOptions)
+    }
+
+    private var ctaButtons: some View {
+        HStack {
+            CapsuleTextButton(title: "Cancel",
+                              titleColor: PassColor.textWeak,
+                              backgroundColor: PassColor.textDisabled,
+                              height: 44,
+                              action: dismiss.callAsFunction)
+
+            CapsuleTextButton(
+                title: viewModel.mode.confirmTitle,
+                titleColor: PassColor.textInvert,
+                backgroundColor: PassColor.loginInteractionNormMajor1,
+                height: 44,
+                action: {
+                    viewModel.confirm()
+                    if case .createLogin = viewModel.mode {
+                        dismiss()
+                    }
+                })
+        }
+        .padding(.vertical)
+    }
+
+    private var characterCountRow: some View {
+        HStack {
+            Text("\(Int(viewModel.characterCount)) characters")
+                .frame(minWidth: 120, alignment: .leading)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .animationsDisabled()
+            Slider(value: $viewModel.characterCount,
+                   in: 4...64,
+                   step: 1)
+            .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+        }
+    }
+
+    private var wordCountRow: some View {
+        HStack {
+            Text("\(Int(viewModel.wordCount)) word(s)")
+                .frame(minWidth: 120, alignment: .leading)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .animationsDisabled()
+            Slider(value: $viewModel.wordCount,
+                   in: 1...10,
+                   step: 1)
+            .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+        }
+    }
+
+    private func toggle(title: String, isOn: Binding<Bool>) -> some View {
+        Toggle(isOn: isOn) {
+            Text(title)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+        }
+        .toggleStyle(SwitchToggleStyle.pass)
+    }
+
+    private var capitalizingWordsRow: some View {
+        toggle(title: "Capitalise", isOn: $viewModel.capitalizingWords)
+    }
+
     private var wordSeparatorRow: some View {
         HStack {
             Text("Word separator")
@@ -160,8 +217,8 @@ struct GeneratePasswordView: View {
                         .foregroundColor(Color(uiColor: PassColor.textHint))
                         .frame(width: 16)
                 }
-                .animationsDisabled()
             }
         }
+        .animationsDisabled()
     }
 }
