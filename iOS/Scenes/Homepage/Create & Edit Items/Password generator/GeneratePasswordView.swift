@@ -43,6 +43,10 @@ struct GeneratePasswordView: View {
 
                 wordSeparatorRow
 
+                if !viewModel.isShowingAdvancedOptions {
+                    AdvancedOptionsSection(isShowingAdvancedOptions: $viewModel.isShowingAdvancedOptions)
+                }
+
                 PassDivider()
 
                 HStack {
@@ -91,6 +95,7 @@ struct GeneratePasswordView: View {
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: viewModel.password)
+            .animation(.default, value: viewModel.isShowingAdvancedOptions)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     // Hidden gimmick button to make the navigation title centered properly

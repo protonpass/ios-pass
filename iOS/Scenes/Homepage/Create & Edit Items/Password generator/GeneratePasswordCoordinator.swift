@@ -33,10 +33,6 @@ enum PasswordType: CaseIterable {
     case random, memorable
 }
 
-enum MemorablePasswordMode {
-    case regular, advanced
-}
-
 enum WordSeparator: CaseIterable {
     case hyphens, spaces, periods, commas, underscores, numbers, numbersAndSymbols
 }
@@ -75,7 +71,8 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
 
         generatePasswordViewModel = viewModel
         sheetPresentationController = viewController.sheetPresentationController
-        updateSheetHeight(passwordType: viewModel.type, memorablePasswordMode: viewModel.memorableMode)
+        updateSheetHeight(passwordType: viewModel.type,
+                          isShowingAdvancedOptions: viewModel.isShowingAdvancedOptions)
 
         delegate.generatePasswordCoordinatorWantsToPresent(viewController: viewController)
     }
@@ -83,7 +80,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
 
 // MARK: - Private APIs
 extension GeneratePasswordCoordinator {
-    func updateSheetHeight(passwordType: PasswordType, memorablePasswordMode: MemorablePasswordMode) {
+    func updateSheetHeight(passwordType: PasswordType, isShowingAdvancedOptions: Bool) {
         guard let sheetPresentationController else {
             assertionFailure("sheetPresentationController is null. Coordinator is not yet started.")
             return
@@ -103,12 +100,7 @@ extension GeneratePasswordCoordinator {
             case .random:
                 detent = makeCustomDetent(344)
             case .memorable:
-                switch memorablePasswordMode {
-                case .regular:
-                    detent = makeCustomDetent(500)
-                case .advanced:
-                    detent = makeCustomDetent(750)
-                }
+                detent = makeCustomDetent(isShowingAdvancedOptions ? 750 : 500)
             }
 
             detentIdentifier = detent.identifier
@@ -155,10 +147,6 @@ extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
         delegate?.generatePasswordCoordinatorWantsToPresent(viewController: viewController)
     }
 
-    func generatePasswordViewModelWantsToChangeMemorableMode(currentMode: MemorablePasswordMode) {
-        print(#function)
-    }
-
     func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator) {
         assert(generatePasswordViewModel != nil, "generatePasswordViewModel is not set")
 
@@ -183,8 +171,8 @@ extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
     }
 
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
-                                                           memorablePasswordMode: MemorablePasswordMode) {
-        updateSheetHeight(passwordType: passwordType, memorablePasswordMode: memorablePasswordMode)
+                                                           isShowingAdvancedOptions: Bool) {
+        updateSheetHeight(passwordType: passwordType, isShowingAdvancedOptions: isShowingAdvancedOptions)
     }
 }
 
