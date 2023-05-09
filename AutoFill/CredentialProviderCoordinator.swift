@@ -68,6 +68,9 @@ public final class CredentialProviderCoordinator {
     private var vaultCount: Int?
     private var totpCount: Int?
 
+    private var wordProvider: WordProviderProtocol?
+    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
+
     private var topMostViewController: UIViewController {
         rootViewController.topMostViewController
     }
@@ -509,7 +512,27 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {}
+    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
+        if let wordProvider {
+            let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
+                                                          mode: .createLogin,
+                                                          wordProvider: wordProvider)
+            coordinator.delegate = self
+            coordinator.start()
+            generatePasswordCoordinator = coordinator
+        } else {
+            Task { @MainActor in
+                do {
+                    let wordProvider = try await WordProvider()
+                    self.wordProvider = wordProvider
+                    showGeneratePasswordView(delegate: delegate)
+                } catch {
+                    logger.error(error)
+                    bannerManager.displayTopErrorMessage(error)
+                }
+            }
+        }
+    }
 
     func showLoadingHud() {
         MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
@@ -551,6 +574,13 @@ private extension CredentialProviderCoordinator {
         rootViewController.dismiss(animated: true) { [unowned self] in
             print(#function)
         }
+    }
+}
+
+// MARK: - GeneratePasswordCoordinatorDelegate
+extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
+    func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
+        present(viewController)
     }
 }
 
