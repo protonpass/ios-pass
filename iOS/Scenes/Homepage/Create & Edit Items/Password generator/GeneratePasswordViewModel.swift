@@ -58,10 +58,19 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var password = ""
     @Published private(set) var texts: [Text] = []
     @Published private(set) var type: PasswordType = .random
-    @Published private(set) var wordSeparator: WordSeparator = .hyphens
     @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
-    @Published var length: Double = 16
+
+    // Random password options
+    @Published var characterCount: Double = 16 // Slider expects Double instead of Int
     @Published var hasSpecialCharacters = true
+    @Published var hasCapitalCharacters = true
+    @Published var hasNumberCharacters = true
+
+    // Memorable password options
+    @Published private(set) var wordSeparator: WordSeparator = .hyphens
+    @Published var wordCount: Double = 4
+    @Published var capitalizingWords = false
+    @Published var includingNumbers = false
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: GeneratePasswordViewModelDelegate?
@@ -77,7 +86,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
             }
             .store(in: &cancellables)
 
-        $length
+        $characterCount
             .removeDuplicates()
             .sink { [unowned self] newValue in
                 regenerate(length: newValue, hasSpecialCharacters: hasSpecialCharacters)
@@ -86,7 +95,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
         $hasSpecialCharacters
             .sink { [unowned self] newValue in
-                regenerate(length: length, hasSpecialCharacters: newValue)
+                regenerate(length: characterCount, hasSpecialCharacters: newValue)
             }
             .store(in: &cancellables)
     }
@@ -95,7 +104,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 // MARK: - Public APIs
 extension GeneratePasswordViewModel {
     func regenerate() {
-        regenerate(length: length, hasSpecialCharacters: hasSpecialCharacters)
+        regenerate(length: characterCount, hasSpecialCharacters: hasSpecialCharacters)
     }
 
     func changeType() {

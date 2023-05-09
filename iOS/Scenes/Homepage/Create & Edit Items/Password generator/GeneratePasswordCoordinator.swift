@@ -68,6 +68,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
         viewModel.uiDelegate = self
         let view = GeneratePasswordView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
 
         generatePasswordViewModel = viewModel
         sheetPresentationController = viewController.sheetPresentationController
@@ -95,23 +96,15 @@ extension GeneratePasswordCoordinator {
                     CGFloat(height)
                 }
             }
-
-            switch passwordType {
-            case .random:
-                detent = makeCustomDetent(344)
-            case .memorable:
-                detent = makeCustomDetent(isShowingAdvancedOptions ? 750 : 500)
-            }
-
+            detent = makeCustomDetent(isShowingAdvancedOptions ? 500 : 370)
             detentIdentifier = detent.identifier
         } else {
-            switch passwordType {
-            case .random:
-                detent = .medium()
-                detentIdentifier = .medium
-            case .memorable:
+            if isShowingAdvancedOptions {
                 detent = .large()
                 detentIdentifier = .large
+            } else {
+                detent = .medium()
+                detentIdentifier = .medium
             }
         }
 
