@@ -509,21 +509,7 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
-        let viewModel = GeneratePasswordViewModel(mode: .createLogin)
-        viewModel.delegate = delegate
-        let view = GeneratePasswordView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                344
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
-        present(viewController, dismissible: true)
-    }
+    func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {}
 
     func showLoadingHud() {
         MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
