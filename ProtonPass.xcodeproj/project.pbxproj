@@ -457,7 +457,6 @@
 		35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
 		35855ABB2A0A88B30091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
 		35855ABC2A0A8B4E0091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
-		35855ABD2A0AA3900091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855ABF2A0AA45A0091992F /* PassphraseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABE2A0AA45A0091992F /* PassphraseGenerator.swift */; };
 		35855AC22A0AA4B90091992F /* eff_large_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35855AC12A0AA4B90091992F /* eff_large_wordlist.txt */; };
 		35855AC32A0AA4D00091992F /* eff_large_wordlist.txt in Sources */ = {isa = PBXBuildFile; fileRef = 35855AC12A0AA4B90091992F /* eff_large_wordlist.txt */; };
@@ -3671,7 +3670,6 @@
 			files = (
 				3560846629DDE7FD001F7487 /* PassColorTests.swift in Sources */,
 				3565362129ED7545007A43D3 /* PassIconTests.swift in Sources */,
-				35855ABD2A0AA3900091992F /* GeneratePasswordCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

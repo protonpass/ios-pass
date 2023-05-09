@@ -67,6 +67,7 @@ struct WordSeparatorsView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 
     private func row(for separator: WordSeparator) -> some View {
