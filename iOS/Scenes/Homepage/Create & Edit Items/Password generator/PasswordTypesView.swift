@@ -73,7 +73,9 @@ struct PasswordTypesView: View {
 
     private func row(for type: PasswordType) -> some View {
         Button(action: {
-            viewModel.select(type: type)
+            if viewModel.selectedType != type {
+                viewModel.select(type: type)
+            }
             dismiss()
         }, label: {
             HStack {

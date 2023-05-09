@@ -29,10 +29,9 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
     func generatePasswordViewModelWantsToChangePasswordType(currentType: PasswordType)
-    func generatePasswordViewModelWantsToChangeMemorableMode(currentMode: MemorablePasswordMode)
     func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator)
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
-                                                           memorablePasswordMode: MemorablePasswordMode)
+                                                           isShowingAdvancedOptions: Bool)
 }
 
 enum PasswordUtils {
@@ -59,8 +58,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var password = ""
     @Published private(set) var texts: [Text] = []
     @Published private(set) var type: PasswordType = .random
-    @Published private(set) var memorableMode: MemorablePasswordMode = .regular
     @Published private(set) var wordSeparator: WordSeparator = .hyphens
+    @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
     @Published var length: Double = 16
     @Published var hasSpecialCharacters = true
 
@@ -103,10 +102,6 @@ extension GeneratePasswordViewModel {
         uiDelegate?.generatePasswordViewModelWantsToChangePasswordType(currentType: type)
     }
 
-    func changeMemorableMode() {
-        uiDelegate?.generatePasswordViewModelWantsToChangeMemorableMode(currentMode: memorableMode)
-    }
-
     func changeWordSeparator() {
         uiDelegate?.generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: wordSeparator)
     }
@@ -117,13 +112,19 @@ extension GeneratePasswordViewModel {
 }
 
 // MARK: - Private APIs
-extension GeneratePasswordViewModel {
-    private func regenerate(length: Double, hasSpecialCharacters: Bool) {
+private extension GeneratePasswordViewModel {
+    func regenerate(length: Double, hasSpecialCharacters: Bool) {
         var allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit]
         if hasSpecialCharacters {
             allowedCharacters.append(.special)
         }
         password = .random(allowedCharacters: allowedCharacters, length: Int(length))
+    }
+
+    func requestHeightUpdate() {
+        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(
+            passwordType: type,
+            isShowingAdvancedOptions: isShowingAdvancedOptions)
     }
 }
 
@@ -131,8 +132,8 @@ extension GeneratePasswordViewModel {
 extension GeneratePasswordViewModel: PasswordTypesViewModelDelegate {
     func passwordTypesViewModelDidSelect(type: PasswordType) {
         self.type = type
-        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: type,
-                                                                      memorablePasswordMode: memorableMode)
+        self.isShowingAdvancedOptions = false
+        requestHeightUpdate()
     }
 }
 
