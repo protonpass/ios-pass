@@ -26,7 +26,8 @@ enum CustomFieldType: CaseIterable {
     case text, totp, hidden
 }
 
-struct CustomField {
+struct CustomField: Identifiable {
+    let id = UUID().uuidString
     let title: String
     let type: CustomFieldType
     var content: String
