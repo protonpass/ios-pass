@@ -50,7 +50,8 @@ struct EditAppLockTimeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "App lock time")
+                    Text("App lock time")
+                        .navigationTitleText()
                 }
             }
         }

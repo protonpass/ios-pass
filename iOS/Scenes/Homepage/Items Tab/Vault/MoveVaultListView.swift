@@ -28,9 +28,6 @@ struct MoveVaultListView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Handle()
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.top, 5)
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.allVaults, id: \.hashValue) { vault in

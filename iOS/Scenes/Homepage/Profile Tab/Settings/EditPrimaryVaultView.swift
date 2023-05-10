@@ -53,7 +53,8 @@ struct EditPrimaryVaultView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Primary vault")
+                    Text("Primary vault")
+                        .navigationTitleText()
                 }
             }
         }

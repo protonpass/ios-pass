@@ -324,6 +324,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -355,6 +356,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -372,6 +374,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -388,6 +391,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -554,6 +558,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
@@ -636,6 +641,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -691,6 +697,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -785,6 +792,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -798,6 +806,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -811,6 +820,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -829,6 +839,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -898,6 +909,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -954,6 +966,7 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -1143,6 +1156,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 

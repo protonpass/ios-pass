@@ -55,7 +55,8 @@ struct EditDefaultBrowserView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Default browser")
+                    Text("Default browser")
+                        .navigationTitleText()
                 }
             }
         }

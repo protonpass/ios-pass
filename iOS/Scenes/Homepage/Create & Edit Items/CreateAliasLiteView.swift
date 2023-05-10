@@ -93,7 +93,8 @@ struct CreateAliasLiteView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "You are about to create")
+                    Text("You are about to create")
+                        .navigationTitleText()
                 }
             }
         }
