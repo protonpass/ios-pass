@@ -449,6 +449,17 @@
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
+		35855AB42A0A68DC0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
+		35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
+		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
+		35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
+		35855ABB2A0A88B30091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
+		35855ABC2A0A8B4E0091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
+		35855ABF2A0AA45A0091992F /* PassphraseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABE2A0AA45A0091992F /* PassphraseGenerator.swift */; };
+		35855AC22A0AA4B90091992F /* eff_large_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35855AC12A0AA4B90091992F /* eff_large_wordlist.txt */; };
+		35855AC32A0AA4D00091992F /* eff_large_wordlist.txt in Sources */ = {isa = PBXBuildFile; fileRef = 35855AC12A0AA4B90091992F /* eff_large_wordlist.txt */; };
+		35855AC52A0AA5190091992F /* WordProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AC42A0AA5190091992F /* WordProvider.swift */; };
+		35855AC72A0AB9350091992F /* WordProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AC62A0AB9350091992F /* WordProviderTests.swift */; };
 		3586477929F7D109003487B1 /* CurrentDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477829F7D109003487B1 /* CurrentDateProvider.swift */; };
 		3586477C29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477B29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift */; };
 		3586477E29F7D5F5003487B1 /* TelemetrySchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586477D29F7D5F5003487B1 /* TelemetrySchedulerTests.swift */; };
@@ -1115,6 +1126,13 @@
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
+		35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+NavigationTitleText.swift"; sourceTree = "<group>"; };
+		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
+		35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSeparatorsView.swift; sourceTree = "<group>"; };
+		35855ABE2A0AA45A0091992F /* PassphraseGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseGenerator.swift; sourceTree = "<group>"; };
+		35855AC12A0AA4B90091992F /* eff_large_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = eff_large_wordlist.txt; sourceTree = "<group>"; };
+		35855AC42A0AA5190091992F /* WordProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordProvider.swift; sourceTree = "<group>"; };
+		35855AC62A0AB9350091992F /* WordProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordProviderTests.swift; sourceTree = "<group>"; };
 		3586477829F7D109003487B1 /* CurrentDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProvider.swift; sourceTree = "<group>"; };
 		3586477B29F7D5C5003487B1 /* TelemetryEventRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepositoryTests.swift; sourceTree = "<group>"; };
 		3586477D29F7D5F5003487B1 /* TelemetrySchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetrySchedulerTests.swift; sourceTree = "<group>"; };
@@ -1776,9 +1794,8 @@
 				35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */,
 				3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */,
 				35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */,
-				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
-				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
 				3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */,
+				35855AB02A0A65F20091992F /* Password generator */,
 				3572E52729940C0300775FAC /* Supporting Views */,
 			);
 			path = "Create & Edit Items";
@@ -1859,6 +1876,7 @@
 				3562D3BB29DEB08100981D7D /* NavigationTitleWithHandle.swift */,
 				3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */,
 				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
+				35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */,
 				354FBF602A02961D00A0B27D /* UpgradeButton.swift */,
 			);
 			path = "Supporting Views";
@@ -2053,6 +2071,27 @@
 				355AA31929E9709B00C20F5F /* RemoteFavIconDatasourceTests.swift */,
 			);
 			path = Datasources;
+			sourceTree = "<group>";
+		};
+		35855AB02A0A65F20091992F /* Password generator */ = {
+			isa = PBXGroup;
+			children = (
+				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
+				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
+				35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */,
+				35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */,
+			);
+			path = "Password generator";
+			sourceTree = "<group>";
+		};
+		35855AC02A0AA4950091992F /* PassphraseGenerator */ = {
+			isa = PBXGroup;
+			children = (
+				35855AC12A0AA4B90091992F /* eff_large_wordlist.txt */,
+				35855ABE2A0AA45A0091992F /* PassphraseGenerator.swift */,
+				35855AC42A0AA5190091992F /* WordProvider.swift */,
+			);
+			path = PassphraseGenerator;
 			sourceTree = "<group>";
 		};
 		3586477A29F7D5A5003487B1 /* Repositories */ = {
@@ -2334,6 +2373,7 @@
 				35426B5628EF171000F89BB7 /* DomainParser */,
 				3557836E29632445008A4992 /* Logging */,
 				3572E51729938A1200775FAC /* OTP */,
+				35855AC02A0AA4950091992F /* PassphraseGenerator */,
 				356B21D82870F95B001220CB /* Storage */,
 				35E50704286FB39800A3F6EA /* Utilities */,
 			);
@@ -2346,6 +2386,7 @@
 				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
+				35608C2F29F0559A00CA3864 /* Data+RandomTests.swift */,
 				3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */,
 				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
@@ -2355,7 +2396,7 @@
 				3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */,
 				356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */,
 				3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */,
-				35608C2F29F0559A00CA3864 /* Data+RandomTests.swift */,
+				35855AC62A0AB9350091992F /* WordProviderTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -3101,6 +3142,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35855AC22A0AA4B90091992F /* eff_large_wordlist.txt in Resources */,
 				35426B6A28EF332D00F89BB7 /* public_suffix_list.dat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3569,6 +3611,7 @@
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
 				3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */,
 				355694A029D4619C005DD2EB /* MoveVaultListViewModel.swift in Sources */,
+				35855ABC2A0A8B4E0091992F /* WordSeparatorsView.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
@@ -3583,10 +3626,12 @@
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
+				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
 				3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */,
 				350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */,
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
+				35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
 				3520F36828E327420053A606 /* ItemUiModel.swift in Sources */,
 				3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */,
@@ -3685,6 +3730,7 @@
 				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
+				35855ABB2A0A88B30091992F /* WordSeparatorsView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
@@ -3705,6 +3751,7 @@
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				355694A429D4673A005DD2EB /* VaultListUiModel.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */,
+				35855AB42A0A68DC0091992F /* Text+NavigationTitleText.swift in Sources */,
 				353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */,
 				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
@@ -3724,6 +3771,7 @@
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
 				35661CB429B8BFCD003BBAD6 /* EditableVaultListViewModel.swift in Sources */,
+				35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
@@ -3971,6 +4019,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35855AC32A0AA4D00091992F /* eff_large_wordlist.txt in Sources */,
 				35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */,
 				35426B5C28EF17F100F89BB7 /* Rule.swift in Sources */,
 				354036DF28F4522000F9E729 /* URLUtils+Matcher.swift in Sources */,
@@ -3997,6 +4046,7 @@
 				354036DD28F451AE00F9E729 /* URLUtils.swift in Sources */,
 				356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */,
 				355AA31C29E9736A00C20F5F /* Data+Random.swift in Sources */,
+				35855AC52A0AA5190091992F /* WordProvider.swift in Sources */,
 				356B21D72870F8F1001220CB /* Constants.swift in Sources */,
 				3573CD23292C139900A9EF82 /* AliasPrefixValidator.swift in Sources */,
 				355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */,
@@ -4016,6 +4066,7 @@
 				355342472992A685003E3A47 /* PPCoreError.swift in Sources */,
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
 				35426B6828EF196C00F89BB7 /* RulesParser.swift in Sources */,
+				35855ABF2A0AA45A0091992F /* PassphraseGenerator.swift in Sources */,
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,
 				355222ED293F67A600786F64 /* URLExtensions.swift in Sources */,
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
@@ -4039,6 +4090,7 @@
 				356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */,
 				35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */,
 				3552A28829EBFE2800ABDB6E /* FileUtilsTests.swift in Sources */,
+				35855AC72A0AB9350091992F /* WordProviderTests.swift in Sources */,
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,

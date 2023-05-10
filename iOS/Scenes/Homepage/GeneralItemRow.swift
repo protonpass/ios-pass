@@ -52,6 +52,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                 if let description, !description.isEmpty {
                     Text(description)
                         .font(.callout)
+                        .lineLimit(1)
                         // "scaledToFill" otherwise the text is always scaled
                         // even if there's enough space for larger font
                         .scaledToFill()
