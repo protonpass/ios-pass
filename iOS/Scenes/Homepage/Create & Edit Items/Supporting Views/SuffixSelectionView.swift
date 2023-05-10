@@ -76,7 +76,8 @@ struct SuffixSelectionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Suffix")
+                    Text("Suffix")
+                        .navigationTitleText()
                 }
             }
         }

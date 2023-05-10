@@ -28,6 +28,9 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToHideLoadingHud()
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate)
+    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+                                                            delegate: CustomFieldEditionDelegate)
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
@@ -59,6 +62,7 @@ enum ItemCreationType {
 class BaseCreateEditItemViewModel {
     @Published private(set) var vault: Vault
     @Published private(set) var isSaving = false
+    @Published var customFields = [CustomField]()
     @Published var isObsolete = false
 
     let mode: ItemMode
@@ -123,6 +127,14 @@ class BaseCreateEditItemViewModel {
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
+
+    func addCustomField() {
+        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
+    }
+
+    func editCustomFieldTitle(_ customField: CustomField) {
+        delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(customField, delegate: self)
+    }
 
     func save() {
         Task { @MainActor in
@@ -224,5 +236,28 @@ extension BaseCreateEditItemViewModel {
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     func vaultSelectorViewModelDidSelect(vault: Vault) {
         self.vault = vault
+    }
+}
+
+// MARK: - CustomFieldTitleAlertHandlerDelegate
+extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
+    func customFieldAdded(_ customField: CustomField) {
+        customFields.append(customField)
+    }
+}
+
+// MARK: - CustomFieldEditionDelegate
+extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
+    func customFieldEdited(_ customField: CustomField, newTitle: String) {
+        guard let index = customFields.firstIndex(where: { $0.id == customField.id }) else {
+            let message = "Custom field with id \(customField.id) not found"
+            logger.error(message)
+            assertionFailure(message)
+            return
+        }
+        customFields[index] = .init(id: customField.id,
+                                    title: newTitle,
+                                    type: customField.type,
+                                    content: customField.content)
     }
 }

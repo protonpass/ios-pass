@@ -31,9 +31,6 @@ struct EditableVaultListView: View {
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
         VStack(alignment: .leading) {
-            Handle()
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.top, 5)
             ScrollView {
                 VStack(spacing: 0) {
                     switch vaultsManager.state {

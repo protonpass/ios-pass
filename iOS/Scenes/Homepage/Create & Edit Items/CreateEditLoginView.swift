@@ -69,9 +69,18 @@ struct CreateEditLoginView: View {
                                         focusedField: $focusedField,
                                         field: .note)
                         .id(noteID)
+
+                        #if DEBUG
+                        CustomFieldSections(contentType: .login,
+                                            customFields: $viewModel.customFields,
+                                            onAddMore: viewModel.addCustomField,
+                                            onEditTitle: viewModel.editCustomFieldTitle)
+                        #endif
+
                         Spacer()
                     }
                     .padding()
+                    .animation(.default, value: viewModel.customFields.count)
                 }
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?
@@ -351,7 +360,7 @@ struct CreateEditLoginView: View {
 
             Menu(content: {
                 Button(action: viewModel.generateAlias) {
-                    Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.penSquare) })
+                    Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.pencil) })
                 }
 
                 Button(
