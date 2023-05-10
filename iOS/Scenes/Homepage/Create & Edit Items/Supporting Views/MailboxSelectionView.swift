@@ -86,7 +86,8 @@ struct MailboxSelectionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: viewModel.titleMode.title)
+                    Text(viewModel.titleMode.title)
+                        .navigationTitleText()
                 }
             }
         }

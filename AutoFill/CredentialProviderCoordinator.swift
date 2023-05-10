@@ -613,7 +613,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
-
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, dismissible: true)
     }
 
@@ -694,7 +694,18 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels, selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
-        present(view)
+        let viewController = UIHostingController(rootView: view)
+        if #available(iOS 16, *) {
+            let height = 66 * vaultListUiModels.count + 100
+            let customDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(height)
+            }
+            viewController.sheetPresentationController?.detents = [customDetent, .large()]
+        } else {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
@@ -730,6 +741,7 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, dismissible: true)
     }
 
@@ -766,6 +778,7 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -786,6 +799,7 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 

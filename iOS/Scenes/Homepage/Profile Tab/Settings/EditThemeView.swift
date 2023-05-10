@@ -57,7 +57,8 @@ struct EditThemeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Theme")
+                    Text("Theme")
+                        .navigationTitleText()
                 }
             }
         }
