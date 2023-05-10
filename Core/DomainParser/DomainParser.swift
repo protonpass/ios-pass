@@ -45,7 +45,7 @@ public struct DomainParser {
     }
 }
 
-private extension Bundle {
+public extension Bundle {
     static var current: Bundle {
 #if SWIFT_PACKAGE
         return .module

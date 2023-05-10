@@ -68,6 +68,9 @@ public final class CredentialProviderCoordinator {
     private var vaultCount: Int?
     private var totpCount: Int?
 
+    private var wordProvider: WordProviderProtocol?
+    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
+
     private var topMostViewController: UIViewController {
         rootViewController.topMostViewController
     }
@@ -510,19 +513,25 @@ private extension CredentialProviderCoordinator {
     }
 
     func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
-        let viewModel = GeneratePasswordViewModel(mode: .createLogin)
-        viewModel.delegate = delegate
-        let view = GeneratePasswordView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                344
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
+        if let wordProvider {
+            let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
+                                                          mode: .createLogin,
+                                                          wordProvider: wordProvider)
+            coordinator.delegate = self
+            coordinator.start()
+            generatePasswordCoordinator = coordinator
         } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
+            Task { @MainActor in
+                do {
+                    let wordProvider = try await WordProvider()
+                    self.wordProvider = wordProvider
+                    showGeneratePasswordView(delegate: delegate)
+                } catch {
+                    logger.error(error)
+                    bannerManager.displayTopErrorMessage(error)
+                }
+            }
         }
-        present(viewController, dismissible: true)
     }
 
     func showLoadingHud() {
@@ -565,6 +574,13 @@ private extension CredentialProviderCoordinator {
         rootViewController.dismiss(animated: true) { [unowned self] in
             print(#function)
         }
+    }
+}
+
+// MARK: - GeneratePasswordCoordinatorDelegate
+extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
+    func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
+        present(viewController)
     }
 }
 
