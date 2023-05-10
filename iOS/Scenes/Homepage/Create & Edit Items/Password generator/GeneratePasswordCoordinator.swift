@@ -120,29 +120,6 @@ extension GeneratePasswordCoordinator {
 
 // MARK: - GeneratePasswordViewModelUiDelegate
 extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
-    func generatePasswordViewModelWantsToChangePasswordType(currentType: PasswordType) {
-        assert(generatePasswordViewModel != nil, "generatePasswordViewModel is not set")
-
-        let viewModel = PasswordTypesViewModel(selectedType: currentType)
-        viewModel.delegate = generatePasswordViewModel
-
-        let view = PasswordTypesView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        if #available(iOS 16.0, *) {
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(160)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-
-        delegate?.generatePasswordCoordinatorWantsToPresent(viewController: viewController)
-    }
-
     func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator) {
         assert(generatePasswordViewModel != nil, "generatePasswordViewModel is not set")
 
