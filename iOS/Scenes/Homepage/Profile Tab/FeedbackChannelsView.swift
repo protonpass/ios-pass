@@ -64,7 +64,8 @@ struct FeedbackChannelsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Feedback")
+                    Text("Feedback")
+                        .navigationTitleText()
                 }
             }
         }

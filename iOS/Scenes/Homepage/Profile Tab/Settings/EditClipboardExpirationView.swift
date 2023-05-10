@@ -50,7 +50,8 @@ struct EditClipboardExpirationView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Clear clipboard")
+                    Text("Clear clipboard")
+                        .navigationTitleText()
                 }
             }
         }

@@ -113,7 +113,8 @@ struct ItemTypeListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    NavigationTitleWithHandle(title: "Create")
+                    Text("Create")
+                        .navigationTitleText()
                 }
             }
         }

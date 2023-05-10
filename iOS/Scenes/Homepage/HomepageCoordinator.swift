@@ -68,12 +68,11 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
-    private weak var currentItemDetailViewModel: BaseItemDetailViewModel?
-    private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private weak var searchViewModel: SearchViewModel?
 
+    private var itemDetailCoordinator: ItemDetailCoordinator?
+    private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var wordProvider: WordProviderProtocol?
-    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -273,46 +272,38 @@ private extension HomepageCoordinator {
         }
     }
 
+    func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
+        let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
+                                                    itemRepository: itemRepository,
+                                                    upgradeChecker: upgradeChecker,
+                                                    logManager: logManager,
+                                                    preferences: preferences,
+                                                    vaultsManager: vaultsManager,
+                                                    userData: userData,
+                                                    createEditItemDelegates: self)
+        coordinator.delegate = self
+        createEditItemCoordinator = coordinator
+        return coordinator
+    }
+
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        // Only show vault when there're more than 1 vault
-        var vault: Vault?
-        let allVaults = vaultsManager.getAllVaults()
-        if allVaults.count > 1 {
-            vault = allVaults.first(where: { $0.shareId == itemContent.shareId })
-        }
-
-        let itemDetailPage: ItemDetailPage
-        switch itemContent.contentData {
-        case .login:
-            itemDetailPage = makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
-        case .note:
-            itemDetailPage = makeNoteDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
-        case .alias:
-            itemDetailPage = makeAliasItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
-        }
-
-        itemDetailPage.viewModel.delegate = self
-        currentItemDetailViewModel = itemDetailPage.viewModel
-
-        if asSheet {
-            present(itemDetailPage.view)
-        } else {
-            push(itemDetailPage.view)
-        }
+        let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
+                                                itemRepository: itemRepository,
+                                                favIconRepository: favIconRepository,
+                                                logManager: logManager,
+                                                preferences: preferences,
+                                                vaultsManager: vaultsManager,
+                                                itemDetailViewModelDelegate: self)
+        coordinator.delegate = self
+        coordinator.showDetail(for: itemContent, asSheet: asSheet)
+        itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }
 
     func presentEditItemView(for itemContent: ItemContent) {
         do {
-            let mode = ItemMode.edit(itemContent)
-            switch itemContent.contentData.type {
-            case .login:
-                try presentCreateEditLoginView(mode: mode)
-            case .note:
-                try presentCreateEditNoteView(mode: mode)
-            case .alias:
-                try presentCreateEditAliasView(mode: mode)
-            }
+            let coordinator = makeCreateEditItemCoordinator()
+            try coordinator.presentEditItemView(for: itemContent)
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
@@ -333,58 +324,18 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
     func presentCreateItemView(for itemType: ItemType) {
-        guard let shareId = vaultsManager.getSelectedShareId() else { return }
         do {
-            switch itemType {
-            case .login:
-                let logInType = ItemCreationType.login(title: nil, url: nil, autofill: false)
-                try self.presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
-            case .alias:
-                try self.presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
-            case .note:
-                try self.presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
-            case .password:
-                self.presentGeneratePasswordView(delegate: self, mode: .random)
-            }
+            let coordinator = makeCreateEditItemCoordinator()
+            try coordinator.presentCreateItemView(for: itemType)
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
         }
-    }
-
-    func presentCreateEditLoginView(mode: ItemMode) throws {
-        let emailAddress = userData.addresses.first?.email ?? ""
-        let viewModel = try CreateEditLoginViewModel(mode: mode,
-                                                     itemRepository: itemRepository,
-                                                     aliasRepository: aliasRepository,
-                                                     upgradeChecker: upgradeChecker,
-                                                     vaults: vaultsManager.getAllVaults(),
-                                                     preferences: preferences,
-                                                     logManager: logManager,
-                                                     emailAddress: emailAddress)
-        viewModel.delegate = self
-        viewModel.createEditLoginViewModelDelegate = self
-        let view = CreateEditLoginView(viewModel: viewModel)
-        present(view, dismissible: false)
-        currentCreateEditItemViewModel = viewModel
-    }
-
-    func presentCreateEditAliasView(mode: ItemMode) throws {
-        let viewModel = try CreateEditAliasViewModel(mode: mode,
-                                                     itemRepository: itemRepository,
-                                                     aliasRepository: aliasRepository,
-                                                     vaults: vaultsManager.getAllVaults(),
-                                                     preferences: preferences,
-                                                     logManager: logManager)
-        viewModel.delegate = self
-        viewModel.createEditAliasViewModelDelegate = self
-        let view = CreateEditAliasView(viewModel: viewModel)
-        present(view, dismissible: false)
-        currentCreateEditItemViewModel = viewModel
     }
 
     func presentMailboxSelectionView(selection: MailboxSelection,
@@ -405,6 +356,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -422,42 +374,8 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
-    }
-
-    func presentCreateEditNoteView(mode: ItemMode) throws {
-        let viewModel = try CreateEditNoteViewModel(mode: mode,
-                                                    itemRepository: itemRepository,
-                                                    vaults: vaultsManager.getAllVaults(),
-                                                    preferences: preferences,
-                                                    logManager: logManager)
-        viewModel.delegate = self
-        let view = CreateEditNoteView(viewModel: viewModel)
-        present(view, dismissible: false)
-        currentCreateEditItemViewModel = viewModel
-    }
-
-    func presentGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?,
-                                     mode: GeneratePasswordViewMode) {
-        if let wordProvider {
-            let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
-                                                          mode: mode,
-                                                          wordProvider: wordProvider)
-            coordinator.delegate = self
-            coordinator.start()
-            generatePasswordCoordinator = coordinator
-        } else {
-            Task { @MainActor in
-                do {
-                    let wordProvider = try await WordProvider()
-                    self.wordProvider = wordProvider
-                    presentGeneratePasswordView(delegate: delegate, mode: mode)
-                } catch {
-                    logger.error(error)
-                    bannerManager.displayTopErrorMessage(error)
-                }
-            }
-        }
     }
 
     func presentSortTypeList(selectedSortType: SortType,
@@ -473,6 +391,7 @@ private extension HomepageCoordinator {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -490,8 +409,8 @@ private extension HomepageCoordinator {
     func refresh() {
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
-        currentItemDetailViewModel?.refresh()
-        currentCreateEditItemViewModel?.refresh()
+        itemDetailCoordinator?.refresh()
+        createEditItemCoordinator?.refresh()
     }
 
     func shouldShowAsSheet() -> Bool {
@@ -558,55 +477,6 @@ private extension HomepageCoordinator {
         dismissAllViewControllers(animated: true) { [unowned self] in
             print(#function)
         }
-    }
-}
-
-// MARK: - Item detail pages
-private extension HomepageCoordinator {
-    struct ItemDetailPage {
-        let viewModel: BaseItemDetailViewModel
-        let view: any View
-    }
-
-    func makeLoginItemDetailPage(from itemContent: ItemContent,
-                                 asSheet: Bool,
-                                 vault: Vault?) -> ItemDetailPage {
-        let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
-                                             itemContent: itemContent,
-                                             favIconRepository: favIconRepository,
-                                             itemRepository: itemRepository,
-                                             vault: vault,
-                                             logManager: logManager,
-                                             theme: preferences.theme)
-        viewModel.logInDetailViewModelDelegate = self
-        return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
-    }
-
-    func makeAliasItemDetailPage(from itemContent: ItemContent,
-                                 asSheet: Bool,
-                                 vault: Vault?) -> ItemDetailPage {
-        let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
-                                             itemContent: itemContent,
-                                             favIconRepository: favIconRepository,
-                                             itemRepository: itemRepository,
-                                             aliasRepository: aliasRepository,
-                                             vault: vault,
-                                             logManager: logManager,
-                                             theme: preferences.theme)
-        return .init(viewModel: viewModel, view: AliasDetailView(viewModel: viewModel))
-    }
-
-    func makeNoteDetailPage(from itemContent: ItemContent,
-                            asSheet: Bool,
-                            vault: Vault?) -> ItemDetailPage {
-        let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
-                                            itemContent: itemContent,
-                                            favIconRepository: favIconRepository,
-                                            itemRepository: itemRepository,
-                                            vault: vault,
-                                            logManager: logManager,
-                                            theme: preferences.theme)
-        return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
 }
 
@@ -688,6 +558,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
@@ -702,6 +573,36 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - ItemDetailCoordinatorDelegate
+extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
+    func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
+        if asSheet {
+            present(view)
+        } else {
+            push(view)
+        }
+    }
+}
+
+// MARK: - CreateEditItemCoordinatorDelegate
+extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
+    func createEditItemCoordinatorWantsWordProvider() async -> WordProviderProtocol? {
+        do {
+            let wordProvider = try await WordProvider()
+            self.wordProvider = wordProvider
+            return wordProvider
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
+            return nil
+        }
+    }
+
+    func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
+        present(view, dismissible: dismissable)
     }
 }
 
@@ -740,6 +641,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -795,6 +697,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -889,6 +792,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -902,6 +806,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -915,6 +820,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -933,6 +839,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
@@ -1002,7 +909,22 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
+    }
+
+    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
+        let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+                                                         delegate: delegate)
+        coordinator.start()
+    }
+
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+                                                            delegate: CustomFieldEditionDelegate) {
+        let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
+                                                        delegate: delegate,
+                                                        customField: customField)
+        coordinator.start()
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
@@ -1036,7 +958,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         addNewEvent(type: .update(type))
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
-        currentItemDetailViewModel?.refresh()
+        itemDetailCoordinator?.refresh()
         dismissTopMostViewController { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(message)
         }
@@ -1058,11 +980,13 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
-        presentGeneratePasswordView(delegate: delegate, mode: .createLogin)
+        let coordinator = makeCreateEditItemCoordinator()
+        coordinator.presentGeneratePasswordForLoginItem(delegate: delegate)
     }
 
     func createEditLoginViewModelWantsToOpenSettings() {
@@ -1246,6 +1170,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         } else {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
@@ -1281,13 +1206,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidFail(_ error: Error) {
         bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - LogInDetailViewModelDelegate
-extension HomepageCoordinator: LogInDetailViewModelDelegate {
-    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent, asSheet: true)
     }
 }
 
