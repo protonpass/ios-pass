@@ -449,11 +449,9 @@
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
-		35855AB22A0A677E0091992F /* PasswordTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB12A0A677E0091992F /* PasswordTypesView.swift */; };
 		35855AB42A0A68DC0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
 		35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
-		35855AB82A0A79400091992F /* PasswordTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB12A0A677E0091992F /* PasswordTypesView.swift */; };
 		35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
 		35855ABB2A0A88B30091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
 		35855ABC2A0A8B4E0091992F /* WordSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */; };
@@ -1128,7 +1126,6 @@
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
-		35855AB12A0A677E0091992F /* PasswordTypesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTypesView.swift; sourceTree = "<group>"; };
 		35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+NavigationTitleText.swift"; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
 		35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSeparatorsView.swift; sourceTree = "<group>"; };
@@ -2082,7 +2079,6 @@
 				3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */,
 				3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */,
 				35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */,
-				35855AB12A0A677E0091992F /* PasswordTypesView.swift */,
 				35855ABA2A0A88B30091992F /* WordSeparatorsView.swift */,
 			);
 			path = "Password generator";
@@ -3631,7 +3627,6 @@
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
-				35855AB82A0A79400091992F /* PasswordTypesView.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
 				3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */,
 				350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */,
@@ -3704,7 +3699,6 @@
 			files = (
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				356BC35029D6C57100F03497 /* SettingsView.swift in Sources */,
-				35855AB22A0A677E0091992F /* PasswordTypesView.swift in Sources */,
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,

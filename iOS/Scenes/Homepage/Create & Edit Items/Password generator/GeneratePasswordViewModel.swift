@@ -27,7 +27,6 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 }
 
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
-    func generatePasswordViewModelWantsToChangePasswordType(currentType: PasswordType)
     func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator)
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
                                                            isShowingAdvancedOptions: Bool)
@@ -103,8 +102,12 @@ extension GeneratePasswordViewModel {
         }
     }
 
-    func changeType() {
-        uiDelegate?.generatePasswordViewModelWantsToChangePasswordType(currentType: type)
+    func changeType(_ type: PasswordType) {
+        guard self.type != type else { return }
+        self.type = type
+        self.isShowingAdvancedOptions = false
+        regenerate()
+        requestHeightUpdate()
     }
 
     func changeWordSeparator() {
@@ -142,16 +145,6 @@ private extension GeneratePasswordViewModel {
         uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(
             passwordType: type,
             isShowingAdvancedOptions: isShowingAdvancedOptions)
-    }
-}
-
-// MARK: PasswordTypesViewModelDelegate
-extension GeneratePasswordViewModel: PasswordTypesViewModelDelegate {
-    func passwordTypesViewModelDidSelect(type: PasswordType) {
-        self.type = type
-        self.isShowingAdvancedOptions = false
-        regenerate()
-        requestHeightUpdate()
     }
 }
 

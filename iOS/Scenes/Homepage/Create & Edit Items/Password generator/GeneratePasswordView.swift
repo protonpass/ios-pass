@@ -120,7 +120,21 @@ struct GeneratePasswordView: View {
 
             Spacer()
 
-            Button(action: viewModel.changeType) {
+            Menu(content: {
+                ForEach(PasswordType.allCases, id: \.self) { type in
+                    Button(action: {
+                        viewModel.changeType(type)
+                    }, label: {
+                        HStack {
+                            Text(type.title)
+                            Spacer()
+                            if viewModel.type == type {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    })
+                }
+            }, label: {
                 HStack {
                     Text(viewModel.type.title)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -130,9 +144,9 @@ struct GeneratePasswordView: View {
                         .foregroundColor(Color(uiColor: PassColor.textHint))
                         .frame(width: 16)
                 }
-                .animationsDisabled()
-            }
+            })
         }
+        .animationsDisabled()
     }
 
     private var advancedOptionsRow: some View {
