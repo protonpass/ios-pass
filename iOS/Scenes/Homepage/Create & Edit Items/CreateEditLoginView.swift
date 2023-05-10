@@ -71,17 +71,10 @@ struct CreateEditLoginView: View {
                         .id(noteID)
 
                         #if DEBUG
-                        ForEach(0..<viewModel.customFields.count, id: \.self) { index in
-                            if let field = viewModel.customFields[safeIndex: index] {
-                                VStack {
-                                    Text(field.title)
-                                }
-                            }
-                        }
-
-                        AddCustomFieldButton(action: viewModel.addCustomField,
-                                             tintColor: viewModel.itemContentType().normMajor2Color)
-                        .padding(.vertical, kItemDetailSectionPadding)
+                        CustomFieldSections(contentType: .login,
+                                            customFields: $viewModel.customFields,
+                                            onAddMore: viewModel.addCustomField,
+                                            onEditTitle: {})
                         #endif
 
                         Spacer()
@@ -367,7 +360,7 @@ struct CreateEditLoginView: View {
 
             Menu(content: {
                 Button(action: viewModel.generateAlias) {
-                    Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.penSquare) })
+                    Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.pencil) })
                 }
 
                 Button(

@@ -1,5 +1,5 @@
 //
-// AddCustomFieldButton.swift
+// CustomFieldSections.swift
 // Proton Pass - Created on 10/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,14 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import SwiftUI
 
-struct AddCustomFieldButton: View {
-    let action: () -> Void
-    let tintColor: UIColor
+struct CustomFieldSections: View {
+    let contentType: ItemContentType
+    @Binding var customFields: [CustomField]
+    let onAddMore: () -> Void
+    let onEditTitle: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        ForEach($customFields) { $field in
+            EditCustomFieldView(contentType: contentType,
+                                customField: $field,
+                                onEditTitle: {},
+                                onRemove: { customFields.removeAll(where: { $0.id == field.id }) })
+        }
+
+        Button(action: onAddMore) {
             Label(title: {
                 Text("Add more")
                     .font(.callout)
@@ -33,8 +43,9 @@ struct AddCustomFieldButton: View {
             }, icon: {
                 Image(systemName: "plus")
             })
-            .foregroundColor(Color(uiColor: tintColor))
+            .foregroundColor(Color(uiColor: contentType.normMajor2Color))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, kItemDetailSectionPadding)
     }
 }
