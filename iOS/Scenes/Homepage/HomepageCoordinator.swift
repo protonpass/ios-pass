@@ -68,12 +68,11 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
-    private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private weak var searchViewModel: SearchViewModel?
 
     private var itemDetailCoordinator: ItemDetailCoordinator?
+    private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var wordProvider: WordProviderProtocol?
-    private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -273,6 +272,20 @@ private extension HomepageCoordinator {
         }
     }
 
+    func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
+        let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
+                                                    itemRepository: itemRepository,
+                                                    upgradeChecker: upgradeChecker,
+                                                    logManager: logManager,
+                                                    preferences: preferences,
+                                                    vaultsManager: vaultsManager,
+                                                    userData: userData,
+                                                    createEditItemDelegates: self)
+        coordinator.delegate = self
+        createEditItemCoordinator = coordinator
+        return coordinator
+    }
+
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
         let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
                                                 itemRepository: itemRepository,
@@ -289,15 +302,8 @@ private extension HomepageCoordinator {
 
     func presentEditItemView(for itemContent: ItemContent) {
         do {
-            let mode = ItemMode.edit(itemContent)
-            switch itemContent.contentData.type {
-            case .login:
-                try presentCreateEditLoginView(mode: mode)
-            case .note:
-                try presentCreateEditNoteView(mode: mode)
-            case .alias:
-                try presentCreateEditAliasView(mode: mode)
-            }
+            let coordinator = makeCreateEditItemCoordinator()
+            try coordinator.presentEditItemView(for: itemContent)
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
@@ -322,54 +328,13 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
-        guard let shareId = vaultsManager.getSelectedShareId() else { return }
         do {
-            switch itemType {
-            case .login:
-                let logInType = ItemCreationType.login(title: nil, url: nil, autofill: false)
-                try self.presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
-            case .alias:
-                try self.presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
-            case .note:
-                try self.presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
-            case .password:
-                self.presentGeneratePasswordView(delegate: self, mode: .random)
-            }
+            let coordinator = makeCreateEditItemCoordinator()
+            try coordinator.presentCreateItemView(for: itemType)
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
         }
-    }
-
-    func presentCreateEditLoginView(mode: ItemMode) throws {
-        let emailAddress = userData.addresses.first?.email ?? ""
-        let viewModel = try CreateEditLoginViewModel(mode: mode,
-                                                     itemRepository: itemRepository,
-                                                     aliasRepository: aliasRepository,
-                                                     upgradeChecker: upgradeChecker,
-                                                     vaults: vaultsManager.getAllVaults(),
-                                                     preferences: preferences,
-                                                     logManager: logManager,
-                                                     emailAddress: emailAddress)
-        viewModel.delegate = self
-        viewModel.createEditLoginViewModelDelegate = self
-        let view = CreateEditLoginView(viewModel: viewModel)
-        present(view, dismissible: false)
-        currentCreateEditItemViewModel = viewModel
-    }
-
-    func presentCreateEditAliasView(mode: ItemMode) throws {
-        let viewModel = try CreateEditAliasViewModel(mode: mode,
-                                                     itemRepository: itemRepository,
-                                                     aliasRepository: aliasRepository,
-                                                     vaults: vaultsManager.getAllVaults(),
-                                                     preferences: preferences,
-                                                     logManager: logManager)
-        viewModel.delegate = self
-        viewModel.createEditAliasViewModelDelegate = self
-        let view = CreateEditAliasView(viewModel: viewModel)
-        present(view, dismissible: false)
-        currentCreateEditItemViewModel = viewModel
     }
 
     func presentMailboxSelectionView(selection: MailboxSelection,
@@ -410,41 +375,6 @@ private extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentCreateEditNoteView(mode: ItemMode) throws {
-        let viewModel = try CreateEditNoteViewModel(mode: mode,
-                                                    itemRepository: itemRepository,
-                                                    vaults: vaultsManager.getAllVaults(),
-                                                    preferences: preferences,
-                                                    logManager: logManager)
-        viewModel.delegate = self
-        let view = CreateEditNoteView(viewModel: viewModel)
-        present(view, dismissible: false)
-        currentCreateEditItemViewModel = viewModel
-    }
-
-    func presentGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate?,
-                                     mode: GeneratePasswordViewMode) {
-        if let wordProvider {
-            let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
-                                                          mode: mode,
-                                                          wordProvider: wordProvider)
-            coordinator.delegate = self
-            coordinator.start()
-            generatePasswordCoordinator = coordinator
-        } else {
-            Task { @MainActor in
-                do {
-                    let wordProvider = try await WordProvider()
-                    self.wordProvider = wordProvider
-                    presentGeneratePasswordView(delegate: delegate, mode: mode)
-                } catch {
-                    logger.error(error)
-                    bannerManager.displayTopErrorMessage(error)
-                }
-            }
-        }
-    }
-
     func presentSortTypeList(selectedSortType: SortType,
                              delegate: SortTypeListViewModelDelegate) {
         let viewModel = SortTypeListViewModel(sortType: selectedSortType)
@@ -476,7 +406,7 @@ private extension HomepageCoordinator {
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
-        currentCreateEditItemViewModel?.refresh()
+        createEditItemCoordinator?.refresh()
     }
 
     func shouldShowAsSheet() -> Bool {
@@ -649,6 +579,25 @@ extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
         } else {
             push(view)
         }
+    }
+}
+
+// MARK: - CreateEditItemCoordinatorDelegate
+extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
+    func createEditItemCoordinatorWantsWordProvider() async -> WordProviderProtocol? {
+        do {
+            let wordProvider = try await WordProvider()
+            self.wordProvider = wordProvider
+            return wordProvider
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
+            return nil
+        }
+    }
+
+    func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
+        present(view, dismissible: dismissable)
     }
 }
 
@@ -1009,7 +958,8 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
-        presentGeneratePasswordView(delegate: delegate, mode: .createLogin)
+        let coordinator = makeCreateEditItemCoordinator()
+        coordinator.presentGeneratePasswordForLoginItem(delegate: delegate)
     }
 
     func createEditLoginViewModelWantsToOpenSettings() {
