@@ -74,7 +74,7 @@ struct CreateEditLoginView: View {
                         CustomFieldSections(contentType: .login,
                                             customFields: $viewModel.customFields,
                                             onAddMore: viewModel.addCustomField,
-                                            onEditTitle: {})
+                                            onEditTitle: viewModel.editCustomFieldTitle)
                         #endif
 
                         Spacer()

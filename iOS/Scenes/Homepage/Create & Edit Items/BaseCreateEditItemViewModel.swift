@@ -29,6 +29,8 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+                                                            delegate: CustomFieldEditionDelegate)
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
@@ -128,6 +130,10 @@ class BaseCreateEditItemViewModel {
 
     func addCustomField() {
         delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
+    }
+
+    func editCustomFieldTitle(_ customField: CustomField) {
+        delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(customField, delegate: self)
     }
 
     func save() {
@@ -237,5 +243,21 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
 extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
     func customFieldAdded(_ customField: CustomField) {
         customFields.append(customField)
+    }
+}
+
+// MARK: - CustomFieldEditionDelegate
+extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
+    func customFieldEdited(_ customField: CustomField, newTitle: String) {
+        guard let index = customFields.firstIndex(where: { $0.id == customField.id }) else {
+            let message = "Custom field with id \(customField.id) not found"
+            logger.error(message)
+            assertionFailure(message)
+            return
+        }
+        customFields[index] = .init(id: customField.id,
+                                    title: newTitle,
+                                    type: customField.type,
+                                    content: customField.content)
     }
 }

@@ -132,7 +132,7 @@ struct CreateEditAliasView: View {
                     CustomFieldSections(contentType: .alias,
                                         customFields: $viewModel.customFields,
                                         onAddMore: viewModel.addCustomField,
-                                        onEditTitle: {})
+                                        onEditTitle: viewModel.editCustomFieldTitle)
                     #endif
                 }
                 .padding()
