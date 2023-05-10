@@ -919,6 +919,14 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         coordinator.start()
     }
 
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+                                                            delegate: CustomFieldEditionDelegate) {
+        let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
+                                                        delegate: delegate,
+                                                        customField: customField)
+        coordinator.start()
+    }
+
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
         let message: String
         switch type {

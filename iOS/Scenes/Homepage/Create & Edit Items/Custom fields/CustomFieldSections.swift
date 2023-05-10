@@ -25,13 +25,13 @@ struct CustomFieldSections: View {
     let contentType: ItemContentType
     @Binding var customFields: [CustomField]
     let onAddMore: () -> Void
-    let onEditTitle: () -> Void
+    let onEditTitle: (CustomField) -> Void
 
     var body: some View {
         ForEach($customFields) { $field in
             EditCustomFieldView(contentType: contentType,
                                 customField: $field,
-                                onEditTitle: {},
+                                onEditTitle: { onEditTitle(field) },
                                 onRemove: { customFields.removeAll(where: { $0.id == field.id }) })
         }
 
