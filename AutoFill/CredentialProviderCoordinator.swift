@@ -705,7 +705,13 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             viewController.sheetPresentationController?.detents = [.medium(), .large()]
         }
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
+        present(viewController, dismissible: true)
+    }
+
+    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
+        let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+                                                         delegate: delegate)
+        coordinator.start()
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
