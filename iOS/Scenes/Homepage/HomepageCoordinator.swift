@@ -68,10 +68,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
-    private weak var currentItemDetailViewModel: BaseItemDetailViewModel?
     private weak var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private weak var searchViewModel: SearchViewModel?
 
+    private var itemDetailCoordinator: ItemDetailCoordinator?
     private var wordProvider: WordProviderProtocol?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
@@ -274,31 +274,16 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        // Only show vault when there're more than 1 vault
-        var vault: Vault?
-        let allVaults = vaultsManager.getAllVaults()
-        if allVaults.count > 1 {
-            vault = allVaults.first(where: { $0.shareId == itemContent.shareId })
-        }
-
-        let itemDetailPage: ItemDetailPage
-        switch itemContent.contentData {
-        case .login:
-            itemDetailPage = makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
-        case .note:
-            itemDetailPage = makeNoteDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
-        case .alias:
-            itemDetailPage = makeAliasItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
-        }
-
-        itemDetailPage.viewModel.delegate = self
-        currentItemDetailViewModel = itemDetailPage.viewModel
-
-        if asSheet {
-            present(itemDetailPage.view)
-        } else {
-            push(itemDetailPage.view)
-        }
+        let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
+                                                itemRepository: itemRepository,
+                                                favIconRepository: favIconRepository,
+                                                logManager: logManager,
+                                                preferences: preferences,
+                                                vaultsManager: vaultsManager,
+                                                itemDetailViewModelDelegate: self)
+        coordinator.delegate = self
+        coordinator.showDetail(for: itemContent, asSheet: asSheet)
+        itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }
 
@@ -490,7 +475,7 @@ private extension HomepageCoordinator {
     func refresh() {
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
-        currentItemDetailViewModel?.refresh()
+        itemDetailCoordinator?.refresh()
         currentCreateEditItemViewModel?.refresh()
     }
 
@@ -558,55 +543,6 @@ private extension HomepageCoordinator {
         dismissAllViewControllers(animated: true) { [unowned self] in
             print(#function)
         }
-    }
-}
-
-// MARK: - Item detail pages
-private extension HomepageCoordinator {
-    struct ItemDetailPage {
-        let viewModel: BaseItemDetailViewModel
-        let view: any View
-    }
-
-    func makeLoginItemDetailPage(from itemContent: ItemContent,
-                                 asSheet: Bool,
-                                 vault: Vault?) -> ItemDetailPage {
-        let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
-                                             itemContent: itemContent,
-                                             favIconRepository: favIconRepository,
-                                             itemRepository: itemRepository,
-                                             vault: vault,
-                                             logManager: logManager,
-                                             theme: preferences.theme)
-        viewModel.logInDetailViewModelDelegate = self
-        return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
-    }
-
-    func makeAliasItemDetailPage(from itemContent: ItemContent,
-                                 asSheet: Bool,
-                                 vault: Vault?) -> ItemDetailPage {
-        let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
-                                             itemContent: itemContent,
-                                             favIconRepository: favIconRepository,
-                                             itemRepository: itemRepository,
-                                             aliasRepository: aliasRepository,
-                                             vault: vault,
-                                             logManager: logManager,
-                                             theme: preferences.theme)
-        return .init(viewModel: viewModel, view: AliasDetailView(viewModel: viewModel))
-    }
-
-    func makeNoteDetailPage(from itemContent: ItemContent,
-                            asSheet: Bool,
-                            vault: Vault?) -> ItemDetailPage {
-        let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
-                                            itemContent: itemContent,
-                                            favIconRepository: favIconRepository,
-                                            itemRepository: itemRepository,
-                                            vault: vault,
-                                            logManager: logManager,
-                                            theme: preferences.theme)
-        return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
 }
 
@@ -702,6 +638,17 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
+    }
+}
+
+// MARK: - ItemDetailCoordinatorDelegate
+extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
+    func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
+        if asSheet {
+            present(view)
+        } else {
+            push(view)
+        }
     }
 }
 
@@ -1036,7 +983,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         addNewEvent(type: .update(type))
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
-        currentItemDetailViewModel?.refresh()
+        itemDetailCoordinator?.refresh()
         dismissTopMostViewController { [unowned self] in
             self.bannerManager.displayBottomInfoMessage(message)
         }
@@ -1281,13 +1228,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidFail(_ error: Error) {
         bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - LogInDetailViewModelDelegate
-extension HomepageCoordinator: LogInDetailViewModelDelegate {
-    func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
-        presentItemDetailView(for: itemContent, asSheet: true)
     }
 }
 
