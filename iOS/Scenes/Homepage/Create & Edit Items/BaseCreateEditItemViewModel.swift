@@ -28,6 +28,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToHideLoadingHud()
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate)
+    func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
@@ -59,6 +60,7 @@ enum ItemCreationType {
 class BaseCreateEditItemViewModel {
     @Published private(set) var vault: Vault
     @Published private(set) var isSaving = false
+    @Published var customFields = [CustomField]()
     @Published var isObsolete = false
 
     let mode: ItemMode
@@ -123,6 +125,10 @@ class BaseCreateEditItemViewModel {
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
+
+    func addCustomField() {
+        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
+    }
 
     func save() {
         Task { @MainActor in
@@ -224,5 +230,12 @@ extension BaseCreateEditItemViewModel {
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     func vaultSelectorViewModelDidSelect(vault: Vault) {
         self.vault = vault
+    }
+}
+
+// MARK: - CustomFieldTitleAlertHandlerDelegate
+extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
+    func customFieldAdded(_ customField: CustomField) {
+        customFields.append(customField)
     }
 }

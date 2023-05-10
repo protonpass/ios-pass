@@ -69,9 +69,25 @@ struct CreateEditLoginView: View {
                                         focusedField: $focusedField,
                                         field: .note)
                         .id(noteID)
+
+                        #if DEBUG
+                        ForEach(0..<viewModel.customFields.count, id: \.self) { index in
+                            if let field = viewModel.customFields[safeIndex: index] {
+                                VStack {
+                                    Text(field.title)
+                                }
+                            }
+                        }
+
+                        AddCustomFieldButton(action: viewModel.addCustomField,
+                                             tintColor: viewModel.itemContentType().normMajor2Color)
+                        .padding(.vertical, kItemDetailSectionPadding)
+                        #endif
+
                         Spacer()
                     }
                     .padding()
+                    .animation(.default, value: viewModel.customFields.count)
                 }
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?

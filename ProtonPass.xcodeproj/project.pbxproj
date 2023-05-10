@@ -507,6 +507,12 @@
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
 		35AC9A542A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A532A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift */; };
 		35AC9A562A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A552A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift */; };
+		35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A582A0BD12600FBCEEC /* CustomFieldTypesView.swift */; };
+		35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A582A0BD12600FBCEEC /* CustomFieldTypesView.swift */; };
+		35AC9A5C2A0BDAA300FBCEEC /* AddCustomFieldButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A5B2A0BDAA300FBCEEC /* AddCustomFieldButton.swift */; };
+		35AC9A5D2A0BDB7D00FBCEEC /* AddCustomFieldButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A5B2A0BDAA300FBCEEC /* AddCustomFieldButton.swift */; };
+		35AC9A652A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A642A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift */; };
+		35AC9A662A0BE4C700FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A642A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
@@ -1175,6 +1181,9 @@
 		35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemEndpoint.swift; sourceTree = "<group>"; };
 		35AC9A532A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailCoordinator.swift; sourceTree = "<group>"; };
 		35AC9A552A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemCoordinator.swift; sourceTree = "<group>"; };
+		35AC9A582A0BD12600FBCEEC /* CustomFieldTypesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypesView.swift; sourceTree = "<group>"; };
+		35AC9A5B2A0BDAA300FBCEEC /* AddCustomFieldButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomFieldButton.swift; sourceTree = "<group>"; };
+		35AC9A642A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldAdditionCoordinator.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveTextField.swift; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
@@ -1795,6 +1804,7 @@
 				3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */,
 				35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */,
 				3561C9F529E6CDFA00D6E518 /* VaultSelectorView.swift */,
+				35AC9A5E2A0BDCA600FBCEEC /* Custom fields */,
 				35855AB02A0A65F20091992F /* Password generator */,
 				3572E52729940C0300775FAC /* Supporting Views */,
 			);
@@ -2221,6 +2231,16 @@
 				359A800C29096A2200EEBC51 /* SyncEventLoop.swift */,
 			);
 			path = EventLoop;
+			sourceTree = "<group>";
+		};
+		35AC9A5E2A0BDCA600FBCEEC /* Custom fields */ = {
+			isa = PBXGroup;
+			children = (
+				35AC9A5B2A0BDAA300FBCEEC /* AddCustomFieldButton.swift */,
+				35AC9A642A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift */,
+				35AC9A582A0BD12600FBCEEC /* CustomFieldTypesView.swift */,
+			);
+			path = "Custom fields";
 			sourceTree = "<group>";
 		};
 		35C2162B29EA951E001720FF /* Settings Bundles */ = {
@@ -3604,6 +3624,7 @@
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
 				355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */,
 				354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */,
+				35AC9A662A0BE4C700FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				355694A529D46923005DD2EB /* VaultListUiModel.swift in Sources */,
 				350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */,
 				3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */,
@@ -3613,6 +3634,7 @@
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
+				35AC9A5D2A0BDB7D00FBCEEC /* AddCustomFieldButton.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */,
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
@@ -3620,6 +3642,7 @@
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */,
+				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
@@ -3696,6 +3719,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3593DD1528A843B200C235D3 /* ProtonPass.xcdatamodeld in Sources */,
+				35AC9A5C2A0BDAA300FBCEEC /* AddCustomFieldButton.swift in Sources */,
 				356BC35029D6C57100F03497 /* SettingsView.swift in Sources */,
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
@@ -3721,6 +3745,7 @@
 				35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */,
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
 				354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */,
+				35AC9A652A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
@@ -3760,6 +3785,7 @@
 				353EC0162A05A7EF004AF925 /* TrashItemsSection.swift in Sources */,
 				354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */,
 				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
+				35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
