@@ -29,12 +29,12 @@ enum GeneratePasswordViewMode {
     case random
 }
 
-enum PasswordType: CaseIterable {
-    case random, memorable
+enum PasswordType: Int, CaseIterable {
+    case random = 0, memorable
 }
 
-enum WordSeparator: CaseIterable {
-    case hyphens, spaces, periods, commas, underscores, numbers, numbersAndSymbols
+enum WordSeparator: Int, CaseIterable {
+    case hyphens = 0, spaces, periods, commas, underscores, numbers, numbersAndSymbols
 }
 
 protocol GeneratePasswordCoordinatorDelegate: AnyObject {
