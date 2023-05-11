@@ -27,7 +27,6 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 }
 
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
-    func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator)
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
                                                            isShowingAdvancedOptions: Bool)
 }
@@ -56,7 +55,12 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     let wordProvider: WordProviderProtocol
 
     @Published private(set) var password = ""
-    @Published private(set) var type: PasswordType = .random
+    @Published private(set) var type: PasswordType = .random {
+        didSet {
+            regenerate(forceRefresh: false)
+            requestHeightUpdate()
+        }
+    }
     @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
 
     // Random password options
@@ -70,19 +74,26 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published var hasNumberCharacters = true { didSet { regenerate() } }
 
     // Memorable password options
-    @Published private(set) var wordSeparator: WordSeparator = .hyphens { didSet { regenerate() } }
+    @Published private(set) var wordSeparator: WordSeparator = .hyphens {
+        didSet {
+            regenerate(forceRefresh: false)
+            requestHeightUpdate()
+        }
+    }
     @Published var wordCount: Double = 4 {
         didSet {
             if wordCount != oldValue { regenerate() }
         }
     }
-    @Published var capitalizingWords = false { didSet { regenerate() } }
-    @Published var includingNumbers = false { didSet { regenerate() } }
+    @Published var capitalizingWords = false { didSet { regenerate(forceRefresh: false) } }
+    @Published var includingNumbers = false { didSet { regenerate(forceRefresh: false) } }
 
     weak var delegate: GeneratePasswordViewModelDelegate?
     weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
 
     var texts: [Text] { PasswordUtils.generateColoredPasswords(password) }
+
+    private var words = [String]()
 
     init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
         self.mode = mode
@@ -93,25 +104,21 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
 // MARK: - Public APIs
 extension GeneratePasswordViewModel {
-    func regenerate() {
+    func regenerate(forceRefresh: Bool = true) {
         switch type {
         case .random:
             regenerateRandomPassword()
         case .memorable:
-            regenerateMemorablePassword()
+            regenerateMemorablePassword(forceRefresh: forceRefresh)
         }
     }
 
     func changeType(_ type: PasswordType) {
-        guard self.type != type else { return }
         self.type = type
-        self.isShowingAdvancedOptions = false
-        regenerate()
-        requestHeightUpdate()
     }
 
-    func changeWordSeparator() {
-        uiDelegate?.generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: wordSeparator)
+    func changeWordSeparator(_ separator: WordSeparator) {
+        self.wordSeparator = separator
     }
 
     func confirm() {
@@ -129,28 +136,36 @@ private extension GeneratePasswordViewModel {
         password = .random(allowedCharacters: allowedCharacters, length: Int(characterCount))
     }
 
-    func regenerateMemorablePassword() {
-        var words = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
-        if capitalizingWords { words = words.map { $0.capitalized } }
+    func regenerateMemorablePassword(forceRefresh: Bool) {
+        if forceRefresh || words.isEmpty {
+            words = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
+        }
+
+        var copiedWords = words
+
+        if capitalizingWords { copiedWords = copiedWords.map { $0.capitalized } }
+
         if includingNumbers {
-            if let randomIndex = words.indices.randomElement(),
+            if let randomIndex = copiedWords.indices.randomElement(),
                let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
-                words[randomIndex] = words[randomIndex] + String(randomNumber)
+                copiedWords[randomIndex] = copiedWords[randomIndex] + String(randomNumber)
             }
         }
-        password = words.joined(separator: wordSeparator.value)
+
+        var password = ""
+        for (index, word) in copiedWords.enumerated() {
+            password += word
+            if index != copiedWords.count - 1 {
+                password += wordSeparator.value
+            }
+        }
+
+        self.password = password
     }
 
     func requestHeightUpdate() {
         uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(
             passwordType: type,
             isShowingAdvancedOptions: isShowingAdvancedOptions)
-    }
-}
-
-// MARK: - WordSeparatorsViewModelDelegate
-extension GeneratePasswordViewModel: WordSeparatorsViewModelDelegate {
-    func wordSeparatorsViewModelDidSelect(separator: WordSeparator) {
-        self.wordSeparator = separator
     }
 }
