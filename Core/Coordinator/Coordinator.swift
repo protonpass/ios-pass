@@ -39,6 +39,8 @@ public protocol CoordinatorProtocol: AnyObject {
                  animated: Bool,
                  dismissible: Bool)
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
+    func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
+    func coordinatorDidDismiss()
     func popTopViewController(animated: Bool)
     func popToRoot(animated: Bool, secondaryViewController: UIViewController?)
     func isAtRootViewController() -> Bool
@@ -77,12 +79,20 @@ public extension CoordinatorProtocol {
     }
 
     func dismissTopMostViewController(animated: Bool = true, completion: (() -> Void)? = nil) {
-        rootViewController.topMostViewController.dismiss(animated: animated, completion: completion)
+        rootViewController.topMostViewController.dismiss(animated: animated) { [unowned self] in
+            completion?()
+            coordinatorDidDismiss()
+        }
     }
 
     func dismissAllViewControllers(animated: Bool = true, completion: (() -> Void)? = nil) {
-        rootViewController.dismiss(animated: animated, completion: completion)
+        rootViewController.dismiss(animated: animated) { [unowned self] in
+            completion?()
+            coordinatorDidDismiss()
+        }
     }
+
+    func coordinatorDidDismiss() {}
 }
 
 enum CoordinatorType {
@@ -231,6 +241,8 @@ open class Coordinator: CoordinatorProtocol {
             return splitViewController.isCollapsed
         }
     }
+
+    open func coordinatorDidDismiss() {}
 }
 
 public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
