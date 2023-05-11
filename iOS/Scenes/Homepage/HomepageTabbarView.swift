@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -60,6 +61,10 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     }
 }
 
+extension Notification.Name {
+    static let forceRefreshItemsTab = Notification.Name("forceRefreshItemsTab")
+}
+
 protocol HomepageTabBarControllerDelegate: AnyObject {
     func homepageTabBarControllerDidSelectItemsTab()
     func homepageTabBarControllerWantToCreateNewItem()
@@ -73,6 +78,8 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private let profileTabView: ProfileTabView
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView) {
         self.itemsTabView = itemsTabView
@@ -125,6 +132,19 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
                 item.imageInsets = .init(top: 8, left: 0, bottom: -8, right: 0)
             }
         }
+
+        NotificationCenter.default.publisher(for: .forceRefreshItemsTab)
+            .sink { [unowned self] _ in
+                // Workaround a SwiftUI bug that makes the view at the top untappable
+                // (vaut switcher & search bar) when a sheet is closed.
+                // Only applicable when currently selected tab is items tab
+                // https://stackoverflow.com/a/60492031
+                if selectedViewController == viewControllers?.first {
+                    self.select(tab: .profile)
+                    self.select(tab: .items)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func select(tab: HomepageTab) {

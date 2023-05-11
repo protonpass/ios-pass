@@ -172,6 +172,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.refreshPlan()
         self.sendAllEventsIfApplicable()
     }
+
+    override func coordinatorDidDismiss() {
+        NotificationCenter.default.post(name: .forceRefreshItemsTab, object: nil)
+    }
 }
 
 // MARK: - Private APIs
@@ -227,6 +231,7 @@ private extension HomepageCoordinator {
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager)
         profileTabViewModel.delegate = self
+        self.profileTabViewModel = profileTabViewModel
 
         let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
             self.popTopViewController(animated: true)
@@ -238,7 +243,6 @@ private extension HomepageCoordinator {
                                        delegate: self).ignoresSafeArea(edges: [.top, .bottom]),
               secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
-        self.profileTabViewModel = profileTabViewModel
     }
 
     func refreshPlan() {
