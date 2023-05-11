@@ -55,45 +55,54 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     let wordProvider: WordProviderProtocol
 
     @Published private(set) var password = ""
-    @Published private(set) var type: PasswordType = .random {
+
+    @AppStorage("passwordType", store: kSharedUserDefaults)
+    private(set) var type: PasswordType = .random {
         didSet {
             regenerate(forceRefresh: false)
             requestHeightUpdate()
         }
     }
+
     @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
 
     // Random password options
-    @Published var characterCount: Double = 16 {
-        didSet {
-            if characterCount != oldValue { regenerate() }
-        }
-    }
-    @Published var hasSpecialCharacters = true { didSet { regenerate() } }
-    @Published var hasCapitalCharacters = true { didSet { regenerate() } }
-    @Published var hasNumberCharacters = true { didSet { regenerate() } }
+    @AppStorage("characterCount", store: kSharedUserDefaults)
+    var characterCount: Double = 16 { didSet { if characterCount != oldValue { regenerate() } } }
+
+    @AppStorage("hasSpecialCharacters", store: kSharedUserDefaults)
+    var hasSpecialCharacters = true { didSet { regenerate() } }
+
+    @AppStorage("hasCapitalCharacters", store: kSharedUserDefaults)
+    var hasCapitalCharacters = true { didSet { regenerate() } }
+
+    @AppStorage("hasNumberCharacters", store: kSharedUserDefaults)
+    var hasNumberCharacters = true { didSet { regenerate() } }
 
     // Memorable password options
-    @Published private(set) var wordSeparator: WordSeparator = .hyphens {
+    @AppStorage("wordSeparator", store: kSharedUserDefaults)
+    private(set) var wordSeparator: WordSeparator = .hyphens {
         didSet {
             regenerate(forceRefresh: false)
             requestHeightUpdate()
         }
     }
-    @Published var wordCount: Double = 4 {
-        didSet {
-            if wordCount != oldValue { regenerate() }
-        }
-    }
-    @Published var capitalizingWords = false { didSet { regenerate(forceRefresh: false) } }
-    @Published var includingNumbers = false { didSet { regenerate(forceRefresh: false) } }
+
+    @AppStorage("wordCount", store: kSharedUserDefaults)
+    var wordCount: Double = 4 { didSet { if wordCount != oldValue { regenerate() } } }
+
+    @AppStorage("capitalizingWords", store: kSharedUserDefaults)
+    var capitalizingWords = false { didSet { regenerate(forceRefresh: false) } }
+
+    @AppStorage("includingNumbers", store: kSharedUserDefaults)
+    var includingNumbers = false { didSet { regenerate(forceRefresh: false) } }
 
     weak var delegate: GeneratePasswordViewModelDelegate?
     weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
 
     var texts: [Text] { PasswordUtils.generateColoredPasswords(password) }
 
-    private var words = [String]()
+    private var cachedWords = [String]()
 
     init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
         self.mode = mode
@@ -137,25 +146,25 @@ private extension GeneratePasswordViewModel {
     }
 
     func regenerateMemorablePassword(forceRefresh: Bool) {
-        if forceRefresh || words.isEmpty {
-            words = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
+        if forceRefresh || cachedWords.isEmpty {
+            cachedWords = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
         }
 
-        var copiedWords = words
+        var words = cachedWords
 
-        if capitalizingWords { copiedWords = copiedWords.map { $0.capitalized } }
+        if capitalizingWords { words = words.map { $0.capitalized } }
 
         if includingNumbers {
-            if let randomIndex = copiedWords.indices.randomElement(),
+            if let randomIndex = words.indices.randomElement(),
                let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
-                copiedWords[randomIndex] = copiedWords[randomIndex] + String(randomNumber)
+                words[randomIndex] = words[randomIndex] + String(randomNumber)
             }
         }
 
         var password = ""
-        for (index, word) in copiedWords.enumerated() {
+        for (index, word) in words.enumerated() {
             password += word
-            if index != copiedWords.count - 1 {
+            if index != words.count - 1 {
                 password += wordSeparator.value
             }
         }
