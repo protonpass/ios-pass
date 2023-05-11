@@ -82,7 +82,9 @@ enum CredentialItem {
 
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
-    @Published var selectedSortType = SortType.mostRecent
+
+    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+    var selectedSortType = SortType.mostRecent
 
     private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?

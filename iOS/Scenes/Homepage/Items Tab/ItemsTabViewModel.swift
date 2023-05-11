@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToShowSpinner()
@@ -36,7 +37,8 @@ protocol ItemsTabViewModelDelegate: AnyObject {
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var selectedSortType = SortType.mostRecent
+    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+    var selectedSortType = SortType.mostRecent
 
     let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
