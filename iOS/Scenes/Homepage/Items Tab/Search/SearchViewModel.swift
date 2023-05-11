@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import SwiftUI
 
 enum SearchViewState {
     /// Indexing items
@@ -50,7 +51,9 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var state = SearchViewState.initializing
     @Published var selectedType: ItemContentType?
-    @Published var selectedSortType = SortType.mostRecent
+
+    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+    var selectedSortType = SortType.mostRecent { didSet { filterResults() } }
 
     // Injected properties
     private let itemRepository: ItemRepositoryProtocol
@@ -102,14 +105,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
             .store(in: &cancellables)
 
         $selectedType
-            .receive(on: DispatchQueue.main)
-            .dropFirst()
-            .sink { [unowned self] _ in
-                self.filterResults()
-            }
-            .store(in: &cancellables)
-
-        $selectedSortType
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [unowned self] _ in
