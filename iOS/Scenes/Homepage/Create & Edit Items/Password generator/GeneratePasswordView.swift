@@ -93,7 +93,7 @@ struct GeneratePasswordView: View {
                     CircleButton(icon: IconProvider.arrowsRotate,
                                  iconColor: PassColor.interactionNormMajor1,
                                  backgroundColor: PassColor.interactionNormMinor1,
-                                 action: viewModel.regenerate)
+                                 action: { viewModel.regenerate() })
                     .opacity(0)
                 }
 
@@ -106,7 +106,7 @@ struct GeneratePasswordView: View {
                     CircleButton(icon: IconProvider.arrowsRotate,
                                  iconColor: PassColor.loginInteractionNormMajor2,
                                  backgroundColor: PassColor.loginInteractionNormMinor1,
-                                 action: viewModel.regenerate)
+                                 action: { viewModel.regenerate() })
                 }
             }
         }
@@ -221,7 +221,21 @@ struct GeneratePasswordView: View {
 
             Spacer()
 
-            Button(action: viewModel.changeWordSeparator) {
+            Menu(content: {
+                ForEach(WordSeparator.allCases, id: \.self) { separator in
+                    Button(action: {
+                        viewModel.changeWordSeparator(separator)
+                    }, label: {
+                        HStack {
+                            Text(separator.title)
+                            Spacer()
+                            if viewModel.wordSeparator == separator {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    })
+                }
+            }, label: {
                 HStack {
                     Text(viewModel.wordSeparator.title)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -231,7 +245,7 @@ struct GeneratePasswordView: View {
                         .foregroundColor(Color(uiColor: PassColor.textHint))
                         .frame(width: 16)
                 }
-            }
+            })
         }
         .animationsDisabled()
     }
