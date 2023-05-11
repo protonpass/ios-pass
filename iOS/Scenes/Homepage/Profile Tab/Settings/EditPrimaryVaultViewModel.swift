@@ -48,7 +48,10 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
     }
 
     func setAsPrimary(vault: Vault) {
-        self.primaryVault = vault
+        guard primaryVault.shareId != vault.shareId else {
+            delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
+            return
+        }
         Task { @MainActor in
             defer {
                 isLoading = false
@@ -58,6 +61,7 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
                 isLoading = true
                 delegate?.editPrimaryVaultViewModelWantsToShowSpinner()
                 if try await shareRepository.setPrimaryVault(shareId: vault.shareId) {
+                    self.primaryVault = vault
                     delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
                 }
             } catch {
