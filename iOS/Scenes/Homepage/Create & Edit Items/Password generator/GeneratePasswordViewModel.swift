@@ -27,7 +27,6 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 }
 
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
-    func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator)
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
                                                            isShowingAdvancedOptions: Bool)
 }
@@ -56,33 +55,54 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     let wordProvider: WordProviderProtocol
 
     @Published private(set) var password = ""
-    @Published private(set) var type: PasswordType = .random
+
+    @AppStorage("passwordType", store: kSharedUserDefaults)
+    private(set) var type: PasswordType = .random {
+        didSet {
+            regenerate(forceRefresh: false)
+            requestHeightUpdate()
+        }
+    }
+
     @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
 
     // Random password options
-    @Published var characterCount: Double = 16 {
-        didSet {
-            if characterCount != oldValue { regenerate() }
-        }
-    }
-    @Published var hasSpecialCharacters = true { didSet { regenerate() } }
-    @Published var hasCapitalCharacters = true { didSet { regenerate() } }
-    @Published var hasNumberCharacters = true { didSet { regenerate() } }
+    @AppStorage("characterCount", store: kSharedUserDefaults)
+    var characterCount: Double = 16 { didSet { if characterCount != oldValue { regenerate() } } }
+
+    @AppStorage("hasSpecialCharacters", store: kSharedUserDefaults)
+    var hasSpecialCharacters = true { didSet { regenerate() } }
+
+    @AppStorage("hasCapitalCharacters", store: kSharedUserDefaults)
+    var hasCapitalCharacters = true { didSet { regenerate() } }
+
+    @AppStorage("hasNumberCharacters", store: kSharedUserDefaults)
+    var hasNumberCharacters = true { didSet { regenerate() } }
 
     // Memorable password options
-    @Published private(set) var wordSeparator: WordSeparator = .hyphens { didSet { regenerate() } }
-    @Published var wordCount: Double = 4 {
+    @AppStorage("wordSeparator", store: kSharedUserDefaults)
+    private(set) var wordSeparator: WordSeparator = .hyphens {
         didSet {
-            if wordCount != oldValue { regenerate() }
+            regenerate(forceRefresh: false)
+            requestHeightUpdate()
         }
     }
-    @Published var capitalizingWords = false { didSet { regenerate() } }
-    @Published var includingNumbers = false { didSet { regenerate() } }
+
+    @AppStorage("wordCount", store: kSharedUserDefaults)
+    var wordCount: Double = 4 { didSet { if wordCount != oldValue { regenerate() } } }
+
+    @AppStorage("capitalizingWords", store: kSharedUserDefaults)
+    var capitalizingWords = false { didSet { regenerate(forceRefresh: false) } }
+
+    @AppStorage("includingNumbers", store: kSharedUserDefaults)
+    var includingNumbers = false { didSet { regenerate(forceRefresh: false) } }
 
     weak var delegate: GeneratePasswordViewModelDelegate?
     weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
 
     var texts: [Text] { PasswordUtils.generateColoredPasswords(password) }
+
+    private var cachedWords = [String]()
 
     init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
         self.mode = mode
@@ -93,25 +113,21 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
 // MARK: - Public APIs
 extension GeneratePasswordViewModel {
-    func regenerate() {
+    func regenerate(forceRefresh: Bool = true) {
         switch type {
         case .random:
             regenerateRandomPassword()
         case .memorable:
-            regenerateMemorablePassword()
+            regenerateMemorablePassword(forceRefresh: forceRefresh)
         }
     }
 
     func changeType(_ type: PasswordType) {
-        guard self.type != type else { return }
         self.type = type
-        self.isShowingAdvancedOptions = false
-        regenerate()
-        requestHeightUpdate()
     }
 
-    func changeWordSeparator() {
-        uiDelegate?.generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: wordSeparator)
+    func changeWordSeparator(_ separator: WordSeparator) {
+        self.wordSeparator = separator
     }
 
     func confirm() {
@@ -129,28 +145,36 @@ private extension GeneratePasswordViewModel {
         password = .random(allowedCharacters: allowedCharacters, length: Int(characterCount))
     }
 
-    func regenerateMemorablePassword() {
-        var words = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
+    func regenerateMemorablePassword(forceRefresh: Bool) {
+        if forceRefresh || cachedWords.isEmpty {
+            cachedWords = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
+        }
+
+        var words = cachedWords
+
         if capitalizingWords { words = words.map { $0.capitalized } }
+
         if includingNumbers {
             if let randomIndex = words.indices.randomElement(),
                let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
                 words[randomIndex] = words[randomIndex] + String(randomNumber)
             }
         }
-        password = words.joined(separator: wordSeparator.value)
+
+        var password = ""
+        for (index, word) in words.enumerated() {
+            password += word
+            if index != words.count - 1 {
+                password += wordSeparator.value
+            }
+        }
+
+        self.password = password
     }
 
     func requestHeightUpdate() {
         uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(
             passwordType: type,
             isShowingAdvancedOptions: isShowingAdvancedOptions)
-    }
-}
-
-// MARK: - WordSeparatorsViewModelDelegate
-extension GeneratePasswordViewModel: WordSeparatorsViewModelDelegate {
-    func wordSeparatorsViewModelDidSelect(separator: WordSeparator) {
-        self.wordSeparator = separator
     }
 }

@@ -29,12 +29,12 @@ enum GeneratePasswordViewMode {
     case random
 }
 
-enum PasswordType: CaseIterable {
-    case random, memorable
+enum PasswordType: Int, CaseIterable {
+    case random = 0, memorable
 }
 
-enum WordSeparator: CaseIterable {
-    case hyphens, spaces, periods, commas, underscores, numbers, symbols
+enum WordSeparator: Int, CaseIterable {
+    case hyphens = 0, spaces, periods, commas, underscores, numbers, numbersAndSymbols
 }
 
 protocol GeneratePasswordCoordinatorDelegate: AnyObject {
@@ -99,7 +99,7 @@ extension GeneratePasswordCoordinator {
                     CGFloat(height)
                 }
             }
-            detent = makeCustomDetent(isShowingAdvancedOptions ? 500 : 370)
+            detent = makeCustomDetent(isShowingAdvancedOptions ? 500 : 400)
             detentIdentifier = detent.identifier
         } else {
             if isShowingAdvancedOptions {
@@ -120,29 +120,6 @@ extension GeneratePasswordCoordinator {
 
 // MARK: - GeneratePasswordViewModelUiDelegate
 extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
-    func generatePasswordViewModelWantsToChangeWordSeparator(currentSeparator: WordSeparator) {
-        assert(generatePasswordViewModel != nil, "generatePasswordViewModel is not set")
-
-        let viewModel = WordSeparatorsViewModel(selectedSeparator: currentSeparator)
-        viewModel.delegate = generatePasswordViewModel
-
-        let view = WordSeparatorsView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        if #available(iOS 16.0, *) {
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(44 * WordSeparator.allCases.count + 120)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-
-        delegate?.generatePasswordCoordinatorWantsToPresent(viewController: viewController)
-    }
-
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
                                                            isShowingAdvancedOptions: Bool) {
         updateSheetHeight(passwordType: passwordType, isShowingAdvancedOptions: isShowingAdvancedOptions)
@@ -186,8 +163,8 @@ extension WordSeparator {
             return "Underscores"
         case .numbers:
             return "Numbers"
-        case .symbols:
-            return "Symbols"
+        case .numbersAndSymbols:
+            return "Numbers and Symbols"
         }
     }
 
@@ -204,15 +181,18 @@ extension WordSeparator {
         case .underscores:
             return "_"
         case .numbers:
-            if let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
-                return String(randomNumber)
+            if let randomCharacter = AllowedCharacter.digit.rawValue.randomElement() {
+                return String(randomCharacter)
             } else {
+                assertionFailure("Something's wrong")
                 return "0"
             }
-        case .symbols:
-            if let specialCharacter = AllowedCharacter.special.rawValue.randomElement() {
-                return String(specialCharacter)
+        case .numbersAndSymbols:
+            let allowedCharacters = AllowedCharacter.digit.rawValue + AllowedCharacter.special.rawValue
+            if let randomCharacter = allowedCharacters.randomElement() {
+                return String(randomCharacter)
             } else {
+                assertionFailure("Something's wrong")
                 return "&"
             }
         }
