@@ -178,13 +178,21 @@ public extension ShareRepositoryProtocol {
             logger.trace("Failed to set primary vault \(shareId) \(shareId) for user \(userId)")
             return false
         }
-        for share in shares {
+
+        let updatedShares = shares.map { share in
             let clonedShare = share.share.clone(isPrimary: share.share.shareID == shareId)
-            let clonedEncryptedShare = SymmetricallyEncryptedShare(
-                encryptedContent: share.encryptedContent,
-                share: clonedShare)
-            try await localShareDatasource.upsertShares([clonedEncryptedShare], userId: userId)
+            return SymmetricallyEncryptedShare(encryptedContent: share.encryptedContent,
+                                               share: clonedShare)
         }
+
+        let primaryShares = updatedShares.filter { $0.share.primary }
+        assert(primaryShares.count == 1, "Should only have one primary vault")
+        assert(primaryShares.first?.share.shareID == shareId)
+
+        // Remove all shares before upserting because of CoreData bug
+        // that doesn't update boolean values ("primary" boolean of ShareEntity in this case)
+        try await localShareDatasource.removeAllShares(userId: userId)
+        try await localShareDatasource.upsertShares(updatedShares, userId: userId)
         logger.trace("Finished setting primary vault \(shareId) \(shareId) for user \(userId)")
         return true
     }
