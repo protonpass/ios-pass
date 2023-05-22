@@ -30,7 +30,7 @@ public struct PassPlan: Decodable, Equatable {
     /// Human readable plan name
     public let displayName: String
 
-    /// Force hide the upgrade button independently of plan (in case of premium SL users)
+    /// Force hide the upgrade button independently of plan
     public let hideUpgrade: Bool
 
     public let trialEnd: Int?
@@ -40,8 +40,23 @@ public struct PassPlan: Decodable, Equatable {
 
     /// Enum representation of `type`
     public enum PlanType {
-        case free, plus
+        case free, plus, trial
     }
 
-    public var planType: PlanType { type == "plus" ? .plus : .free }
+    public var planType: PlanType {
+        switch type {
+        case "plus":
+            return .plus
+
+        case "free":
+            if let trialEnd, trialEnd > 0 {
+                return .trial
+            } else {
+                return .free
+            }
+
+        default:
+            return .free
+        }
+    }
 }
