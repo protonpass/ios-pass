@@ -18,82 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-enum ItemType: CaseIterable {
-    case login, alias, note, password
-
-    var icon: UIImage {
-        switch self {
-        case .login:
-            return IconProvider.user
-        case .alias:
-            return IconProvider.alias
-        case .note:
-            return IconProvider.fileLines
-        case .password:
-            return IconProvider.key
-        }
-    }
-
-    var tintColor: UIColor {
-        switch self {
-        case .login:
-            return ItemContentType.login.normMajor2Color
-        case .alias:
-            return ItemContentType.alias.normMajor2Color
-        case .note:
-            return ItemContentType.note.normMajor2Color
-        case .password:
-            return PassColor.passwordInteractionNormMajor2
-        }
-    }
-
-    var backgroundColor: UIColor {
-        switch self {
-        case .login:
-            return ItemContentType.login.normMinor1Color
-        case .alias:
-            return ItemContentType.alias.normMinor1Color
-        case .note:
-            return ItemContentType.note.normMinor1Color
-        case .password:
-            return PassColor.passwordInteractionNormMinor1
-        }
-    }
-
-    var title: String {
-        switch self {
-        case .login:
-            return "Login"
-        case .alias:
-            return "Alias"
-        case .note:
-            return "Note"
-        case .password:
-            return "Password"
-        }
-    }
-
-    var description: String {
-        switch self {
-        case .login:
-            return "Add login details for an app or site"
-        case .alias:
-            return "Get an email alias to use on new apps"
-        case .note:
-            return "Jot down a PIN, code, or note to self"
-        case .password:
-            return "Generate a secure password"
-        }
-    }
-}
-
 struct ItemTypeListView: View {
-    let onSelectItemType: (ItemType) -> Void
+    @StateObject private var viewModel: ItemTypeListViewModel
+
+    init(viewModel: ItemTypeListViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         NavigationView {
@@ -121,10 +54,9 @@ struct ItemTypeListView: View {
         .navigationViewStyle(.stack)
     }
 
-    @ViewBuilder
     private func itemRow(for type: ItemType) -> some View {
         Button(action: {
-            onSelectItemType(type)
+            viewModel.select(type: type)
         }, label: {
             GeneralItemRow(
                 thumbnailView: {
@@ -134,9 +66,25 @@ struct ItemTypeListView: View {
                 },
                 title: type.title,
                 description: type.description,
-                descriptionMinScaleFactor: 0.9)
+                descriptionMinScaleFactor: 0.9,
+                secondaryTitle: secondaryTitle(for: type),
+                secondaryTitleColor: secondaryTitleColor(for: type))
             .frame(height: 66)
         })
         .buttonStyle(.plain)
+    }
+
+    private func secondaryTitle(for type: ItemType) -> String? {
+        guard case .alias = type, let limitation = viewModel.limitation else {
+            return nil
+        }
+        return "(\(limitation.count)/\(limitation.limit))"
+    }
+
+    private func secondaryTitleColor(for type: ItemType) -> UIColor? {
+        guard case .alias = type, let limitation = viewModel.limitation else {
+            return nil
+        }
+        return limitation.count < limitation.limit ? PassColor.textNorm : PassColor.signalDanger
     }
 }
