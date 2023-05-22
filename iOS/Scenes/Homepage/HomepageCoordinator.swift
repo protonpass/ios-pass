@@ -316,7 +316,7 @@ private extension HomepageCoordinator {
 
     func presentItemTypeListView() {
         let viewModel = ItemTypeListViewModel(aliasCount: vaultsManager.getAliasCount(),
-                                              passPlanRepository: passPlanRepository,
+                                              upgradeChecker: upgradeChecker,
                                               logManager: logManager)
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)

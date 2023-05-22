@@ -65,6 +65,7 @@ public final class CredentialProviderCoordinator {
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
+    private var aliasCount: Int?
     private var vaultCount: Int?
     private var totpCount: Int?
 
@@ -637,6 +638,8 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                     let items = try await itemRepository.getAllItems()
                     let vaults = try await shareRepository.getVaults()
 
+                    self.aliasCount = items.filter { $0.item.aliasEmail != nil }.count
+
                     self.vaultListUiModels = vaults.map { vault in
                         let activeItems =
                         items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
@@ -870,6 +873,11 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
 
 // MARK: - LimitationCounterProtocol
 extension CredentialProviderCoordinator: LimitationCounterProtocol {
+    public func getAliasCount() -> Int {
+        guard let aliasCount else { return 0 }
+        return aliasCount
+    }
+
     public func getVaultCount() -> Int {
         guard let vaultCount else { return 0 }
         return vaultCount

@@ -45,6 +45,8 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
         self.suffixSelection = suffixSelection
 
         suffixSelection.attach(to: self, storeIn: &cancellables)
+
+        /*
         Task { @MainActor in
             do {
                 shouldUpgrade = try await upgradeChecker.isFreeUser()
@@ -53,6 +55,7 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
                 delegate?.suffixSelectionViewModelDidEncounter(error: error)
             }
         }
+         */
     }
 
     func upgrade() {
