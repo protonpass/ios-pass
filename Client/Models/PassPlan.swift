@@ -23,10 +23,17 @@ import Foundation
 public struct PassPlan: Decodable, Equatable {
     /// ⚠️ Use `planType` instead
     public let type: String
+
     /// Plan name for telemetry
     public let internalName: String
+
     /// Human readable plan name
     public let displayName: String
+
+    /// Force hide the upgrade button independently of plan (in case of premium SL users)
+    public let hideUpgrade: Bool
+
+    public let trialEnd: Int?
     public let vaultLimit: Int?
     public let aliasLimit: Int?
     public let totpLimit: Int?

@@ -32,6 +32,7 @@ extension PassPlanEntity {
     }
 
     @NSManaged var displayName: String
+    @NSManaged var hideUpgrade: Bool
     @NSManaged var internalName: String
     @NSManaged var type: String
     @NSManaged var userID: String
@@ -39,6 +40,7 @@ extension PassPlanEntity {
     // All limits are -1 by default (unlimited)
     @NSManaged var aliasLimit: Int64
     @NSManaged var totpLimit: Int64
+    @NSManaged var trialEnd: Int64
     @NSManaged var vaultLimit: Int64
 }
 
@@ -47,6 +49,8 @@ extension PassPlanEntity {
         .init(type: type,
               internalName: internalName,
               displayName: displayName,
+              hideUpgrade: hideUpgrade,
+              trialEnd: trialEnd == -1 ? nil : Int(trialEnd),
               vaultLimit: vaultLimit == -1 ? nil : Int(vaultLimit),
               aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
               totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
@@ -59,6 +63,7 @@ extension PassPlanEntity {
         self.userID = userId
         self.aliasLimit = Int64(passPlan.aliasLimit ?? -1)
         self.totpLimit = Int64(passPlan.totpLimit ?? -1)
+        self.trialEnd = Int64(passPlan.trialEnd ?? -1)
         self.vaultLimit = Int64(passPlan.vaultLimit ?? -1)
     }
 }
