@@ -20,16 +20,31 @@
 
 import Core
 
+public struct AliasLimitation {
+    public let count: Int
+    public let limit: Int
+}
+
 public protocol UpgradeCheckerProtocol: AnyObject {
     var passPlanRepository: PassPlanRepositoryProtocol { get }
     var counter: LimitationCounterProtocol { get }
 
+    /// Return `null` when there's no limitation (unlimited aliases)
+    func aliasLimitation() async throws -> AliasLimitation?
     func canCreateMoreVaults() async throws -> Bool
     func canCreateMoreTOTPs() async throws -> Bool
     func isFreeUser() async throws -> Bool
 }
 
 public extension UpgradeCheckerProtocol {
+    func aliasLimitation() async throws -> AliasLimitation? {
+        let plan = try await passPlanRepository.getPlan()
+        if let aliasLimit = plan.aliasLimit {
+            return .init(count: counter.getAliasCount(), limit: aliasLimit)
+        }
+        return nil
+    }
+
     func canCreateMoreVaults() async throws -> Bool {
         let plan = try await passPlanRepository.getPlan()
         if let vaultLimit = plan.vaultLimit {
@@ -55,6 +70,7 @@ public extension UpgradeCheckerProtocol {
 }
 
 public protocol LimitationCounterProtocol {
+    func getAliasCount() -> Int
     func getVaultCount() -> Int
     func getTOTPCount() -> Int
 }

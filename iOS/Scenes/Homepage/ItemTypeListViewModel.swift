@@ -27,11 +27,6 @@ enum ItemType: CaseIterable {
     case login, alias, note, password
 }
 
-struct AliasLimitation {
-    let count: Int
-    let limit: Int
-}
-
 protocol ItemTypeListViewModelDelegate: AnyObject {
     func itemTypeListViewModelDidSelect(type: ItemType)
     func itemTypeListViewModelDidEncounter(error: Error)
@@ -43,14 +38,11 @@ final class ItemTypeListViewModel: ObservableObject {
     weak var delegate: ItemTypeListViewModelDelegate?
 
     init(aliasCount: Int,
-         passPlanRepository: PassPlanRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager) {
         Task { @MainActor in
             do {
-                let plan = try await passPlanRepository.getPlan()
-                if let aliasLimit = plan.aliasLimit {
-                    limitation = .init(count: aliasCount, limit: aliasLimit)
-                }
+                limitation = try await upgradeChecker.aliasLimitation()
             } catch {
                 let logger = Logger(manager: logManager)
                 logger.error(error)

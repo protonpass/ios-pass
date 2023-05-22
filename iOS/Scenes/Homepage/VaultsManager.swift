@@ -226,26 +226,6 @@ extension VaultsManager {
         return vaults.map { $0.vault }
     }
 
-    func getVaultCount() -> Int {
-        switch state {
-        case let .loaded(vaults, _):
-            return vaults.count
-        default:
-            return 0
-        }
-    }
-
-    func getAliasCount() -> Int {
-        switch state {
-        case let .loaded(vaults, trash):
-            let activeAliases = vaults.flatMap { $0.items }.filter { $0.isAlias }
-            let trashedAliases = trash.filter { $0.isAlias }
-            return activeAliases.count + trashedAliases.count
-        default:
-            return 0
-        }
-    }
-
     func vaultHasTrashedItems(_ vault: Vault) -> Bool {
         guard case let .loaded(_, trashedItems) = state else { return false }
         return trashedItems.contains { $0.shareId == vault.shareId }
@@ -308,11 +288,31 @@ extension VaultsManager {
 
 // MARK: - LimitationCounterProtocol
 extension VaultsManager: LimitationCounterProtocol {
+    func getAliasCount() -> Int {
+        switch state {
+        case let .loaded(vaults, trash):
+            let activeAliases = vaults.flatMap { $0.items }.filter { $0.isAlias }
+            let trashedAliases = trash.filter { $0.isAlias }
+            return activeAliases.count + trashedAliases.count
+        default:
+            return 0
+        }
+    }
+
     func getTOTPCount() -> Int {
         guard case let .loaded(vaults, trashedItems) = state else { return 0 }
         let activeItemsWithTotpUri = vaults.flatMap { $0.items }.filter { $0.hasTotpUri }.count
         let trashedItemsWithTotpUri = trashedItems.filter { $0.hasTotpUri }.count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
+    }
+
+    func getVaultCount() -> Int {
+        switch state {
+        case let .loaded(vaults, _):
+            return vaults.count
+        default:
+            return 0
+        }
     }
 }
 
