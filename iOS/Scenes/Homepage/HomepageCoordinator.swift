@@ -315,11 +315,11 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let view = ItemTypeListView { [unowned self] itemType in
-            dismissTopMostViewController { [unowned self] in
-                self.presentCreateItemView(for: itemType)
-            }
-        }
+        let viewModel = ItemTypeListViewModel(aliasCount: vaultsManager.getAliasCount(),
+                                              passPlanRepository: passPlanRepository,
+                                              logManager: logManager)
+        viewModel.delegate = self
+        let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16.0, *) {
             // 66 per row + nav bar height
@@ -519,6 +519,19 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
         if !isCollapsed() {
             profileTabViewModelWantsToShowAccountMenu()
         }
+    }
+}
+
+// MARK: - ItemTypeListViewModelDelegate
+extension HomepageCoordinator: ItemTypeListViewModelDelegate {
+    func itemTypeListViewModelDidSelect(type: ItemType) {
+        dismissTopMostViewController { [unowned self] in
+            self.presentCreateItemView(for: type)
+        }
+    }
+
+    func itemTypeListViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
