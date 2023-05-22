@@ -26,7 +26,6 @@ struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var focusedField: Field?
-    @Namespace private var contentID
     @State private var isShowingDiscardAlert = false
 
     init(viewModel: CreateEditNoteViewModel) {
@@ -39,39 +38,31 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            ScrollViewReader { value in
-                ScrollView {
-                    LazyVStack {
-                        CreateEditItemTitleSection(title: .constant(""),
-                                                   focusedField: $focusedField,
-                                                   field: .title,
-                                                   selectedVault: viewModel.vault,
-                                                   itemContentType: viewModel.itemContentType(),
-                                                   isEditMode: viewModel.mode.isEditMode,
-                                                   onChangeVault: viewModel.changeVault)
-                        .padding(.bottom, 18)
+            ScrollView {
+                LazyVStack {
+                    CreateEditItemTitleSection(title: .constant(""),
+                                               focusedField: $focusedField,
+                                               field: .title,
+                                               selectedVault: viewModel.vault,
+                                               itemContentType: viewModel.itemContentType(),
+                                               isEditMode: viewModel.mode.isEditMode,
+                                               onChangeVault: viewModel.changeVault)
+                    .padding(.bottom, 18)
 
-                        TextEditorWithPlaceholder(text: $viewModel.title,
-                                                  focusedField: $focusedField,
-                                                  field: .title,
-                                                  placeholder: "Untitled",
-                                                  font: .title,
-                                                  fontWeight: .bold,
-                                                  onSubmit: { focusedField = .content })
+                    TextEditorWithPlaceholder(text: $viewModel.title,
+                                              focusedField: $focusedField,
+                                              field: .title,
+                                              placeholder: "Untitled",
+                                              font: .title,
+                                              fontWeight: .bold,
+                                              onSubmit: { focusedField = .content })
 
-                        TextEditorWithPlaceholder(text: $viewModel.note,
-                                                  focusedField: $focusedField,
-                                                  field: .content,
-                                                  placeholder: "Note")
-                        .id(contentID)
-                    }
-                    .padding()
+                    TextEditorWithPlaceholder(text: $viewModel.note,
+                                              focusedField: $focusedField,
+                                              field: .content,
+                                              placeholder: "Note")
                 }
-                .onChange(of: viewModel.note) { _ in
-                    withAnimation {
-                        value.scrollTo(contentID, anchor: .bottom)
-                    }
-                }
+                .padding()
             }
             .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
