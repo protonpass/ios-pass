@@ -57,7 +57,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var password = ""
 
     @AppStorage("passwordType", store: kSharedUserDefaults)
-    private(set) var type: PasswordType = .random {
+    private(set) var type: PasswordType = .memorable {
         didSet {
             regenerate(forceRefresh: false)
             requestHeightUpdate()
@@ -92,10 +92,10 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     var wordCount: Double = 4 { didSet { if wordCount != oldValue { regenerate() } } }
 
     @AppStorage("capitalizingWords", store: kSharedUserDefaults)
-    var capitalizingWords = false { didSet { regenerate(forceRefresh: false) } }
+    var capitalizingWords = true { didSet { regenerate(forceRefresh: false) } }
 
     @AppStorage("includingNumbers", store: kSharedUserDefaults)
-    var includingNumbers = false { didSet { regenerate(forceRefresh: false) } }
+    var includingNumbers = true { didSet { regenerate(forceRefresh: false) } }
 
     weak var delegate: GeneratePasswordViewModelDelegate?
     weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
