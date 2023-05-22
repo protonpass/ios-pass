@@ -48,6 +48,8 @@ private final class MockedFreePlanRepository: PassPlanRepositoryProtocol {
     var freePlan = PassPlan(type: "free",
                             internalName: .random(),
                             displayName: .random(),
+                            hideUpgrade: false,
+                            trialEnd: .random(in: 1...100),
                             vaultLimit: .random(in: 1...100),
                             aliasLimit: .random(in: 1...100),
                             totpLimit: .random(in: 1...100))
