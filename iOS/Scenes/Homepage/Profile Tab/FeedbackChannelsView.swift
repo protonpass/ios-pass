@@ -78,8 +78,6 @@ extension FeedbackChannel {
         switch self {
         case .email:
             return IconProvider.paperPlane
-//        case .twitter:
-//            return PassIcon.brandTwitter
         case .reddit:
             return PassIcon.brandReddit
         }
@@ -89,8 +87,6 @@ extension FeedbackChannel {
         switch self {
         case .email:
             return "Send us a message"
-//        case .twitter:
-//            return "Write us on Twitter"
         case .reddit:
             return "Write us on Reddit"
         }
@@ -99,9 +95,7 @@ extension FeedbackChannel {
     var urlString: String {
         switch self {
         case .email:
-            return "mailto:pass@proton.me"
-//        case .twitter:
-//            return "https://twitter.com/proton_pass"
+            return "mailto:pass@protonme.zendesk.com"
         case .reddit:
             return "https://www.reddit.com/r/ProtonPass"
         }
