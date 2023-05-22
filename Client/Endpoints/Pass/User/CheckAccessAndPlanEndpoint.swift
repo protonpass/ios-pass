@@ -40,6 +40,6 @@ public struct CheckAccessAndPlanEndpoint: Endpoint {
     public init() {
         self.debugDescription = "Check access to Pass"
         self.path = "/pass/v1/user/access"
-        self.method = .post
+        self.method = .get
     }
 }
