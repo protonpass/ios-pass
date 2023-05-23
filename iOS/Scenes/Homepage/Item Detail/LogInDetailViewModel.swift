@@ -30,6 +30,12 @@ protocol LogInDetailViewModelDelegate: AnyObject {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent)
 }
 
+enum TOTPTokenState {
+    case loading
+    case allowed
+    case notAllowed
+}
+
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -38,24 +44,29 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
+    @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private(set) var totpManager: TOTPManager
     @Published private var aliasItem: SymmetricallyEncryptedItem?
 
     var isAlias: Bool { aliasItem != nil }
+
+    private let upgradeChecker: UpgradeCheckerProtocol
 
     private var cancellables = Set<AnyCancellable>()
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
     var coloredPasswordTexts: [Text] { PasswordUtils.generateColoredPasswords(password) }
 
-    override init(isShownAsSheet: Bool,
-                  itemContent: ItemContent,
-                  favIconRepository: FavIconRepositoryProtocol,
-                  itemRepository: ItemRepositoryProtocol,
-                  vault: Vault?,
-                  logManager: LogManager,
-                  theme: Theme) {
+    init(isShownAsSheet: Bool,
+         itemContent: ItemContent,
+         favIconRepository: FavIconRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
+         vault: Vault?,
+         logManager: LogManager,
+         theme: Theme) {
         self.totpManager = .init(logManager: logManager)
+        self.upgradeChecker = upgradeChecker
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    favIconRepository: favIconRepository,
@@ -74,11 +85,44 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
             self.password = data.password
             self.urls = data.urls
             totpManager.bind(uri: data.totpUri)
-            Task { @MainActor in
-                self.aliasItem = try await itemRepository.getAliasItem(email: data.username)
+            getAliasItem(username: data.username)
+
+            if !data.totpUri.isEmpty {
+                checkTotpState(createTime: itemContent.item.createTime)
+            } else {
+                totpTokenState = .allowed
             }
         } else {
             fatalError("Expecting login type")
+        }
+    }
+}
+
+// MARK: - Private APIs
+private extension LogInDetailViewModel {
+    func getAliasItem(username: String) {
+        Task { @MainActor in
+            do {
+                self.aliasItem = try await itemRepository.getAliasItem(email: username)
+            } catch {
+                logger.error(error)
+                delegate?.itemDetailViewModelDidFail(error)
+            }
+        }
+    }
+
+    func checkTotpState(createTime: Int64) {
+        Task { @MainActor in
+            do {
+                if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
+                    self.totpTokenState = .allowed
+                } else {
+                    self.totpTokenState = .notAllowed
+                }
+            } catch {
+                logger.error(error)
+                delegate?.itemDetailViewModelDidFail(error)
+            }
         }
     }
 }

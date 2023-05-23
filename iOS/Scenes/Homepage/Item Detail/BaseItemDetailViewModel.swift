@@ -34,6 +34,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelWantsToOpen(urlString: String)
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
+    func itemDetailViewModelWantsToUpgrade()
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
@@ -168,6 +169,10 @@ class BaseItemDetailViewModel {
                 delegate?.itemDetailViewModelDidFail(error)
             }
         }
+    }
+
+    func upgrade() {
+        delegate?.itemDetailViewModelWantsToUpgrade()
     }
 }
 

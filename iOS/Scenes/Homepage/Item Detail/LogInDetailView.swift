@@ -113,16 +113,27 @@ struct LogInDetailView: View {
             PassSectionDivider()
             passwordRow
 
-            switch viewModel.totpManager.state {
-            case .empty:
+            switch viewModel.totpTokenState {
+            case .loading:
                 EmptyView()
-            default:
+
+            case .notAllowed:
                 PassSectionDivider()
-                totpRow
+                totpNotAllowedRow
+
+            case .allowed:
+                switch viewModel.totpManager.state {
+                case .empty:
+                    EmptyView()
+                default:
+                    PassSectionDivider()
+                    totpAllowedRow
+                }
             }
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedDetailSection()
+        .animation(.default, value: viewModel.totpTokenState)
     }
 
     private var usernameRow: some View {
@@ -224,47 +235,56 @@ struct LogInDetailView: View {
         }
     }
 
-    @ViewBuilder
-    private var totpRow: some View {
-        if case .empty = viewModel.totpManager.state {
-            EmptyView()
-        } else {
-            HStack(spacing: kItemDetailSectionPadding) {
-                ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
+    private var totpNotAllowedRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
 
-                VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                    Text("2FA token (TOTP)")
-                        .sectionTitleText()
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("2FA limit reached")
+                    .sectionTitleText()
+                UpgradeButtonLite(action: viewModel.upgrade)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+    }
 
-                    switch viewModel.totpManager.state {
-                    case .empty:
-                        EmptyView()
-                    case .loading:
-                        ProgressView()
-                    case .valid(let data):
-                        TOTPText(code: data.code)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    case .invalid:
-                        Text("Invalid TOTP URI")
-                            .font(.caption)
-                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
-                .onTapGesture(perform: viewModel.copyTotpCode)
+    private var totpAllowedRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.lock, color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("2FA token (TOTP)")
+                    .sectionTitleText()
 
                 switch viewModel.totpManager.state {
-                case .valid(let data):
-                    TOTPCircularTimer(data: data.timerData)
-                        .animation(nil, value: isShowingPassword)
-                default:
+                case .empty:
                     EmptyView()
+                case .loading:
+                    ProgressView()
+                case .valid(let data):
+                    TOTPText(code: data.code)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                case .invalid:
+                    Text("Invalid TOTP URI")
+                        .font(.caption)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
                 }
             }
-            .padding(.horizontal, kItemDetailSectionPadding)
-            .animation(.default, value: viewModel.totpManager.state)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: viewModel.copyTotpCode)
+
+            switch viewModel.totpManager.state {
+            case .valid(let data):
+                TOTPCircularTimer(data: data.timerData)
+                    .animation(nil, value: isShowingPassword)
+            default:
+                EmptyView()
+            }
         }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.totpManager.state)
     }
 
     private var urlsSection: some View {

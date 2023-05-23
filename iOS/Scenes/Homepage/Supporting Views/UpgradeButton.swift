@@ -47,3 +47,23 @@ struct UpgradeButton: View {
         }
     }
 }
+
+/// Text button without background color
+struct UpgradeButtonLite: View {
+    var foregroundColor: UIColor = PassColor.loginInteractionNormMajor1
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text("Upgrade")
+                Image(uiImage: IconProvider.arrowOutSquare)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 16)
+            }
+            .foregroundColor(Color(uiColor: foregroundColor))
+            .containerShape(Rectangle())
+        }
+    }
+}

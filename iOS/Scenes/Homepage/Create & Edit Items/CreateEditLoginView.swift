@@ -460,21 +460,11 @@ struct CreateEditLoginView: View {
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("2FA limit reached")
-                    .font(.footnote)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .sectionTitleText()
 
-                HStack {
-                    Text("Upgrade")
-                    Image(uiImage: IconProvider.arrowOutSquare)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 16)
-                }
-                .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+                UpgradeButtonLite(action: viewModel.upgrade)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.upgrade)
         }
         .padding(.horizontal, kItemDetailSectionPadding)
     }

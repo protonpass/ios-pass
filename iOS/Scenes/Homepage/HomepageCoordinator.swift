@@ -159,7 +159,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.userData = userData
         self.passPlanRepository = passPlanRepository
         self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                             counter: vaultsManager)
+                                             counter: vaultsManager,
+                                             totpChecker: itemRepository)
         self.vaultsManager = .init(itemRepository: itemRepository,
                                    manualLogIn: manualLogIn,
                                    logManager: logManager,
@@ -294,6 +295,7 @@ private extension HomepageCoordinator {
         let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
                                                 itemRepository: itemRepository,
                                                 favIconRepository: favIconRepository,
+                                                upgradeChecker: upgradeChecker,
                                                 logManager: logManager,
                                                 preferences: preferences,
                                                 vaultsManager: vaultsManager,
@@ -1189,6 +1191,10 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func itemDetailViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
