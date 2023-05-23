@@ -20,11 +20,17 @@
 
 import Core
 
+public protocol PassPlanRepositoryDelegate: AnyObject {
+    func passPlanRepositoryDidUpdateToNewPlan()
+}
+
 public protocol PassPlanRepositoryProtocol: AnyObject {
     var localPassPlanDatasource: LocalPassPlanDatasourceProtocol { get }
     var remotePassPlanDatasource: RemotePassPlanDatasourceProtocol { get }
     var userId: String { get }
     var logger: Logger { get }
+
+    var delegate: PassPlanRepositoryDelegate? { get set }
 
     /// Get from local, refresh if not exist
     func getPlan() async throws -> PassPlan
@@ -50,8 +56,16 @@ public extension PassPlanRepositoryProtocol {
     func refreshPlan() async throws -> PassPlan {
         logger.trace("Refreshing plan for user \(userId)")
         let passPlan = try await remotePassPlanDatasource.getPassPlan()
+
+        if let currentLocalPlan = try await localPassPlanDatasource.getPassPlan(userId: userId),
+           currentLocalPlan != passPlan {
+            logger.info("New plan found")
+            delegate?.passPlanRepositoryDidUpdateToNewPlan()
+        }
+
         logger.trace("Upserting plan for user \(userId)")
         try await localPassPlanDatasource.upsert(passPlan: passPlan, userId: userId)
+
         logger.info("Refreshed plan for user \(userId)")
         return passPlan
     }
@@ -62,6 +76,8 @@ public final class PassPlanRepository: PassPlanRepositoryProtocol {
     public let remotePassPlanDatasource: RemotePassPlanDatasourceProtocol
     public let userId: String
     public let logger: Logger
+
+    public weak var delegate: PassPlanRepositoryDelegate?
 
     public init(localPassPlanDatasource: LocalPassPlanDatasourceProtocol,
                 remotePassPlanDatasource: RemotePassPlanDatasourceProtocol,

@@ -187,6 +187,7 @@ private extension HomepageCoordinator {
         eventLoop.delegate = self
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
+        passPlanRepository.delegate = self
         (itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
         urlOpener.rootViewController = rootViewController
 
@@ -207,7 +208,7 @@ private extension HomepageCoordinator {
                 self.refresh()
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.forceSync()
-                self.updateCredentials()
+                self.updateCredentials(forceRemoval: false)
                 self.refreshPlan()
             }
             .store(in: &cancellables)
@@ -227,6 +228,7 @@ private extension HomepageCoordinator {
         let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
                                                       credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
+                                                      shareRepository: shareRepository,
                                                       preferences: preferences,
                                                       logManager: logManager,
                                                       passPlanRepository: passPlanRepository,
@@ -467,11 +469,14 @@ private extension HomepageCoordinator {
         }
     }
 
-    func updateCredentials() {
+    func updateCredentials(forceRemoval: Bool) {
         Task {
             do {
-                try await credentialManager.insertAllCredentials(from: itemRepository,
-                                                                 forceRemoval: false)
+                try await credentialManager.insertAllCredentials(
+                    itemRepository: itemRepository,
+                    shareRepository: shareRepository,
+                    passPlanRepository: passPlanRepository,
+                    forceRemoval: forceRemoval)
                 logger.info("Updated all credentials.")
             } catch {
                 logger.error(error)
@@ -499,6 +504,14 @@ extension HomepageCoordinator {
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         onboardingViewController.isModalInPresentation = true
         topMostViewController.present(onboardingViewController, animated: true)
+    }
+}
+
+// MARK: - PassPlanRepositoryDelegate
+extension HomepageCoordinator: PassPlanRepositoryDelegate {
+    func passPlanRepositoryDidUpdateToNewPlan() {
+        logger.trace("Found new plan, refreshing credential database")
+        updateCredentials(forceRemoval: true)
     }
 }
 
