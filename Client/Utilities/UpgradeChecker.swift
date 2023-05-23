@@ -28,11 +28,13 @@ public struct AliasLimitation {
 public protocol UpgradeCheckerProtocol: AnyObject {
     var passPlanRepository: PassPlanRepositoryProtocol { get }
     var counter: LimitationCounterProtocol { get }
+    var totpChecker: TOTPCheckerProtocol { get }
 
     /// Return `null` when there's no limitation (unlimited aliases)
     func aliasLimitation() async throws -> AliasLimitation?
     func canCreateMoreVaults() async throws -> Bool
     func canCreateMoreTOTPs() async throws -> Bool
+    func canShowTOTPToken(creationDate: Int64) async throws -> Bool
     func isFreeUser() async throws -> Bool
 }
 
@@ -63,6 +65,16 @@ public extension UpgradeCheckerProtocol {
         return true
     }
 
+    func canShowTOTPToken(creationDate: Int64) async throws -> Bool {
+        let plan = try await passPlanRepository.getPlan()
+        guard let totpLimit = plan.totpLimit else { return true }
+
+        if let threshold = try await totpChecker.totpCreationDateThreshold(numberOfTotp: totpLimit) {
+            return creationDate <= threshold
+        }
+        return true
+    }
+
     func isFreeUser() async throws -> Bool {
         let plan = try await passPlanRepository.getPlan()
         return plan.planType == .free
@@ -75,13 +87,22 @@ public protocol LimitationCounterProtocol {
     func getTOTPCount() -> Int
 }
 
+public protocol TOTPCheckerProtocol {
+    /// Get the maximum creation date of items that are allowed to display 2FA token
+    /// If the creation date of a given login is less than this max creation date, we don't calculate the 2FA token
+    func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64?
+}
+
 public final class UpgradeChecker: UpgradeCheckerProtocol {
     public let passPlanRepository: PassPlanRepositoryProtocol
     public let counter: LimitationCounterProtocol
+    public let totpChecker: TOTPCheckerProtocol
 
     public init(passPlanRepository: PassPlanRepositoryProtocol,
-                counter: LimitationCounterProtocol) {
+                counter: LimitationCounterProtocol,
+                totpChecker: TOTPCheckerProtocol) {
         self.passPlanRepository = passPlanRepository
         self.counter = counter
+        self.totpChecker = totpChecker
     }
 }

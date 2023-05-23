@@ -129,6 +129,7 @@ public final class RepositoryManager: DeinitPrintable {
         self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
 
         self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                             counter: limitationCounter)
+                                             counter: limitationCounter,
+                                             totpChecker: itemRepository)
     }
 }
