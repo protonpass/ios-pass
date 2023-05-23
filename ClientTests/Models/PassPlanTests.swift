@@ -46,7 +46,7 @@ final class PassPlanTests: XCTestCase {
         XCTAssertEqual(freePlan.planType, .free)
 
         // Trial
-        let trialPlan = PassPlan(type: "free",
+        let trialPlan = PassPlan(type: "plus",
                                  internalName: "test",
                                  displayName: "test",
                                  hideUpgrade: false,
