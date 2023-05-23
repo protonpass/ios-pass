@@ -46,13 +46,10 @@ public struct PassPlan: Decodable, Equatable {
     public var planType: PlanType {
         switch type {
         case "plus":
-            return .plus
-
-        case "free":
             if let trialEnd, trialEnd > 0 {
                 return .trial
             } else {
-                return .free
+                return .plus
             }
 
         default:

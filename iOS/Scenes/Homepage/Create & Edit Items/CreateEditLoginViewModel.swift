@@ -40,7 +40,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     deinit { print(deinitMessage) }
 
     @Published private(set) var isAlias = false // `Username` is an alias or a custom one
-    @Published private(set) var canCreateOrEditTOTPs = true
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -147,10 +146,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = title ?? ""
                 self.urls = [url ?? ""].map { .init(value: $0) }
             }
-        }
-
-        Task { @MainActor in
-            canCreateOrEditTOTPs = try await upgradeChecker.canCreateMoreTOTPs()
         }
     }
 
