@@ -456,6 +456,7 @@ private extension CredentialProviderCoordinator {
         guard let shareRepository,
               let shareEventIDRepository,
               let itemRepository,
+              let upgradeChecker,
               let favIconRepository,
               let shareKeyRepository,
               let remoteSyncEventsDatasource else { return }
@@ -463,6 +464,7 @@ private extension CredentialProviderCoordinator {
                                              shareRepository: shareRepository,
                                              shareEventIDRepository: shareEventIDRepository,
                                              itemRepository: itemRepository,
+                                             upgradeChecker: upgradeChecker,
                                              shareKeyRepository: shareKeyRepository,
                                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                              favIconRepository: favIconRepository,
@@ -572,9 +574,12 @@ private extension CredentialProviderCoordinator {
     }
 
     func startUpgradeFlow() {
-        rootViewController.dismiss(animated: true) { [unowned self] in
-            print(#function)
-        }
+        let alert = UIAlertController(title: "Upgrade",
+                                      message: "Please open Proton Pass app to upgrade",
+                                      preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okButton)
+        rootViewController.present(alert, animated: true)
     }
 }
 
@@ -663,6 +668,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                 }
             }
         }
+    }
+
+    func credentialsViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
