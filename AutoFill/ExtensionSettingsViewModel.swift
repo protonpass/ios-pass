@@ -45,6 +45,8 @@ final class ExtensionSettingsViewModel: ObservableObject {
 
     let credentialManager: CredentialManagerProtocol
     let itemRepository: ItemRepositoryProtocol
+    let shareRepository: ShareRepositoryProtocol
+    let passPlanRepository: PassPlanRepositoryProtocol
     let logger: Logger
     let logManager: LogManager
     let preferences: Preferences
@@ -53,10 +55,14 @@ final class ExtensionSettingsViewModel: ObservableObject {
 
     init(credentialManager: CredentialManagerProtocol,
          itemRepository: ItemRepositoryProtocol,
+         shareRepository: ShareRepositoryProtocol,
+         passPlanRepository: PassPlanRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences) {
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
+        self.shareRepository = shareRepository
+        self.passPlanRepository = passPlanRepository
         self.logManager = logManager
         self.logger = .init(manager: logManager)
         self.preferences = preferences
@@ -88,8 +94,11 @@ private extension ExtensionSettingsViewModel {
                 logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
                 delegate?.extensionSettingsViewModelWantsToShowSpinner()
                 if quickTypeBar {
-                    try await credentialManager.insertAllCredentials(from: itemRepository,
-                                                                     forceRemoval: true)
+                    try await credentialManager.insertAllCredentials(
+                        itemRepository: itemRepository,
+                        shareRepository: shareRepository,
+                        passPlanRepository: passPlanRepository,
+                        forceRemoval: true)
                     logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
                 } else {
                     try await credentialManager.removeAllCredentials()

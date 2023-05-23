@@ -134,12 +134,15 @@ public final class CredentialProviderCoordinator {
             return
         }
 
-        guard let itemRepository else { return }
+        guard let itemRepository, let shareRepository, let upgradeChecker else { return }
 
-        let viewModel = ExtensionSettingsViewModel(credentialManager: credentialManager,
-                                                   itemRepository: itemRepository,
-                                                   logManager: logManager,
-                                                   preferences: preferences)
+        let viewModel = ExtensionSettingsViewModel(
+            credentialManager: credentialManager,
+            itemRepository: itemRepository,
+            shareRepository: shareRepository,
+            passPlanRepository: upgradeChecker.passPlanRepository,
+            logManager: logManager,
+            preferences: preferences)
         viewModel.delegate = self
         let view = ExtensionSettingsView(viewModel: viewModel)
         showView(view)
