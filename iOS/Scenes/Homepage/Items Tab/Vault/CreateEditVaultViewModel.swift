@@ -48,7 +48,7 @@ protocol CreateEditVaultViewModelDelegate: AnyObject {
 }
 
 final class CreateEditVaultViewModel: ObservableObject {
-    @Published private(set) var canCreateMoreVaults = true
+    @Published private(set) var canCreateOrEdit = true
     @Published var selectedColor: VaultColor
     @Published var selectedIcon: VaultIcon
     @Published var title: String
@@ -100,7 +100,12 @@ private extension CreateEditVaultViewModel {
     func verifyLimitation() {
         Task { @MainActor in
             do {
-                canCreateMoreVaults = try await upgradeChecker.canCreateMoreVaults()
+                // Primary vault can always be edited
+                if case .edit(let vault) = mode, vault.isPrimary {
+                    canCreateOrEdit = true
+                } else {
+                    canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
+                }
             } catch {
                 logger.error(error)
                 delegate?.createEditVaultViewModelDidEncounter(error: error)

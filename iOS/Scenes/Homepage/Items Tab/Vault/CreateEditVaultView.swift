@@ -30,14 +30,14 @@ struct CreateEditVaultView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 24) {
-                if !viewModel.canCreateMoreVaults {
+                if !viewModel.canCreateOrEdit {
                     vaultsLimitMessage
                 }
                 previewAndTitle
                     .fixedSize(horizontal: false, vertical: true)
                 colorsAndIcons
             }
-            .animation(.default, value: viewModel.canCreateMoreVaults)
+            .animation(.default, value: viewModel.canCreateOrEdit)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)
             .navigationBarTitleDisplayMode(.inline)
@@ -65,7 +65,7 @@ struct CreateEditVaultView: View {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            if viewModel.canCreateMoreVaults {
+            if viewModel.canCreateOrEdit {
                 DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
