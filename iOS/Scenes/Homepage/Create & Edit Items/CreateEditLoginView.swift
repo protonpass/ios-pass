@@ -265,11 +265,7 @@ struct CreateEditLoginView: View {
             PassSectionDivider()
             passwordRow
             PassSectionDivider()
-            if viewModel.canCreateOrEditTOTPs {
-                totpRow
-            } else {
-                totpUpgradeRow
-            }
+            totpRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedEditableSection()
@@ -452,21 +448,6 @@ struct CreateEditLoginView: View {
                 viewModel.handleScanResult(result)
             }
         }
-    }
-
-    private var totpUpgradeRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.lock)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("2FA limit reached")
-                    .sectionTitleText()
-
-                UpgradeButtonLite(action: viewModel.upgrade)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.horizontal, kItemDetailSectionPadding)
     }
 }
 
