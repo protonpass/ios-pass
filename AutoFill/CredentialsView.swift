@@ -115,11 +115,14 @@ struct CredentialsView: View {
         VStack(spacing: 0) {
             SearchBar(query: $query,
                       isFocused: $isFocusedOnSearchBar,
-                      placeholder: "Search in all vaults",
+                      placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
                       onCancel: viewModel.cancel)
 
             switch state {
             case .idle:
+                if let planType = viewModel.planType, case .free = planType {
+                    primaryVaultOnlyMessage
+                }
                 itemList(matchedItems: result.matchedItems,
                          notMatchedItems: result.notMatchedItems)
 
@@ -141,6 +144,7 @@ struct CredentialsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: state)
+        .animation(.default, value: viewModel.planType)
         .onChange(of: query) { viewModel.search(term: $0) }
     }
 
@@ -206,6 +210,21 @@ struct CredentialsView: View {
                 }
             }
         }
+    }
+
+    private var primaryVaultOnlyMessage: some View {
+        ZStack {
+            Text("Your plan only allows to use items in your primary vault for autofill purposes.")
+                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+            Text(" ") +
+            Text("Upgrade now")
+                .underline(color: Color(uiColor: PassColor.interactionNormMajor1))
+                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
+        }
+        .padding()
+        .background(Color(uiColor: PassColor.interactionNormMinor1))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .onTapGesture(perform: viewModel.upgrade)
     }
 
     private func searchResults(_ results: [ItemSearchResult]) -> some View {
