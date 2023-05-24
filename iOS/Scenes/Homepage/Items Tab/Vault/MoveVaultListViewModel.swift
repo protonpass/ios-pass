@@ -28,7 +28,7 @@ protocol MoveVaultListViewModelDelegate: AnyObject {
 final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var selectedVault: VaultListUiModel?
+    @Published var selectedVault: VaultListUiModel
 
     weak var delegate: MoveVaultListViewModelDelegate?
 
@@ -38,10 +38,11 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     init(allVaults: [VaultListUiModel], currentVault: VaultListUiModel) {
         self.allVaults = allVaults
         self.currentVault = currentVault
+        self.selectedVault = currentVault
     }
 
     func confirm() {
-        guard let selectedVault else { return }
+        guard selectedVault != currentVault else { return }
         delegate?.moveVaultListViewModelDidPick(vault: selectedVault.vault)
     }
 }
