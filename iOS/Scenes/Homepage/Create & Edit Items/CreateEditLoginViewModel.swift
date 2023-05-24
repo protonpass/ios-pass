@@ -55,7 +55,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     let emailAddress: String
 
     private let aliasRepository: AliasRepositoryProtocol
-    private let upgradeChecker: UpgradeCheckerProtocol
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
@@ -89,9 +88,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          emailAddress: String) throws {
         self.emailAddress = emailAddress
         self.aliasRepository = aliasRepository
-        self.upgradeChecker = upgradeChecker
         try super.init(mode: mode,
                        itemRepository: itemRepository,
+                       upgradeChecker: upgradeChecker,
                        vaults: vaults,
                        preferences: preferences,
                        logManager: logManager)
@@ -107,7 +106,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             })
             .store(in: &cancellables)
 
-        $vault
+        $selectedVault
             .eraseToAnyPublisher()
             .dropFirst()
             .receive(on: RunLoop.main)
@@ -205,7 +204,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             Task { @MainActor in
                 do {
                     delegate?.createEditItemViewModelWantsToShowLoadingHud()
-                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: vault.shareId)
+                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     if let firstSuffix = aliasOptions.suffixes.first,
                        let firstMailbox = aliasOptions.mailboxes.first {
@@ -222,7 +221,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     }
                 } catch {
                     delegate?.createEditItemViewModelWantsToHideLoadingHud()
-                    delegate?.createEditItemViewModelDidFail(error)
+                    delegate?.createEditItemViewModelDidEncounter(error: error)
                 }
             }
         }
@@ -272,7 +271,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case .success(let successResult):
             totpUri = successResult.string
         case .failure(let error):
-            delegate?.createEditItemViewModelDidFail(error)
+            delegate?.createEditItemViewModelDidEncounter(error: error)
         }
     }
 

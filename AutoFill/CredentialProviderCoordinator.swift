@@ -763,7 +763,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     // Not applicable
     func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {}
 
-    func createEditItemViewModelDidFail(_ error: Error) {
+    func createEditItemViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error.localizedDescription)
     }
 }

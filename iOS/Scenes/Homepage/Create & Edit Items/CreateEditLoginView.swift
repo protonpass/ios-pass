@@ -53,7 +53,7 @@ struct CreateEditLoginView: View {
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
                                                    field: .title,
-                                                   selectedVault: viewModel.vault,
+                                                   selectedVault: viewModel.selectedVault,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
                                                    onChangeVault: viewModel.changeVault,
