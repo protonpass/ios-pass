@@ -58,6 +58,8 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
 
+    private var isRefreshing = false
+
     init(itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
          logManager: LogManager,
@@ -68,7 +70,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
-        self.refresh()
     }
 }
 
@@ -121,7 +122,12 @@ private extension VaultsManager {
 // MARK: - Public APIs
 extension VaultsManager {
     func refresh() {
+        guard !isRefreshing else { return }
+
         Task { @MainActor in
+            defer { isRefreshing = false }
+            isRefreshing = true
+
             do {
                 // No need to show loading indicator once items are loaded beforehand.
                 switch state {

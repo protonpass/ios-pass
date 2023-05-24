@@ -168,6 +168,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                    symmetricKey: symmetricKey)
         super.init()
         self.finalizeInitialization()
+        self.vaultsManager.refresh()
         self.start()
         self.eventLoop.start()
         self.refreshPlan()
