@@ -28,6 +28,11 @@ struct MoveVaultListView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
+            if viewModel.isFreeUser {
+                LimitedVaultOperationsBanner(onUpgrade: viewModel.upgrade)
+                    .padding([.horizontal, .top])
+            }
+
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.allVaults, id: \.hashValue) { vault in
@@ -60,6 +65,7 @@ struct MoveVaultListView: View {
         }
         .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
+        .animation(.default, value: viewModel.isFreeUser)
     }
 
     private func vaultRow(for vault: VaultListUiModel) -> some View {
@@ -72,5 +78,6 @@ struct MoveVaultListView: View {
                      isSelected: viewModel.selectedVault == vault)
         })
         .buttonStyle(.plain)
+        .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)
     }
 }

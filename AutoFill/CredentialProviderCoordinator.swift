@@ -716,7 +716,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * vaultListUiModels.count + 150  // Space for upsell banner
+            let height = 66 * vaultListUiModels.count + 180  // Space for upsell banner
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }

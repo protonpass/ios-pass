@@ -39,7 +39,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
-    func itemDetailViewModelDidFail(_ error: Error)
+    func itemDetailViewModelDidEncounter(error: Error)
 }
 
 class BaseItemDetailViewModel {
@@ -128,7 +128,7 @@ class BaseItemDetailViewModel {
                 logger.info("Trashed \(item.debugInformation)")
             } catch {
                 logger.error(error)
-                delegate?.itemDetailViewModelDidFail(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
@@ -147,7 +147,7 @@ class BaseItemDetailViewModel {
                 logger.info("Restored \(item.debugInformation)")
             } catch {
                 logger.error(error)
-                delegate?.itemDetailViewModelDidFail(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
@@ -166,7 +166,7 @@ class BaseItemDetailViewModel {
                 logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 logger.error(error)
-                delegate?.itemDetailViewModelDidFail(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
@@ -199,7 +199,7 @@ private extension BaseItemDetailViewModel {
                 delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
             } catch {
                 logger.error(error)
-                delegate?.itemDetailViewModelDidFail(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
@@ -207,7 +207,15 @@ private extension BaseItemDetailViewModel {
 
 // MARK: - MoveVaultListViewModelDelegate
 extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
+    func moveVaultListViewModelWantsToUpgrade() {
+        delegate?.itemDetailViewModelWantsToUpgrade()
+    }
+
     func moveVaultListViewModelDidPick(vault: Vault) {
         doMove(to: vault)
+    }
+
+    func moveVaultListViewModelDidEncounter(error: Error) {
+        delegate?.itemDetailViewModelDidEncounter(error: error)
     }
 }

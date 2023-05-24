@@ -106,7 +106,7 @@ private extension LogInDetailViewModel {
                 self.aliasItem = try await itemRepository.getAliasItem(email: username)
             } catch {
                 logger.error(error)
-                delegate?.itemDetailViewModelDidFail(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
@@ -121,7 +121,7 @@ private extension LogInDetailViewModel {
                 }
             } catch {
                 logger.error(error)
-                delegate?.itemDetailViewModelDidFail(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
@@ -155,7 +155,7 @@ extension LogInDetailViewModel {
             let itemContent = try aliasItem.getDecryptedItemContent(symmetricKey: symmetricKey)
             logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
         } catch {
-            delegate?.itemDetailViewModelDidFail(error)
+            delegate?.itemDetailViewModelDidEncounter(error: error)
         }
     }
 

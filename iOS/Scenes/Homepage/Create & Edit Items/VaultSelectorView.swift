@@ -27,21 +27,25 @@ struct VaultSelectorView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 0) {
-                    if viewModel.onlyPrimaryVaultIsAllowed {
-                        upgradeMessage
-                    }
-                    ForEach(viewModel.allVaults, id: \.hashValue) { vault in
-                        view(for: vault)
-                        PassDivider()
-                            .padding(.horizontal)
+            VStack {
+                if viewModel.isFreeUser {
+                    LimitedVaultOperationsBanner(onUpgrade: viewModel.upgrade)
+                        .padding([.horizontal, .top])
+                }
+
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.allVaults, id: \.hashValue) { vault in
+                            view(for: vault)
+                            PassDivider()
+                                .padding(.horizontal)
+                        }
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .background(Color(uiColor: PassColor.backgroundWeak))
-            .animation(.default, value: viewModel.onlyPrimaryVaultIsAllowed)
+            .animation(.default, value: viewModel.isFreeUser)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Select a vault")
@@ -66,21 +70,6 @@ struct VaultSelectorView: View {
             .padding(.horizontal)
         })
         .buttonStyle(.plain)
-        .opacityReduced(viewModel.onlyPrimaryVaultIsAllowed && !vault.vault.isPrimary)
-    }
-
-    private var upgradeMessage: some View {
-        ZStack {
-            Text("To interact with other vaults, you need to upgrade your account.")
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-            Text(" ") +
-            Text("Upgrade now")
-                .underline(color: Color(uiColor: PassColor.interactionNormMajor1))
-                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
-        }
-        .padding()
-        .background(Color(uiColor: PassColor.interactionNormMinor1))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .onTapGesture(perform: viewModel.upgrade)
+        .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)
     }
 }

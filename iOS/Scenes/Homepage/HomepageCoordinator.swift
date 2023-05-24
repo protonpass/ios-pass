@@ -932,7 +932,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * vaultsManager.getVaultCount() + 150 // Space for upsell banner
+            let height = 66 * vaultsManager.getVaultCount() + 180 // Space for upsell banner
             let customDetent = makeCustomDetent(height: height)
             viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
@@ -1191,13 +1191,16 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         let allVaults = vaultsManager.getAllVaultContents()
         guard !allVaults.isEmpty,
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
-                                               currentVault: .init(vaultContent: currentVault))
+        let viewModel = MoveVaultListViewModel(
+            allVaults: allVaults.map { .init(vaultContent: $0) },
+            currentVault: .init(vaultContent: currentVault),
+            upgradeChecker: upgradeChecker,
+            logManager: logManager)
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * allVaults.count + 150
+            let height = 66 * allVaults.count + 180
             let customDetent = makeCustomDetent(height: height)
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
@@ -1241,7 +1244,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         addNewEvent(type: .delete(item.type))
     }
 
-    func itemDetailViewModelDidFail(_ error: Error) {
+    func itemDetailViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

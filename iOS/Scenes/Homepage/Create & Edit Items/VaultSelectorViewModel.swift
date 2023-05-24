@@ -33,7 +33,7 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     let allVaults: [VaultListUiModel]
 
     @Published private(set) var selectedVault: Vault
-    @Published private(set) var onlyPrimaryVaultIsAllowed = false
+    @Published private(set) var isFreeUser = false
 
     weak var delegate: VaultSelectorViewModelDelegate?
 
@@ -47,9 +47,8 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor in
             guard allVaults.count > 1 else { return }
             do {
-                onlyPrimaryVaultIsAllowed = try await upgradeChecker.isFreeUser()
-                if onlyPrimaryVaultIsAllowed,
-                   let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+                if isFreeUser, let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
                     self.selectedVault = primaryVault.vault
                 }
             } catch {
