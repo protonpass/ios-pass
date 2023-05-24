@@ -85,6 +85,6 @@ struct ItemTypeListView: View {
         guard case .alias = type, let limitation = viewModel.limitation else {
             return nil
         }
-        return limitation.count < limitation.limit ? PassColor.textNorm : PassColor.signalDanger
+        return limitation.count < limitation.limit ? PassColor.textWeak : PassColor.signalDanger
     }
 }

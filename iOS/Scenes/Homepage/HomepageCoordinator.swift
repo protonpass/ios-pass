@@ -161,11 +161,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
                                              counter: vaultsManager,
                                              totpChecker: itemRepository)
-        self.vaultsManager = .init(itemRepository: itemRepository,
-                                   manualLogIn: manualLogIn,
-                                   logManager: logManager,
-                                   shareRepository: shareRepository,
-                                   symmetricKey: symmetricKey)
+        self.vaultsManager = vaultsManager
         super.init()
         self.finalizeInitialization()
         self.vaultsManager.refresh()
@@ -320,9 +316,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel(aliasCount: vaultsManager.getAliasCount(),
-                                              upgradeChecker: upgradeChecker,
-                                              logManager: logManager)
+        let viewModel = ItemTypeListViewModel(upgradeChecker: upgradeChecker, logManager: logManager)
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)

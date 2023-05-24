@@ -154,6 +154,7 @@ extension VaultsManager {
         }
     }
 
+    // Delete everything and download again
     func fullSync() async throws {
         // 1. Delete all local items & shares
         try await itemRepository.deleteAllItemsLocally()
