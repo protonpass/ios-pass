@@ -31,6 +31,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
                                                             delegate: CustomFieldEditionDelegate)
+    func createEditItemViewModelWantsToUpgrade()
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
@@ -234,8 +235,16 @@ extension BaseCreateEditItemViewModel {
 
 // MARK: - VaultSelectorViewModelDelegate
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
+    func vaultSelectorViewModelWantsToUpgrade() {
+        delegate?.createEditItemViewModelWantsToUpgrade()
+    }
+
     func vaultSelectorViewModelDidSelect(vault: Vault) {
         self.vault = vault
+    }
+
+    func vaultSelectorViewModelDidEncounter(error: Error) {
+        delegate?.createEditItemViewModelDidFail(error)
     }
 }
 
