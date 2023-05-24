@@ -582,7 +582,9 @@ private extension CredentialProviderCoordinator {
                                       preferredStyle: .alert)
         let okButton = UIAlertAction(title: "OK", style: .default)
         alert.addAction(okButton)
-        rootViewController.present(alert, animated: true)
+        rootViewController.dismiss(animated: true) { [unowned self] in
+            self.rootViewController.present(alert, animated: true)
+        }
     }
 }
 
@@ -705,13 +707,16 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
-        guard let vaultListUiModels else { return }
-        let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels, selectedVault: selectedVault)
+        guard let vaultListUiModels, let upgradeChecker else { return }
+        let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels,
+                                               selectedVault: selectedVault,
+                                               upgradeChecker: upgradeChecker,
+                                               logManager: logManager)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * vaultListUiModels.count + 100
+            let height = 66 * vaultListUiModels.count + 150  // Space for upsell banner
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
@@ -735,6 +740,10 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
                                                         delegate: delegate,
                                                         customField: customField)
         coordinator.start()
+    }
+
+    func createEditItemViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,

@@ -925,12 +925,14 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                    delegate: VaultSelectorViewModelDelegate) {
         let vaultContents = vaultsManager.getAllVaultContents()
         let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
-                                               selectedVault: selectedVault)
+                                               selectedVault: selectedVault,
+                                               upgradeChecker: upgradeChecker,
+                                               logManager: logManager)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * vaultsManager.getVaultCount() + 100
+            let height = 66 * vaultsManager.getVaultCount() + 150 // Space for upsell banner
             let customDetent = makeCustomDetent(height: height)
             viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
@@ -952,6 +954,10 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                         delegate: delegate,
                                                         customField: customField)
         coordinator.start()
+    }
+
+    func createEditItemViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
