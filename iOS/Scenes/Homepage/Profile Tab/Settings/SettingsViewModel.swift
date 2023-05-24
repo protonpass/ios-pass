@@ -152,7 +152,7 @@ extension SettingsViewModel {
         Task { @MainActor in
             defer { delegate?.settingsViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Doing full sync")
+                logger.info("Doing full sync")
                 delegate?.settingsViewModelWantsToShowSpinner()
                 try await vaultsManager.fullSync()
                 logger.info("Done full sync")

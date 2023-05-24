@@ -37,9 +37,7 @@ final class ItemTypeListViewModel: ObservableObject {
 
     weak var delegate: ItemTypeListViewModelDelegate?
 
-    init(aliasCount: Int,
-         upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager) {
+    init(upgradeChecker: UpgradeCheckerProtocol, logManager: LogManager) {
         Task { @MainActor in
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
