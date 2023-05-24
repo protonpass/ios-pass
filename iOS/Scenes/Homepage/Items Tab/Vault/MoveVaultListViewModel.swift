@@ -22,12 +22,15 @@ import Client
 import Core
 
 protocol MoveVaultListViewModelDelegate: AnyObject {
+    func moveVaultListViewModelWantsToUpgrade()
     func moveVaultListViewModelDidPick(vault: Vault)
+    func moveVaultListViewModelDidEncounter(error: Error)
 }
 
 final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var isFreeUser = false
     @Published var selectedVault: VaultListUiModel
 
     weak var delegate: MoveVaultListViewModelDelegate?
@@ -35,14 +38,31 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     let allVaults: [VaultListUiModel]
     let currentVault: VaultListUiModel
 
-    init(allVaults: [VaultListUiModel], currentVault: VaultListUiModel) {
+    init(allVaults: [VaultListUiModel],
+         currentVault: VaultListUiModel,
+         upgradeChecker: UpgradeCheckerProtocol,
+         logManager: LogManager) {
         self.allVaults = allVaults
         self.currentVault = currentVault
         self.selectedVault = currentVault
+
+        Task { @MainActor in
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                let logger = Logger(manager: logManager)
+                logger.error(error)
+                delegate?.moveVaultListViewModelDidEncounter(error: error)
+            }
+        }
     }
 
     func confirm() {
         guard selectedVault != currentVault else { return }
         delegate?.moveVaultListViewModelDidPick(vault: selectedVault.vault)
+    }
+
+    func upgrade() {
+        delegate?.moveVaultListViewModelWantsToUpgrade()
     }
 }

@@ -409,6 +409,8 @@
 		356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */; };
 		35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C932A1E41C90089B539 /* VaultSelectorViewModel.swift */; };
 		35702C952A1E44140089B539 /* VaultSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C932A1E41C90089B539 /* VaultSelectorViewModel.swift */; };
+		35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */; };
+		35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */; };
 		3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */; };
 		3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20229C1F14D00805445 /* SearchResultChips.swift */; };
 		3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20629C20A7E00805445 /* SearchResultsView.swift */; };
@@ -1106,6 +1108,7 @@
 		356E88CB293899B100B27104 /* PullToRefreshable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshable.swift; sourceTree = "<group>"; };
 		356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowFullScreen.swift"; sourceTree = "<group>"; };
 		35702C932A1E41C90089B539 /* VaultSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSelectorViewModel.swift; sourceTree = "<group>"; };
+		35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedVaultOperationsBanner.swift; sourceTree = "<group>"; };
 		3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemContextMenus.swift"; sourceTree = "<group>"; };
 		3570D20229C1F14D00805445 /* SearchResultChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultChips.swift; sourceTree = "<group>"; };
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
@@ -1895,6 +1898,7 @@
 			isa = PBXGroup;
 			children = (
 				3571B59329BF1321008D4350 /* HighlightText.swift */,
+				35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */,
 				3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */,
 				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
 				35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */,
@@ -3629,6 +3633,7 @@
 				3560844229DDA1C4001F7487 /* ExtensionSettingsView.swift in Sources */,
 				3552A28E29EC8B5600ABDB6E /* URLExtensions.swift in Sources */,
 				3565FD59298D423A00E2A0EE /* TOTPText.swift in Sources */,
+				35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				3560844929DDA344001F7487 /* OptionRow.swift in Sources */,
 				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
@@ -3871,6 +3876,7 @@
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
+				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
