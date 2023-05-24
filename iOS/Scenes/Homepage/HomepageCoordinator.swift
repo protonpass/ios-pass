@@ -997,7 +997,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         }
     }
 
-    func createEditItemViewModelDidFail(_ error: Error) {
+    func createEditItemViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

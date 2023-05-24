@@ -130,12 +130,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) throws {
         self.aliasRepository = aliasRepository
         try super.init(mode: mode,
                        itemRepository: itemRepository,
+                       upgradeChecker: upgradeChecker,
                        vaults: vaults,
                        preferences: preferences,
                        logManager: logManager)
@@ -166,7 +168,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
             .store(in: &cancellables)
 
-        $vault
+        $selectedVault
             .eraseToAnyPublisher()
             .dropFirst()
             .receive(on: RunLoop.main)
@@ -227,7 +229,7 @@ extension CreateEditAliasViewModel {
             do {
                 state = .loading
 
-                let shareId = vault.shareId
+                let shareId = selectedVault.shareId
                 let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
                 suffixSelection?.attach(to: self, storeIn: &cancellables)
