@@ -1197,7 +1197,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * allVaults.count + 44
+            let height = 66 * allVaults.count + 150
             let customDetent = makeCustomDetent(height: height)
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
