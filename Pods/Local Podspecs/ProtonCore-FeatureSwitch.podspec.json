@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-FeatureSwitch",
   "module_name": "ProtonCore_FeatureSwitch",
-  "version": "5.1.0",
+  "version": "6.1.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,15 +13,14 @@
     "zhj4478": "feng@pm.me",
     "magohamote": "cedric.rolland@proton.ch",
     "siejkowski": "krzysztof.siejkowski@proton.ch",
-    "gbiegaj": "grzegorz.biegaj@proton.ch",
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
     "git": null,
-    "tag": "5.1.0"
+    "tag": "6.1.0"
   },
   "platforms": {
-    "ios": "11.0",
+    "ios": "14.0",
     "osx": "10.13"
   },
   "swift_versions": [
@@ -32,13 +31,13 @@
   },
   "dependencies": {
     "ProtonCore-Foundations": [
-      "5.1.0"
+      "6.1.0"
     ],
     "ProtonCore-Utilities": [
-      "5.1.0"
+      "6.1.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "5.1.0"
+      "6.1.0"
     ]
   },
   "source_files": "libraries/FeatureSwitch/Sources/**/*.{h,m,swift}",
@@ -57,10 +56,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "5.1.0"
+          "6.1.0"
         ],
         "ProtonCore-Doh": [
-          "5.1.0"
+          "6.1.0"
         ]
       },
       "source_files": "libraries/FeatureSwitch/Tests/**/*.swift",

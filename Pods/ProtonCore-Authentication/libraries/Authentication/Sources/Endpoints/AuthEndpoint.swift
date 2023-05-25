@@ -24,6 +24,7 @@ import ProtonCore_APIClient
 import ProtonCore_DataModel
 import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
+import ProtonCore_Services
 
 extension Feature {
     public static var externalSignupHeader = Feature.init(name: "externalSignupHeader", isEnable: false, flags: [.availableCoreInternal])
@@ -32,17 +33,6 @@ extension Feature {
 extension AuthService {
     
     struct AuthRouteResponse: APIDecodableResponse, CredentialConvertible, Encodable {
-        struct TwoFA: Codable {
-            var enabled: State
-            struct State: OptionSet, Codable {
-                let rawValue: Int
-
-                static let off: State = []
-                static let totp = State(rawValue: 1 << 0)
-                static let webAuthn = State(rawValue: 1 << 2)
-            }
-        }
-        
         var accessToken: String
         var tokenType: String
         var refreshToken: String

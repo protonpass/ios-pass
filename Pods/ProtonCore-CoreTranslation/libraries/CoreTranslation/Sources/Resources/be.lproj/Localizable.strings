@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метад аднаўлення дапаможа атрымаць доступ да вашага ўліковага запісу ў выпадку, калі вы забудзеце пароль або заблакіруеце ўліковы запіс.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Уліковы запіс выдалены.\nАдбываецца выхад...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Патрабуецца наладжванне ўліковага запісу";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "З кампаніі Apple нам паведамілі, што вы палепшылі тарыфны план абслугоўвання, але нам не хапае некаторых тэхнічных даных. Запоўніце справаздачу пра памылкі, і наша каманда падтрымкі кліентаў звяжацца з вамі.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "З кампаніі Apple нам паведамілі, што вы палепшылі тарыфны план абслугоўвання, але мы выявілі, што з таго моманту вы выйшлі з уліковага запісу.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Вы сапраўды хочаце выйсці з %@?";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Працягнуць";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Стварыце ўліковы адрас Proton з вашай бягучай электроннай поштай";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Стварыць бяспечны адрас электроннай пошты Proton";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "Немагчыма стварыць карыстальніка";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Стварыць пароль";
 
 /* *
@@ -444,6 +447,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Увядзіце пароль уліковага запісу Proton.";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Увайдзіце ва ўліковы запіс Proton Mail для якога вы хочаце палепшыць тарыфны план абслугоўвання, каб мы маглі завяршыць куплю.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Увайдзіце ва ўліковы запіс Proton Mail для якога вы хочаце палепшыць тарыфны план абслугоўвання, каб мы маглі завяршыць актывацыю тарыфнага плана абслугоўвання.";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Пераканайцеся, што ваша падключэнне да інтэрнэту працуе.";
 
@@ -600,6 +609,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton зараз недаступны. Гэта можа здарыцца па прычыне няправільнай канфігурацыі сеткі. Таксама магчыма, што зараз яны не працуюць або былі заблакіраваны";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не ўдалося праверыць сертыфікат TLS падчас падключэння да Proton API. Ваша бягучае падключэнне да інтэрнэту можа адсочвацца. Для таго, каб захаваць вашы даныя ў бяспецы, мы прадухілілі доступ праграмы да Proton API.\nДля ўваходу ў праграму або доступу да вашага ўліковага запісу, пераключыцеся на новую сетку і паспрабуйце падключыцца яшчэ раз.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Звычайна гэта патрабуе не больш за хвіліну.";
 
@@ -607,7 +619,7 @@
 "This will help you access your account in case you forget your password or get locked out of your account." = "Гэта дапаможа атрымаць доступ да вашага ўліковага запісу ў выпадку, калі вы забудзеце пароль або заблакіруеце яго.";
 
 /* Delete account explaination under button */
-"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Гэта дзеянне незваротна выдаліць ваш уліковы запіс і ўсе звязаныя з ім даныя. У вас не будзе магчымасці аднавіць яго пазней.";
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Гэта незваротна выдаліць ваш уліковы запіс і ўсе звязаныя з ім даныя. У вас не будзе магчымасці аднавіць яго пазней.";
 
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Для выкарыстання праграмы Proton у якасці ўдзельніка арганізацыі, першапачаткова вам неабходна змяніць свой пароль, увайшоўшы ў Proton праз браўзер.";
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш уліковы запіс Proton Free паспяхова створаны.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Ваш сеанс пратэрмінаваны. Увайдзіце яшчэ раз.";
 

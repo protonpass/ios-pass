@@ -1,3 +1,6 @@
+/* Plan details number of email aliases message */
+"%@ email aliases" = "%@ alias d'adresse e-mail";
+
 /* Plan details storage */
 "%@ storage" = "%@ d'espace de stockage";
 
@@ -12,6 +15,9 @@
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Une méthode de récupération vous aidera à accéder à votre compte en cas d'oubli de votre mot de passe ou de blocage de votre compte.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Compte supprimé.\nDéconnexion en cours";
 
 /* *
  *  Login errors */
@@ -40,6 +46,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nous a informés que vous avez souscrit à un abonnement, mais il manque quelques données techniques. Nous vous invitons à compléter le rapport de bug et notre service client vous contactera.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nous a informés que vous avez changé d'abonnement, mais nous constatons que vous vous êtes déconnecté du compte depuis ce changement.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Voulez-vous vraiment vous déconnecter de %@ ?";
@@ -106,9 +115,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Continuer";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Créez un compte Proton avec votre adresse e-mail actuelle.";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Créer plutôt une adresse sécurisée Proton Mail.";
 
@@ -118,7 +124,7 @@
 /* Create user failed error */
 "Create user failed" = "L'utilisateur n'a pas pu être créé.";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Créez votre mot de passe";
 
 /* *
@@ -194,7 +200,10 @@
 "Enter the verification code that was sent to %@" = "Saisissez le code de vérification qui a été envoyé à %@.";
 
 /* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Saisissez le code de vérification qui a été envoyé à %@. Si vous ne trouvez pas le message dans votre boîte de réception, vérifiez dans votre dossier Indésirables/spam.";
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Saisissez le code de vérification qui a été envoyé à %@. Si vous ne trouvez pas le message dans votre boite de réception, vérifiez dans votre dossier Indésirables/spam.";
+
+/* Title of a page asking to enter your password. */
+"Enter your password" = "Saisissez votre mot de passe.";
 
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Saisissez les informations de votre compte Proton.";
@@ -208,6 +217,9 @@
 
 /* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
 "for %@" = "pour %@";
+
+/* Description of the Pass plan */
+"For next-level password management and identity protection." = "Passez au niveau supérieur pour gérer vos mots de passe et protéger votre identité.";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Pour votre sécurité, nous devons vérifier que l'adresse que vous avez saisie vous appartient. Nous avons envoyé un code de vérification à %@. Saisissez le code ci-dessous :";
@@ -261,6 +273,9 @@
 
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Le mot de passe de la messagerie n'est pas correct.";
+
+/* Plan details `Integrated 2FA authenticator` message */
+"Integrated 2FA authenticator" = "Authentification à deux facteurs (A2F) intégrée";
 
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problème de fournisseur d'accès internet (FAI)";
@@ -444,6 +459,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Saisissez le mot de passe de votre compte Proton.";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Connectez-vous au compte Proton Mail dont vous voulez changer l'abonnement pour que nous puissions finaliser l'achat.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Connectez-vous au compte Proton Mail dont vous voulez changer l'abonnement pour que nous terminions l'activation.";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Nous vous invitons à vérifier que votre connexion internet fonctionne.";
 
@@ -455,6 +476,9 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "Service client prioritaire";
+
+/* Plan details `Priority support` message */
+"Priority support" = "Assistance prioritaire";
 
 /* Welcome screen */
 "Privacy by default" = "Privacy by default";
@@ -570,7 +594,7 @@
 "Streaming service support" = "Prise en charge des services de streaming";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Objet...";
+"Subject..." = "Objet…";
 
 /* Subscription title */
 "Subscription" = "Abonnement";
@@ -599,6 +623,9 @@
 
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Les serveurs Proton sont inaccessibles. Cela peut être dû à une mauvaise configuration du réseau, à des serveurs Proton qui ne fonctionnent pas ou qui sont bloqués.";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Le certificat TLS n'a pas pu être validé pendant la tentative de connexion à l'API Proton. Votre connexion internet actuelle peut être surveillée. Pour protéger vos données, nous empêchons l'application d'accéder à l'API Proton.\nPour vous connecter ou accéder à votre compte, basculez vers un nouveau réseau et réessayez de vous connecter.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Ceci ne devrait pas prendre plus d'une minute.";
@@ -630,12 +657,24 @@
 /* 2FA screen field title */
 "Two-factor code" = "Code à deux facteurs";
 
+/* Plan details `Unlimited devices` message */
+"Unlimited devices" = "Nombre illimité d'appareils";
+
+/* Plan details `Unlimited email aliases` message */
+"Unlimited email aliases" = "Nombre d'alias d’adresses e-mail illimité";
+
+/* Plan details `Unlimited logins and notes` message */
+"Unlimited logins and notes" = "Nombre illimité de connexions et de notes";
+
 /* Mailbox unlock screen action button title */
 "Unlock" = "Déverrouiller";
 
 /* *
  * Login unlock mailbox */
 "Unlock your mailbox" = "Déverrouillez votre messagerie";
+
+/* Plan details `Up to %@ forwarding mailboxes` message */
+"Up to %@ forwarding mailboxes" = "Jusqu'à %@ messageries de transfert";
 
 /* update button */
 "Update" = "Mettre à jour";
@@ -743,4 +782,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Votre compte Proton Free a été créé.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Votre session a expiré. Nous vous invitons à vous reconnecter.";
 

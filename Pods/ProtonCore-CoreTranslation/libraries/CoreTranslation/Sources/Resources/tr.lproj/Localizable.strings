@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Kurtarma yöntemi, parolanızı unuttuğunuzda ya da oturum açamadığınızda hesabınıza erişmenizi sağlar.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Hesap silindi.\nOturum kapatılıyor...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Hesap kurulumu gerekli";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple, hizmet tarifenizi yükselttiğinizi bildirdi. Ancak bazı teknik veriler eksikti. Lütfen hata bildirimini doldurun. Müşteri destek ekibimiz sizinle görüşecek.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple, bize hizmet tarifenizi yükselttiğiniz hakkında bilgi verdi. Ancak o zamandan beri hesap oturumunuzu kapattığınızı farkettik.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "%@ oturumunu kapatmak istediğinize emin misiniz?";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "İlerle";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Geçerli e-posta adresinizle bir Proton hesabı oluşturun";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Bunun yerine güvenli bir Proton Mail adresi oluşturun";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "Kullanıcı oluşturulamadı";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Parolanızı oluşturun";
 
 /* *
@@ -201,7 +204,7 @@
 
 /* *
  *  Payments */
-"Error occured" = "Hata oluştu";
+"Error occured" = "Sorun çıktı";
 
 /* Error message */
 "Failed to get list of available products from App Store." = "App Store üzerinden var olan ürünlerin listesi alınamadı.";
@@ -269,7 +272,7 @@
 "Invalid hashed password" = "Karılmış parola geçersiz";
 
 /* Invalid token error */
-"Invalid token error" = "Kod geçersiz hatası";
+"Invalid token error" = "Kod geçersiz sorunu";
 
 /* Invalid token request error */
 "Invalid token request" = "Kod isteği geçersiz";
@@ -278,7 +281,7 @@
 "Invalid verification code" = "Doğrulama kodu geçersiz";
 
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Satın aldığınız App Store ürününü sunucumuzdaki hiçbir ürünle eşleştirilemedi. Lütfen hata bildirimini doldurun. Müşteri destek ekibimiz sizinle görüşecek.";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Satın aldığınız App Store ürününü sunucumuzdaki herhangi bir ürünle eşleştirilemedi. Lütfen hata bildirimini doldurun. Müşteri destek ekibimiz sizinle görüşecek.";
 
 /* alternative routing link name in description
    External accounts not supported popup learn more button
@@ -353,7 +356,7 @@
 "New_Plans Strict no-logs policy" = "Sıkı kayıt tutmama ilkesi";
 
 /* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Ücretsiz başlangıç hesabı gizliliği doğal sayan herkesin gereksinimlerine göre tasarlanmıştır.";
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Ücretsiz başlangıç hesabı gizliliğe odaklanmış herkesin gereksinimlerine göre tasarlanmıştır.";
 
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Günlük iletişim gereksinimleriniz için gizliliğe öncelik veren e-posta ve takvim çözümü.";
@@ -443,6 +446,12 @@
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Lütfen Proton hesabınızın parolasını yazın.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Lütfen, satın alma işleminizi tamamlayabilmemiz için hizmet tarifenizi yükselttiğiniz Proton Mail hesabıyla oturum açın.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Hizmet tarifesini etkinleştirebilmemiz için, lütfen hizmet tarifenizi yükselttiğiniz Proton Mail hesabıyla oturum açın.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Lütfen internet bağlantınızın çalıştığından emin olun.";
@@ -589,7 +598,7 @@
 "Terms and Conditions" = "Hüküm ve Koşullar";
 
 /* Unfinished operation dialog description */
-"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Hesap kurulum işlemi beklenmeyen bir hatadan dolayı tamamlanamadı.\nLütfen yeniden deneyin.";
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Hesap kurulum işlemi beklenmeyen bir sorun çıktığından tamamlanamadı.\nLütfen yeniden deneyin.";
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Kişisel ve güvenli iletişim için Basic.";
@@ -599,6 +608,9 @@
 
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton sunucularına erişilemiyor. Bu durum hatalı bir ağ yapılandırmasından, Proton sunucularının çalışmıyor olmasından ya da Proton sunucularına erişimin engelleniyor olmasından kaynaklanabilir";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Proton API hizmeti ile bağlantı kurulmaya çalışılırken TLS sertifikası doğrulanamadı. Geçerli internet bağlantınız izlenebilir. Verilerinizi güvende tutmak için, uygulamanın Proton API hizmetine erişmesini engelliyoruz.\nOturum açmak veya hesabınıza erişmek için başka bir ağa geçin ve yeniden bağlanmayı deneyin.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Bu işlem bir dakikadan uzun sürmemeli.";
@@ -625,10 +637,10 @@
 "Try other method" = "Başka bir yöntem deneyin";
 
 /* 2FA screen title */
-"Two-factor authentication" = "İki aşamalı doğrulama";
+"Two-factor authentication" = "İki adımlı doğrulama";
 
 /* 2FA screen field title */
-"Two-factor code" = "İki aşamalı doğrulama kodu";
+"Two-factor code" = "İki adımlı doğrulama kodu";
 
 /* Mailbox unlock screen action button title */
 "Unlock" = "Kilidi aç";
@@ -651,7 +663,7 @@
 "Use recovery code" = "Kurtarma kodunu kullan";
 
 /* 2FA screen 2FA button title */
-"Use two-factor code" = "İki aşamalı doğrulama kodunu kullan";
+"Use two-factor code" = "İki adımlı doğrulama kodu kullanılsın";
 
 /* Email address button */
 "Use your current email instead" = "Bunun yerine var olan e-posta adresinizi kullanın";
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free hesabınız oluşturuldu.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Oturumunuzun geçerlilik süresi dolmuş. Lütfen yeniden oturum açın.";
 

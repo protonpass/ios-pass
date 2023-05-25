@@ -100,9 +100,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "ادامه";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "ایجاد یک حساب Proton با ایمیل فعلی خود";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "به جای آن یک آدرس Proton Mail امن ایجاد کنید";
 
@@ -112,7 +109,7 @@
 /* Create user failed error */
 "Create user failed" = "کاربر ساخته نشد";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "گذرواژه خود را ایجاد کنید";
 
 /* *

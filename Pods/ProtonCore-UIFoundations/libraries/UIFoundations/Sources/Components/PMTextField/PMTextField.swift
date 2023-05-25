@@ -342,7 +342,7 @@ public class PMTextField: UIView, AccessibleView {
 
     // MARK: - Setup
 
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         load()
     }

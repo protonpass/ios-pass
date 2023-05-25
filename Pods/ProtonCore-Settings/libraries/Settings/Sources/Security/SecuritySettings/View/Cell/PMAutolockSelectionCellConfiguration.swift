@@ -68,11 +68,11 @@ public struct PMAutolockSelectionCellConfiguration: PMCellSuplier {
 }
 
 extension PMAutolockSelectionCellConfiguration: PMDrillDownCellViewModel {
-    var title: String {
+    public var title: String {
         "Auto-Locker"
     }
 
-    var preview: String? {
+    public var preview: String? {
         return autoLocker.autolockerTimeout.title
     }
 }

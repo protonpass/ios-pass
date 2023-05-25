@@ -63,7 +63,7 @@ public enum AccountDeletionError: Error {
     
     public var userFacingMessageInAccountDeletion: String {
         switch self {
-        case .cannotDeleteYourself(let error): return error.localizedDescription
+        case .cannotDeleteYourself(let error): return error.networkResponseMessageForTheUser
         case .sessionForkingError(let message): return message
         case .closedByUser: return ""
         case .deletionFailure(let message): return message

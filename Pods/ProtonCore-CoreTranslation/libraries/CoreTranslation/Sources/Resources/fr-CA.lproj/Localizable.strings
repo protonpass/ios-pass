@@ -115,9 +115,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Продолжить";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Créez un compte Proton avec votre adresse courriel actuelle";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Créer plutôt une adresse Proton Mail sécurisée";
 
@@ -127,7 +124,7 @@
 /* Create user failed error */
 "Create user failed" = "Impossible de créer l'utilisateur";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Créez votre mot de passe";
 
 /* *

@@ -139,4 +139,9 @@ public extension LocalizedString {
     var _new_plans_details_n_connections_per_user: String {
         NSLocalizedString("New_Plans %d VPN connections per user", bundle: Common.bundle, comment: "New_Plans Plan details n connections per user")
     }
+
+    /// Plan details n vaults
+    var _plan_details_n_vaults: String {
+        NSLocalizedString("%d vaults", bundle: Common.bundle, comment: "Plan details n vaults")
+    }
 }

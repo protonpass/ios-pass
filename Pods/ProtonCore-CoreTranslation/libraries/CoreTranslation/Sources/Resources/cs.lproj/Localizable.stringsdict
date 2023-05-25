@@ -202,6 +202,26 @@
 			<string>%d uživatelů</string>
 		</dict>
 	</dict>
+	<key>%d vaults</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d vaults</string>
+			<key>many</key>
+			<string>%d vaults</string>
+			<key>one</key>
+			<string>%d trezor</string>
+			<key>other</key>
+			<string>%d vaults</string>
+		</dict>
+	</dict>
 	<key>New_Plans %d VPN connections per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -490,11 +510,11 @@
 			<key>few</key>
 			<string>Vysokorychlostní VPN na %d zařízení</string>
 			<key>many</key>
-			<string>Vysokorychlostní VPN na $%d zařízeních</string>
+			<string>Vysokorychlostní VPN na %d zařízeních</string>
 			<key>one</key>
 			<string>Vysokorychlostní VPN na %d zařízení</string>
 			<key>other</key>
-			<string>Vysokorychlostní VPN na $%d zařízeních</string>
+			<string>Vysokorychlostní VPN na %d zařízeních</string>
 		</dict>
 	</dict>
 	<key>New_Plans Medium VPN speed %d VPN connections</key>

@@ -25,7 +25,7 @@ public struct PMAboutConfiguration: PMCellSuplier, PMDrillDownCellViewModel {
     let titleKey: String
     let action: PMSettingsAction
     let bundle: Bundle
-    let preview: String? = nil
+    public let preview: String? = nil
 
     public init(title: String, action: PMSettingsAction, bundle: Bundle) {
         self.titleKey = title
@@ -49,7 +49,7 @@ public struct PMAboutConfiguration: PMCellSuplier, PMDrillDownCellViewModel {
         return cell
     }
 
-    var title: String {
+    public var title: String {
         titleKey.localized(in: bundle)
     }
 }
@@ -58,7 +58,7 @@ public struct PMAcknowledgementsConfiguration: PMCellSuplier, PMDrillDownCellVie
     let titleKey: String
     let url: URL
     let bundle: Bundle
-    let preview: String? = nil
+    public let preview: String? = nil
 
     public init(title: String, url: URL, bundle: Bundle) {
         self.titleKey = title
@@ -79,7 +79,7 @@ public struct PMAcknowledgementsConfiguration: PMCellSuplier, PMDrillDownCellVie
         return cell
     }
 
-    var title: String {
+    public var title: String {
         titleKey.localized(in: bundle)
     }
 }
