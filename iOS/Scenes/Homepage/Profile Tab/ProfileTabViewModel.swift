@@ -59,9 +59,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {
         didSet {
-            if automaticallyCopyTotpCode {
-                requestNotificationPermission()
-            }
             preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         }
     }
@@ -217,9 +214,5 @@ private extension ProfileTabViewModel {
                 delegate?.profileTabViewModelWantsDidEncounter(error: error)
             }
         }
-    }
-
-    func requestNotificationPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
     }
 }
