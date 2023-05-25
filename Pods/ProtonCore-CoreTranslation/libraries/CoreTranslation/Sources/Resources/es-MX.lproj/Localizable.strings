@@ -103,9 +103,6 @@
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Póngase en contacto con support@protonvpn.com para completar su compra.";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Cree una cuenta de Proton con su correo electrónico actual";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Crear una dirección segura de Proton Mail en su lugar";
 
@@ -122,7 +119,7 @@
 /* Create user failed error */
 "Create user failed" = "Error al crear el usuario";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Cree su contraseña";
 
 /* *

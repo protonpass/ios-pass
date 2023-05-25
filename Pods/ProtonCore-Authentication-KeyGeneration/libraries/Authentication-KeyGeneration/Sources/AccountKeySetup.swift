@@ -143,7 +143,7 @@ final class AccountKeySetup {
             /// sign detached. keylist.json signed by primary address key. on signup situation this is the address key we are going to submit.
             let addSigner = SigningKey.init(privateKey: armoredAddrKey,
                                             passphrase: addrPassphrase)
-            let signed = try Sign.signDetached(signingKey: addSigner, plainText: jsonKeylist)
+            let signed = try Sign.signDetached(signingKey: addSigner, plainText: jsonKeylist, signatureContext: AddressKeySetup.signedKeyListSignatureContext)
             let signedKeyList: [String: Any] = [
                 "Data": jsonKeylist,
                 "Signature": signed.value

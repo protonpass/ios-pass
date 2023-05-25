@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d calendar</string>
+			<string>%d calendário</string>
 			<key>other</key>
-			<string>%d calendars</string>
+			<string>%d calendários</string>
 		</dict>
 	</dict>
 	<key>%d connections</key>
@@ -160,6 +160,22 @@
 			<string>%d utilizador</string>
 			<key>other</key>
 			<string>%d utilizadores</string>
+		</dict>
+	</dict>
+	<key>%d vaults</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d vault</string>
+			<key>other</key>
+			<string>%d vaults</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d VPN connections per user</key>
@@ -364,7 +380,7 @@
 			<string>%d países</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
+		<string>%#@SERVERS@ em %#@COUNTRIES@</string>
 		<key>SERVERS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

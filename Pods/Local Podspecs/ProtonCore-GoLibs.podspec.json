@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-GoLibs",
   "module_name": "ProtonCore_Crypto",
-  "version": "5.1.0",
+  "version": "6.1.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,15 +13,14 @@
     "zhj4478": "feng@pm.me",
     "magohamote": "cedric.rolland@proton.ch",
     "siejkowski": "krzysztof.siejkowski@proton.ch",
-    "gbiegaj": "grzegorz.biegaj@proton.ch",
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
     "git": null,
-    "tag": "5.1.0"
+    "tag": "6.1.0"
   },
   "platforms": {
-    "ios": "11.0",
+    "ios": "14.0",
     "osx": "10.13"
   },
   "swift_versions": [
@@ -32,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-DataModel": [
-      "5.1.0"
+      "6.1.0"
     ]
   },
   "default_subspecs": [
@@ -40,12 +39,12 @@
   ],
   "subspecs": [
     {
-      "name": "Crypto-Go1.20.2",
+      "name": "Crypto-Go",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto-Go1.20.2/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto-Go/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",
@@ -56,12 +55,12 @@
       ]
     },
     {
-      "name": "Crypto-patched-Go1.20.2",
+      "name": "Crypto-patched-Go",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto-patched-Go1.20.2/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto-patched-Go/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",
@@ -72,12 +71,12 @@
       ]
     },
     {
-      "name": "Crypto+VPN-Go1.15.15",
+      "name": "Crypto+VPN-patched-Go",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto+VPN-Go1.15.15/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto+VPN-patched-Go/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",
@@ -88,60 +87,12 @@
       ]
     },
     {
-      "name": "Crypto+VPN-Go1.20.2",
+      "name": "Crypto+Search-Go",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto+VPN-Go1.20.2/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
-    },
-    {
-      "name": "Crypto+VPN-patched-Go1.20.2",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto+VPN-patched-Go1.20.2/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
-    },
-    {
-      "name": "Crypto+Search-Go1.15.15",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto+Search-Go1.15.15/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
-    },
-    {
-      "name": "Crypto+Search-Go1.20.2",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto+Search-Go1.20.2/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto+Search-Go/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",

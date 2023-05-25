@@ -106,16 +106,13 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Tovább";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Hozzon létre egy Proton fiókot a jelenlegi email címével";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Inkább egy biztonságos Proton Mail cím létrehozása";
 
 /* Create account button */
 "Create an account" = "Fiók létrehozása";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Hozzon létre egy jelszót";
 
 /* *

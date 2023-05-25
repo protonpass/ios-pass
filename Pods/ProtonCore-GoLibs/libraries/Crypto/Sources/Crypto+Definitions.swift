@@ -103,3 +103,27 @@ public class DecryptionKey {
 
 public typealias SigningKey = DecryptionKey
 public typealias SigningContext = DecryptionContext
+
+public struct SignatureContext {
+    public let value: String
+    public let isCritical: Bool
+    public init(value: String, isCritical: Bool) {
+        self.value = value
+        self.isCritical = isCritical
+    }
+}
+
+public enum ContextRequirement {
+    case never
+    case always
+    case after(unixTime: Int64)
+}
+
+public struct VerificationContext {
+    public let value: String
+    public let required: ContextRequirement
+    public init(value: String, required: ContextRequirement) {
+        self.value = value
+        self.required = required
+    }
+}

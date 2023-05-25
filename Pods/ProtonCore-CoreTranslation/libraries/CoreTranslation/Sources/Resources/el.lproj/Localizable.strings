@@ -106,9 +106,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Συνέχεια";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Δημιουργήστε έναν λογαριασμό Proton με την τρέχουσα διεύθυνσή σας";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Εναλλακτικά, δημιουργήστε μια διασφαλισμένη διεύθυνση Proton Mail";
 
@@ -118,7 +115,7 @@
 /* Create user failed error */
 "Create user failed" = "Αποτυχία δημιουργίας χρήστη";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Δημιουργήστε τον κωδικό πρόσβασής σας";
 
 /* *

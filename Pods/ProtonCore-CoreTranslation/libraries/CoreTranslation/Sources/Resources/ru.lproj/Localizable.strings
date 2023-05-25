@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метод восстановления поможет вам получить доступ к аккаунту, если вы забудете пароль или он будет заблокирован.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Аккаунт удален.\nВыход из системы...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Требуется настройка аккаунта";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple сообщили, что вы улучшили тариф, но нам не хватает технических данных. Пожалуйста, заполните отчет об ошибке, и наша команда поддержки свяжется с вами.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Компания Apple уведомила нас, что вы улучшили свой тариф, но мы заметили, что после этого вы вышли из учётной записи.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Вы уверены, что хотите выйти из %@?";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Продолжить";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Создать аккаунт Proton с вашим текущим адресом электронной почты";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Создать защищенный адрес Proton Mail";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "Не удалось создать пользователя";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Создайте пароль";
 
 /* *
@@ -444,6 +447,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Введите пароль вашего аккаунта Proton.";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Пожалуйста, войдите в аккаунт Proton Mail, тариф которого вы улучшаете, чтобы мы могли оформить покупку.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Пожалуйста, войдите в аккаунт Proton Mail, тариф которого вы улучшаете, чтобы мы могли завершить активацию обновленного тарифа обслуживания.";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Убедитесь, что работает ваше подключение к Интернету.";
 
@@ -600,6 +609,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton недоступны. Это может быть вызвано неправильной настройкой сети, сбоем серверов Proton или тем, что сервисы Proton были заблокированы";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Сбой проверки TLS-сертификата при попытке подключения к API Proton VPN. Возможно, ваше подключение к Интернету отслеживается. Чтобы сохранить ваши данные в безопасности, мы предотвратили доступ приложения к Proton API.\nДля входа в приложение или доступа к аккаунту подключитесь к другой сети и попробуйте снова.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Обычно на это требуется менее минуты.";
 
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш аккаунт Proton Free был успешно создан.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Ваш сеанс истёк. Пожалуйста, войдите снова.";
 

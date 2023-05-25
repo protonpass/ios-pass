@@ -1,3 +1,6 @@
+/* Plan details number of email aliases message */
+"%@ email aliases" = "%@ e-mailových aliasů";
+
 /* Plan details storage */
 "%@ storage" = "%@ úložiště";
 
@@ -12,6 +15,9 @@
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metoda obnovení vám pomůže získat přístup k účtu v případě, že zapomenete heslo nebo se z účtu odhlásíte.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Účet byl smazán.\nOdhlašování...";
 
 /* *
  *  Login errors */
@@ -40,6 +46,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nás informoval, že jste navýšil(a) tarif služby, ale některé technické údaje chyběly. Prosím vyplňte zprávu o chybě a náš tým podpory zákazníků vás bude kontaktovat.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nás informoval, že jste navýšili tarif služby, ale zjistili jsme, že jste se od té doby z účtu odhlásili.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Opravdu se chcete odhlásit %@?";
@@ -106,9 +115,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Pokračovat";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Vytvořte si účet Proton pomocí aktuálního e-mailu";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Namísto toho vytvořit zabezpečenou Proton Mail adresu";
 
@@ -118,7 +124,7 @@
 /* Create user failed error */
 "Create user failed" = "Vytváření uživatele selhalo";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Vytvořte si heslo";
 
 /* *
@@ -196,6 +202,9 @@
 /* Enter email code label */
 "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Zadejte ověřovací kód, který byl odeslán na adresu %@. Pokud nenajdete tento e-mail ve své schránce, zkontrolujte prosím složku se spamem.";
 
+/* Title of a page asking to enter your password. */
+"Enter your password" = "Zadejte své heslo";
+
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Zadejte údaje Vašeho účtu Proton.";
 
@@ -208,6 +217,9 @@
 
 /* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
 "for %@" = "na %@";
+
+/* Description of the Pass plan */
+"For next-level password management and identity protection." = "Pro pokročilou správu hesel a ochranu identity.";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Z důvodu vaší bezpečnosti musíme ověřit, zda zadaná adresa patří vám. Poslali jsme ověřovací kód na adresu %@. Prosím zadejte kód níže:";
@@ -261,6 +273,9 @@
 
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Neplatné heslo e-mailové schránky";
+
+/* Plan details `Integrated 2FA authenticator` message */
+"Integrated 2FA authenticator" = "Integrovaný ověřovací modul 2FA";
 
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problém s poskytovatelem internetových služeb (ISP)";
@@ -444,6 +459,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Prosím, zadejte Vaše heslo Proton účtu.";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Přihlaste se prosím do Proton Mail účtu, pro který chcete navýšit tarif služby, aby bylo možné dokončit nákup.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Přihlaste se prosím do Proton Mail účtu, pro který chcete navýšit tarif služby, aby bylo možné dokončit aktivaci.";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Ujistěte se prosím, že vaše připojení k internetu funguje.";
 
@@ -600,6 +621,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Servery Proton jsou nedostupné. Může to být způsobeno špatnou konfigurací sítě, nefunkčností serverů Proton nebo zablokováním serverů Proton";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Při pokusu o připojení k rozhraní Proton API selhalo ověření certifikátu TLS. Vaše aktuální internetové připojení může být monitorováno. Abychom zajistili bezpečnost vašich dat, bráníme aplikaci v přístupu k rozhraní Proton API.\nChcete-li se přihlásit nebo získat přístup ke svému účtu, přepněte na novou síť a zkuste se znovu připojit.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Nemělo by to trvat déle, než minutu.";
 
@@ -629,6 +653,15 @@
 
 /* 2FA screen field title */
 "Two-factor code" = "Kód pro dvoufázové ověření";
+
+/* Plan details `Unlimited devices` message */
+"Unlimited devices" = "Neomezený počet zařízení";
+
+/* Plan details `Unlimited email aliases` message */
+"Unlimited email aliases" = "Neomezený počet emailových aliasů";
+
+/* Plan details `Unlimited logins and notes` message */
+"Unlimited logins and notes" = "Neomezený počet přihlášení a poznámek";
 
 /* Mailbox unlock screen action button title */
 "Unlock" = "Odemknout";
@@ -743,4 +776,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Váš účet Proton Free byl úspěšně vytvořen.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Vaše relace vypršela. Přihlaste se prosím znovu.";
 

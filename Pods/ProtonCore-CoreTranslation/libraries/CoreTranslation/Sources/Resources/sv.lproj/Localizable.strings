@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En återställningsmetod hjälper dig att komma åt ditt konto om du glömmer ditt lösenord eller blir utelåst från ditt konto.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Konto borttaget.\nLoggar ut...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Inställning av konto krävs";
@@ -106,9 +109,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Fortsätt";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Skapa ett Proton-konto med din nuvarande e-post";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Skapa en säker Proton Mail-adress istället";
 
@@ -118,7 +118,7 @@
 /* Create user failed error */
 "Create user failed" = "Kunde inte skapa användare";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Skapa ditt lösenord";
 
 /* *
@@ -450,9 +450,6 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Dela ditt problem.";
 
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
-
 /* Plan details priority customer support */
 "Priority customer support" = "Prioriterad kundsupport";
 
@@ -681,9 +678,6 @@
 /* Error message */
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Vi har blivit aviserad om ett köp i App Store men kan inte matcha köpet med ditt konto.";
 
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Vi har aktiverat ditt abonnemang. Vänligen starta om appen för att börja använda din nya serviceplan.";
-
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
 "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Vi kunde inte uppgradera ditt konto till det paket du valde, så vi lade till din betalning som krediter till ditt konto. För mer information och för att slutföra uppgraderingen, kontakta supporten.";
 
@@ -743,4 +737,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ditt Proton Free-konto har skapats.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Din session har löpt ut. Logga in igen.";
 

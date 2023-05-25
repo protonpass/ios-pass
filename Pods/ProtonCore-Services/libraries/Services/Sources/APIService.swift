@@ -261,55 +261,6 @@ public protocol APIServiceDelegate: AnyObject {
     func onDohTroubleshot()
 }
 
-public enum HumanVerifyFinishReason {
-    public typealias HumanVerifyHeader = [String: Any]
-    
-    case verification(header: HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?)
-    case close
-    case closeWithError(code: Int, description: String)
-}
-
-public protocol HumanVerifyDelegate: AnyObject {
-
-    var responseDelegateForLoginAndSignup: HumanVerifyResponseDelegate? { get set }
-    var paymentDelegateForLoginAndSignup: HumanVerifyPaymentDelegate? { get set }
-
-    func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
-    // This function calculate a device challenge using different challenge types and returns the solved hash in Base64 format.
-    func onDeviceVerify(parameters: DeviceVerifyParameters) -> String?
-
-    func getSupportURL() -> URL
-}
-
-extension HumanVerifyDelegate {
-    
-    @available(*, deprecated, message: "The error parameter is no longer used, please use the version without it")
-    func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, error _: NSError, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
-        onHumanVerify(parameters: parameters, currentURL: currentURL, completion: completion)
-    }
-}
-
-public enum HumanVerifyEndResult {
-    case success
-    case cancel
-}
-
-public protocol HumanVerifyResponseDelegate: AnyObject {
-    func onHumanVerifyStart()
-    func onHumanVerifyEnd(result: HumanVerifyEndResult)
-    func humanVerifyToken(token: String?, tokenType: String?)
-}
-
-public enum PaymentTokenStatusResult {
-    case success
-    case fail
-}
-
-public protocol HumanVerifyPaymentDelegate: AnyObject {
-    var paymentToken: String? { get }
-    func paymentTokenStatusChanged(status: PaymentTokenStatusResult)
-}
-
 public typealias AuthRefreshResultCompletion = (Result<Credential, AuthErrors>) -> Void
 
 public protocol AuthSessionInvalidatedDelegate: AnyObject {
