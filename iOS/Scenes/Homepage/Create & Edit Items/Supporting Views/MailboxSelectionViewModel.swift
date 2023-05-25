@@ -66,6 +66,8 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
         self.titleMode = titleMode
 
         mailboxSelection.attach(to: self, storeIn: &cancellables)
+
+        /*
         Task { @MainActor in
             do {
                 shouldUpgrade = try await upgradeChecker.isFreeUser()
@@ -74,6 +76,7 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
                 delegate?.mailboxSelectionViewModelDidEncounter(error: error)
             }
         }
+         */
     }
 
     func upgrade() {

@@ -33,9 +33,13 @@ public protocol CredentialManagerProtocol {
 
     /// Get all active login items from `ItemRepository` and insert to credential store
     /// - Parameter itemRepository: The `ItemRepository` to get items
+    /// - Parameter shareRepository: The `ShareRepository` to get all vaults
+    /// - Parameter passPlanRepository: The `PassPlanRepository` to get the current plan
     /// - Parameter forceRemoval: If `true`, will remove all credentials before inserting.
     /// if `false`, only insert when no credentials found in credential store
-    func insertAllCredentials(from itemRepository: ItemRepositoryProtocol,
+    func insertAllCredentials(itemRepository: ItemRepositoryProtocol,
+                              shareRepository: ShareRepositoryProtocol,
+                              passPlanRepository: PassPlanRepositoryProtocol,
                               forceRemoval: Bool) async throws
     func removeAllCredentials() async throws
 }
@@ -84,7 +88,9 @@ public extension CredentialManagerProtocol {
         }
     }
 
-    func insertAllCredentials(from itemRepository: ItemRepositoryProtocol,
+    func insertAllCredentials(itemRepository: ItemRepositoryProtocol,
+                              shareRepository: ShareRepositoryProtocol,
+                              passPlanRepository: PassPlanRepositoryProtocol,
                               forceRemoval: Bool) async throws {
         logger.trace("Trying to insert all credentials from ItemRepository")
         let state = await store.state()
@@ -101,10 +107,26 @@ public extension CredentialManagerProtocol {
             return
         }
 
+        let vaults = try await shareRepository.getVaults()
+        let plan = try await passPlanRepository.getPlan()
+
         let symmetricKey = itemRepository.symmetricKey
         let encryptedItems = try await itemRepository.getActiveLogInItems()
         var credentials = [AutoFillCredential]()
         for encryptedItem in encryptedItems {
+            let vault = vaults.first { $0.shareId == encryptedItem.shareId }
+
+            let shouldTakeIntoAccount: Bool
+            switch plan.planType {
+            case .free:
+                shouldTakeIntoAccount = vault?.isPrimary == true
+            default:
+                shouldTakeIntoAccount = true
+            }
+
+            // Do not suggest items in non-primary vaults when in free plan
+            guard shouldTakeIntoAccount else { continue }
+
             let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
             if case .login(let data) = decryptedItem.contentData {
                 for url in data.urls {

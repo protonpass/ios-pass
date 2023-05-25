@@ -58,6 +58,8 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
 
+    private var isRefreshing = false
+
     init(itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
          logManager: LogManager,
@@ -68,7 +70,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
-        self.refresh()
     }
 }
 
@@ -121,7 +122,12 @@ private extension VaultsManager {
 // MARK: - Public APIs
 extension VaultsManager {
     func refresh() {
+        guard !isRefreshing else { return }
+
         Task { @MainActor in
+            defer { isRefreshing = false }
+            isRefreshing = true
+
             do {
                 // No need to show loading indicator once items are loaded beforehand.
                 switch state {
@@ -148,6 +154,7 @@ extension VaultsManager {
         }
     }
 
+    // Delete everything and download again
     func fullSync() async throws {
         // 1. Delete all local items & shares
         try await itemRepository.deleteAllItemsLocally()
@@ -226,15 +233,6 @@ extension VaultsManager {
         return vaults.map { $0.vault }
     }
 
-    func getVaultCount() -> Int {
-        switch state {
-        case let .loaded(vaults, _):
-            return vaults.count
-        default:
-            return 0
-        }
-    }
-
     func vaultHasTrashedItems(_ vault: Vault) -> Bool {
         guard case let .loaded(_, trashedItems) = state else { return false }
         return trashedItems.contains { $0.shareId == vault.shareId }
@@ -297,11 +295,31 @@ extension VaultsManager {
 
 // MARK: - LimitationCounterProtocol
 extension VaultsManager: LimitationCounterProtocol {
+    func getAliasCount() -> Int {
+        switch state {
+        case let .loaded(vaults, trash):
+            let activeAliases = vaults.flatMap { $0.items }.filter { $0.isAlias }
+            let trashedAliases = trash.filter { $0.isAlias }
+            return activeAliases.count + trashedAliases.count
+        default:
+            return 0
+        }
+    }
+
     func getTOTPCount() -> Int {
         guard case let .loaded(vaults, trashedItems) = state else { return 0 }
         let activeItemsWithTotpUri = vaults.flatMap { $0.items }.filter { $0.hasTotpUri }.count
         let trashedItemsWithTotpUri = trashedItems.filter { $0.hasTotpUri }.count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
+    }
+
+    func getVaultCount() -> Int {
+        switch state {
+        case let .loaded(vaults, _):
+            return vaults.count
+        default:
+            return 0
+        }
     }
 }
 

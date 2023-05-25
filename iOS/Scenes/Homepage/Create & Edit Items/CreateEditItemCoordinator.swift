@@ -140,6 +140,7 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
                                                      itemRepository: itemRepository,
                                                      aliasRepository: aliasRepository,
+                                                     upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults(),
                                                      preferences: preferences,
                                                      logManager: logManager)
@@ -153,6 +154,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditNoteView(mode: ItemMode) throws {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
                                                     itemRepository: itemRepository,
+                                                    upgradeChecker: upgradeChecker,
                                                     vaults: vaultsManager.getAllVaults(),
                                                     preferences: preferences,
                                                     logManager: logManager)

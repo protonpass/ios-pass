@@ -32,7 +32,7 @@ public protocol ItemRepositoryDelegate: AnyObject {
     func itemRepositoryDeletedCredentials(_ credentials: [AutoFillCredential])
 }
 
-public protocol ItemRepositoryProtocol {
+public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     var userData: UserData { get }
     var symmetricKey: SymmetricKey { get }
     var localItemDatasoure: LocalItemDatasourceProtocol { get }
@@ -460,6 +460,34 @@ private extension ItemRepositoryProtocol {
                            shareId: String) async throws -> CreateItemRequest {
         let latestKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
         return try CreateItemRequest(vaultKey: latestKey, itemContent: itemContent)
+    }
+}
+
+// MARK: - TOTPCheckerProtocol
+public extension ItemRepositoryProtocol {
+    func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64? {
+        let items = try await localItemDatasoure.getAllItems()
+
+        let loginItemsWithTotp =
+        try items
+            .filter { $0.isLogInItem }
+            .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
+            .filter { item in
+                switch item.contentData {
+                case .login(let loginData):
+                    return !loginData.totpUri.isEmpty
+                default:
+                    return false
+                }
+            }
+            .sorted(by: { $0.item.createTime < $1.item.createTime })
+
+        // Number of TOTP is not reached
+        if loginItemsWithTotp.count < numberOfTotp {
+            return nil
+        }
+
+        return loginItemsWithTotp.prefix(numberOfTotp).last?.item.createTime
     }
 }
 

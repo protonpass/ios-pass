@@ -20,16 +20,32 @@
 
 import Core
 
+public struct AliasLimitation {
+    public let count: Int
+    public let limit: Int
+}
+
 public protocol UpgradeCheckerProtocol: AnyObject {
     var passPlanRepository: PassPlanRepositoryProtocol { get }
     var counter: LimitationCounterProtocol { get }
+    var totpChecker: TOTPCheckerProtocol { get }
 
+    /// Return `null` when there's no limitation (unlimited aliases)
+    func aliasLimitation() async throws -> AliasLimitation?
     func canCreateMoreVaults() async throws -> Bool
-    func canCreateMoreTOTPs() async throws -> Bool
+    func canShowTOTPToken(creationDate: Int64) async throws -> Bool
     func isFreeUser() async throws -> Bool
 }
 
 public extension UpgradeCheckerProtocol {
+    func aliasLimitation() async throws -> AliasLimitation? {
+        let plan = try await passPlanRepository.getPlan()
+        if let aliasLimit = plan.aliasLimit {
+            return .init(count: counter.getAliasCount(), limit: aliasLimit)
+        }
+        return nil
+    }
+
     func canCreateMoreVaults() async throws -> Bool {
         let plan = try await passPlanRepository.getPlan()
         if let vaultLimit = plan.vaultLimit {
@@ -39,11 +55,12 @@ public extension UpgradeCheckerProtocol {
         return true
     }
 
-    func canCreateMoreTOTPs() async throws -> Bool {
+    func canShowTOTPToken(creationDate: Int64) async throws -> Bool {
         let plan = try await passPlanRepository.getPlan()
-        if let totpLimit = plan.totpLimit {
-            let totpCount = counter.getTOTPCount()
-            return totpCount < totpLimit
+        guard let totpLimit = plan.totpLimit else { return true }
+
+        if let threshold = try await totpChecker.totpCreationDateThreshold(numberOfTotp: totpLimit) {
+            return creationDate <= threshold
         }
         return true
     }
@@ -55,17 +72,27 @@ public extension UpgradeCheckerProtocol {
 }
 
 public protocol LimitationCounterProtocol {
+    func getAliasCount() -> Int
     func getVaultCount() -> Int
     func getTOTPCount() -> Int
+}
+
+public protocol TOTPCheckerProtocol {
+    /// Get the maximum creation date of items that are allowed to display 2FA token
+    /// If the creation date of a given login is less than this max creation date, we don't calculate the 2FA token
+    func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64?
 }
 
 public final class UpgradeChecker: UpgradeCheckerProtocol {
     public let passPlanRepository: PassPlanRepositoryProtocol
     public let counter: LimitationCounterProtocol
+    public let totpChecker: TOTPCheckerProtocol
 
     public init(passPlanRepository: PassPlanRepositoryProtocol,
-                counter: LimitationCounterProtocol) {
+                counter: LimitationCounterProtocol,
+                totpChecker: TOTPCheckerProtocol) {
         self.passPlanRepository = passPlanRepository
         self.counter = counter
+        self.totpChecker = totpChecker
     }
 }

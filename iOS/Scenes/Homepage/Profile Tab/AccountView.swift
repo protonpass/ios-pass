@@ -114,7 +114,6 @@ struct AccountView: View {
 
                 Spacer()
             }
-            .animation(.default, value: viewModel.plan?.displayName)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
         }

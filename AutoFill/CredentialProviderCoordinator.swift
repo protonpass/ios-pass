@@ -65,6 +65,7 @@ public final class CredentialProviderCoordinator {
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
+    private var aliasCount: Int?
     private var vaultCount: Int?
     private var totpCount: Int?
 
@@ -133,12 +134,15 @@ public final class CredentialProviderCoordinator {
             return
         }
 
-        guard let itemRepository else { return }
+        guard let itemRepository, let shareRepository, let upgradeChecker else { return }
 
-        let viewModel = ExtensionSettingsViewModel(credentialManager: credentialManager,
-                                                   itemRepository: itemRepository,
-                                                   logManager: logManager,
-                                                   preferences: preferences)
+        let viewModel = ExtensionSettingsViewModel(
+            credentialManager: credentialManager,
+            itemRepository: itemRepository,
+            shareRepository: shareRepository,
+            passPlanRepository: upgradeChecker.passPlanRepository,
+            logManager: logManager,
+            preferences: preferences)
         viewModel.delegate = self
         let view = ExtensionSettingsView(viewModel: viewModel)
         showView(view)
@@ -455,6 +459,7 @@ private extension CredentialProviderCoordinator {
         guard let shareRepository,
               let shareEventIDRepository,
               let itemRepository,
+              let upgradeChecker,
               let favIconRepository,
               let shareKeyRepository,
               let remoteSyncEventsDatasource else { return }
@@ -462,6 +467,7 @@ private extension CredentialProviderCoordinator {
                                              shareRepository: shareRepository,
                                              shareEventIDRepository: shareEventIDRepository,
                                              itemRepository: itemRepository,
+                                             upgradeChecker: upgradeChecker,
                                              shareKeyRepository: shareKeyRepository,
                                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                              favIconRepository: favIconRepository,
@@ -571,8 +577,13 @@ private extension CredentialProviderCoordinator {
     }
 
     func startUpgradeFlow() {
+        let alert = UIAlertController(title: "Upgrade",
+                                      message: "Please open Proton Pass app to upgrade",
+                                      preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okButton)
         rootViewController.dismiss(animated: true) { [unowned self] in
-            print(#function)
+            self.rootViewController.present(alert, animated: true)
         }
     }
 }
@@ -637,6 +648,8 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                     let items = try await itemRepository.getAllItems()
                     let vaults = try await shareRepository.getVaults()
 
+                    self.aliasCount = items.filter { $0.item.aliasEmail != nil }.count
+
                     self.vaultListUiModels = vaults.map { vault in
                         let activeItems =
                         items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
@@ -660,6 +673,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                 }
             }
         }
+    }
+
+    func credentialsViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
@@ -690,13 +707,16 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
-        guard let vaultListUiModels else { return }
-        let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels, selectedVault: selectedVault)
+        guard let vaultListUiModels, let upgradeChecker else { return }
+        let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels,
+                                               selectedVault: selectedVault,
+                                               upgradeChecker: upgradeChecker,
+                                               logManager: logManager)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * vaultListUiModels.count + 100
+            let height = 66 * vaultListUiModels.count + 180  // Space for upsell banner
             let customDetent = UISheetPresentationController.Detent.custom { _ in
                 CGFloat(height)
             }
@@ -722,6 +742,10 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         coordinator.start()
     }
 
+    func createEditItemViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType) {
         switch type {
@@ -739,7 +763,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     // Not applicable
     func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {}
 
-    func createEditItemViewModelDidFail(_ error: Error) {
+    func createEditItemViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error.localizedDescription)
     }
 }
@@ -870,6 +894,11 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
 
 // MARK: - LimitationCounterProtocol
 extension CredentialProviderCoordinator: LimitationCounterProtocol {
+    public func getAliasCount() -> Int {
+        guard let aliasCount else { return 0 }
+        return aliasCount
+    }
+
     public func getVaultCount() -> Int {
         guard let vaultCount else { return 0 }
         return vaultCount
