@@ -34,9 +34,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {
         didSet {
-            if automaticallyCopyTotpCode {
-                requestNotificationPermission()
-            }
             preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         }
     }
@@ -111,9 +108,5 @@ private extension ExtensionSettingsViewModel {
                 delegate?.extensionSettingsViewModelDidEncounter(error: error)
             }
         }
-    }
-
-    func requestNotificationPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
     }
 }

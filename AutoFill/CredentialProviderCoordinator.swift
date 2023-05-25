@@ -150,7 +150,9 @@ public final class CredentialProviderCoordinator {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let symmetricKey, let itemRepository,
+        guard let symmetricKey,
+              let itemRepository,
+              let upgradeChecker,
               let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)
             return
@@ -171,6 +173,7 @@ public final class CredentialProviderCoordinator {
                                      credential: .init(user: data.username, password: data.password),
                                      encryptedItem: encryptedItem,
                                      itemRepository: itemRepository,
+                                     upgradeChecker: upgradeChecker,
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
                         } else {
                             logger.error("Failed to autofill. Not log in item.")
@@ -189,7 +192,7 @@ public final class CredentialProviderCoordinator {
 
     // Biometric authentication
     func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let symmetricKey, let itemRepository else {
+        guard let symmetricKey, let itemRepository, let upgradeChecker else {
             cancel(errorCode: .failed)
             return
         }
@@ -204,6 +207,7 @@ public final class CredentialProviderCoordinator {
                      credential: credential,
                      encryptedItem: item,
                      itemRepository: itemRepository,
+                     upgradeChecker: upgradeChecker,
                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
@@ -343,33 +347,30 @@ private extension CredentialProviderCoordinator {
         context.cancelRequest(withError: error)
     }
 
+    // swiftlint:disable:next function_parameter_count
     func complete(quickTypeBar: Bool,
                   credential: ASPasswordCredential,
                   encryptedItem: SymmetricallyEncryptedItem,
                   itemRepository: ItemRepositoryProtocol,
+                  upgradeChecker: UpgradeCheckerProtocol,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         Task { @MainActor in
             do {
-                let getTotpData: () -> TOTPData? = {
+                let getTotpData: () async -> TOTPData? = {
                     do {
-                        return try encryptedItem.totpData(symmetricKey: itemRepository.symmetricKey)
+                        if try await upgradeChecker.canShowTOTPToken(creationDate: encryptedItem.item.createTime) {
+                            return try encryptedItem.totpData(symmetricKey: itemRepository.symmetricKey)
+                        } else {
+                            return nil
+                        }
                     } catch {
                         self.logger.error(error)
                         return nil
                     }
                 }
 
-                if preferences.automaticallyCopyTotpCode, let totpData = getTotpData() {
-                    if quickTypeBar {
-                        copyAndNotify(totpData: totpData)
-                    } else {
-                        if totpData.timerData.remaining <= 10 {
-                            alertExpiringSoonTotpCode()
-                            return // Early exit, stop AutoFill process
-                        } else {
-                            copyAndNotify(totpData: totpData)
-                        }
-                    }
+                if preferences.automaticallyCopyTotpCode, let totpData = await getTotpData() {
+                    clipboardManager.copy(text: totpData.code, bannerMessage: "")
                 }
 
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
@@ -402,31 +403,6 @@ private extension CredentialProviderCoordinator {
                 }
             }
         }
-    }
-
-    func copyAndNotify(totpData: TOTPData) {
-        clipboardManager.copy(text: totpData.code, bannerMessage: "")
-        let content = UNMutableNotificationContent()
-        content.title = "Two Factor Authentication code copied"
-        if let username = totpData.username {
-            content.subtitle = username
-        }
-        // swiftlint:disable:next line_length
-        content.body = "\"\(totpData.code)\" is copied to clipboard. Expiring in \(totpData.timerData.remaining) seconds"
-        let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                            content: content,
-                                            trigger: nil) // Deliver immediately
-        UNUserNotificationCenter.current().add(request)
-    }
-
-    func alertExpiringSoonTotpCode() {
-        let alert = UIAlertController(title: "Expiring soon Two Factor Authentication code",
-                                      // swiftlint:disable:next line_length
-                                      message: "Two Factor Authentication code for this log in item will expire in less than 10 seconds. Please try again in a few seconds.",
-                                      preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addAction(cancelAction)
-        rootViewController.present(alert, animated: true)
     }
 }
 
@@ -682,11 +658,12 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: SymmetricallyEncryptedItem,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let itemRepository else { return }
+        guard let itemRepository, let upgradeChecker else { return }
         complete(quickTypeBar: false,
                  credential: credential,
                  encryptedItem: item,
                  itemRepository: itemRepository,
+                 upgradeChecker: upgradeChecker,
                  serviceIdentifiers: serviceIdentifiers)
     }
 

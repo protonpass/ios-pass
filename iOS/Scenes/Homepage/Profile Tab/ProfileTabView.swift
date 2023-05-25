@@ -222,12 +222,6 @@ struct ProfileTabView: View {
                 }
             }
             .roundedEditableSection()
-
-            if viewModel.automaticallyCopyTotpCode {
-                Text("When autofilling, you will be warned if the 2FA code expires in less than 10 seconds")
-                    .sectionTitleText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
         }
         .padding(.horizontal)
     }
