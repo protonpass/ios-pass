@@ -24,17 +24,23 @@ import UIComponents
 struct GeneralItemRow<ThumbnailView: View>: View {
     let thumbnailView: ThumbnailView
     let title: String
+    let secondaryTitle: String?
+    let secondaryTitleColor: UIColor?
     let description: String?
     let descriptionMinScaleFactor: CGFloat
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
          description: String?,
-         descriptionMinScaleFactor: CGFloat = 1.0) {
+         descriptionMinScaleFactor: CGFloat = 1.0,
+         secondaryTitle: String? = nil,
+         secondaryTitleColor: UIColor? = nil) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.description = description
         self.descriptionMinScaleFactor = descriptionMinScaleFactor
+        self.secondaryTitle = secondaryTitle
+        self.secondaryTitleColor = secondaryTitleColor
     }
 
     var body: some View {
@@ -47,8 +53,15 @@ struct GeneralItemRow<ThumbnailView: View>: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                HStack {
+                    Text(title)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    if let secondaryTitle {
+                        Text(secondaryTitle)
+                            .foregroundColor(Color(uiColor: secondaryTitleColor ?? PassColor.textNorm))
+                    }
+                }
+
                 if let description, !description.isEmpty {
                     Text(description)
                         .font(.callout)

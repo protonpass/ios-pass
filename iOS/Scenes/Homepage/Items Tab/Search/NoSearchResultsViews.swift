@@ -26,7 +26,7 @@ struct NoSearchResultsInAllVaultView: View {
 
     var body: some View {
         VStack {
-            Text("Coundn't find \"\(query)\" in all vaults")
+            Text("Coundn't find \"\(query)\"")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))

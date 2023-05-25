@@ -40,9 +40,14 @@ extension LocalPassPlanDatasourceTests {
     func testUpsertAndGetPlans() async throws {
         // Given
         let givenUserId = String.random()
-        let givenFreePlan = PassPlan.random(vaultLimit: .random(in: 1...100),
-                                            aliasLimit: .random(in: 1...100),
-                                            totpLimit: .random(in: 1...100))
+        let givenFreePlan = PassPlan(type: "free",
+                                     internalName: "test",
+                                     displayName: "test",
+                                     hideUpgrade: false,
+                                     trialEnd: .random(in: 1...100),
+                                     vaultLimit: .random(in: 1...100),
+                                     aliasLimit: .random(in: 1...100),
+                                     totpLimit: .random(in: 1...100))
         // When
         try await sut.upsert(passPlan: givenFreePlan, userId: givenUserId)
         let freePlan = try await sut.getPassPlan(userId: givenUserId)
@@ -51,7 +56,14 @@ extension LocalPassPlanDatasourceTests {
         XCTAssertEqual(freePlan, givenFreePlan)
 
         // Given
-        let givenPaidPlan = PassPlan.random(vaultLimit: nil, aliasLimit: nil, totpLimit: nil)
+        let givenPaidPlan = PassPlan(type: "plus",
+                                     internalName: "test",
+                                     displayName: "test",
+                                     hideUpgrade: true,
+                                     trialEnd: nil,
+                                     vaultLimit: nil,
+                                     aliasLimit: nil,
+                                     totpLimit: nil)
 
         // When
         try await sut.upsert(passPlan: givenPaidPlan, userId: givenUserId)
@@ -59,16 +71,5 @@ extension LocalPassPlanDatasourceTests {
 
         // Then
         XCTAssertEqual(paidPlan, givenPaidPlan)
-    }
-}
-
-private extension PassPlan {
-    static func random(vaultLimit: Int?, aliasLimit: Int?, totpLimit: Int?) -> PassPlan {
-        .init(type: .random(),
-              internalName: .random(),
-              displayName: .random(),
-              vaultLimit: vaultLimit,
-              aliasLimit: aliasLimit,
-              totpLimit: totpLimit)
     }
 }

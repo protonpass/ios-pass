@@ -18,32 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
 import SwiftUI
 import UIComponents
-
-protocol VaultSelectorViewModelDelegate: AnyObject {
-    func vaultSelectorViewModelDidSelect(vault: Vault)
-}
-
-final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
-
-    let allVaults: [VaultListUiModel]
-    @Published private(set) var selectedVault: Vault
-
-    weak var delegate: VaultSelectorViewModelDelegate?
-
-    init(allVaults: [VaultListUiModel], selectedVault: Vault) {
-        self.allVaults = allVaults
-        self.selectedVault = selectedVault
-    }
-
-    func select(vault: Vault) {
-        delegate?.vaultSelectorViewModelDidSelect(vault: vault)
-    }
-}
 
 struct VaultSelectorView: View {
     @Environment(\.dismiss) private var dismiss
@@ -51,30 +27,25 @@ struct VaultSelectorView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(viewModel.allVaults, id: \.hashValue) { vault in
-                        Button(action: {
-                            viewModel.select(vault: vault.vault)
-                            dismiss()
-                        }, label: {
-                            VaultRow(
-                                thumbnail: { VaultThumbnail(vault: vault.vault) },
-                                title: vault.vault.name,
-                                itemCount: vault.itemCount,
-                                isSelected: vault.vault.shareId == viewModel.selectedVault.shareId,
-                                height: 74)
-                            .padding(.horizontal)
-                        })
-                        .buttonStyle(.plain)
+            VStack {
+                if viewModel.isFreeUser {
+                    LimitedVaultOperationsBanner(onUpgrade: viewModel.upgrade)
+                        .padding([.horizontal, .top])
+                }
 
-                        PassDivider()
-                            .padding(.horizontal)
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.allVaults, id: \.hashValue) { vault in
+                            view(for: vault)
+                            PassDivider()
+                                .padding(.horizontal)
+                        }
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .background(Color(uiColor: PassColor.backgroundWeak))
+            .animation(.default, value: viewModel.isFreeUser)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Select a vault")
@@ -83,5 +54,22 @@ struct VaultSelectorView: View {
             }
         }
         .navigationViewStyle(.stack)
+    }
+
+    private func view(for vault: VaultListUiModel) -> some View {
+        Button(action: {
+            viewModel.select(vault: vault.vault)
+            dismiss()
+        }, label: {
+            VaultRow(
+                thumbnail: { VaultThumbnail(vault: vault.vault) },
+                title: vault.vault.name,
+                itemCount: vault.itemCount,
+                isSelected: vault.vault.shareId == viewModel.selectedVault.shareId,
+                height: 74)
+            .padding(.horizontal)
+        })
+        .buttonStyle(.plain)
+        .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)
     }
 }

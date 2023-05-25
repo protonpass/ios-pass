@@ -42,12 +42,16 @@ private final class MockedFreePlanRepository: PassPlanRepositoryProtocol {
     var remotePassPlanDatasource: RemotePassPlanDatasourceProtocol =
     RemotePassPlanDatasource(apiService: PMAPIService.dummyService())
 
+    weak var delegate: Client.PassPlanRepositoryDelegate?
+
     var userId: String = ""
     let logger = Logger.dummyLogger()
 
     var freePlan = PassPlan(type: "free",
                             internalName: .random(),
                             displayName: .random(),
+                            hideUpgrade: false,
+                            trialEnd: .random(in: 1...100),
                             vaultLimit: .random(in: 1...100),
                             aliasLimit: .random(in: 1...100),
                             totpLimit: .random(in: 1...100))

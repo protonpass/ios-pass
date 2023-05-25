@@ -33,6 +33,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
     private let aliasRepository: AliasRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let favIconRepository: FavIconRepositoryProtocol
+    private let upgradeChecker: UpgradeCheckerProtocol
     private let logManager: LogManager
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
@@ -44,6 +45,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
     init(aliasRepository: AliasRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          favIconRepository: FavIconRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager,
          preferences: Preferences,
          vaultsManager: VaultsManager,
@@ -51,6 +53,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
         self.aliasRepository = aliasRepository
         self.itemRepository = itemRepository
         self.favIconRepository = favIconRepository
+        self.upgradeChecker = upgradeChecker
         self.logManager = logManager
         self.preferences = preferences
         self.vaultsManager = vaultsManager
@@ -102,6 +105,7 @@ private extension ItemDetailCoordinator {
                                              itemContent: itemContent,
                                              favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
+                                             upgradeChecker: upgradeChecker,
                                              vault: vault,
                                              logManager: logManager,
                                              theme: preferences.theme)

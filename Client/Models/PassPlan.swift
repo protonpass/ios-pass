@@ -23,18 +23,37 @@ import Foundation
 public struct PassPlan: Decodable, Equatable {
     /// ⚠️ Use `planType` instead
     public let type: String
+
     /// Plan name for telemetry
     public let internalName: String
+
     /// Human readable plan name
     public let displayName: String
+
+    /// Force hide the upgrade button independently of plan
+    public let hideUpgrade: Bool
+
+    public let trialEnd: Int?
     public let vaultLimit: Int?
     public let aliasLimit: Int?
     public let totpLimit: Int?
 
     /// Enum representation of `type`
     public enum PlanType {
-        case free, plus
+        case free, plus, trial
     }
 
-    public var planType: PlanType { type == "plus" ? .plus : .free }
+    public var planType: PlanType {
+        switch type {
+        case "plus":
+            if let trialEnd, trialEnd > 0 {
+                return .trial
+            } else {
+                return .plus
+            }
+
+        default:
+            return .free
+        }
+    }
 }

@@ -28,14 +28,17 @@ struct MoveVaultListView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
+            if viewModel.isFreeUser {
+                LimitedVaultOperationsBanner(onUpgrade: viewModel.upgrade)
+                    .padding([.horizontal, .top])
+            }
+
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.allVaults, id: \.hashValue) { vault in
-                        if vault != viewModel.currentVault {
-                            vaultRow(for: vault)
-                            if vault != viewModel.allVaults.last {
-                                PassDivider()
-                            }
+                        vaultRow(for: vault)
+                        if vault != viewModel.allVaults.last {
+                            PassDivider()
                         }
                     }
                 }
@@ -54,7 +57,7 @@ struct MoveVaultListView: View {
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
-                                            disabled: viewModel.selectedVault == nil,
+                                            disabled: false,
                                             height: 44,
                                             action: { dismiss(); viewModel.confirm() })
             }
@@ -62,6 +65,7 @@ struct MoveVaultListView: View {
         }
         .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
+        .animation(.default, value: viewModel.isFreeUser)
     }
 
     private func vaultRow(for vault: VaultListUiModel) -> some View {
@@ -74,5 +78,6 @@ struct MoveVaultListView: View {
                      isSelected: viewModel.selectedVault == vault)
         })
         .buttonStyle(.plain)
+        .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)
     }
 }

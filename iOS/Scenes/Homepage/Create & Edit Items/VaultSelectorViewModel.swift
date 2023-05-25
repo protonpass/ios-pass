@@ -1,6 +1,6 @@
 //
-// MoveVaultListViewModel.swift
-// Proton Pass - Created on 29/03/2023.
+// VaultSelectorViewModel.swift
+// Proton Pass - Created on 24/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,48 +21,49 @@
 import Client
 import Core
 
-protocol MoveVaultListViewModelDelegate: AnyObject {
-    func moveVaultListViewModelWantsToUpgrade()
-    func moveVaultListViewModelDidPick(vault: Vault)
-    func moveVaultListViewModelDidEncounter(error: Error)
+protocol VaultSelectorViewModelDelegate: AnyObject {
+    func vaultSelectorViewModelWantsToUpgrade()
+    func vaultSelectorViewModelDidSelect(vault: Vault)
+    func vaultSelectorViewModelDidEncounter(error: Error)
 }
 
-final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
+final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published private(set) var isFreeUser = false
-    @Published var selectedVault: VaultListUiModel
-
-    weak var delegate: MoveVaultListViewModelDelegate?
-
     let allVaults: [VaultListUiModel]
-    let currentVault: VaultListUiModel
+
+    @Published private(set) var selectedVault: Vault
+    @Published private(set) var isFreeUser = false
+
+    weak var delegate: VaultSelectorViewModelDelegate?
 
     init(allVaults: [VaultListUiModel],
-         currentVault: VaultListUiModel,
+         selectedVault: Vault,
          upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager) {
         self.allVaults = allVaults
-        self.currentVault = currentVault
-        self.selectedVault = currentVault
+        self.selectedVault = selectedVault
 
         Task { @MainActor in
+            guard allVaults.count > 1 else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
+                if isFreeUser, let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
+                    self.selectedVault = primaryVault.vault
+                }
             } catch {
                 let logger = Logger(manager: logManager)
                 logger.error(error)
-                delegate?.moveVaultListViewModelDidEncounter(error: error)
+                delegate?.vaultSelectorViewModelDidEncounter(error: error)
             }
         }
     }
 
-    func confirm() {
-        guard selectedVault != currentVault else { return }
-        delegate?.moveVaultListViewModelDidPick(vault: selectedVault.vault)
+    func select(vault: Vault) {
+        delegate?.vaultSelectorViewModelDidSelect(vault: vault)
     }
 
     func upgrade() {
-        delegate?.moveVaultListViewModelWantsToUpgrade()
+        delegate?.vaultSelectorViewModelWantsToUpgrade()
     }
 }

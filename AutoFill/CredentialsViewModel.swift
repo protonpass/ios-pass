@@ -43,6 +43,7 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
+    func credentialsViewModelWantsToUpgrade()
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        item: SymmetricallyEncryptedItem,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier])
@@ -82,6 +83,7 @@ enum CredentialItem {
 
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
+    @Published private(set) var planType: PassPlan.PlanType?
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
@@ -92,6 +94,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+    private let upgradeChecker: UpgradeCheckerProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger: Logger
@@ -109,6 +112,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          shareRepository: ShareRepositoryProtocol,
          shareEventIDRepository: ShareEventIDRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          shareKeyRepository: ShareKeyRepositoryProtocol,
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
          favIconRepository: FavIconRepositoryProtocol,
@@ -117,6 +121,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          logManager: LogManager) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.upgradeChecker = upgradeChecker
         self.favIconRepository = favIconRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
@@ -195,7 +200,10 @@ extension CredentialsViewModel {
                     state = .loading
                 }
 
-                let result = try await fetchCredentialsTask().value
+                let plan = try await upgradeChecker.passPlanRepository.getPlan()
+                self.planType = plan.planType
+
+                let result = try await fetchCredentialsTask(plan: plan).value
                 state = .loaded(result, .idle)
                 logger.info("Loaded log in items")
             } catch {
@@ -281,6 +289,10 @@ extension CredentialsViewModel {
                                                                  url: urls.first)
         }
     }
+
+    func upgrade() {
+        delegate?.credentialsViewModelWantsToUpgrade()
+    }
 }
 
 // MARK: - Private supporting tasks
@@ -296,7 +308,8 @@ private extension CredentialsViewModel {
         }
     }
 
-    func fetchCredentialsTask() -> Task<CredentialsFetchResult, Error> {
+    // swiftlint:disable:next function_body_length
+    func fetchCredentialsTask(plan: PassPlan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             let vaults = try await self.shareRepository.getVaults()
             let encryptedItems = try await self.itemRepository.getActiveLogInItems()
@@ -310,10 +323,16 @@ private extension CredentialsViewModel {
                 let decryptedItemContent =
                 try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
+                let vault = vaults.first { $0.shareId == encryptedItem.shareId }
+                assert(vault != nil, "Must have at least 1 vault")
+                let shouldTakeIntoAccount = self.shouldTakeIntoAccount(vault: vault, withPlan: plan)
+
                 if case .login(let data) = decryptedItemContent.contentData {
-                    searchableItems.append(try SearchableItem(from: encryptedItem,
-                                                              symmetricKey: self.symmetricKey,
-                                                              allVaults: vaults))
+                    if shouldTakeIntoAccount {
+                        searchableItems.append(try SearchableItem(from: encryptedItem,
+                                                                  symmetricKey: self.symmetricKey,
+                                                                  allVaults: vaults))
+                    }
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()
@@ -326,7 +345,7 @@ private extension CredentialsViewModel {
                         }
                     }
 
-                    if matchResults.isEmpty {
+                    if matchResults.isEmpty || !shouldTakeIntoAccount {
                         notMatchedEncryptedItems.append(encryptedItem)
                     } else {
                         let totalScore = matchResults.reduce(into: 0) { partialResult, next in
@@ -369,6 +388,18 @@ private extension CredentialsViewModel {
             default:
                 throw PPError.credentialProvider(.notLogInItem)
             }
+        }
+    }
+
+    /// When in free plan, only take primary vault into account (suggestions & search)
+    /// Otherwise take everything into account
+    func shouldTakeIntoAccount(vault: Vault?, withPlan plan: PassPlan) -> Bool {
+        guard let vault else { return true }
+        switch plan.planType {
+        case .free:
+            return vault.isPrimary
+        default:
+            return true
         }
     }
 }
@@ -458,6 +489,17 @@ extension CredentialItem: DateSortable, AlphabeticalSortable, Identifiable {
             return itemUiModel.alphabeticalSortableString
         case .searchResult(let itemSearchResult):
             return itemSearchResult.alphabeticalSortableString
+        }
+    }
+}
+
+extension PassPlan.PlanType {
+    var searchBarPlaceholder: String {
+        switch self {
+        case .free:
+            return "Search in primary vault"
+        default:
+            return "Search in all vaults"
         }
     }
 }

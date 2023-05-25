@@ -53,7 +53,7 @@ struct CreateEditLoginView: View {
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
                                                    field: .title,
-                                                   selectedVault: viewModel.vault,
+                                                   selectedVault: viewModel.selectedVault,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
                                                    onChangeVault: viewModel.changeVault,
@@ -265,11 +265,7 @@ struct CreateEditLoginView: View {
             PassSectionDivider()
             passwordRow
             PassSectionDivider()
-            if viewModel.canCreateOrEditTOTPs {
-                totpRow
-            } else {
-                totpUpgradeRow
-            }
+            totpRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedEditableSection()
@@ -452,31 +448,6 @@ struct CreateEditLoginView: View {
                 viewModel.handleScanResult(result)
             }
         }
-    }
-
-    private var totpUpgradeRow: some View {
-        HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.lock)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("2FA limit reached")
-                    .font(.footnote)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-
-                HStack {
-                    Text("Upgrade")
-                    Image(uiImage: IconProvider.arrowOutSquare)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 16)
-                }
-                .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.upgrade)
-        }
-        .padding(.horizontal, kItemDetailSectionPadding)
     }
 }
 

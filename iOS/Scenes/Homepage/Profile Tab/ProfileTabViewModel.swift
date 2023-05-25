@@ -47,6 +47,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     var biometricAuthenticator: BiometricAuthenticator
     let credentialManager: CredentialManagerProtocol
     let itemRepository: ItemRepositoryProtocol
+    let shareRepository: ShareRepositoryProtocol
     let logger: Logger
     let preferences: Preferences
     let appVersion: String
@@ -73,6 +74,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     init(apiService: APIService,
          credentialManager: CredentialManagerProtocol,
          itemRepository: ItemRepositoryProtocol,
+         shareRepository: ShareRepositoryProtocol,
          preferences: Preferences,
          logManager: LogManager,
          passPlanRepository: PassPlanRepositoryProtocol,
@@ -81,6 +83,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
+        self.shareRepository = shareRepository
         self.logger = .init(manager: logManager)
         self.preferences = preferences
         self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
@@ -197,8 +200,11 @@ private extension ProfileTabViewModel {
                 logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
                 delegate?.profileTabViewModelWantsToShowSpinner()
                 if quickTypeBar {
-                    try await credentialManager.insertAllCredentials(from: itemRepository,
-                                                                     forceRemoval: true)
+                    try await credentialManager.insertAllCredentials(
+                        itemRepository: itemRepository,
+                        shareRepository: shareRepository,
+                        passPlanRepository: passPlanRepository,
+                        forceRemoval: true)
                     logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
                 } else {
                     try await credentialManager.removeAllCredentials()

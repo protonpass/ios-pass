@@ -159,14 +159,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.userData = userData
         self.passPlanRepository = passPlanRepository
         self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                             counter: vaultsManager)
-        self.vaultsManager = .init(itemRepository: itemRepository,
-                                   manualLogIn: manualLogIn,
-                                   logManager: logManager,
-                                   shareRepository: shareRepository,
-                                   symmetricKey: symmetricKey)
+                                             counter: vaultsManager,
+                                             totpChecker: itemRepository)
+        self.vaultsManager = vaultsManager
         super.init()
         self.finalizeInitialization()
+        self.vaultsManager.refresh()
         self.start()
         self.eventLoop.start()
         self.refreshPlan()
@@ -186,6 +184,7 @@ private extension HomepageCoordinator {
         eventLoop.delegate = self
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
+        passPlanRepository.delegate = self
         (itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
         urlOpener.rootViewController = rootViewController
 
@@ -206,7 +205,7 @@ private extension HomepageCoordinator {
                 self.refresh()
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.forceSync()
-                self.updateCredentials()
+                self.updateCredentials(forceRemoval: false)
                 self.refreshPlan()
             }
             .store(in: &cancellables)
@@ -226,6 +225,7 @@ private extension HomepageCoordinator {
         let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
                                                       credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
+                                                      shareRepository: shareRepository,
                                                       preferences: preferences,
                                                       logManager: logManager,
                                                       passPlanRepository: passPlanRepository,
@@ -294,6 +294,7 @@ private extension HomepageCoordinator {
         let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
                                                 itemRepository: itemRepository,
                                                 favIconRepository: favIconRepository,
+                                                upgradeChecker: upgradeChecker,
                                                 logManager: logManager,
                                                 preferences: preferences,
                                                 vaultsManager: vaultsManager,
@@ -315,11 +316,9 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let view = ItemTypeListView { [unowned self] itemType in
-            dismissTopMostViewController { [unowned self] in
-                self.presentCreateItemView(for: itemType)
-            }
-        }
+        let viewModel = ItemTypeListViewModel(upgradeChecker: upgradeChecker, logManager: logManager)
+        viewModel.delegate = self
+        let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16.0, *) {
             // 66 per row + nav bar height
@@ -465,11 +464,14 @@ private extension HomepageCoordinator {
         }
     }
 
-    func updateCredentials() {
+    func updateCredentials(forceRemoval: Bool) {
         Task {
             do {
-                try await credentialManager.insertAllCredentials(from: itemRepository,
-                                                                 forceRemoval: false)
+                try await credentialManager.insertAllCredentials(
+                    itemRepository: itemRepository,
+                    shareRepository: shareRepository,
+                    passPlanRepository: passPlanRepository,
+                    forceRemoval: forceRemoval)
                 logger.info("Updated all credentials.")
             } catch {
                 logger.error(error)
@@ -500,6 +502,14 @@ extension HomepageCoordinator {
     }
 }
 
+// MARK: - PassPlanRepositoryDelegate
+extension HomepageCoordinator: PassPlanRepositoryDelegate {
+    func passPlanRepositoryDidUpdateToNewPlan() {
+        logger.trace("Found new plan, refreshing credential database")
+        updateCredentials(forceRemoval: true)
+    }
+}
+
 // MARK: - HomepageTabBarControllerDelegate
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
@@ -519,6 +529,19 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
         if !isCollapsed() {
             profileTabViewModelWantsToShowAccountMenu()
         }
+    }
+}
+
+// MARK: - ItemTypeListViewModelDelegate
+extension HomepageCoordinator: ItemTypeListViewModelDelegate {
+    func itemTypeListViewModelDidSelect(type: ItemType) {
+        dismissTopMostViewController { [unowned self] in
+            self.presentCreateItemView(for: type)
+        }
+    }
+
+    func itemTypeListViewModelDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -902,12 +925,14 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                    delegate: VaultSelectorViewModelDelegate) {
         let vaultContents = vaultsManager.getAllVaultContents()
         let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
-                                               selectedVault: selectedVault)
+                                               selectedVault: selectedVault,
+                                               upgradeChecker: upgradeChecker,
+                                               logManager: logManager)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * vaultsManager.getVaultCount() + 100
+            let height = 66 * vaultsManager.getVaultCount() + 180 // Space for upsell banner
             let customDetent = makeCustomDetent(height: height)
             viewController.sheetPresentationController?.detents = [customDetent, .large()]
         } else {
@@ -929,6 +954,10 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                         delegate: delegate,
                                                         customField: customField)
         coordinator.start()
+    }
+
+    func createEditItemViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
@@ -968,7 +997,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         }
     }
 
-    func createEditItemViewModelDidFail(_ error: Error) {
+    func createEditItemViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }
@@ -1162,13 +1191,16 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         let allVaults = vaultsManager.getAllVaultContents()
         guard !allVaults.isEmpty,
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
-                                               currentVault: .init(vaultContent: currentVault))
+        let viewModel = MoveVaultListViewModel(
+            allVaults: allVaults.map { .init(vaultContent: $0) },
+            currentVault: .init(vaultContent: currentVault),
+            upgradeChecker: upgradeChecker,
+            logManager: logManager)
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         if #available(iOS 16, *) {
-            let height = 66 * allVaults.count + 44
+            let height = 66 * allVaults.count + 180
             let customDetent = makeCustomDetent(height: height)
             viewController.sheetPresentationController?.detents = [customDetent]
         } else {
@@ -1176,6 +1208,10 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    }
+
+    func itemDetailViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
@@ -1208,7 +1244,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         addNewEvent(type: .delete(item.type))
     }
 
-    func itemDetailViewModelDidFail(_ error: Error) {
+    func itemDetailViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

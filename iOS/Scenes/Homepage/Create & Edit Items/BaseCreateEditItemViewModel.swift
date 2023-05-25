@@ -31,10 +31,11 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
                                                             delegate: CustomFieldEditionDelegate)
+    func createEditItemViewModelWantsToUpgrade()
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
-    func createEditItemViewModelDidFail(_ error: Error)
+    func createEditItemViewModelDidEncounter(error: Error)
 }
 
 enum ItemMode {
@@ -60,15 +61,17 @@ enum ItemCreationType {
 }
 
 class BaseCreateEditItemViewModel {
-    @Published private(set) var vault: Vault
+    @Published private(set) var selectedVault: Vault
     @Published private(set) var isSaving = false
     @Published var customFields = [CustomField]()
     @Published var isObsolete = false
 
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
+    let upgradeChecker: UpgradeCheckerProtocol
     let preferences: Preferences
     let logger: Logger
+    let vaults: [Vault]
 
     var didEditSomething = false
 
@@ -77,6 +80,7 @@ class BaseCreateEditItemViewModel {
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) throws {
@@ -88,15 +92,18 @@ class BaseCreateEditItemViewModel {
             vaultShareId = itemContent.shareId
         }
 
-        guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) else {
+        guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
             throw PPError.vault(.vaultNotFound(vaultShareId))
         }
-        self.vault = vault
+        self.selectedVault = vault
         self.mode = mode
         self.itemRepository = itemRepository
+        self.upgradeChecker = upgradeChecker
         self.preferences = preferences
         self.logger = .init(manager: logManager)
+        self.vaults = vaults
         self.bindValues()
+        self.pickPrimaryVaultIfApplicable()
     }
 
     /// To be overridden by subclasses
@@ -158,13 +165,29 @@ class BaseCreateEditItemViewModel {
                 }
             } catch {
                 logger.error(error)
-                delegate?.createEditItemViewModelDidFail(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
+    /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
+    private func pickPrimaryVaultIfApplicable() {
+        guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
+        Task { @MainActor in
+            do {
+                let isFreeUser = try await upgradeChecker.isFreeUser()
+                if isFreeUser, let primaryVault = vaults.first(where: { $0.isPrimary }) {
+                    selectedVault = primaryVault
+                }
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
             }
         }
     }
 
     private func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
-        let shareId = vault.shareId
+        let shareId = selectedVault.shareId
         let itemContent = generateItemContent()
 
         switch type {
@@ -228,14 +251,22 @@ extension BaseCreateEditItemViewModel {
     }
 
     func changeVault() {
-        delegate?.createEditItemViewModelWantsToChangeVault(selectedVault: vault, delegate: self)
+        delegate?.createEditItemViewModelWantsToChangeVault(selectedVault: selectedVault, delegate: self)
     }
 }
 
 // MARK: - VaultSelectorViewModelDelegate
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
+    func vaultSelectorViewModelWantsToUpgrade() {
+        delegate?.createEditItemViewModelWantsToUpgrade()
+    }
+
     func vaultSelectorViewModelDidSelect(vault: Vault) {
-        self.vault = vault
+        self.selectedVault = vault
+    }
+
+    func vaultSelectorViewModelDidEncounter(error: Error) {
+        delegate?.createEditItemViewModelDidEncounter(error: error)
     }
 }
 
