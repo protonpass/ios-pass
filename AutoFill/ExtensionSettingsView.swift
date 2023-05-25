@@ -68,11 +68,6 @@ struct ExtensionSettingsView: View {
                     }
                     .roundedEditableSection()
 
-                    // swiftlint:disable:next line_length
-                    Text("When autofilling, you will be warned if Two Factor Authentication code expires in less than 10 seconds.")
-                        .sectionTitleText()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
                     Spacer()
                 }
                 .padding(.horizontal)
