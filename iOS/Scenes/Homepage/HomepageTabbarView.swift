@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import ProtonCore_UIFoundations
@@ -31,17 +32,22 @@ enum HomepageTab {
 
 protocol HomepageTabDelegete: AnyObject {
     func homepageTabShouldChange(tab: HomepageTab)
+    func homepageTabShouldRefreshTabIcons()
 }
 
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
+    let passPlanRepository: PassPlanRepositoryProtocol
+    let logManager: LogManager
     weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
         let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
-                                                  profileTabView: .init(viewModel: profileTabViewModel))
+                                                  profileTabView: .init(viewModel: profileTabViewModel),
+                                                  passPlanRepository: passPlanRepository,
+                                                  logManager: logManager)
         controller.homepageTabBarControllerDelegate = delegate
         context.coordinator.homepageTabBarController = controller
         homepageCoordinator?.homepageTabDelegete = context.coordinator
@@ -57,6 +63,10 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
 
         func homepageTabShouldChange(tab: HomepageTab) {
             homepageTabBarController?.select(tab: tab)
+        }
+
+        func homepageTabShouldRefreshTabIcons() {
+            homepageTabBarController?.refreshTabBarIcons()
         }
     }
 }
@@ -76,14 +86,23 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     private let itemsTabView: ItemsTabView
     private let profileTabView: ProfileTabView
+    private var profileTabViewController: UIViewController?
+
+    private let passPlanRepository: PassPlanRepositoryProtocol
+    private let logger: Logger
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView) {
+    init(itemsTabView: ItemsTabView,
+         profileTabView: ProfileTabView,
+         passPlanRepository: PassPlanRepositoryProtocol,
+         logManager: LogManager) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
+        self.passPlanRepository = passPlanRepository
+        self.logger = .init(manager: logManager)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -114,6 +133,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = IconProvider.user
+        self.profileTabViewController = profileTabViewController
 
         viewControllers = [itemsTabViewController, dummyViewController, profileTabViewController]
 
@@ -145,8 +165,13 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
                 }
             }
             .store(in: &cancellables)
-    }
 
+        refreshTabBarIcons()
+    }
+}
+
+// MARK: - Public APIs
+extension HomepageTabBarController {
     func select(tab: HomepageTab) {
         switch tab {
         case .items:
@@ -155,8 +180,36 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
             selectedViewController = viewControllers?.last
         }
     }
+
+    func refreshTabBarIcons() {
+        Task { @MainActor in
+            do {
+                let plan = try await passPlanRepository.getPlan()
+
+                let image: UIImage
+                let selectedImage: UIImage
+                switch plan.planType {
+                case .free:
+                    image = IconProvider.user
+                    selectedImage = IconProvider.user
+                case .plus:
+                    image = PassIcon.tabProfilePaidUnselected
+                    selectedImage = PassIcon.tabProfilePaidSelected
+                case .trial:
+                    image = PassIcon.tabProfileTrialUnselected
+                    selectedImage = PassIcon.tabProfileTrialSelected
+                }
+
+                profileTabViewController?.tabBarItem.image = image
+                profileTabViewController?.tabBarItem.selectedImage = selectedImage
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
 }
 
+// MARK: - UITabBarControllerDelegate
 extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
