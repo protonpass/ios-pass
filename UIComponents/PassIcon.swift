@@ -51,6 +51,12 @@ public extension PassIcon {
     static var passIcon = UIImage(named: "PassIcon")!
     static var passTextLogo = UIImage(named: "PassTextLogo")!
     static var swirls = UIImage(named: "Swirls")!
+
+    static var tabProfilePaidSelected = UIImage(named: "TabProfilePaidSelected")!
+    static var tabProfilePaidUnselected = UIImage(named: "TabProfilePaidUnselected")!
+    static var tabProfileTrialSelected = UIImage(named: "TabProfileTrialSelected")!
+    static var tabProfileTrialUnselected = UIImage(named: "TabProfileTrialUnselected")!
+
     static var trash = UIImage(named: "Trash")!
 
     static var trial2FA = UIImage(named: "Trial2FA")!

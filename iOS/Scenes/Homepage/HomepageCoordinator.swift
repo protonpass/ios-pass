@@ -239,6 +239,8 @@ private extension HomepageCoordinator {
 
         start(with: HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                        profileTabViewModel: profileTabViewModel,
+                                       passPlanRepository: passPlanRepository,
+                                       logManager: logManager,
                                        homepageCoordinator: self,
                                        delegate: self).ignoresSafeArea(edges: [.top, .bottom]),
               secondaryView: placeholderView)
@@ -507,6 +509,7 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
     func passPlanRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
         updateCredentials(forceRemoval: true)
+        homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
     }
 }
 

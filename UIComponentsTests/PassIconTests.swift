@@ -54,6 +54,12 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.passIcon
         _ = PassIcon.passTextLogo
         _ = PassIcon.swirls
+
+        _ = PassIcon.tabProfilePaidSelected
+        _ = PassIcon.tabProfilePaidUnselected
+        _ = PassIcon.tabProfileTrialSelected
+        _ = PassIcon.tabProfileTrialUnselected
+
         _ = PassIcon.trash
 
         _ = PassIcon.trial2FA
