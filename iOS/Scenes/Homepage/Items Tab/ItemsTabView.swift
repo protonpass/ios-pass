@@ -61,6 +61,12 @@ struct ItemsTabView: View {
         GeometryReader { proxy in
             VStack {
                 topBar
+
+                InfoBannerViewStack(banners: $viewModel.banners,
+                                    dismiss: viewModel.dismiss(banner:),
+                                    action: viewModel.handleAction(banner:))
+                .padding(.horizontal)
+
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
                     case .all, .precise:
@@ -78,6 +84,7 @@ struct ItemsTabView: View {
             .ignoresSafeArea(edges: .bottom)
             .edgesIgnoringSafeArea(.bottom)
             .animation(.default, value: viewModel.vaultsManager.state)
+            .animation(.default, value: viewModel.banners.count)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }

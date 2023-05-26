@@ -33,6 +33,10 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.coverScreenBackground
         _ = PassIcon.coverScreenLogo
 
+        _ = PassIcon.infoBannerAliases
+        _ = PassIcon.infoBannerAutoFill
+        _ = PassIcon.infoBannerPass
+
         _ = PassIcon.magnifyingGlass
 
         _ = PassIcon.onboardAliases
