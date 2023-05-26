@@ -40,6 +40,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
+    @Published var banners: [InfoBanner] = [.trial, .autofill, .aliases, .pass]
+
     let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemRepository: ItemRepositoryProtocol
@@ -92,6 +94,14 @@ private extension ItemsTabViewModel {
 extension ItemsTabViewModel {
     func search() {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
+    }
+
+    func dismiss(banner: InfoBanner) {
+        banners.removeAll(where: { $0 == banner })
+    }
+
+    func handleAction(banner: InfoBanner) {
+        print(#function)
     }
 
     func presentVaultList() {
