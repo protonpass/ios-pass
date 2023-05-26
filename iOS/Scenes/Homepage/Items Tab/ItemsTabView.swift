@@ -65,7 +65,7 @@ struct ItemsTabView: View {
                 InfoBannerViewStack(banners: $viewModel.banners,
                                     dismiss: viewModel.dismiss(banner:),
                                     action: viewModel.handleAction(banner:))
-                .padding(.horizontal)
+                .padding()
 
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {

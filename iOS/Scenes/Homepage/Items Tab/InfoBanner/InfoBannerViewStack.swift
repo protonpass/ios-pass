@@ -22,32 +22,26 @@ import SwiftUI
 
 struct InfoBannerViewStack: View {
     private let offset: CGFloat = 16
-    private let numOfVisibleBanners = 2
+    private let numOfVisibleBanners = 3
     @Binding var banners: [InfoBanner]
     let dismiss: (InfoBanner) -> Void
     let action: (InfoBanner) -> Void
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             ForEach(Array(banners.enumerated()), id: \.element) { index, banner in
                 InfoBannerView(banner: banner,
                                dismiss: { dismiss(banner) },
                                action: { action(banner) })
-                .offset(y: offset(for: index))
+                .offset(y: -CGFloat(index) * offset)
                 .scaleEffect(1.0 - (CGFloat(index) * 0.1))
                 .brightness(brightness(for: index))
+                .opacity(index <= numOfVisibleBanners - 1 ? 1 : 0)
                 .zIndex(Double(banners.count - index))
             }
         }
         .animation(.default, value: banners.count)
         .frame(height: height)
-        .offset(y: -totalOffset)
-    }
-
-    // Make separate functions because the compiler is confused if inlining the formular
-    private func offset(for index: Int) -> CGFloat {
-        guard index <= numOfVisibleBanners - 1 else { return 0 }
-        return CGFloat(min(banners.count, numOfVisibleBanners) - index) * offset
     }
 
     private func brightness(for index: Int) -> Double {
@@ -58,11 +52,8 @@ struct InfoBannerViewStack: View {
         if banners.isEmpty {
             return 0
         } else {
+            let totalOffset = CGFloat(min(banners.count, numOfVisibleBanners)) * offset
             return InfoBannerView.height + totalOffset
         }
-    }
-
-    private var totalOffset: CGFloat {
-        CGFloat(min(banners.count, numOfVisibleBanners) - 1) * offset
     }
 }

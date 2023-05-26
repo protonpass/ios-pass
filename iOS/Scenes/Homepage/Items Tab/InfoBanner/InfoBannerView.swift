@@ -26,7 +26,7 @@ struct InfoBannerView: View {
     let dismiss: () -> Void
     let action: () -> Void
 
-    static let height: CGFloat = 140
+    static let height: CGFloat = 120
 
     var body: some View {
         VStack {
@@ -76,9 +76,9 @@ struct InfoBannerView: View {
 
             Spacer()
         }
+        .frame(height: Self.height)
         .padding()
         .background(Color(uiColor: banner.detail.backgroundColor))
         .clipShape(RoundedRectangle(cornerRadius: 16))
-        .frame(height: Self.height)
     }
 }
