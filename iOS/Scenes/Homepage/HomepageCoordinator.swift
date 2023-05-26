@@ -594,6 +594,31 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
     }
 
+    func itemsTabViewModelWantsToShowTrialDetail() {
+        Task { @MainActor in
+            defer { hideLoadingHud() }
+            do {
+                showLoadingHud()
+
+                let plan = try await upgradeChecker.passPlanRepository.getPlan()
+                guard let trialEnd = plan.trialEnd else { return }
+                let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
+                let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)
+
+                hideLoadingHud()
+
+                let view = TrialDetailView(
+                    daysLeft: abs(daysLeft),
+                    onUpgrade: startUpgradeFlow,
+                    onLearnMore: { self.urlOpener.open(urlString: "https://proton.me/pass") })
+                present(view)
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
+    }
+
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
     }

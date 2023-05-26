@@ -30,6 +30,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate)
+    func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
     func itemsTabViewModelDidEncounter(error: Error)
 }
@@ -101,7 +102,12 @@ extension ItemsTabViewModel {
     }
 
     func handleAction(banner: InfoBanner) {
-        print(#function)
+        switch banner {
+        case .trial:
+            delegate?.itemsTabViewModelWantsToShowTrialDetail()
+        default:
+            break
+        }
     }
 
     func presentVaultList() {

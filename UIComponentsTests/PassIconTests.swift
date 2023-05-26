@@ -56,6 +56,11 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.swirls
         _ = PassIcon.trash
 
+        _ = PassIcon.trial2FA
+        _ = PassIcon.trialCustomFields
+        _ = PassIcon.trialDetail
+        _ = PassIcon.trialVaults
+
         _ = PassIcon.vaultIcon1Big
         _ = PassIcon.vaultIcon1Small
         _ = PassIcon.vaultIcon2Big

@@ -53,6 +53,11 @@ public extension PassIcon {
     static var swirls = UIImage(named: "Swirls")!
     static var trash = UIImage(named: "Trash")!
 
+    static var trial2FA = UIImage(named: "Trial2FA")!
+    static var trialCustomFields = UIImage(named: "TrialCustomFields")!
+    static var trialDetail = UIImage(named: "TrialDetail")!
+    static var trialVaults = UIImage(named: "TrialVaults")!
+
     static var vaultIcon1Big    = UIImage(named: "VaultIcon1Big")!
     static var vaultIcon1Small  = UIImage(named: "VaultIcon1Small")!
     static var vaultIcon2Big    = UIImage(named: "VaultIcon2Big")!
