@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "TabProfilePaidSelected.svg",
+      "filename" : "TabProfilePaidSelectedLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "TabProfilePaidSelectedDark.svg",
       "idiom" : "universal"
     }
   ],

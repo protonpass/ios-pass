@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "TabProfileTrialSelected.svg",
+      "filename" : "TabProfileTrialSelectedLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "TabProfileTrialSelectedDark.svg",
       "idiom" : "universal"
     }
   ],
