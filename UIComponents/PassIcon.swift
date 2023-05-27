@@ -24,6 +24,9 @@ import UIKit
 public enum PassIcon {}
 
 public extension PassIcon {
+    static var badgePaid = UIImage(named: "BadgePaid")!
+    static var badgeTrial = UIImage(named: "BadgeTrial")!
+
     static var brandPass = UIImage(named: "BrandPass")!
     static var brandReddit = UIImage(named: "BrandReddit")!
     static var brandTwitter = UIImage(named: "BrandTwitter")!

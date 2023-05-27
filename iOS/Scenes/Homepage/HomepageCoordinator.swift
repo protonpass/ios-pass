@@ -510,6 +510,7 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
         logger.trace("Found new plan, refreshing credential database")
         updateCredentials(forceRemoval: true)
         homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
+        profileTabViewModel?.refreshPlan()
     }
 }
 

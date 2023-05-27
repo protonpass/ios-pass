@@ -26,6 +26,9 @@ final class PassIconTests: XCTestCase {
     func testGetIconss() {
         let expectation = expectation(description: "Should be able to get icons")
 
+        _ = PassIcon.badgePaid
+        _ = PassIcon.badgeTrial
+
         _ = PassIcon.brandPass
         _ = PassIcon.brandReddit
         _ = PassIcon.brandTwitter

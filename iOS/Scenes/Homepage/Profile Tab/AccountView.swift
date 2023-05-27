@@ -116,6 +116,7 @@ struct AccountView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
+            .animation(.default, value: viewModel.plan)
         }
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()

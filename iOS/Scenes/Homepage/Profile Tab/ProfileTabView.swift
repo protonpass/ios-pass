@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import SwiftUI
 import UIComponents
 
@@ -228,8 +229,34 @@ struct ProfileTabView: View {
 
     private var accountAndSettingsSection: some View {
         VStack(spacing: 0) {
-            TextOptionRow(title: "Account", action: viewModel.showAccountMenu)
+            OptionRow(
+                action: viewModel.showAccountMenu,
+                content: {
+                    HStack {
+                        Text("Account")
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                        Spacer()
+
+                        if let associatedPlanInfo = viewModel.plan?.associatedPlanInfo {
+                            Label(title: {
+                                Text(associatedPlanInfo.title)
+                                    .font(.callout)
+                            }, icon: {
+                                Image(uiImage: associatedPlanInfo.icon)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: associatedPlanInfo.iconWidth)
+                            })
+                            .foregroundColor(Color(uiColor: associatedPlanInfo.tintColor))
+                            .padding(.horizontal)
+                        }
+                    }
+                },
+                trailing: { ChevronRight() })
+
             PassSectionDivider()
+
             TextOptionRow(title: "Settings", action: viewModel.showSettingsMenu)
         }
         .roundedEditableSection()
@@ -282,5 +309,32 @@ private extension View {
         self.foregroundColor(Color(uiColor: PassColor.textNorm))
             .font(.callout.weight(.bold))
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct AssociatedPlanInfo {
+    let title: String
+    let icon: UIImage
+    let iconWidth: CGFloat
+    let tintColor: UIColor
+}
+
+private extension PassPlan {
+    var associatedPlanInfo: AssociatedPlanInfo? {
+        switch planType {
+        case .free:
+            return nil
+
+        case .trial:
+            return .init(title: "Free trial",
+                         icon: PassIcon.badgeTrial,
+                         iconWidth: 12,
+                         tintColor: PassColor.interactionNormMajor2)
+        case .plus:
+            return .init(title: displayName,
+                         icon: PassIcon.badgePaid,
+                         iconWidth: 16,
+                         tintColor: PassColor.noteInteractionNormMajor2)
+        }
     }
 }
