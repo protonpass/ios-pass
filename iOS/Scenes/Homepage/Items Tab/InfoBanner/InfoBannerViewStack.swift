@@ -23,7 +23,7 @@ import SwiftUI
 struct InfoBannerViewStack: View {
     private let offset: CGFloat = 16
     private let numOfVisibleBanners = 3
-    @Binding var banners: [InfoBanner]
+    let banners: [InfoBanner]
     let dismiss: (InfoBanner) -> Void
     let action: (InfoBanner) -> Void
 

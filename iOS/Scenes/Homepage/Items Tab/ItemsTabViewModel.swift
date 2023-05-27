@@ -41,11 +41,13 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
-    @Published var banners: [InfoBanner] = [.trial, .autofill, .aliases, .pass]
+    @Published private(set) var banners: [InfoBanner] = []
 
     let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemRepository: ItemRepositoryProtocol
+    let credentialManager: CredentialManagerProtocol
+    let passPlanRepository: PassPlanRepositoryProtocol
     let logger: Logger
     let preferences: Preferences
     let vaultsManager: VaultsManager
@@ -63,6 +65,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     init(favIconRepository: FavIconRepositoryProtocol,
          itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
+         credentialManager: CredentialManagerProtocol,
+         passPlanRepository: PassPlanRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
@@ -70,11 +74,14 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         self.favIconRepository = favIconRepository
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
+        self.credentialManager = credentialManager
+        self.passPlanRepository = passPlanRepository
         self.logger = .init(manager: logManager)
         self.preferences = preferences
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
         self.finalizeInitialization()
+        self.refreshBanners()
     }
 }
 
@@ -82,6 +89,55 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func finalizeInitialization() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in
+                self?.refreshBanners()
+            }
+            .store(in: &cancellables)
+    }
+
+    func refreshBanners() {
+        Task { @MainActor in
+            do {
+                var banners: [InfoBanner] = []
+                for banner in InfoBanner.allCases {
+                    var dismissed = preferences.dismissedBannerIds.contains { $0 == banner.id }
+
+                    switch banner {
+                    case .trial:
+                        // If not in trial, consider dismissed
+                        let plan = try await passPlanRepository.getPlan()
+                        switch plan.planType {
+                        case .trial:
+                            break
+                        default:
+                            dismissed = true
+                        }
+
+                    case .autofill:
+                        // We don't show the banner if AutoFill extension is enabled
+                        // consider dismissed in this case
+                        if await self.credentialManager.isAutoFillEnabled() {
+                            dismissed = true
+                        }
+
+                    default:
+                        break
+                    }
+
+                    if !dismissed {
+                        banners.append(banner)
+                    }
+                }
+
+                self.banners = banners
+            } catch {
+                logger.error(error)
+                delegate?.itemsTabViewModelDidEncounter(error: error)
+            }
+        }
     }
 
     func makeEmptyVaultViewModel() -> EmptyVaultViewModel {
@@ -99,12 +155,15 @@ extension ItemsTabViewModel {
 
     func dismiss(banner: InfoBanner) {
         banners.removeAll(where: { $0 == banner })
+        preferences.dismissedBannerIds.append(banner.id)
     }
 
     func handleAction(banner: InfoBanner) {
         switch banner {
         case .trial:
             delegate?.itemsTabViewModelWantsToShowTrialDetail()
+        case .autofill:
+            UIApplication.shared.openPasswordSettings()
         default:
             break
         }

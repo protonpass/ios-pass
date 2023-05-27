@@ -21,9 +21,11 @@
 import UIComponents
 import UIKit
 
-enum InfoBanner: String {
+enum InfoBanner: String, CaseIterable {
     // Order of cases matter cause it affects the UI
     case trial, autofill, aliases, pass
+
+    var id: String { rawValue }
 
     var detail: InfoBannerDetail {
         switch self {

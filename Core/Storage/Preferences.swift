@@ -65,6 +65,21 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage("displayFavIcons", store: kSharedUserDefaults)
     public var displayFavIcons = true
 
+    /// A list of IDs of banners that are dismissed by users.
+    /// `AppStorage` does not support array out of the box so these IDs are concatenated and separated by `,`
+    /// E.g: when trial & autofill banners are dismissed, this is how the string looks like `"trial,autofill"`
+    @AppStorage("dismissedBannerIds", store: kSharedUserDefaults)
+    private var _dismissedBannerIds = ""
+
+    public var dismissedBannerIds: [String] {
+        get {
+            _dismissedBannerIds.components(separatedBy: ",").filter { !$0.isEmpty }
+        }
+        set {
+            _dismissedBannerIds = newValue.joined(separator: ",")
+        }
+    }
+
     @AppStorage("isFirstRun", store: kSharedUserDefaults)
     public var isFirstRun = true
 
@@ -81,6 +96,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
         shareClipboard = false
         telemetryThreshold = nil
         displayFavIcons = true
+        _dismissedBannerIds = ""
         if isUITests {
             onboarded = false
         }
