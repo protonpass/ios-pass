@@ -27,15 +27,13 @@ struct TelemetryEventsSection: View {
     let userId: String
 
     var body: some View {
-        Section {
-            NavigationLink(destination: {
-                let viewModel = TelemetryEventsViewModel(
-                    telemetryEventRepository: telemetryEventRepository, userId: userId)
-                TelemetryEventsView(viewModel: viewModel)
-            }, label: {
-                Text("Telemetry events")
-            })
-        }
+        NavigationLink(destination: {
+            let viewModel = TelemetryEventsViewModel(
+                telemetryEventRepository: telemetryEventRepository, userId: userId)
+            TelemetryEventsView(viewModel: viewModel)
+        }, label: {
+            Text("Telemetry events")
+        })
     }
 }
 
