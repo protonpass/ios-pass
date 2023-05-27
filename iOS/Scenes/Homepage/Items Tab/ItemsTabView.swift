@@ -62,7 +62,7 @@ struct ItemsTabView: View {
             VStack {
                 topBar
 
-                InfoBannerViewStack(banners: $viewModel.banners,
+                InfoBannerViewStack(banners: viewModel.banners,
                                     dismiss: viewModel.dismiss(banner:),
                                     action: viewModel.handleAction(banner:))
                 .padding()

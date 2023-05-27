@@ -215,6 +215,8 @@ private extension HomepageCoordinator {
         let itemsTabViewModel = ItemsTabViewModel(favIconRepository: favIconRepository,
                                                   itemContextMenuHandler: itemContextMenuHandler,
                                                   itemRepository: itemRepository,
+                                                  credentialManager: credentialManager,
+                                                  passPlanRepository: passPlanRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
                                                   syncEventLoop: eventLoop,
