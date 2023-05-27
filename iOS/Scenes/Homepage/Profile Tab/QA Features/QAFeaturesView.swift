@@ -33,12 +33,15 @@ struct QAFeaturesView: View {
             Form {
                 OnboardSection(viewModel: viewModel)
                 HapticFeedbacksSection()
-                CachedFavIconsSection(favIconRepository: viewModel.favIconRepository)
-                TelemetryEventsSection(telemetryEventRepository: viewModel.telemetryEventRepository,
-                                       userId: viewModel.userData.user.ID)
-                TrashItemsSection(itemRepository: viewModel.itemRepository,
-                                  shareRepository: viewModel.shareRepository,
-                                  bannerManager: viewModel.bannerManager)
+                Section {
+                    CachedFavIconsSection(favIconRepository: viewModel.favIconRepository)
+                    TelemetryEventsSection(telemetryEventRepository: viewModel.telemetryEventRepository,
+                                           userId: viewModel.userData.user.ID)
+                    TrashItemsSection(itemRepository: viewModel.itemRepository,
+                                      shareRepository: viewModel.shareRepository,
+                                      bannerManager: viewModel.bannerManager)
+                    BannersSection(preferences: viewModel.preferences)
+                }
             }
             .navigationTitle("QA Features")
             .toolbar {

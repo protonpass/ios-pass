@@ -26,14 +26,12 @@ struct CachedFavIconsSection: View {
     let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
-        Section {
-            NavigationLink(destination: {
-                let viewModel = CachedFavIconsViewModel(favIconRepository: favIconRepository)
-                CachedFavIconsView(viewModel: viewModel)
-            }, label: {
-                Text("Cached fav icons")
-            })
-        }
+        NavigationLink(destination: {
+            let viewModel = CachedFavIconsViewModel(favIconRepository: favIconRepository)
+            CachedFavIconsView(viewModel: viewModel)
+        }, label: {
+            Text("Cached fav icons")
+        })
     }
 }
 
