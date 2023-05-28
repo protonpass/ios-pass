@@ -82,6 +82,21 @@ extension LocalTelemetryEventDatasourceTests {
         XCTAssertEqual(lastEvents[1], event8)
     }
 
+    func testRemoveAllEvents() async throws {
+        // Given
+        let givenUserId = String.random()
+        _ = try await givenInsertedEvent(userId: givenUserId)
+        _ = try await givenInsertedEvent(userId: givenUserId)
+        _ = try await givenInsertedEvent(userId: givenUserId)
+
+        // When
+        try await sut.removeAllEvents(userId: givenUserId)
+        let allEvents = try await sut.getAllEvents(userId: givenUserId)
+
+        // Then
+        XCTAssertEqual(allEvents.count, 0)
+    }
+
     func givenInsertedEvent(userId: String) async throws -> TelemetryEvent {
         let event = TelemetryEvent.random()
         try await sut.insert(event: event, userId: userId)

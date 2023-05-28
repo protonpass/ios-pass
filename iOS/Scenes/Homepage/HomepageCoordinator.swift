@@ -150,6 +150,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.telemetryEventRepository = TelemetryEventRepository(
             localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
             remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
+            remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
             passPlanRepository: passPlanRepository,
             logManager: logManager,
             scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),

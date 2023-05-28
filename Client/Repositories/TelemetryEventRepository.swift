@@ -22,10 +22,17 @@ import Core
 import ProtonCore_Login
 import ProtonCore_Services
 
+public enum TelemetryEventSendResult {
+    case thresholdNotReached
+    case thresholdReachedButTelemetryOff
+    case allEventsSent
+}
+
 // MARK: - TelemetryEventRepositoryProtocol
 public protocol TelemetryEventRepositoryProtocol {
     var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
     var remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol { get }
+    var remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol { get }
     var passPlanRepository: PassPlanRepositoryProtocol { get }
     var eventCount: Int { get }
     var logger: Logger { get }
@@ -34,9 +41,8 @@ public protocol TelemetryEventRepositoryProtocol {
 
     func addNewEvent(type: TelemetryEventType) async throws
 
-    /// - Returns: `true` if threshold is reached, `false` if threshold is not reached
     @discardableResult
-    func sendAllEventsIfApplicable() async throws -> Bool
+    func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult
 }
 
 public extension TelemetryEventRepositoryProtocol {
@@ -48,14 +54,25 @@ public extension TelemetryEventRepositoryProtocol {
         logger.debug("Added new event")
     }
 
-    func sendAllEventsIfApplicable() async throws -> Bool {
+    func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult {
         guard scheduler.shouldSendEvents() else {
             logger.debug("Threshold not reached")
-            return false
+            return .thresholdNotReached
         }
 
-        logger.debug("Threshold is reached. Sending events if any.")
-        logger.trace("Refreshing user plan")
+        defer { scheduler.randomNextThreshold() }
+
+        logger.debug("Threshold is reached. Checking telemetry settings before sending events.")
+
+        let userSettings = try await remoteUserSettingsDatasource.getUserSettings()
+
+        if !userSettings.telemetry {
+            logger.info("Telemetry disabled, removing all local events.")
+            try await localTelemetryEventDatasource.removeAllEvents(userId: userId)
+            return .thresholdReachedButTelemetryOff
+        }
+
+        logger.trace("Telemetry enabled, refreshing user plan.")
         let plan = try await passPlanRepository.refreshPlan()
 
         while true {
@@ -69,15 +86,15 @@ public extension TelemetryEventRepositoryProtocol {
             try await localTelemetryEventDatasource.remove(events: events, userId: userId)
         }
 
-        scheduler.randomNextThreshold()
         logger.info("Sent all events")
-        return true
+        return .allEventsSent
     }
 }
 
 public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol
     public let remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol
+    public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
     public let passPlanRepository: PassPlanRepositoryProtocol
     public let eventCount: Int
     public let logger: Logger
@@ -86,6 +103,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
 
     public init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
                 remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
+                remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
                 passPlanRepository: PassPlanRepositoryProtocol,
                 logManager: LogManager,
                 scheduler: TelemetrySchedulerProtocol,
@@ -93,6 +111,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 eventCount: Int = 500) {
         self.localTelemetryEventDatasource = localTelemetryEventDatasource
         self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
+        self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
         self.passPlanRepository = passPlanRepository
         self.eventCount = eventCount
         self.logger = .init(manager: logManager)
