@@ -197,6 +197,34 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(sut.displayFavIcons)
     }
 
+    func testGetSetDismissedBannerIds() {
+        XCTAssertTrue(sut.dismissedBannerIds.isEmpty)
+
+        let id1 = String.random()
+        sut.dismissedBannerIds.append(id1)
+        XCTAssertEqual(sut.dismissedBannerIds.count, 1)
+        XCTAssertEqual(sut.dismissedBannerIds[0], id1)
+
+        let id2 = String.random()
+        sut.dismissedBannerIds.append(id2)
+        XCTAssertEqual(sut.dismissedBannerIds.count, 2)
+        XCTAssertEqual(sut.dismissedBannerIds[1], id2)
+
+        sut.dismissedBannerIds.removeAll(where: { $0 == id1 })
+        XCTAssertEqual(sut.dismissedBannerIds.count, 1)
+        XCTAssertEqual(sut.dismissedBannerIds[0], id2)
+
+        sut.dismissedBannerIds.removeAll()
+        XCTAssertTrue(sut.dismissedBannerIds.isEmpty)
+    }
+
+    func testDismissedBannerIdsIsEmptyAfterResetting() {
+        sut.dismissedBannerIds.append(.random())
+        XCTAssertFalse(sut.dismissedBannerIds.isEmpty)
+        sut.reset()
+        XCTAssertTrue(sut.dismissedBannerIds.isEmpty)
+    }
+
     func testIsFirstRunByDefault() {
         XCTAssertTrue(sut.isFirstRun)
     }

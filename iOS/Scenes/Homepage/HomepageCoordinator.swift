@@ -215,6 +215,8 @@ private extension HomepageCoordinator {
         let itemsTabViewModel = ItemsTabViewModel(favIconRepository: favIconRepository,
                                                   itemContextMenuHandler: itemContextMenuHandler,
                                                   itemRepository: itemRepository,
+                                                  credentialManager: credentialManager,
+                                                  passPlanRepository: passPlanRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
                                                   syncEventLoop: eventLoop,
@@ -239,6 +241,8 @@ private extension HomepageCoordinator {
 
         start(with: HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                        profileTabViewModel: profileTabViewModel,
+                                       passPlanRepository: passPlanRepository,
+                                       logManager: logManager,
                                        homepageCoordinator: self,
                                        delegate: self).ignoresSafeArea(edges: [.top, .bottom]),
               secondaryView: placeholderView)
@@ -507,6 +511,8 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
     func passPlanRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
         updateCredentials(forceRemoval: true)
+        homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
+        profileTabViewModel?.refreshPlan()
     }
 }
 
@@ -592,6 +598,31 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate) {
         presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
+    }
+
+    func itemsTabViewModelWantsToShowTrialDetail() {
+        Task { @MainActor in
+            defer { hideLoadingHud() }
+            do {
+                showLoadingHud()
+
+                let plan = try await upgradeChecker.passPlanRepository.getPlan()
+                guard let trialEnd = plan.trialEnd else { return }
+                let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
+                let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)
+
+                hideLoadingHud()
+
+                let view = TrialDetailView(
+                    daysLeft: abs(daysLeft),
+                    onUpgrade: startUpgradeFlow,
+                    onLearnMore: { self.urlOpener.open(urlString: "https://proton.me/pass") })
+                present(view)
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
+        }
     }
 
     func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {

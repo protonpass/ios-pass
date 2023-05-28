@@ -26,12 +26,19 @@ final class PassIconTests: XCTestCase {
     func testGetIconss() {
         let expectation = expectation(description: "Should be able to get icons")
 
+        _ = PassIcon.badgePaid
+        _ = PassIcon.badgeTrial
+
         _ = PassIcon.brandPass
         _ = PassIcon.brandReddit
         _ = PassIcon.brandTwitter
 
         _ = PassIcon.coverScreenBackground
         _ = PassIcon.coverScreenLogo
+
+        _ = PassIcon.infoBannerAliases
+        _ = PassIcon.infoBannerAutoFill
+        _ = PassIcon.infoBannerPass
 
         _ = PassIcon.magnifyingGlass
 
@@ -50,7 +57,18 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.passIcon
         _ = PassIcon.passTextLogo
         _ = PassIcon.swirls
+
+        _ = PassIcon.tabProfilePaidSelected
+        _ = PassIcon.tabProfilePaidUnselected
+        _ = PassIcon.tabProfileTrialSelected
+        _ = PassIcon.tabProfileTrialUnselected
+
         _ = PassIcon.trash
+
+        _ = PassIcon.trial2FA
+        _ = PassIcon.trialCustomFields
+        _ = PassIcon.trialDetail
+        _ = PassIcon.trialVaults
 
         _ = PassIcon.vaultIcon1Big
         _ = PassIcon.vaultIcon1Small

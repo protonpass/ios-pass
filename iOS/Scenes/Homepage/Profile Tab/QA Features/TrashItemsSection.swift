@@ -36,15 +36,13 @@ struct TrashItemsSection: View {
     }
 
     var body: some View {
-        Section {
-            NavigationLink(destination: {
-                TrashItemsView(itemRepository: itemRepository,
-                               shareRepository: shareRepository,
-                               bannerManager: bannerManager)
-            }, label: {
-                Text("Trash all items")
-            })
-        }
+        NavigationLink(destination: {
+            TrashItemsView(itemRepository: itemRepository,
+                           shareRepository: shareRepository,
+                           bannerManager: bannerManager)
+        }, label: {
+            Text("Trash all items")
+        })
     }
 }
 
