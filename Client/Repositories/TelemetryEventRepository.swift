@@ -22,6 +22,12 @@ import Core
 import ProtonCore_Login
 import ProtonCore_Services
 
+public enum TelemetryEventSendResult {
+    case thresholdNotReached
+    case thresholdReachedButTelemetryOff
+    case allEventsSent
+}
+
 // MARK: - TelemetryEventRepositoryProtocol
 public protocol TelemetryEventRepositoryProtocol {
     var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
@@ -35,9 +41,8 @@ public protocol TelemetryEventRepositoryProtocol {
 
     func addNewEvent(type: TelemetryEventType) async throws
 
-    /// - Returns: `true` if threshold is reached, `false` if threshold is not reached
     @discardableResult
-    func sendAllEventsIfApplicable() async throws -> Bool
+    func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult
 }
 
 public extension TelemetryEventRepositoryProtocol {
@@ -49,11 +54,13 @@ public extension TelemetryEventRepositoryProtocol {
         logger.debug("Added new event")
     }
 
-    func sendAllEventsIfApplicable() async throws -> Bool {
+    func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult {
         guard scheduler.shouldSendEvents() else {
             logger.debug("Threshold not reached")
-            return false
+            return .thresholdNotReached
         }
+
+        defer { scheduler.randomNextThreshold() }
 
         logger.debug("Threshold is reached. Checking telemetry settings before sending events.")
 
@@ -62,7 +69,7 @@ public extension TelemetryEventRepositoryProtocol {
         if !userSettings.telemetry {
             logger.info("Telemetry disabled, removing all local events.")
             try await localTelemetryEventDatasource.removeAllEvents(userId: userId)
-            return true
+            return .thresholdReachedButTelemetryOff
         }
 
         logger.trace("Telemetry enabled, refreshing user plan.")
@@ -79,9 +86,8 @@ public extension TelemetryEventRepositoryProtocol {
             try await localTelemetryEventDatasource.remove(events: events, userId: userId)
         }
 
-        scheduler.randomNextThreshold()
         logger.info("Sent all events")
-        return true
+        return .allEventsSent
     }
 }
 
