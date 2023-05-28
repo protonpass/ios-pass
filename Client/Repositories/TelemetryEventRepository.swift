@@ -26,6 +26,7 @@ import ProtonCore_Services
 public protocol TelemetryEventRepositoryProtocol {
     var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
     var remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol { get }
+    var remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol { get }
     var passPlanRepository: PassPlanRepositoryProtocol { get }
     var eventCount: Int { get }
     var logger: Logger { get }
@@ -54,8 +55,17 @@ public extension TelemetryEventRepositoryProtocol {
             return false
         }
 
-        logger.debug("Threshold is reached. Sending events if any.")
-        logger.trace("Refreshing user plan")
+        logger.debug("Threshold is reached. Checking telemetry settings before sending events.")
+
+        let userSettings = try await remoteUserSettingsDatasource.getUserSettings()
+
+        if !userSettings.telemetry {
+            logger.info("Telemetry disabled, removing all local events.")
+            try await localTelemetryEventDatasource.removeAllEvents(userId: userId)
+            return true
+        }
+
+        logger.trace("Telemetry enabled, refreshing user plan.")
         let plan = try await passPlanRepository.refreshPlan()
 
         while true {
@@ -78,6 +88,7 @@ public extension TelemetryEventRepositoryProtocol {
 public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol
     public let remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol
+    public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
     public let passPlanRepository: PassPlanRepositoryProtocol
     public let eventCount: Int
     public let logger: Logger
@@ -86,6 +97,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
 
     public init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
                 remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
+                remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
                 passPlanRepository: PassPlanRepositoryProtocol,
                 logManager: LogManager,
                 scheduler: TelemetrySchedulerProtocol,
@@ -93,6 +105,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 eventCount: Int = 500) {
         self.localTelemetryEventDatasource = localTelemetryEventDatasource
         self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
+        self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
         self.passPlanRepository = passPlanRepository
         self.eventCount = eventCount
         self.logger = .init(manager: logManager)

@@ -102,6 +102,8 @@ public final class RepositoryManager: DeinitPrintable {
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: currentDateProvider,
                                                     thresholdProvider: telemetryThresholdProvider)
 
+        let remoteUserSettingsDatasource = RemoteUserSettingsDatasource(apiService: apiService)
+
         let userId = userData.user.ID
 
         self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
@@ -120,6 +122,7 @@ public final class RepositoryManager: DeinitPrintable {
         self.telemetryEventRepository = TelemetryEventRepository(
             localTelemetryEventDatasource: localTelemetryEventDatasource,
             remoteTelemetryEventDatasource: remoteTelemetryEventDatasource,
+            remoteUserSettingsDatasource: remoteUserSettingsDatasource,
             passPlanRepository: passPlanRepository,
             logManager: logManager,
             scheduler: telemetryScheduler,

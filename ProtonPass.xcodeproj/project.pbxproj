@@ -329,6 +329,9 @@
 		3562BCF529BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */; };
 		3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF629BDE77900564508 /* AnimatingGradient.swift */; };
 		3562D3C229DF670200981D7D /* SquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D3C129DF670200981D7D /* SquircleThumbnail.swift */; };
+		3563401B2A2383BB00E22BFE /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401A2A2383BB00E22BFE /* UserSettings.swift */; };
+		3563401D2A23849200E22BFE /* GetUserSettingsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */; };
+		3563401F2A23860800E22BFE /* RemoteUserSettingsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */; };
 		35635176299C10040059A97A /* IdentifiableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35635175299C10040059A97A /* IdentifiableObject.swift */; };
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
@@ -1042,6 +1045,9 @@
 		3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollIndicatorsHiddenModifier.swift; sourceTree = "<group>"; };
 		3562BCF629BDE77900564508 /* AnimatingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingGradient.swift; sourceTree = "<group>"; };
 		3562D3C129DF670200981D7D /* SquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquircleThumbnail.swift; sourceTree = "<group>"; };
+		3563401A2A2383BB00E22BFE /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserSettingsEndpoint.swift; sourceTree = "<group>"; };
+		3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteUserSettingsDatasource.swift; sourceTree = "<group>"; };
 		35635175299C10040059A97A /* IdentifiableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableObject.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemTitleSection.swift; sourceTree = "<group>"; };
@@ -1708,6 +1714,7 @@
 				359A4DDB29E4891400EC94BC /* SymmetricallyEncryptedShareKey.swift */,
 				35581812290AB2B000DD94DB /* SyncEvents.swift */,
 				354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */,
+				3563401A2A2383BB00E22BFE /* UserSettings.swift */,
 				350A97D32885BFFD00A7168B /* Vault.swift */,
 			);
 			path = Models;
@@ -1754,6 +1761,7 @@
 			isa = PBXGroup;
 			children = (
 				355792DC29E859A5001198DA /* GetLogoEndpoint.swift */,
+				3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -2236,6 +2244,7 @@
 				356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */,
 				35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */,
 				357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */,
+				3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -3919,6 +3928,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */,
+				3563401D2A23849200E22BFE /* GetUserSettingsEndpoint.swift in Sources */,
 				3542E2B828D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift in Sources */,
 				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
 				358BD360287D4EA200802A91 /* VaultProtobuf.swift in Sources */,
@@ -3985,6 +3995,7 @@
 				3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */,
 				358BD376287E083500802A91 /* APIService+ExecEndpoint.swift in Sources */,
 				354EA82B29EF4FE300F1FB95 /* TelemetryEvent.swift in Sources */,
+				3563401B2A2383BB00E22BFE /* UserSettings.swift in Sources */,
 				356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */,
 				354EA82929EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift in Sources */,
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
@@ -4006,6 +4017,7 @@
 				355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */,
 				355E803F28A3072F00BE7C9B /* CreateItemEndpoint.swift in Sources */,
 				3553424529928762003E3A47 /* PPClientError.swift in Sources */,
+				3563401F2A23860800E22BFE /* RemoteUserSettingsDatasource.swift in Sources */,
 				3593DD1028A83F7A00C235D3 /* ProtonPass.xcdatamodeld in Sources */,
 				355CA56829F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift in Sources */,
 				35544407287CB3810017FCAD /* Endpoint.swift in Sources */,
