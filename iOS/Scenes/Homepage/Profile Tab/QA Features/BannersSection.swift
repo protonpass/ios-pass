@@ -40,6 +40,11 @@ private struct ManageBannersView: View {
         Form {
             Section {
                 Text("In order for changes to take effect, either move app to background or close app")
+                Button(action: {
+                    preferences.dismissedBannerIds.removeAll()
+                }, label: {
+                    Text("Undismiss all banners")
+                })
             }
 
             ForEach(InfoBanner.allCases, id: \.id) { banner in

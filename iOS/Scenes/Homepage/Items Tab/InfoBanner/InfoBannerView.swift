@@ -26,7 +26,7 @@ struct InfoBannerView: View {
     let dismiss: () -> Void
     let action: () -> Void
 
-    static let height: CGFloat = 120
+    static let height: CGFloat = 140
 
     var body: some View {
         VStack {
@@ -37,7 +37,7 @@ struct InfoBannerView: View {
                         .resizable()
                         .scaledToFit()
                         .padding(4)
-                        .frame(maxWidth: 20, maxHeight: 20)
+                        .frame(width: 20, height: 20)
                         .foregroundColor(Color(uiColor: PassColor.textInvert))
                 }
             }
@@ -60,11 +60,9 @@ struct InfoBannerView: View {
                                 .font(.caption.weight(.semibold))
                         }
                     }
-
-                    Spacer()
                 }
                 .foregroundColor(Color(uiColor: PassColor.textInvert))
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 
                 if let icon = banner.detail.icon {
                     Image(uiImage: icon)
@@ -76,8 +74,8 @@ struct InfoBannerView: View {
 
             Spacer()
         }
-        .frame(height: Self.height)
         .padding()
+        .frame(height: Self.height)
         .background(Color(uiColor: banner.detail.backgroundColor))
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
