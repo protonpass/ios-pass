@@ -1,6 +1,6 @@
 //
-// GetUserEndpoint.swift
-// Proton Pass - Created on 24/04/2023.
+// UserSettings.swift
+// Proton Pass - Created on 28/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,30 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
-import ProtonCore_Services
+import Foundation
 
-public struct GetUserResponse: Decodable {
-    let code: Int
-    let user: UserLite
+public struct UserSettings {
+    public let telemetry: Bool
 }
 
-public struct UserLite: Decodable {
-    let type: Int
-    let subscribed: Int
-}
+extension UserSettings: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case telemetry
+    }
 
-public struct GetUserEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetUserResponse
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-
-    public init() {
-        self.debugDescription = "Get user"
-        self.path = "/core/v4/users"
-        self.method = .get
+        // 0 or 1, 1 means sending telemetry enabled
+        let telemetry = try container.decode(Int.self, forKey: .telemetry)
+        self.telemetry = telemetry >= 1
     }
 }

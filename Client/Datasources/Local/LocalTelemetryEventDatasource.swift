@@ -31,6 +31,8 @@ public protocol LocalTelemetryEventDatasourceProtocol: LocalDatasourceProtocol {
     func insert(event: TelemetryEvent, userId: String) async throws
 
     func remove(events: [TelemetryEvent], userId: String) async throws
+
+    func removeAllEvents(userId: String) async throws
 }
 
 public extension LocalTelemetryEventDatasourceProtocol {
@@ -79,6 +81,14 @@ public extension LocalTelemetryEventDatasourceProtocol {
             }
             try context.save()
         }
+    }
+
+    func removeAllEvents(userId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TelemetryEventEntity")
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
     }
 }
 

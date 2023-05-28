@@ -1,6 +1,6 @@
 //
-// GetSubscriptionEndpoint.swift
-// Proton Pass - Created on 05/04/2023.
+// GetUserSettingsEndpoint.swift
+// Proton Pass - Created on 28/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,36 +21,20 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct GetSubscriptionResponse: Decodable {
-    public let code: Int
-    public let subscription: SubcriptionLite
+public struct GetUserSettingsResponse: Decodable {
+    let code: Int
+    let userSettings: UserSettings
 }
 
-public struct GetSubscriptionEndpoint: Endpoint {
+public struct GetUserSettingsEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetSubscriptionResponse
+    public typealias Response = GetUserSettingsResponse
 
     public var debugDescription: String
     public var path: String
-    public var method: HTTPMethod
 
     public init() {
-        self.debugDescription = "Get subscription"
-        self.path = "/payments/v4/subscription"
-        self.method = .get
+        self.debugDescription = "Get user settings"
+        self.path = "/core/v4/settings"
     }
-}
-
-public struct SubcriptionLite: Decodable {
-    let plans: [PlanLite]
-}
-
-public struct PlanLite: Codable {
-    /// Internal name
-    public let name: String
-    /// Human readable name
-    public let title: String
-    public let type: Int
-
-    public var isPrimary: Bool { type == 1 }
 }
