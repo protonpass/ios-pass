@@ -291,7 +291,6 @@
 		3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */; };
 		3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */; };
 		3560844929DDA344001F7487 /* OptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35829D6F36200F03497 /* OptionRow.swift */; };
-		3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */; };
 		3560844F29DDE2C7001F7487 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3560844D29DDE2BE001F7487 /* Colors.xcassets */; };
 		3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3560844D29DDE2BE001F7487 /* Colors.xcassets */; };
 		3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3560844D29DDE2BE001F7487 /* Colors.xcassets */; };
@@ -447,7 +446,6 @@
 		357602AA29F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */; };
 		357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */; };
 		357602AE29F6FDA0003062A2 /* TelemetryEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */; };
-		357602B329F71499003062A2 /* GetUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602B229F71499003062A2 /* GetUserEndpoint.swift */; };
 		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
 		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
@@ -1016,7 +1014,6 @@
 		3560843929DD4909001F7487 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettings.swift; sourceTree = "<group>"; };
 		3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsView.swift; sourceTree = "<group>"; };
 		3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsViewModel.swift; sourceTree = "<group>"; };
-		3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSubscriptionEndpoint.swift; sourceTree = "<group>"; };
 		3560844D29DDE2BE001F7487 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		3560845329DDE305001F7487 /* PassColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassColor.swift; sourceTree = "<group>"; };
 		3560845929DDE7E1001F7487 /* UIComponentsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIComponentsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1142,7 +1139,6 @@
 		357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasourceTests.swift; sourceTree = "<group>"; };
 		357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTelemetryEventDatasource.swift; sourceTree = "<group>"; };
 		357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepository.swift; sourceTree = "<group>"; };
-		357602B229F71499003062A2 /* GetUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserEndpoint.swift; sourceTree = "<group>"; };
 		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
 		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
@@ -1691,7 +1687,6 @@
 				357602B129F712AE003062A2 /* Pass */,
 				3565362229EDD6C7007A43D3 /* Data */,
 				355792DB29E85979001198DA /* Core */,
-				3560844A29DDBC92001F7487 /* Payments */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -1759,7 +1754,6 @@
 			isa = PBXGroup;
 			children = (
 				355792DC29E859A5001198DA /* GetLogoEndpoint.swift */,
-				357602B229F71499003062A2 /* GetUserEndpoint.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1837,14 +1831,6 @@
 				3572E52729940C0300775FAC /* Supporting Views */,
 			);
 			path = "Create & Edit Items";
-			sourceTree = "<group>";
-		};
-		3560844A29DDBC92001F7487 /* Payments */ = {
-			isa = PBXGroup;
-			children = (
-				3560844B29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift */,
-			);
-			path = Payments;
 			sourceTree = "<group>";
 		};
 		3560845A29DDE7E1001F7487 /* UIComponentsTests */ = {
@@ -3969,10 +3955,8 @@
 				356BC35F29D7164D00F03497 /* SetPrimaryVaultEndpoint.swift in Sources */,
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				355A5B0E2A03D6A20089E0AC /* LocalPassPlanDatasource.swift in Sources */,
-				3560844C29DDBCA8001F7487 /* GetSubscriptionEndpoint.swift in Sources */,
 				359A4DDE29E4A4EF00EC94BC /* SymmetricallyEncryptedShare.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
-				357602B329F71499003062A2 /* GetUserEndpoint.swift in Sources */,
 				358A508D28AD823000F5285C /* PublicKey.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
 				35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */,
