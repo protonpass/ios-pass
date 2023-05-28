@@ -52,7 +52,7 @@ struct InfoBannerViewStack: View {
         if banners.isEmpty {
             return 0
         } else {
-            let totalOffset = CGFloat(min(banners.count, numOfVisibleBanners)) * offset
+            let totalOffset = CGFloat(min(banners.count, numOfVisibleBanners) - 2) * offset
             return InfoBannerView.height + totalOffset
         }
     }

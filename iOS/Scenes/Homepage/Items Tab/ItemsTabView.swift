@@ -62,10 +62,12 @@ struct ItemsTabView: View {
             VStack {
                 topBar
 
-                InfoBannerViewStack(banners: viewModel.banners,
-                                    dismiss: viewModel.dismiss(banner:),
-                                    action: viewModel.handleAction(banner:))
-                .padding()
+                if !viewModel.banners.isEmpty {
+                    InfoBannerViewStack(banners: viewModel.banners,
+                                        dismiss: viewModel.dismiss(banner:),
+                                        action: viewModel.handleAction(banner:))
+                    .padding([.horizontal, .top])
+                }
 
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
