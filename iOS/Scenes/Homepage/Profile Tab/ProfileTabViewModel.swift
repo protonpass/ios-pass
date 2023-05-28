@@ -124,6 +124,15 @@ extension ProfileTabViewModel {
         print(#function)
     }
 
+    func refreshPlan() {
+        Task { @MainActor in
+            // First get local plan to optimistically display it
+            // and then try to refresh the plan to have it updated
+            plan = try await passPlanRepository.getPlan()
+            plan = try await passPlanRepository.refreshPlan()
+        }
+    }
+
     func editAppLockTime() {
         delegate?.profileTabViewModelWantsToEditAppLockTime()
     }
@@ -171,12 +180,7 @@ private extension ProfileTabViewModel {
         updateAutoFillAvalability()
         biometricAuthenticator.initializeBiometryType()
         biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
-        Task { @MainActor in
-            // First get local plan to optimistically display it
-            // and then try to refresh the plan to have it updated
-            plan = try await passPlanRepository.getPlan()
-            plan = try await passPlanRepository.refreshPlan()
-        }
+        refreshPlan()
     }
 
     func updateAutoFillAvalability() {

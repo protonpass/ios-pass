@@ -24,6 +24,9 @@ import UIKit
 public enum PassIcon {}
 
 public extension PassIcon {
+    static var badgePaid = UIImage(named: "BadgePaid")!
+    static var badgeTrial = UIImage(named: "BadgeTrial")!
+
     static var brandPass = UIImage(named: "BrandPass")!
     static var brandReddit = UIImage(named: "BrandReddit")!
     static var brandTwitter = UIImage(named: "BrandTwitter")!
@@ -31,6 +34,10 @@ public extension PassIcon {
 
     static var coverScreenBackground = UIImage(named: "CoverScreenBackground")!
     static var coverScreenLogo = UIImage(named: "CoverScreenLogo")!
+
+    static var infoBannerAliases = UIImage(named: "InfoBannerAliases")!
+    static var infoBannerAutoFill = UIImage(named: "InfoBannerAutoFill")!
+    static var infoBannerPass = UIImage(named: "InfoBannerPass")!
 
     static var onboardAliases = UIImage(named: "OnboardAliases")!
     static var onboardAuthentication = UIImage(named: "OnboardAuthentication")!
@@ -47,7 +54,18 @@ public extension PassIcon {
     static var passIcon = UIImage(named: "PassIcon")!
     static var passTextLogo = UIImage(named: "PassTextLogo")!
     static var swirls = UIImage(named: "Swirls")!
+
+    static var tabProfilePaidSelected = UIImage(named: "TabProfilePaidSelected")!
+    static var tabProfilePaidUnselected = UIImage(named: "TabProfilePaidUnselected")!
+    static var tabProfileTrialSelected = UIImage(named: "TabProfileTrialSelected")!
+    static var tabProfileTrialUnselected = UIImage(named: "TabProfileTrialUnselected")!
+
     static var trash = UIImage(named: "Trash")!
+
+    static var trial2FA = UIImage(named: "Trial2FA")!
+    static var trialCustomFields = UIImage(named: "TrialCustomFields")!
+    static var trialDetail = UIImage(named: "TrialDetail")!
+    static var trialVaults = UIImage(named: "TrialVaults")!
 
     static var vaultIcon1Big    = UIImage(named: "VaultIcon1Big")!
     static var vaultIcon1Small  = UIImage(named: "VaultIcon1Small")!
