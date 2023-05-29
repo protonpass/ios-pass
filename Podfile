@@ -147,7 +147,7 @@ post_install do |installer|
       config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "15.0"
       config.build_settings["MACOSX_DEPLOYMENT_TARGET"] = "12.0"
       config.build_settings['ENABLE_BITCODE'] = 'No'
-      if config.name == "Debug" || config.name == "Debug-Black" || config.name == "Debug-Prod"
+      if config.name == "Debug" || config.name == "Debug-QA"
         config.build_settings["SWIFT_ACTIVE_COMPILATION_CONDITIONS"] = "$(inherited) DEBUG"
       end
     end
