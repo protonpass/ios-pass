@@ -4,6 +4,8 @@
 <dict>
 	<key>StringsTable</key>
 	<string>Root</string>
+	<key>ApplicationGroupContainerIdentifier</key>
+	<string>group.me.proton.pass</string>
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
