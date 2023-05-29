@@ -48,7 +48,7 @@ struct ProfileTabView: View {
                     helpCenterSection
                         .padding(.vertical)
 
-                    if UserDefaults.standard.bool(forKey: "qa_features") {
+                    if UserDefaults.standard.bool(forKey: "pref_qa_features") {
                         qaFeaturesSection
                     }
 

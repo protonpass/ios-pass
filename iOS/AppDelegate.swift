@@ -56,7 +56,7 @@ private extension AppDelegate {
     }
 
     func setUpDefaultValuesForSettingsBundle() {
-        let appVersionKey = "app_version"
+        let appVersionKey = "pref_app_version"
         let appVersionValue = "\(Bundle.main.fullAppVersionName())(\(Bundle.main.buildNumber))"
         UserDefaults.standard.register(defaults: [appVersionKey: "-"])
         UserDefaults.standard.set(appVersionValue, forKey: appVersionKey)
