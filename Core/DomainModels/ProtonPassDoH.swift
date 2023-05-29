@@ -29,7 +29,43 @@ public final class ProtonPassDoH: DoH, ServerConfig {
     public let apiHost: String
     public let defaultPath: String
 
-    public init(environment: ProtonPassEnvironment) {
+    public init(bundle: Bundle = .main, userDefaults: UserDefaults = kSharedUserDefaults) {
+        let environment: ProtonPassEnvironment
+        if bundle.isQaBuild {
+            switch kSharedUserDefaults.string(forKey: "pref_environment") {
+            case "black":
+                environment = .black
+            case "prod":
+                environment = .prod
+            case "custom":
+                let signupDomain = userDefaults.string(forKey: "pref_custom_env_sign_up_domain")
+                let captchaHost = userDefaults.string(forKey: "pref_custom_env_captcha_host")
+                let hvHost = userDefaults.string(forKey: "pref_custom_env_human_verification_host")
+                let accountHost = userDefaults.string(forKey: "pref_custom_env_account_host")
+                let defaultHost = userDefaults.string(forKey: "pref_custom_env_default_host")
+                let apiHost = userDefaults.string(forKey: "pref_custom_env_api_host")
+                let defaultPath = userDefaults.string(forKey: "pref_custom_env_default_path")
+                environment = .custom(.init(
+                    signupDomain: signupDomain ?? "proton.me",
+                    captchaHost: captchaHost ?? "https://pass-api.proton.me",
+                    humanVerificationV3Host: hvHost ?? "https://verify.proton.me",
+                    accountHost: accountHost ?? "https://account.proton.me",
+                    defaultHost: defaultHost ?? "https://pass-api.proton.me",
+                    apiHost: apiHost ?? "pass-api.proton.me",
+                    defaultPath: defaultPath ?? "/api"))
+            default:
+                // Fallback to "Automatic" mode
+                #if DEBUG
+                environment = .black
+                #else
+                environment = .prod
+                #endif
+            }
+        } else {
+            // Always point to prod when not in QA build
+            environment = .prod
+        }
+
         let params = environment.parameters
         self.signupDomain = params.signupDomain
         self.captchaHost = params.captchaHost

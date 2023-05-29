@@ -12,7 +12,7 @@
 			<key>Type</key>
 			<string>PSTitleValueSpecifier</string>
 			<key>Title</key>
-			<string>App Version</string>
+			<string>App version</string>
 			<key>Key</key>
 			<string>pref_app_version</string>
 			<key>DefaultValue</key>
