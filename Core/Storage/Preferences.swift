@@ -20,7 +20,8 @@
 
 import SwiftUI
 
-public let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)
+// swiftlint:disable:next force_unwrapping
+public let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)!
 
 public final class Preferences: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }

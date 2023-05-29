@@ -12,7 +12,7 @@
 			<key>Title</key>
 			<string>App Version</string>
 			<key>Key</key>
-			<string>app_version</string>
+			<string>pref_app_version</string>
 			<key>DefaultValue</key>
 			<string>-</string>
 		</dict>

@@ -1,5 +1,5 @@
 //
-// Config-Prod.swift
+// macOS-Debug-QA.swift
 // Proton Pass - Created on 08/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,12 +21,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-SLASH=/
-ACCOUNT_HOST = https:$(SLASH)/account.proton.me
-API_HOST = pass-api.proton.me
-CAPTCHA_HOST = https:$(SLASH)/pass-api.proton.me
-DEFAULT_PATH = /api
-DEFAULT_HOST = https:$(SLASH)/pass-api.proton.me
-HUMAN_VERIFICATION_V3_HOST = https:$(SLASH)/verify.proton.me
-SIGNUP_DOMAIN = proton.me
-SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) PROD
+#include "../../Pods/Target Support Files/Pods-macOS/Pods-macOS.debug-qa.xcconfig"
+APP_VERSION_IDENTIFIER = dev
