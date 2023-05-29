@@ -8,9 +8,27 @@
 	<array>
 		<dict>
 			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>App Version</string>
+			<key>Key</key>
+			<string>app_version</string>
+			<key>DefaultValue</key>
+			<string>-</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>This will add a &quot;QA Features&quot; option to the bottom of the Profile tab</string>
+			<key>Title</key>
+			<string>QA features</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>QA Features</string>
+			<string>Enable</string>
 			<key>Key</key>
 			<string>qa_features</string>
 			<key>DefaultValue</key>
