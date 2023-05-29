@@ -18,20 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import ProtonCore_Doh
 
-public enum BuildConfigKey: String {
-    case signUpDomain = "SIGNUP_DOMAIN"
-    case captchaHost = "CAPTCHA_HOST"
-    case humanVerificationV3Host = "HUMAN_VERIFICATION_V3_HOST"
-    case accountHost = "ACCOUNT_HOST"
-    case defaultHost = "DEFAULT_HOST"
-    case apiHost = "API_HOST"
-    case defaultPath = "DEFAULT_PATH"
-}
-
-public final class PPDoH: DoH, ServerConfig {
+public final class ProtonPassDoH: DoH, ServerConfig {
     public let signupDomain: String
     public let captchaHost: String
     public let humanVerificationV3Host: String
@@ -40,19 +29,14 @@ public final class PPDoH: DoH, ServerConfig {
     public let apiHost: String
     public let defaultPath: String
 
-    public init(bundle: Bundle) {
-        let getValue: (BuildConfigKey) -> String = { key in
-            if let value = bundle.infoDictionary?[key.rawValue] as? String {
-                return value
-            }
-            fatalError("Key not found \(key.rawValue)")
-        }
-        self.signupDomain = getValue(.signUpDomain)
-        self.captchaHost = getValue(.captchaHost)
-        self.humanVerificationV3Host = getValue(.humanVerificationV3Host)
-        self.accountHost = getValue(.accountHost)
-        self.defaultHost = getValue(.defaultHost)
-        self.apiHost = getValue(.apiHost)
-        self.defaultPath = getValue(.defaultPath)
+    public init(environment: ProtonPassEnvironment) {
+        let params = environment.parameters
+        self.signupDomain = params.signupDomain
+        self.captchaHost = params.captchaHost
+        self.humanVerificationV3Host = params.humanVerificationV3Host
+        self.accountHost = params.accountHost
+        self.defaultHost = params.defaultHost
+        self.apiHost = params.apiHost
+        self.defaultPath = params.defaultHost
     }
 }

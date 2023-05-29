@@ -258,6 +258,7 @@
 		355AA32529E9B41900C20F5F /* ItemThumbnailableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */; };
 		355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */; };
 		355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
+		355B2B782A24DDD900129A16 /* ProtonPassEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B772A24DDD900129A16 /* ProtonPassEnvironment.swift */; };
 		355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */; };
 		355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */; };
 		355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */; };
@@ -552,7 +553,7 @@
 		35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506F9286FB37300A3F6EA /* Coordinator.swift */; };
 		35E50702286FB39600A3F6EA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50700286FB39600A3F6EA /* AppState.swift */; };
 		35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */; };
-		35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50709286FB44800A3F6EA /* PPDoH.swift */; };
+		35E5070A286FB44800A3F6EA /* ProtonPassDoH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50709286FB44800A3F6EA /* ProtonPassDoH.swift */; };
 		35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */; };
 		35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */; };
 		35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F6D0C52A20A93800C8E395 /* InfoBanner.swift */; };
@@ -990,6 +991,7 @@
 		355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemThumbnailableTests.swift; sourceTree = "<group>"; };
 		355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; };
 		355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSquircleThumbnail.swift; sourceTree = "<group>"; };
+		355B2B772A24DDD900129A16 /* ProtonPassEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonPassEnvironment.swift; sourceTree = "<group>"; };
 		355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTextButton.swift; sourceTree = "<group>"; };
 		355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+AttachToAnother.swift"; sourceTree = "<group>"; };
 		355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+InsertOrRemove.swift"; sourceTree = "<group>"; };
@@ -1249,7 +1251,7 @@
 		35E506F9286FB37300A3F6EA /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		35E50700286FB39600A3F6EA /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Unwrap.swift"; sourceTree = "<group>"; };
-		35E50709286FB44800A3F6EA /* PPDoH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPDoH.swift; sourceTree = "<group>"; };
+		35E50709286FB44800A3F6EA /* ProtonPassDoH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonPassDoH.swift; sourceTree = "<group>"; };
 		35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		35F6D0C52A20A93800C8E395 /* InfoBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBanner.swift; sourceTree = "<group>"; };
@@ -2518,7 +2520,8 @@
 			isa = PBXGroup;
 			children = (
 				35E50700286FB39600A3F6EA /* AppState.swift */,
-				35E50709286FB44800A3F6EA /* PPDoH.swift */,
+				35E50709286FB44800A3F6EA /* ProtonPassDoH.swift */,
+				355B2B772A24DDD900129A16 /* ProtonPassEnvironment.swift */,
 				353E10912881827C00E59474 /* UserProtocol.swift */,
 				353C2840291DC729008A5EBF /* SortDirection.swift */,
 			);
@@ -4106,7 +4109,7 @@
 				35426B5E28EF183900F89BB7 /* RuleLabel.swift in Sources */,
 				3565621E29B9EDDB00C43F72 /* Date+AddingValue.swift in Sources */,
 				35699B93298103F1006CB225 /* String+HTML.swift in Sources */,
-				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
+				35E5070A286FB44800A3F6EA /* ProtonPassDoH.swift in Sources */,
 				3552A28629EBFCAA00ABDB6E /* FileUtils.swift in Sources */,
 				3565FD53298D3D6500E2A0EE /* Array+Chunked.swift in Sources */,
 				354513E728E4CE700020A93A /* CodableBase64.swift in Sources */,
@@ -4139,6 +4142,7 @@
 				353C2841291DC729008A5EBF /* SortDirection.swift in Sources */,
 				35426B6428EF193800F89BB7 /* BasicRuleParser.swift in Sources */,
 				35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */,
+				355B2B782A24DDD900129A16 /* ProtonPassEnvironment.swift in Sources */,
 				356A34B92977B46300969BA2 /* OTP.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
 				355342472992A685003E3A47 /* PPCoreError.swift in Sources */,
