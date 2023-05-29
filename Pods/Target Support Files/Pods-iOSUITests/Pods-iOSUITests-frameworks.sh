@@ -175,7 +175,7 @@ code_sign_if_enabled() {
   fi
 }
 
-if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
+if [[ "$CONFIGURATION" == "Debug-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
@@ -195,7 +195,7 @@ if [[ "$CONFIGURATION" == "Debug-Black" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
 fi
-if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
+if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
@@ -215,47 +215,7 @@ if [[ "$CONFIGURATION" == "Debug-Prod" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
 fi
-if [[ "$CONFIGURATION" == "Release-Black" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftOTP/SwiftOTP.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-ObfuscatedConstants/ProtonCore_ObfuscatedConstants.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
-fi
-if [[ "$CONFIGURATION" == "Release-Prod" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SwiftOTP/SwiftOTP.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-ObfuscatedConstants/ProtonCore_ObfuscatedConstants.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
-fi
-if [[ "$CONFIGURATION" == "Release-Prod-QA" ]]; then
+if [[ "$CONFIGURATION" == "Release-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
