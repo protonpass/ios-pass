@@ -20,7 +20,7 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>FooterText</key>
-			<string>This will add a &quot;QA Features&quot; option to the bottom of the Profile tab</string>
+			<string>Add &quot;QA Features&quot; option to the bottom of the Profile tab</string>
 			<key>Title</key>
 			<string>QA features</string>
 		</dict>
@@ -38,7 +38,7 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>FooterText</key>
-			<string>&quot;Automatic&quot; points to black in debug mode &amp; points to prod in release mode</string>
+			<string>&quot;Automatic&quot; points to black in debug mode &amp; points to prod in release mode. So it always points to prod if app is installed via TestFlight.</string>
 			<key>Title</key>
 			<string>Environment</string>
 		</dict>
@@ -72,89 +72,15 @@
 			<key>FooterText</key>
 			<string>Only applicable if chosen environment is &quot;Custom&quot;</string>
 			<key>Title</key>
+			<string>Custom environment</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
 			<string>Custom environment values</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string>proton.me</string>
-			<key>Title</key>
-			<string>Sign up domain</string>
-			<key>Key</key>
-			<string>pref_custom_env_sign_up_domain</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string>https://pass-api.proton.me</string>
-			<key>KeyboardType</key>
-			<string>URL</string>
-			<key>Title</key>
-			<string>Captcha host</string>
-			<key>Key</key>
-			<string>pref_custom_env_captcha_host</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string>https://verify.proton.me</string>
-			<key>KeyboardType</key>
-			<string>URL</string>
-			<key>Title</key>
-			<string>Human verification host</string>
-			<key>Key</key>
-			<string>pref_custom_env_human_verification_host</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string>https://account.proton.me</string>
-			<key>KeyboardType</key>
-			<string>URL</string>
-			<key>Title</key>
-			<string>Account host</string>
-			<key>Key</key>
-			<string>pref_custom_env_account_host</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string>https://pass-api.proton.me</string>
-			<key>KeyboardType</key>
-			<string>URL</string>
-			<key>Title</key>
-			<string>Default host</string>
-			<key>Key</key>
-			<string>pref_custom_env_default_host</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string>https://pass-api.proton.me</string>
-			<key>KeyboardType</key>
-			<string>URL</string>
-			<key>Title</key>
-			<string>API host</string>
-			<key>Key</key>
-			<string>pref_custom_env_api_host</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string></string>
-			<key>KeyboardType</key>
-			<string>URL</string>
-			<key>Title</key>
-			<string>Default path</string>
-			<key>Key</key>
-			<string>pref_custom_env_default_path</string>
+			<key>File</key>
+			<string>CustomEnvironmentValues</string>
 		</dict>
 	</array>
 </dict>
