@@ -37,6 +37,6 @@ public final class ProtonPassDoH: DoH, ServerConfig {
         self.accountHost = params.accountHost
         self.defaultHost = params.defaultHost
         self.apiHost = params.apiHost
-        self.defaultPath = params.defaultHost
+        self.defaultPath = params.defaultPath
     }
 }

@@ -11,7 +11,7 @@
 			<string>Default values for prod (with or without &quot;https://&quot; does matter)
 - Sign up domain: proton.me
 - Captcha host: https://pass-api.proton.me
-- Human verification: https://verify.proton.me
+- HV (human verification) host: https://verify.proton.me
 - Account host: https://account.proton.me
 - Default host: https://pass-api.proton.me
 - API host: pass-api.proton.me
@@ -49,7 +49,7 @@
 			<key>KeyboardType</key>
 			<string>URL</string>
 			<key>Title</key>
-			<string>Human verification host</string>
+			<string>HV host</string>
 			<key>Key</key>
 			<string>pref_custom_env_human_verification_host</string>
 		</dict>

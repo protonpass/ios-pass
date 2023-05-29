@@ -2,20 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ACCOUNT_HOST</key>
-	<string>$(ACCOUNT_HOST)</string>
-	<key>API_HOST</key>
-	<string>$(API_HOST)</string>
 	<key>APP_VERSION_IDENTIFIER</key>
 	<string>$(APP_VERSION_IDENTIFIER)</string>
-	<key>CAPTCHA_HOST</key>
-	<string>$(CAPTCHA_HOST)</string>
-	<key>DEFAULT_HOST</key>
-	<string>$(DEFAULT_HOST)</string>
-	<key>DEFAULT_PATH</key>
-	<string>$(DEFAULT_PATH)</string>
-	<key>HUMAN_VERIFICATION_V3_HOST</key>
-	<string>$(HUMAN_VERIFICATION_V3_HOST)</string>
+	<key>IS_QA_BUILD</key>
+	<string>$(IS_QA_BUILD)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>ITSEncryptionExportComplianceCode</key>
@@ -28,8 +18,6 @@
 		<string>brave</string>
 		<string>microsoft-edge</string>
 	</array>
-	<key>SIGNUP_DOMAIN</key>
-	<string>$(SIGNUP_DOMAIN)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
