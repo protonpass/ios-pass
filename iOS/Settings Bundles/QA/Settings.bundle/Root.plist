@@ -22,24 +22,6 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>FooterText</key>
-			<string>Add &quot;QA Features&quot; option to the bottom of the Profile tab</string>
-			<key>Title</key>
-			<string>QA features</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Enable</string>
-			<key>Key</key>
-			<string>pref_qa_features</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>FooterText</key>
 			<string>&quot;Automatic&quot; points to black in debug mode &amp; points to prod in release mode. So it always points to prod if app is installed via TestFlight.</string>
 			<key>Title</key>
 			<string>Environment</string>
