@@ -130,7 +130,7 @@ struct CreateEditAliasView: View {
 
                     #if DEBUG
                     CustomFieldSections(contentType: .alias,
-                                        customFields: $viewModel.customFields,
+                                        uiModels: $viewModel.customFieldUiModels,
                                         onAddMore: viewModel.addCustomField,
                                         onEditTitle: viewModel.editCustomFieldTitle)
                     #endif

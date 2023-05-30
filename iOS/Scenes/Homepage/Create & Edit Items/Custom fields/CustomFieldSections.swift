@@ -23,16 +23,16 @@ import SwiftUI
 
 struct CustomFieldSections: View {
     let contentType: ItemContentType
-    @Binding var customFields: [CustomField]
+    @Binding var uiModels: [CustomFieldUiModel]
     let onAddMore: () -> Void
-    let onEditTitle: (CustomField) -> Void
+    let onEditTitle: (CustomFieldUiModel) -> Void
 
     var body: some View {
-        ForEach($customFields) { $field in
+        ForEach($uiModels) { $uiModel in
             EditCustomFieldView(contentType: contentType,
-                                customField: $field,
-                                onEditTitle: { onEditTitle(field) },
-                                onRemove: { customFields.removeAll(where: { $0.id == field.id }) })
+                                uiModel: $uiModel,
+                                onEditTitle: { onEditTitle(uiModel) },
+                                onRemove: { uiModels.removeAll(where: { $0.id == uiModel.id }) })
         }
 
         Button(action: onAddMore) {

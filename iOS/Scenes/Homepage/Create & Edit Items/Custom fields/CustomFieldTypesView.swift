@@ -18,20 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
-
-enum CustomFieldType: CaseIterable {
-    case text, totp, hidden
-}
-
-struct CustomField: Identifiable {
-    var id = UUID().uuidString
-    let title: String
-    let type: CustomFieldType
-    var content: String
-}
 
 struct CustomFieldTypesView: View {
     let onSelect: (CustomFieldType) -> Void

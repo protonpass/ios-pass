@@ -72,7 +72,7 @@ struct CreateEditLoginView: View {
 
                         #if DEBUG
                         CustomFieldSections(contentType: .login,
-                                            customFields: $viewModel.customFields,
+                                            uiModels: $viewModel.customFieldUiModels,
                                             onAddMore: viewModel.addCustomField,
                                             onEditTitle: viewModel.editCustomFieldTitle)
                         #endif
@@ -80,7 +80,7 @@ struct CreateEditLoginView: View {
                         Spacer()
                     }
                     .padding()
-                    .animation(.default, value: viewModel.customFields.count)
+                    .animation(.default, value: viewModel.customFieldUiModels.count)
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
                 }
                 .onChange(of: focusedField) { focusedField in

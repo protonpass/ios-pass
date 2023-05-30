@@ -68,6 +68,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
         ItemContentProtobuf(name: title,
                             note: note,
                             itemUuid: UUID().uuidString,
-                            data: ItemContentData.note)
+                            data: ItemContentData.note,
+                            customFields: [])
     }
 }

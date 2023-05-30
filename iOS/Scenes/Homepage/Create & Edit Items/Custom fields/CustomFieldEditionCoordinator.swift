@@ -18,11 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import SwiftUI
 
+struct CustomFieldUiModel: Identifiable {
+    var id = UUID().uuidString
+    var customField: CustomField
+}
+
 protocol CustomFieldEditionDelegate: AnyObject {
-    func customFieldEdited(_ customField: CustomField, newTitle: String)
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
 }
 
 final class CustomFieldEditionCoordinator: DeinitPrintable {
@@ -30,19 +36,19 @@ final class CustomFieldEditionCoordinator: DeinitPrintable {
 
     let rootViewController: UIViewController
     let delegate: CustomFieldEditionDelegate
-    let customField: CustomField
+    let uiModel: CustomFieldUiModel
 
     init(rootViewController: UIViewController,
          delegate: CustomFieldEditionDelegate,
-         customField: CustomField) {
+         uiModel: CustomFieldUiModel) {
         self.rootViewController = rootViewController
         self.delegate = delegate
-        self.customField = customField
+        self.uiModel = uiModel
     }
 
     func start() {
         let alert = UIAlertController(title: "Edit field title",
-                                      message: "Enter new title for \"\(customField.title)\"",
+                                      message: "Enter new title for \"\(uiModel.customField.title)\"",
                                       preferredStyle: .alert)
         alert.addTextField { textField in
             textField.placeholder = "New field title"
@@ -52,9 +58,8 @@ final class CustomFieldEditionCoordinator: DeinitPrintable {
             textField.addAction(action, for: .editingChanged)
         }
 
-        let saveAction = UIAlertAction(title: "Save", style: .default) { [customField, delegate] _ in
-            delegate.customFieldEdited(customField,
-                                       newTitle: alert.textFields?.first?.text ?? "")
+        let saveAction = UIAlertAction(title: "Save", style: .default) { [uiModel, delegate] _ in
+            delegate.customFieldEdited(uiModel, newTitle: alert.textFields?.first?.text ?? "")
         }
         saveAction.isEnabled = false
         alert.addAction(saveAction)

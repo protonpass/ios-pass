@@ -173,7 +173,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return ItemContentProtobuf(name: title,
                                    note: note,
                                    itemUuid: UUID().uuidString,
-                                   data: logInData)
+                                   data: logInData,
+                                   customFields: customFieldUiModels.map { $0.customField })
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
@@ -189,7 +190,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return .init(name: title,
                      note: "Alias of login item \"\(title)\"",
                      itemUuid: UUID().uuidString,
-                     data: .alias)
+                     data: .alias,
+                     customFields: [])
     }
 
     override func additionalEdit() async throws {

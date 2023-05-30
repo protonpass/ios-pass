@@ -79,13 +79,48 @@ public struct LogInItemData {
     }
 }
 
+public enum CustomFieldType: CaseIterable {
+    case text, totp, hidden
+}
+
+public struct CustomField {
+    public let title: String
+    public let type: CustomFieldType
+    public var content: String
+
+    public init(title: String, type: CustomFieldType, content: String) {
+        self.title = title
+        self.type = type
+        self.content = content
+    }
+
+    init(from extraField: ProtonPassItemV1_ExtraField) {
+        self.title = extraField.fieldName
+        switch extraField.content {
+        case .text(let extraText):
+            self.type = .text
+            self.content = extraText.content
+
+        case .totp(let extraTotp):
+            self.type = .totp
+            self.content = extraTotp.totpUri
+
+        case .hidden(let extraHidden):
+            self.type = .hidden
+            self.content = extraHidden.content
+
+        default:
+            self.type = .text
+            self.content = ""
+        }
+    }
+}
+
 public protocol ItemContentProtocol {
-    // Metadata
     var name: String { get }
     var note: String { get }
-
-    // Custom data
     var contentData: ItemContentData { get }
+    var customFields: [CustomField] { get }
 }
 
 public typealias ItemContentProtobuf = ProtonPassItemV1_Item
@@ -112,6 +147,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         }
     }
 
+    public var customFields: [CustomField] { extraFields.map { .init(from: $0) } }
+
     public func data() throws -> Data {
         try self.serializedData()
     }
@@ -123,11 +160,13 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     public init(name: String,
                 note: String,
                 itemUuid: String,
-                data: ItemContentData) {
+                data: ItemContentData,
+                customFields: [CustomField]) {
         metadata = .init()
         metadata.itemUuid = itemUuid
         metadata.name = name
         metadata.note = note
+
         switch data {
         case .alias:
             content.alias = .init()
@@ -142,6 +181,27 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         case .note:
             content.note = .init()
         }
+
+        extraFields = customFields.map { customField in
+            var extraField = ProtonPassItemV1_ExtraField()
+            extraField.fieldName = customField.title
+
+            switch customField.type {
+            case .text:
+                extraField.text = .init()
+                extraField.text.content = customField.content
+
+            case .totp:
+                extraField.totp = .init()
+                extraField.totp.totpUri = customField.content
+
+            case .hidden:
+                extraField.hidden = .init()
+                extraField.hidden.content = customField.content
+            }
+
+            return extraField
+        }
     }
 }
 
@@ -152,6 +212,7 @@ public struct ItemContent: ItemContentProtocol {
     public let name: String
     public let note: String
     public let contentData: ItemContentData
+    public let customFields: [CustomField]
 
     public init(shareId: String,
                 item: ItemRevision,
@@ -162,10 +223,15 @@ public struct ItemContent: ItemContentProtocol {
         self.name = contentProtobuf.name
         self.note = contentProtobuf.note
         self.contentData = contentProtobuf.contentData
+        self.customFields = contentProtobuf.customFields
     }
 
     public var protobuf: ItemContentProtobuf {
-        .init(name: name, note: note, itemUuid: itemUuid, data: contentData)
+        .init(name: name,
+              note: note,
+              itemUuid: itemUuid,
+              data: contentData,
+              customFields: customFields)
     }
 }
 
