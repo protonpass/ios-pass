@@ -57,7 +57,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
-    func getDecryptedItemContent(shareId: String, itemId: String) async throws -> ItemContent?
+    /// Get decrypted item content
+    func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
     /// Full sync for a given `shareId`
     func refreshItems(shareId: String) async throws
@@ -109,7 +110,7 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 
     /// Update the last use time of an item. Only log in items are concerned.
-    func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws
+    func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws
 }
 
 private extension ItemRepositoryProtocol {
@@ -133,9 +134,9 @@ public extension ItemRepositoryProtocol {
         try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
     }
 
-    func getDecryptedItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
+    func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
         let encryptedItem = try await getItem(shareId: shareId, itemId: itemId)
-        return try encryptedItem?.getDecryptedItemContent(symmetricKey: symmetricKey)
+        return try encryptedItem?.getItemContent(symmetricKey: symmetricKey)
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
@@ -328,9 +329,8 @@ public extension ItemRepositoryProtocol {
                     shareId: String) async throws {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
-        let encryptedOldItemContentData = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
-        let decryptedOldItemContentData =
-        try encryptedOldItemContentData?.getDecryptedItemContent(symmetricKey: symmetricKey)
+        let symmetricallyEncryptedOldItem = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
+        let oldItemContentData = try symmetricallyEncryptedOldItem?.getItemContent(symmetricKey: symmetricKey)
         let latestItemKey = try await passKeyManager.getLatestItemKey(shareId: shareId,
                                                                       itemId: itemId)
         let request = try UpdateItemRequest(oldRevision: oldItem,
@@ -345,7 +345,7 @@ public extension ItemRepositoryProtocol {
         try await localItemDatasoure.upsertItems([encryptedItem])
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
 
-        if case .login(let oldData) = decryptedOldItemContentData?.contentData,
+        if case .login(let oldData) = oldItemContentData?.contentData,
            case .login(let newData) = newItemContent.contentData {
             let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
             let deletedCredentials = oldData.urls.map { oldUrl in
@@ -379,7 +379,7 @@ public extension ItemRepositoryProtocol {
             throw PPClientError.itemNotFound(item: item)
         }
 
-        let oldItemContent = try oldEncryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+        let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: symmetricKey)
         let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
         let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
                                           destinationShareId: toShareId,
@@ -401,7 +401,7 @@ public extension ItemRepositoryProtocol {
         return logInItems
     }
 
-    func update(item: SymmetricallyEncryptedItem, lastUseTime: TimeInterval) async throws {
+    func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws {
         logger.trace("Updating lastUsedTime \(item.debugInformation)")
         let updatedItem =
         try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
@@ -421,8 +421,7 @@ private extension ItemRepositoryProtocol {
         let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
         let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey)
-        let encryptedContentProtobuf = try contentProtobuf.symmetricallyEncrypted(symmetricKey)
-        let encryptedContent = try encryptedContentProtobuf.serializedData().base64EncodedString()
+        let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
 
         let isLogInItem: Bool
         if case .login = contentProtobuf.contentData {
@@ -442,7 +441,7 @@ private extension ItemRepositoryProtocol {
         let encryptedLogInItems = encryptedItems.filter { $0.item.itemState == state }
         var credentials = [AutoFillCredential]()
         for encryptedLogInItem in encryptedLogInItems {
-            let decryptedLogInItem = try encryptedLogInItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+            let decryptedLogInItem = try encryptedLogInItem.getItemContent(symmetricKey: symmetricKey)
             if case .login(let data) = decryptedLogInItem.contentData {
                 for url in data.urls {
                     credentials.append(.init(ids: .init(shareId: decryptedLogInItem.shareId,
@@ -471,7 +470,7 @@ public extension ItemRepositoryProtocol {
         let loginItemsWithTotp =
         try items
             .filter { $0.isLogInItem }
-            .map { try $0.getDecryptedItemContent(symmetricKey: symmetricKey) }
+            .map { try $0.getItemContent(symmetricKey: symmetricKey) }
             .filter { item in
                 switch item.contentData {
                 case .login(let loginData):

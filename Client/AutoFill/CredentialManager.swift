@@ -127,14 +127,14 @@ public extension CredentialManagerProtocol {
             // Do not suggest items in non-primary vaults when in free plan
             guard shouldTakeIntoAccount else { continue }
 
-            let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-            if case .login(let data) = decryptedItem.contentData {
+            let itemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+            if case .login(let data) = itemContent.contentData {
                 for url in data.urls {
-                    credentials.append(.init(shareId: decryptedItem.shareId,
-                                             itemId: decryptedItem.item.itemID,
+                    credentials.append(.init(shareId: itemContent.shareId,
+                                             itemId: itemContent.item.itemID,
                                              username: data.username,
                                              url: url,
-                                             lastUseTime: encryptedItem.item.lastUseTime ?? 0))
+                                             lastUseTime: itemContent.item.lastUseTime ?? 0))
                 }
             }
         }

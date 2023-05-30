@@ -45,7 +45,7 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
     func credentialsViewModelWantsToUpgrade()
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
-                                       item: SymmetricallyEncryptedItem,
+                                       itemContent: ItemContent,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier])
     func credentialsViewModelDidFail(_ error: Error)
 }
@@ -225,7 +225,7 @@ extension CredentialsViewModel {
             do {
                 logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await getItemTask(item: item).value
-                let oldContent = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 guard case .login(let oldData) = oldContent.contentData else {
                     throw PPError.credentialProvider(.notLogInItem)
                 }
@@ -256,9 +256,9 @@ extension CredentialsViewModel {
         Task { @MainActor in
             do {
                 logger.trace("Selecting \(item.debugInformation)")
-                let (credential, item) = try await getCredentialTask(for: item).value
+                let (credential, itemContent) = try await getCredentialTask(for: item).value
                 delegate?.credentialsViewModelDidSelect(credential: credential,
-                                                        item: item,
+                                                        itemContent: itemContent,
                                                         serviceIdentifiers: serviceIdentifiers)
                 logger.info("Selected \(item.debugInformation)")
             } catch {
@@ -320,8 +320,7 @@ private extension CredentialsViewModel {
             var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
             var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
             for encryptedItem in encryptedItems {
-                let decryptedItemContent =
-                try encryptedItem.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+                let decryptedItemContent = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
 
                 let vault = vaults.first { $0.shareId == encryptedItem.shareId }
                 assert(vault != nil, "Must have at least 1 vault")
@@ -372,19 +371,18 @@ private extension CredentialsViewModel {
         }
     }
 
-    func getCredentialTask(for item: ItemIdentifiable)
-    -> Task<(ASPasswordCredential, SymmetricallyEncryptedItem), Error> {
+    func getCredentialTask(for item: ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
         Task.detached(priority: .userInitiated) {
-            guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
-                                                                   itemId: item.itemId) else {
+            guard let itemContent =
+                    try await self.itemRepository.getItemContent(shareId: item.shareId,
+                                                                 itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
-            let itemContent = try item.getDecryptedItemContent(symmetricKey: self.symmetricKey)
 
             switch itemContent.contentData {
             case .login(let data):
                 let credential = ASPasswordCredential(user: data.username, password: data.password)
-                return (credential, item)
+                return (credential, itemContent)
             default:
                 throw PPError.credentialProvider(.notLogInItem)
             }

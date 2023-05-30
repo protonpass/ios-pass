@@ -186,9 +186,8 @@ extension ItemsTabViewModel {
     func viewDetail(of item: ItemUiModel) {
         Task { @MainActor in
             do {
-                if let itemContent =
-                    try await itemRepository.getDecryptedItemContent(shareId: item.shareId,
-                                                                     itemId: item.itemId) {
+                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                             itemId: item.itemId) {
                     delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {

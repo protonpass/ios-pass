@@ -47,7 +47,7 @@ public struct SearchableItem: ItemTypeIdentifiable {
             self.vault = nil
         }
 
-        let itemContent = try item.getDecryptedItemContent(symmetricKey: symmetricKey)
+        let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
         self.type = itemContent.contentData.type
         self.name = itemContent.name
         self.note = itemContent.note

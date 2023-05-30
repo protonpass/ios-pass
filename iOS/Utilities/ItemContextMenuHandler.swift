@@ -175,7 +175,7 @@ private extension ItemContextMenuHandler {
     func getDecryptedItemContent(for item: ItemIdentifiable) async throws -> ItemContent {
         let symmetricKey = self.itemRepository.symmetricKey
         let encryptedItem = try await self.getEncryptedItem(for: item)
-        return try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+        return try encryptedItem.getItemContent(symmetricKey: symmetricKey)
     }
 
     func getEncryptedItem(for item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
