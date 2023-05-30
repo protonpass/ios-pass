@@ -27,7 +27,7 @@ struct EditCustomFieldView: View {
     @FocusState private var focusedField: Dummy?
     @State private var isRemoved = false
     let contentType: ItemContentType
-    @Binding var customField: CustomField
+    @Binding var uiModel: CustomFieldUiModel
 
     var onEditTitle: () -> Void
     var onRemove: () -> Void
@@ -36,10 +36,10 @@ struct EditCustomFieldView: View {
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: customField.type.icon)
+            ItemDetailSectionIcon(icon: uiModel.customField.type.icon)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text(customField.title)
+                Text(uiModel.customField.title)
                     .sectionTitleText()
 
                 // Remove TextField from view's hierachy before removing the custom field
@@ -51,13 +51,13 @@ struct EditCustomFieldView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .opacity(0)
                 } else {
-                    switch customField.type {
+                    switch uiModel.customField.type {
                     case .text, .totp:
-                        TextField("", text: $customField.content)
+                        TextField("", text: $uiModel.customField.content)
                             .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                     case .hidden:
-                        SensitiveTextField(text: $customField.content,
+                        SensitiveTextField(text: $uiModel.customField.content,
                                            placeholder: "",
                                            focusedField: $focusedField,
                                            field: .dummy)

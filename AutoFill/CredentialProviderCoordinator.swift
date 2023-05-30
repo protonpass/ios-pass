@@ -709,11 +709,11 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         coordinator.start()
     }
 
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate) {
         let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
                                                         delegate: delegate,
-                                                        customField: customField)
+                                                        uiModel: uiModel)
         coordinator.start()
     }
 

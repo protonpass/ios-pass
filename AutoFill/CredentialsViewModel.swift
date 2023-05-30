@@ -244,7 +244,8 @@ extension CredentialsViewModel {
                 let newContent = ItemContentProtobuf(name: oldContent.name,
                                                      note: oldContent.note,
                                                      itemUuid: oldContent.itemUuid,
-                                                     data: newLoginData)
+                                                     data: newLoginData,
+                                                     customFields: oldContent.customFields)
                 try await itemRepository.updateItem(oldItem: encryptedItem.item,
                                                     newItemContent: newContent,
                                                     shareId: encryptedItem.shareId)
