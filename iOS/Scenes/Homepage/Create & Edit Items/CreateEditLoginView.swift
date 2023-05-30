@@ -81,6 +81,7 @@ struct CreateEditLoginView: View {
                     }
                     .padding()
                     .animation(.default, value: viewModel.customFields.count)
+                    .animation(.default, value: viewModel.canAddOrEdit2FAURI)
                 }
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?
@@ -265,7 +266,11 @@ struct CreateEditLoginView: View {
             PassSectionDivider()
             passwordRow
             PassSectionDivider()
-            totpRow
+            if viewModel.canAddOrEdit2FAURI {
+                totpAllowedRow
+            } else {
+                totpNotAllowedRow
+            }
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedEditableSection()
@@ -409,7 +414,21 @@ struct CreateEditLoginView: View {
         .id(passwordID)
     }
 
-    private var totpRow: some View {
+    private var totpNotAllowedRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.lock)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("2FA limit reached")
+                    .sectionTitleText()
+                UpgradeButtonLite(action: viewModel.upgrade)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+    }
+
+    private var totpAllowedRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 

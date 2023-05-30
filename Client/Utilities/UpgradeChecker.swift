@@ -33,6 +33,7 @@ public protocol UpgradeCheckerProtocol: AnyObject {
     /// Return `null` when there's no limitation (unlimited aliases)
     func aliasLimitation() async throws -> AliasLimitation?
     func canCreateMoreVaults() async throws -> Bool
+    func canHaveMoreLoginsWith2FA() async throws -> Bool
     func canShowTOTPToken(creationDate: Int64) async throws -> Bool
     func isFreeUser() async throws -> Bool
 }
@@ -53,6 +54,12 @@ public extension UpgradeCheckerProtocol {
             return vaultCount < vaultLimit
         }
         return true
+    }
+
+    func canHaveMoreLoginsWith2FA() async throws -> Bool {
+        let plan = try await passPlanRepository.getPlan()
+        guard let totpLimit = plan.totpLimit else { return true }
+        return counter.getTOTPCount() < totpLimit
     }
 
     func canShowTOTPToken(creationDate: Int64) async throws -> Bool {
