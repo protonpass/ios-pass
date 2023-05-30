@@ -66,14 +66,14 @@ final class APIManager {
 
         if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
             self.apiService = PMAPIService.createAPIService(
-                doh: PPDoH(bundle: .main),
+                doh: ProtonPassDoH(),
                 sessionUID: credential.sessionID,
                 challengeParametersProvider: .forAPIService(clientApp: .other(named: "pass"), challenge: .init())
             )
             self.authHelper = AuthHelper(authCredential: credential)
         } else {
             self.apiService = PMAPIService.createAPIServiceWithoutSession(
-                doh: PPDoH(bundle: .main),
+                doh: ProtonPassDoH(),
                 challengeParametersProvider: .forAPIService(clientApp: .other(named: "pass"), challenge: .init())
             )
             self.authHelper = AuthHelper()

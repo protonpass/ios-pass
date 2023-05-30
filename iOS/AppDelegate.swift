@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Sentry
 import UIKit
 
@@ -26,6 +27,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setUpSentry()
+        setUpDefaultValuesForSettingsBundle()
         return true
     }
 
@@ -39,8 +41,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-extension AppDelegate {
-    private func setUpSentry() {
+private extension AppDelegate {
+    func setUpSentry() {
         SentrySDK.start { options in
             options.dsn = "https://a053e81a23354f1eb6becdeb3a91440a@pass-api.proton.me/core/v4/reports/sentry/44"
             if ProcessInfo.processInfo.environment["me.proton.pass.SentryDebug"] == "1" {
@@ -51,5 +53,12 @@ extension AppDelegate {
             options.enableCoreDataTracking = true
             options.attachViewHierarchy = true // EXPERIMENTAL
         }
+    }
+
+    func setUpDefaultValuesForSettingsBundle() {
+        let appVersionKey = "pref_app_version"
+        let appVersionValue = "\(Bundle.main.fullAppVersionName())(\(Bundle.main.buildNumber))"
+        kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
+        kSharedUserDefaults.set(appVersionValue, forKey: appVersionKey)
     }
 }
