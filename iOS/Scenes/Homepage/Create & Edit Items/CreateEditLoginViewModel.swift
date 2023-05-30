@@ -39,6 +39,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
+    @Published private(set) var canAddOrEdit2FAURI = true
     @Published private(set) var isAlias = false // `Username` is an alias or a custom one
     @Published var title = ""
     @Published var username = ""
@@ -144,6 +145,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if case let .login(title, url, _) = type {
                 self.title = title ?? ""
                 self.urls = [url ?? ""].map { .init(value: $0) }
+            }
+
+            Task { @MainActor in
+                canAddOrEdit2FAURI = try await upgradeChecker.canHaveMoreLoginsWith2FA()
             }
         }
     }
