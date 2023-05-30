@@ -94,8 +94,8 @@ class BaseItemDetailViewModel {
     func refresh() {
         Task { @MainActor in
             guard let updatedItemContent =
-                    try await itemRepository.getDecryptedItemContent(shareId: itemContent.shareId,
-                                                                     itemId: itemContent.item.itemID) else {
+                    try await itemRepository.getItemContent(shareId: itemContent.shareId,
+                                                            itemId: itemContent.item.itemID) else {
                 return
             }
             itemContent = updatedItemContent
@@ -122,7 +122,7 @@ class BaseItemDetailViewModel {
                 logger.trace("Trashing \(itemContent.debugInformation)")
                 delegate?.itemDetailViewModelWantsToShowSpinner()
                 let encryptedItem = try await getItemTask(item: itemContent).value
-                let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await itemRepository.trashItems([encryptedItem])
                 delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 logger.info("Trashed \(item.debugInformation)")
@@ -141,7 +141,7 @@ class BaseItemDetailViewModel {
                 delegate?.itemDetailViewModelWantsToShowSpinner()
                 let encryptedItem = try await getItemTask(item: itemContent).value
                 let symmetricKey = itemRepository.symmetricKey
-                let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await itemRepository.untrashItems([encryptedItem])
                 delegate?.itemDetailViewModelDidRestore(item: item)
                 logger.info("Restored \(item.debugInformation)")
@@ -160,7 +160,7 @@ class BaseItemDetailViewModel {
                 delegate?.itemDetailViewModelWantsToShowSpinner()
                 let encryptedItem = try await getItemTask(item: itemContent).value
                 let symmetricKey = itemRepository.symmetricKey
-                let item = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 delegate?.itemDetailViewModelDidPermanentlyDelete(item: item)
                 logger.info("Permanently deleted \(item.debugInformation)")

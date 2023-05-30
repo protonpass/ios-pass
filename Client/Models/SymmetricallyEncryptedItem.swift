@@ -34,25 +34,12 @@ public struct SymmetricallyEncryptedItem: Equatable {
     /// Whether the item is type log in or not
     public let isLogInItem: Bool
 
-    public func getEncryptedItemContent() throws -> ItemContent {
-        guard let data = try encryptedContent.base64Decode() else {
-            throw PPClientError.corruptedEncryptedContent
-        }
-        let protobufItem = try ItemContentProtobuf(data: data)
+    /// Symmetrically decrypt and return decrypted item content
+    public func getItemContent(symmetricKey: SymmetricKey) throws -> ItemContent {
+        let contentProtobuf = try ItemContentProtobuf(base64: encryptedContent, symmetricKey: symmetricKey)
         return .init(shareId: shareId,
                      item: item,
-                     contentProtobuf: protobufItem)
-    }
-
-    public func getDecryptedItemContent(symmetricKey: SymmetricKey) throws -> ItemContent {
-        guard let data = try encryptedContent.base64Decode() else {
-            throw PPClientError.corruptedEncryptedContent
-        }
-        let encryptedProtobufItem = try ItemContentProtobuf(data: data)
-        let decryptedProtobufItem = try encryptedProtobufItem.symmetricallyDecrypted(symmetricKey)
-        return .init(shareId: shareId,
-                     item: item,
-                     contentProtobuf: decryptedProtobufItem)
+                     contentProtobuf: contentProtobuf)
     }
 }
 

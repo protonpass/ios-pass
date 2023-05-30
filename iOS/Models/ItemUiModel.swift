@@ -51,49 +51,37 @@ extension ItemUiModel: AlphabeticalSortable {
 
 extension SymmetricallyEncryptedItem {
     func toItemUiModel(_ symmetricKey: SymmetricKey) throws -> ItemUiModel {
-        let encryptedItemContent = try getEncryptedItemContent()
-        let name = try symmetricKey.decrypt(encryptedItemContent.name)
+        let itemContent = try getItemContent(symmetricKey: symmetricKey)
 
         let note: String
-        let url: String?
-        let isAlias: Bool
-        let hasTotpUri: Bool
+        var url: String?
+        var isAlias = false
+        var hasTotpUri = false
 
-        switch encryptedItemContent.contentData {
+        switch itemContent.contentData {
         case .login(let data):
-            note = try symmetricKey.decrypt(data.username)
-            if let firstUrl = data.urls.first {
-                url = try symmetricKey.decrypt(firstUrl)
-            } else {
-                url = nil
-            }
-            isAlias = false
-            let totpUri = try symmetricKey.decrypt(data.totpUri)
-            hasTotpUri = !totpUri.isEmpty
+            note = data.username
+            url = data.urls.first
+            hasTotpUri = !data.totpUri.isEmpty
 
         case .alias:
             note = item.aliasEmail ?? ""
-            url = nil
             isAlias = true
-            hasTotpUri = false
 
         default:
-            note = try String(symmetricKey.decrypt(encryptedItemContent.note).prefix(50))
-            url = nil
-            isAlias = false
-            hasTotpUri = false
+            note = String(itemContent.note.prefix(50))
         }
 
-        return .init(itemId: encryptedItemContent.item.itemID,
-                     shareId: encryptedItemContent.shareId,
-                     type: encryptedItemContent.contentData.type,
-                     title: name,
+        return .init(itemId: item.itemID,
+                     shareId: shareId,
+                     type: itemContent.contentData.type,
+                     title: itemContent.name,
                      description: note,
                      url: url,
                      isAlias: isAlias,
                      hasTotpUri: hasTotpUri,
                      lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime,
-                     state: encryptedItemContent.item.itemState)
+                     state: item.itemState)
     }
 }

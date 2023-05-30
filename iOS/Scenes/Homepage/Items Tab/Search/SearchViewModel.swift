@@ -227,9 +227,8 @@ extension SearchViewModel {
     func viewDetail(of item: ItemIdentifiable) {
         Task { @MainActor in
             do {
-                if let itemContent =
-                    try await itemRepository.getDecryptedItemContent(shareId: item.shareId,
-                                                                     itemId: item.itemId) {
+                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                             itemId: item.itemId) {
                     try await searchEntryDatasource.upsert(item: item, date: .now)
                     try await refreshSearchHistory()
                     delegate?.searchViewModelWantsToViewDetail(of: itemContent)
