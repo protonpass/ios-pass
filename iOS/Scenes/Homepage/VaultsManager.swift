@@ -55,6 +55,9 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
 
+    /// Can be removed after going public
+    private let preferences: Preferences
+
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
 
@@ -64,12 +67,14 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
          manualLogIn: Bool,
          logManager: LogManager,
          shareRepository: ShareRepositoryProtocol,
-         symmetricKey: SymmetricKey) {
+         symmetricKey: SymmetricKey,
+         preferences: Preferences) {
         self.itemRepository = itemRepository
         self.manualLogIn = manualLogIn
         self.logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
+        self.preferences = preferences
     }
 }
 
@@ -142,7 +147,12 @@ extension VaultsManager {
                     try await fullSync()
                     manualLogIn = false
                     logger.info("Manual login, done full sync")
+                    preferences.didReencryptAllItems = true
                 } else {
+                    if !preferences.didReencryptAllItems {
+                        try await itemRepository.reencryptAllItemsTemp()
+                        preferences.didReencryptAllItems = true
+                    }
                     logger.info("Not manual login, getting local shares & items")
                     let vaults = try await shareRepository.getVaults()
                     try await loadContents(for: vaults)

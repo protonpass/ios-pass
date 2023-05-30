@@ -84,6 +84,10 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage("isFirstRun", store: kSharedUserDefaults)
     public var isFirstRun = true
 
+    /// Temporary boolean. Can be removed after going public.
+    @AppStorage("didReencryptAllItems", store: kSharedUserDefaults)
+    public var didReencryptAllItems = false
+
     public func reset(isUITests: Bool = false) {
         quickTypeBar = true
         automaticallyCopyTotpCode = false
