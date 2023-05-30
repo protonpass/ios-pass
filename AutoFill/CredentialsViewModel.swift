@@ -104,6 +104,9 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     weak var delegate: CredentialsViewModelDelegate?
 
+    /// To be removed
+    private let preferences: Preferences
+
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
@@ -118,7 +121,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          favIconRepository: FavIconRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier],
-         logManager: LogManager) {
+         logManager: LogManager,
+         preferences: Preferences) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
@@ -148,6 +152,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
         self.logManager = logManager
         self.logger = .init(manager: logManager)
+        self.preferences = preferences
 
         self.syncEventLoop.delegate = self
         syncEventLoop.start()
@@ -311,6 +316,11 @@ private extension CredentialsViewModel {
     // swiftlint:disable:next function_body_length
     func fetchCredentialsTask(plan: PassPlan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
+            if !self.preferences.didReencryptAllItems {
+                try await self.itemRepository.reencryptAllItemsTemp()
+                self.preferences.didReencryptAllItems = true
+            }
+
             let vaults = try await self.shareRepository.getVaults()
             let encryptedItems = try await self.itemRepository.getActiveLogInItems()
             self.logger.debug("Mapping \(encryptedItems.count) encrypted items")

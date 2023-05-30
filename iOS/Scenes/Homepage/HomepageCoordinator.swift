@@ -119,7 +119,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                           manualLogIn: manualLogIn,
                                           logManager: logManager,
                                           shareRepository: shareRepository,
-                                          symmetricKey: symmetricKey)
+                                          symmetricKey: symmetricKey,
+                                          preferences: preferences)
 
         self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.apiService = apiService

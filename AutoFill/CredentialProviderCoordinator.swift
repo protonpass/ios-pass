@@ -150,8 +150,7 @@ public final class CredentialProviderCoordinator {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let symmetricKey,
-              let itemRepository,
+        guard let itemRepository,
               let upgradeChecker,
               let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)
@@ -446,7 +445,8 @@ private extension CredentialProviderCoordinator {
                                              favIconRepository: favIconRepository,
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers,
-                                             logManager: logManager)
+                                             logManager: logManager,
+                                             preferences: preferences)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
