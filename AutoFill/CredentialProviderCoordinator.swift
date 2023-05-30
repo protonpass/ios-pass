@@ -704,6 +704,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
         let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+                                                         preferences: preferences,
                                                          delegate: delegate)
         coordinator.start()
     }
