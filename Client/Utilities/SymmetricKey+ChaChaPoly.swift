@@ -53,8 +53,3 @@ public extension SymmetricKey {
         return try ChaChaPoly.open(sealedBox, using: self)
     }
 }
-
-public protocol SymmetricallyEncryptable {
-    func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> Self
-    func symmetricallyDecrypted(_ symmetricKey: SymmetricKey) throws -> Self
-}

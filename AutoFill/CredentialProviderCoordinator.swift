@@ -150,8 +150,7 @@ public final class CredentialProviderCoordinator {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let symmetricKey,
-              let itemRepository,
+        guard let itemRepository,
               let upgradeChecker,
               let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancel(errorCode: .failed)
@@ -165,13 +164,12 @@ public final class CredentialProviderCoordinator {
                 do {
                     logger.trace("Autofilling from QuickType bar")
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
-                    if let encryptedItem = try await itemRepository.getItem(shareId: ids.shareId,
-                                                                            itemId: ids.itemId) {
-                        let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-                        if case .login(let data) = decryptedItem.contentData {
+                    if let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
+                                                                                 itemId: ids.itemId) {
+                        if case .login(let data) = itemContent.contentData {
                             complete(quickTypeBar: true,
                                      credential: .init(user: data.username, password: data.password),
-                                     encryptedItem: encryptedItem,
+                                     itemContent: itemContent,
                                      itemRepository: itemRepository,
                                      upgradeChecker: upgradeChecker,
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
@@ -202,10 +200,10 @@ public final class CredentialProviderCoordinator {
                                                   credentialIdentity: credentialIdentity,
                                                   logManager: logManager)
         viewModel.onFailure = handle(error:)
-        viewModel.onSuccess = { [unowned self] credential, item in
+        viewModel.onSuccess = { [unowned self] credential, itemContent in
             complete(quickTypeBar: false,
                      credential: credential,
-                     encryptedItem: item,
+                     itemContent: itemContent,
                      itemRepository: itemRepository,
                      upgradeChecker: upgradeChecker,
                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
@@ -299,12 +297,11 @@ public final class CredentialProviderCoordinator {
 }
 
 extension CredentialProviderCoordinator {
-    private func updateRank(encryptedItem: SymmetricallyEncryptedItem,
+    private func updateRank(itemContent: ItemContent,
                             symmetricKey: SymmetricKey,
                             serviceIdentifiers: [ASCredentialServiceIdentifier],
                             lastUseTime: TimeInterval) async throws {
-        let decryptedItem = try encryptedItem.getDecryptedItemContent(symmetricKey: symmetricKey)
-        if case .login(let data) = decryptedItem.contentData {
+        if case .login(let data) = itemContent.contentData {
             let serviceUrls = serviceIdentifiers
                 .map { serviceIdentifier in
                     switch serviceIdentifier.type {
@@ -328,8 +325,8 @@ extension CredentialProviderCoordinator {
             }
 
             let credentials = matchedUrls
-                .map { AutoFillCredential(shareId: encryptedItem.shareId,
-                                          itemId: encryptedItem.item.itemID,
+                .map { AutoFillCredential(shareId: itemContent.shareId,
+                                          itemId: itemContent.itemId,
                                           username: data.username,
                                           url: $0.absoluteString,
                                           lastUseTime: Int64(lastUseTime)) }
@@ -350,7 +347,7 @@ private extension CredentialProviderCoordinator {
     // swiftlint:disable:next function_parameter_count
     func complete(quickTypeBar: Bool,
                   credential: ASPasswordCredential,
-                  encryptedItem: SymmetricallyEncryptedItem,
+                  itemContent: ItemContent,
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -358,8 +355,8 @@ private extension CredentialProviderCoordinator {
             do {
                 let getTotpData: () async -> TOTPData? = {
                     do {
-                        if try await upgradeChecker.canShowTOTPToken(creationDate: encryptedItem.item.createTime) {
-                            return try encryptedItem.totpData(symmetricKey: itemRepository.symmetricKey)
+                        if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
+                            return try itemContent.totpData()
                         } else {
                             return nil
                         }
@@ -374,20 +371,19 @@ private extension CredentialProviderCoordinator {
                 }
 
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
-                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(encryptedItem.debugInformation)")
+                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(itemContent.debugInformation)")
 
                 let lastUseTime = Date().timeIntervalSince1970
-                logger.trace("Updating rank \(encryptedItem.debugInformation)")
-                try await updateRank(encryptedItem: encryptedItem,
+                logger.trace("Updating rank \(itemContent.debugInformation)")
+                try await updateRank(itemContent: itemContent,
                                      symmetricKey: itemRepository.symmetricKey,
                                      serviceIdentifiers: serviceIdentifiers,
                                      lastUseTime: lastUseTime)
-                logger.info("Updated rank \(encryptedItem.debugInformation)")
+                logger.info("Updated rank \(itemContent.debugInformation)")
 
-                logger.trace("Updating lastUseTime \(encryptedItem.debugInformation)")
-                try await itemRepository.update(item: encryptedItem,
-                                                lastUseTime: lastUseTime)
-                logger.info("Updated lastUseTime \(encryptedItem.debugInformation)")
+                logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
+                try await itemRepository.update(item: itemContent, lastUseTime: lastUseTime)
+                logger.info("Updated lastUseTime \(itemContent.debugInformation)")
 
                 if quickTypeBar {
                     addNewEvent(type: .autofillTriggeredFromSource)
@@ -449,7 +445,8 @@ private extension CredentialProviderCoordinator {
                                              favIconRepository: favIconRepository,
                                              symmetricKey: symmetricKey,
                                              serviceIdentifiers: serviceIdentifiers,
-                                             logManager: logManager)
+                                             logManager: logManager,
+                                             preferences: preferences)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel, preferences: preferences))
@@ -656,12 +653,12 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
-                                       item: SymmetricallyEncryptedItem,
+                                       itemContent: ItemContent,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         guard let itemRepository, let upgradeChecker else { return }
         complete(quickTypeBar: false,
                  credential: credential,
-                 encryptedItem: item,
+                 itemContent: itemContent,
                  itemRepository: itemRepository,
                  upgradeChecker: upgradeChecker,
                  serviceIdentifiers: serviceIdentifiers)
@@ -884,18 +881,5 @@ extension CredentialProviderCoordinator: LimitationCounterProtocol {
     public func getTOTPCount() -> Int {
         guard let totpCount else { return 0 }
         return totpCount
-    }
-}
-
-extension SymmetricallyEncryptedItem {
-    /// Get `TOTPData` of the current moment
-    func totpData(symmetricKey: SymmetricKey) throws -> TOTPData? {
-        let decryptedItemContent = try getDecryptedItemContent(symmetricKey: symmetricKey)
-        if case .login(let logInData) = decryptedItemContent.contentData,
-           !logInData.totpUri.isEmpty {
-            return try .init(uri: logInData.totpUri)
-        } else {
-            return nil
-        }
     }
 }
