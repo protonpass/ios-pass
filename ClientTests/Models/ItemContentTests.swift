@@ -32,10 +32,11 @@ final class ItemContentTests: XCTestCase {
         let givenSymmetricKey = SymmetricKey.random()
 
         // When
-        let encryptedItemContent = try givenItemContent.symmetricallyEncrypted(givenSymmetricKey)
+        let encryptedItemContent = try givenItemContent.encrypt(symmetricKey: givenSymmetricKey)
 
         // Then
-        let itemContent = try encryptedItemContent.symmetricallyDecrypted(givenSymmetricKey)
+        let itemContent = try ItemContentProtobuf(base64: encryptedItemContent,
+                                                  symmetricKey: givenSymmetricKey)
         XCTAssertEqual(itemContent, givenItemContent)
     }
 }

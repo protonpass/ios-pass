@@ -32,7 +32,7 @@ final class LockedCredentialViewModel: ObservableObject {
     let logManager: LogManager
 
     var onFailure: ((Error) -> Void)?
-    var onSuccess: ((ASPasswordCredential, SymmetricallyEncryptedItem) -> Void)?
+    var onSuccess: ((ASPasswordCredential, ItemContent) -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
@@ -57,13 +57,13 @@ final class LockedCredentialViewModel: ObservableObject {
                                                                        itemId: ids.itemId) else {
                     throw PPError.itemNotFound(shareID: ids.shareId, itemID: ids.itemId)
                 }
-                let itemContent = try item.getDecryptedItemContent(symmetricKey: self.symmetricKey)
+                let itemContent = try item.getItemContent(symmetricKey: self.symmetricKey)
 
                 switch itemContent.contentData {
                 case .login(let data):
                     let credential = ASPasswordCredential(user: data.username,
                                                           password: data.password)
-                    onSuccess?(credential, item)
+                    onSuccess?(credential, itemContent)
                     logger.info("Loaded and returned credential \(ids.debugInformation)")
                 default:
                     throw PPError.credentialProvider(.notLogInItem)

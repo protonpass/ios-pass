@@ -44,27 +44,25 @@ extension SearchEntryUiModel: Equatable {
 
 extension SymmetricallyEncryptedItem {
     func toSearchEntryUiModel(_ symmetricKey: SymmetricKey) throws -> SearchEntryUiModel {
-        let encryptedItemContent = try getEncryptedItemContent()
-        let name = try symmetricKey.decrypt(encryptedItemContent.name)
+        let itemContent = try getItemContent(symmetricKey: symmetricKey)
 
         let note: String?
         var url: String?
-        switch encryptedItemContent.contentData {
+
+        switch itemContent.contentData {
         case .login(let data):
-            note = try symmetricKey.decrypt(data.username)
-            if let firstUrl = data.urls.first {
-                url = try symmetricKey.decrypt(firstUrl)
-            }
+            note = data.username
+            url = data.urls.first
         case .alias:
             note = item.aliasEmail
         default:
-            note = try symmetricKey.decrypt(encryptedItemContent.note)
+            note = itemContent.note
         }
 
-        return .init(itemId: encryptedItemContent.item.itemID,
-                     shareId: encryptedItemContent.shareId,
-                     type: encryptedItemContent.contentData.type,
-                     title: name,
+        return .init(itemId: item.itemID,
+                     shareId: shareId,
+                     type: itemContent.contentData.type,
+                     title: itemContent.name,
                      url: url,
                      description: note?.isEmpty == true ? nil : note)
     }

@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 
 public enum ItemContentType: Int, CaseIterable {
@@ -189,58 +190,32 @@ extension ItemContent: ItemThumbnailable {
     }
 }
 
-extension ItemContentData: SymmetricallyEncryptable {
-    public func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentData {
-        switch self {
-        case .alias, .note:
-            return self
-        case .login(let data):
-            let encryptedUsername = try symmetricKey.encrypt(data.username)
-            let encryptedPassword = try symmetricKey.encrypt(data.password)
-            let encryptedTotpUri = try symmetricKey.encrypt(data.totpUri)
-            let encryptedUrls = try data.urls.map { try symmetricKey.encrypt($0) }
-            return .login(.init(username: encryptedUsername,
-                                password: encryptedPassword,
-                                totpUri: encryptedTotpUri,
-                                urls: encryptedUrls))
-        }
-    }
-
-    public func symmetricallyDecrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentData {
-        switch self {
-        case .alias, .note:
-            return self
-        case .login(let data):
-            let decryptedUsername = try symmetricKey.decrypt(data.username)
-            let decryptedPassword = try symmetricKey.decrypt(data.password)
-            let decryptedTotpUri = try symmetricKey.decrypt(data.totpUri)
-            let decryptedUrls = try data.urls.map { try symmetricKey.decrypt($0) }
-            return .login(.init(username: decryptedUsername,
-                                password: decryptedPassword,
-                                totpUri: decryptedTotpUri,
-                                urls: decryptedUrls))
+public extension ItemContent {
+    /// Get `TOTPData` of the current moment
+    func totpData() throws -> TOTPData? {
+        if case .login(let logInData) = contentData,
+           !logInData.totpUri.isEmpty {
+            return try .init(uri: logInData.totpUri)
+        } else {
+            return nil
         }
     }
 }
 
-extension ItemContentProtobuf: SymmetricallyEncryptable {
-    public func symmetricallyEncrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentProtobuf {
-        let encryptedName = try symmetricKey.encrypt(name)
-        let encryptedNote = try symmetricKey.encrypt(note)
-        let encryptedData = try contentData.symmetricallyEncrypted(symmetricKey)
-        return .init(name: encryptedName,
-                     note: encryptedNote,
-                     itemUuid: uuid,
-                     data: encryptedData)
+// MARK: - Symmetric encryption/decryption
+public extension ItemContentProtobuf {
+    /// Symmetrically encrypt and base 64 the binary data
+    func encrypt(symmetricKey: SymmetricKey) throws -> String {
+        let clearData = try data()
+        let cypherData = try symmetricKey.encrypt(clearData)
+        return cypherData.base64EncodedString()
     }
 
-    public func symmetricallyDecrypted(_ symmetricKey: SymmetricKey) throws -> ItemContentProtobuf {
-        let decryptedName = try symmetricKey.decrypt(name)
-        let decryptedNote = try symmetricKey.decrypt(note)
-        let decryptedData = try contentData.symmetricallyDecrypted(symmetricKey)
-        return .init(name: decryptedName,
-                     note: decryptedNote,
-                     itemUuid: uuid,
-                     data: decryptedData)
+    init(base64: String, symmetricKey: SymmetricKey) throws {
+        guard let cypherData = try base64.base64Decode() else {
+            throw PPClientError.crypto(.failedToBase64Decode)
+        }
+        let clearData = try symmetricKey.decrypt(cypherData)
+        try self.init(data: clearData)
     }
 }
