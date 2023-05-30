@@ -36,7 +36,7 @@ final class PreferencesTests: XCTestCase {
     }
 
     override func tearDown() {
-        kSharedUserDefaults?.reset()
+        kSharedUserDefaults.reset()
         super.tearDown()
     }
 

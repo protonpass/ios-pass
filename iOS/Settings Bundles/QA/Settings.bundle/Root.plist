@@ -4,17 +4,67 @@
 <dict>
 	<key>StringsTable</key>
 	<string>Root</string>
+	<key>ApplicationGroupContainerIdentifier</key>
+	<string>group.me.proton.pass</string>
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
 			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
+			<string>PSTitleValueSpecifier</string>
 			<key>Title</key>
-			<string>QA Features</string>
+			<string>App version</string>
 			<key>Key</key>
-			<string>qa_features</string>
+			<string>pref_app_version</string>
 			<key>DefaultValue</key>
-			<false/>
+			<string>-</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>&quot;Automatic&quot; points to black in debug mode &amp; points to prod in release mode. So it always points to prod if app is installed via TestFlight.</string>
+			<key>Title</key>
+			<string>Environment</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Titles</key>
+			<array>
+				<string>Automatic</string>
+				<string>Black</string>
+				<string>Prod</string>
+				<string>Custom</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>automatic</string>
+				<string>black</string>
+				<string>prod</string>
+				<string>custom</string>
+			</array>
+			<key>Title</key>
+			<string>Chosen environment</string>
+			<key>Key</key>
+			<string>pref_environment</string>
+			<key>DefaultValue</key>
+			<string>automatic</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>Only applicable if chosen environment is &quot;Custom&quot;</string>
+			<key>Title</key>
+			<string>Custom environment</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Custom environment values</string>
+			<key>File</key>
+			<string>CustomEnvironmentValues</string>
 		</dict>
 	</array>
 </dict>

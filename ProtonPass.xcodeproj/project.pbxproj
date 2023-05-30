@@ -258,6 +258,7 @@
 		355AA32529E9B41900C20F5F /* ItemThumbnailableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */; };
 		355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */; };
 		355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
+		355B2B782A24DDD900129A16 /* ProtonPassEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355B2B772A24DDD900129A16 /* ProtonPassEnvironment.swift */; };
 		355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */; };
 		355BDECE299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */; };
 		355BDED0299E3807009FDBB1 /* Array+InsertOrRemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */; };
@@ -530,7 +531,7 @@
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
-		35C2162729EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig */; };
+		35C2162729EA8B0B001720FF /* macOS-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
 		35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		35D56D572942354A00C2D0E2 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -544,15 +545,13 @@
 		35E5068C286F87A700A3F6EA /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
 		35E50694286F87A700A3F6EA /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E50686286F87A600A3F6EA /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35E506AD286F920300A3F6EA /* UIComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E506AC286F920300A3F6EA /* UIComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		35E506D9286FB12000A3F6EA /* macOS-Debug-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */; };
-		35E506DA286FB12000A3F6EA /* macOS-Release-Black.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */; };
-		35E506DB286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */; };
-		35E506DC286FB12000A3F6EA /* macOS-Release-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */; };
+		35E506D9286FB12000A3F6EA /* macOS-Debug-QA.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D5286FB12000A3F6EA /* macOS-Debug-QA.xcconfig */; };
+		35E506DA286FB12000A3F6EA /* macOS-Release-QA.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35E506D6286FB12000A3F6EA /* macOS-Release-QA.xcconfig */; };
 		35E506DE286FB1D300A3F6EA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35E506DD286FB1D300A3F6EA /* Info.plist */; };
 		35E506FC286FB37300A3F6EA /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E506F9286FB37300A3F6EA /* Coordinator.swift */; };
 		35E50702286FB39600A3F6EA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50700286FB39600A3F6EA /* AppState.swift */; };
 		35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */; };
-		35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50709286FB44800A3F6EA /* PPDoH.swift */; };
+		35E5070A286FB44800A3F6EA /* ProtonPassDoH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50709286FB44800A3F6EA /* ProtonPassDoH.swift */; };
 		35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */; };
 		35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */; };
 		35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F6D0C52A20A93800C8E395 /* InfoBanner.swift */; };
@@ -746,32 +745,24 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0201F7A5DA6395D2A81EC9CF /* Pods-iOSUITests.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-black.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-black.xcconfig"; sourceTree = "<group>"; };
-		05BB58E3AF6F668997F9A688 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		019BC7869C9FE723FFAD11D8 /* Pods-Client.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-qa.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-qa.xcconfig"; sourceTree = "<group>"; };
 		0732689995489E51EB3A34F5 /* Pods-UIComponents.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-prod.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-prod.xcconfig"; sourceTree = "<group>"; };
 		07E7A7EB42F8AB28ADFC55C9 /* Pods-Core-CoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		09F3C53F6D63359F1D2BB611 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		09F9AF248F495BF6BBC04AB5 /* Pods-Client-ClientTests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.debug-prod.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		0BE4E6BF168DD26038B84CF6 /* Pods-Client.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-black.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-black.xcconfig"; sourceTree = "<group>"; };
 		0D35678054D43CDE3733E788 /* Pods_Client_ClientTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client_ClientTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F382BBD9753A08A782F9EB2 /* Pods-Core.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-black.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-black.xcconfig"; sourceTree = "<group>"; };
-		17BE26CF2B94EDD6A22376D3 /* Pods-Client-ClientTests.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-black.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-black.xcconfig"; sourceTree = "<group>"; };
+		0F820E5F03DEFC586857AC33 /* Pods-iOSUITests.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-qa.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-qa.xcconfig"; sourceTree = "<group>"; };
+		13310A38B5283BACBEB6410A /* Pods-AutoFill.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.release.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.release.xcconfig"; sourceTree = "<group>"; };
 		17D15977914828A6DFEE18C6 /* Pods-UIComponents.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-black.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-black.xcconfig"; sourceTree = "<group>"; };
+		19622432E08BBD1B8B745E2A /* Pods-macOS.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-qa.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-qa.xcconfig"; sourceTree = "<group>"; };
 		1A319647D011E96DE85C3A50 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		1CAF01E39F49DD204AB5CDDB /* Pods-iOSUITests.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-prod.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-prod.xcconfig"; sourceTree = "<group>"; };
+		1B5B9D407EE2BBCA5DC3F32A /* Pods-AutoFill.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.release-qa.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.release-qa.xcconfig"; sourceTree = "<group>"; };
 		1E3B68C8C289D03C90EDC374 /* Pods-UIComponents.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		1F5C90C76FB6CAE61EBE55B9 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		20BFF04E7821BB820D7FD2DB /* Pods-Client.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
-		259E778BA83D0093652C7BDF /* Pods-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug.xcconfig"; sourceTree = "<group>"; };
 		26B3098DA5BEED9ECD640EB8 /* Pods_Client_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2A2387AA3DDC1A71F6C10348 /* Pods-Client-ClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.debug.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.debug.xcconfig"; sourceTree = "<group>"; };
-		2D5242ADECD892556B57F1DF /* Pods-AutoFill.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.debug-black.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.debug-black.xcconfig"; sourceTree = "<group>"; };
 		2EBE5641DFFE61217DABB67F /* Pods-UIComponents.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-black.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-black.xcconfig"; sourceTree = "<group>"; };
-		300FE52B1838D7440D923D3A /* Pods-Core.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.debug-black.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.debug-black.xcconfig"; sourceTree = "<group>"; };
 		302E54D07ED836B91BE0C248 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		303E837161E0B51054C04021 /* Pods_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		30FB1FEFC42583AF82ADF0CB /* Pods-AutoFill.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.release-prod.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.release-prod.xcconfig"; sourceTree = "<group>"; };
-		32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		30F599298A294158AAC0B5FE /* Pods-iOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release.xcconfig"; sourceTree = "<group>"; };
 		350A97D12885BF7E00A7168B /* Protobufable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protobufable.swift; sourceTree = "<group>"; };
 		350A97D32885BFFD00A7168B /* Vault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault.swift; sourceTree = "<group>"; };
 		350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share+ShareProviderTests.swift"; sourceTree = "<group>"; };
@@ -938,10 +929,9 @@
 		3554747F29A8E8460060B555 /* PassKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassKeyManager.swift; sourceTree = "<group>"; };
 		3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperModeStateManager.swift; sourceTree = "<group>"; };
 		3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+MatcherTests.swift"; sourceTree = "<group>"; };
-		3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-Black.xcconfig"; sourceTree = "<group>"; };
-		3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
-		3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Black.xcconfig"; sourceTree = "<group>"; };
-		3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Prod.xcconfig"; sourceTree = "<group>"; };
+		3555800D28F04D30009C3B88 /* AutoFill-Debug-QA.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-QA.xcconfig"; sourceTree = "<group>"; };
+		3555801128F04DB6009C3B88 /* AutoFill-Release-QA.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-QA.xcconfig"; sourceTree = "<group>"; };
+		3555801328F04DE3009C3B88 /* AutoFill-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release.xcconfig"; sourceTree = "<group>"; };
 		3555801528F04F5C009C3B88 /* NoCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCredentialsView.swift; sourceTree = "<group>"; };
 		3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+SanitizerTests.swift"; sourceTree = "<group>"; };
 		3556949829D44DAE005DD2EB /* MoveItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemEndpoint.swift; sourceTree = "<group>"; };
@@ -990,6 +980,7 @@
 		355AA32429E9B41900C20F5F /* ItemThumbnailableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemThumbnailableTests.swift; sourceTree = "<group>"; };
 		355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; };
 		355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSquircleThumbnail.swift; sourceTree = "<group>"; };
+		355B2B772A24DDD900129A16 /* ProtonPassEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonPassEnvironment.swift; sourceTree = "<group>"; };
 		355BDEC7299E1506009FDBB1 /* CapsuleTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTextButton.swift; sourceTree = "<group>"; };
 		355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableObject+AttachToAnother.swift"; sourceTree = "<group>"; };
 		355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+InsertOrRemove.swift"; sourceTree = "<group>"; };
@@ -1213,9 +1204,8 @@
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveTextField.swift; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
-		35C2161529EA8991001720FF /* iOS-Release-Prod-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Prod-QA.xcconfig"; sourceTree = "<group>"; };
-		35C2162429EA8AA5001720FF /* AutoFill-Release-Prod-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-Prod-QA.xcconfig"; sourceTree = "<group>"; };
-		35C2162629EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-Prod-QA.xcconfig"; sourceTree = "<group>"; };
+		35C2161529EA8991001720FF /* iOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release.xcconfig"; sourceTree = "<group>"; };
+		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162829EA911E001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedShareTests.swift"; sourceTree = "<group>"; };
@@ -1235,21 +1225,15 @@
 		35E5068B286F87A700A3F6EA /* CoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E506AA286F920300A3F6EA /* UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E506AC286F920300A3F6EA /* UIComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIComponents.h; sourceTree = "<group>"; };
-		35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Black.xcconfig"; sourceTree = "<group>"; };
-		35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
-		35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-Black.xcconfig"; sourceTree = "<group>"; };
-		35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-Prod.xcconfig"; sourceTree = "<group>"; };
-		35E506D2286FA25000A3F6EA /* Config-Black.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Black.xcconfig"; sourceTree = "<group>"; };
-		35E506D3286FA25000A3F6EA /* Config-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Prod.xcconfig"; sourceTree = "<group>"; };
-		35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Debug-Black.xcconfig"; sourceTree = "<group>"; };
-		35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-Black.xcconfig"; sourceTree = "<group>"; };
-		35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Debug-Prod.xcconfig"; sourceTree = "<group>"; };
-		35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-Prod.xcconfig"; sourceTree = "<group>"; };
+		35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-QA.xcconfig"; sourceTree = "<group>"; };
+		35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-QA.xcconfig"; sourceTree = "<group>"; };
+		35E506D5286FB12000A3F6EA /* macOS-Debug-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Debug-QA.xcconfig"; sourceTree = "<group>"; };
+		35E506D6286FB12000A3F6EA /* macOS-Release-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-QA.xcconfig"; sourceTree = "<group>"; };
 		35E506DD286FB1D300A3F6EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35E506F9286FB37300A3F6EA /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		35E50700286FB39600A3F6EA /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Unwrap.swift"; sourceTree = "<group>"; };
-		35E50709286FB44800A3F6EA /* PPDoH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPDoH.swift; sourceTree = "<group>"; };
+		35E50709286FB44800A3F6EA /* ProtonPassDoH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonPassDoH.swift; sourceTree = "<group>"; };
 		35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		35E50715286FB61E00A3F6EA /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		35F6D0C52A20A93800C8E395 /* InfoBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBanner.swift; sourceTree = "<group>"; };
@@ -1257,21 +1241,15 @@
 		35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListView.swift; sourceTree = "<group>"; };
 		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
 		37BE836F29954C6000E42C89 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
-		3C13DBA0B8C0C668500A98D4 /* Pods-AutoFill.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
-		3CDC57C290CF2F32BE9B8B39 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		4AD83E95CA93A6D9E7C5F7AA /* Pods-iOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug-prod.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		4F2B4B9BB6AD0FC32CE93279 /* Pods-Client-iOSTests.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.debug-black.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.debug-black.xcconfig"; sourceTree = "<group>"; };
-		50E3D0EFD3C4BE45369D6842 /* Pods-Client.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-prod.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-prod.xcconfig"; sourceTree = "<group>"; };
-		50F9263A8A746957BD9149AE /* Pods-Client-iOSTests.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
-		516CDE61530718391B5F970B /* Pods-Client-iOSTests.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-prod.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-prod.xcconfig"; sourceTree = "<group>"; };
-		56B3CF30248112360ECC618C /* Pods-iOSUITests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.debug-prod.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		38687DA8ED3D5D051F53F6A4 /* Pods-UIComponents.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-qa.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		3CB08929D9AE79A08B4DE9B4 /* Pods-Client-iOSTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		448BC1603E67AC907A982299 /* Pods-macOS.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug-qa.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
 		6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProviderMock.swift; sourceTree = "<group>"; };
 		66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PassLaunchScreen.storyboard; path = "Pods/ProtonCore-UIFoundations/libraries/UIFoundations/LaunchScreens/PassLaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
-		683905819D159624F444A02C /* Pods-Client-ClientTests.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
-		70B9DCC580A1534DBDA4F437 /* Pods-iOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-black.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-black.xcconfig"; sourceTree = "<group>"; };
-		726D9C24A4B8451F39AA08BB /* Pods-Core.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
+		69062710305A395AF0DBECC5 /* Pods-iOSUITests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.debug-qa.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		7513C54429A5E89B006F7160 /* AutoFillRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoFillRobot.swift; sourceTree = "<group>"; };
 		7513C54629A5F963006F7160 /* FaceIDRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceIDRobot.swift; sourceTree = "<group>"; };
 		7513C54829A5F9F9006F7160 /* GetStartedRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStartedRobot.swift; sourceTree = "<group>"; };
@@ -1287,41 +1265,28 @@
 		75283C022946E49A006658A6 /* ExternalAccountsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalAccountsTests.swift; sourceTree = "<group>"; };
 		752A68E62954945900DCC65E /* OnboardingRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingRobot.swift; sourceTree = "<group>"; };
 		75F7578E297928C2008A43D7 /* TokenRefreshTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenRefreshTests.swift; sourceTree = "<group>"; };
-		78F8E0F7C874568D823F1AD8 /* Pods-macOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-prod.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-prod.xcconfig"; sourceTree = "<group>"; };
-		7F50ECE489EAEA282F1E10CF /* Pods-iOSUITests.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.debug-black.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.debug-black.xcconfig"; sourceTree = "<group>"; };
-		80AC4779C71BD8F89D6A14C0 /* Pods-Client-iOSTests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.debug-prod.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		7FABBFFCB07E3A67811FC27D /* Pods-Client-iOSTests.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-qa.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-qa.xcconfig"; sourceTree = "<group>"; };
 		81DBB96363B0551C727A1AF9 /* Pods_Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		83A3B0925AABD3FD2AA0F210 /* Pods-macOS.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-black.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-black.xcconfig"; sourceTree = "<group>"; };
-		90C0C1685F4D41658DEF1E6C /* Pods-Client.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-black.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-black.xcconfig"; sourceTree = "<group>"; };
-		93AC007F0743C065058291A6 /* Pods-Core-CoreTests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-prod.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		946F2D8BDA19ED0C714A6A22 /* Pods-Core-CoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8A7A3FD3B77CCCF5D602C857 /* Pods-iOS.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug-qa.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		94AE5D410EFAB0B8D22D5184 /* Pods-UIComponents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release.xcconfig"; sourceTree = "<group>"; };
 		97D2D6F8FD1A0A99A0662537 /* Pods-UIComponents.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-prod.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		9965F4B39D9422BF0D7E5B85 /* Pods-Core-CoreTests.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		9A07426AD9500D93BED2EBAD /* Pods-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release.xcconfig"; sourceTree = "<group>"; };
-		9E070493E2D6339771866BE7 /* Pods-Core.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-prod.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-prod.xcconfig"; sourceTree = "<group>"; };
-		A1E0D78F806CB695524002A9 /* Pods-macOS.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
-		A4E4EA6BF38A98C49659B2BA /* Pods-macOS.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug-prod.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		9EA17DAE72CD3ACA27A275E6 /* Pods-Client.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.debug-qa.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		A07CA956D1E14B890020FA57 /* Pods-Client-ClientTests.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-qa.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-qa.xcconfig"; sourceTree = "<group>"; };
+		A12F3AAB74A7ACCCDB2EA538 /* Pods-Client-ClientTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		A79B9F2378C11580D640D29A /* Pods-iOS.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-qa.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-qa.xcconfig"; sourceTree = "<group>"; };
 		A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Core_CoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD7FE7A5D7863113BC743656 /* Pods-iOSUITests.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
+		BD0AFF12E1F2F402CC2E9B32 /* Pods-AutoFill.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.debug-qa.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		BE32F98A2102F4FD59442842 /* Pods_AutoFill.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AutoFill.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C0485B91C0DEF5918A6C1733 /* Pods-Core.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.debug-prod.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		C55F96A42ED0FF6854E96B79 /* Pods-iOS.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug-black.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug-black.xcconfig"; sourceTree = "<group>"; };
-		CBC47769DCAD49B4772D80FB /* Pods-Client-iOSTests.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-black.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-black.xcconfig"; sourceTree = "<group>"; };
-		D1642D55A9FDF6952A32F249 /* Pods-Core-CoreTests.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release-prod.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release-prod.xcconfig"; sourceTree = "<group>"; };
-		D27E0A5EAE9B0698D5A72C3D /* Pods-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.debug.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.debug.xcconfig"; sourceTree = "<group>"; };
+		C3FDCE16FBB5538D0B28258D /* Pods-UIComponents.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-qa.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-qa.xcconfig"; sourceTree = "<group>"; };
+		C678D7A31091FEED1A1E716A /* Pods-Core-CoreTests.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release-qa.xcconfig"; sourceTree = "<group>"; };
+		C85EE1DB4119453F128B2164 /* Pods-Core.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		D56F1368DBEE5894B8A7AA5C /* Pods_iOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6BD2BB36DA98010CEC08ED2 /* Pods-Core-CoreTests.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-black.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-black.xcconfig"; sourceTree = "<group>"; };
-		D704CA14C22B2B517F7A2844 /* Pods-iOS.release-prod-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-prod-qa.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-prod-qa.xcconfig"; sourceTree = "<group>"; };
 		D817C441253549DC8F078A3F /* Pods-Client-ClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		D8E8D5E563338181886BC10D /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC4C15957574DF9317C4FE1 /* Pods-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release.xcconfig"; sourceTree = "<group>"; };
-		E22F920F7E78303659BDBA47 /* Pods-Core-CoreTests.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release-black.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release-black.xcconfig"; sourceTree = "<group>"; };
-		E325197AE4F15607BD70E490 /* Pods-Client-ClientTests.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-prod.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-prod.xcconfig"; sourceTree = "<group>"; };
-		E4285F27322D0D95BC23B552 /* Pods-macOS.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug-black.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug-black.xcconfig"; sourceTree = "<group>"; };
-		EA45B2ACC448C9202AFC6495 /* Pods-iOS.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-prod.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-prod.xcconfig"; sourceTree = "<group>"; };
-		EEE721392C92FACA31BAF6F9 /* Pods-AutoFill.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.debug-prod.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		F8176598CFDBA80A90AEA289 /* Pods-Client-ClientTests.debug-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.debug-black.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.debug-black.xcconfig"; sourceTree = "<group>"; };
-		FEFEF778D5E2480849C2E7B7 /* Pods-AutoFill.release-black.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.release-black.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.release-black.xcconfig"; sourceTree = "<group>"; };
+		E7BD2DA60D08ED39E3B852A9 /* Pods-Core.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-qa.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-qa.xcconfig"; sourceTree = "<group>"; };
+		F0E45B73A4034D9D3A3A8122 /* Pods-Client-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1736,11 +1701,9 @@
 		3555800C28F04CFF009C3B88 /* BuildConfigs */ = {
 			isa = PBXGroup;
 			children = (
-				3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */,
-				3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */,
-				3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */,
-				3555801328F04DE3009C3B88 /* AutoFill-Release-Prod.xcconfig */,
-				35C2162429EA8AA5001720FF /* AutoFill-Release-Prod-QA.xcconfig */,
+				3555800D28F04D30009C3B88 /* AutoFill-Debug-QA.xcconfig */,
+				3555801128F04DB6009C3B88 /* AutoFill-Release-QA.xcconfig */,
+				3555801328F04DE3009C3B88 /* AutoFill-Release.xcconfig */,
 			);
 			path = BuildConfigs;
 			sourceTree = "<group>";
@@ -2321,8 +2284,6 @@
 			isa = PBXGroup;
 			children = (
 				35E50636286F819F00A3F6EA /* Assets.xcassets */,
-				35E506D2286FA25000A3F6EA /* Config-Black.xcconfig */,
-				35E506D3286FA25000A3F6EA /* Config-Prod.xcconfig */,
 			);
 			path = "iOS & macOS";
 			sourceTree = "<group>";
@@ -2485,11 +2446,9 @@
 		35E506C9286FA06300A3F6EA /* BuildConfigs */ = {
 			isa = PBXGroup;
 			children = (
-				35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */,
-				35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */,
-				35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */,
-				35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */,
-				35C2161529EA8991001720FF /* iOS-Release-Prod-QA.xcconfig */,
+				35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */,
+				35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */,
+				35C2161529EA8991001720FF /* iOS-Release.xcconfig */,
 			);
 			path = BuildConfigs;
 			sourceTree = "<group>";
@@ -2497,11 +2456,9 @@
 		35E506D4286FB0FE00A3F6EA /* BuildConfigs */ = {
 			isa = PBXGroup;
 			children = (
-				35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */,
-				35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */,
-				35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */,
-				35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */,
-				35C2162629EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig */,
+				35E506D5286FB12000A3F6EA /* macOS-Debug-QA.xcconfig */,
+				35E506D6286FB12000A3F6EA /* macOS-Release-QA.xcconfig */,
+				35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */,
 			);
 			path = BuildConfigs;
 			sourceTree = "<group>";
@@ -2518,7 +2475,8 @@
 			isa = PBXGroup;
 			children = (
 				35E50700286FB39600A3F6EA /* AppState.swift */,
-				35E50709286FB44800A3F6EA /* PPDoH.swift */,
+				35E50709286FB44800A3F6EA /* ProtonPassDoH.swift */,
+				355B2B772A24DDD900129A16 /* ProtonPassEnvironment.swift */,
 				353E10912881827C00E59474 /* UserProtocol.swift */,
 				353C2840291DC729008A5EBF /* SortDirection.swift */,
 			);
@@ -2682,68 +2640,41 @@
 		A960751BC7741704CCF907C2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				259E778BA83D0093652C7BDF /* Pods-Client.debug.xcconfig */,
 				9A07426AD9500D93BED2EBAD /* Pods-Client.release.xcconfig */,
-				2A2387AA3DDC1A71F6C10348 /* Pods-Client-ClientTests.debug.xcconfig */,
 				D817C441253549DC8F078A3F /* Pods-Client-ClientTests.release.xcconfig */,
-				D27E0A5EAE9B0698D5A72C3D /* Pods-Core.debug.xcconfig */,
 				DFC4C15957574DF9317C4FE1 /* Pods-Core.release.xcconfig */,
-				946F2D8BDA19ED0C714A6A22 /* Pods-Core-CoreTests.debug.xcconfig */,
 				07E7A7EB42F8AB28ADFC55C9 /* Pods-Core-CoreTests.release.xcconfig */,
-				05BB58E3AF6F668997F9A688 /* Pods-iOS.debug.xcconfig */,
 				09F3C53F6D63359F1D2BB611 /* Pods-iOS.release.xcconfig */,
-				3CDC57C290CF2F32BE9B8B39 /* Pods-macOS.debug.xcconfig */,
 				1A319647D011E96DE85C3A50 /* Pods-macOS.release.xcconfig */,
-				90C0C1685F4D41658DEF1E6C /* Pods-Client.debug-black.xcconfig */,
-				32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */,
-				0BE4E6BF168DD26038B84CF6 /* Pods-Client.release-black.xcconfig */,
-				50E3D0EFD3C4BE45369D6842 /* Pods-Client.release-prod.xcconfig */,
-				F8176598CFDBA80A90AEA289 /* Pods-Client-ClientTests.debug-black.xcconfig */,
-				09F9AF248F495BF6BBC04AB5 /* Pods-Client-ClientTests.debug-prod.xcconfig */,
-				17BE26CF2B94EDD6A22376D3 /* Pods-Client-ClientTests.release-black.xcconfig */,
-				E325197AE4F15607BD70E490 /* Pods-Client-ClientTests.release-prod.xcconfig */,
-				300FE52B1838D7440D923D3A /* Pods-Core.debug-black.xcconfig */,
-				C0485B91C0DEF5918A6C1733 /* Pods-Core.debug-prod.xcconfig */,
-				0F382BBD9753A08A782F9EB2 /* Pods-Core.release-black.xcconfig */,
-				9E070493E2D6339771866BE7 /* Pods-Core.release-prod.xcconfig */,
-				D6BD2BB36DA98010CEC08ED2 /* Pods-Core-CoreTests.debug-black.xcconfig */,
-				93AC007F0743C065058291A6 /* Pods-Core-CoreTests.debug-prod.xcconfig */,
-				E22F920F7E78303659BDBA47 /* Pods-Core-CoreTests.release-black.xcconfig */,
-				D1642D55A9FDF6952A32F249 /* Pods-Core-CoreTests.release-prod.xcconfig */,
-				C55F96A42ED0FF6854E96B79 /* Pods-iOS.debug-black.xcconfig */,
-				4AD83E95CA93A6D9E7C5F7AA /* Pods-iOS.debug-prod.xcconfig */,
-				70B9DCC580A1534DBDA4F437 /* Pods-iOS.release-black.xcconfig */,
-				EA45B2ACC448C9202AFC6495 /* Pods-iOS.release-prod.xcconfig */,
-				E4285F27322D0D95BC23B552 /* Pods-macOS.debug-black.xcconfig */,
-				A4E4EA6BF38A98C49659B2BA /* Pods-macOS.debug-prod.xcconfig */,
-				83A3B0925AABD3FD2AA0F210 /* Pods-macOS.release-black.xcconfig */,
-				78F8E0F7C874568D823F1AD8 /* Pods-macOS.release-prod.xcconfig */,
 				17D15977914828A6DFEE18C6 /* Pods-UIComponents.debug-black.xcconfig */,
 				97D2D6F8FD1A0A99A0662537 /* Pods-UIComponents.debug-prod.xcconfig */,
 				2EBE5641DFFE61217DABB67F /* Pods-UIComponents.release-black.xcconfig */,
 				0732689995489E51EB3A34F5 /* Pods-UIComponents.release-prod.xcconfig */,
-				2D5242ADECD892556B57F1DF /* Pods-AutoFill.debug-black.xcconfig */,
-				EEE721392C92FACA31BAF6F9 /* Pods-AutoFill.debug-prod.xcconfig */,
-				FEFEF778D5E2480849C2E7B7 /* Pods-AutoFill.release-black.xcconfig */,
-				30FB1FEFC42583AF82ADF0CB /* Pods-AutoFill.release-prod.xcconfig */,
-				7F50ECE489EAEA282F1E10CF /* Pods-iOSUITests.debug-black.xcconfig */,
-				56B3CF30248112360ECC618C /* Pods-iOSUITests.debug-prod.xcconfig */,
-				0201F7A5DA6395D2A81EC9CF /* Pods-iOSUITests.release-black.xcconfig */,
-				1CAF01E39F49DD204AB5CDDB /* Pods-iOSUITests.release-prod.xcconfig */,
-				4F2B4B9BB6AD0FC32CE93279 /* Pods-Client-iOSTests.debug-black.xcconfig */,
-				80AC4779C71BD8F89D6A14C0 /* Pods-Client-iOSTests.debug-prod.xcconfig */,
-				CBC47769DCAD49B4772D80FB /* Pods-Client-iOSTests.release-black.xcconfig */,
-				516CDE61530718391B5F970B /* Pods-Client-iOSTests.release-prod.xcconfig */,
-				3C13DBA0B8C0C668500A98D4 /* Pods-AutoFill.release-prod-qa.xcconfig */,
-				20BFF04E7821BB820D7FD2DB /* Pods-Client.release-prod-qa.xcconfig */,
-				683905819D159624F444A02C /* Pods-Client-ClientTests.release-prod-qa.xcconfig */,
-				50F9263A8A746957BD9149AE /* Pods-Client-iOSTests.release-prod-qa.xcconfig */,
-				726D9C24A4B8451F39AA08BB /* Pods-Core.release-prod-qa.xcconfig */,
-				9965F4B39D9422BF0D7E5B85 /* Pods-Core-CoreTests.release-prod-qa.xcconfig */,
 				1E3B68C8C289D03C90EDC374 /* Pods-UIComponents.release-prod-qa.xcconfig */,
-				D704CA14C22B2B517F7A2844 /* Pods-iOS.release-prod-qa.xcconfig */,
-				BD7FE7A5D7863113BC743656 /* Pods-iOSUITests.release-prod-qa.xcconfig */,
-				A1E0D78F806CB695524002A9 /* Pods-macOS.release-prod-qa.xcconfig */,
+				BD0AFF12E1F2F402CC2E9B32 /* Pods-AutoFill.debug-qa.xcconfig */,
+				1B5B9D407EE2BBCA5DC3F32A /* Pods-AutoFill.release-qa.xcconfig */,
+				13310A38B5283BACBEB6410A /* Pods-AutoFill.release.xcconfig */,
+				9EA17DAE72CD3ACA27A275E6 /* Pods-Client.debug-qa.xcconfig */,
+				019BC7869C9FE723FFAD11D8 /* Pods-Client.release-qa.xcconfig */,
+				A12F3AAB74A7ACCCDB2EA538 /* Pods-Client-ClientTests.debug-qa.xcconfig */,
+				A07CA956D1E14B890020FA57 /* Pods-Client-ClientTests.release-qa.xcconfig */,
+				3CB08929D9AE79A08B4DE9B4 /* Pods-Client-iOSTests.debug-qa.xcconfig */,
+				7FABBFFCB07E3A67811FC27D /* Pods-Client-iOSTests.release-qa.xcconfig */,
+				F0E45B73A4034D9D3A3A8122 /* Pods-Client-iOSTests.release.xcconfig */,
+				C85EE1DB4119453F128B2164 /* Pods-Core.debug-qa.xcconfig */,
+				E7BD2DA60D08ED39E3B852A9 /* Pods-Core.release-qa.xcconfig */,
+				5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */,
+				C678D7A31091FEED1A1E716A /* Pods-Core-CoreTests.release-qa.xcconfig */,
+				38687DA8ED3D5D051F53F6A4 /* Pods-UIComponents.debug-qa.xcconfig */,
+				C3FDCE16FBB5538D0B28258D /* Pods-UIComponents.release-qa.xcconfig */,
+				94AE5D410EFAB0B8D22D5184 /* Pods-UIComponents.release.xcconfig */,
+				8A7A3FD3B77CCCF5D602C857 /* Pods-iOS.debug-qa.xcconfig */,
+				A79B9F2378C11580D640D29A /* Pods-iOS.release-qa.xcconfig */,
+				69062710305A395AF0DBECC5 /* Pods-iOSUITests.debug-qa.xcconfig */,
+				0F820E5F03DEFC586857AC33 /* Pods-iOSUITests.release-qa.xcconfig */,
+				30F599298A294158AAC0B5FE /* Pods-iOSUITests.release.xcconfig */,
+				448BC1603E67AC907A982299 /* Pods-macOS.debug-qa.xcconfig */,
+				19622432E08BBD1B8B745E2A /* Pods-macOS.release-qa.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -3172,13 +3103,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35E506D9286FB12000A3F6EA /* macOS-Debug-Black.xcconfig in Resources */,
+				35E506D9286FB12000A3F6EA /* macOS-Debug-QA.xcconfig in Resources */,
 				35E50649286F819F00A3F6EA /* Assets.xcassets in Resources */,
-				35C2162729EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig in Resources */,
+				35C2162729EA8B0B001720FF /* macOS-Release.xcconfig in Resources */,
 				35E506DE286FB1D300A3F6EA /* Info.plist in Resources */,
-				35E506DC286FB12000A3F6EA /* macOS-Release-Prod.xcconfig in Resources */,
-				35E506DB286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig in Resources */,
-				35E506DA286FB12000A3F6EA /* macOS-Release-Black.xcconfig in Resources */,
+				35E506DA286FB12000A3F6EA /* macOS-Release-QA.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3339,7 +3268,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "BUNDLE_DIR=\"$PROJECT_DIR/iOS/Settings Bundles\"\nBUILD_APP_DIR=\"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app\"\n\nif [ $CONFIGURATION == \"Release-Prod\" ]; then\n    # Copy Settings bundle in \"Regular\" folder into the app bundle\n    cp -rf \"$BUNDLE_DIR/Regular/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nelse\n    # Copy Settings bundle in \"QA\" folder into the app bundle\n    cp -rf \"$BUNDLE_DIR/QA/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nfi\n";
+			shellScript = "BUNDLE_DIR=\"$PROJECT_DIR/iOS/Settings Bundles\"\nBUILD_APP_DIR=\"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app\"\n\nif [ $CONFIGURATION == \"Release\" ]; then\n    # Copy Settings bundle in \"Regular\" folder into the app bundle\n    cp -rf \"$BUNDLE_DIR/Regular/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nelse\n    # Copy Settings bundle in \"QA\" folder into the app bundle\n    cp -rf \"$BUNDLE_DIR/QA/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nfi\n";
 		};
 		35E506A1286F8DB400A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4106,7 +4035,7 @@
 				35426B5E28EF183900F89BB7 /* RuleLabel.swift in Sources */,
 				3565621E29B9EDDB00C43F72 /* Date+AddingValue.swift in Sources */,
 				35699B93298103F1006CB225 /* String+HTML.swift in Sources */,
-				35E5070A286FB44800A3F6EA /* PPDoH.swift in Sources */,
+				35E5070A286FB44800A3F6EA /* ProtonPassDoH.swift in Sources */,
 				3552A28629EBFCAA00ABDB6E /* FileUtils.swift in Sources */,
 				3565FD53298D3D6500E2A0EE /* Array+Chunked.swift in Sources */,
 				354513E728E4CE700020A93A /* CodableBase64.swift in Sources */,
@@ -4139,6 +4068,7 @@
 				353C2841291DC729008A5EBF /* SortDirection.swift in Sources */,
 				35426B6428EF193800F89BB7 /* BasicRuleParser.swift in Sources */,
 				35E50708286FB3A600A3F6EA /* Publisher+Unwrap.swift in Sources */,
+				355B2B782A24DDD900129A16 /* ProtonPassEnvironment.swift in Sources */,
 				356A34B92977B46300969BA2 /* OTP.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* StringExtensions.swift in Sources */,
 				355342472992A685003E3A47 /* PPCoreError.swift in Sources */,
@@ -4348,9 +4278,9 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		3544F5EE28E2341900834CA4 /* Debug-Black */ = {
+		3544F5EE28E2341900834CA4 /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555800D28F04D30009C3B88 /* AutoFill-Debug-Black.xcconfig */;
+			baseConfigurationReference = 3555800D28F04D30009C3B88 /* AutoFill-Debug-QA.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4430,95 +4360,11 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		3544F5EF28E2341900834CA4 /* Debug-Prod */ = {
+		3544F5F128E2341900834CA4 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = AutoFill/AutoFill.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 89;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_BITCODE = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = AutoFill/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = AutoFill;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass AutoFill Distribution";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug-Prod";
-		};
-		3544F5F028E2341900834CA4 /* Release-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555801128F04DB6009C3B88 /* AutoFill-Release-Black.xcconfig */;
+			baseConfigurationReference = 1B5B9D407EE2BBCA5DC3F32A /* Pods-AutoFill.release-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4592,89 +4438,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Black";
+			name = "Release-QA";
 		};
-		3544F5F128E2341900834CA4 /* Release-Prod */ = {
+		354A804228D8B8D8003F49CF /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555800F28F04D92009C3B88 /* AutoFill-Debug-Prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = AutoFill/AutoFill.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 89;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_BITCODE = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = AutoFill/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = AutoFill;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.autofill;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass AutoFill Distribution";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Prod";
-		};
-		354A804228D8B8D8003F49CF /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4F2B4B9BB6AD0FC32CE93279 /* Pods-Client-iOSTests.debug-black.xcconfig */;
+			baseConfigurationReference = 3CB08929D9AE79A08B4DE9B4 /* Pods-Client-iOSTests.debug-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4748,89 +4516,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		354A804328D8B8D8003F49CF /* Debug-Prod */ = {
+		354A804528D8B8D8003F49CF /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 80AC4779C71BD8F89D6A14C0 /* Pods-Client-iOSTests.debug-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
-			};
-			name = "Debug-Prod";
-		};
-		354A804428D8B8D8003F49CF /* Release-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBC47769DCAD49B4772D80FB /* Pods-Client-iOSTests.release-black.xcconfig */;
+			baseConfigurationReference = 7FABBFFCB07E3A67811FC27D /* Pods-Client-iOSTests.release-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4898,81 +4588,9 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Black";
+			name = "Release-QA";
 		};
-		354A804528D8B8D8003F49CF /* Release-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 516CDE61530718391B5F970B /* Pods-Client-iOSTests.release-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Prod";
-		};
-		3560846129DDE7E1001F7487 /* Debug-Black */ = {
+		3560846129DDE7E1001F7487 /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -5043,82 +4661,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Proton Pass";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		3560846229DDE7E1001F7487 /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.UIComponentsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Proton Pass";
-			};
-			name = "Debug-Prod";
-		};
-		3560846329DDE7E1001F7487 /* Release-Black */ = {
+		3560846429DDE7E1001F7487 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -5183,76 +4728,9 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Black";
+			name = "Release-QA";
 		};
-		3560846429DDE7E1001F7487 /* Release-Prod */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.UIComponentsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Proton Pass";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Prod";
-		};
-		356125082982438300EDA991 /* Debug-Black */ = {
+		356125082982438300EDA991 /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5332,94 +4810,9 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		356125092982438300EDA991 /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = Keyboard/Keyboard.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 89;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Keyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Proton Pass";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.keyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Proton Pass Keyboard Distribution";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug-Prod";
-		};
-		3561250A2982438300EDA991 /* Release-Black */ = {
+		3561250B2982438300EDA991 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5496,88 +4889,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Black";
+			name = "Release-QA";
 		};
-		3561250B2982438300EDA991 /* Release-Prod */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = Keyboard/Keyboard.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 89;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2SB5Z68H26;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Keyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Proton Pass";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.keyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Proton Pass Keyboard Distribution";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Prod";
-		};
-		35C2161729EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161729EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5627,11 +4941,11 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161829EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161829EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C2161529EA8991001720FF /* iOS-Release-Prod-QA.xcconfig */;
+			baseConfigurationReference = 35C2161529EA8991001720FF /* iOS-Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -5671,11 +4985,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161929EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161929EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50F9263A8A746957BD9149AE /* Pods-Client-iOSTests.release-prod-qa.xcconfig */;
+			baseConfigurationReference = F0E45B73A4034D9D3A3A8122 /* Pods-Client-iOSTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5743,11 +5057,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161A29EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161A29EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD7FE7A5D7863113BC743656 /* Pods-iOSUITests.release-prod-qa.xcconfig */;
+			baseConfigurationReference = 30F599298A294158AAC0B5FE /* Pods-iOSUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5809,11 +5123,11 @@
 				TEST_TARGET_NAME = iOS;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161B29EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161B29EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C2162429EA8AA5001720FF /* AutoFill-Release-Prod-QA.xcconfig */;
+			baseConfigurationReference = 13310A38B5283BACBEB6410A /* Pods-AutoFill.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5887,9 +5201,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161C29EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161C29EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5966,11 +5280,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161D29EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161D29EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C2162629EA8B0B001720FF /* macOS-Release-Prod-QA.xcconfig */;
+			baseConfigurationReference = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -5999,11 +5313,11 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161E29EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161E29EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 20BFF04E7821BB820D7FD2DB /* Pods-Client.release-prod-qa.xcconfig */;
+			baseConfigurationReference = 9A07426AD9500D93BED2EBAD /* Pods-Client.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -6035,11 +5349,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2161F29EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2161F29EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 683905819D159624F444A02C /* Pods-Client-ClientTests.release-prod-qa.xcconfig */;
+			baseConfigurationReference = D817C441253549DC8F078A3F /* Pods-Client-ClientTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -6064,11 +5378,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2162029EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2162029EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 726D9C24A4B8451F39AA08BB /* Pods-Core.release-prod-qa.xcconfig */;
+			baseConfigurationReference = DFC4C15957574DF9317C4FE1 /* Pods-Core.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -6100,11 +5414,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2162129EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2162129EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9965F4B39D9422BF0D7E5B85 /* Pods-Core-CoreTests.release-prod-qa.xcconfig */;
+			baseConfigurationReference = 07E7A7EB42F8AB28ADFC55C9 /* Pods-Core-CoreTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -6129,11 +5443,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2162229EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2162229EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1E3B68C8C289D03C90EDC374 /* Pods-UIComponents.release-prod-qa.xcconfig */;
+			baseConfigurationReference = 94AE5D410EFAB0B8D22D5184 /* Pods-UIComponents.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
@@ -6167,9 +5481,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35C2162329EA8A0B001720FF /* Release-Prod-QA */ = {
+		35C2162329EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -6234,9 +5548,9 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod-QA";
+			name = Release;
 		};
-		35E5064A286F819F00A3F6EA /* Debug-Black */ = {
+		35E5064A286F819F00A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -6293,66 +5607,14 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E5064B286F819F00A3F6EA /* Release-Black */ = {
+		35E5064D286F819F00A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-			};
-			name = "Release-Black";
-		};
-		35E5064D286F819F00A3F6EA /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-Black.xcconfig */;
+			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "iOS/iOSDebug-Black.entitlements";
@@ -6389,55 +5651,11 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E5064E286F819F00A3F6EA /* Release-Black */ = {
+		35E50650286F819F00A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CA286FA0BD00A3F6EA /* iOS-Release-Black.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 89;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_BITCODE = NO;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
-				PRODUCT_NAME = "Proton Pass";
-				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Black";
-		};
-		35E50650286F819F00A3F6EA /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506D5286FB12000A3F6EA /* macOS-Debug-Black.xcconfig */;
+			baseConfigurationReference = 35E506D5286FB12000A3F6EA /* macOS-Debug-QA.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -6467,44 +5685,11 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E50651286F819F00A3F6EA /* Release-Black */ = {
+		35E50677286F870500A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506D6286FB12000A3F6EA /* macOS-Release-Black.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
-				PRODUCT_NAME = "Proton Pass";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = "Release-Black";
-		};
-		35E50677286F870500A3F6EA /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90C0C1685F4D41658DEF1E6C /* Pods-Client.debug-black.xcconfig */;
+			baseConfigurationReference = 9EA17DAE72CD3ACA27A275E6 /* Pods-Client.debug-qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -6536,47 +5721,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E50678286F870500A3F6EA /* Release-Black */ = {
+		35E5067B286F870500A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BE4E6BF168DD26038B84CF6 /* Pods-Client.release-black.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.client;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Black";
-		};
-		35E5067B286F870500A3F6EA /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8176598CFDBA80A90AEA289 /* Pods-Client-ClientTests.debug-black.xcconfig */;
+			baseConfigurationReference = A12F3AAB74A7ACCCDB2EA538 /* Pods-Client-ClientTests.debug-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -6601,40 +5750,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E5067C286F870500A3F6EA /* Release-Black */ = {
+		35E5069A286F87A700A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17BE26CF2B94EDD6A22376D3 /* Pods-Client-ClientTests.release-black.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ClientTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Black";
-		};
-		35E5069A286F87A700A3F6EA /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 300FE52B1838D7440D923D3A /* Pods-Core.debug-black.xcconfig */;
+			baseConfigurationReference = C85EE1DB4119453F128B2164 /* Pods-Core.debug-qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -6666,47 +5786,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E5069B286F87A700A3F6EA /* Release-Black */ = {
+		35E5069D286F87A700A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F382BBD9753A08A782F9EB2 /* Pods-Core.release-black.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.core;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Black";
-		};
-		35E5069D286F87A700A3F6EA /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6BD2BB36DA98010CEC08ED2 /* Pods-Core-CoreTests.debug-black.xcconfig */;
+			baseConfigurationReference = 5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -6731,40 +5815,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E5069E286F87A700A3F6EA /* Release-Black */ = {
+		35E506B3286F920300A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E22F920F7E78303659BDBA47 /* Pods-Core-CoreTests.release-black.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.CoreTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Black";
-		};
-		35E506B3286F920300A3F6EA /* Debug-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17D15977914828A6DFEE18C6 /* Pods-UIComponents.debug-black.xcconfig */;
+			baseConfigurationReference = 38687DA8ED3D5D051F53F6A4 /* Pods-UIComponents.debug-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
@@ -6798,352 +5853,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		35E506B4286F920300A3F6EA /* Release-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EBE5641DFFE61217DABB67F /* Pods-UIComponents.release-black.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
-				ENABLE_TESTING_SEARCH_PATHS = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.uicomponents;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Black";
-		};
-		35E506B9286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = "Debug-Prod";
-		};
-		35E506BA286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CB286FA0BD00A3F6EA /* iOS-Debug-Prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 89;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_BITCODE = NO;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
-				PRODUCT_NAME = "Proton Pass";
-				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass Distribution";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug-Prod";
-		};
-		35E506BB286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506D7286FB12000A3F6EA /* macOS-Debug-Prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
-				PRODUCT_NAME = "Proton Pass";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-			};
-			name = "Debug-Prod";
-		};
-		35E506BC286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 32C1E0DDBABAC43C35D4832D /* Pods-Client.debug-prod.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.client;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Debug-Prod";
-		};
-		35E506BD286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09F9AF248F495BF6BBC04AB5 /* Pods-Client-ClientTests.debug-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ClientTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
-			};
-			name = "Debug-Prod";
-		};
-		35E506BE286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0485B91C0DEF5918A6C1733 /* Pods-Core.debug-prod.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.core;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Debug-Prod";
-		};
-		35E506BF286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93AC007F0743C065058291A6 /* Pods-Core-CoreTests.debug-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.CoreTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
-			};
-			name = "Debug-Prod";
-		};
-		35E506C0286F9D1300A3F6EA /* Debug-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97D2D6F8FD1A0A99A0662537 /* Pods-UIComponents.debug-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
-				ENABLE_TESTING_SEARCH_PATHS = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.uicomponents;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Debug-Prod";
-		};
-		35E506C1286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C1286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -7193,14 +5905,14 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		35E506C2286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C2286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-Prod.xcconfig */;
+			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
@@ -7237,11 +5949,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		35E506C3286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C3286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506D8286FB12000A3F6EA /* macOS-Release-Prod.xcconfig */;
+			baseConfigurationReference = 19622432E08BBD1B8B745E2A /* Pods-macOS.release-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -7270,11 +5982,11 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		35E506C4286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C4286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50E3D0EFD3C4BE45369D6842 /* Pods-Client.release-prod.xcconfig */;
+			baseConfigurationReference = 019BC7869C9FE723FFAD11D8 /* Pods-Client.release-qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -7306,11 +6018,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		35E506C5286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C5286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E325197AE4F15607BD70E490 /* Pods-Client-ClientTests.release-prod.xcconfig */;
+			baseConfigurationReference = A07CA956D1E14B890020FA57 /* Pods-Client-ClientTests.release-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -7335,11 +6047,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		35E506C6286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C6286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E070493E2D6339771866BE7 /* Pods-Core.release-prod.xcconfig */;
+			baseConfigurationReference = E7BD2DA60D08ED39E3B852A9 /* Pods-Core.release-qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -7371,11 +6083,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		35E506C7286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C7286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D1642D55A9FDF6952A32F249 /* Pods-Core-CoreTests.release-prod.xcconfig */;
+			baseConfigurationReference = C678D7A31091FEED1A1E716A /* Pods-Core-CoreTests.release-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -7400,11 +6112,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Proton Pass.app/Proton Pass";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		35E506C8286F9D1E00A3F6EA /* Release-Prod */ = {
+		35E506C8286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0732689995489E51EB3A34F5 /* Pods-UIComponents.release-prod.xcconfig */;
+			baseConfigurationReference = C3FDCE16FBB5538D0B28258D /* Pods-UIComponents.release-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
@@ -7438,11 +6150,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
-		75283BDD2946E1A9006658A6 /* Debug-Black */ = {
+		75283BDD2946E1A9006658A6 /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7F50ECE489EAEA282F1E10CF /* Pods-iOSUITests.debug-black.xcconfig */;
+			baseConfigurationReference = 69062710305A395AF0DBECC5 /* Pods-iOSUITests.debug-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -7510,83 +6222,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = iOS;
 			};
-			name = "Debug-Black";
+			name = "Debug-QA";
 		};
-		75283BDE2946E1A9006658A6 /* Debug-Prod */ = {
+		75283BE02946E1A9006658A6 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 56B3CF30248112360ECC618C /* Pods-iOSUITests.debug-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = iOS;
-			};
-			name = "Debug-Prod";
-		};
-		75283BDF2946E1A9006658A6 /* Release-Black */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0201F7A5DA6395D2A81EC9CF /* Pods-iOSUITests.release-black.xcconfig */;
+			baseConfigurationReference = 0F820E5F03DEFC586857AC33 /* Pods-iOSUITests.release-qa.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -7648,73 +6288,7 @@
 				TEST_TARGET_NAME = iOS;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-Black";
-		};
-		75283BE02946E1A9006658A6 /* Release-Prod */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1CAF01E39F49DD204AB5CDDB /* Pods-iOSUITests.release-prod.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.iOSUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = iOS;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Release-Prod";
+			name = "Release-QA";
 		};
 /* End XCBuildConfiguration section */
 
@@ -7722,158 +6296,132 @@
 		3544F5ED28E2341900834CA4 /* Build configuration list for PBXNativeTarget "AutoFill" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3544F5EE28E2341900834CA4 /* Debug-Black */,
-				3544F5EF28E2341900834CA4 /* Debug-Prod */,
-				3544F5F028E2341900834CA4 /* Release-Black */,
-				3544F5F128E2341900834CA4 /* Release-Prod */,
-				35C2161B29EA8A0B001720FF /* Release-Prod-QA */,
+				3544F5EE28E2341900834CA4 /* Debug-QA */,
+				3544F5F128E2341900834CA4 /* Release-QA */,
+				35C2161B29EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		354A804628D8B8D8003F49CF /* Build configuration list for PBXNativeTarget "iOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				354A804228D8B8D8003F49CF /* Debug-Black */,
-				354A804328D8B8D8003F49CF /* Debug-Prod */,
-				354A804428D8B8D8003F49CF /* Release-Black */,
-				354A804528D8B8D8003F49CF /* Release-Prod */,
-				35C2161929EA8A0B001720FF /* Release-Prod-QA */,
+				354A804228D8B8D8003F49CF /* Debug-QA */,
+				354A804528D8B8D8003F49CF /* Release-QA */,
+				35C2161929EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		3560846029DDE7E1001F7487 /* Build configuration list for PBXNativeTarget "UIComponentsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3560846129DDE7E1001F7487 /* Debug-Black */,
-				3560846229DDE7E1001F7487 /* Debug-Prod */,
-				3560846329DDE7E1001F7487 /* Release-Black */,
-				3560846429DDE7E1001F7487 /* Release-Prod */,
-				35C2162329EA8A0B001720FF /* Release-Prod-QA */,
+				3560846129DDE7E1001F7487 /* Debug-QA */,
+				3560846429DDE7E1001F7487 /* Release-QA */,
+				35C2162329EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		3561250C2982438300EDA991 /* Build configuration list for PBXNativeTarget "Keyboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				356125082982438300EDA991 /* Debug-Black */,
-				356125092982438300EDA991 /* Debug-Prod */,
-				3561250A2982438300EDA991 /* Release-Black */,
-				3561250B2982438300EDA991 /* Release-Prod */,
-				35C2161C29EA8A0B001720FF /* Release-Prod-QA */,
+				356125082982438300EDA991 /* Debug-QA */,
+				3561250B2982438300EDA991 /* Release-QA */,
+				35C2161C29EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E50632286F819F00A3F6EA /* Build configuration list for PBXProject "ProtonPass" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E5064A286F819F00A3F6EA /* Debug-Black */,
-				35E506B9286F9D1300A3F6EA /* Debug-Prod */,
-				35E5064B286F819F00A3F6EA /* Release-Black */,
-				35E506C1286F9D1E00A3F6EA /* Release-Prod */,
-				35C2161729EA8A0B001720FF /* Release-Prod-QA */,
+				35E5064A286F819F00A3F6EA /* Debug-QA */,
+				35E506C1286F9D1E00A3F6EA /* Release-QA */,
+				35C2161729EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E5064C286F819F00A3F6EA /* Build configuration list for PBXNativeTarget "iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E5064D286F819F00A3F6EA /* Debug-Black */,
-				35E506BA286F9D1300A3F6EA /* Debug-Prod */,
-				35E5064E286F819F00A3F6EA /* Release-Black */,
-				35E506C2286F9D1E00A3F6EA /* Release-Prod */,
-				35C2161829EA8A0B001720FF /* Release-Prod-QA */,
+				35E5064D286F819F00A3F6EA /* Debug-QA */,
+				35E506C2286F9D1E00A3F6EA /* Release-QA */,
+				35C2161829EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E5064F286F819F00A3F6EA /* Build configuration list for PBXNativeTarget "macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E50650286F819F00A3F6EA /* Debug-Black */,
-				35E506BB286F9D1300A3F6EA /* Debug-Prod */,
-				35E50651286F819F00A3F6EA /* Release-Black */,
-				35E506C3286F9D1E00A3F6EA /* Release-Prod */,
-				35C2161D29EA8A0B001720FF /* Release-Prod-QA */,
+				35E50650286F819F00A3F6EA /* Debug-QA */,
+				35E506C3286F9D1E00A3F6EA /* Release-QA */,
+				35C2161D29EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E50676286F870500A3F6EA /* Build configuration list for PBXNativeTarget "Client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E50677286F870500A3F6EA /* Debug-Black */,
-				35E506BC286F9D1300A3F6EA /* Debug-Prod */,
-				35E50678286F870500A3F6EA /* Release-Black */,
-				35E506C4286F9D1E00A3F6EA /* Release-Prod */,
-				35C2161E29EA8A0B001720FF /* Release-Prod-QA */,
+				35E50677286F870500A3F6EA /* Debug-QA */,
+				35E506C4286F9D1E00A3F6EA /* Release-QA */,
+				35C2161E29EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E5067A286F870500A3F6EA /* Build configuration list for PBXNativeTarget "ClientTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E5067B286F870500A3F6EA /* Debug-Black */,
-				35E506BD286F9D1300A3F6EA /* Debug-Prod */,
-				35E5067C286F870500A3F6EA /* Release-Black */,
-				35E506C5286F9D1E00A3F6EA /* Release-Prod */,
-				35C2161F29EA8A0B001720FF /* Release-Prod-QA */,
+				35E5067B286F870500A3F6EA /* Debug-QA */,
+				35E506C5286F9D1E00A3F6EA /* Release-QA */,
+				35C2161F29EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E50699286F87A700A3F6EA /* Build configuration list for PBXNativeTarget "Core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E5069A286F87A700A3F6EA /* Debug-Black */,
-				35E506BE286F9D1300A3F6EA /* Debug-Prod */,
-				35E5069B286F87A700A3F6EA /* Release-Black */,
-				35E506C6286F9D1E00A3F6EA /* Release-Prod */,
-				35C2162029EA8A0B001720FF /* Release-Prod-QA */,
+				35E5069A286F87A700A3F6EA /* Debug-QA */,
+				35E506C6286F9D1E00A3F6EA /* Release-QA */,
+				35C2162029EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E5069C286F87A700A3F6EA /* Build configuration list for PBXNativeTarget "CoreTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E5069D286F87A700A3F6EA /* Debug-Black */,
-				35E506BF286F9D1300A3F6EA /* Debug-Prod */,
-				35E5069E286F87A700A3F6EA /* Release-Black */,
-				35E506C7286F9D1E00A3F6EA /* Release-Prod */,
-				35C2162129EA8A0B001720FF /* Release-Prod-QA */,
+				35E5069D286F87A700A3F6EA /* Debug-QA */,
+				35E506C7286F9D1E00A3F6EA /* Release-QA */,
+				35C2162129EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		35E506B2286F920300A3F6EA /* Build configuration list for PBXNativeTarget "UIComponents" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				35E506B3286F920300A3F6EA /* Debug-Black */,
-				35E506C0286F9D1300A3F6EA /* Debug-Prod */,
-				35E506B4286F920300A3F6EA /* Release-Black */,
-				35E506C8286F9D1E00A3F6EA /* Release-Prod */,
-				35C2162229EA8A0B001720FF /* Release-Prod-QA */,
+				35E506B3286F920300A3F6EA /* Debug-QA */,
+				35E506C8286F9D1E00A3F6EA /* Release-QA */,
+				35C2162229EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 		75283BE12946E1A9006658A6 /* Build configuration list for PBXNativeTarget "iOSUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				75283BDD2946E1A9006658A6 /* Debug-Black */,
-				75283BDE2946E1A9006658A6 /* Debug-Prod */,
-				75283BDF2946E1A9006658A6 /* Release-Black */,
-				75283BE02946E1A9006658A6 /* Release-Prod */,
-				35C2161A29EA8A0B001720FF /* Release-Prod-QA */,
+				75283BDD2946E1A9006658A6 /* Debug-QA */,
+				75283BE02946E1A9006658A6 /* Release-QA */,
+				35C2161A29EA8A0B001720FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-Prod";
+			defaultConfigurationName = "Release-QA";
 		};
 /* End XCConfigurationList section */
 

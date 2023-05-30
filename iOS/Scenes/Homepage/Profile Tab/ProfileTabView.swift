@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import SwiftUI
 import UIComponents
 
@@ -48,7 +49,7 @@ struct ProfileTabView: View {
                     helpCenterSection
                         .padding(.vertical)
 
-                    if UserDefaults.standard.bool(forKey: "qa_features") {
+                    if Bundle.main.isQaBuild {
                         qaFeaturesSection
                     }
 

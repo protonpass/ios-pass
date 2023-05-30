@@ -4,7 +4,20 @@
 <dict>
 	<key>StringsTable</key>
 	<string>Root</string>
+	<key>ApplicationGroupContainerIdentifier</key>
+	<string>group.me.proton.pass</string>
 	<key>PreferenceSpecifiers</key>
-	<array/>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>App version</string>
+			<key>Key</key>
+			<string>pref_app_version</string>
+			<key>DefaultValue</key>
+			<string>-</string>
+		</dict>
+	</array>
 </dict>
 </plist>
