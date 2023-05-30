@@ -29,10 +29,14 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let rootViewController: UIViewController
+    let preferences: Preferences
     let delegate: CustomFieldAdditionDelegate
 
-    init(rootViewController: UIViewController, delegate: CustomFieldAdditionDelegate) {
+    init(rootViewController: UIViewController,
+         preferences: Preferences,
+         delegate: CustomFieldAdditionDelegate) {
         self.rootViewController = rootViewController
+        self.preferences = preferences
         self.delegate = delegate
     }
 
@@ -54,6 +58,7 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable {
             viewController.sheetPresentationController?.detents = [.medium()]
         }
         viewController.sheetPresentationController?.prefersGrabberVisible = true
+        viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         rootViewController.topMostViewController.present(viewController, animated: true)
     }
 }
