@@ -44,11 +44,13 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 
 class BaseItemDetailViewModel {
     @Published private(set) var isFreeUser = false
+    @Published private(set) var customFieldsSupported = false
 
     let isShownAsSheet: Bool
     let favIconRepository: FavIconRepositoryProtocol
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
+    let remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol
     private(set) var itemContent: ItemContent
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger: Logger
@@ -64,6 +66,7 @@ class BaseItemDetailViewModel {
          favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
+         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
          vault: Vault?,
          logManager: LogManager,
          theme: Theme) {
@@ -72,11 +75,13 @@ class BaseItemDetailViewModel {
         self.favIconRepository = favIconRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
+        self.remoteCustomFieldsFlagDatasource = remoteCustomFieldsFlagDatasource
         self.vault = vault
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.theme = theme
         self.bindValues()
+        self.checkIfCustomFieldsAreSupported()
         self.checkIfFreeUser()
     }
 
@@ -190,6 +195,18 @@ private extension BaseItemDetailViewModel {
         Task { @MainActor in
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                logger.error(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
+    func checkIfCustomFieldsAreSupported() {
+        Task { @MainActor in
+            do {
+                let flag = try await remoteCustomFieldsFlagDatasource.getCustomFieldsFlag()
+                customFieldsSupported = flag.value
             } catch {
                 logger.error(error)
                 delegate?.itemDetailViewModelDidEncounter(error: error)

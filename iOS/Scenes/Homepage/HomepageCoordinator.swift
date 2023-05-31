@@ -299,14 +299,16 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
-                                                itemRepository: itemRepository,
-                                                favIconRepository: favIconRepository,
-                                                upgradeChecker: upgradeChecker,
-                                                logManager: logManager,
-                                                preferences: preferences,
-                                                vaultsManager: vaultsManager,
-                                                itemDetailViewModelDelegate: self)
+        let coordinator = ItemDetailCoordinator(
+            aliasRepository: aliasRepository,
+            itemRepository: itemRepository,
+            favIconRepository: favIconRepository,
+            upgradeChecker: upgradeChecker,
+            remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasource(apiService: apiService),
+            logManager: logManager,
+            preferences: preferences,
+            vaultsManager: vaultsManager,
+            itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
         itemDetailCoordinator = coordinator

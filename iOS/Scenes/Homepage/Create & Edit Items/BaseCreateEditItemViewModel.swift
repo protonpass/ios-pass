@@ -63,6 +63,7 @@ enum ItemCreationType {
 class BaseCreateEditItemViewModel {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isSaving = false
+    @Published private(set) var customFieldsSupported = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
@@ -114,6 +115,7 @@ class BaseCreateEditItemViewModel {
         self.vaults = vaults
         self.bindValues()
         self.pickPrimaryVaultIfApplicable()
+        self.checkIfCustomFieldsAreSupported()
         self.checkIfAbleToAddMoreCustomFields()
     }
 
@@ -158,6 +160,18 @@ private extension BaseCreateEditItemViewModel {
                 if isFreeUser, let primaryVault = vaults.first(where: { $0.isPrimary }) {
                     selectedVault = primaryVault
                 }
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
+    func checkIfCustomFieldsAreSupported() {
+        Task { @MainActor in
+            do {
+                let flag = try await remoteCustomFieldsFlagDatasource.getCustomFieldsFlag()
+                customFieldsSupported = flag.value
             } catch {
                 logger.error(error)
                 delegate?.createEditItemViewModelDidEncounter(error: error)
