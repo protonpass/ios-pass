@@ -471,15 +471,19 @@ private extension CredentialProviderCoordinator {
                                                       url: url?.schemeAndHost,
                                                       autofill: true)
             let emailAddress = appData.userData?.addresses.first?.email ?? ""
-            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
-                                                                       type: creationType),
-                                                         itemRepository: itemRepository,
-                                                         aliasRepository: aliasRepository,
-                                                         upgradeChecker: upgradeChecker,
-                                                         vaults: vaults,
-                                                         preferences: preferences,
-                                                         logManager: logManager,
-                                                         emailAddress: emailAddress)
+            let remoteCustomFieldsFlagDatasource =
+            RemoteCustomFieldsFlagDatasource(apiService: apiManager.apiService)
+            let viewModel = try CreateEditLoginViewModel(
+                mode: .create(shareId: shareId,
+                              type: creationType),
+                itemRepository: itemRepository,
+                aliasRepository: aliasRepository,
+                upgradeChecker: upgradeChecker,
+                remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
+                vaults: vaults,
+                preferences: preferences,
+                logManager: logManager,
+                emailAddress: emailAddress)
             viewModel.delegate = self
             viewModel.createEditLoginViewModelDelegate = self
             let view = CreateEditLoginView(viewModel: viewModel)
@@ -704,15 +708,16 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
         let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+                                                         preferences: preferences,
                                                          delegate: delegate)
         coordinator.start()
     }
 
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate) {
         let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
                                                         delegate: delegate,
-                                                        customField: customField)
+                                                        uiModel: uiModel)
         coordinator.start()
     }
 

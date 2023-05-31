@@ -29,9 +29,8 @@ public struct SensitiveTextField<Field: Hashable>: View {
     let field: Field
     let onSubmit: (() -> Void)?
 
-    private var isFocused: Bool {
-        focusedField.wrappedValue == field
-    }
+    private var isFocused: Bool { focusedField.wrappedValue == field }
+    private var shouldShowTextEditor: Bool { isFocused || text.isEmpty }
 
     public init(text: Binding<String>,
                 placeholder: String,
@@ -47,16 +46,19 @@ public struct SensitiveTextField<Field: Hashable>: View {
 
     public var body: some View {
         ZStack {
-            TextField(placeholder, text: $text)
-                .focused(focusedField, equals: field)
-                .opacity(isFocused || text.isEmpty ? 1 : 0)
-                .onSubmit { onSubmit?() }
+            TextEditorWithPlaceholder(text: $text,
+                                      focusedField: focusedField,
+                                      field: field,
+                                      placeholder: placeholder,
+                                      onSubmit: onSubmit)
+            .frame(maxHeight: shouldShowTextEditor ? .infinity : 0)
+            .opacity(shouldShowTextEditor ? 1 : 0)
 
             if !text.isEmpty {
                 Button(action: {
                     focusedField.wrappedValue = field
                 }, label: {
-                    Text(String(repeating: "•", count: text.count))
+                    Text(String(repeating: "•", count: min(20, text.count)))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
                 })
@@ -64,6 +66,6 @@ public struct SensitiveTextField<Field: Hashable>: View {
                 .buttonStyle(.plain)
             }
         }
-        .animation(.default, value: isFocused)
+        .animation(.default, value: shouldShowTextEditor)
     }
 }

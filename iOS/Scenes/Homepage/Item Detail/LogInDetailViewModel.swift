@@ -50,27 +50,27 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     var isAlias: Bool { aliasItem != nil }
 
-    private let upgradeChecker: UpgradeCheckerProtocol
-
     private var cancellables = Set<AnyCancellable>()
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
     var coloredPasswordTexts: [Text] { PasswordUtils.generateColoredPasswords(password) }
 
-    init(isShownAsSheet: Bool,
-         itemContent: ItemContent,
-         favIconRepository: FavIconRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?,
-         logManager: LogManager,
-         theme: Theme) {
+    override init(isShownAsSheet: Bool,
+                  itemContent: ItemContent,
+                  favIconRepository: FavIconRepositoryProtocol,
+                  itemRepository: ItemRepositoryProtocol,
+                  upgradeChecker: UpgradeCheckerProtocol,
+                  remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
+                  vault: Vault?,
+                  logManager: LogManager,
+                  theme: Theme) {
         self.totpManager = .init(logManager: logManager)
-        self.upgradeChecker = upgradeChecker
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    favIconRepository: favIconRepository,
                    itemRepository: itemRepository,
+                   upgradeChecker: upgradeChecker,
+                   remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
                    vault: vault,
                    logManager: logManager,
                    theme: theme)

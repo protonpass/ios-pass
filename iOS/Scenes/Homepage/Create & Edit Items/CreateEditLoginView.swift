@@ -70,18 +70,21 @@ struct CreateEditLoginView: View {
                                         field: .note)
                         .id(noteID)
 
-                        #if DEBUG
-                        CustomFieldSections(contentType: .login,
-                                            customFields: $viewModel.customFields,
-                                            onAddMore: viewModel.addCustomField,
-                                            onEditTitle: viewModel.editCustomFieldTitle)
-                        #endif
+                        if viewModel.customFieldsSupported {
+                            EditCustomFieldSections(contentType: .login,
+                                                    uiModels: $viewModel.customFieldUiModels,
+                                                    canAddMore: viewModel.canAddMoreCustomFields,
+                                                    onAddMore: viewModel.addCustomField,
+                                                    onEditTitle: viewModel.editCustomFieldTitle,
+                                                    onUpgrade: viewModel.upgrade)
+                        }
 
                         Spacer()
                     }
                     .padding()
-                    .animation(.default, value: viewModel.customFields.count)
+                    .animation(.default, value: viewModel.customFieldUiModels.count)
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
+                    .animation(.default, value: viewModel.customFieldsSupported)
                 }
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?

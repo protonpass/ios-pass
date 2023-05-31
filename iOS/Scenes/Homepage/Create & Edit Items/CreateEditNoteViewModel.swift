@@ -35,12 +35,14 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     override init(mode: ItemMode,
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
+                  remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
                   vaults: [Vault],
                   preferences: Preferences,
                   logManager: LogManager) throws {
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
+                       remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
                        vaults: vaults,
                        preferences: preferences,
                        logManager: logManager)
@@ -68,6 +70,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
         ItemContentProtobuf(name: title,
                             note: note,
                             itemUuid: UUID().uuidString,
-                            data: ItemContentData.note)
+                            data: ItemContentData.note,
+                            customFields: [])
     }
 }

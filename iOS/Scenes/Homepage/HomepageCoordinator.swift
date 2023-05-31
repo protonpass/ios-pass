@@ -283,28 +283,32 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
-                                                    itemRepository: itemRepository,
-                                                    upgradeChecker: upgradeChecker,
-                                                    logManager: logManager,
-                                                    preferences: preferences,
-                                                    vaultsManager: vaultsManager,
-                                                    userData: userData,
-                                                    createEditItemDelegates: self)
+        let coordinator = CreateEditItemCoordinator(
+            aliasRepository: aliasRepository,
+            itemRepository: itemRepository,
+            upgradeChecker: upgradeChecker,
+            remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasource(apiService: apiService),
+            logManager: logManager,
+            preferences: preferences,
+            vaultsManager: vaultsManager,
+            userData: userData,
+            createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
-                                                itemRepository: itemRepository,
-                                                favIconRepository: favIconRepository,
-                                                upgradeChecker: upgradeChecker,
-                                                logManager: logManager,
-                                                preferences: preferences,
-                                                vaultsManager: vaultsManager,
-                                                itemDetailViewModelDelegate: self)
+        let coordinator = ItemDetailCoordinator(
+            aliasRepository: aliasRepository,
+            itemRepository: itemRepository,
+            favIconRepository: favIconRepository,
+            upgradeChecker: upgradeChecker,
+            remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasource(apiService: apiService),
+            logManager: logManager,
+            preferences: preferences,
+            vaultsManager: vaultsManager,
+            itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
         itemDetailCoordinator = coordinator
@@ -977,15 +981,16 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
         let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+                                                         preferences: preferences,
                                                          delegate: delegate)
         coordinator.start()
     }
 
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate) {
         let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
                                                         delegate: delegate,
-                                                        customField: customField)
+                                                        uiModel: uiModel)
         coordinator.start()
     }
 
