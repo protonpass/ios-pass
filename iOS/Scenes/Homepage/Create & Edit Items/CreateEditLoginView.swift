@@ -70,12 +70,10 @@ struct CreateEditLoginView: View {
                                         field: .note)
                         .id(noteID)
 
-                        #if DEBUG
-                        CustomFieldSections(contentType: .login,
-                                            uiModels: $viewModel.customFieldUiModels,
-                                            onAddMore: viewModel.addCustomField,
-                                            onEditTitle: viewModel.editCustomFieldTitle)
-                        #endif
+                        EditCustomFieldSections(contentType: .login,
+                                                uiModels: $viewModel.customFieldUiModels,
+                                                onAddMore: viewModel.addCustomField,
+                                                onEditTitle: viewModel.editCustomFieldTitle)
 
                         Spacer()
                     }

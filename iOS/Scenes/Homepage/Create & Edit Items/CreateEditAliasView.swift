@@ -128,12 +128,10 @@ struct CreateEditAliasView: View {
                                     field: .note)
                     .id(noteID)
 
-                    #if DEBUG
-                    CustomFieldSections(contentType: .alias,
-                                        uiModels: $viewModel.customFieldUiModels,
-                                        onAddMore: viewModel.addCustomField,
-                                        onEditTitle: viewModel.editCustomFieldTitle)
-                    #endif
+                    EditCustomFieldSections(contentType: .alias,
+                                            uiModels: $viewModel.customFieldUiModels,
+                                            onAddMore: viewModel.addCustomField,
+                                            onEditTitle: viewModel.editCustomFieldTitle)
                 }
                 .padding()
                 .animation(.default, value: viewModel.shouldUpgrade)

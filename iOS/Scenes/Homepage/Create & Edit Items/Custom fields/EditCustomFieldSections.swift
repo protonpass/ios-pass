@@ -1,5 +1,5 @@
 //
-// CustomFieldSections.swift
+// EditCustomFieldSections.swift
 // Proton Pass - Created on 10/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 import Client
 import SwiftUI
 
-struct CustomFieldSections: View {
+struct EditCustomFieldSections: View {
     let contentType: ItemContentType
     @Binding var uiModels: [CustomFieldUiModel]
     let onAddMore: () -> Void
