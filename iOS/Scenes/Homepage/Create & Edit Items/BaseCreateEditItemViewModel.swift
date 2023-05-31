@@ -63,7 +63,11 @@ enum ItemCreationType {
 class BaseCreateEditItemViewModel {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isSaving = false
-    @Published var customFieldUiModels = [CustomFieldUiModel]()
+    @Published var customFieldUiModels = [CustomFieldUiModel]() {
+        didSet {
+            didEditSomething = true
+        }
+    }
     @Published var isObsolete = false
 
     let mode: ItemMode
@@ -73,6 +77,7 @@ class BaseCreateEditItemViewModel {
     let logger: Logger
     let vaults: [Vault]
 
+    var hasEmptyCustomField: Bool { customFieldUiModels.contains(where: { $0.customField.content.isEmpty }) }
     var didEditSomething = false
 
     weak var delegate: CreateEditItemViewModelDelegate?
