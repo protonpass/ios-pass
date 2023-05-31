@@ -27,7 +27,7 @@ public struct GetCustomFieldsFlagResponse: Decodable {
 }
 
 public struct CustomFieldsFlag: Decodable {
-    let value: Bool
+    public let value: Bool
 }
 
 public struct GetCustomFieldsFlagEndpoint: Endpoint {
