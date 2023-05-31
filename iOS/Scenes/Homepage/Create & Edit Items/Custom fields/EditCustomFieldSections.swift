@@ -19,13 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import ProtonCore_UIFoundations
 import SwiftUI
 
 struct EditCustomFieldSections: View {
     let contentType: ItemContentType
     @Binding var uiModels: [CustomFieldUiModel]
+    let canAddMore: Bool
     let onAddMore: () -> Void
     let onEditTitle: (CustomFieldUiModel) -> Void
+    let onUpgrade: () -> Void
 
     var body: some View {
         ForEach($uiModels) { $uiModel in
@@ -35,6 +38,14 @@ struct EditCustomFieldSections: View {
                                 onRemove: { uiModels.removeAll(where: { $0.id == uiModel.id }) })
         }
 
+        if canAddMore {
+            addMoreButton
+        } else {
+            upgradeButton
+        }
+    }
+
+    private var addMoreButton: some View {
         Button(action: onAddMore) {
             Label(title: {
                 Text("Add more")
@@ -42,6 +53,24 @@ struct EditCustomFieldSections: View {
                     .fontWeight(.medium)
             }, icon: {
                 Image(systemName: "plus")
+            })
+            .foregroundColor(Color(uiColor: contentType.normMajor2Color))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, kItemDetailSectionPadding)
+    }
+
+    private var upgradeButton: some View {
+        Button(action: onUpgrade) {
+            Label(title: {
+                Text("Upgrade to add custom fields")
+                    .font(.callout)
+                    .fontWeight(.medium)
+            }, icon: {
+                Image(uiImage: IconProvider.arrowOutSquare)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 16)
             })
             .foregroundColor(Color(uiColor: contentType.normMajor2Color))
         }

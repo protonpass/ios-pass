@@ -63,6 +63,7 @@ enum ItemCreationType {
 class BaseCreateEditItemViewModel {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isSaving = false
+    @Published private(set) var canAddMoreCustomFields = true
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
             didEditSomething = true
@@ -73,6 +74,7 @@ class BaseCreateEditItemViewModel {
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
+    let remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol
     let preferences: Preferences
     let logger: Logger
     let vaults: [Vault]
@@ -86,6 +88,7 @@ class BaseCreateEditItemViewModel {
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
+         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) throws {
@@ -105,11 +108,13 @@ class BaseCreateEditItemViewModel {
         self.mode = mode
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
+        self.remoteCustomFieldsFlagDatasource = remoteCustomFieldsFlagDatasource
         self.preferences = preferences
         self.logger = .init(manager: logManager)
         self.vaults = vaults
         self.bindValues()
         self.pickPrimaryVaultIfApplicable()
+        self.checkIfAbleToAddMoreCustomFields()
     }
 
     /// To be overridden by subclasses
@@ -140,7 +145,89 @@ class BaseCreateEditItemViewModel {
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
+}
 
+// MARK: - Private APIs
+private extension BaseCreateEditItemViewModel {
+    /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
+    func pickPrimaryVaultIfApplicable() {
+        guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
+        Task { @MainActor in
+            do {
+                let isFreeUser = try await upgradeChecker.isFreeUser()
+                if isFreeUser, let primaryVault = vaults.first(where: { $0.isPrimary }) {
+                    selectedVault = primaryVault
+                }
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
+    func checkIfAbleToAddMoreCustomFields() {
+        Task { @MainActor in
+            do {
+                let isFreeUser = try await upgradeChecker.isFreeUser()
+                canAddMoreCustomFields = !isFreeUser
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
+    func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
+        let shareId = selectedVault.shareId
+        let itemContent = generateItemContent()
+
+        switch type {
+        case .alias:
+            if let aliasCreationInfo = generateAliasCreationInfo() {
+                return try await itemRepository.createAlias(info: aliasCreationInfo,
+                                                            itemContent: itemContent,
+                                                            shareId: shareId)
+            } else {
+                assertionFailure("aliasCreationInfo should not be null")
+                logger.warning("Can not create alias because creation info is empty")
+                return nil
+            }
+
+        case .login:
+            if let aliasCreationInfo = generateAliasCreationInfo(),
+               let aliasItemContent = generateAliasItemContent() {
+                let (_, createdLoginItem) = try await itemRepository.createAliasAndOtherItem(
+                    info: aliasCreationInfo,
+                    aliasItemContent: aliasItemContent,
+                    otherItemContent: itemContent,
+                    shareId: shareId)
+                return createdLoginItem
+            }
+
+        default:
+            break
+        }
+
+        return try await itemRepository.createItem(itemContent: itemContent, shareId: shareId)
+    }
+
+    func editItem(oldItemContent: ItemContent) async throws {
+        try await additionalEdit()
+        let itemId = oldItemContent.itemId
+        let shareId = oldItemContent.shareId
+        guard let oldItem = try await itemRepository.getItem(shareId: shareId,
+                                                             itemId: itemId) else {
+            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
+        }
+        let newItemContent = generateItemContent()
+        try await itemRepository.updateItem(oldItem: oldItem.item,
+                                            newItemContent: newItemContent,
+                                            shareId: oldItem.shareId)
+    }
+}
+
+// MARK: - Public APIs
+extension BaseCreateEditItemViewModel {
     func addCustomField() {
         delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
     }
@@ -176,72 +263,6 @@ class BaseCreateEditItemViewModel {
         }
     }
 
-    /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
-    private func pickPrimaryVaultIfApplicable() {
-        guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
-        Task { @MainActor in
-            do {
-                let isFreeUser = try await upgradeChecker.isFreeUser()
-                if isFreeUser, let primaryVault = vaults.first(where: { $0.isPrimary }) {
-                    selectedVault = primaryVault
-                }
-            } catch {
-                logger.error(error)
-                delegate?.createEditItemViewModelDidEncounter(error: error)
-            }
-        }
-    }
-
-    private func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
-        let shareId = selectedVault.shareId
-        let itemContent = generateItemContent()
-
-        switch type {
-        case .alias:
-            if let aliasCreationInfo = generateAliasCreationInfo() {
-                return try await itemRepository.createAlias(info: aliasCreationInfo,
-                                                            itemContent: itemContent,
-                                                            shareId: shareId)
-            } else {
-                assertionFailure("aliasCreationInfo should not be null")
-                logger.warning("Can not create alias because creation info is empty")
-                return nil
-            }
-
-        case .login:
-            if let aliasCreationInfo = generateAliasCreationInfo(),
-               let aliasItemContent = generateAliasItemContent() {
-                let (_, createdLoginItem) = try await itemRepository.createAliasAndOtherItem(
-                    info: aliasCreationInfo,
-                    aliasItemContent: aliasItemContent,
-                    otherItemContent: itemContent,
-                    shareId: shareId)
-                return createdLoginItem
-            }
-
-        default:
-            break
-        }
-
-        return try await itemRepository.createItem(itemContent: itemContent, shareId: shareId)
-    }
-
-    private func editItem(oldItemContent: ItemContent) async throws {
-        try await additionalEdit()
-        let itemId = oldItemContent.itemId
-        let shareId = oldItemContent.shareId
-        guard let oldItem = try await itemRepository.getItem(shareId: shareId,
-                                                             itemId: itemId) else {
-            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
-        }
-        let newItemContent = generateItemContent()
-        try await itemRepository.updateItem(oldItem: oldItem.item,
-                                            newItemContent: newItemContent,
-                                            shareId: oldItem.shareId)
-    }
-}
-
-extension BaseCreateEditItemViewModel {
     /// Refresh the item to detect changes.
     /// When changes happen, announce via `isObsolete` boolean  so the view can act accordingly
     func refresh() {
