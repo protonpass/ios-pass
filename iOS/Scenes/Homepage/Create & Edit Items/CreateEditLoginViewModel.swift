@@ -77,7 +77,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return false
     }
 
-    override var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
