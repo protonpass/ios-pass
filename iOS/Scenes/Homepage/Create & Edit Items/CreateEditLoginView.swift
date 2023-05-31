@@ -72,8 +72,10 @@ struct CreateEditLoginView: View {
 
                         EditCustomFieldSections(contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
+                                                canAddMore: viewModel.canAddMoreCustomFields,
                                                 onAddMore: viewModel.addCustomField,
-                                                onEditTitle: viewModel.editCustomFieldTitle)
+                                                onEditTitle: viewModel.editCustomFieldTitle,
+                                                onUpgrade: viewModel.upgrade)
 
                         Spacer()
                     }

@@ -283,14 +283,16 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
-                                                    itemRepository: itemRepository,
-                                                    upgradeChecker: upgradeChecker,
-                                                    logManager: logManager,
-                                                    preferences: preferences,
-                                                    vaultsManager: vaultsManager,
-                                                    userData: userData,
-                                                    createEditItemDelegates: self)
+        let coordinator = CreateEditItemCoordinator(
+            aliasRepository: aliasRepository,
+            itemRepository: itemRepository,
+            upgradeChecker: upgradeChecker,
+            remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasource(apiService: apiService),
+            logManager: logManager,
+            preferences: preferences,
+            vaultsManager: vaultsManager,
+            userData: userData,
+            createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator

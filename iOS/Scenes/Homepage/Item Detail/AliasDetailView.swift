@@ -64,9 +64,6 @@ struct AliasDetailView: View {
                                           favIconRepository: viewModel.favIconRepository)
                     }
 
-                    CustomFieldSections(itemContent: viewModel.itemContent,
-                                        logManager: viewModel.logManager)
-
                     ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
                     .padding(.top, 24)
