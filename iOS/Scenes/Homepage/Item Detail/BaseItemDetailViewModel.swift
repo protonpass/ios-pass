@@ -43,9 +43,12 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 }
 
 class BaseItemDetailViewModel {
+    @Published private(set) var isFreeUser = false
+
     let isShownAsSheet: Bool
     let favIconRepository: FavIconRepositoryProtocol
     let itemRepository: ItemRepositoryProtocol
+    let upgradeChecker: UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger: Logger
@@ -60,6 +63,7 @@ class BaseItemDetailViewModel {
          itemContent: ItemContent,
          favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          vault: Vault?,
          logManager: LogManager,
          theme: Theme) {
@@ -67,11 +71,13 @@ class BaseItemDetailViewModel {
         self.itemContent = itemContent
         self.favIconRepository = favIconRepository
         self.itemRepository = itemRepository
+        self.upgradeChecker = upgradeChecker
         self.vault = vault
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.theme = theme
         self.bindValues()
+        self.checkIfFreeUser()
     }
 
     /// To be overidden by subclasses
@@ -180,6 +186,17 @@ class BaseItemDetailViewModel {
 
 // MARK: - Private APIs
 private extension BaseItemDetailViewModel {
+    func checkIfFreeUser() {
+        Task { @MainActor in
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                logger.error(error)
+                delegate?.itemDetailViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) {
             guard let item = try await self.itemRepository.getItem(shareId: item.shareId,

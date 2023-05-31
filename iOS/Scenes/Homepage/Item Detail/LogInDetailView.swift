@@ -72,7 +72,10 @@ struct LogInDetailView: View {
                         }
 
                         CustomFieldSections(itemContent: viewModel.itemContent,
-                                            logManager: viewModel.logManager)
+                                            isFreeUser: viewModel.isFreeUser,
+                                            hasReachedTotpLimit: viewModel.totpTokenState == .notAllowed,
+                                            logManager: viewModel.logManager,
+                                            onUpgrade: viewModel.upgrade)
 
                         ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)

@@ -37,6 +37,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
          favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
          vault: Vault?,
          logManager: LogManager,
          theme: Theme) {
@@ -45,6 +46,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                    itemContent: itemContent,
                    favIconRepository: favIconRepository,
                    itemRepository: itemRepository,
+                   upgradeChecker: upgradeChecker,
                    vault: vault,
                    logManager: logManager,
                    theme: theme)
