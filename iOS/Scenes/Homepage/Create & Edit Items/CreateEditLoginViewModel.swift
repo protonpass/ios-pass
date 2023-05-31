@@ -77,12 +77,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return false
     }
 
-    override var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
+         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager,
@@ -92,6 +93,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
+                       remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
                        vaults: vaults,
                        preferences: preferences,
                        logManager: logManager)
@@ -173,7 +175,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return ItemContentProtobuf(name: title,
                                    note: note,
                                    itemUuid: UUID().uuidString,
-                                   data: logInData)
+                                   data: logInData,
+                                   customFields: customFieldUiModels.map { $0.customField })
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
@@ -189,7 +192,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return .init(name: title,
                      note: "Alias of login item \"\(title)\"",
                      itemUuid: UUID().uuidString,
-                     data: .alias)
+                     data: .alias,
+                     customFields: [])
     }
 
     override func additionalEdit() async throws {

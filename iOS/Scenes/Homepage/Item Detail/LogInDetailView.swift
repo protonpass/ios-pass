@@ -71,6 +71,14 @@ struct LogInDetailView: View {
                             .padding(.top, 8)
                         }
 
+                        if viewModel.customFieldsSupported {
+                            CustomFieldSections(itemContent: viewModel.itemContent,
+                                                isFreeUser: viewModel.isFreeUser,
+                                                hasReachedTotpLimit: viewModel.totpTokenState == .notAllowed,
+                                                logManager: viewModel.logManager,
+                                                onUpgrade: viewModel.upgrade)
+                        }
+
                         ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)
                         .padding(.top, 24)
@@ -79,6 +87,7 @@ struct LogInDetailView: View {
                     .padding()
                 }
                 .animation(.default, value: isShowingPassword)
+                .animation(.default, value: viewModel.customFieldsSupported)
                 .onChange(of: isMoreInfoSectionExpanded) { _ in
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }

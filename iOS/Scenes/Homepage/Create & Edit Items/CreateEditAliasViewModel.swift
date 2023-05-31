@@ -127,10 +127,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
+    // swiftlint:disable:next function_body_length
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
+         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) throws {
@@ -138,6 +140,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
+                       remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
                        vaults: vaults,
                        preferences: preferences,
                        logManager: logManager)
@@ -190,7 +193,11 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func itemContentType() -> ItemContentType { .alias }
 
     override func generateItemContent() -> ItemContentProtobuf {
-        ItemContentProtobuf(name: title, note: note, itemUuid: UUID().uuidString, data: .alias)
+        ItemContentProtobuf(name: title,
+                            note: note,
+                            itemUuid: UUID().uuidString,
+                            data: .alias,
+                            customFields: customFieldUiModels.map { $0.customField })
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {

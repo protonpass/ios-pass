@@ -29,7 +29,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ customField: CustomField,
+    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate)
     func createEditItemViewModelWantsToUpgrade()
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
@@ -63,16 +63,24 @@ enum ItemCreationType {
 class BaseCreateEditItemViewModel {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isSaving = false
-    @Published var customFields = [CustomField]()
+    @Published private(set) var customFieldsSupported = false
+    @Published private(set) var canAddMoreCustomFields = true
+    @Published var customFieldUiModels = [CustomFieldUiModel]() {
+        didSet {
+            didEditSomething = true
+        }
+    }
     @Published var isObsolete = false
 
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
+    let remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol
     let preferences: Preferences
     let logger: Logger
     let vaults: [Vault]
 
+    var hasEmptyCustomField: Bool { customFieldUiModels.contains(where: { $0.customField.content.isEmpty }) }
     var didEditSomething = false
 
     weak var delegate: CreateEditItemViewModelDelegate?
@@ -81,6 +89,7 @@ class BaseCreateEditItemViewModel {
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
+         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) throws {
@@ -90,6 +99,7 @@ class BaseCreateEditItemViewModel {
             vaultShareId = shareId
         case .edit(let itemContent):
             vaultShareId = itemContent.shareId
+            customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
 
         guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
@@ -99,11 +109,14 @@ class BaseCreateEditItemViewModel {
         self.mode = mode
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
+        self.remoteCustomFieldsFlagDatasource = remoteCustomFieldsFlagDatasource
         self.preferences = preferences
         self.logger = .init(manager: logManager)
         self.vaults = vaults
         self.bindValues()
         self.pickPrimaryVaultIfApplicable()
+        self.checkIfCustomFieldsAreSupported()
+        self.checkIfAbleToAddMoreCustomFields()
     }
 
     /// To be overridden by subclasses
@@ -134,44 +147,12 @@ class BaseCreateEditItemViewModel {
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
+}
 
-    func addCustomField() {
-        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
-    }
-
-    func editCustomFieldTitle(_ customField: CustomField) {
-        delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(customField, delegate: self)
-    }
-
-    func save() {
-        Task { @MainActor in
-            defer { isSaving = false }
-            isSaving = true
-
-            do {
-                switch mode {
-                case let .create(_, type):
-                    logger.trace("Creating item")
-                    if let createdItem = try await createItem(for: type) {
-                        logger.info("Created \(createdItem.debugInformation)")
-                        delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
-                    }
-
-                case .edit(let oldItemContent):
-                    logger.trace("Editing \(oldItemContent.debugInformation)")
-                    try await editItem(oldItemContent: oldItemContent)
-                    logger.info("Edited \(oldItemContent.debugInformation)")
-                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
-                }
-            } catch {
-                logger.error(error)
-                delegate?.createEditItemViewModelDidEncounter(error: error)
-            }
-        }
-    }
-
+// MARK: - Private APIs
+private extension BaseCreateEditItemViewModel {
     /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
-    private func pickPrimaryVaultIfApplicable() {
+    func pickPrimaryVaultIfApplicable() {
         guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
         Task { @MainActor in
             do {
@@ -186,7 +167,31 @@ class BaseCreateEditItemViewModel {
         }
     }
 
-    private func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
+    func checkIfCustomFieldsAreSupported() {
+        Task { @MainActor in
+            do {
+                let flag = try await remoteCustomFieldsFlagDatasource.getCustomFieldsFlag()
+                customFieldsSupported = flag.value
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
+    func checkIfAbleToAddMoreCustomFields() {
+        Task { @MainActor in
+            do {
+                let isFreeUser = try await upgradeChecker.isFreeUser()
+                canAddMoreCustomFields = !isFreeUser
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
+    func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
         let shareId = selectedVault.shareId
         let itemContent = generateItemContent()
 
@@ -220,7 +225,7 @@ class BaseCreateEditItemViewModel {
         return try await itemRepository.createItem(itemContent: itemContent, shareId: shareId)
     }
 
-    private func editItem(oldItemContent: ItemContent) async throws {
+    func editItem(oldItemContent: ItemContent) async throws {
         try await additionalEdit()
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
@@ -235,7 +240,43 @@ class BaseCreateEditItemViewModel {
     }
 }
 
+// MARK: - Public APIs
 extension BaseCreateEditItemViewModel {
+    func addCustomField() {
+        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
+    }
+
+    func editCustomFieldTitle(_ uiModel: CustomFieldUiModel) {
+        delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(uiModel, delegate: self)
+    }
+
+    func save() {
+        Task { @MainActor in
+            defer { isSaving = false }
+            isSaving = true
+
+            do {
+                switch mode {
+                case let .create(_, type):
+                    logger.trace("Creating item")
+                    if let createdItem = try await createItem(for: type) {
+                        logger.info("Created \(createdItem.debugInformation)")
+                        delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
+                    }
+
+                case .edit(let oldItemContent):
+                    logger.trace("Editing \(oldItemContent.debugInformation)")
+                    try await editItem(oldItemContent: oldItemContent)
+                    logger.info("Edited \(oldItemContent.debugInformation)")
+                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+                }
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
     /// Refresh the item to detect changes.
     /// When changes happen, announce via `isObsolete` boolean  so the view can act accordingly
     func refresh() {
@@ -273,22 +314,22 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
 // MARK: - CustomFieldTitleAlertHandlerDelegate
 extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
     func customFieldAdded(_ customField: CustomField) {
-        customFields.append(customField)
+        customFieldUiModels.append(.init(customField: customField))
     }
 }
 
 // MARK: - CustomFieldEditionDelegate
 extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
-    func customFieldEdited(_ customField: CustomField, newTitle: String) {
-        guard let index = customFields.firstIndex(where: { $0.id == customField.id }) else {
-            let message = "Custom field with id \(customField.id) not found"
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
+        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
+            let message = "Custom field with id \(uiModel.id) not found"
             logger.error(message)
             assertionFailure(message)
             return
         }
-        customFields[index] = .init(id: customField.id,
-                                    title: newTitle,
-                                    type: customField.type,
-                                    content: customField.content)
+        customFieldUiModels[index] = .init(id: uiModel.id,
+                                           customField: .init(title: newTitle,
+                                                              type: uiModel.customField.type,
+                                                              content: uiModel.customField.content))
     }
 }
