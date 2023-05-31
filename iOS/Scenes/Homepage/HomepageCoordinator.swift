@@ -91,7 +91,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          preferences: Preferences,
          symmetricKey: SymmetricKey,
          userData: UserData,
-         paymentsManager: PaymentsManager) {
+         appData: AppData,
+         mainKeyProvider: MainKeyProvider) {
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
@@ -148,7 +149,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
-        self.paymentsManager = paymentsManager
+        self.paymentsManager = PaymentsManager(apiService: apiService,
+                                               appData: appData,
+                                               mainKeyProvider: mainKeyProvider,
+                                               logger: logger,
+                                               preferences: preferences,
+                                               storage: kSharedUserDefaults)
         self.preferences = preferences
         self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository

@@ -42,7 +42,6 @@ final class AppCoordinator {
     private let keymaker: Keymaker
     private let appData: AppData
     private let apiManager: APIManager
-    private let paymentsManager: PaymentsManager
     private let logManager: LogManager
     private let logger: Logger
     private var container: NSPersistentContainer
@@ -76,12 +75,6 @@ final class AppCoordinator {
         let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
         self.apiManager = apiManager
         let preferences = Preferences()
-        self.paymentsManager = PaymentsManager(apiService: apiManager.apiService,
-                                               appData: appData,
-                                               mainKeyProvider: keymaker,
-                                               logger: logger,
-                                               preferences: preferences,
-                                               storage: kSharedUserDefaults ?? .standard)
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
@@ -211,7 +204,8 @@ final class AppCoordinator {
                                                               preferences: preferences,
                                                               symmetricKey: symmetricKey,
                                                               userData: userData,
-                                                              paymentsManager: paymentsManager)
+                                                              appData: appData,
+                                                              mainKeyProvider: keymaker)
                 homepageCoordinator.delegate = self
                 self.homepageCoordinator = homepageCoordinator
                 self.welcomeCoordinator = nil
