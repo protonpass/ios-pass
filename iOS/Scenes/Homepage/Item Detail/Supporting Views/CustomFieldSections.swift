@@ -26,7 +26,10 @@ import UIComponents
 
 struct CustomFieldSections: View {
     let itemContent: ItemContent
+    let isFreeUser: Bool
+    let hasReachedTotpLimit: Bool
     let logManager: LogManager
+    let onUpgrade: () -> Void
 
     var body: some View {
         let uiModels = itemContent.customFields.map { CustomFieldUiModel(customField: $0) }
@@ -40,16 +43,20 @@ struct CustomFieldSections: View {
             case .text:
                 TextCustomFieldSection(title: title,
                                        content: content,
-                                       itemContentType: type)
+                                       itemContentType: type,
+                                       isFreeUser: isFreeUser)
             case .hidden:
                 HiddenCustomFieldSection(title: title,
                                          content: content,
-                                         itemContentType: type)
+                                         itemContentType: type,
+                                         isFreeUser: isFreeUser)
             case .totp:
                 TotpCustomFieldSection(title: title,
                                        content: content,
                                        itemContentType: type,
-                                       logManager: logManager)
+                                       hasReachedTotpLimit: hasReachedTotpLimit,
+                                       logManager: logManager,
+                                       onUpgrade: onUpgrade)
             }
         }
     }
@@ -59,6 +66,7 @@ struct TextCustomFieldSection: View {
     let title: String
     let content: String
     let itemContentType: ItemContentType
+    let isFreeUser: Bool
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -70,6 +78,7 @@ struct TextCustomFieldSection: View {
                     .sectionTitleText()
                 TextView(.constant(content))
                     .foregroundColor(PassColor.textNorm)
+                    .disabled(isFreeUser)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -86,6 +95,7 @@ struct HiddenCustomFieldSection: View {
     let title: String
     let content: String
     let itemContentType: ItemContentType
+    let isFreeUser: Bool
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -99,6 +109,7 @@ struct HiddenCustomFieldSection: View {
                 if isShowingText {
                     TextView(.constant(content))
                         .foregroundColor(PassColor.textNorm)
+                        .disabled(isFreeUser)
                 } else {
                     Text(String(repeating: "•", count: min(20, content.count)))
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -129,15 +140,21 @@ struct TotpCustomFieldSection: View {
     let title: String
     let content: String
     let itemContentType: ItemContentType
+    let hasReachedTotpLimit: Bool
+    let onUpgrade: () -> Void
 
     internal init(title: String,
                   content: String,
                   itemContentType: ItemContentType,
-                  logManager: LogManager) {
+                  hasReachedTotpLimit: Bool,
+                  logManager: LogManager,
+                  onUpgrade: @escaping () -> Void) {
         self._totpManager = .init(wrappedValue: .init(logManager: logManager))
         self.title = title
         self.content = content
         self.itemContentType = itemContentType
+        self.hasReachedTotpLimit = hasReachedTotpLimit
+        self.onUpgrade = onUpgrade
     }
 
     var body: some View {
@@ -149,18 +166,22 @@ struct TotpCustomFieldSection: View {
                 Text(title)
                     .sectionTitleText()
 
-                switch totpManager.state {
-                case .empty:
-                    EmptyView()
-                case .loading:
-                    ProgressView()
-                case .valid(let data):
-                    TOTPText(code: data.code)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                case .invalid:
-                    Text("Invalid TOTP URI")
-                        .font(.caption)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                if hasReachedTotpLimit {
+                    UpgradeButtonLite(action: onUpgrade)
+                } else {
+                    switch totpManager.state {
+                    case .empty:
+                        EmptyView()
+                    case .loading:
+                        ProgressView()
+                    case .valid(let data):
+                        TOTPText(code: data.code)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    case .invalid:
+                        Text("Invalid TOTP URI")
+                            .font(.caption)
+                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -178,7 +199,9 @@ struct TotpCustomFieldSection: View {
         .roundedDetailSection()
         .padding(.top, 8)
         .onFirstAppear {
-            totpManager.bind(uri: content)
+            if !hasReachedTotpLimit {
+                totpManager.bind(uri: content)
+            }
         }
     }
 }

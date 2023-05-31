@@ -121,6 +121,7 @@ private extension ItemDetailCoordinator {
                                              favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
                                              aliasRepository: aliasRepository,
+                                             upgradeChecker: upgradeChecker,
                                              vault: vault,
                                              logManager: logManager,
                                              theme: preferences.theme)
@@ -134,6 +135,7 @@ private extension ItemDetailCoordinator {
                                             itemContent: itemContent,
                                             favIconRepository: favIconRepository,
                                             itemRepository: itemRepository,
+                                            upgradeChecker: upgradeChecker,
                                             vault: vault,
                                             logManager: logManager,
                                             theme: preferences.theme)
