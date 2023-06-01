@@ -74,7 +74,7 @@ public extension UpgradeCheckerProtocol {
 
     func isFreeUser() async throws -> Bool {
         let plan = try await passPlanRepository.getPlan()
-        return plan.planType == .free
+        return plan.isFreeUser
     }
 }
 

@@ -150,7 +150,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.paymentsManager = PaymentsManager(apiService: apiService,
-                                               appData: appData,
+                                               userDataProvider: appData,
                                                mainKeyProvider: mainKeyProvider,
                                                logger: logger,
                                                preferences: preferences,
@@ -498,7 +498,18 @@ private extension HomepageCoordinator {
 
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [unowned self] in
-            print(#function)
+            self.paymentsManager.upgradeSubscription { [unowned self] result in
+                switch result {
+                case .success(let inAppPurchasePlan):
+                    if inAppPurchasePlan != nil {
+                        self.refreshPlan()
+                    } else {
+                        logger.debug("Payment is done but no plan is purchased")
+                    }
+                case .failure(let error):
+                    self.bannerManager.displayTopErrorMessage(error)
+                }
+            }
         }
     }
 }
@@ -700,6 +711,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToHideSpinner() {
         hideLoadingHud()
+    }
+
+    func profileTabViewModelWantsToUpgrade() {
+        startUpgradeFlow()
     }
 
     func profileTabViewModelWantsToEditAppLockTime() {
