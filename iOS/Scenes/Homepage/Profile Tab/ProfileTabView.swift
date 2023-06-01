@@ -66,7 +66,7 @@ struct ProfileTabView: View {
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
             .background(Color(uiColor: PassColor.backgroundNorm))
-//            .toolbar { toolbarContent }
+            .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
     }
@@ -74,17 +74,12 @@ struct ProfileTabView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            if let plan = viewModel.plan {
-                switch plan.planType {
-                case .free:
-                    CapsuleLabelButton(icon: PassIcon.brandPass,
-                                       title: "Upgrade",
-                                       titleColor: PassColor.interactionNorm,
-                                       backgroundColor: PassColor.interactionNormMinor2,
-                                       action: viewModel.upgrade)
-                default:
-                    EmptyView()
-                }
+            if let plan = viewModel.plan, plan.isFreeUser {
+                CapsuleLabelButton(icon: PassIcon.brandPass,
+                                   title: "Upgrade",
+                                   titleColor: PassColor.interactionNorm,
+                                   backgroundColor: PassColor.interactionNormMinor2,
+                                   action: viewModel.upgrade)
             } else {
                 EmptyView()
             }

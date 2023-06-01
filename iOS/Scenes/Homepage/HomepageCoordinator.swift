@@ -713,6 +713,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         hideLoadingHud()
     }
 
+    func profileTabViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
     func profileTabViewModelWantsToEditAppLockTime() {
         let view = EditAppLockTimeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
