@@ -25,39 +25,40 @@ import SwiftUI
 import UIComponents
 
 struct CustomFieldSections: View {
-    let itemContent: ItemContent
+    let itemContentType: ItemContentType
+    let uiModels: [CustomFieldUiModel]
     let isFreeUser: Bool
     let hasReachedTotpLimit: Bool
     let logManager: LogManager
+    let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
 
     var body: some View {
-        let uiModels = itemContent.customFields.map { CustomFieldUiModel(customField: $0) }
         ForEach(uiModels) { uiModel in
             let customField = uiModel.customField
             let title = customField.title
             let content = customField.content
 
-            let type = itemContent.type
             switch customField.type {
             case .text:
                 TextCustomFieldSection(title: title,
                                        content: content,
-                                       itemContentType: type,
+                                       itemContentType: itemContentType,
                                        isFreeUser: isFreeUser,
                                        onUpgrade: onUpgrade)
             case .hidden:
                 HiddenCustomFieldSection(title: title,
                                          content: content,
-                                         itemContentType: type,
+                                         itemContentType: itemContentType,
                                          isFreeUser: isFreeUser,
                                          onUpgrade: onUpgrade)
             case .totp:
                 TotpCustomFieldSection(title: title,
                                        content: content,
-                                       itemContentType: type,
+                                       itemContentType: itemContentType,
                                        hasReachedTotpLimit: hasReachedTotpLimit,
                                        logManager: logManager,
+                                       onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
             }
         }
@@ -154,19 +155,22 @@ struct TotpCustomFieldSection: View {
     let content: String
     let itemContentType: ItemContentType
     let hasReachedTotpLimit: Bool
+    let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
 
-    internal init(title: String,
-                  content: String,
-                  itemContentType: ItemContentType,
-                  hasReachedTotpLimit: Bool,
-                  logManager: LogManager,
-                  onUpgrade: @escaping () -> Void) {
+    init(title: String,
+         content: String,
+         itemContentType: ItemContentType,
+         hasReachedTotpLimit: Bool,
+         logManager: LogManager,
+         onSelectTotpToken: @escaping (String) -> Void,
+         onUpgrade: @escaping () -> Void) {
         self._totpManager = .init(wrappedValue: .init(logManager: logManager))
         self.title = title
         self.content = content
         self.itemContentType = itemContentType
         self.hasReachedTotpLimit = hasReachedTotpLimit
+        self.onSelectTotpToken = onSelectTotpToken
         self.onUpgrade = onUpgrade
     }
 
@@ -198,6 +202,12 @@ struct TotpCustomFieldSection: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if !hasReachedTotpLimit, let code = totpManager.totpData?.code {
+                    onSelectTotpToken(code)
+                }
+            }
 
             switch totpManager.state {
             case .valid(let data):

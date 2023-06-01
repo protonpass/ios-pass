@@ -72,11 +72,17 @@ struct LogInDetailView: View {
                         }
 
                         if viewModel.customFieldsSupported {
-                            CustomFieldSections(itemContent: viewModel.itemContent,
-                                                isFreeUser: viewModel.isFreeUser,
-                                                hasReachedTotpLimit: viewModel.totpTokenState == .notAllowed,
-                                                logManager: viewModel.logManager,
-                                                onUpgrade: viewModel.upgrade)
+                            CustomFieldSections(
+                                itemContentType: viewModel.itemContent.type,
+                                uiModels: viewModel.customFieldUiModels,
+                                isFreeUser: viewModel.isFreeUser,
+                                hasReachedTotpLimit: viewModel.totpTokenState == .notAllowed,
+                                logManager: viewModel.logManager,
+                                onSelectTotpToken: { token in
+                                    viewModel.copyToClipboard(
+                                        text: token,
+                                        message: "Two Factor Authentication code copied") },
+                                onUpgrade: viewModel.upgrade)
                         }
 
                         ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
