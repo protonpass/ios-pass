@@ -56,4 +56,6 @@ public struct PassPlan: Decodable, Equatable {
             return .free
         }
     }
+
+    public var isFreeUser: Bool { planType == .free }
 }
