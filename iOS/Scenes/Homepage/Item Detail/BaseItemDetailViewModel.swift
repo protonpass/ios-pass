@@ -51,7 +51,12 @@ class BaseItemDetailViewModel {
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
     let remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol
-    private(set) var itemContent: ItemContent
+    private(set) var itemContent: ItemContent {
+        didSet {
+            customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+        }
+    }
+    private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger: Logger
     let logManager: LogManager
@@ -72,6 +77,7 @@ class BaseItemDetailViewModel {
          theme: Theme) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
+        self.customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.favIconRepository = favIconRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
