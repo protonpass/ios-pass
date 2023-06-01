@@ -162,6 +162,22 @@
 			<string>%d users</string>
 		</dict>
 	</dict>
+	<key>%d vaults</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d vault</string>
+			<key>other</key>
+			<string>%d vaults</string>
+		</dict>
+	</dict>
 	<key>New_Plans %d VPN connections per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

@@ -28,6 +28,8 @@ import ProtonCore_DataModel
 
 final class AddressKeySetup {
     
+    static let signedKeyListSignatureContext = SignatureContext(value: "key-transparency.key-list", isCritical: false)
+    
     struct GeneratedAddressKey {
         /// armored key
         let armoredKey: ArmoredKey
@@ -97,7 +99,7 @@ final class AddressKeySetup {
         /// sign detached. keylist.json signed by primary address key. on signup situation this is the address key we are going to submit.
         let addrSignerKey = SigningKey.init(privateKey: armoredAddrKey,
                                             passphrase: addrKeyPassphrase)
-        let signed = try Sign.signDetached(signingKey: addrSignerKey, plainText: jsonKeylist)
+        let signed = try Sign.signDetached(signingKey: addrSignerKey, plainText: jsonKeylist, signatureContext: AddressKeySetup.signedKeyListSignatureContext)
         
         let signedKeyList: [String: Any] = [
             "Data": jsonKeylist,

@@ -27,6 +27,7 @@ import CryptoKit
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Login
+import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -52,6 +53,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let logger: Logger
     private let logManager: LogManager
     private let manualLogIn: Bool
+    private let paymentsManager: PaymentsManager
     private let preferences: Preferences
     private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
@@ -69,6 +71,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
+    private var paymentsUI: PaymentsUI?
 
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -87,7 +90,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          manualLogIn: Bool,
          preferences: Preferences,
          symmetricKey: SymmetricKey,
-         userData: UserData) {
+         userData: UserData,
+         appData: AppData,
+         mainKeyProvider: MainKeyProvider) {
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
@@ -144,6 +149,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
+        self.paymentsManager = PaymentsManager(apiService: apiService,
+                                               userDataProvider: appData,
+                                               mainKeyProvider: mainKeyProvider,
+                                               logger: logger,
+                                               preferences: preferences,
+                                               storage: kSharedUserDefaults)
         self.preferences = preferences
         self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
@@ -491,7 +502,18 @@ private extension HomepageCoordinator {
 
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [unowned self] in
-            print(#function)
+            self.paymentsManager.upgradeSubscription { [unowned self] result in
+                switch result {
+                case .success(let inAppPurchasePlan):
+                    if inAppPurchasePlan != nil {
+                        self.refreshPlan()
+                    } else {
+                        logger.debug("Payment is done but no plan is purchased")
+                    }
+                case .failure(let error):
+                    self.bannerManager.displayTopErrorMessage(error)
+                }
+            }
         }
     }
 }
@@ -695,6 +717,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         hideLoadingHud()
     }
 
+    func profileTabViewModelWantsToUpgrade() {
+        startUpgradeFlow()
+    }
+
     func profileTabViewModelWantsToEditAppLockTime() {
         let view = EditAppLockTimeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
@@ -713,6 +739,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet,
                                          apiService: apiService,
+                                         paymentsManager: paymentsManager,
                                          logManager: logManager,
                                          theme: preferences.theme,
                                          username: userData.user.email ?? "",
@@ -792,10 +819,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 extension HomepageCoordinator: AccountViewModelDelegate {
     func accountViewModelWantsToGoBack() {
         adaptivelyDismissCurrentDetailView()
-    }
-
-    func accountViewModelWantsToManageSubscription() {
-        print(#function)
     }
 
     func accountViewModelWantsToSignOut() {

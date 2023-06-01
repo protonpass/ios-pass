@@ -232,8 +232,11 @@ extension PMAPIService {
                     } else {
                         // finish the request if it should not be retried
                         if self.dohInterface.errorIndicatesDoHSolvableProblem(error: error) {
-                            let apiBlockedError = NSError.protonMailError(APIErrorCode.potentiallyBlocked,
-                                                                          localizedDescription: CoreString._net_api_might_be_blocked_message)
+                            let apiBlockedError = NSError.protonMailError(
+                                APIErrorCode.potentiallyBlocked,
+                                localizedDescription: CoreString._net_api_might_be_blocked_message,
+                                underlyingError: error
+                            )
                             response = response.mapLeft { _ in .failure(apiBlockedError) }.mapRight { _ in .failure(apiBlockedError) }
                         }
                         self.handleNetworkRequestBeingFinished(task,
@@ -346,8 +349,28 @@ extension PMAPIService {
             
         } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
             
-            protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, self.deviceVerificationHandler, forceUpgradeHandler)
-            
+            protonMailResponseCodeHandler.handleProtonResponseCode(
+                responseHandlerData: PMResponseHandlerData(
+                    method: method,
+                    path: path,
+                    parameters: parameters,
+                    headers: headers,
+                    authenticated: authenticated,
+                    authRetry: authRetry,
+                    authRetryRemains: authRetryRemains,
+                    customAuthCredential: authCredential,
+                    nonDefaultTimeout: nonDefaultTimeout,
+                    retryPolicy: retryPolicy,
+                    task: task
+                ),
+                response: .right(responseError),
+                responseCode: responseCode,
+                completion: completion,
+                humanVerificationHandler: humanVerificationHandler,
+                deviceVerificationHandler: deviceVerificationHandler,
+                missingScopesHandler: missingScopesHandler,
+                forceUpgradeHandler: forceUpgradeHandler
+            )
         } else {
             completion.call(task: task, error: error)
         }
@@ -434,9 +457,30 @@ extension PMAPIService {
             }
             
         } else {
-            protonMailResponseCodeHandler.handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, self.deviceVerificationHandler, forceUpgradeHandler)
+            self.protonMailResponseCodeHandler.handleProtonResponseCode(
+                responseHandlerData: PMResponseHandlerData(
+                    method: method,
+                    path: path,
+                    parameters: parameters,
+                    headers: headers,
+                    authenticated: authenticated,
+                    authRetry: authRetry,
+                    authRetryRemains: authRetryRemains,
+                    customAuthCredential: nil,
+                    nonDefaultTimeout: nonDefaultTimeout,
+                    retryPolicy: retryPolicy,
+                    task: task
+                ),
+                response: .left(response),
+                responseCode: responseCode,
+                completion: completion,
+                humanVerificationHandler: self.humanVerificationHandler,
+                deviceVerificationHandler: self.deviceVerificationHandler,
+                missingScopesHandler: self.missingScopesHandler,
+                forceUpgradeHandler: self.forceUpgradeHandler
+            )
         }
-        self.debugError(error)
+        debugError(error)
     }
     
     private func handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions<T>(
@@ -501,7 +545,28 @@ extension PMAPIService {
                         completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
                         return
                     }
-                    self.protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, nil, nonDefaultTimeout, retryPolicy, completion, self.humanVerificationHandler, self.deviceVerificationHandler, self.forceUpgradeHandler)
+                    self.protonMailResponseCodeHandler.handleProtonResponseCode(
+                        responseHandlerData: PMResponseHandlerData(
+                            method: method,
+                            path: path,
+                            parameters: parameters,
+                            headers: headers,
+                            authenticated: authenticated,
+                            authRetry: authRetry,
+                            authRetryRemains: authRetryRemains,
+                            customAuthCredential: nil,
+                            nonDefaultTimeout: nonDefaultTimeout,
+                            retryPolicy: retryPolicy,
+                            task: task
+                        ),
+                        response: .right(responseError),
+                        responseCode: responseCode,
+                        completion: completion,
+                        humanVerificationHandler: self.humanVerificationHandler,
+                        deviceVerificationHandler: self.deviceVerificationHandler,
+                        missingScopesHandler: self.missingScopesHandler,
+                        forceUpgradeHandler: self.forceUpgradeHandler
+                    )
                 case .triedAcquiringNew(.wrongConfigurationNoDelegate(let error)):
                     self.debugError(error)
                     completion.call(task: nil, error: error)
@@ -630,7 +695,7 @@ extension PMAPIService {
                     
                     [ERROR]
                     code: \(error.bestShotAtReasonableErrorCode)
-                    message: \(error.messageForTheUser)
+                    message: \(error.localizedDescription)
                     """)
         #endif
     }

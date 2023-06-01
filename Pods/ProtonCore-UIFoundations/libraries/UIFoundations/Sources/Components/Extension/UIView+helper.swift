@@ -62,4 +62,13 @@ public extension UIView {
             layer.render(in: context.cgContext)
         }
     }
+    
+    func addConstraints(_ constraintsMaker: (UIView) -> [NSLayoutConstraint]) {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(constraintsMaker(self))
+    }
+    
+    func addSubviews(_ subviews: UIView...) {
+        subviews.forEach(addSubview)
+    }
 }

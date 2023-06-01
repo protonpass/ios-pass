@@ -66,8 +66,8 @@ public class Crypto {
     }
     
     internal func encryptAndSign(plainRaw: Either<String, Data>,
-                                 publicKey: ArmoredKey, signingKey: SigningKey?) throws -> SplitPacket {
-        let armoredMessage: ArmoredMessage = try self.encryptAndSign(plainRaw: plainRaw, publicKey: publicKey, signingKey: signingKey)
+                                 publicKey: ArmoredKey, signingKey: SigningKey?, signatureContext: SignatureContext?) throws -> SplitPacket {
+        let armoredMessage: ArmoredMessage = try self.encryptAndSign(plainRaw: plainRaw, publicKey: publicKey, signingKey: signingKey, signatureContext: signatureContext)
         
         let splitMessage = try throwingNotNil { error in CryptoNewPGPSplitMessageFromArmored(armoredMessage.value, &error) }
         
@@ -79,7 +79,6 @@ public class Crypto {
             throw CryptoError.splitMessageKeyNil
         }
         return SplitPacket.init(dataPacket: dataPacket, keyPacket: keyPacket)
-        
     }
     
     /// Base fun to handle the encryption and signing
@@ -89,7 +88,7 @@ public class Crypto {
     ///   - signingKey: signing key pack. include a private key and its passphase
     /// - Returns: encrypted Armored message
     internal func encryptAndSign(plainRaw: Either<String, Data>,
-                                 publicKey: ArmoredKey, signingKey: SigningKey?) throws -> ArmoredMessage {
+                                 publicKey: ArmoredKey, signingKey: SigningKey?, signatureContext: SignatureContext?) throws -> ArmoredMessage {
         
         let publicKeyRing = try self.keyRingBuilder.buildPublicKeyRing(armoredKeys: [publicKey])
         
@@ -110,8 +109,10 @@ public class Crypto {
             signerKeyRing = try throwing { error in CryptoNewKeyRing(unlockedSignerKey, &error) }
         }
         
-        let cryptedMessage = try publicKeyRing.encrypt(plainMessage, privateKey: signerKeyRing)
-        let armoredMessage = try throwing { error in cryptedMessage.getArmored(&error) }
+        let context = try signatureContext?.cast()
+        
+        let encryptedMessage = try publicKeyRing.encrypt(withContext: plainMessage, privateKey: signerKeyRing, signingContext: context)
+        let armoredMessage = try throwing { error in encryptedMessage.getArmored(&error) }
         guard !armoredMessage.isEmpty else {
             throw CryptoError.messageCouldNotBeEncrypted
         }
@@ -185,10 +186,16 @@ public class Crypto {
     
     private func signStream(_ signKeyRing: CryptoKeyRing,
                             _ encryptKeyRing: CryptoKeyRing,
-                            _ plaintextFile: FileHandle) throws -> ArmoredSignature {
+                            _ plaintextFile: FileHandle,
+                            _ signatureContext: SignatureContext?
+    ) throws -> ArmoredSignature {
         var error: NSError?
         let plaintextReader = HelperMobile2GoReader(File.FileMobileReader(file: plaintextFile))
-        let encSignature = try signKeyRing.signDetachedEncryptedStream(plaintextReader, encryptionKeyRing: encryptKeyRing)
+        let context = try signatureContext?.cast()
+        let signature = try signKeyRing.signDetachedStream(withContext: plaintextReader, context: context)
+        let signatureData = signature.data
+        let signatureMessage = CryptoNewPlainMessage(signatureData)
+        let encSignature = try encryptKeyRing.encrypt(signatureMessage, privateKey: nil)
         let encSignatureArmored = encSignature.getArmored(&error)
         guard error == nil else {
             throw error!
@@ -231,12 +238,14 @@ public class Crypto {
     internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
                                    split: SplitPacket,
                                    verifications: [ArmoredKey],
-                                   verifyTime: Int64) throws -> VerifiedString {
+                                   verifyTime: Int64,
+                                   verificationContext: VerificationContext?) throws -> VerifiedString {
         let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
             decryptionKeys: decryptionKeys,
             encrypted: .right(split),
             verifications: verifications,
-            verifyTime: verifyTime
+            verifyTime: verifyTime,
+            verificationContext: verificationContext
         )
 
         return verifyMessage.map { $0.getString() }
@@ -245,12 +254,14 @@ public class Crypto {
     internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
                                    split: SplitPacket,
                                    verifications: [ArmoredKey],
-                                   verifyTime: Int64) throws -> VerifiedData {
+                                   verifyTime: Int64,
+                                   verificationContext: VerificationContext?) throws -> VerifiedData {
         let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
             decryptionKeys: decryptionKeys,
             encrypted: .right(split),
             verifications: verifications,
-            verifyTime: verifyTime
+            verifyTime: verifyTime,
+            verificationContext: verificationContext
         )
         return try verifyMessage.map {
             guard let data = $0.data else {
@@ -263,12 +274,14 @@ public class Crypto {
     internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
                                    encrypted: ArmoredMessage,
                                    verifications: [ArmoredKey],
-                                   verifyTime: Int64) throws -> VerifiedData {
+                                   verifyTime: Int64,
+                                   verificationContext: VerificationContext?) throws -> VerifiedData {
         let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
             decryptionKeys: decryptionKeys,
             encrypted: .left(encrypted),
             verifications: verifications,
-            verifyTime: verifyTime
+            verifyTime: verifyTime,
+            verificationContext: verificationContext
         )
         return try verifyMessage.map {
             guard let data = $0.data else {
@@ -281,12 +294,14 @@ public class Crypto {
     internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
                                    encrypted: ArmoredMessage,
                                    verifications: [ArmoredKey],
-                                   verifyTime: Int64) throws -> VerifiedString {
+                                   verifyTime: Int64,
+                                   verificationContext: VerificationContext?) throws -> VerifiedString {
         let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
             decryptionKeys: decryptionKeys,
             encrypted: .left(encrypted),
             verifications: verifications,
-            verifyTime: verifyTime
+            verifyTime: verifyTime,
+            verificationContext: verificationContext
         )
         return verifyMessage.map { $0.getString() }
     }
@@ -295,7 +310,8 @@ public class Crypto {
         decryptionKeys: [DecryptionKey],
         encrypted: Either<ArmoredMessage, SplitPacket>,
         verifications: [ArmoredKey],
-        verifyTime: Int64
+        verifyTime: Int64,
+        verificationContext: VerificationContext?
     ) throws -> VerifiedMessage<CryptoPlainMessage> {
         let pgpMsg: CryptoPGPMessage = try throwingNotNil { _ in
             switch encrypted {
@@ -309,7 +325,8 @@ public class Crypto {
         let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
                                                                              encrypted: pgpMsg,
                                                                              verifications: verifications,
-                                                                             verifyTime: verifyTime)
+                                                                             verifyTime: verifyTime,
+                                                                             verificationContext: verificationContext)
         guard let message = verifyMessage.message else {
             throw CryptoError.emptyResult
         }
@@ -326,7 +343,7 @@ public class Crypto {
     }
     
     func decryptAndVerify(decryptionKey: DecryptionKey, encrypted: ArmoredMessage,
-                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64, trimTrailingSpaces: Bool = true) throws -> VerifiedString {
+                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64, trimTrailingSpaces: Bool = true, verificationContext: VerificationContext?) throws -> VerifiedString {
         
         let decryptionKeyRing = try keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
         defer { decryptionKeyRing.clearPrivateParams() }
@@ -339,13 +356,15 @@ public class Crypto {
         
         let verificationKeyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: verificationKeys)
         
+        let context = try verificationContext?.cast()
+        
         let signature = CryptoPGPSignature(fromArmored: signature.value)
         
         let verifyUnixTime = verifyTime == 0 ? CryptoGetUnixTime() : verifyTime
         do {
             let trimmed = (trimTrailingSpaces) ? decrypted.trimTrailingSpaces() : decrypted
             let plainMessage = CryptoPlainMessage(from: trimmed)
-            try verificationKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyUnixTime)
+            try verificationKeyRing.verifyDetached(withContext: plainMessage, signature: signature, verifyTime: verifyUnixTime, verificationContext: context)
             return .verified(decrypted)
         } catch {
             return .unverified(decrypted, error)
@@ -353,7 +372,7 @@ public class Crypto {
     }
     
     func decryptAndVerify(decryptionKey: DecryptionKey, keyPacket: Data,
-                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64) throws -> VerifiedData {
+                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64, verificationContext: VerificationContext?) throws -> VerifiedData {
         
         let decryptionKeyRing = try keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
         defer { decryptionKeyRing.clearPrivateParams() }
@@ -366,15 +385,17 @@ public class Crypto {
         
         let signature = CryptoPGPSignature(fromArmored: signature.value)
         
+        let context = try verificationContext?.cast()
+        
         do {
             let plainMessage = CryptoPlainMessage(sessionKey)
-            try verificationKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: CryptoGetUnixTime())
+            try verificationKeyRing.verifyDetached(withContext: plainMessage, signature: signature, verifyTime: CryptoGetUnixTime(), verificationContext: context)
             return .verified(sessionKey)
         } catch { }
         
         do {
             let plainMessage = CryptoPlainMessage(keyPacket)
-            try verificationKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: CryptoGetUnixTime())
+            try verificationKeyRing.verifyDetached(withContext: plainMessage, signature: signature, verifyTime: CryptoGetUnixTime(), verificationContext: context)
             return .verified(sessionKey)
         } catch {
             return .unverified(sessionKey, error)
@@ -384,14 +405,17 @@ public class Crypto {
     private func decryptAndVerify(decryptionKeys: [DecryptionKey],
                                   encrypted: PGPMessage,
                                   verifications: [ArmoredKey],
-                                  verifyTime: Int64) throws -> ExplicitVerifyMessage {
+                                  verifyTime: Int64,
+                                  verificationContext: VerificationContext?) throws -> ExplicitVerifyMessage {
         
         let privateKeyRing = try self.keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
         let verifierKeyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: verifications)
         
+        let context = try verificationContext?.cast()
+        
         let verified = try throwingNotNil { error in
-            HelperDecryptExplicitVerify(encrypted, privateKeyRing, verifierKeyRing, verifyTime, &error)
+            HelperDecryptExplicitVerifyWithContext(encrypted, privateKeyRing, verifierKeyRing, verifyTime, context, &error)
         }
         return verified
     }
@@ -484,9 +508,10 @@ public class Crypto {
                                 decryptionKeys: [DecryptionKey],
                                 keyPacket: Data,
                                 verificationKeys: [ArmoredKey],
-                                signature: ArmoredSignature,
+                                encryptedSignature: ArmoredMessage,
                                 chunckSize: Int,
-                                removeClearTextFileIfAlreadyExists: Bool = false) throws
+                                removeClearTextFileIfAlreadyExists: Bool = false,
+                                verificationContext: VerificationContext?) throws
     {
         // prepare files
         if FileManager.default.fileExists(atPath: cleartextUrl.path) {
@@ -514,23 +539,30 @@ public class Crypto {
         defer { verifyFileHandle.closeFile() }
         let verificationKeyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: verificationKeys)
         
-        try self.verifyStream(verificationKeyRing, decryptionKeyRing, verifyFileHandle, signature)
+        try self.verifyStream(verificationKeyRing, decryptionKeyRing, verifyFileHandle, encryptedSignature, verificationContext)
     }
     
     internal func verifyStream(_ verifyKeyRing: CryptoKeyRing,
                                _ decryptKeyRing: CryptoKeyRing,
                                _ plaintextFile: FileHandle,
-                               _ encSignatureArmored: ArmoredSignature) throws
+                               _ encSignatureArmored: ArmoredMessage,
+                               _ verificationContext: VerificationContext?) throws
     {
         let plaintextReader = HelperMobile2GoReader(File.FileMobileReader(file: plaintextFile))
         
         let encSignature = CryptoPGPMessage(fromArmored: encSignatureArmored.value)
         
-        try verifyKeyRing.verifyDetachedEncryptedStream(
-            plaintextReader,
-            encryptedSignature: encSignature,
-            decryptionKeyRing: decryptKeyRing,
-            verifyTime: CryptoGetUnixTime()
+        let decryptedSignature = try decryptKeyRing.decrypt(encSignature, verifyKey: nil, verifyTime: 0)
+        
+        let context = try verificationContext?.cast()
+        
+        let signatureData = decryptedSignature.data
+        
+        try verifyKeyRing.verifyDetachedStream(
+            withContext: plaintextReader,
+            signature: CryptoNewPGPSignature(signatureData),
+            verifyTime: CryptoGetUnixTime(),
+            verificationContext: context
         )
     }
     
@@ -564,7 +596,7 @@ public class Crypto {
         }
     }
     
-    internal func signDetached(plainRaw: Either<String, Data>, signer: SigningKey, trimTrailingSpaces: Bool) throws -> ArmoredSignature {
+    internal func signDetached(plainRaw: Either<String, Data>, signer: SigningKey, trimTrailingSpaces: Bool, signatureContext: SignatureContext?) throws -> ArmoredSignature {
         guard !signer.isEmpty else {
             throw SignError.invalidSigningKey
         }
@@ -586,7 +618,9 @@ public class Crypto {
             plainMessage = CryptoNewPlainMessage(plainData)
         }
         
-        let pgpSignature = try keyRing.signDetached(plainMessage)
+        let context = try signatureContext?.cast()
+        
+        let pgpSignature = try keyRing.signDetached(withContext: plainMessage, context: context)
         
         let signature = try throwingNotNil { error in pgpSignature.getArmored(&error) }
         
@@ -594,13 +628,13 @@ public class Crypto {
     }
     
     internal func verifyDetached(input: Either<String, Data>, signature: Either<ArmoredSignature, UnArmoredSignature>,
-                                 verifier: ArmoredKey, verifyTime: Int64, trimTrailingSpaces: Bool) throws -> Bool {
+                                 verifier: ArmoredKey, verifyTime: Int64, trimTrailingSpaces: Bool, verificationContext: VerificationContext?) throws -> Bool {
         return try self.verifyDetached(input: input, signature: signature,
-                                       verifiers: [verifier], verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces)
+                                       verifiers: [verifier], verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
     
     internal func verifyDetached(input: Either<String, Data>, signature: Either<ArmoredSignature, UnArmoredSignature>,
-                                 verifiers: [ArmoredKey], verifyTime: Int64, trimTrailingSpaces: Bool) throws -> Bool {
+                                 verifiers: [ArmoredKey], verifyTime: Int64, trimTrailingSpaces: Bool, verificationContext: VerificationContext?) throws -> Bool {
         
         let publicKeyRing = try self.keyRingBuilder.buildPublicKeyRing(armoredKeys: verifiers)
         let plainMessage: CryptoPlainMessage?
@@ -616,15 +650,16 @@ public class Crypto {
         case .left(let armoredSignature): pgpSignature = try throwingNotNil { error in CryptoNewPGPSignatureFromArmored(armoredSignature.value, &error) }
         case .right(let plainData): pgpSignature = try throwingNotNil { error in CryptoNewPGPSignature(plainData.value) }
         }
+        let context = try verificationContext?.cast()
         do {
-            try publicKeyRing.verifyDetached(plainMessage, signature: pgpSignature, verifyTime: verifyTime)
+            try publicKeyRing.verifyDetached(withContext: plainMessage, signature: pgpSignature, verifyTime: verifyTime, verificationContext: context)
             return true
         } catch {
             return false
         }
     }
     
-    public func signStream(publicKey: ArmoredKey, signerKey: SigningKey, plainFile: URL) throws -> ArmoredSignature  {
+    public func signStream(publicKey: ArmoredKey, signerKey: SigningKey, plainFile: URL, signatureContext: SignatureContext?) throws -> ArmoredSignature  {
         guard !signerKey.isEmpty else {
             throw SignError.invalidSigningKey
         }
@@ -652,7 +687,7 @@ public class Crypto {
         }
         
         let readFileHandle = try FileHandle(forReadingFrom: plainFile)
-        let hash = try signStream(signKeyRing, encryptionKeyRing, readFileHandle)
+        let hash = try signStream(signKeyRing, encryptionKeyRing, readFileHandle, signatureContext)
         
         if #available(iOSApplicationExtension 13.0, macOSApplicationExtension 10.15, *) {
             try readFileHandle.close()
@@ -709,4 +744,34 @@ public class Crypto {
         return ArmoredKey.init(value: newKey)
     }
 
+}
+
+internal extension SignatureContext {
+    func cast() throws -> CryptoSigningContext {
+        let context = CryptoSigningContext(self.value, isCritical: self.isCritical)
+        if let context {
+            return context
+        } else {
+            throw CryptoError.signatureContextNotInitialised
+        }
+    }
+}
+
+internal extension VerificationContext {
+    func cast() throws -> CryptoVerificationContext {
+        let context: CryptoVerificationContext?
+        switch self.required {
+        case .never:
+             context = CryptoVerificationContext(self.value, isRequired: false, requiredAfter: 0)
+        case .always:
+            context = CryptoVerificationContext(self.value, isRequired: true, requiredAfter: 0)
+        case .after(let unixTime):
+            context = CryptoVerificationContext(self.value, isRequired: true, requiredAfter: unixTime)
+        }
+        if let context {
+            return context
+        } else {
+            throw CryptoError.verificationContextNotInitialised
+        }
+    }
 }

@@ -40,6 +40,7 @@ final class PaymentsUICoordinator {
     private let storeKitManager: StoreKitManagerProtocol
     private let purchaseManager: PurchaseManagerProtocol
     private let shownPlanNames: ListOfShownPlanNames
+    private let customPlansDescription: CustomPlansDescription
     private let alertManager: PaymentsUIAlertManager
     private let clientApp: ClientApp
     private let storyboardName: String
@@ -60,6 +61,7 @@ final class PaymentsUICoordinator {
          purchaseManager: PurchaseManagerProtocol,
          clientApp: ClientApp,
          shownPlanNames: ListOfShownPlanNames,
+         customPlansDescription: CustomPlansDescription,
          alertManager: PaymentsUIAlertManager,
          onDohTroubleshooting: @escaping () -> Void) {
         self.planService = planService
@@ -68,6 +70,7 @@ final class PaymentsUICoordinator {
         self.shownPlanNames = shownPlanNames
         self.alertManager = alertManager
         self.clientApp = clientApp
+        self.customPlansDescription = customPlansDescription
         self.storyboardName = "PaymentsUI"
         self.onDohTroubleshooting = onDohTroubleshooting
     }
@@ -100,7 +103,8 @@ final class PaymentsUICoordinator {
                                         storeKitManager: storeKitManager,
                                         servicePlan: servicePlan,
                                         shownPlanNames: shownPlanNames,
-                                        clientApp: clientApp) { [weak self] updatedPlan in
+                                        clientApp: clientApp,
+                                        customPlansDescription: customPlansDescription) { [weak self] updatedPlan in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentsUIViewController?.reloadData()
                 if updatedPlan != nil {

@@ -38,6 +38,7 @@ public enum ProductionHosts: String, CaseIterable {
     case calendarAPI = "calendar-api.proton.me"
     case driveAPI = "drive-api.proton.me"
     case vpnAPI = "vpn-api.proton.me"
+    case passAPI = "pass-api.proton.me"
     
     case accountApp = "account.proton.me"
     case accountAPI = "account-api.proton.me"
@@ -58,6 +59,7 @@ public enum ProductionHosts: String, CaseIterable {
         case .calendarAPI: result = "MNQWYZLOMRQXELLBOBUS44DSN52G63RONVSQ"
         case .driveAPI: result = "MRZGS5TFFVQXA2JOOBZG65DPNYXG2ZI"
         case .vpnAPI: result = "OZYG4LLBOBUS44DSN52G63RONVSQ"
+        case .passAPI: result = "OBQXG4ZNMFYGSLTQOJXXI33OFZWWK"
         case .accountApp: result = "MFRWG33VNZ2C44DSN52G63RONVSQ"
         case .accountAPI: result = "MFRWG33VNZ2C2YLQNEXHA4TPORXW4LTNMU"
         case .verifyApp: result = "OZSXE2LGPEXHA4TPORXW4LTNMU"

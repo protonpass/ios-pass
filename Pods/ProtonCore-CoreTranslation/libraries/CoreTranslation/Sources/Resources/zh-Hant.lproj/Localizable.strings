@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "復原方法可協助您存取帳號，以因應忘記密碼或被鎖在帳號之外。";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "帳號已刪除\n正在登出…";
+
 /* *
  *  Login errors */
 "Account setup required" = "必須設定帳號";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通報我們您已升等服務方案，但缺少部份技術資料。煩請儘速填寫錯誤回報，以利客戶支援團隊及時與您聯繫。";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 通報我們您已升等服務方案，但我們偵測到您同時亦登出帳號。";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "繼續";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "以既有電郵位址創建 Proton 帳號";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "另行創建安全防護的 Proton Mail 電郵位址";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "無法創建新使用者";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "創建您的密碼";
 
 /* *
@@ -444,6 +447,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "請輸入您的 Proton 帳號密碼。";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "請登入至您要升級服務方案的 Proton Mail 帳號，我們隨後即可完成此次訂購。";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "請註冊至您要升級服務方案的 Proton Mail 帳號，我們隨後即可完成方案服務啟用。";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "請確認您的網際網路連線正常運作。";
 
@@ -600,6 +609,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "無法連線到 Proton 伺服器。可能是錯誤的網路組態設定、Proton 伺服器暫停服務，又或者 Proton 伺服器遭到封鎖所導致";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "連接 Proton API 時，TLS 憑證驗證失敗。您現階段網路連線很可能會受到監控。基於防禦您的資料安全無虞，我們正管制此應用程式存取 Proton API。若需登入或存取您的帳號，請切換至新的網路後，再試著連接。";
+
 /* Complete view description */
 "This should take no more than a minute." = "此耗時往往不超過一分鐘。";
 
@@ -619,7 +631,7 @@
 "TroubleShooting" = "疑難排解";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用 %1$@ 或 %2$@）。";
 
 /* other method alert button */
 "Try other method" = "嘗試其他方法";
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您的 Proton 免費帳號已成功創建。";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "連線已逾時，請重新登入。";
 

@@ -44,12 +44,18 @@ enum PaymentsUIMode {
     case update         // presents plans to upgrade
 }
 
+public typealias CustomPlansDescription = [String: (purchasable: PurchasablePlanDescription?, current: CurrentPlanDescription?)]
+
 public final class PaymentsUI {
 
     private let coordinator: PaymentsUICoordinator
     private let paymentsUIAlertManager: PaymentsUIAlertManager
     
-    public init(payments: Payments, clientApp: ClientApp, shownPlanNames: ListOfShownPlanNames, alertManager: AlertManagerProtocol? = nil) {
+    public init(payments: Payments,
+                clientApp: ClientApp,
+                shownPlanNames: ListOfShownPlanNames,
+                customPlansDescription: CustomPlansDescription = [:],
+                alertManager: AlertManagerProtocol? = nil) {
         if let alertManager = alertManager {
             self.paymentsUIAlertManager = AlwaysDelegatingPaymentsUIAlertManager(delegatedAlertManager: alertManager)
         } else {
@@ -62,6 +68,7 @@ public final class PaymentsUI {
                                                  purchaseManager: payments.purchaseManager,
                                                  clientApp: clientApp,
                                                  shownPlanNames: shownPlanNames,
+                                                 customPlansDescription: customPlansDescription,
                                                  alertManager: paymentsUIAlertManager,
                                                  onDohTroubleshooting: { [weak payments] in
             payments?.executeDohTroubleshootMethodFromApiDelegate()
