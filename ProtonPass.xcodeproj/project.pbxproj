@@ -359,6 +359,7 @@
 		35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35661CB129B8BF97003BBAD6 /* EditableVaultListView.swift */; };
 		35661CB429B8BFCD003BBAD6 /* EditableVaultListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35661CB329B8BFCD003BBAD6 /* EditableVaultListViewModel.swift */; };
 		35661CB629B91990003BBAD6 /* EdgeInsets+Zero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35661CB529B91990003BBAD6 /* EdgeInsets+Zero.swift */; };
+		3567414F2A28927800C99C32 /* UserDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567414E2A28927800C99C32 /* UserDataProvider.swift */; };
 		356750D529D31E9200247648 /* View+ItemSwipeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356750D429D31E9200247648 /* View+ItemSwipeModifier.swift */; };
 		3567E46229B08ABE00511D62 /* PassDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46129B08ABE00511D62 /* PassDivider.swift */; };
 		3567E46429B0C93C00511D62 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46329B0C93C00511D62 /* PreferencesTests.swift */; };
@@ -1064,6 +1065,7 @@
 		35661CB129B8BF97003BBAD6 /* EditableVaultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableVaultListView.swift; sourceTree = "<group>"; };
 		35661CB329B8BFCD003BBAD6 /* EditableVaultListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableVaultListViewModel.swift; sourceTree = "<group>"; };
 		35661CB529B91990003BBAD6 /* EdgeInsets+Zero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets+Zero.swift"; sourceTree = "<group>"; };
+		3567414E2A28927800C99C32 /* UserDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataProvider.swift; sourceTree = "<group>"; };
 		356750D429D31E9200247648 /* View+ItemSwipeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemSwipeModifier.swift"; sourceTree = "<group>"; };
 		3567E46129B08ABE00511D62 /* PassDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassDivider.swift; sourceTree = "<group>"; };
 		3567E46329B0C93C00511D62 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
@@ -2544,6 +2546,7 @@
 				35E5070D286FB5A400A3F6EA /* AppCoordinator.swift */,
 				354F1F1929D8C2A200A6B1E8 /* AppData.swift */,
 				3531B5422902DA890070D2EE /* AppLockedView.swift */,
+				3567414E2A28927800C99C32 /* UserDataProvider.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -3801,6 +3804,7 @@
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
 				356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */,
+				3567414F2A28927800C99C32 /* UserDataProvider.swift in Sources */,
 				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
 				357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */,
 				3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */,
