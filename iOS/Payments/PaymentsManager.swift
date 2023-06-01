@@ -26,7 +26,7 @@ import ProtonCore_Services
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
 
-    private let appData: AppData
+    private let userDataProvider: UserDataProvider
     private let mainKeyProvider: MainKeyProvider
     private let payments: Payments
     private var paymentsUI: PaymentsUI?
@@ -37,7 +37,7 @@ final class PaymentsManager {
     // swiftlint:disable:next todo
     // TODO: should we provide the actual BugAlertHandler?
     init(apiService: APIService,
-         appData: AppData,
+         userDataProvider: UserDataProvider,
          mainKeyProvider: MainKeyProvider,
          logger: Logger,
          preferences: Preferences,
@@ -50,7 +50,7 @@ final class PaymentsManager {
                                 apiService: apiService,
                                 localStorage: persistentDataStorage,
                                 reportBugAlertHandler: bugAlertHandler)
-        self.appData = appData
+        self.userDataProvider = userDataProvider
         self.mainKeyProvider = mainKeyProvider
         self.inMemoryTokenStorage = inMemoryTokenStorage
         self.payments = payments
@@ -128,28 +128,19 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var isUnlocked: Bool {
-        guard let mainKey = mainKeyProvider.mainKey, !mainKey.isEmpty else {
-            return false
-        }
-        return true
+        mainKeyProvider.mainKey?.isEmpty == false
     }
 
     var isSignedIn: Bool {
-        guard let userData = appData.userData,
-              !userData.getCredential.isForUnauthenticatedSession else {
-            return false
-        }
-        return true
+        userDataProvider.userData?.getCredential.isForUnauthenticatedSession == false
     }
 
     var activeUsername: String? {
-        guard let userData = appData.userData else { return nil }
-        return userData.user.name
+        userDataProvider.userData?.user.name
     }
 
     var userId: String? {
-        guard let userData = appData.userData else { return nil }
-        return userData.user.ID
+        userDataProvider.userData?.user.ID
     }
 }
 

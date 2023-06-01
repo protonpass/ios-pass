@@ -92,10 +92,13 @@ extension AccountViewModel {
 
     private func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
         switch result {
-        case .success(_?):
-            refreshUserPlan()
-        case .success:
-            logger.debug("")
+        case .success(let inAppPurchasePlan):
+            if inAppPurchasePlan != nil {
+                refreshUserPlan()
+            } else {
+                logger.debug("Payment is done but no plan is purchased")
+            }
+
         case .failure(let error):
             logger.error(error)
         }

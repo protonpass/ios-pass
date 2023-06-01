@@ -1,6 +1,6 @@
 //
-// PaymentsConstants.swift
-// Proton Pass - Created on 26/04/2023.
+// UserDataProvider.swift
+// Proton Pass - Created on 01/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,24 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
-import ProtonCore_Payments
+import ProtonCore_Login
 
-enum PaymentsConstants {
-    static let inAppPurchaseIdentifiers: ListOfIAPIdentifiers = [
-        "iospass_pass2023_12_usd_non_renewing",
-        "iospass_bundle2022_12_usd_non_renewing"
-    ]
-
-    static let shownPlanNames: ListOfShownPlanNames = [
-        "pass2023",
-        "bundle2022",
-        "family2022",
-        "visionary2022",
-        "bundlepro2022",
-        "enterprise2022",
-        "visionary"
-    ]
-
-    static let clientApp = ClientApp.pass
+protocol UserDataProvider {
+    var userData: UserData? { get }
 }
+
+extension AppData: UserDataProvider {}
