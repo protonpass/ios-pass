@@ -40,7 +40,7 @@ public enum ProtonPassEnvironment {
                          accountHost: "https://account.proton.me",
                          defaultHost: "https://pass-api.proton.me",
                          apiHost: "pass-api.proton.me",
-                         defaultPath: "/api")
+                         defaultPath: "")
         case .custom(let customParams):
             return customParams
         }
