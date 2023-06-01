@@ -93,7 +93,7 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>DefaultValue</key>
-			<string>/api</string>
+			<string></string>
 			<key>KeyboardType</key>
 			<string>URL</string>
 			<key>Title</key>
