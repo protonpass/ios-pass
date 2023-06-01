@@ -67,4 +67,16 @@ public extension UIViewController {
         }
     }
 
+    static var topVC: UIViewController? {
+        var topViewController: UIViewController?
+        let keyWindow = UIApplication.getInstance()?.windows.filter { $0.isKeyWindow }.first
+        if var top = keyWindow?.rootViewController {
+            while let presentedViewController = top.presentedViewController {
+                top = presentedViewController
+            }
+            topViewController = top
+        }
+        
+        return topViewController
+    }
 }

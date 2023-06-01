@@ -23,25 +23,7 @@ import Foundation
 import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
 
-extension AuthService {
-    
-    public final class AuthInfoResponse: Response, Codable {
-        public var modulus: String?
-        public var serverEphemeral: String?
-        public var version: Int = 0
-        public var salt: String?
-        public var srpSession: String?
-        
-        override public func ParseResponse(_ response: [String: Any]!) -> Bool {
-            self.modulus = response["Modulus"] as? String
-            self.serverEphemeral = response["ServerEphemeral"] as? String
-            self.version = response["Version"] as? Int ?? 0
-            self.salt = response["Salt"] as? String
-            self.srpSession = response["SRPSession"] as? String
-            return true
-        }
-    }
-    
+extension AuthService {    
     struct InfoEndpoint: Request {
         struct Key {
             static let userName = "Username"

@@ -64,18 +64,21 @@ final class AppCoordinator {
         self.window = window
         self.appStateObserver = .init()
         let logManager = LogManager(module: .hostApp)
+        let logger = Logger(manager: logManager)
         self.logManager = logManager
-        self.logger = .init(manager: logManager)
+        self.logger = logger
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
         self.appData = appData
         self.keymaker = keymaker
-        self.apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
+        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
+        self.apiManager = apiManager
+        let preferences = Preferences()
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
-        self.preferences = .init()
+        self.preferences = preferences
         self.isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
@@ -200,7 +203,9 @@ final class AppCoordinator {
                                                               manualLogIn: manualLogIn,
                                                               preferences: preferences,
                                                               symmetricKey: symmetricKey,
-                                                              userData: userData)
+                                                              userData: userData,
+                                                              appData: appData,
+                                                              mainKeyProvider: keymaker)
                 homepageCoordinator.delegate = self
                 self.homepageCoordinator = homepageCoordinator
                 self.welcomeCoordinator = nil

@@ -25,6 +25,33 @@ import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
 import UIKit
 
+public struct PurchasablePlanDescription {
+    let name: String?
+    let description: String?
+    let details: [(DetailType, String)]
+    let isPreferred: Bool
+
+    public init(name: String?,
+                description: String?,
+                details: [(UIImage, String)],
+                isPreferred: Bool) {
+        self.init(name: name,
+                  description: description,
+                  details: details.map { image, text in (DetailType.custom(image), text) },
+                  isPreferred: isPreferred)
+    }
+
+    init(name: String?,
+         description: String?,
+         details: [(DetailType, String)],
+         isPreferred: Bool) {
+        self.name = name
+        self.description = description
+        self.details = details
+        self.isPreferred = isPreferred
+    }
+}
+
 struct PlanDetails {
     let name: String
     let title: String?
@@ -42,18 +69,25 @@ extension PlanDetails {
                            countriesCount: Int?,
                            clientApp: ClientApp,
                            storeKitManager: StoreKitManagerProtocol,
+                           customPlansDescription: CustomPlansDescription,
                            protonPrice: String?,
                            isSelectable: Bool) -> PlanDetails {
-        let planDataDetails = planDataDetails(from: details, countriesCount: countriesCount, clientApp: clientApp)
+        let planDataDetails = planDataDetails(from: details, countriesCount: countriesCount, clientApp: clientApp,
+                                              customPlansDescription: customPlansDescription)
         let name = planDataDetails.name ?? details.titleDescription
         let price = plan.planPrice(from: storeKitManager) ?? protonPrice
         return PlanDetails(name: name, title: planDataDetails.description, price: price, cycle: details.cycleDescription, isSelectable: isSelectable, details: planDataDetails.details, isPreferred: planDataDetails.isPreferred)
     }
-    
-    typealias PlanDataDetails = (name: String?, description: String?, details: [(DetailType, String)], isPreferred: Bool)
+
     typealias PlanDataOptDetails = (name: String?, description: String?, optDetails: [(DetailType, String?)], isPreferred: Bool)
-    
-    private static func planDataDetails(from details: Plan, countriesCount: Int?, clientApp: ClientApp) -> PlanDataDetails {
+
+    // swiftlint:disable:next function_body_length
+    private static func planDataDetails(
+        from details: Plan, countriesCount: Int?, clientApp: ClientApp, customPlansDescription: CustomPlansDescription
+    ) -> PurchasablePlanDescription {
+        if let customDescription = customPlansDescription[details.name]?.purchasable {
+            return customDescription
+        }
         let strDetails: PlanDataOptDetails
         switch details.hashedName {
         case "383ef36928344f56ffe8fe23ceed2ad8c0db8ec222c5f56c47163747dc738a0e":
@@ -65,7 +99,7 @@ extension PlanDetails {
                             (.checkmark, details.YAddressesDescription),
                             (.checkmark, details.plusLabelsDescription),
                             (.checkmark, details.customEmailDescription),
-                            (.checkmark, details.prioritySupportDescription)
+                            (.checkmark, details.priorityCustomerSupportDescription)
                           ],
                           isPreferred: false)
 
@@ -131,17 +165,50 @@ extension PlanDetails {
                           isPreferred: false)
 
         case "04567dee288f15bb533814cf89f3ab5a4fa3c25d1aed703a409672181f8a900a":
+            switch clientApp {
+            case .pass:
+                strDetails = (name: nil,
+                              description: CoreString._new_plans_plan_details_bundle_description,
+                              optDetails: [
+                                (.infinity, details.unlimitedLoginsAndNotesDescription),
+                                (.infinity, details.unlimitedDevicesDescription),
+                                (.vault, details.vaultsDescription(number: 20)),
+                                (.alias, details.unlimitedEmailAliasesDescription),
+                                (.lock, details.integrated2FADescription),
+                                (.forward, details.forwardingMailboxesDescription(number: 5)),
+                                (.storage, details.XGBStorageDescription),
+                                (.envelope, details.YAddressesDescription),
+                                (.shield, details.VPNUDevicesDescription),
+                                (.eye, details.prioritySupportDescription)
+                              ],
+                              isPreferred: true)
+            default:
+                strDetails = (name: nil,
+                              description: CoreString._new_plans_plan_details_bundle_description,
+                              optDetails: [
+                                (.storage, details.XGBStorageDescription),
+                                (.envelope, details.YAddressesDescription),
+                                (.globe, details.VCustomEmailDomainDescription),
+                                (.tag, details.unlimitedFoldersLabelsFiltersDescription),
+                                (.calendarCheckmark, details.ZPersonalCalendarsDescription),
+                                (.shield, details.VPNUDevicesDescription)
+                              ],
+                              isPreferred: true)
+            }
+
+        case "599c124096f1f87dae3deb83b654c6198b8ecb9c150d2a4aa513c41288dd7645":
             strDetails = (name: nil,
-                          description: CoreString._new_plans_plan_details_bundle_description,
+                          description: CoreString._plan_pass_description,
                           optDetails: [
-                            (.storage, details.XGBStorageDescription),
-                            (.envelope, details.YAddressesDescription),
-                            (.globe, details.VCustomEmailDomainDescription),
-                            (.tag, details.unlimitedFoldersLabelsFiltersDescription),
-                            (.calendarCheckmark, details.ZPersonalCalendarsDescription),
-                            (.shield, details.VPNUDevicesDescription)
+                            (.infinity, details.unlimitedLoginsAndNotesDescription),
+                            (.infinity, details.unlimitedDevicesDescription),
+                            (.vault, details.vaultsDescription(number: 20)),
+                            (.alias, details.unlimitedEmailAliasesDescription),
+                            (.lock, details.integrated2FADescription),
+                            (.forward, details.forwardingMailboxesDescription(number: 5)),
+                            (.eye, details.prioritySupportDescription)
                           ],
-                          isPreferred: true)
+                          isPreferred: false)
 
         default:
             // default description, used for no plan (aka free) or for plans with unknown ID
@@ -153,6 +220,16 @@ extension PlanDetails {
                                 (.servers, details.VPNFreeServersDescription(countries: countriesCount)),
                                 (.rocket, details.VPNFreeSpeedDescription),
                                 (.eyeSlash, details.VPNNoLogsPolicy)
+                              ],
+                              isPreferred: false)
+            case .pass:
+                strDetails = (name: "Free",
+                              description: CoreString._new_plans_plan_details_free_description,
+                              optDetails: [
+                                (.infinity, details.unlimitedLoginsAndNotesDescription),
+                                (.infinity, details.unlimitedDevicesDescription),
+                                (.vault, details.vaultsDescription(number: 1)),
+                                (.alias, details.numberOfEmailAliasesDescription(number: 10))
                               ],
                               isPreferred: false)
             default:
@@ -168,7 +245,10 @@ extension PlanDetails {
                               isPreferred: false)
             }
         }
-        return (name: strDetails.name, strDetails.description, strDetails.optDetails.compactMap { t in t.1.map { (t.0, $0) } }, isPreferred: strDetails.isPreferred)
+        return PurchasablePlanDescription(name: strDetails.name,
+                                          description: strDetails.description,
+                                          details: strDetails.optDetails.compactMap { t in t.1.map { (t.0, $0) } },
+                                          isPreferred: strDetails.isPreferred)
     }
 
 }

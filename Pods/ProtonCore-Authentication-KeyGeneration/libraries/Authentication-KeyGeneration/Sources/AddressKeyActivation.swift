@@ -128,7 +128,7 @@ final class AddressKeyActivation {
                 
                 let updatedSigner = SigningKey.init(privateKey: updatedPrivateKey,
                                                     passphrase: newPassphrase)
-                let signed = try Sign.signDetached(signingKey: updatedSigner, plainText: jsonKeylist)
+                let signed = try Sign.signDetached(signingKey: updatedSigner, plainText: jsonKeylist, signatureContext: AddressKeySetup.signedKeyListSignatureContext)
                 let signedKeyList: [String: Any] = [
                     "Data": jsonKeylist,
                     "Signature": signed.value

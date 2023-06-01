@@ -42,6 +42,7 @@ final class PaymentsUIViewModel {
     private let storeKitManager: StoreKitManagerProtocol
     private let clientApp: ClientApp
     private let shownPlanNames: ListOfShownPlanNames
+    private let customPlansDescription: CustomPlansDescription
 
     // MARK: Public properties
 
@@ -83,6 +84,7 @@ final class PaymentsUIViewModel {
          servicePlan: ServicePlanDataServiceProtocol,
          shownPlanNames: ListOfShownPlanNames,
          clientApp: ClientApp,
+         customPlansDescription: CustomPlansDescription,
          planRefreshHandler: @escaping (CurrentPlanDetails?) -> Void,
          extendSubscriptionHandler: @escaping () -> Void) {
         self.mode = mode
@@ -90,6 +92,7 @@ final class PaymentsUIViewModel {
         self.storeKitManager = storeKitManager
         self.shownPlanNames = shownPlanNames
         self.clientApp = clientApp
+        self.customPlansDescription = customPlansDescription
         self.planRefreshHandler = planRefreshHandler
         self.extendSubscriptionHandler = extendSubscriptionHandler
         registerRefreshHandler()
@@ -345,6 +348,7 @@ final class PaymentsUIViewModel {
                                            servicePlan: servicePlan,
                                            clientApp: clientApp,
                                            storeKitManager: storeKitManager,
+                                           customPlansDescription: customPlansDescription,
                                            isCurrent: isCurrent,
                                            isSelectable: isSelectable,
                                            isMultiUser: isMultiUser,

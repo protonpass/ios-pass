@@ -31,9 +31,10 @@ public class AuthService: Client {
         self.apiService = api
     }
     
-    func info(username: String, complete: @escaping(_ response: AuthInfoResponse) -> Void) {
+    public func info(username: String, complete: @escaping(_ response: AuthInfoResponse) -> Void) {
         let route = InfoEndpoint(username: username)
-        self.apiService.perform(request: route, response: AuthInfoResponse(), responseCompletion: { _, response in complete(response) })
+        let response = AuthInfoResponse(modulus: "", serverEphemeral: "", version: 0, salt: "", srpSession: "")
+        self.apiService.perform(request: route, response: response, responseCompletion: { _, response in complete(response) })
     }
     
     // swiftlint:disable function_parameter_count

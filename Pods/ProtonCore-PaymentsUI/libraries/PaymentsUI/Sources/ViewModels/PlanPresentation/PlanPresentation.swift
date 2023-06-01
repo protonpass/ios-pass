@@ -29,6 +29,8 @@ enum DetailType {
     case checkmark, storage, envelope, globe, tag, calendarCheckmark, shield
     case powerOff, rocket, servers, play, locks, brandTor, arrowsSwitch, eyeSlash
     case user
+    case infinity, lock, vault, alias, at, forward, eye
+    case custom(UIImage)
     
     var icon: UIImage {
         switch self {
@@ -48,6 +50,18 @@ enum DetailType {
         case .arrowsSwitch: return IconProvider.arrowsSwitch
         case .eyeSlash: return IconProvider.eyeSlash
         case .user: return IconProvider.user
+        case .infinity: if #available(iOS 13.0, *) {
+            return UIImage(systemName: "infinity")!
+        } else {
+            return IconProvider.checkmarkTriple
+        }
+        case .lock: return IconProvider.lock
+        case .vault: return IconProvider.vault
+        case .alias: return IconProvider.alias
+        case .at: return IconProvider.at
+        case .forward: return IconProvider.forward
+        case .eye: return IconProvider.eye
+        case .custom(let image): return image
         }
     }
 }
@@ -83,6 +97,7 @@ extension PlanPresentation {
                            servicePlan: ServicePlanDataServiceProtocol,
                            clientApp: ClientApp,
                            storeKitManager: StoreKitManagerProtocol,
+                           customPlansDescription: CustomPlansDescription,
                            isCurrent: Bool,
                            isSelectable: Bool,
                            isMultiUser: Bool,
@@ -93,10 +108,10 @@ extension PlanPresentation {
         var planPresentationType: PlanPresentationType
         let countriesCount = servicePlan.countriesCount?.first { $0.maxTier == details.maxTier ?? 0 }?.count
         if isCurrent {
-            let currentPlanDetails = CurrentPlanDetails.createPlan(from: details, plan: plan, servicePlan: servicePlan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, isMultiUser: isMultiUser, protonPrice: protonPrice, hasPaymentMethods: hasPaymentMethods, endDate: endDate)
+            let currentPlanDetails = CurrentPlanDetails.createPlan(from: details, plan: plan, servicePlan: servicePlan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, customPlansDescription: customPlansDescription, isMultiUser: isMultiUser, protonPrice: protonPrice, hasPaymentMethods: hasPaymentMethods, endDate: endDate)
             planPresentationType = .current(.details(currentPlanDetails))
         } else {
-            let planDetails = PlanDetails.createPlan(from: details, plan: plan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, protonPrice: protonPrice, isSelectable: isSelectable)
+            let planDetails = PlanDetails.createPlan(from: details, plan: plan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, customPlansDescription: customPlansDescription, protonPrice: protonPrice, isSelectable: isSelectable)
             planPresentationType = .plan(planDetails)
         }
         return PlanPresentation(accountPlan: plan, planPresentationType: planPresentationType)

@@ -100,7 +100,7 @@ extension Plan {
         return CoreString._pu_plan_details_custom_email
     }
     
-    var prioritySupportDescription: String {
+    var priorityCustomerSupportDescription: String {
         return CoreString._pu_plan_details_priority_support
     }
     
@@ -255,6 +255,39 @@ extension Plan {
         let countries = countries ?? 63
         return String(format: CoreString._pu_plan_details_countries, countries)
     }
+
+    var unlimitedLoginsAndNotesDescription: String {
+        CoreString._plan_details_logins_and_notes_unlimited
+    }
+
+    var unlimitedDevicesDescription: String {
+        CoreString._plan_details_devices_unlimited
+    }
+
+    func vaultsDescription(number: Int) -> String {
+        String(format: CoreString._plan_details_n_vaults, number)
+    }
+
+    var unlimitedEmailAliasesDescription: String {
+        CoreString._plan_details_email_aliases_unlimited
+    }
+
+    var integrated2FADescription: String {
+        CoreString._plan_details_2fa_authenticator
+    }
+
+    func forwardingMailboxesDescription(number: Int) -> String {
+        String(format: CoreString._plan_details_forwarding_mailboxes, "\(number)")
+    }
+
+    var prioritySupportDescription: String {
+        CoreString._plan_details_priority_support
+    }
+
+    func numberOfEmailAliasesDescription(number: Int) -> String {
+        String(format: CoreString._plan_details_email_aliases_number, "\(number)")
+    }
+
 }
 
 private let monthsFormatter: DateComponentsFormatter = createSingleUnitFormatter(unit: .month)

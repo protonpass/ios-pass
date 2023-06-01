@@ -24,7 +24,6 @@ import ProtonCore_Services
 
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
-    func accountViewModelWantsToManageSubscription()
     func accountViewModelWantsToSignOut()
     func accountViewModelWantsToDeleteAccount()
 }
@@ -34,28 +33,33 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     let isShownAsSheet: Bool
     let apiService: APIService
+    let paymentsManager: PaymentsManager
     let logger: Logger
     let theme: Theme
     let username: String
     let passPlanRepository: PassPlanRepositoryProtocol
-
     @Published private(set) var plan: PassPlan?
 
     weak var delegate: AccountViewModelDelegate?
 
     init(isShownAsSheet: Bool,
          apiService: APIService,
+         paymentsManager: PaymentsManager,
          logManager: LogManager,
          theme: Theme,
          username: String,
          passPlanRepository: PassPlanRepositoryProtocol) {
         self.isShownAsSheet = isShownAsSheet
         self.apiService = apiService
+        self.paymentsManager = paymentsManager
         self.logger = .init(manager: logManager)
         self.username = username
         self.theme = theme
         self.passPlanRepository = passPlanRepository
+        self.refreshUserPlan()
+    }
 
+    private func refreshUserPlan() {
         Task { @MainActor in
             do {
                 // First get local plan to optimistically display it
@@ -75,7 +79,29 @@ extension AccountViewModel {
     }
 
     func manageSubscription() {
-        delegate?.accountViewModelWantsToManageSubscription()
+        paymentsManager.manageSubscription { [weak self] result in
+            self?.handlePaymentsResult(result: result)
+        }
+    }
+
+    func upgradeSubscription() {
+        paymentsManager.upgradeSubscription { [weak self] result in
+            self?.handlePaymentsResult(result: result)
+        }
+    }
+
+    private func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
+        switch result {
+        case .success(let inAppPurchasePlan):
+            if inAppPurchasePlan != nil {
+                refreshUserPlan()
+            } else {
+                logger.debug("Payment is done but no plan is purchased")
+            }
+
+        case .failure(let error):
+            logger.error(error)
+        }
     }
 
     func signOut() {

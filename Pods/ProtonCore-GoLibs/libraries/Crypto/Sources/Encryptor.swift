@@ -31,9 +31,10 @@ public enum Encryptor {
     ///   - publicKey: armored public to encrypt text
     ///   - cleartext: plaintext string
     ///   - signerKey: optional signer.  if not nil. will try to sign the message with this key
+    ///   - signatureContext: optional context, which is added to the signature as notation data.
     /// - Returns: Armored encrypted message
-    public static func encrypt(publicKey: ArmoredKey, cleartext: String, signerKey: SigningKey? = nil) throws -> ArmoredMessage {
-        return try Crypto().encryptAndSign(plainRaw: Either.left(cleartext), publicKey: publicKey, signingKey: signerKey)
+    public static func encrypt(publicKey: ArmoredKey, cleartext: String, signerKey: SigningKey? = nil, signatureContext: SignatureContext? = nil) throws -> ArmoredMessage {
+        return try Crypto().encryptAndSign(plainRaw: Either.left(cleartext), publicKey: publicKey, signingKey: signerKey, signatureContext: signatureContext)
     }
     
     /// encrypt a raw session key with recipent's public key.
@@ -50,9 +51,10 @@ public enum Encryptor {
     ///   - publicKey: armored public to encrypt text
     ///   - cleartext: raw data
     ///   - signerKey: optional signer.  if not nil. will try to sign the message with this key
+    ///   - signatureContext: optional context, which is added to the signature as notation data.
     /// - Returns: Armored encrypted message
-    public static func encrypt(publicKey: ArmoredKey, clearData: Data, signerKey: SigningKey? = nil) throws -> ArmoredMessage {
-        return try Crypto().encryptAndSign(plainRaw: Either.right(clearData), publicKey: publicKey, signingKey: signerKey)
+    public static func encrypt(publicKey: ArmoredKey, clearData: Data, signerKey: SigningKey? = nil, signatureContext: SignatureContext? = nil) throws -> ArmoredMessage {
+        return try Crypto().encryptAndSign(plainRaw: Either.right(clearData), publicKey: publicKey, signingKey: signerKey, signatureContext: signatureContext)
     }
     
     /// encrypt a clear data with a public key. signer is optional. this func usually used when encrypt some blobs.
@@ -61,9 +63,10 @@ public enum Encryptor {
     ///   - publicKey: armored public to encrypt text
     ///   - clearData: raw data
     ///   - signerKey: optional signer.  if not nil. will try to sign the message with this key
+    ///   - signatureContext: optional context, which is added to the signature as notation data.
     /// - Returns: spit packet. inclide datapacket and keypacket
-    public static func encryptSplit(publicKey: ArmoredKey, clearData: Data, signerKey: SigningKey? = nil) throws -> SplitPacket {
-        return try Crypto().encryptAndSign(plainRaw: Either.right(clearData), publicKey: publicKey, signingKey: signerKey)
+    public static func encryptSplit(publicKey: ArmoredKey, clearData: Data, signerKey: SigningKey? = nil, signatureContext: SignatureContext? = nil) throws -> SplitPacket {
+        return try Crypto().encryptAndSign(plainRaw: Either.right(clearData), publicKey: publicKey, signingKey: signerKey, signatureContext: signatureContext)
     }
     
     // swiftlint:disable function_parameter_count

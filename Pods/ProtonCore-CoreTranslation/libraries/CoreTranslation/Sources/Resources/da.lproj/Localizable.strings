@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En gendannelsesmetode vil hjælpe dig med at få adgang til din konto, hvis du glemmer din adgangskode eller bliver låst ude af din konto.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Konto slettet.\nLogger ud...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Kontoopsætning påkrævet";
@@ -106,9 +109,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Fortsæt";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Opret en Proton-konto med din aktuelle e-mail";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Opret en sikker Proton Mail-adresse i stedet";
 
@@ -118,7 +118,7 @@
 /* Create user failed error */
 "Create user failed" = "Kunne ikke oprette bruger";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Opret din adgangskode";
 
 /* *
@@ -743,4 +743,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Din Proton Free-konto blev oprettet.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Din session er udløbet. Log venligst ind igen.";
 

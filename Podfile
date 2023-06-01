@@ -3,7 +3,7 @@ def proton_core_path
 end
 
 def proton_core_version
-  '5.1.2'
+  '6.1.0'
 end
   
 def pmtest_path
@@ -15,7 +15,7 @@ def pmtest_commit
 end
 
 def crypto_variant
-  "Crypto-Go1.20.2"
+  "Crypto-Go"
 end
 
 def client_and_ios_pods

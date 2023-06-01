@@ -197,6 +197,10 @@ public enum LocalizedStringAccessors: CaseIterable {
     case __ls_validation_invalid_password
     public var _ls_validation_invalid_password: LocalizedStringAccessors { .__ls_validation_invalid_password }
 
+    case __ls_validation_enter_password
+    public var _ls_validation_enter_password: LocalizedStringAccessors {
+        .__ls_validation_enter_password }
+    
     case __ls_error_missing_keys_text_button
     public var _ls_error_missing_keys_text_button: LocalizedStringAccessors { .__ls_error_missing_keys_text_button }
 
@@ -449,11 +453,8 @@ public enum LocalizedStringAccessors: CaseIterable {
     case __su_email_field_title
     public var _su_email_field_title: LocalizedStringAccessors { .__su_email_field_title }
 
-    case __su_password_proton_view_title
-    public var _su_password_proton_view_title: LocalizedStringAccessors { .__su_password_proton_view_title }
-
-    case __su_password_email_view_title
-    public var _su_password_email_view_title: LocalizedStringAccessors { .__su_password_email_view_title }
+    case __su_password_view_title
+    public var _su_password_view_title: LocalizedStringAccessors { .__su_password_view_title }
 
     case __su_password_field_title
     public var _su_password_field_title: LocalizedStringAccessors { .__su_password_field_title }
@@ -914,6 +915,33 @@ public enum LocalizedStringAccessors: CaseIterable {
     case __new_plans_details_n_connections_per_user
     public var _new_plans_details_n_connections_per_user: LocalizedStringAccessors { .__new_plans_details_n_connections_per_user }
 
+    case __plan_details_2fa_authenticator
+    public var _plan_details_2fa_authenticator: LocalizedStringAccessors { .__plan_details_2fa_authenticator }
+
+    case __plan_details_priority_support
+    public var _plan_details_priority_support: LocalizedStringAccessors { .__plan_details_priority_support }
+
+    case __plan_details_devices_unlimited
+    public var _plan_details_devices_unlimited: LocalizedStringAccessors { .__plan_details_devices_unlimited }
+
+    case __plan_details_email_aliases_number
+    public var _plan_details_email_aliases_number: LocalizedStringAccessors { .__plan_details_email_aliases_number }
+
+    case __plan_details_email_aliases_unlimited
+    public var _plan_details_email_aliases_unlimited: LocalizedStringAccessors { .__plan_details_email_aliases_unlimited }
+
+    case __plan_details_logins_and_notes_unlimited
+    public var _plan_details_logins_and_notes_unlimited: LocalizedStringAccessors { .__plan_details_logins_and_notes_unlimited }
+
+    case __plan_details_forwarding_mailboxes
+    public var _plan_details_forwarding_mailboxes: LocalizedStringAccessors { .__plan_details_forwarding_mailboxes }
+
+    case __plan_pass_description
+    public var _plan_pass_description: LocalizedStringAccessors { .__plan_pass_description }
+
+    case __plan_details_n_vaults
+    public var _plan_details_n_vaults: LocalizedStringAccessors { .__plan_details_n_vaults }
+
     public func localizedString(from localizedStringInstance: LocalizedString) -> String {
         switch self {
         case .__hv_title: return localizedStringInstance._hv_title
@@ -968,6 +996,7 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__ls_help_more_help: return localizedStringInstance._ls_help_more_help
         case .__ls_validation_invalid_username: return localizedStringInstance._ls_validation_invalid_username
         case .__ls_validation_invalid_password: return localizedStringInstance._ls_validation_invalid_password
+        case .__ls_validation_enter_password: return localizedStringInstance._ls_validation_invalid_password
         case .__ls_error_missing_keys_text_button: return localizedStringInstance._ls_error_missing_keys_text_button
         case .__ls_error_missing_keys_text: return localizedStringInstance._ls_error_missing_keys_text
         case .__ls_error_missing_keys_title: return localizedStringInstance._ls_error_missing_keys_title
@@ -1052,8 +1081,7 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__su_proton_address_button: return localizedStringInstance._su_proton_address_button
         case .__su_username_field_title: return localizedStringInstance._su_username_field_title
         case .__su_email_field_title: return localizedStringInstance._su_email_field_title
-        case .__su_password_proton_view_title: return localizedStringInstance._su_password_proton_view_title
-        case .__su_password_email_view_title: return localizedStringInstance._su_password_email_view_title
+        case .__su_password_view_title: return localizedStringInstance._su_password_view_title
         case .__su_password_field_title: return localizedStringInstance._su_password_field_title
         case .__su_password_field_hint: return localizedStringInstance._su_password_field_hint
         case .__su_repeat_password_field_title: return localizedStringInstance._su_repeat_password_field_title
@@ -1207,9 +1235,17 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__new_plans_details_n_addresses_per_user: return localizedStringInstance._new_plans_details_n_addresses_per_user
         case .__new_plans_details_n_personal_calendars_per_user: return localizedStringInstance._new_plans_details_n_personal_calendars_per_user
         case .__new_plans_details_n_connections_per_user: return localizedStringInstance._new_plans_details_n_connections_per_user
+        case .__plan_details_2fa_authenticator: return localizedStringInstance._plan_details_2fa_authenticator
+        case .__plan_details_priority_support: return localizedStringInstance._plan_details_priority_support
+        case .__plan_details_devices_unlimited: return localizedStringInstance._plan_details_devices_unlimited
+        case .__plan_details_email_aliases_number: return localizedStringInstance._plan_details_email_aliases_number
+        case .__plan_details_email_aliases_unlimited: return localizedStringInstance._plan_details_email_aliases_unlimited
+        case .__plan_details_logins_and_notes_unlimited: return localizedStringInstance._plan_details_logins_and_notes_unlimited
+        case .__plan_details_forwarding_mailboxes: return localizedStringInstance._plan_details_forwarding_mailboxes
+        case .__plan_pass_description: return localizedStringInstance._plan_pass_description
+        case .__plan_details_n_vaults: return localizedStringInstance._plan_details_n_vaults
         }
     }
-    
 }
 
 public class LocalizedString {
@@ -1391,6 +1427,9 @@ public class LocalizedString {
     /// Invalid password hint
     public lazy var _ls_validation_invalid_password = NSLocalizedString("Please enter your Proton Account password.", bundle: Common.bundle, comment: "Invalid password hint")
 
+    /// Enter your password
+    public lazy var _ls_validation_enter_password = NSLocalizedString("Enter your password", bundle: Common.bundle, comment: "Title of a page asking to enter your password.")
+    
     // Login errors
 
     /// Dialog button for missing keys error
@@ -1621,11 +1660,8 @@ public class LocalizedString {
     /// Email field title
     public lazy var _su_email_field_title = NSLocalizedString("Email", bundle: Common.bundle, comment: "Email field title")
 
-    /// Signup password proton view title
-    public lazy var _su_password_proton_view_title = NSLocalizedString("Create your password", bundle: Common.bundle, comment: "Signup password proton view title")
-
-    /// Signup password email view title
-    public lazy var _su_password_email_view_title = NSLocalizedString("Create a Proton account with your current email", bundle: Common.bundle, comment: "Signup password email view title")
+    /// Signup password view title
+    public lazy var _su_password_view_title = NSLocalizedString("Create your password", bundle: Common.bundle, comment: "Signup password view title")
 
     /// Password field title
     public lazy var _su_password_field_title = NSLocalizedString("Password", bundle: Common.bundle, comment: "Password field title")
@@ -2005,5 +2041,22 @@ public class LocalizedString {
 
     /// Plan details VPN no logs policy
     public lazy var _new_plans_plan_successfully_upgraded = NSLocalizedString("New_Plans Plan successfully upgraded", bundle: Common.bundle, comment: "New_Plans Plan successfully upgraded banner message")
+
+    /// Plan details integrated 2FA authenticator
+    public lazy var _plan_details_2fa_authenticator = NSLocalizedString("Integrated 2FA authenticator", bundle: Common.bundle, comment: "Plan details `Integrated 2FA authenticator` message")
+    /// Plan details priority support
+    public lazy var _plan_details_priority_support = NSLocalizedString("Priority support", bundle: Common.bundle, comment: "Plan details `Priority support` message")
+    /// Plan details unlimited devices
+    public lazy var _plan_details_devices_unlimited = NSLocalizedString("Unlimited devices", bundle: Common.bundle, comment: "Plan details `Unlimited devices` message")
+    /// Plan details email aliases
+    public lazy var _plan_details_email_aliases_number = NSLocalizedString("%@ email aliases", bundle: Common.bundle, comment: "Plan details number of email aliases message")
+    /// Plan details unlimited email aliases
+    public lazy var _plan_details_email_aliases_unlimited = NSLocalizedString("Unlimited email aliases", bundle: Common.bundle, comment: "Plan details `Unlimited email aliases` message")
+    /// Plan details unlimited logins and notes
+    public lazy var _plan_details_logins_and_notes_unlimited = NSLocalizedString("Unlimited logins and notes", bundle: Common.bundle, comment: "Plan details `Unlimited logins and notes` message")
+    /// Plan details formarding mailboxes
+    public lazy var _plan_details_forwarding_mailboxes = NSLocalizedString("Up to %@ forwarding mailboxes", bundle: Common.bundle, comment: "Plan details `Up to %@ forwarding mailboxes` message")
+    /// Description of the Pass plan
+    public lazy var _plan_pass_description = NSLocalizedString("For next-level password management and identity protection.", bundle: Common.bundle, comment: "Description of the Pass plan")
 
 }

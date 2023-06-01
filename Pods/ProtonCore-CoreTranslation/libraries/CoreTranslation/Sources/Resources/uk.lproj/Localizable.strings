@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Спосіб відновлення допоможе вам отримати доступ до свого облікового запису у випадку втрати пароля чи виходу з облікового запису.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Обліковий запис видалено.\nВихід із системи...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Налаштування облікового запису обов'язкове";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Компанія Apple повідомила нас про те, що ви оновили план послуг, але не вистачає деяких технічних даних. Будь ласка, заповніть дані звіту про помилку і наша служба підтримки зв'яжеться з вами.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Компанія Apple повідомила нас, що ви оновили план послуг, але ми виявили, що відтоді ви вийшли з облікового запису.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Ви дійсно хочете вийти з %@?";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Продовжити";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Створити обліковий запис Proton із поточною е-поштою";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Створити натомість захищену електронну адресу Proton";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "Не вдалося створити користувача";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Створіть пароль";
 
 /* *
@@ -444,6 +447,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Введіть свій пароль облікового запису Proton.";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Увійдіть за допомогою облікового запису електронної пошти Proton, для якого ви оновлюєте тарифний план, щоб ми могли завершити купівлю.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Увійдіть за допомогою облікового запису електронної пошти Proton, для якого ви оновлюєте тарифний план, щоб ми могли завершити активацію тарифного плану.";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Переконайтеся, що ваше з'єднання з інтернетом працює.";
 
@@ -600,6 +609,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Сервери Proton недоступні. Причиною може бути неправильна конфігурація мережі, сервери Proton не працюють або сервери Proton заблоковані";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не вдалося перевірити сертифікат TLS під час спроби з'єднання з Proton API. Ваше інтернет-з'єднання може відстежуватися. Для захисту ваших даних ми не дозволяємо програмі отримувати доступ до Proton API.\nЩоб увійти чи отримати доступ до свого облікового запису, змініть мережу і спробуйте з'єднатися знову.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Це повинно тривати не довше хвилини.";
 
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш обліковий запис Proton Free успішно створено.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Термін дії вашого сеансу завершився. Увійдіть знову.";
 

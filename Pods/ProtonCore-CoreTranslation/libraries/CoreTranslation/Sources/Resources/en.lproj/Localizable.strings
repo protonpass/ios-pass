@@ -40,6 +40,7 @@
 "Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
 "Request new code" = "Request new code";
 "Code sent to %@" = "Code sent to %@";
+"Enter your password" = "Enter your password";
 
 // Verification help
 
@@ -209,7 +210,6 @@
 "Username" = "Username";
 "Email" = "Email";
 "Create your password" = "Create your password";
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
 "Password" = "Password";
 "Password must contain at least 8 characters" = "Password must contain at least 8 characters";
 "Repeat password" = "Repeat password";
@@ -389,3 +389,4 @@
 "New_Plans Strict no-logs policy" = "Strict no-logs policy";
 
 "New_Plans Plan successfully upgraded" = "Plan successfully upgraded";
+

@@ -57,6 +57,12 @@ public enum CryptoError: Error {
     case decryptAndVerifyFailed
     
     case emptyAddressKeys
+    
+    case signatureContextNotInitialised
+    case verificationContextNotInitialised
+    
+    case encryptedSignatureDecryptionFailed
+    
 }
 
 public enum CryptoKeyError: Error {

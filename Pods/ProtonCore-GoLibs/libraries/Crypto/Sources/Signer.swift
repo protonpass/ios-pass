@@ -31,9 +31,10 @@ public enum Sign {
     /// - Parameters:
     ///   - signingKey: signer
     ///   - plainData: raw data
+    ///   - signatureContext: optional context, which is added to the signature as notation data.
     /// - Returns: armored signature
-    public static func signDetached(signingKey: SigningKey, plainData: Data) throws -> ArmoredSignature {
-        return try Crypto().signDetached(plainRaw: .right(plainData), signer: signingKey, trimTrailingSpaces: false)
+    public static func signDetached(signingKey: SigningKey, plainData: Data, signatureContext: SignatureContext? = nil) throws -> ArmoredSignature {
+        return try Crypto().signDetached(plainRaw: .right(plainData), signer: signingKey, trimTrailingSpaces: false, signatureContext: signatureContext)
     }
 
     /// sign string detached
@@ -43,9 +44,10 @@ public enum Sign {
     ///   - trimTrailingSpaces: If true, line ends will be trimmed of all trailing spaces and tabs, before signing.
     ///     This is sometimes needed because it's expected by a standard, or to keep compatibility
     ///     with old signatures, as this used to be the default behavior.
+    ///   - signatureContext: optional context, which is added to the signature as notation data.
     /// - Returns: armored signature
-    public static func signDetached(signingKey: SigningKey, plainText: String, trimTrailingSpaces: Bool = true) throws -> ArmoredSignature {
-        return try Crypto().signDetached(plainRaw: .left(plainText), signer: signingKey, trimTrailingSpaces: trimTrailingSpaces)
+    public static func signDetached(signingKey: SigningKey, plainText: String, trimTrailingSpaces: Bool = true, signatureContext: SignatureContext? = nil) throws -> ArmoredSignature {
+        return try Crypto().signDetached(plainRaw: .left(plainText), signer: signingKey, trimTrailingSpaces: trimTrailingSpaces, signatureContext: signatureContext)
     }
     
     /// verify detached signature
@@ -57,9 +59,10 @@ public enum Sign {
     ///   - trimTrailingSpaces: If true, line ends will be trimmed of all trailing spaces and tabs, before verifying.
     ///     This is sometimes needed because it's expected by a standard, or to keep compatibility
     ///     with old signatures, as this used to be the default behavior.
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
-    public static func verifyDetached(signature: ArmoredSignature, plainText: String, verifierKey: ArmoredKey, verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true) throws -> Bool {
-        return try Crypto().verifyDetached(input: .left(plainText), signature: .left(signature), verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces)
+    public static func verifyDetached(signature: ArmoredSignature, plainText: String, verifierKey: ArmoredKey, verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true, verificationContext: VerificationContext? = nil) throws -> Bool {
+        return try Crypto().verifyDetached(input: .left(plainText), signature: .left(signature), verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
     
     /// verify detached signature
@@ -71,11 +74,12 @@ public enum Sign {
     ///   - trimTrailingSpaces: If true, line ends will be trimmed of all trailing spaces and tabs, before verifying.
     ///     This is sometimes needed because it's expected by a standard, or to keep compatibility
     ///     with old signatures, as this used to be the default behavior.
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
     public static func verifyDetached(unArmoredSignature: UnArmoredSignature, plainText: String,
-                                      verifierKey: ArmoredKey, verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true) throws -> Bool {
+                                      verifierKey: ArmoredKey, verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .left(plainText), signature: .right(unArmoredSignature),
-                                           verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces)
+                                           verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
     
     /// verify detached signature
@@ -87,10 +91,11 @@ public enum Sign {
     ///   - trimTrailingSpaces: If true, line ends will be trimmed of all trailing spaces and tabs, before verifying.
     ///     This is sometimes needed because it's expected by a standard, or to keep compatibility
     ///     with old signatures, as this used to be the default behavior.
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
-    public static func verifyDetached(signature: ArmoredSignature, plainText: String, verifierKeys: [ArmoredKey], verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true) throws -> Bool {
+    public static func verifyDetached(signature: ArmoredSignature, plainText: String, verifierKeys: [ArmoredKey], verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .left(plainText), signature: .left(signature),
-                                           verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces)
+                                           verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
     
     /// verify detached signature
@@ -102,11 +107,12 @@ public enum Sign {
     ///   - trimTrailingSpaces: If true, line ends will be trimmed of all trailing spaces and tabs, before verifying.
     ///     This is sometimes needed because it's expected by a standard, or to keep compatibility
     ///     with old signatures, as this used to be the default behavior.
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
     public static func verifyDetached(unArmoredSignature: UnArmoredSignature, plainText: String,
-                                      verifierKeys: [ArmoredKey], verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true) throws -> Bool {
+                                      verifierKeys: [ArmoredKey], verifyTime: Int64 = 0, trimTrailingSpaces: Bool = true, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .left(plainText), signature: .right(unArmoredSignature),
-                                           verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces)
+                                           verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces, verificationContext: verificationContext)
     }
     
     /// verify detached signature
@@ -115,9 +121,10 @@ public enum Sign {
     ///   - plainText: plain source to verify
     ///   - verifierKey: verifier
     ///   - verifyTime: verify time
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
-    public static func verifyDetached(signature: ArmoredSignature, plainData: Data, verifierKeys: [ArmoredKey], verifyTime: Int64 = 0) throws -> Bool {
-        return try Crypto().verifyDetached(input: .right(plainData), signature: .left(signature), verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: false)
+    public static func verifyDetached(signature: ArmoredSignature, plainData: Data, verifierKeys: [ArmoredKey], verifyTime: Int64 = 0, verificationContext: VerificationContext? = nil) throws -> Bool {
+        return try Crypto().verifyDetached(input: .right(plainData), signature: .left(signature), verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
     
     /// verify detached signature
@@ -126,11 +133,12 @@ public enum Sign {
     ///   - plainText: plain source to verify
     ///   - verifierKey: verifier
     ///   - verifyTime: verify time
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
     public static func verifyDetached(unArmoredSignature: UnArmoredSignature, plainData: Data,
-                                      verifierKeys: [ArmoredKey], verifyTime: Int64 = 0) throws -> Bool {
+                                      verifierKeys: [ArmoredKey], verifyTime: Int64 = 0, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .right(plainData), signature: .right(unArmoredSignature),
-                                           verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: false)
+                                           verifiers: verifierKeys, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
     
     /// verify detached signature
@@ -139,10 +147,11 @@ public enum Sign {
     ///   - plainText: plain source to verify
     ///   - verifierKey: verifier
     ///   - verifyTime: verify time
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
-    public static func verifyDetached(signature: ArmoredSignature, plainData: Data, verifierKey: ArmoredKey, verifyTime: Int64 = 0) throws -> Bool {
+    public static func verifyDetached(signature: ArmoredSignature, plainData: Data, verifierKey: ArmoredKey, verifyTime: Int64 = 0, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .right(plainData), signature: .left(signature),
-                                           verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: false)
+                                           verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
     
     /// verify detached signature
@@ -151,14 +160,22 @@ public enum Sign {
     ///   - plainData: plain data source to verify
     ///   - verifierKey: verifier
     ///   - verifyTime: verify time
+    ///   - verificationContext: optional context, which can be used to enforce the signature was created with the right context.
     /// - Returns: true / false
     public static func verifyDetached(unArmoredSignature: UnArmoredSignature, plainData: Data,
-                                      verifierKey: ArmoredKey, verifyTime: Int64 = 0) throws -> Bool {
+                                      verifierKey: ArmoredKey, verifyTime: Int64 = 0, verificationContext: VerificationContext? = nil) throws -> Bool {
         return try Crypto().verifyDetached(input: .right(plainData), signature: .right(unArmoredSignature),
-                                           verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: false)
+                                           verifier: verifierKey, verifyTime: verifyTime, trimTrailingSpaces: false, verificationContext: verificationContext)
     }
     
-    public static func signStream(publicKey: ArmoredKey, signerKey: SigningKey, plainFile: URL) throws -> ArmoredSignature {
-        return try Crypto().signStream(publicKey: publicKey, signerKey: signerKey, plainFile: plainFile)
+    /// Sign file using the streaming api, and encrypt the detached signature.
+    /// - Parameters:
+    ///   - publicKey: key used to encrypt the detached signature
+    ///   - signingKey: signer
+    ///   - plainFile: URL to the file to sign
+    ///   - signatureContext: optional context, which is added to the signature as notation data.
+    /// - Returns: armored signature
+    public static func signStream(publicKey: ArmoredKey, signerKey: SigningKey, plainFile: URL, signatureContext: SignatureContext? = nil) throws -> ArmoredSignature {
+        return try Crypto().signStream(publicKey: publicKey, signerKey: signerKey, plainFile: plainFile, signatureContext: signatureContext)
     }
 }

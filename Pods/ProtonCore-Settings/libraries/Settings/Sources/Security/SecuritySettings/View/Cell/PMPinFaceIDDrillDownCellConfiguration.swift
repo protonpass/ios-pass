@@ -21,11 +21,6 @@
 
 import UIKit
 
-protocol PMDrillDownCellViewModel {
-    var title: String { get }
-    var preview: String? { get }
-}
-
 public struct PMPinFaceIDDrillDownCellConfiguration: PMCellSuplier {
     let lockReader: LockReader
     let biometryType: BiometryType
@@ -51,7 +46,7 @@ public struct PMPinFaceIDDrillDownCellConfiguration: PMCellSuplier {
 }
 
 extension PMPinFaceIDDrillDownCellConfiguration: PMDrillDownCellViewModel {
-    var title: String {
+    public var title: String {
         ["PIN", biometryProtectionName].filter { !$0.isEmpty }.joined(separator: " & ")
     }
 
@@ -60,7 +55,7 @@ extension PMPinFaceIDDrillDownCellConfiguration: PMDrillDownCellViewModel {
         return biometryType == .none ? bioProtected : biometryType.technologyName
     }
 
-    var preview: String? {
+    public var preview: String? {
         lockReader.isProtectionEnabled() ? "On" : "Off"
     }
 }

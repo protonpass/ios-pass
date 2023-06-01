@@ -101,11 +101,11 @@ public extension ResponseError {
 public extension AuthErrors {
     static func from(_ responseError: ResponseError) -> AuthErrors {
         if responseError.isApiIsBlockedError {
-            return .apiMightBeBlocked(message: responseError.networkResponseMessageForTheUser, originalError: responseError)
+            return .apiMightBeBlocked(message: responseError.localizedDescription, originalError: responseError)
         } else if responseError.isAppVersionTooOldForExternalAccountsError {
-            return .externalAccountsNotSupported(message: responseError.networkResponseMessageForTheUser, title: CoreString._ls_external_accounts_update_required_popup_title, originalError: responseError)
+            return .externalAccountsNotSupported(message: responseError.localizedDescription, title: CoreString._ls_external_accounts_update_required_popup_title, originalError: responseError)
         } else if responseError.isAppVersionNotSupportedForExternalAccountsError {
-            return .externalAccountsNotSupported(message: responseError.networkResponseMessageForTheUser, title: CoreString._ls_external_accounts_address_required_popup_title, originalError: responseError)
+            return .externalAccountsNotSupported(message: responseError.localizedDescription, title: CoreString._ls_external_accounts_address_required_popup_title, originalError: responseError)
         } else {
             return .networkingError(responseError)
         }
@@ -113,8 +113,13 @@ public extension AuthErrors {
 }
 // This need move to a common framwork
 public extension NSError {
-    class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
-        return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
+    class func protonMailError(_ code: Int, localizedDescription: String, underlyingError: NSError? = nil, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
+        return NSError(domain: protonMailErrorDomain(), code: code, userInfo: [
+            NSLocalizedDescriptionKey: localizedDescription,
+            NSLocalizedFailureReasonErrorKey: localizedFailureReason,
+            NSLocalizedRecoverySuggestionErrorKey: localizedRecoverySuggestion,
+            NSUnderlyingErrorKey: underlyingError,
+        ])
     }
 
     class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {

@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "恢复方法将帮助您在忘记密码或账户被锁时访问您的账户";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "账户已删除。\n正在退出...";
+
 /* *
  *  Login errors */
 "Account setup required" = "需要设置账户";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 告知我们您已升级账户，但有部分技术数据缺失。请提交一份问题反馈，我们的客服团队将联系您";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 告知我们您的账户已完成升级，但我们发现当时您已退出账户。";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "您确定要退出登录 %@ 吗？";
@@ -89,7 +95,7 @@
 "Congratulations" = "祝贺您！";
 
 /* Plan details unavailable contact administrator */
-"Contact an administrator to make changes to your Proton subscription." = "联系管理员更改Proton订阅。";
+"Contact an administrator to make changes to your Proton subscription." = "请联系机构管理员调整 Proton 账户等级。";
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "联系客服";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "继续";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "使用您已有的邮箱创建一个 Proton 账户";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "创建一个安全的 Proton Mail 邮箱地址";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "无法创建账户";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "创建密码";
 
 /* *
@@ -226,7 +229,7 @@
 "Generating your address" = "正在为您生成地址";
 
 /* External accounts not supported popup local desc */
-"Get a Proton Mail address linked to this account in your Proton web settings." = "在 Proton web 设置中获取该账户链接的 Proton 电子邮件地址。";
+"Get a Proton Mail address linked to this account in your Proton web settings." = "在 Proton 网页版设置中可为此账户创建 Proton Mail 邮箱地址。";
 
 /* alert message */
 "Get a replacement code sent to %@." = "获取发送到 %@ 的替换码";
@@ -323,16 +326,16 @@
 "New_Plans Connection issues" = "连接问题";
 
 /* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "延长订阅期限";
+"New_Plans Extend subscription" = "续期";
 
 /* New_Plans Plan details VPN on a single device */
 "New_Plans Free VPN on a single device" = "单台设备免费 VPN";
 
 /* New_Plans Get plan button */
-"New_Plans Get %@" = "获得 %@";
+"New_Plans Get %@" = "开通 %@";
 
 /* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "免费获得Proton";
+"New_Plans Get Proton for free" = "免费注册 Proton";
 
 /* New_Plans Plan details Highest VPN speed */
 "New_Plans Highest VPN speed" = "最快的 VPN 速度";
@@ -341,7 +344,7 @@
 "New_Plans One plan for all Proton services" = "账户等级对所有 Proton 服务均有效";
 
 /* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "仅可通过此应用进行非续订年度订阅";
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "此应用内仅支持开通年费账户";
 
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "套餐成功升级";
@@ -393,7 +396,7 @@
 "One account for all Proton services." = "一个账户即可通用所有 Proton 服务";
 
 /* Plan footer description */
-"Only annual subscriptions without auto-renewal are available inside the mobile app." = "移动应用程序中仅提供无自动续订的年度订阅。";
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "移动应用内仅支持开通无自动续期的年费账户。";
 
 /* Other sign-in issues button */
 "Other sign-in issues" = "其他登录问题";
@@ -443,6 +446,12 @@
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "请输入您的 Proton 账户密码";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "请登录要升级的 Proton Mail 账户以便完成交易。";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "请登录要升级的 Proton Mail 账户以便完成激活。";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "请确认您已连接网络。";
@@ -548,7 +557,7 @@
 "Signed in to Proton Mail" = "已登录 Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Proton Mail" = "已登出 Proton Mail";
+"Signed out of Proton Mail" = "已退出 Proton Mail 账户";
 
 /* Skip button */
 "Skip" = "跳过";
@@ -573,7 +582,7 @@
 "Subject..." = "主题...";
 
 /* Subscription title */
-"Subscription" = "订购";
+"Subscription" = "账户等级";
 
 /* network troubleshooting */
 "support form" = "客服表单";
@@ -599,6 +608,9 @@
 
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "连接 Proton 服务器失败，原因可能是网络配置有误、Proton 服务器故障或遭到封锁";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "连接 Proton API 时 TLS 证书校验失败，您当前的网络环境可能已遭到监控。为保障您的数据安全，我们已停止连接 Proton API。\n若要登录账户，请尝试使用其他网络重新连接。";
 
 /* Complete view description */
 "This should take no more than a minute." = "应该不会超过一分钟。";
@@ -645,7 +657,7 @@
 "Update required" = "需要更新";
 
 /* Plan selection title */
-"Upgrade your plan" = "升级您的计划";
+"Upgrade your plan" = "升级账户";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "使用恢复码";
@@ -682,7 +694,7 @@
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "我们已经收到了 App Store 的购买通知，但是无法将这笔交易与您的账户匹配";
 
 /* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "已成功激活订阅，请重启应用以开始体验";
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "账户等级已激活，重启应用即可体验。";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
 "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "我们无法将您的账户升级至所选套餐，因此我们将您的付款作为消费金添加至您的账户。 如需获取更多信息和完成升级，请联系支持人员。";
@@ -706,7 +718,7 @@
 "Yes, activate it for " = "是的，用于 ";
 
 /* Plan footer purchased description */
-"You cannot manage subscriptions inside the mobile application." = "您不能在移动应用程序中管理订阅。";
+"You cannot manage subscriptions inside the mobile application." = "移动应用中不支持调整账户等级。";
 
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "您已成功注册，但支付未能完成。点击重试可再次执行支付，请放心不会重复扣费。如果此问题仍存在，请联系客服";
@@ -715,7 +727,7 @@
 "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "需要一个 Proton 邮箱地址来使用 Proton Mail 和 Proton Calendar 服务，你仍然可以使用 %@ 来登录并恢复你的账户。";
 
 /* Alert message of remove account */
-"You will be signed out and all the data associated with this account will be removed from this device." = "您即将登出，与此账户相关的所有数据都将从此设备中删除";
+"You will be signed out and all the data associated with this account will be removed from this device." = "您即将退出账户，此账户的所有相关数据都将从此设备中清除。";
 
 /* Complete view title */
 "Your account is being created" = "正在创建您的账户…";
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您已经成功创建Proton免费账号。";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "登录状态已失效，请重新登录。";
 

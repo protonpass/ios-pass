@@ -50,8 +50,10 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     // we do not want this to be ever used
     override private init() { }
 
+    private let srpBuilder = SRPBuilder()
+    
     /// Clear login, when previously unauthenticated
-    public func authenticate(username: String, password PASSWORD: String, challenge: ChallengeProperties?, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
+    public func authenticate(username: String, password: String, challenge: ChallengeProperties?, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
         // 1. auth info request
         let authClient = AuthService(api: self.apiService)
         authClient.info(username: username) { (response) in
@@ -59,62 +61,51 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                 completion(.failure(.from(responseError)))
                 return
             }
-            
-            // guard let response
-            guard let salt = response.salt,
-                  let signedModulus = response.modulus,
-                  let serverEphemeral = response.serverEphemeral,
-                  let srpSession = response.srpSession
-            else {
-                return completion(.failure(Errors.emptyAuthInfoResponse))
-            }
 
             // 2. build SRP things
             do {
-                let passSlice = PASSWORD.data(using: .utf8)
-                guard let auth = srpAuth ?? SrpAuth.init(response.version,
-                                              username: username,
-                                              password: passSlice,
-                                              b64salt: salt,
-                                              signedModulus: signedModulus,
-                                              serverEphemeral: serverEphemeral) else
-                {
-                    return completion(.failure(Errors.emptyServerSrpAuth))
-                }
+                let srpClientInfo = try self.srpBuilder.buildSRP(
+                    username: username,
+                    password: password,
+                    authInfo: AuthInfoResponse(
+                        modulus: response.modulus,
+                        serverEphemeral: response.serverEphemeral,
+                        version: response.version,
+                        salt: response.salt,
+                        srpSession: response.srpSession
+                    ),
+                    srpAuth: srpAuth
+                )
                 
-                // client SRP
-                let srpClient = try auth.generateProofs(2048)
-                guard let clientEphemeral = srpClient.clientEphemeral,
-                      let clientProof = srpClient.clientProof,
-                      let expectedServerProof = srpClient.expectedServerProof else
-                {
-                    return completion(.failure(Errors.emptyClientSrpAuth))
-                }
-                
-                // 3. auth request
-                authClient.auth(username: username, ephemeral: clientEphemeral, proof: clientProof, session: srpSession, challenge: challenge) { (result) in
-                    switch result {
-                    case .failure(let responseError):
-                        completion(.failure(.from(responseError)))
-                    case .success(let authResponse):
-                        
-                        guard expectedServerProof == Data(base64Encoded: authResponse.serverProof) else {
-                            return completion(.failure(Errors.wrongServerProof))
-                        }
-                        // are we done yet or need 2FA?
-                        if authResponse._2FA.enabled == .off {
-                            let credential = Credential(res: authResponse, userName: username, userID: authResponse.userID)
-                            self.apiService.setSessionUID(uid: credential.UID)
-                            completion(.success(.newCredential(credential, authResponse.passwordMode)))
-                        } else if authResponse._2FA.enabled.contains(.totp) {
-                            let credential = Credential(res: authResponse, userName: username, userID: authResponse.userID)
-                            self.apiService.setSessionUID(uid: credential.UID)
-                            let context = (credential, authResponse.passwordMode)
-                            completion(.success(.ask2FA(context)))
-                        } else if authResponse._2FA.enabled.contains(.webAuthn) {
-                            completion(.failure(Errors.notImplementedYet("WebAuthn not implemented yet")))
-                        } else {
-                            completion(.failure(Errors.notImplementedYet("Unknown 2FA method required")))
+                switch srpClientInfo {
+                case .failure(let error):
+                    return completion(.failure(error))
+                case .success(let srpClientInfo):
+                    // 3. auth request
+                    authClient.auth(username: username, ephemeral: srpClientInfo.clientEphemeral, proof: srpClientInfo.clientProof, session: response.srpSession, challenge: challenge) { (result) in
+                        switch result {
+                        case .failure(let responseError):
+                            completion(.failure(.from(responseError)))
+                        case .success(let authResponse):
+                            
+                            guard srpClientInfo.expectedServerProof == Data(base64Encoded: authResponse.serverProof) else {
+                                return completion(.failure(Errors.wrongServerProof))
+                            }
+                            // are we done yet or need 2FA?
+                            if authResponse._2FA.enabled == .off {
+                                let credential = Credential(res: authResponse, userName: username, userID: authResponse.userID)
+                                self.apiService.setSessionUID(uid: credential.UID)
+                                completion(.success(.newCredential(credential, authResponse.passwordMode)))
+                            } else if authResponse._2FA.enabled.contains(.totp) {
+                                let credential = Credential(res: authResponse, userName: username, userID: authResponse.userID)
+                                self.apiService.setSessionUID(uid: credential.UID)
+                                let context = (credential, authResponse.passwordMode)
+                                completion(.success(.ask2FA(context)))
+                            } else if authResponse._2FA.enabled.contains(.webAuthn) {
+                                completion(.failure(Errors.notImplementedYet("WebAuthn not implemented yet")))
+                            } else {
+                                completion(.failure(Errors.notImplementedYet("Unknown 2FA method required")))
+                            }
                         }
                     }
                 }
