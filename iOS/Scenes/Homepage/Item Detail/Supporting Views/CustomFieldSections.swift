@@ -85,6 +85,7 @@ struct TextCustomFieldSection: View {
                 } else {
                     TextView(.constant(content))
                         .foregroundColor(PassColor.textNorm)
+                        .isEditable(false)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -120,6 +121,7 @@ struct HiddenCustomFieldSection: View {
                     if isShowingText {
                         TextView(.constant(content))
                             .foregroundColor(PassColor.textNorm)
+                            .isEditable(false)
                     } else {
                         Text(String(repeating: "•", count: min(20, content.count)))
                             .foregroundColor(Color(uiColor: PassColor.textNorm))
