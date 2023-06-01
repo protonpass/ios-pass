@@ -37,6 +37,5 @@ enum PaymentsConstants {
         "visionary"
     ]
 
-    // swiftlint:disable:next todo
-    static let clientApp: ClientApp = .other(named: "pass") // TODO: to be replaced by .pass once available
+    static let clientApp = ClientApp.pass
 }

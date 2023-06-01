@@ -61,7 +61,7 @@ final class WelcomeCoordinator: DeinitPrintable {
                                                 passwordRestrictions: .default,
                                                 summaryScreenVariant: .noSummaryScreen)
         return .init(appName: "Proton Pass",
-                     clientApp: .other(named: "pass"),
+                     clientApp: .pass,
                      apiService: apiService,
                      minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
