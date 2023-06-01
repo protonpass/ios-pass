@@ -150,7 +150,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.logManager = logManager
         self.manualLogIn = manualLogIn
         self.paymentsManager = PaymentsManager(apiService: apiService,
-                                               appData: appData,
+                                               userDataProvider: appData,
                                                mainKeyProvider: mainKeyProvider,
                                                logger: logger,
                                                preferences: preferences,
