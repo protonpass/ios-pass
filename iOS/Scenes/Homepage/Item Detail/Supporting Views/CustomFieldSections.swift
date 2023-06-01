@@ -44,12 +44,14 @@ struct CustomFieldSections: View {
                 TextCustomFieldSection(title: title,
                                        content: content,
                                        itemContentType: type,
-                                       isFreeUser: isFreeUser)
+                                       isFreeUser: isFreeUser,
+                                       onUpgrade: onUpgrade)
             case .hidden:
                 HiddenCustomFieldSection(title: title,
                                          content: content,
                                          itemContentType: type,
-                                         isFreeUser: isFreeUser)
+                                         isFreeUser: isFreeUser,
+                                         onUpgrade: onUpgrade)
             case .totp:
                 TotpCustomFieldSection(title: title,
                                        content: content,
@@ -67,6 +69,7 @@ struct TextCustomFieldSection: View {
     let content: String
     let itemContentType: ItemContentType
     let isFreeUser: Bool
+    let onUpgrade: () -> Void
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -76,9 +79,13 @@ struct TextCustomFieldSection: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text(title)
                     .sectionTitleText()
-                TextView(.constant(content))
-                    .foregroundColor(PassColor.textNorm)
-                    .disabled(isFreeUser)
+
+                if isFreeUser {
+                    UpgradeButtonLite(action: onUpgrade)
+                } else {
+                    TextView(.constant(content))
+                        .foregroundColor(PassColor.textNorm)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -96,6 +103,7 @@ struct HiddenCustomFieldSection: View {
     let content: String
     let itemContentType: ItemContentType
     let isFreeUser: Bool
+    let onUpgrade: () -> Void
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -106,18 +114,21 @@ struct HiddenCustomFieldSection: View {
                 Text(title)
                     .sectionTitleText()
 
-                if isShowingText {
-                    TextView(.constant(content))
-                        .foregroundColor(PassColor.textNorm)
-                        .disabled(isFreeUser)
+                if isFreeUser {
+                    UpgradeButtonLite(action: onUpgrade)
                 } else {
-                    Text(String(repeating: "•", count: min(20, content.count)))
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    if isShowingText {
+                        TextView(.constant(content))
+                            .foregroundColor(PassColor.textNorm)
+                    } else {
+                        Text(String(repeating: "•", count: min(20, content.count)))
+                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !content.isEmpty {
+            if !isFreeUser, !content.isEmpty {
                 CircleButton(icon: isShowingText ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: itemContentType.normMajor2Color,
                              backgroundColor: itemContentType.normMinor2Color,
