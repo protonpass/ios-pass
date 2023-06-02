@@ -644,7 +644,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                 let view = TrialDetailView(
                     daysLeft: abs(daysLeft),
                     onUpgrade: startUpgradeFlow,
-                    onLearnMore: { self.urlOpener.open(urlString: "https://proton.me/pass") })
+                    onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
                 present(view)
             } catch {
                 logger.error(error)
@@ -765,15 +765,15 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowPrivacyPolicy() {
-        urlOpener.open(urlString: "https://proton.me/legal/privacy")
+        urlOpener.open(urlString: ProtonLink.privacyPolicy)
     }
 
     func profileTabViewModelWantsToShowTermsOfService() {
-        urlOpener.open(urlString: "https://proton.me/legal/terms")
+        urlOpener.open(urlString: ProtonLink.termsOfService)
     }
 
     func profileTabViewModelWantsToShowImportInstructions() {
-        urlOpener.open(urlString: "https://proton.me/support/pass-import")
+        urlOpener.open(urlString: ProtonLink.howToImport)
     }
 
     func profileTabViewModelWantsToShowFeedback() {
