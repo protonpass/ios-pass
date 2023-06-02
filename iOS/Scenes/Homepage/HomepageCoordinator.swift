@@ -644,7 +644,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                 let view = TrialDetailView(
                     daysLeft: abs(daysLeft),
                     onUpgrade: startUpgradeFlow,
-                    onLearnMore: { self.urlOpener.open(urlString: "https://proton.me/pass") })
+                    onLearnMore: { self.urlOpener.open(urlString: "https://proton.me/support/pass-trial") })
                 present(view)
             } catch {
                 logger.error(error)
