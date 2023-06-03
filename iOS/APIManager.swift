@@ -33,8 +33,6 @@ import ProtonCore_Networking
 import ProtonCore_Observability
 import ProtonCore_Services
 
-let kAppStoreUrlString = "itms-apps://itunes.apple.com/app/id6443490629"
-
 protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
 }
@@ -68,13 +66,13 @@ final class APIManager {
             self.apiService = PMAPIService.createAPIService(
                 doh: ProtonPassDoH(),
                 sessionUID: credential.sessionID,
-                challengeParametersProvider: .forAPIService(clientApp: .other(named: "pass"), challenge: .init())
+                challengeParametersProvider: .forAPIService(clientApp: .pass, challenge: .init())
             )
             self.authHelper = AuthHelper(authCredential: credential)
         } else {
             self.apiService = PMAPIService.createAPIServiceWithoutSession(
                 doh: ProtonPassDoH(),
-                challengeParametersProvider: .forAPIService(clientApp: .other(named: "pass"), challenge: .init())
+                challengeParametersProvider: .forAPIService(clientApp: .pass, challenge: .init())
             )
             self.authHelper = AuthHelper()
         }
@@ -83,12 +81,19 @@ final class APIManager {
         self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
 
-        self.humanHelper = HumanCheckHelper(apiService: apiService, clientApp: .other(named: "pass"))
+        self.humanHelper = HumanCheckHelper(apiService: apiService, clientApp: .pass)
         self.apiService.humanDelegate = humanHelper
 
-        // swiftlint:disable:next force_unwrapping
-        self.forceUpgradeHelper = ForceUpgradeHelper(config: .mobile(URL(string: kAppStoreUrlString)!),
-                                                     responseDelegate: self)
+        if let appStoreUrl = URL(string: Constants.appStoreUrl) {
+            self.forceUpgradeHelper = .init(config: .mobile(appStoreUrl), responseDelegate: self)
+        } else {
+            // Should never happen
+            let message = "Can not parse App Store URL"
+            assertionFailure(message)
+            logger.warning(message)
+            self.forceUpgradeHelper = .init(config: .desktop, responseDelegate: self)
+        }
+
         self.apiService.forceUpgradeDelegate = forceUpgradeHelper
 
         self.setUpCore()
@@ -203,8 +208,13 @@ extension APIManager: APIServiceDelegate {
 
 // MARK: - ForceUpgradeResponseDelegate
 extension APIManager: ForceUpgradeResponseDelegate {
-    func onQuitButtonPressed() {}
-    func onUpdateButtonPressed() {}
+    func onQuitButtonPressed() {
+        logger.info("Quit force upgrade page")
+    }
+
+    func onUpdateButtonPressed() {
+        logger.info("Forced upgrade")
+    }
 }
 
 // MARK: - TrustKitDelegate
