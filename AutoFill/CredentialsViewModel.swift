@@ -314,7 +314,6 @@ private extension CredentialsViewModel {
         }
     }
 
-    // swiftlint:disable:next function_body_length
     func fetchCredentialsTask(plan: PassPlan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) {
             if !self.preferences.didReencryptAllItems {

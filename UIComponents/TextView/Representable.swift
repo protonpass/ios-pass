@@ -46,3 +46,4 @@ extension TextView {
         }
     }
 }
+// swiftlint:enable discouraged_optional_boolean

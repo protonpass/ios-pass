@@ -484,7 +484,6 @@ private struct WrappedCodeScannerView: View {
         NavigationView {
             CodeScannerView(
                 codeTypes: [.qr],
-                // swiftlint:disable:next line_length
                 simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
                 isGalleryPresented: $isGaleryPresented,
                 completion: { result in dismiss(); completion(result) })
@@ -593,3 +592,4 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
+// swiftlint:enable type_body_length

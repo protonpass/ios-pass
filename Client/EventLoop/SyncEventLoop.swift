@@ -221,9 +221,7 @@ private extension SyncEventLoop {
                 try await self.syncDeleteEvents(localShares: localShares, remoteShares: remoteShares)
             }
 
-            return try await taskGroup.reduce(into: false) { partialResult, nextValue in
-                partialResult = partialResult || nextValue
-            }
+            return try await taskGroup.contains { $0 }
         }
 
         return hasNewEvents
@@ -255,9 +253,7 @@ private extension SyncEventLoop {
                 }
             }
 
-            return try await taskGroup.reduce(into: false) { partialResult, nextValue in
-                partialResult = partialResult || nextValue
-            }
+            return try await taskGroup.contains { $0 }
         }
     }
 
@@ -295,9 +291,7 @@ private extension SyncEventLoop {
                 }
             }
 
-            return try await taskGroup.reduce(into: false) { partialResult, nextValue in
-                partialResult = partialResult || nextValue
-            }
+            return try await taskGroup.contains { $0 }
         }
     }
 

@@ -78,3 +78,4 @@ public extension Collection {
         }
     }
 }
+// swiftlint:enable identifier_name
