@@ -88,7 +88,6 @@ private typealias ScoredAreInDecreasingOrder = (ScoredSymmetricallyEncryptedItem
                                                 ScoredSymmetricallyEncryptedItem) -> Bool
 
 public extension Array where Element == ScoredSymmetricallyEncryptedItem {
-    // swiftlint:disable opening_brace
     /// Sort by `lastUseTime` & `modifyTime` in decreasing order
     func sorted() -> Self {
         let predicates: [ScoredAreInDecreasingOrder] =
@@ -109,3 +108,4 @@ public extension Array where Element == ScoredSymmetricallyEncryptedItem {
         }
     }
 }
+// swiftlint:enable opening_brace

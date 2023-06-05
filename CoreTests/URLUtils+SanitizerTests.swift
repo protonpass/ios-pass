@@ -48,7 +48,10 @@ final class URLUtilsPlusSanitizerTests: XCTestCase {
     }
 
     func testSanitizeAndGetRootDomain() {
-        let parser = try! DomainParser()
+        guard let parser = try? DomainParser() else {
+            XCTFail("Should not reach the part of guard")
+            return
+        }
         let test: (String, String) -> Void = { input, output in
             XCTAssertEqual(URLUtils.Sanitizer.sanitizeAndGetRootDomain(input,
                                                                        domainParser: parser),

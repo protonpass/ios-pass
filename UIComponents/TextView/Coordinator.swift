@@ -116,3 +116,4 @@ extension TextView.Representable.Coordinator {
         }
     }
 }
+// swiftlint:enable line_length

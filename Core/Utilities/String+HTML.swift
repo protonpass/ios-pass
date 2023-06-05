@@ -4,8 +4,7 @@
 // Mapping from XML/HTML character entity reference to character
 // From http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references
 
-// swiftlint:disable colon
-// swiftlint:disable prefixed_toplevel_constant
+// swiftlint:disable prefixed_toplevel_constant colon
 private let characterEntities: [String: Character] = [
     // XML predefined entities:
     "&quot;"     : "\"",
@@ -340,3 +339,4 @@ extension String {
         return result
     }
 }
+// swiftlint:enable prefixed_toplevel_constant colon
