@@ -174,7 +174,7 @@ public extension Logger {
 
 // MARK: - Private APIs
 private extension Logger {
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     func generateEntry(message: String,
                        timestamp: TimeInterval,
                        level: LogLevel,

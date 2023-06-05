@@ -3304,6 +3304,7 @@
 		};
 		35E506A1286F8DB400A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -3322,6 +3323,7 @@
 		};
 		35E506A2286F8E3B00A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

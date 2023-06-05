@@ -1,7 +1,6 @@
 import SwiftUI
 
-// swiftlint:disable force_unwrapping
-// swiftlint:disable line_length
+// swiftlint:disable line_length force_unwrapping
 public extension UIFont {
     static var caption2: UIFont = .preferredFont(forTextStyle: .caption2)
     static var caption: UIFont = .preferredFont(forTextStyle: .caption1)
@@ -68,12 +67,12 @@ public extension UIFont {
         addingAttributes([
             .featureSettings: [
                 [
-                    UIFontDescriptor.FeatureKey.featureIdentifier: kLowerCaseType,
-                    UIFontDescriptor.FeatureKey.typeIdentifier: kLowerCaseSmallCapsSelector
+                    UIFontDescriptor.FeatureKey.type: kLowerCaseType,
+                    UIFontDescriptor.FeatureKey.selector: kLowerCaseSmallCapsSelector
                 ],
                 [
-                    UIFontDescriptor.FeatureKey.featureIdentifier: kUpperCaseType,
-                    UIFontDescriptor.FeatureKey.typeIdentifier: kUpperCaseSmallCapsSelector
+                    UIFontDescriptor.FeatureKey.type: kUpperCaseType,
+                    UIFontDescriptor.FeatureKey.selector: kUpperCaseSmallCapsSelector
                 ]
             ]
         ])
@@ -83,8 +82,8 @@ public extension UIFont {
         addingAttributes([
             .featureSettings: [
                 [
-                    UIFontDescriptor.FeatureKey.featureIdentifier: kLowerCaseType,
-                    UIFontDescriptor.FeatureKey.typeIdentifier: kLowerCaseSmallCapsSelector
+                    UIFontDescriptor.FeatureKey.type: kLowerCaseType,
+                    UIFontDescriptor.FeatureKey.selector: kLowerCaseSmallCapsSelector
                 ]
             ]
         ])
@@ -94,8 +93,8 @@ public extension UIFont {
         addingAttributes([
             .featureSettings: [
                 [
-                    UIFontDescriptor.FeatureKey.featureIdentifier: kUpperCaseType,
-                    UIFontDescriptor.FeatureKey.typeIdentifier: kUpperCaseSmallCapsSelector
+                    UIFontDescriptor.FeatureKey.type: kUpperCaseType,
+                    UIFontDescriptor.FeatureKey.selector: kUpperCaseSmallCapsSelector
                 ]
             ]
         ])
@@ -105,10 +104,11 @@ public extension UIFont {
         addingAttributes([
             .featureSettings: [
                 [
-                    UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType,
-                    UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector
+                    UIFontDescriptor.FeatureKey.type: kNumberSpacingType,
+                    UIFontDescriptor.FeatureKey.selector: kMonospacedNumbersSelector
                 ]
             ]
         ])
     }
 }
+// swiftlint:enable force_unwrapping line_length

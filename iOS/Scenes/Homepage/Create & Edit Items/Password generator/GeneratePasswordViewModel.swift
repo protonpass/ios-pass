@@ -157,7 +157,7 @@ private extension GeneratePasswordViewModel {
         if includingNumbers {
             if let randomIndex = words.indices.randomElement(),
                let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
-                words[randomIndex] = words[randomIndex] + String(randomNumber)
+                words[randomIndex] += String(randomNumber)
             }
         }
 

@@ -82,7 +82,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
 
-    // swiftlint:disable:next function_body_length
     init(apiService: APIService,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,

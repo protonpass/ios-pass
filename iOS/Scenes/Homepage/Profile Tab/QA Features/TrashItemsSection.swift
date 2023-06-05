@@ -71,7 +71,6 @@ private struct TrashItemsView: View {
     }
 
     @ViewBuilder
-    // swiftlint:disable:next function_body_length
     private func vaultList(_ uiModels: [VaultListUiModel]) -> some View {
         let showingAlert = Binding<Bool>(get: {
             selectedUiModel != nil
