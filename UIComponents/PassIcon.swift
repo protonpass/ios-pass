@@ -128,3 +128,4 @@ public extension PassIcon {
     static var vaultIcon30Big   = UIImage(named: "VaultIcon30Big")!
     static var vaultIcon30Small = UIImage(named: "VaultIcon30Small")!
 }
+// swiftlint:enable force_unwrapping

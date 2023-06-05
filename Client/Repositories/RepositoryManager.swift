@@ -41,7 +41,6 @@ public final class RepositoryManager: DeinitPrintable {
 
     public let upgradeChecker: UpgradeCheckerProtocol
 
-    // swiftlint:disable:next function_body_length
     public init(apiService: APIService,
                 container: NSPersistentContainer,
                 currentDateProvider: CurrentDateProviderProtocol,

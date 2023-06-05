@@ -1,7 +1,6 @@
 import SwiftUI
 
 // swiftlint:disable discouraged_optional_boolean
-// swiftlint:disable line_length
 /// A SwiftUI TextView implementation that supports both scrolling and auto-sizing layouts
 public struct TextView: View {
     @Environment(\.layoutDirection) private var layoutDirection
@@ -133,3 +132,4 @@ final class UIKitTextView: UITextView {
         resignFirstResponder()
     }
 }
+// swiftlint:enable discouraged_optional_boolean

@@ -22,13 +22,12 @@ import ProtonCore_Networking
 
 public extension AuthCredential {
     static var preview: AuthCredential {
-        .init(sessionID: "",
-              accessToken: "",
-              refreshToken: "",
-              expiration: .init(),
-              userName: "",
-              userID: "",
-              privateKey: nil,
-              passwordKeySalt: nil)
+        AuthCredential(sessionID: "",
+                       accessToken: "",
+                       refreshToken: "",
+                       userName: "",
+                       userID: "",
+                       privateKey: nil,
+                       passwordKeySalt: nil)
     }
 }

@@ -158,3 +158,4 @@ public extension TextView {
         return view
     }
 }
+// swiftlint:enable discouraged_optional_boolean

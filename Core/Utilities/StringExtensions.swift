@@ -29,14 +29,13 @@ public enum AllowedCharacter: String {
     case separator = "-.,_"
 }
 
-// swiftlint:disable force_unwrapping
 public extension String {
     static func random(allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit],
                        length: Int = 10) -> String {
         let allCharacters = allowedCharacters.map { $0.rawValue }.reduce(into: "") { $0 += $1 }
         // swiftlint:disable:next todo
         // TODO: Make sure that returned string contains at least 1 character from each AllowedCharacter set
-        return String((0..<length).map { _ in allCharacters.randomElement()! })
+        return String((0..<length).compactMap { _ in allCharacters.randomElement() })
     }
 
     func base64Decode() throws -> Data? { Data(base64Encoded: self) }

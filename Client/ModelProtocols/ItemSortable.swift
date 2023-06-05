@@ -185,7 +185,6 @@ public struct AlphabeticalSortResult<T: AlphabeticalSortable> {
 
 public extension Array where Element: AlphabeticalSortable {
     // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_body_length
     func alphabeticalSortResult(direction: SortDirection) -> AlphabeticalSortResult<Element> {
         let sortedAlphabetically =
         sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
@@ -251,7 +250,6 @@ public extension Array where Element: AlphabeticalSortable {
         }
     }
     // swiftlint:enable cyclomatic_complexity
-    // swiftlint:enable function_body_length
 }
 
 // MARK: - Month year

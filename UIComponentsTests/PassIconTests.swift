@@ -22,7 +22,6 @@
 import XCTest
 
 final class PassIconTests: XCTestCase {
-    // swiftlint:disable:next function_body_length
     func testGetIconss() {
         let expectation = expectation(description: "Should be able to get icons")
 

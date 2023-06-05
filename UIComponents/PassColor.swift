@@ -88,3 +88,4 @@ public extension PassColor {
     static var vaultPorsche = UIColor(named: "VaultPorsche")!
     static var vaultWaterLeaf = UIColor(named: "VaultWaterLeaf")!
 }
+// swiftlint:enable force_unwrapping
