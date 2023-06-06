@@ -65,4 +65,8 @@ public extension String {
     mutating func capitalizeFirstLetter() {
         self = self.capitalizingFirstLetter()
     }
+    
+    var spacesRemoved: String {
+        self.replacingOccurrences(of: " ", with: "")
+    }
 }

@@ -1,7 +1,7 @@
 //
-// Core.h
-// Proton Pass - Created on 01/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Double+Extensions.swift
+// Proton Pass - Created on 05/06/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,13 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-#import <Foundation/Foundation.h>
-#import "MF_Base32CodecPass.h"
+import Foundation
 
-//! Project version number for Core.
-FOUNDATION_EXPORT double CoreVersionNumber;
-
-//! Project version string for Core.
-FOUNDATION_EXPORT const unsigned char CoreVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <Core/PublicHeader.h>
+public extension Double {
+    var toInt: Int {
+        Int(self)
+    }
+}

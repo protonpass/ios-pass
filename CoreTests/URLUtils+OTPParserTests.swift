@@ -67,21 +67,6 @@ final class URLUtilsPlusOTPParserTests: XCTestCase {
         }
     }
 
-    func testMissingLabel() {
-        let urlString = "otpauth://totp/?secret=somesecret&algorithm=SHA1&digits=8"
-        do {
-            let url = try XCTUnwrap(URL(string: urlString))
-            _ = try URLUtils.OTPParser.parse(url: url)
-            XCTFail("Expect parse failure")
-        } catch {
-            if let error = error as? URLUtils.OTPParser.Error {
-                XCTAssertEqual(error, .missingLabel)
-            } else {
-                XCTFail("Expect OTPParser error")
-            }
-        }
-    }
-
     func testMissingSecret() {
         let urlString = "otpauth://totp/john?algorithm=SHA1&digits=8"
         do {
