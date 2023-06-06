@@ -60,10 +60,10 @@ public extension CredentialManagerProtocol {
         let domainCredentials = try credentials.map { try ASPasswordCredentialIdentity($0) }
 
         if state.supportsIncrementalUpdates {
-            logger.trace("Empty credential store. Inserting \(credentials.count) credentials.")
+            logger.trace("Non empty credential store. Inserting \(credentials.count) credentials.")
             try await store.saveCredentialIdentities(domainCredentials)
         } else {
-            logger.trace("Non empty credential store. Inserting \(credentials.count) credentials.")
+            logger.trace("Empty credential store. Inserting \(credentials.count) credentials.")
             try await store.replaceCredentialIdentities(with: domainCredentials)
         }
         logger.trace("Inserted \(credentials.count) credentials.")
