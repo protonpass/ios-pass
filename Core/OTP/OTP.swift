@@ -50,19 +50,19 @@ public struct OTPComponents {
 
     public let type: OTPType
     public let secret: String
-    public let label: String
+    public let label: String?
     public let issuer: String?
     public let algorithm: Algorithm
-    public let digits: UInt8
-    public let period: UInt8
+    public let digits: Int
+    public let period: Int
 
     public init(type: OTPType,
                 secret: String,
-                label: String,
+                label: String?,
                 issuer: String?,
                 algorithm: Algorithm,
-                digits: UInt8,
-                period: UInt8) {
+                digits: Int,
+                period: Int) {
         self.type = type
         self.secret = secret
         self.label = label

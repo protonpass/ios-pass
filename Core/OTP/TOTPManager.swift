@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftOTP
+import OneTimePassword
 import SwiftUI
 
 public enum TOTPState: Equatable {
@@ -31,7 +31,7 @@ public enum TOTPState: Equatable {
 public struct TOTPTimerData: Hashable {
     public let total: Int
     public let remaining: Int
-
+    
     public init(total: Int, remaining: Int) {
         self.total = total
         self.remaining = remaining
@@ -49,36 +49,37 @@ public extension TOTPData {
     /// Init and calculate TOTP data of the current moment.
     /// Should only be used to quickly get TOTP data from a given URI in AutoFill context.
     init(uri: String) throws {
-        var totp: TOTP?
+        var tokenGenerator: Generator?
         var username: String?
         var issuer: String?
+        var timeInterval: Double = Constants.TotpBase.timer
+        
         if uri.contains("otpauth") {
             // "otpauth" as protocol, parse information
             let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
             if otpComponents.type == .totp,
-               let secretData = base32DecodeToData(otpComponents.secret) {
+                let secretData = MF_Base32CodecPass.data(fromBase32String: otpComponents.secret) {
                 username = otpComponents.label
                 issuer = otpComponents.issuer
-                totp = TOTP(secret: secretData,
-                            digits: Int(otpComponents.digits),
-                            timeInterval: Int(otpComponents.period),
-                            algorithm: otpComponents.algorithm.otpAlgorithm)
+                timeInterval = Double(otpComponents.period)
+                tokenGenerator = try Generator(factor: .timer(period: timeInterval),
+                                               secret: secretData,
+                                               algorithm: otpComponents.algorithm.otpAlgorithm,
+                                               digits: otpComponents.digits)
             }
-        } else if let secretData = base32DecodeToData(uri.replacingOccurrences(of: " ", with: "")) {
+        } else if let secretData =
+                    MF_Base32CodecPass.data(fromBase32String: uri.spacesRemoved) {
             // Treat the whole string as secret
-            totp = TOTP(secret: secretData,
-                        digits: 6,
-                        timeInterval: 30,
-                        algorithm: .sha1)
+            tokenGenerator = try Generator(secret: secretData)
         }
 
-        guard let totp else {
+        guard let tokenGenerator else {
             throw PPCoreError.totp(.failedToInitializeTOTPObject)
         }
-
-        let secondsPast1970 = Int(Date().timeIntervalSince1970)
-        let code = totp.generate(secondsPast1970: secondsPast1970) ?? ""
-        let timerData = totp.timerData(secondsPast1970: secondsPast1970)
+        
+        let token = Token(name: username ?? "", issuer: issuer ?? "", generator: tokenGenerator)
+        let code = token.currentPassword ?? ""
+        let timerData = timeInterval.timerData()
         self.username = username
         self.issuer = issuer
         self.code = code
@@ -87,7 +88,7 @@ public extension TOTPData {
 }
 
 public extension OTPComponents.Algorithm {
-    var otpAlgorithm: OTPAlgorithm {
+    var otpAlgorithm: Generator.Algorithm {
         switch self {
         case .sha1:
             return .sha1
@@ -100,70 +101,79 @@ public extension OTPComponents.Algorithm {
 }
 
 public final class TOTPManager: DeinitPrintable, ObservableObject {
+    private var timer: Timer?
+    private let logger: Logger
+    private var timeInterval: Double = Constants.TotpBase.timer
+    
+    @Published public private(set) var state = TOTPState.empty
+    
+    /// The current `URI` whether it's valid or not
+    public private(set) var uri = ""
+    
+    public init(logManager: LogManager) {
+        self.logger = .init(manager: logManager)
+    }
+    
     deinit {
         timer?.invalidate()
         print(deinitMessage)
     }
-
-    private var timer: Timer?
-    private let logger: Logger
-
-    @Published public private(set) var state = TOTPState.empty
-
-    /// The current `URI` whether it's valid or not
-    public private(set) var uri = ""
-
-    public init(logManager: LogManager) {
-        self.logger = .init(manager: logManager)
-    }
-
+    
     public var totpData: TOTPData? {
         if case .valid(let data) = state {
             return data
         }
         return nil
     }
-
+    
     public func reset() {
         timer?.invalidate()
         uri = ""
         state = .empty
     }
-
+    
     public func bind(uri: String) {
         self.uri = uri
         timer?.invalidate()
         state = .loading
-        guard !uri.isEmpty else { state = .empty; return }
-
+        guard !uri.isEmpty else {
+            state = .empty
+            return
+        }
+        
         do {
-            var totp: TOTP?
+            var tokenGenerator: Generator?
             var username: String?
             var issuer: String?
             if uri.contains("otpauth") {
                 // "otpauth" as protocol, parse information
                 let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
                 if otpComponents.type == .totp,
-                   let secretData = base32DecodeToData(otpComponents.secret) {
+                   let secretData = MF_Base32CodecPass.data(fromBase32String: otpComponents.secret) {
                     username = otpComponents.label
                     issuer = otpComponents.issuer
-                    totp = TOTP(secret: secretData,
-                                digits: Int(otpComponents.digits),
-                                timeInterval: Int(otpComponents.period),
-                                algorithm: otpComponents.algorithm.otpAlgorithm)
+                    timeInterval = Double(otpComponents.period)
+                    tokenGenerator = try Generator(factor: .timer(period: timeInterval),
+                                                   secret: secretData,
+                                                   algorithm: otpComponents.algorithm.otpAlgorithm,
+                                                   digits: otpComponents.digits)
                 }
-            } else if let secretData = base32DecodeToData(uri.replacingOccurrences(of: " ", with: "")) {
+            } else if let secretData = MF_Base32CodecPass.data(fromBase32String: uri.spacesRemoved) {
                 // Treat the whole string as secret
-                totp = TOTP(secret: secretData,
-                            digits: 6,
-                            timeInterval: 30,
-                            algorithm: .sha1)
+                tokenGenerator = try Generator(secret: secretData)
             }
-
-            guard let totp else { state = .invalid; return }
-
+            
+            guard let tokenGenerator else {
+                state = .invalid
+                return
+            }
+            
+            let token = Token(name: username ?? "",
+                              issuer: issuer ?? "",
+                              generator: tokenGenerator)
+            
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-                self?.calculate(totp: totp, username: username, issuer: issuer)
+                self?.calculate(token: token, username: username, issuer: issuer)
             }
             timer?.fire()
         } catch {
@@ -171,11 +181,10 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
             state = .invalid
         }
     }
-
-    private func calculate(totp: TOTP, username: String?, issuer: String?) {
-        let secondsPast1970 = Int(Date().timeIntervalSince1970)
-        let code = totp.generate(secondsPast1970: secondsPast1970) ?? ""
-        let timerData = totp.timerData(secondsPast1970: secondsPast1970)
+    
+    private func calculate(token: Token, username: String?, issuer: String?) {
+        let code = token.currentPassword ?? ""
+        let timerData = timeInterval.timerData()
         state = .valid(.init(username: username,
                              issuer: issuer,
                              code: code,
@@ -183,9 +192,18 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
     }
 }
 
-extension TOTP {
-    func timerData(secondsPast1970: Int = Int(Date().timeIntervalSince1970)) -> TOTPTimerData {
-        let remainingSeconds = timeInterval - (secondsPast1970 % timeInterval)
-        return .init(total: timeInterval, remaining: remainingSeconds)
+private extension Double {
+    func timerData(secondsPast1970: Double = Date().timeIntervalSince1970) -> TOTPTimerData {
+        let remainingSeconds = self - secondsPast1970.truncatingRemainder(dividingBy: self)
+        return .init(total: self.toInt, remaining: remainingSeconds.toInt)
+    }
+}
+
+private extension Generator {
+    init(secret: Data) throws {
+        try self.init(factor: .timer(period: Constants.TotpBase.timer),
+                      secret: secret,
+                      algorithm: Constants.TotpBase.algo.otpAlgorithm,
+                      digits: Constants.TotpBase.digit)
     }
 }
