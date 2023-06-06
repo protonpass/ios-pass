@@ -21,11 +21,14 @@
 import Core
 import Sentry
 import UIKit
+import ProtonCore_CryptoGoInterface
+import ProtonCore_CryptoGoImplementation
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        injectDefaultCryptoImplementation()
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
         return true
