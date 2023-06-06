@@ -19,10 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import ProtonCore_CryptoGoImplementation
+import ProtonCore_CryptoGoInterface
 import Sentry
 import UIKit
-import ProtonCore_CryptoGoInterface
-import ProtonCore_CryptoGoImplementation
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
