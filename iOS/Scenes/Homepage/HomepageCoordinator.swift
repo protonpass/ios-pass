@@ -24,6 +24,7 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import Factory
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Login
@@ -243,7 +244,9 @@ private extension HomepageCoordinator {
                                                       preferences: preferences,
                                                       logManager: logManager,
                                                       passPlanRepository: passPlanRepository,
-                                                      vaultsManager: vaultsManager)
+                                                      vaultsManager: vaultsManager,
+                                                      notificationService:
+                                                        ServiceContainer.shared.notificationService())
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
