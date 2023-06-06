@@ -193,14 +193,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d vaults</string>
+			<string>%d seifuri</string>
 			<key>one</key>
-			<string>%d vault</string>
+			<string>%d seif</string>
 			<key>other</key>
-			<string>%d vaults</string>
+			<string>%d de seifuri</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d VPN connections per user</key>
+	<key>%d VPN connections per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -218,7 +218,7 @@
 			<string>%d de conexiuni VPN per utilizator</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d addresses per user</key>
+	<key>%d addresses per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -236,7 +236,7 @@
 			<string>%d de adrese per utilizator</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d folders and labels</key>
+	<key>%d folders and labels</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -254,7 +254,7 @@
 			<string>%d de foldere și etichete</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d email addresses</key>
+	<key>%d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ din %#@VARIABLE2@</string>
@@ -285,7 +285,7 @@
 			<string>%d de adrese de e-mail</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d personal calendars</key>
+	<key>%d of %d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ din %#@VARIABLE2@</string>
@@ -316,7 +316,7 @@
 			<string>%d de calendare personale</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d users</key>
+	<key>%d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ din %#@VARIABLE2@</string>
@@ -347,7 +347,7 @@
 			<string>%d de utilizatori</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d personal calendars</key>
+	<key>%d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -365,7 +365,7 @@
 			<string>%d de calendare personale</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d personal calendars per user</key>
+	<key>%d calendars per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -383,7 +383,7 @@
 			<string>%d de calendare personale per utilizator</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
+	<key>%d servers in %d countries (US, NL, JP)</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -414,7 +414,7 @@
 			<string>%d servers</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d+ servers in %d countries</key>
+	<key>%d+ servers in %d countries</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -445,7 +445,7 @@
 			<string>Peste %d de servere</string>
 		</dict>
 	</dict>
-	<key>New_Plans High-speed VPN on %d devices</key>
+	<key>High-speed VPN on %d devices</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -463,7 +463,7 @@
 			<string>VPN de mare viteză pe %d de dispozitive</string>
 		</dict>
 	</dict>
-	<key>New_Plans Medium VPN speed %d VPN connections</key>
+	<key>Medium VPN speed %d VPN connections</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -481,7 +481,7 @@
 			<string>%d de conexiuni VPN cu viteză medie</string>
 		</dict>
 	</dict>
-	<key>New_Plans Support for %d custom email domains</key>
+	<key>Support for %d custom email domains</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>

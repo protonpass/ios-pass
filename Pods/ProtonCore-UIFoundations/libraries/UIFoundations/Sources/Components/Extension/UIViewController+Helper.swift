@@ -58,13 +58,10 @@ public extension UIViewController {
     func updateTitleAttributes() {
         let foregroundColor: UIColor = ColorProvider.TextNorm
         let textAttributes = [NSAttributedString.Key.foregroundColor: foregroundColor]
-        if #available(iOS 13.0, *) {
-            let appearance = navigationController?.navigationBar.standardAppearance
-            appearance?.titleTextAttributes = textAttributes
-            navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        } else {
-            navigationController?.navigationBar.titleTextAttributes = textAttributes
-        }
+        let appearance = navigationController?.navigationBar.standardAppearance
+        appearance?.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
     }
 
     static var topVC: UIViewController? {

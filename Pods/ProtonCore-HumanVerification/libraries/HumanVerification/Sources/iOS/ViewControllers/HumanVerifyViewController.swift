@@ -44,7 +44,6 @@ enum UserInterfaceStyle: Int {
     case light = 1
     case dark = 2
 
-    @available(iOS 12, *)
     init(value: UIUserInterfaceStyle) {
         switch value {
         case .unspecified:
@@ -59,7 +58,6 @@ enum UserInterfaceStyle: Int {
         }
     }
 
-    @available(iOS 12, *)
     static func != (lhs: UIUserInterfaceStyle, rhs: UserInterfaceStyle) -> Bool {
         lhs.rawValue != rhs.rawValue
     }
@@ -115,10 +113,8 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if #available(iOS 12.0, *) {
-            if UIApplication.shared.applicationState == .active {
-                checkInterfaceStyle()
-            }
+        if UIApplication.shared.applicationState == .active {
+            checkInterfaceStyle()
         }
     }
 
@@ -153,9 +149,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
         let webViewConfiguration = WKWebViewConfiguration()
         webViewConfiguration.userContentController = userContentController
         viewModel.setup(webViewConfiguration: webViewConfiguration)
-        if #available(iOS 13.0, *) {
-            webViewConfiguration.defaultWebpagePreferences.preferredContentMode = .mobile
-        }
+        webViewConfiguration.defaultWebpagePreferences.preferredContentMode = .mobile
         webViewConfiguration.websiteDataStore = WKWebsiteDataStore.default()
         webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
         webView.navigationDelegate = self
@@ -184,13 +178,10 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
 
     private func setupObservers() {
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
-            if #available(iOS 12.0, *) {
-                self?.checkInterfaceStyle()
-            }
+            self?.checkInterfaceStyle()
         }
     }
 
-    @available(iOS 12.0, *)
     private func checkInterfaceStyle() {
         if traitCollection.userInterfaceStyle != currentInterfaceStyle {
             loadWebContent()

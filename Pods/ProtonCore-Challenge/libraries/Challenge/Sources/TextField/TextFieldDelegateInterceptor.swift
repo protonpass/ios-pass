@@ -118,7 +118,6 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
         return self.originalDelegate?.textField?(textField, shouldChangeCharactersIn: range, replacementString: string) ?? true
     }
 
-    @available(iOS 13.0, *)
     func textFieldDidChangeSelection(_ textField: UITextField) {
 
         self.originalDelegate?.textFieldDidChangeSelection?(textField)

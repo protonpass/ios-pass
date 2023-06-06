@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
@@ -32,7 +32,7 @@ extension Array where Element: Key {
         var out = Data()
         var error: NSError?
         for key in self {
-            if let privK = ArmorUnarmor(key.privateKey, &error) {
+            if let privK = CryptoGo.ArmorUnarmor(key.privateKey, &error) {
                 out.append(privK)
             }
         }
@@ -43,7 +43,7 @@ extension Array where Element: Key {
         var out: [Data] = []
         var error: NSError?
         for key in self {
-            if let privK = ArmorUnarmor(key.privateKey, &error) {
+            if let privK = CryptoGo.ArmorUnarmor(key.privateKey, &error) {
                 out.append(privK)
             }
         }
@@ -57,7 +57,7 @@ extension Array where Element == Data {
         var out = [ArmoredKey]()
         var error: NSError?
         for key in self {
-            let privK = ArmorArmorKey(key, &error)
+            let privK = CryptoGo.ArmorArmorKey(key, &error)
             out.append(ArmoredKey.init(value: privK))
         }
         return out
@@ -69,7 +69,7 @@ extension Key {
     /// TODO:: need to handle the nil case
     internal var binPrivKeys: Data {
         var error: NSError?
-        return ArmorUnarmor(self.privateKey, &error)!
+        return CryptoGo.ArmorUnarmor(self.privateKey, &error)!
     }
     
     public var publicKey: String {

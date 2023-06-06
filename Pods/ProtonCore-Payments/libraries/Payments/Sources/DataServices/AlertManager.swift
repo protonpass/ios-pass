@@ -132,21 +132,16 @@ final class AlertManager: AlertManagerProtocol {
         }
     }
 
-    @available(iOS 13.0, *)
     private var windowScene: UIWindowScene? {
-        return UIApplication.getInstance()?.connectedScenes.first { $0.activationState == .foregroundActive && $0 is UIWindowScene } as? UIWindowScene
+        UIApplication.getInstance()?.connectedScenes.first { $0.activationState == .foregroundActive && $0 is UIWindowScene } as? UIWindowScene
     }
 
     private var alertWindow: UIWindow?
 
     private func createAlertWindow() -> UIWindow? {
         let alertWindow: UIWindow
-        if #available(iOS 13.0, *) {
-            if let windowScene = windowScene {
-                alertWindow = UIWindow(windowScene: windowScene)
-            } else {
-                alertWindow = UIWindow(frame: UIScreen.main.bounds)
-            }
+        if let windowScene = windowScene {
+            alertWindow = UIWindow(windowScene: windowScene)
         } else {
             alertWindow = UIWindow(frame: UIScreen.main.bounds)
         }

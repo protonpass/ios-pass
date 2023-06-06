@@ -322,74 +322,74 @@
  * Networking */
 "Network connection error" = "Chyba síťového připojení";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ z %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ z %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Globální přístup ke streamovacím službám";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Globální přístup ke streamovacím službám";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Vestavěné blokování reklam (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Vestavěné blokování reklam (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Zkontrolujte své internetové připojení";
+/* Plan connection error description */
+"Check your internet connection" = "Zkontrolujte své internetové připojení";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Problémy s připojením";
+/* Plan connection error title */
+"Connection issues" = "Problémy s připojením";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Prodloužit předplatné";
+/* Extend subscription button */
+"Extend subscription" = "Prodloužit předplatné";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Bezplatná VPN na jednom zařízení";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "Bezplatná VPN na jednom zařízení";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Získejte %@";
+/* Get plan button */
+"Get %@" = "Získejte %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Získejte Proton zdarma";
+/* Get free plan button */
+"Get Proton for free" = "Získejte Proton zdarma";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Nejvyšší rychlost VPN";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Nejvyšší rychlost VPN";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Jeden tarif pro všechny služby Protonu";
+/* */
+"One plan for all Proton services" = "Jeden tarif pro všechny služby Protonu";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Prostřednictvím této aplikace je k dispozici pouze roční předplatné, které není obnovováno";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "Prostřednictvím této aplikace je k dispozici pouze roční předplatné, které není obnovováno";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Tarif úspěšně navýšen";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Tarif úspěšně navýšen";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Servery Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Servery Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Přísné zásady neukládání logů";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Přísné zásady neukládání logů";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Bezplatný startovací účet, který ve výchozím nastavení poskytuje soukromí všem.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "Bezplatný startovací účet, který ve výchozím nastavení poskytuje soukromí všem.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Řešení e-mailu a kalendáře pro každodenní komunikaci s ohledem na soukromí.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "Řešení e-mailu a kalendáře pro každodenní komunikaci s ohledem na soukromí.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Tarif zaměřený na velký úložný prostor, nabízející 200 GB cloudového prostoru, zajišťující soukromí vašich dat.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Tarif zaměřený na velký úložný prostor, nabízející 200 GB cloudového prostoru, zajišťující soukromí vašich dat.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Nejvyšší balíček ochrany soukromí s přístupem ke všem prémiovým službám Proton.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "Nejvyšší balíček ochrany soukromí s přístupem ke všem prémiovým službám Proton.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR skrze VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "TOR skrze VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Až %@ úložného prostoru";
+/* Plan details up to storage */
+"Up to %@ storage" = "Až %@ úložného prostoru";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Vaše soukromí a bezpečnost jsou pro nás prioritou.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Vaše soukromí a bezpečnost jsou pro nás prioritou.";
 
 /* Next button */
 "Next" = "Další";
@@ -476,6 +476,9 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "Prioritní zákaznická podpora";
+
+/* Plan details `Priority support` message */
+"Priority support" = "Prioritní podpora";
 
 /* Welcome screen */
 "Privacy by default" = "Soukromí především";

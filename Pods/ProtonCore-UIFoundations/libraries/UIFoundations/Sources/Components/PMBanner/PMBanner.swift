@@ -567,12 +567,8 @@ extension PMBanner {
 
     private func createActivityIndicator() {
         if activityIndicator != nil { return }
-        if #available(iOS 13.0, *) {
-            activityIndicator = UIActivityIndicatorView(style: .medium)
-            activityIndicator?.color = self.style.assistTextColor
-        } else {
-            activityIndicator = UIActivityIndicatorView(style: .white)
-        }
+        activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator?.color = self.style.assistTextColor
         guard let activityIndicator = activityIndicator,
               let actionButton = self.actionButton else { return }
         activityIndicator.hidesWhenStopped = true

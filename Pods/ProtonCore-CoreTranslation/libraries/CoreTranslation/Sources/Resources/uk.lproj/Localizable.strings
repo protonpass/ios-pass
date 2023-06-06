@@ -310,74 +310,74 @@
  * Networking */
 "Network connection error" = "Помилка зв'язку з мережею";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ з %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ з %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Доступ до сервісів трансляції по всьому світу";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Доступ до сервісів трансляції по всьому світу";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Вбудований блокувальник реклами (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Вбудований блокувальник реклами (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Перевірте своє з'єднання з інтернетом";
+/* Plan connection error description */
+"Check your internet connection" = "Перевірте своє з'єднання з інтернетом";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Проблеми зі з'єднанням";
+/* Plan connection error title */
+"Connection issues" = "Проблеми зі з'єднанням";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Продовжити передплату";
+/* Extend subscription button */
+"Extend subscription" = "Продовжити передплату";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Безплатна VPN для одного пристрою";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "Безплатна VPN для одного пристрою";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Отримати %@";
+/* Get plan button */
+"Get %@" = "Отримати %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Отримати Proton безплатно";
+/* Get free plan button */
+"Get Proton for free" = "Отримати Proton безплатно";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Найвища швидкість VPN";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Найвища швидкість VPN";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Один тарифний план для всіх служб Proton";
+/* */
+"One plan for all Proton services" = "Один тарифний план для всіх служб Proton";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "У цьому застосунку доступні лише річні передплати без поновлення";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "У цьому застосунку доступні лише річні передплати без поновлення";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Тарифний план успішно покращено";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Тарифний план успішно покращено";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Сервери Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Сервери Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Суворе дотримання політики без журналювання";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Суворе дотримання політики без журналювання";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Безплатний початковий обліковий запис, створений для усталеного забезпечення приватності для всіх.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "Безплатний початковий обліковий запис, створений для усталеного забезпечення приватності для всіх.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Зосереджене на приватності рішення електронної пошти та календаря, що задовольняє ваші щоденні потреби для спілкування.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "Зосереджене на приватності рішення електронної пошти та календаря, що задовольняє ваші щоденні потреби для спілкування.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарифний план, орієнтований на зберігання даних, з 200 ГБ хмарного сховища для збереження приватності ваших файлів.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарифний план, орієнтований на зберігання даних, з 200 ГБ хмарного сховища для збереження приватності ваших файлів.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Винятковий комплект приватності з доступом до усіх преміумслужб Proton.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "Винятковий комплект приватності з доступом до усіх преміумслужб Proton.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor через VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor через VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "До %@ сховища";
+/* Plan details up to storage */
+"Up to %@ storage" = "До %@ сховища";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Ваша приватність і безпека — наш пріоритет.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Ваша приватність і безпека — наш пріоритет.";
 
 /* Next button */
 "Next" = "Далі";
