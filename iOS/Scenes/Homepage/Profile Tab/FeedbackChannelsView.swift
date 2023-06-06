@@ -22,8 +22,10 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-enum FeedbackChannel: Int, CaseIterable {
-    case email = 0, reddit
+enum FeedbackChannel: Int, CaseIterable, Identifiable {
+    case email = 0, reddit, uservoice
+
+    var id: Int { rawValue }
 }
 
 struct FeedbackChannelsView: View {
@@ -34,7 +36,7 @@ struct FeedbackChannelsView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    ForEach(FeedbackChannel.allCases, id: \.rawValue) { channel in
+                    ForEach(FeedbackChannel.allCases) { channel in
                         OptionRow(
                             action: {
                                 dismiss()
@@ -80,6 +82,8 @@ extension FeedbackChannel {
             return IconProvider.paperPlane
         case .reddit:
             return PassIcon.brandReddit
+        case .uservoice:
+            return PassIcon.brandPass
         }
     }
 
@@ -89,6 +93,8 @@ extension FeedbackChannel {
             return "Send us a message"
         case .reddit:
             return "Write us on Reddit"
+        case .uservoice:
+            return "Vote for new features"
         }
     }
 
@@ -98,6 +104,8 @@ extension FeedbackChannel {
             return "mailto:pass@protonme.zendesk.com"
         case .reddit:
             return "https://www.reddit.com/r/ProtonPass"
+        case .uservoice:
+            return "https://protonmail.uservoice.com/forums/953584-proton-pass"
         }
     }
 }
