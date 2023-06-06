@@ -255,7 +255,6 @@ DEPENDENCIES:
   - ReachabilitySwift
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.29.0`)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `6.1.0`)"
-  - SwiftOTP
   - SwiftProtobuf (= 1.20.3)
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, tag `1.0.3`)
 
@@ -543,6 +542,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: d0405d0ab30a468d92a16b77dfe530d7d5e2fe33
+PODFILE CHECKSUM: 63097a66ce6aa9a5fb77cde4a005fab98a3ce34e
 
 COCOAPODS: 1.12.1

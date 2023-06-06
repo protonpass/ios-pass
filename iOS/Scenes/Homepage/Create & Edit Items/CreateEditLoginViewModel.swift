@@ -23,7 +23,6 @@ import Client
 import CodeScanner
 import Combine
 import Core
-import SwiftOTP
 import SwiftUI
 
 protocol CreateEditLoginViewModelDelegate: AnyObject {

@@ -30,7 +30,6 @@ public extension URLUtils.OTPParser {
         case invalidScheme(String?)
         case invalidHost(String?)
         case tooManyPaths
-        case missingLabel
         case missingSecret
 
         public static func == (lhs: Self, rhs: Self) -> Bool {
@@ -40,7 +39,6 @@ public extension URLUtils.OTPParser {
             case let (.invalidHost(lHost), .invalidHost(rHost)):
                 return lHost == rHost
             case (.tooManyPaths, .tooManyPaths),
-                (.missingLabel, .missingLabel),
                 (.missingSecret, .missingSecret):
                 return true
             default:
@@ -67,17 +65,14 @@ public extension URLUtils.OTPParser {
             throw Error.tooManyPaths
         }
 
-        guard let label = paths.first else {
-            throw Error.missingLabel
-        }
-
         guard let secret = url["secret"] else {
             throw Error.missingSecret
         }
 
+        let label = paths.first
         let algorithm = OTPComponents.Algorithm(rawString: url["algorithm"] ?? "") ?? .sha1
-        let digits = UInt8(url["digits"] ?? "") ?? 6
-        let period = UInt8(url["period"] ?? "") ?? 30
+        let digits = Int(url["digits"] ?? "") ?? Constants.TotpBase.digit
+        let period = Int(url["period"] ?? "") ?? Constants.TotpBase.timer.toInt
 
         return .init(type: type,
                      secret: secret,
