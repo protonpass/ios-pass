@@ -20,10 +20,7 @@
 
 import Core
 import CryptoKit
-import GoLibs
-import ProtonCore_Crypto
 import ProtonCore_DataModel
-import ProtonCore_KeyManager
 import ProtonCore_Login
 
 public enum ItemState: Int16, CaseIterable {

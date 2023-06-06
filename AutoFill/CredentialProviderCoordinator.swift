@@ -24,7 +24,6 @@ import Client
 import Core
 import CoreData
 import CryptoKit
-import GoLibs
 import MBProgressHUD
 import ProtonCore_Authentication
 import ProtonCore_Keymaker
