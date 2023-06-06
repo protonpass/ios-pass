@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Payments",
-  "version": "6.1.0",
+  "version": "7.1.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": null,
-    "tag": "6.1.0"
+    "tag": "7.1.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -33,16 +33,16 @@
       "~> 5.0.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-Foundations": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-Hash": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-Log": [
-      "6.1.0"
+      "7.1.0"
     ]
   },
   "default_subspecs": [
@@ -53,13 +53,13 @@
       "name": "Crypto-Go",
       "dependencies": {
         "ProtonCore-Authentication/Crypto-Go": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Networking": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Services": [
-          "6.1.0"
+          "7.1.0"
         ]
       },
       "source_files": [
@@ -72,7 +72,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-Go": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -83,13 +83,13 @@
       "name": "Crypto-patched-Go",
       "dependencies": {
         "ProtonCore-Authentication/Crypto-patched-Go": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Networking": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Services": [
-          "6.1.0"
+          "7.1.0"
         ]
       },
       "source_files": [
@@ -102,7 +102,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-patched-Go": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -113,13 +113,13 @@
       "name": "Crypto+VPN-patched-Go",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+VPN-patched-Go": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Networking": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Services": [
-          "6.1.0"
+          "7.1.0"
         ]
       },
       "source_files": [
@@ -132,7 +132,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-patched-Go": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -143,13 +143,13 @@
       "name": "Crypto+Search-Go",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+Search-Go": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Networking": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Services": [
-          "6.1.0"
+          "7.1.0"
         ]
       },
       "source_files": [
@@ -162,7 +162,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+Search-Go": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"

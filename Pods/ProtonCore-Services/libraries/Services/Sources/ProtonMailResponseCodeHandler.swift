@@ -32,7 +32,7 @@ class ProtonMailResponseCodeHandler {
         completion: PMAPIService.APIResponseCompletion<T>,
         humanVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
         deviceVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
-        missingScopesHandler: (String, PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, ResponseError) -> Void,
+        missingScopesHandler: (String, PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>) -> Void,
         forceUpgradeHandler: (String?) -> Void) where T: APIDecodableResponse {
         if responseCode == APIErrorCode.humanVerificationRequired {
             // human verification required
@@ -40,17 +40,11 @@ class ProtonMailResponseCodeHandler {
         } else if responseCode == APIErrorCode.deviceVerificationRequired {
             deviceVerificationHandler(responseHandlerData, completion, response.responseDictionary)
         } else if isMissingScopeError(response: response) && FeatureFactory.shared.isEnabled(.missingScopes), let authCredential = responseHandlerData.customAuthCredential {
-            switch response {
-            case .left(let jsonDictionary):
-                completion.call(task: responseHandlerData.task, response: .left(jsonDictionary))
-            case .right(let responseError):
-                missingScopesHandler(
-                    authCredential.userName,
-                    responseHandlerData,
-                    completion,
-                    responseError
-                )
-            }
+            missingScopesHandler(
+                authCredential.userName,
+                responseHandlerData,
+                completion
+            )
         } else {
             if responseCode == APIErrorCode.badAppVersion || responseCode == APIErrorCode.badApiVersion {
                 forceUpgradeHandler(response.errorMessage)
@@ -64,6 +58,10 @@ class ProtonMailResponseCodeHandler {
     
     private func isMissingScopeError(response: Either<JSONDictionary, ResponseError>) -> Bool {
         if case let .right(error) = response, case .missingScopes = error.details {
+            return true
+        }
+       
+        if case let .left(error) = response, case .missingScopes = error.details {
             return true
         }
         

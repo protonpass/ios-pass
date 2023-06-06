@@ -121,7 +121,7 @@ extension QuarkCommands {
         }.resume()
     }
 
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     public static func create(account: AccountAvailableForCreation,
                               currentlyUsedHostUrl host: String,
                               callCompletionBlockOn: DispatchQueue = .main) async -> Result<CreatedAccountDetails, CreateAccountError> {

@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-HumanVerification",
-  "version": "6.1.0",
+  "version": "7.1.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": null,
-    "tag": "6.1.0"
+    "tag": "7.1.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -36,22 +36,22 @@
   },
   "dependencies": {
     "ProtonCore-UIFoundations": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-Foundations": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-Utilities": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-APIClient": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-Observability": [
-      "6.1.0"
+      "7.1.0"
     ]
   },
   "default_subspecs": [
@@ -61,8 +61,11 @@
     {
       "name": "Crypto-Go",
       "dependencies": {
-        "ProtonCore-GoLibs/Crypto-Go": [
-          "6.1.0"
+        "ProtonCore-Crypto/Crypto-Go": [
+          "7.1.0"
+        ],
+        "ProtonCore-CryptoGoImplementation/Crypto-Go": [
+          "7.1.0"
         ]
       },
       "ios": {
@@ -94,8 +97,14 @@
           "name": "Tests",
           "test_type": "unit",
           "dependencies": {
+            "ProtonCore-CryptoGoInterface": [
+              "7.1.0"
+            ],
+            "ProtonCore-CryptoGoImplementation/Crypto-Go": [
+              "7.1.0"
+            ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/HumanVerification/Tests/**/*"
@@ -105,8 +114,11 @@
     {
       "name": "Crypto-patched-Go",
       "dependencies": {
-        "ProtonCore-GoLibs/Crypto-patched-Go": [
-          "6.1.0"
+        "ProtonCore-Crypto/Crypto-patched-Go": [
+          "7.1.0"
+        ],
+        "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
+          "7.1.0"
         ]
       },
       "ios": {
@@ -138,8 +150,14 @@
           "name": "Tests",
           "test_type": "unit",
           "dependencies": {
+            "ProtonCore-CryptoGoInterface": [
+              "7.1.0"
+            ],
+            "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
+              "7.1.0"
+            ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/HumanVerification/Tests/**/*"
@@ -149,8 +167,11 @@
     {
       "name": "Crypto+VPN-patched-Go",
       "dependencies": {
-        "ProtonCore-GoLibs/Crypto+VPN-patched-Go": [
-          "6.1.0"
+        "ProtonCore-Crypto/Crypto+VPN-patched-Go": [
+          "7.1.0"
+        ],
+        "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
+          "7.1.0"
         ]
       },
       "ios": {
@@ -182,8 +203,14 @@
           "name": "Tests",
           "test_type": "unit",
           "dependencies": {
+            "ProtonCore-CryptoGoInterface": [
+              "7.1.0"
+            ],
+            "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
+              "7.1.0"
+            ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/HumanVerification/Tests/**/*"
@@ -193,8 +220,11 @@
     {
       "name": "Crypto+Search-Go",
       "dependencies": {
-        "ProtonCore-GoLibs/Crypto+Search-Go": [
-          "6.1.0"
+        "ProtonCore-Crypto/Crypto+Search-Go": [
+          "7.1.0"
+        ],
+        "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
+          "7.1.0"
         ]
       },
       "ios": {
@@ -226,8 +256,14 @@
           "name": "Tests",
           "test_type": "unit",
           "dependencies": {
+            "ProtonCore-CryptoGoInterface": [
+              "7.1.0"
+            ],
+            "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
+              "7.1.0"
+            ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "6.1.0"
+              "7.1.0"
             ]
           },
           "source_files": "libraries/HumanVerification/Tests/**/*"

@@ -29,19 +29,18 @@ extension UIColor {
     
     public static func dynamic(light: UIColor, dark: UIColor) -> UIColor {
         var dynamicColor: UIColor = .clear
-        if #available(iOS 13.0, *) {
-            dynamicColor = UIColor(dynamicProvider: {
-                switch $0.userInterfaceStyle {
-                case .dark:
-                    return dark
-                case .light, .unspecified:
-                    return light
-                @unknown default:
-                    assertionFailure("Unknown userInterfaceStyle: \($0.userInterfaceStyle)")
-                    return light
-                }
-            })
-        }
+        dynamicColor = UIColor(dynamicProvider: {
+            switch $0.userInterfaceStyle {
+            case .dark:
+                return dark
+            case .light, .unspecified:
+                return light
+            @unknown default:
+                assertionFailure("Unknown userInterfaceStyle: \($0.userInterfaceStyle)")
+                return light
+            }
+        })
+        
         return darkModeAwareValue { dynamicColor } protonFallback: { light } vpnFallback: { dark }
     }
 }

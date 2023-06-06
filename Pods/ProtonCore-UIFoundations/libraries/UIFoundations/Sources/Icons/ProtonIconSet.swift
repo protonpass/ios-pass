@@ -374,8 +374,6 @@ public struct ProtonIconSet {
 
     public let map = ProtonIcon(name: "ic-map")
 
-    public let minusCircle1 = ProtonIcon(name: "ic-minus-circle-1")
-
     public let minusCircle = ProtonIcon(name: "ic-minus-circle")
 
     public let minus = ProtonIcon(name: "ic-minus")

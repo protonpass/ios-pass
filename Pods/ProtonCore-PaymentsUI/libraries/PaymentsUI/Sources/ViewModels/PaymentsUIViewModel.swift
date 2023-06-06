@@ -162,7 +162,7 @@ final class PaymentsUIViewModel {
     
     private func getLocaleFromIAP(plansPresentation: [PlanPresentation]) -> Locale {
         for plan in plansPresentation {
-            if let locale = PlanPresentation.getLocale(from: plan.accountPlan.protonName, storeKitManager: storeKitManager) {
+            if let locale = PlanPresentation.getLocale(from: plan.accountPlan, storeKitManager: storeKitManager) {
                 return locale
             }
         }
@@ -215,7 +215,7 @@ final class PaymentsUIViewModel {
         var plans: [[PlanPresentation]] = []
         let userHasNoAccessToThePlan = self.servicePlan.currentSubscription?.isEmptyBecauseOfUnsufficientScopeToFetchTheDetails == true
         let userHasNoPlan = !userHasNoAccessToThePlan && (self.servicePlan.currentSubscription?.planDetails.map { $0.isEmpty } ?? true)
-        let freePlan = servicePlan.detailsOfServicePlan(named: InAppPurchasePlan.freePlanName).flatMap {
+        let freePlan = servicePlan.detailsOfPlanCorrespondingToIAP(InAppPurchasePlan.freePlan).flatMap {
             self.createPlan(details: $0,
                             isSelectable: false,
                             isCurrent: true,
@@ -263,7 +263,7 @@ final class PaymentsUIViewModel {
 
         } else {
             if let subscription = self.servicePlan.currentSubscription,
-               let accountPlan = InAppPurchasePlan(protonName: subscription.computedPresentationDetails(shownPlanNames: shownPlanNames).name,
+               let accountPlan = InAppPurchasePlan(protonPlan: subscription.computedPresentationDetails(shownPlanNames: shownPlanNames),
                                                    listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers),
                let plan = self.createPlan(details: subscription.computedPresentationDetails(shownPlanNames: shownPlanNames),
                                           isSelectable: false,
@@ -340,7 +340,7 @@ final class PaymentsUIViewModel {
         // we only show plans that are either current or available for purchase
         guard isCurrent || baseDetails.isPurchasable else { return nil }
 
-        var details = servicePlan.defaultPlanDetails.map { Plan.combineDetailsDroppingPricing(baseDetails, $0) } ?? baseDetails
+        var details = servicePlan.defaultPlanDetails.map { Plan.combineDetailsKeepingPricing(baseDetails, $0) } ?? baseDetails
         if let cycle = cycle {
             details = details.updating(cycle: cycle)
         }

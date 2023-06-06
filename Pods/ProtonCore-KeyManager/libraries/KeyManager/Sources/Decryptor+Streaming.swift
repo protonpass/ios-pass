@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Utilities
 
@@ -96,15 +96,15 @@ extension Decryptor {
                                      _ plaintextFile: FileHandle,
                                      _ encSignatureArmored: String) throws
     {
-        let plaintextReader = HelperMobile2GoReader(FileMobileReader(file: plaintextFile))
+        let plaintextReader = CryptoGo.HelperMobile2GoReader(FileMobileReader(file: plaintextFile))
         
-        let encSignature = CryptoPGPMessage(fromArmored: encSignatureArmored)
+        let encSignature = CryptoGo.CryptoPGPMessage(fromArmored: encSignatureArmored)
         
         try verifyKeyRing.verifyDetachedEncryptedStream(
             plaintextReader,
             encryptedSignature: encSignature,
             decryptionKeyRing: decryptKeyRing,
-            verifyTime: CryptoGetUnixTime()
+            verifyTime: CryptoGo.CryptoGetUnixTime()
         )
     }
     
@@ -115,15 +115,15 @@ extension Decryptor {
                                             _ bufferSize: Int) throws
     {
         
-        let ciphertextReader = HelperMobile2GoReader(FileMobileReader(file: ciphertextFile))
+        let ciphertextReader = CryptoGo.HelperMobile2GoReader(FileMobileReader(file: ciphertextFile))
         
         let plaintextMessageReader = try sessionKey.decryptStream(
             ciphertextReader,
             verifyKeyRing: verifyKeyRing,
-            verifyTime: CryptoGetUnixTime()
+            verifyTime: CryptoGo.CryptoGetUnixTime()
         )
         
-        let reader = HelperGo2IOSReader(plaintextMessageReader)!
+        let reader = CryptoGo.HelperGo2IOSReader(plaintextMessageReader)!
         var isEOF: Bool = false
         while !isEOF {
             try autoreleasepool {
