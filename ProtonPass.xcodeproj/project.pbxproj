@@ -564,6 +564,11 @@
 		35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		43D8E83DEA8EF33F5E68C83E /* Pods_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */; };
+		5B0C74E02A2E083C00272CE8 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74DF2A2E083C00272CE8 /* OneTimePassword */; };
+		5B0C74E42A2E088000272CE8 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74E32A2E088000272CE8 /* OneTimePassword */; };
+		5B0C74E72A2E1B8700272CE8 /* MF_Base32CodecPass.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B0C74E52A2E1B8700272CE8 /* MF_Base32CodecPass.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5B0C74E82A2E1B8700272CE8 /* MF_Base32CodecPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74E62A2E1B8700272CE8 /* MF_Base32CodecPass.m */; };
+		5B0C74F22A2E2CDB00272CE8 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74F12A2E2CDB00272CE8 /* Double+Extensions.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1256,6 +1261,9 @@
 		38687DA8ED3D5D051F53F6A4 /* Pods-UIComponents.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.debug-qa.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		3CB08929D9AE79A08B4DE9B4 /* Pods-Client-iOSTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		448BC1603E67AC907A982299 /* Pods-macOS.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug-qa.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		5B0C74E52A2E1B8700272CE8 /* MF_Base32CodecPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base32CodecPass.h; sourceTree = "<group>"; };
+		5B0C74E62A2E1B8700272CE8 /* MF_Base32CodecPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base32CodecPass.m; sourceTree = "<group>"; };
+		5B0C74F12A2E2CDB00272CE8 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
@@ -1350,6 +1358,7 @@
 			files = (
 				CCE7E1B680E6647D25927D82 /* Pods_iOS.framework in Frameworks */,
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
+				5B0C74E02A2E083C00272CE8 /* OneTimePassword in Frameworks */,
 				356A34C82978630100969BA2 /* CodeScanner in Frameworks */,
 				3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */,
 				3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */,
@@ -1388,6 +1397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E40DE51A41CD97CC92DF6EF9 /* Pods_Core.framework in Frameworks */,
+				5B0C74E42A2E088000272CE8 /* OneTimePassword in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2016,6 +2026,8 @@
 		3572E51729938A1200775FAC /* OTP */ = {
 			isa = PBXGroup;
 			children = (
+				5B0C74E52A2E1B8700272CE8 /* MF_Base32CodecPass.h */,
+				5B0C74E62A2E1B8700272CE8 /* MF_Base32CodecPass.m */,
 				356A34B82977B46300969BA2 /* OTP.swift */,
 				3572E51829938A3C00775FAC /* TOTPManager.swift */,
 			);
@@ -2516,24 +2528,25 @@
 				35498F8528DC5D0500AF1D8F /* Collection+ParallelMap.swift */,
 				356B21D62870F8F1001220CB /* Constants.swift */,
 				3586477829F7D109003487B1 /* CurrentDateProvider.swift */,
-				3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */,
 				355AA31B29E9736A00C20F5F /* Data+Random.swift */,
+				3565621D29B9EDDB00C43F72 /* Date+AddingValue.swift */,
 				350A97DD2886032000A7168B /* DeinitPrintable.swift */,
+				5B0C74F12A2E2CDB00272CE8 /* Double+Extensions.swift */,
 				3552A28529EBFCAA00ABDB6E /* FileUtils.swift */,
 				35635175299C10040059A97A /* IdentifiableObject.swift */,
 				355BDECD299E35B9009FDBB1 /* ObservableObject+AttachToAnother.swift */,
 				35E50706286FB3A600A3F6EA /* Publisher+Unwrap.swift */,
 				3529432828DAF54900E1F11B /* SearchUtils.swift */,
 				35429B26288AB730000BA22F /* StaticFuncs.swift */,
-				3510A2FB287841AD0003BE79 /* StringExtensions.swift */,
-				35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */,
 				35699B92298103F1006CB225 /* String+HTML.swift */,
-				353547C22880CF470021C716 /* UserData+Codable.swift */,
+				35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */,
+				3510A2FB287841AD0003BE79 /* StringExtensions.swift */,
 				355222EC293F67A600786F64 /* URLExtensions.swift */,
 				354036DC28F451AE00F9E729 /* URLUtils.swift */,
 				354036DE28F4522000F9E729 /* URLUtils+Matcher.swift */,
 				356A34B62977B18000969BA2 /* URLUtils+OTPParser.swift */,
 				354036E028F452F200F9E729 /* URLUtils+Sanitizer.swift */,
+				353547C22880CF470021C716 /* UserData+Codable.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -2727,6 +2740,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				35E50694286F87A700A3F6EA /* Core.h in Headers */,
+				5B0C74E72A2E1B8700272CE8 /* MF_Base32CodecPass.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2848,6 +2862,7 @@
 			name = iOS;
 			packageProductDependencies = (
 				356A34C72978630100969BA2 /* CodeScanner */,
+				5B0C74DF2A2E083C00272CE8 /* OneTimePassword */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -2889,6 +2904,8 @@
 				358BD371287D539F00802A91 /* PBXTargetDependency */,
 			);
 			name = Client;
+			packageProductDependencies = (
+			);
 			productName = Client;
 			productReference = 35E50661286F870500A3F6EA /* Client.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2930,6 +2947,9 @@
 			dependencies = (
 			);
 			name = Core;
+			packageProductDependencies = (
+				5B0C74E32A2E088000272CE8 /* OneTimePassword */,
+			);
 			productName = Core;
 			productReference = 35E50684286F87A600A3F6EA /* Core.framework */;
 			productType = "com.apple.product-type.framework";
@@ -3038,7 +3058,7 @@
 					};
 					35E50683286F87A600A3F6EA = {
 						CreatedOnToolsVersion = 13.3.1;
-						LastSwiftMigration = 1330;
+						LastSwiftMigration = 1430;
 					};
 					35E5068A286F87A700A3F6EA = {
 						CreatedOnToolsVersion = 13.3.1;
@@ -3066,6 +3086,7 @@
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
 				356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				5B0C74DE2A2E083C00272CE8 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
 			);
 			productRefGroup = 35E5063C286F819F00A3F6EA /* Products */;
 			projectDirPath = "";
@@ -4106,6 +4127,7 @@
 				353E10922881827C00E59474 /* UserProtocol.swift in Sources */,
 				356A34B72977B18000969BA2 /* URLUtils+OTPParser.swift in Sources */,
 				3553C2212965705C0087518A /* LogManager.swift in Sources */,
+				5B0C74F22A2E2CDB00272CE8 /* Double+Extensions.swift in Sources */,
 				3531B5412902A9DD0070D2EE /* BiometricAuthenticator.swift in Sources */,
 				353C2841291DC729008A5EBF /* SortDirection.swift in Sources */,
 				35426B6428EF193800F89BB7 /* BasicRuleParser.swift in Sources */,
@@ -4116,6 +4138,7 @@
 				355342472992A685003E3A47 /* PPCoreError.swift in Sources */,
 				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
 				35426B6828EF196C00F89BB7 /* RulesParser.swift in Sources */,
+				5B0C74E82A2E1B8700272CE8 /* MF_Base32CodecPass.m in Sources */,
 				35855ABF2A0AA45A0091992F /* PassphraseGenerator.swift in Sources */,
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,
 				355222ED293F67A600786F64 /* URLExtensions.swift in Sources */,
@@ -6476,6 +6499,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		5B0C74DE2A2E083C00272CE8 /* XCRemoteSwiftPackageReference "OneTimePassword" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mattrubin/OneTimePassword.git";
+			requirement = {
+				kind = revision;
+				revision = 66f284e22c170ffcc2c9dcf055a1efeb260c766d;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -6488,6 +6519,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		5B0C74DF2A2E083C00272CE8 /* OneTimePassword */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B0C74DE2A2E083C00272CE8 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
+			productName = OneTimePassword;
+		};
+		5B0C74E32A2E088000272CE8 /* OneTimePassword */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B0C74DE2A2E083C00272CE8 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
+			productName = OneTimePassword;
 		};
 /* End XCSwiftPackageProductDependency section */
 

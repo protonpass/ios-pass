@@ -21,7 +21,6 @@
 import Client
 import Combine
 import Core
-import SwiftOTP
 import SwiftUI
 import UIComponents
 import UIKit

@@ -25,6 +25,12 @@ public enum Constants {
     public static let appGroup = "group.me.proton.pass"
     public static let keychainGroup = "\(teamId).\(appGroup)"
     public static let sortTypeKey = "sortType"
+    
+    enum TotpBase {
+        public static let timer: Double = 30.0
+        public static let digit: Int = 6
+        public static let algo: OTPComponents.Algorithm = .sha1
+    }
 }
 
 /// Links to KB articles or useful pages
