@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 
 extension Encryptor {
     public enum SigncryptError: Error {
@@ -55,7 +55,7 @@ extension Encryptor {
         // cryptography
         
         var error: NSError?
-        let sessionKey = HelperDecryptSessionKey(nodeKey, Data(nodePassphrase.utf8), contentKeyPacket, &error)
+        let sessionKey = CryptoGo.HelperDecryptSessionKey(nodeKey, Data(nodePassphrase.utf8), contentKeyPacket, &error)
         guard error == nil else { throw error! }
         
         let hash = try Encryptor.encryptBinaryStream(sessionKey!, nil, readFileHandle, writeFileHandle, size, chunkSize)
@@ -68,7 +68,7 @@ extension Encryptor {
                                   _ addressPassphrase: String,
                                   _ plaintextFile: URL) throws -> String
     {
-        guard var encryptionKey = CryptoKey(fromArmored: nodePublicKey) else {
+        guard var encryptionKey = CryptoGo.CryptoKey(fromArmored: nodePublicKey) else {
             throw SigncryptError.invalidPublicKey
         }
         
@@ -76,24 +76,24 @@ extension Encryptor {
             encryptionKey = try encryptionKey.toPublic()
         }
         
-        guard let encryptionKeyRing = CryptoKeyRing(encryptionKey) else {
+        guard let encryptionKeyRing = CryptoGo.CryptoKeyRing(encryptionKey) else {
             throw SigncryptError.invalidPublicKey
         }
         
-        guard let signKeyLocked = CryptoKey(fromArmored: addressPrivateKey) else {
+        guard let signKeyLocked = CryptoGo.CryptoKey(fromArmored: addressPrivateKey) else {
             throw SigncryptError.invalidPrivateKey
         }
         
         let signKeyUnlocked = try signKeyLocked.unlock(Data(addressPassphrase.utf8))
         
-        guard let signKeyRing = CryptoKeyRing(signKeyUnlocked) else {
+        guard let signKeyRing = CryptoGo.CryptoKeyRing(signKeyUnlocked) else {
             throw SigncryptError.invalidPrivateKey
         }
         
         let readFileHandle = try FileHandle(forReadingFrom: plaintextFile)
         let hash = try signStream(signKeyRing, encryptionKeyRing, readFileHandle)
         
-        if #available(iOSApplicationExtension 13.0, macOSApplicationExtension 10.15, *) {
+        if #available(macOSApplicationExtension 10.15, macOS 15.0, *) {
             try readFileHandle.close()
         }
         
@@ -112,7 +112,7 @@ extension Encryptor {
     // swiftlint:enable function_parameter_count
     {
         
-        let ciphertextWriter = HelperMobile2GoWriterWithSHA256(FileMobileWriter(file: ciphertextFile))!
+        let ciphertextWriter = CryptoGo.HelperMobile2GoWriterWithSHA256(FileMobileWriter(file: ciphertextFile))!
         let plaintextWriter = try sessionKey.encryptStream(ciphertextWriter, plainMessageMetadata: nil, sign: signKeyRing)
         
         var offset = 0
@@ -138,7 +138,7 @@ extension Encryptor {
     {
         var error: NSError?
         
-        let plaintextReader = HelperMobile2GoReader(FileMobileReader(file: plaintextFile))
+        let plaintextReader = CryptoGo.HelperMobile2GoReader(FileMobileReader(file: plaintextFile))
         
         let encSignature = try signKeyRing.signDetachedEncryptedStream(plaintextReader, encryptionKeyRing: encryptKeyRing)
         

@@ -92,7 +92,7 @@ final class CreateAddressViewModel {
                 success()
             case let .failure(error):
                 self?.isLoading.value = false
-                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .availabilityError(error)))
+                self?.error.publish((error.localizedDescription, error.codeInLogin, .availabilityError(error)))
             }
         }
     }

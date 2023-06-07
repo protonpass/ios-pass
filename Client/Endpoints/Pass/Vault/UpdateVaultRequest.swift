@@ -19,8 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
-import GoLibs
-import ProtonCore_Crypto
 import ProtonCore_Login
 
 public struct UpdateVaultRequest {

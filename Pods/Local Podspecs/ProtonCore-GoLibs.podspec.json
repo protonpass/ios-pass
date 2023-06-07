@@ -1,7 +1,6 @@
 {
   "name": "ProtonCore-GoLibs",
-  "module_name": "ProtonCore_Crypto",
-  "version": "6.1.0",
+  "version": "7.1.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +16,7 @@
   },
   "source": {
     "git": null,
-    "tag": "6.1.0"
+    "tag": "7.1.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -29,78 +28,29 @@
   "pod_target_xcconfig": {
     "APPLICATION_EXTENSION_API_ONLY": "YES"
   },
-  "dependencies": {
-    "ProtonCore-DataModel": [
-      "6.1.0"
-    ]
-  },
   "default_subspecs": [
     "ErrorWarningEmittingDefaultSubspec"
   ],
   "subspecs": [
     {
       "name": "Crypto-Go",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto-Go/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
+      "source_files": "libraries/GoLibs/Sources/*.swift",
+      "vendored_frameworks": "vendor/Crypto-Go/GoLibs.xcframework"
     },
     {
       "name": "Crypto-patched-Go",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto-patched-Go/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
+      "source_files": "libraries/GoLibs/Sources/*.swift",
+      "vendored_frameworks": "vendor/Crypto-patched-Go/GoLibs.xcframework"
     },
     {
       "name": "Crypto+VPN-patched-Go",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto+VPN-patched-Go/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
+      "source_files": "libraries/GoLibs/Sources/*.swift",
+      "vendored_frameworks": "vendor/Crypto+VPN-patched-Go/GoLibs.xcframework"
     },
     {
       "name": "Crypto+Search-Go",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto+Search-Go/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
+      "source_files": "libraries/GoLibs/Sources/*.swift",
+      "vendored_frameworks": "vendor/Crypto+Search-Go/GoLibs.xcframework"
     },
     {
       "name": "ErrorWarningEmittingDefaultSubspec",

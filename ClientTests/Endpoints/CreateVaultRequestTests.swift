@@ -20,9 +20,6 @@
 
 @testable import Client
 import Core
-import GoLibs
-import ProtonCore_Crypto
-import ProtonCore_DataModel
 import XCTest
 
 final class CreateVaultRequestTests: XCTestCase {

@@ -125,8 +125,8 @@ class PaymentsManager {
     }
     
     func planTitle(plan: InAppPurchasePlan?) -> String? {
-        guard let name = plan?.protonName else { return nil }
-        return servicePlanDataService?.detailsOfServicePlan(named: name)?.titleDescription
+        guard let plan else { return nil }
+        return servicePlanDataService?.detailsOfPlanCorrespondingToIAP(plan)?.titleDescription
     }
 }
 

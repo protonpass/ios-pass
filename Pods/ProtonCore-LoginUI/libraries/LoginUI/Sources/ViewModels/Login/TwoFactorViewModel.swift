@@ -43,9 +43,13 @@ final class TwoFactorViewModel {
     let mode = Observable<Mode>(.twoFactorCode)
 
     private let login: Login
+    let username: String
+    let password: String
 
-    init(login: Login) {
+    init(login: Login, username: String, password: String) {
         self.login = login
+        self.username = username
+        self.password = password
     }
 
     // MARK: - Actions

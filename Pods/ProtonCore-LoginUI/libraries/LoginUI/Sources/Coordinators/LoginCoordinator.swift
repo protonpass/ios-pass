@@ -144,9 +144,9 @@ final class LoginCoordinator {
         navigationController?.present(helpViewController, animated: true, completion: nil)
     }
 
-    private func showTwoFactorCode() {
+    private func showTwoFactorCode(username: String, password: String) {
         let twoFactorViewController = UIStoryboard.instantiate(TwoFactorViewController.self)
-        twoFactorViewController.viewModel = container.makeTwoFactorViewModel()
+        twoFactorViewController.viewModel = container.makeTwoFactorViewModel(username: username, password: password)
         twoFactorViewController.customErrorPresenter = customization.customErrorPresenter
         twoFactorViewController.delegate = self
         twoFactorViewController.onDohTroubleshooting = { [weak self] in
@@ -244,8 +244,8 @@ extension LoginCoordinator: LoginStepsDelegate {
         UIApplication.openURLIfPossible(externalLinks.accountSetup)
     }
 
-    func twoFactorCodeNeeded() {
-        showTwoFactorCode()
+    func requestTwoFactorCode(username: String, password: String) {
+        showTwoFactorCode(username: username, password: password)
     }
 
     func mailboxPasswordNeeded() {

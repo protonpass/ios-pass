@@ -169,7 +169,16 @@ public enum LocalizedStringAccessors: CaseIterable {
 
     case __ls_sign_in_button
     public var _ls_sign_in_button: LocalizedStringAccessors { .__ls_sign_in_button }
+    
+    case __ls_sign_in_button_with_password
+    public var _ls_sign_in_button_with_password: LocalizedStringAccessors { .__ls_sign_in_button_with_password }
 
+    case __ls_sign_in_with_sso_button
+    public var _ls_sign_in_with_sso_button: LocalizedStringAccessors { .__ls_sign_in_with_sso_button }
+    
+    case __ls_sign_in_with_sso_title
+    public var _ls_sign_in_with_sso_title: LocalizedStringAccessors { .__ls_sign_in_with_sso_title }
+    
     case __ls_create_account_button
     public var _ls_create_account_button: LocalizedStringAccessors { .__ls_create_account_button }
 
@@ -431,7 +440,7 @@ public enum LocalizedStringAccessors: CaseIterable {
 
     case __su_main_view_title
     public var _su_main_view_title: LocalizedStringAccessors { .__su_main_view_title }
-
+    
     case __su_main_view_desc
     public var _su_main_view_desc: LocalizedStringAccessors { .__su_main_view_desc }
 
@@ -665,6 +674,9 @@ public enum LocalizedStringAccessors: CaseIterable {
 
     case __pu_plan_details_plus_description
     public var _pu_plan_details_plus_description: LocalizedStringAccessors { .__pu_plan_details_plus_description }
+    
+    case __pu_plan_limited_time_offer
+    public var _pu_plan_limited_time_offer: LocalizedStringAccessors { .__pu_plan_limited_time_offer }
 
     case __pu_plan_unfinished_error_title
     public var _pu_plan_unfinished_error_title: LocalizedStringAccessors { .__pu_plan_unfinished_error_title }
@@ -804,116 +816,116 @@ public enum LocalizedStringAccessors: CaseIterable {
     case __ls_welcome_footer
     public var _ls_welcome_footer: LocalizedStringAccessors { .__ls_welcome_footer }
     
-    case __new_plans_select_plan_description
-    public var _new_plans_select_plan_description: LocalizedStringAccessors { .__new_plans_select_plan_description }
+    case __select_plan_description
+    public var _select_plan_description: LocalizedStringAccessors { .__select_plan_description }
     
-    case __new_plans_plan_details_free_description
-    public var _new_plans_plan_details_free_description: LocalizedStringAccessors { .__new_plans_plan_details_free_description }
+    case __plan_details_free_description
+    public var _plan_details_free_description: LocalizedStringAccessors { .__plan_details_free_description }
     
-    case __new_plans_plan_details_plus_description
-    public var _new_plans_plan_details_plus_description: LocalizedStringAccessors { .__new_plans_plan_details_plus_description }
+    case __plan_details_plus_description
+    public var _plan_details_plus_description: LocalizedStringAccessors { .__plan_details_plus_description }
     
-    case __new_plans_plan_details_vpn_plus_description
-    public var _new_plans_plan_details_vpn_plus_description: LocalizedStringAccessors { .__new_plans_plan_details_vpn_plus_description }
+    case __plan_details_vpn_plus_description
+    public var _plan_details_vpn_plus_description: LocalizedStringAccessors { .__plan_details_vpn_plus_description }
     
-    case __new_plans_plan_details_bundle_description
-    public var _new_plans_plan_details_bundle_description: LocalizedStringAccessors { .__new_plans_plan_details_bundle_description }
+    case __plan_details_bundle_description
+    public var _plan_details_bundle_description: LocalizedStringAccessors { .__plan_details_bundle_description }
     
     case __new_plan_details_drive_plus_description
     public var _new_plan_details_drive_plus_description: LocalizedStringAccessors { .__new_plan_details_drive_plus_description }
     
-    case __new_plans_plan_footer_desc
-        public var _new_plans_plan_footer_desc: LocalizedStringAccessors { .__new_plans_plan_footer_desc }
+    case __plan_footer_desc
+        public var _plan_footer_desc: LocalizedStringAccessors { .__plan_footer_desc }
     
-    case __new_plans_details_unlimited_folders_labels_filters
-    public var _new_plans_details_unlimited_folders_labels_filters: LocalizedStringAccessors { .__new_plans_details_unlimited_folders_labels_filters }
+    case __details_unlimited_folders_labels_filters
+    public var _details_unlimited_folders_labels_filters: LocalizedStringAccessors { .__details_unlimited_folders_labels_filters }
     
-    case __new_plans_details_up_to_storage
-    public var _new_plans_details_up_to_storage: LocalizedStringAccessors { .__new_plans_details_up_to_storage }
+    case __details_up_to_storage
+    public var _details_up_to_storage: LocalizedStringAccessors { .__details_up_to_storage }
     
-    case __new_plans_details_vpn_on_single_device
-    public var _new_plans_details_vpn_on_single_device: LocalizedStringAccessors { .__new_plans_details_vpn_on_single_device }
+    case __details_vpn_on_single_device
+    public var _details_vpn_on_single_device: LocalizedStringAccessors { .__details_vpn_on_single_device }
     
-    case __new_plans_details_highest_VPN_speed
-    public var _new_plans_details_highest_VPN_speed: LocalizedStringAccessors { .__new_plans_details_highest_VPN_speed }
+    case __details_highest_VPN_speed
+    public var _details_highest_VPN_speed: LocalizedStringAccessors { .__details_highest_VPN_speed }
     
-    case __new_plans_details_ad_blocker
-    public var _new_plans_details_ad_blocker: LocalizedStringAccessors { .__new_plans_details_ad_blocker }
+    case __details_ad_blocker
+    public var _details_ad_blocker: LocalizedStringAccessors { .__details_ad_blocker }
     
-    case __new_plans_details_access_streaming_services
-    public var _new_plans_details_access_streaming_services: LocalizedStringAccessors { .__new_plans_details_access_streaming_services }
+    case __details_access_streaming_services
+    public var _details_access_streaming_services: LocalizedStringAccessors { .__details_access_streaming_services }
     
-    case __new_plans_details_secure_core_servers
-    public var _new_plans_details_secure_core_servers: LocalizedStringAccessors { .__new_plans_details_secure_core_servers }
+    case __details_secure_core_servers
+    public var _details_secure_core_servers: LocalizedStringAccessors { .__details_secure_core_servers }
     
-    case __new_plans_details_tor_over_vpn
-    public var _new_plans_details_tor_over_vpn: LocalizedStringAccessors { .__new_plans_details_tor_over_vpn }
+    case __details_tor_over_vpn
+    public var _details_tor_over_vpn: LocalizedStringAccessors { .__details_tor_over_vpn }
     
-    case __new_plans_details_p2p
-    public var _new_plans_details_p2p: LocalizedStringAccessors { .__new_plans_details_p2p }
+    case __details_p2p
+    public var _details_p2p: LocalizedStringAccessors { .__details_p2p }
     
-    case __new_plans_get_plan_button
-    public var _new_plans_get_plan_button: LocalizedStringAccessors { .__new_plans_get_plan_button }
+    case __get_plan_button
+    public var _get_plan_button: LocalizedStringAccessors { .__get_plan_button }
     
-    case __new_plans_get_free_plan_button
-    public var _new_plans_get_free_plan_button: LocalizedStringAccessors { .__new_plans_get_free_plan_button }
+    case __get_free_plan_button
+    public var _get_free_plan_button: LocalizedStringAccessors { .__get_free_plan_button }
     
-    case __new_plans_extend_subscription_button
-    public var _new_plans_extend_subscription_button: LocalizedStringAccessors { .__new_plans_extend_subscription_button }
+    case __extend_subscription_button
+    public var _extend_subscription_button: LocalizedStringAccessors { .__extend_subscription_button }
     
-    case __new_plans_details_used_storage_space
-    public var _new_plans_details_used_storage_space: LocalizedStringAccessors { .__new_plans_details_used_storage_space }
+    case __details_used_storage_space
+    public var _details_used_storage_space: LocalizedStringAccessors { .__details_used_storage_space }
     
-    case __new_plans_connection_error_title
-    public var _new_plans_connection_error_title: LocalizedStringAccessors { .__new_plans_connection_error_title }
+    case __connection_error_title
+    public var _connection_error_title: LocalizedStringAccessors { .__connection_error_title }
     
-    case __new_plans_connection_error_description
-    public var _new_plans_connection_error_description: LocalizedStringAccessors { .__new_plans_connection_error_description }
+    case __connection_error_description
+    public var _connection_error_description: LocalizedStringAccessors { .__connection_error_description }
     
-    case __new_plans_details_no_logs_policy
-    public var _new_plans_details_no_logs_policy: LocalizedStringAccessors { .__new_plans_details_no_logs_policy }
+    case __details_no_logs_policy
+    public var _details_no_logs_policy: LocalizedStringAccessors { .__details_no_logs_policy }
     
-    case __new_plans_plan_successfully_upgraded
-    public var _new_plans_plan_successfully_upgraded: LocalizedStringAccessors { .__new_plans_plan_successfully_upgraded }
+    case __plan_successfully_upgraded
+    public var _plan_successfully_upgraded: LocalizedStringAccessors { .__plan_successfully_upgraded }
     
-    case __new_plans_details_n_custom_email_domains
-    public var _new_plans_details_n_custom_email_domains: LocalizedStringAccessors { .__new_plans_details_n_custom_email_domains }
+    case __details_n_custom_email_domains
+    public var _details_n_custom_email_domains: LocalizedStringAccessors { .__details_n_custom_email_domains }
     
-    case __new_plans_details_n_folders_labels
-    public var _new_plans_details_n_folders_labels: LocalizedStringAccessors { .__new_plans_details_n_folders_labels }
+    case __details_n_folders_labels
+    public var _details_n_folders_labels: LocalizedStringAccessors { .__details_n_folders_labels }
     
-    case __new_plans_details_n_personal_calendars
-    public var _new_plans_details_n_personal_calendars: LocalizedStringAccessors { .__new_plans_details_n_personal_calendars }
+    case __details_n_calendars
+    public var _details_n_calendars: LocalizedStringAccessors { .__details_n_calendars }
     
-    case __new_plans_details_vpn_on_n_devices
-    public var _new_plans_details_vpn_on_n_devices: LocalizedStringAccessors { .__new_plans_details_vpn_on_n_devices }
+    case __details_vpn_on_n_devices
+    public var _details_vpn_on_n_devices: LocalizedStringAccessors { .__details_vpn_on_n_devices }
     
-    case __new_plans_details_vpn_servers
-    public var _new_plans_details_vpn_servers: LocalizedStringAccessors { .__new_plans_details_vpn_servers }
+    case __details_vpn_servers
+    public var _details_vpn_servers: LocalizedStringAccessors { .__details_vpn_servers }
     
-    case __new_plans_details_vpn_free_servers
-    public var _new_plans_details_vpn_free_servers: LocalizedStringAccessors { .__new_plans_details_vpn_free_servers }
+    case __details_vpn_free_servers
+    public var _details_vpn_free_servers: LocalizedStringAccessors { .__details_vpn_free_servers }
     
-    case __new_plans_details_vpn_free_speed_n_connections
-    public var _new_plans_details_vpn_free_speed_n_connections: LocalizedStringAccessors { .__new_plans_details_vpn_free_speed_n_connections }
+    case __details_vpn_free_speed_n_connections
+    public var _details_vpn_free_speed_n_connections: LocalizedStringAccessors { .__details_vpn_free_speed_n_connections }
     
-    case __new_plans_details_n_of_m_users
-    public var _new_plans_details_n_of_m_users: LocalizedStringAccessors { .__new_plans_details_n_of_m_users }
+    case __details_n_of_m_users
+    public var _details_n_of_m_users: LocalizedStringAccessors { .__details_n_of_m_users }
     
-    case __new_plans_details_n_of_m_addresses
-    public var _new_plans_details_n_of_m_addresses: LocalizedStringAccessors { .__new_plans_details_n_of_m_addresses }
+    case __details_n_of_m_addresses
+    public var _details_n_of_m_addresses: LocalizedStringAccessors { .__details_n_of_m_addresses }
     
-    case __new_plans_details_n_of_m_personal_calendars
-    public var _new_plans_details_n_of_m_personal_calendars: LocalizedStringAccessors { .__new_plans_details_n_of_m_personal_calendars }
+    case __details_n_of_m_calendars
+    public var _details_n_of_m_calendars: LocalizedStringAccessors { .__details_n_of_m_calendars }
     
-    case __new_plans_details_n_addresses_per_user
-    public var _new_plans_details_n_addresses_per_user: LocalizedStringAccessors { .__new_plans_details_n_addresses_per_user }
+    case __details_n_addresses_per_user
+    public var _details_n_addresses_per_user: LocalizedStringAccessors { .__details_n_addresses_per_user }
     
-    case __new_plans_details_n_personal_calendars_per_user
-    public var _new_plans_details_n_personal_calendars_per_user: LocalizedStringAccessors { .__new_plans_details_n_personal_calendars_per_user }
+    case __details_n_calendars_per_user
+    public var _details_n_calendars_per_user: LocalizedStringAccessors { .__details_n_calendars_per_user }
     
-    case __new_plans_details_n_connections_per_user
-    public var _new_plans_details_n_connections_per_user: LocalizedStringAccessors { .__new_plans_details_n_connections_per_user }
+    case __details_n_connections_per_user
+    public var _details_n_connections_per_user: LocalizedStringAccessors { .__details_n_connections_per_user }
 
     case __plan_details_2fa_authenticator
     public var _plan_details_2fa_authenticator: LocalizedStringAccessors { .__plan_details_2fa_authenticator }
@@ -987,6 +999,9 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__ls_password_title: return localizedStringInstance._ls_password_title
         case .__ls_help_button: return localizedStringInstance._ls_help_button
         case .__ls_sign_in_button: return localizedStringInstance._ls_sign_in_button
+        case .__ls_sign_in_button_with_password: return localizedStringInstance._ls_sign_in_button_with_password
+        case .__ls_sign_in_with_sso_button: return localizedStringInstance._ls_sign_in_with_sso_button
+        case .__ls_sign_in_with_sso_title: return localizedStringInstance._ls_sign_in_with_sso_title
         case .__ls_create_account_button: return localizedStringInstance._ls_create_account_button
         case .__ls_help_screen_title: return localizedStringInstance._ls_help_screen_title
         case .__ls_help_forgot_username: return localizedStringInstance._ls_help_forgot_username
@@ -1152,6 +1167,7 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__pu_plan_details_multi_user_support: return localizedStringInstance._pu_plan_details_multi_user_support
         case .__pu_plan_details_free_description: return localizedStringInstance._pu_plan_details_free_description
         case .__pu_plan_details_plus_description: return localizedStringInstance._pu_plan_details_plus_description
+        case .__pu_plan_limited_time_offer: return localizedStringInstance._pu_plan_limited_time_offer
         case .__pu_plan_unfinished_error_title: return localizedStringInstance._pu_plan_unfinished_error_title
         case .__pu_plan_unfinished_error_desc: return localizedStringInstance._pu_plan_unfinished_error_desc
         case .__pu_plan_unfinished_error_retry_button: return localizedStringInstance._pu_plan_unfinished_error_retry_button
@@ -1198,43 +1214,43 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__pu_plan_details_n_high_speed_connections: return localizedStringInstance._pu_plan_details_n_high_speed_connections
         case .__pu_plan_details_n_custom_domains: return localizedStringInstance._pu_plan_details_n_custom_domains
         case .__ls_welcome_footer: return localizedStringInstance._ls_welcome_footer
-        case .__new_plans_select_plan_description: return localizedStringInstance._new_plans_select_plan_description
-        case .__new_plans_plan_details_free_description: return localizedStringInstance._new_plans_plan_details_free_description
-        case .__new_plans_plan_details_plus_description: return localizedStringInstance._new_plans_plan_details_plus_description
-        case .__new_plans_plan_details_vpn_plus_description: return localizedStringInstance._new_plans_plan_details_vpn_plus_description
-        case .__new_plans_plan_details_bundle_description: return localizedStringInstance._new_plans_plan_details_bundle_description
+        case .__select_plan_description: return localizedStringInstance._select_plan_description
+        case .__plan_details_free_description: return localizedStringInstance._plan_details_free_description
+        case .__plan_details_plus_description: return localizedStringInstance._plan_details_plus_description
+        case .__plan_details_vpn_plus_description: return localizedStringInstance._plan_details_vpn_plus_description
+        case .__plan_details_bundle_description: return localizedStringInstance._plan_details_bundle_description
         case .__new_plan_details_drive_plus_description: return localizedStringInstance._new_plan_details_drive_plus_description
-        case .__new_plans_plan_footer_desc: return localizedStringInstance._new_plans_plan_footer_desc
-        case .__new_plans_details_unlimited_folders_labels_filters: return localizedStringInstance._new_plans_details_unlimited_folders_labels_filters
-        case .__new_plans_details_up_to_storage: return localizedStringInstance._new_plans_details_up_to_storage
-        case .__new_plans_details_vpn_on_single_device: return localizedStringInstance._new_plans_details_vpn_on_single_device
-        case .__new_plans_details_highest_VPN_speed: return localizedStringInstance._new_plans_details_highest_VPN_speed
-        case .__new_plans_details_ad_blocker: return localizedStringInstance._new_plans_details_ad_blocker
-        case .__new_plans_details_access_streaming_services: return localizedStringInstance._new_plans_details_access_streaming_services
-        case .__new_plans_details_secure_core_servers: return localizedStringInstance._new_plans_details_secure_core_servers
-        case .__new_plans_details_tor_over_vpn: return localizedStringInstance._new_plans_details_tor_over_vpn
-        case .__new_plans_details_p2p: return localizedStringInstance._new_plans_details_p2p
-        case .__new_plans_get_plan_button: return localizedStringInstance._new_plans_get_plan_button
-        case .__new_plans_get_free_plan_button: return localizedStringInstance._new_plans_get_free_plan_button
-        case .__new_plans_extend_subscription_button: return localizedStringInstance._new_plans_extend_subscription_button
-        case .__new_plans_details_used_storage_space: return localizedStringInstance._new_plans_details_used_storage_space
-        case .__new_plans_connection_error_title: return localizedStringInstance._new_plans_connection_error_title
-        case .__new_plans_connection_error_description: return localizedStringInstance._new_plans_connection_error_description
-        case .__new_plans_details_no_logs_policy: return localizedStringInstance._new_plans_details_no_logs_policy
-        case .__new_plans_plan_successfully_upgraded: return localizedStringInstance._new_plans_plan_successfully_upgraded
-        case .__new_plans_details_n_custom_email_domains: return localizedStringInstance._new_plans_details_n_custom_email_domains
-        case .__new_plans_details_n_folders_labels: return localizedStringInstance._new_plans_details_n_folders_labels
-        case .__new_plans_details_n_personal_calendars: return localizedStringInstance._new_plans_details_n_personal_calendars
-        case .__new_plans_details_vpn_on_n_devices: return localizedStringInstance._new_plans_details_vpn_on_n_devices
-        case .__new_plans_details_vpn_servers: return localizedStringInstance._new_plans_details_vpn_servers
-        case .__new_plans_details_vpn_free_servers: return localizedStringInstance._new_plans_details_vpn_free_servers
-        case .__new_plans_details_vpn_free_speed_n_connections: return localizedStringInstance._new_plans_details_vpn_free_speed_n_connections
-        case .__new_plans_details_n_of_m_users: return localizedStringInstance._new_plans_details_n_of_m_users
-        case .__new_plans_details_n_of_m_addresses: return localizedStringInstance._new_plans_details_n_of_m_addresses
-        case .__new_plans_details_n_of_m_personal_calendars: return localizedStringInstance._new_plans_details_n_of_m_personal_calendars
-        case .__new_plans_details_n_addresses_per_user: return localizedStringInstance._new_plans_details_n_addresses_per_user
-        case .__new_plans_details_n_personal_calendars_per_user: return localizedStringInstance._new_plans_details_n_personal_calendars_per_user
-        case .__new_plans_details_n_connections_per_user: return localizedStringInstance._new_plans_details_n_connections_per_user
+        case .__plan_footer_desc: return localizedStringInstance._plan_footer_desc
+        case .__details_unlimited_folders_labels_filters: return localizedStringInstance._details_unlimited_folders_labels_filters
+        case .__details_up_to_storage: return localizedStringInstance._details_up_to_storage
+        case .__details_vpn_on_single_device: return localizedStringInstance._details_vpn_on_single_device
+        case .__details_highest_VPN_speed: return localizedStringInstance._details_highest_VPN_speed
+        case .__details_ad_blocker: return localizedStringInstance._details_ad_blocker
+        case .__details_access_streaming_services: return localizedStringInstance._details_access_streaming_services
+        case .__details_secure_core_servers: return localizedStringInstance._details_secure_core_servers
+        case .__details_tor_over_vpn: return localizedStringInstance._details_tor_over_vpn
+        case .__details_p2p: return localizedStringInstance._details_p2p
+        case .__get_plan_button: return localizedStringInstance._get_plan_button
+        case .__get_free_plan_button: return localizedStringInstance._get_free_plan_button
+        case .__extend_subscription_button: return localizedStringInstance._extend_subscription_button
+        case .__details_used_storage_space: return localizedStringInstance._details_used_storage_space
+        case .__connection_error_title: return localizedStringInstance._connection_error_title
+        case .__connection_error_description: return localizedStringInstance._connection_error_description
+        case .__details_no_logs_policy: return localizedStringInstance._details_no_logs_policy
+        case .__plan_successfully_upgraded: return localizedStringInstance._plan_successfully_upgraded
+        case .__details_n_custom_email_domains: return localizedStringInstance._details_n_custom_email_domains
+        case .__details_n_folders_labels: return localizedStringInstance._details_n_folders_labels
+        case .__details_n_calendars: return localizedStringInstance._details_n_calendars
+        case .__details_vpn_on_n_devices: return localizedStringInstance._details_vpn_on_n_devices
+        case .__details_vpn_servers: return localizedStringInstance._details_vpn_servers
+        case .__details_vpn_free_servers: return localizedStringInstance._details_vpn_free_servers
+        case .__details_vpn_free_speed_n_connections: return localizedStringInstance._details_vpn_free_speed_n_connections
+        case .__details_n_of_m_users: return localizedStringInstance._details_n_of_m_users
+        case .__details_n_of_m_addresses: return localizedStringInstance._details_n_of_m_addresses
+        case .__details_n_of_m_calendars: return localizedStringInstance._details_n_of_m_calendars
+        case .__details_n_addresses_per_user: return localizedStringInstance._details_n_addresses_per_user
+        case .__details_n_calendars_per_user: return localizedStringInstance._details_n_calendars_per_user
+        case .__details_n_connections_per_user: return localizedStringInstance._details_n_connections_per_user
         case .__plan_details_2fa_authenticator: return localizedStringInstance._plan_details_2fa_authenticator
         case .__plan_details_priority_support: return localizedStringInstance._plan_details_priority_support
         case .__plan_details_devices_unlimited: return localizedStringInstance._plan_details_devices_unlimited
@@ -1396,6 +1412,15 @@ public class LocalizedString {
     /// Sign in button
     public lazy var _ls_sign_in_button = NSLocalizedString("Sign in", bundle: Common.bundle, comment: "Sign in button")
 
+    /// Sign in with password button
+    public lazy var _ls_sign_in_button_with_password = NSLocalizedString("Sign in with password", bundle: Common.bundle, comment: "Sign in button when in SSO mode")
+    
+    /// Sign in with SSO Button
+    public lazy var _ls_sign_in_with_sso_button = NSLocalizedString("Sign in with SSO", bundle: Common.bundle, comment: "Sign in with SSO button")
+
+    /// Sign in with SSO Title
+    public lazy var _ls_sign_in_with_sso_title = NSLocalizedString("Sign in to your organization", bundle: Common.bundle, comment: "Sign in with SSO screen title")
+    
     /// Sign up button
     public lazy var _ls_create_account_button = NSLocalizedString("Create an account", bundle: Common.bundle, comment: "Create account button")
 
@@ -1899,6 +1924,9 @@ public class LocalizedString {
     /// Plan details plus description
     public lazy var _pu_plan_details_plus_description = NSLocalizedString("Full-featured mailbox with advanced protection.", bundle: Common.bundle, comment: "Plan details plus description")
     
+    /// Plan limited time offer
+    public lazy var _pu_plan_limited_time_offer = NSLocalizedString("Limited time offer", bundle: Common.bundle, comment: "Badge under plan name indicating a limited time offer (promo price)")
+    
     /// Unfinished operation error dialog title
     public lazy var _pu_plan_unfinished_error_title = NSLocalizedString("Complete payment?", bundle: Common.bundle, comment: "Unfinished operation error dialog title")
     
@@ -1971,76 +1999,76 @@ public class LocalizedString {
     // New_Plans
     
     /// Select a plan description
-    public lazy var _new_plans_select_plan_description = NSLocalizedString("New_Plans One plan for all Proton services", bundle: Common.bundle, comment: "New_Plans Plan selection title")
+    public lazy var _select_plan_description = NSLocalizedString("One plan for all Proton services", bundle: Common.bundle, comment: "Plan selection title")
     
     /// Details free plan description
-    public lazy var _new_plans_plan_details_free_description = NSLocalizedString("New_Plans The no-cost starter account designed to empower everyone with privacy by default.", bundle: Common.bundle, comment: "New_Plans Plan details free description")
+    public lazy var _plan_details_free_description = NSLocalizedString("The no-cost starter account designed to empower everyone with privacy by default.", bundle: Common.bundle, comment: "Plan details free description")
     
     /// Details plus plan description
-    public lazy var _new_plans_plan_details_plus_description = NSLocalizedString("New_Plans The privacy-first email and calendar solution for your everyday communication needs.", bundle: Common.bundle, comment: "New_Plans Plan details plus description")
+    public lazy var _plan_details_plus_description = NSLocalizedString("The privacy-first email and calendar solution for your everyday communication needs.", bundle: Common.bundle, comment: "Plan details plus description")
     
     /// Details vpn plus plan description
-    public lazy var _new_plans_plan_details_vpn_plus_description = NSLocalizedString("New_Plans Your privacy and security are our priority.", bundle: Common.bundle, comment: "New_Plans Plan details vpn plus description")
+    public lazy var _plan_details_vpn_plus_description = NSLocalizedString("Your privacy and security are our priority.", bundle: Common.bundle, comment: "Plan details vpn plus description")
 
     /// Details drive plus plan description
-    public lazy var _new_plan_details_drive_plus_description = NSLocalizedString("New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private.", bundle: Common.bundle, comment: "New_Plans Plan details drive plus description")
+    public lazy var _new_plan_details_drive_plus_description = NSLocalizedString("The storage-focused plan with 200 GB of cloud storage to keep your files private.", bundle: Common.bundle, comment: "Plan details drive plus description")
 
     /// Details bundle plan description
-    public lazy var _new_plans_plan_details_bundle_description = NSLocalizedString("New_Plans The ultimate privacy pack with access to all premium Proton services.", bundle: Common.bundle, comment: "New_Plans Plan details bundle description")
+    public lazy var _plan_details_bundle_description = NSLocalizedString("The ultimate privacy pack with access to all premium Proton services.", bundle: Common.bundle, comment: "Plan details bundle description")
     
     /// Plan footer description
-    public lazy var _new_plans_plan_footer_desc = NSLocalizedString("New_Plans Only non-renewing annual subscriptions are available via this app", bundle: Common.bundle, comment: "New_Plans Plan footer description")
+    public lazy var _plan_footer_desc = NSLocalizedString("Only non-renewing annual subscriptions are available via this app", bundle: Common.bundle, comment: "Plan footer description")
     
     /// Plan details unlimited folders labels filters
-    public lazy var _new_plans_details_unlimited_folders_labels_filters = NSLocalizedString("New_Plans Unlimited folders, labels, and filters", bundle: Common.bundle, comment: "New_Plans Plan details unlimited folders, labels, filters")
+    public lazy var _details_unlimited_folders_labels_filters = NSLocalizedString("Unlimited folders, labels, and filters", bundle: Common.bundle, comment: "Plan details unlimited folders, labels, filters")
     
     /// Plan details up to storage
-    public lazy var _new_plans_details_up_to_storage = NSLocalizedString("New_Plans Up to %@ storage", bundle: Common.bundle, comment: "New_Plans Plan details up to storage")
+    public lazy var _details_up_to_storage = NSLocalizedString("Up to %@ storage", bundle: Common.bundle, comment: "Plan details up to storage")
     
     /// Plan details VPN on a single device
-    public lazy var _new_plans_details_vpn_on_single_device = NSLocalizedString("New_Plans Free VPN on a single device", bundle: Common.bundle, comment: "New_Plans Plan details VPN on a single device")
+    public lazy var _details_vpn_on_single_device = NSLocalizedString("Free VPN on a single device", bundle: Common.bundle, comment: "Plan details VPN on a single device")
     
     /// Plan details Highest VPN speed
-    public lazy var _new_plans_details_highest_VPN_speed = NSLocalizedString("New_Plans Highest VPN speed", bundle: Common.bundle, comment: "New_Plans Plan details Highest VPN speed")
+    public lazy var _details_highest_VPN_speed = NSLocalizedString("Highest VPN speed", bundle: Common.bundle, comment: "Plan details Highest VPN speed")
     
     /// Plan details ad-blocker
-    public lazy var _new_plans_details_ad_blocker = NSLocalizedString("New_Plans Built-in ad-blocker (NetShield)", bundle: Common.bundle, comment: "New_Plans Plan details ad-blocker")
+    public lazy var _details_ad_blocker = NSLocalizedString("Built-in ad-blocker (NetShield)", bundle: Common.bundle, comment: "Plan details ad-blocker")
     
     /// Plan details access to streaming services globally
-    public lazy var _new_plans_details_access_streaming_services = NSLocalizedString("New_Plans Access to streaming services globally", bundle: Common.bundle, comment: "New_Plans Plan details Access to streaming services globally")
+    public lazy var _details_access_streaming_services = NSLocalizedString("Access to streaming services globally", bundle: Common.bundle, comment: "Plan details Access to streaming services globally")
     
     /// Plan details secure core servers
-    public lazy var _new_plans_details_secure_core_servers = NSLocalizedString("New_Plans Secure Core servers", bundle: Common.bundle, comment: "New_Plans Plan details Secure Core servers")
+    public lazy var _details_secure_core_servers = NSLocalizedString("Secure Core servers", bundle: Common.bundle, comment: "Plan details Secure Core servers")
     
     /// Plan details tor over VPN
-    public lazy var _new_plans_details_tor_over_vpn = NSLocalizedString("New_Plans TOR over VPN", bundle: Common.bundle, comment: "New_Plans Plan details TOR over VPN")
+    public lazy var _details_tor_over_vpn = NSLocalizedString("TOR over VPN", bundle: Common.bundle, comment: "Plan details TOR over VPN")
 
     /// Plan details P2P
-    public lazy var _new_plans_details_p2p = NSLocalizedString("New_Plans P2P/BitTorrent", bundle: Common.bundle, comment: "New_Plans Plan details P2P/BitTorrent")
+    public lazy var _details_p2p = NSLocalizedString("P2P/BitTorrent", bundle: Common.bundle, comment: "Plan details P2P/BitTorrent")
 
     /// Get plan button
-    public lazy var _new_plans_get_plan_button = NSLocalizedString("New_Plans Get %@", bundle: Common.bundle, comment: "New_Plans Get plan button")
+    public lazy var _get_plan_button = NSLocalizedString("Get %@", bundle: Common.bundle, comment: "Get plan button")
     
     /// Get free plan button
-    public lazy var _new_plans_get_free_plan_button = NSLocalizedString("New_Plans Get Proton for free", bundle: Common.bundle, comment: "New_Plans Get free plan button")
+    public lazy var _get_free_plan_button = NSLocalizedString("Get Proton for free", bundle: Common.bundle, comment: "Get free plan button")
     
     /// Get free plan button
-    public lazy var _new_plans_extend_subscription_button = NSLocalizedString("New_Plans Extend subscription", bundle: Common.bundle, comment: "New_Plans Extend subscription button")
+    public lazy var _extend_subscription_button = NSLocalizedString("Extend subscription", bundle: Common.bundle, comment: "Extend subscription button")
 
     /// Plan details used storage space
-    public lazy var _new_plans_details_used_storage_space = NSLocalizedString("New_Plans %@ of %@", bundle: Common.bundle, comment: "New_Plans Plan details used storage space")
+    public lazy var _details_used_storage_space = NSLocalizedString("%@ of %@", bundle: Common.bundle, comment: "Plan details used storage space")
 
     /// Plan connection error title
-    public lazy var _new_plans_connection_error_title = NSLocalizedString("New_Plans Connection issues", bundle: Common.bundle, comment: "New_Plans Plan connection error title")
+    public lazy var _connection_error_title = NSLocalizedString("Connection issues", bundle: Common.bundle, comment: "Plan connection error title")
     
     /// Plan connection error description
-    public lazy var _new_plans_connection_error_description = NSLocalizedString("New_Plans Check your internet connection", bundle: Common.bundle, comment: "New_Plans Plan connection error description")
+    public lazy var _connection_error_description = NSLocalizedString("Check your internet connection", bundle: Common.bundle, comment: "Plan connection error description")
     
     /// Plan details VPN no logs policy
-    public lazy var _new_plans_details_no_logs_policy = NSLocalizedString("New_Plans Strict no-logs policy", bundle: Common.bundle, comment: "New_Plans Plan details no logs policy")
+    public lazy var _details_no_logs_policy = NSLocalizedString("Strict no-logs policy", bundle: Common.bundle, comment: "Plan details no logs policy")
 
     /// Plan details VPN no logs policy
-    public lazy var _new_plans_plan_successfully_upgraded = NSLocalizedString("New_Plans Plan successfully upgraded", bundle: Common.bundle, comment: "New_Plans Plan successfully upgraded banner message")
+    public lazy var _plan_successfully_upgraded = NSLocalizedString("Plan successfully upgraded", bundle: Common.bundle, comment: "Plan successfully upgraded banner message")
 
     /// Plan details integrated 2FA authenticator
     public lazy var _plan_details_2fa_authenticator = NSLocalizedString("Integrated 2FA authenticator", bundle: Common.bundle, comment: "Plan details `Integrated 2FA authenticator` message")

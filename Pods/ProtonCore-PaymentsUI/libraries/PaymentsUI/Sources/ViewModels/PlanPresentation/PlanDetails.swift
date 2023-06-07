@@ -53,14 +53,30 @@ public struct PurchasablePlanDescription {
 }
 
 struct PlanDetails {
+    
+    enum Highlight: Equatable {
+        case no
+        case preferred
+        case offer(percentage: String?, description: String)
+    }
+    
     let name: String
     let title: String?
     var price: String?
     let cycle: String?
     var isSelectable: Bool
     let details: [(DetailType, String)]
-    var isPreferred: Bool = false
+    var highlight: Highlight = .no
 }
+
+let percentageNumberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .percent
+    formatter.locale = .autoupdatingCurrent
+    formatter.maximumFractionDigits = 0
+    formatter.minimumFractionDigits = 0
+    return formatter
+}()
 
 extension PlanDetails {
     // swiftlint:disable function_parameter_count
@@ -76,7 +92,27 @@ extension PlanDetails {
                                               customPlansDescription: customPlansDescription)
         let name = planDataDetails.name ?? details.titleDescription
         let price = plan.planPrice(from: storeKitManager) ?? protonPrice
-        return PlanDetails(name: name, title: planDataDetails.description, price: price, cycle: details.cycleDescription, isSelectable: isSelectable, details: planDataDetails.details, isPreferred: planDataDetails.isPreferred)
+        let highlight: Highlight
+        let cycle = details.cycle.map(String.init) ?? InAppPurchasePlan.defaultCycle
+        if let defaultPricing = details.defaultPricing(for: cycle),
+           let currentPricing = details.pricing(for: cycle),
+           defaultPricing != currentPricing {
+            let percentage = Double(currentPricing) / Double(defaultPricing) - 1.0
+            let percentageString = percentageNumberFormatter.string(from: percentage as NSNumber)
+            let description = CoreString._pu_plan_limited_time_offer
+            highlight = .offer(percentage: percentageString ?? nil, description: description)
+        } else if planDataDetails.isPreferred {
+            highlight = .preferred
+        } else {
+            highlight = .no
+        }
+        return PlanDetails(name: name,
+                           title: planDataDetails.description,
+                           price: price,
+                           cycle: details.cycleDescription,
+                           isSelectable: isSelectable,
+                           details: planDataDetails.details,
+                           highlight: highlight)
     }
 
     typealias PlanDataOptDetails = (name: String?, description: String?, optDetails: [(DetailType, String?)], isPreferred: Bool)
@@ -127,20 +163,20 @@ extension PlanDetails {
 
         case "b1fedaf0300a6a79f73918565cc0870abffd391e3e1899ed6d602c3339e1c3bb":
             strDetails = (name: nil,
-                          description: CoreString._new_plans_plan_details_plus_description,
+                          description: CoreString._plan_details_plus_description,
                           optDetails: [
                             (.storage, details.XGBStorageDescription),
                             (.envelope, details.YAddressesDescription),
                             (.globe, details.VCustomEmailDomainDescription),
                             (.tag, details.unlimitedFoldersLabelsFiltersDescription),
-                            (.calendarCheckmark, details.ZPersonalCalendarsDescription),
+                            (.calendarCheckmark, details.ZCalendarsDescription),
                             (.shield, details.VPNFreeDescription)
                           ],
                           isPreferred: false)
 
         case "f6df8a2c854381704084384cd102951c2caa33cdcca15ab740b34569acfbfc10":
             strDetails = (name: nil,
-                          description: CoreString._new_plans_plan_details_vpn_plus_description,
+                          description: CoreString._plan_details_vpn_plus_description,
                           optDetails: [
                             (.powerOff, details.UVPNConnectionsDescription),
                             (.rocket, details.VPNHighestSpeedDescription),
@@ -159,7 +195,7 @@ extension PlanDetails {
                           optDetails: [
                             (.storage, details.XGBStorageDescription),
                             (.envelope, details.YAddressesDescription),
-                            (.calendarCheckmark, details.ZPersonalCalendarsDescription),
+                            (.calendarCheckmark, details.ZCalendarsDescription),
                             (.shield, details.UVPNConnectionsDescription),
                           ],
                           isPreferred: false)
@@ -168,7 +204,7 @@ extension PlanDetails {
             switch clientApp {
             case .pass:
                 strDetails = (name: nil,
-                              description: CoreString._new_plans_plan_details_bundle_description,
+                              description: CoreString._plan_details_bundle_description,
                               optDetails: [
                                 (.infinity, details.unlimitedLoginsAndNotesDescription),
                                 (.infinity, details.unlimitedDevicesDescription),
@@ -184,13 +220,13 @@ extension PlanDetails {
                               isPreferred: true)
             default:
                 strDetails = (name: nil,
-                              description: CoreString._new_plans_plan_details_bundle_description,
+                              description: CoreString._plan_details_bundle_description,
                               optDetails: [
                                 (.storage, details.XGBStorageDescription),
                                 (.envelope, details.YAddressesDescription),
                                 (.globe, details.VCustomEmailDomainDescription),
                                 (.tag, details.unlimitedFoldersLabelsFiltersDescription),
-                                (.calendarCheckmark, details.ZPersonalCalendarsDescription),
+                                (.calendarCheckmark, details.ZCalendarsDescription),
                                 (.shield, details.VPNUDevicesDescription)
                               ],
                               isPreferred: true)
@@ -224,7 +260,7 @@ extension PlanDetails {
                               isPreferred: false)
             case .pass:
                 strDetails = (name: "Free",
-                              description: CoreString._new_plans_plan_details_free_description,
+                              description: CoreString._plan_details_free_description,
                               optDetails: [
                                 (.infinity, details.unlimitedLoginsAndNotesDescription),
                                 (.infinity, details.unlimitedDevicesDescription),
@@ -234,12 +270,12 @@ extension PlanDetails {
                               isPreferred: false)
             default:
                 strDetails = (name: "Free",
-                              description: CoreString._new_plans_plan_details_free_description,
+                              description: CoreString._plan_details_free_description,
                               optDetails: [
                                 (.storage, details.upToXGBStorageDescription),
                                 (.envelope, details.YAddressesDescription),
                                 (.tag, details.freeFoldersLabelsDescription),
-                                (.calendarCheckmark, details.ZPersonalCalendarsDescription),
+                                (.calendarCheckmark, details.ZCalendarsDescription),
                                 (.shield, details.VPNFreeDescription)
                               ],
                               isPreferred: false)
