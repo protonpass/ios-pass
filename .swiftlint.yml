@@ -186,3 +186,9 @@ identifier_name:
     warning: 2
   excluded: # excluded via string array
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji, sonarqube, markdown)
+
+custom_rules:
+  drop_first_one:
+    name: "Drop first one"
+    message: "Implicitly drop first one element"
+    regex: "(\\.dropFirst\\(1\\))"
