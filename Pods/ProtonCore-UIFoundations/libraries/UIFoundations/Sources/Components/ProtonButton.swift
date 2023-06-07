@@ -252,12 +252,9 @@ public class ProtonButton: UIButton, AccessibleView {
     }
 
     fileprivate func createActivityIndicator() {
-        if #available(iOS 13.0, *) {
-            activityIndicator = UIActivityIndicatorView(style: .medium)
-            activityIndicator?.color = titleColor(for: state)
-        } else {
-            activityIndicator = UIActivityIndicatorView(style: mode == .solid ? .white : .gray)
-        }
+        activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator?.color = titleColor(for: state)
+
         guard let activityIndicator = activityIndicator else { return }
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()

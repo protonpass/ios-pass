@@ -45,8 +45,7 @@ public extension PMSettingsSectionViewModel {
             .appendRow(PMAboutConfiguration.terms)
             .build()
     }
-    
-    @available(iOS 13.0, *)
+
     static func telemetry(delegate: TelemetrySettingsDelegate, telemetrySettingsService: TelemetrySettingsServiceProtocol) -> PMSettingsSectionViewModel {
         PMSettingsSectionBuilder(bundle: PMSettings.bundle)
             .title("Telemetry")

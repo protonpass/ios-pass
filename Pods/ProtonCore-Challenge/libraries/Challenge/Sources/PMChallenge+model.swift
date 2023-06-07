@@ -339,9 +339,7 @@ extension PMChallenge {
             deviceFingerprint.timezoneOffset = -1 * (timeZone.secondsFromGMT() / 60)
             deviceFingerprint.keyboards = collectKeyboardData()
             deviceFingerprint.cellulars = NetworkInformation.getCellularInfo()
-            if #available(iOS 13.0, *) {
-                deviceFingerprint.isDarkmodeOn = UITraitCollection.current.userInterfaceStyle == .dark
-            }
+            deviceFingerprint.isDarkmodeOn = UITraitCollection.current.userInterfaceStyle == .dark
             deviceFingerprint.preferredContentSize = UIApplication.getInstance()?.preferredContentSizeCategory.rawValue ?? UIContentSizeCategory.medium.rawValue
         }
         

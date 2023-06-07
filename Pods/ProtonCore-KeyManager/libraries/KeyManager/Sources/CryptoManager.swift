@@ -19,7 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import GoLibs
+import Foundation
+import ProtonCore_CryptoGoInterface
 import ProtonCore_Utilities
 
 enum CryptoManagerCryptoError: Error {
@@ -36,7 +37,7 @@ public enum CryptoManager {
 
         do {
             var error: NSError?
-            let newKey = CryptoNewKeyFromArmored(key, &error)
+            let newKey = CryptoGo.CryptoNewKeyFromArmored(key, &error)
             if let err = error {
                 throw err
             }
@@ -48,7 +49,7 @@ public enum CryptoManager {
             let passSlic = passphrase.data(using: .utf8)
             let unlockedKey = try key.unlock(passSlic)
 
-            let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
+            let privateKeyRing = CryptoGo.CryptoNewKeyRing(unlockedKey, &error)
             if let err = error {
                 throw err
             }
@@ -73,7 +74,7 @@ public enum CryptoManager {
     public static func getKey(key: String, passphrase: String) throws -> CryptoKey {
         do {
             var error: NSError?
-            let newKey = CryptoNewKeyFromArmored(key, &error)
+            let newKey = CryptoGo.CryptoNewKeyFromArmored(key, &error)
             if let err = error {
                 throw err
             }
@@ -99,10 +100,10 @@ public enum CryptoManager {
      Data(base64Encoded: keyPacket, options: .init(rawValue: 0))
      */
     public static func decryptString(keyPacket: Data, encryptedPacket: Data, keyRing: CryptoKeyRing, error: inout NSError?) -> String {
-        HelperDecryptAttachment(keyPacket,
-                                encryptedPacket,
-                                keyRing,
-                                &error)?.getString() ?? ""
+        CryptoGo.HelperDecryptAttachment(keyPacket,
+                                         encryptedPacket,
+                                         keyRing,
+                                         &error)?.getString() ?? ""
     }
 
     public static func verifyDetached(signature: String, plainText: String, keyRing: CryptoKeyRing, verifyTime: Int64) throws -> Bool {
@@ -118,11 +119,11 @@ public enum CryptoManager {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        case .left(let plainText): plainMessage = CryptoGo.CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
+        case .right(let plainData): plainMessage = CryptoGo.CryptoNewPlainMessage(plainData)
         }
 
-        let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
+        let signature = CryptoGo.CryptoNewPGPSignatureFromArmored(signature, &error)
         if let err = error {
             throw err
         }
@@ -137,10 +138,10 @@ public enum CryptoManager {
 
     public static func getPrivateKeyPassphrase(password: String, salt: String, error: inout NSError?) -> String {
         let passwordSlic = password.data(using: .utf8)
-        let userPrivPassSlic = SrpMailboxPassword(passwordSlic,
-                                                  Data(base64Encoded: salt,
-                                                       options: .init(rawValue: 0)),
-                                                  &error)
+        let userPrivPassSlic = CryptoGo.SrpMailboxPassword(passwordSlic,
+                                                           Data(base64Encoded: salt,
+                                                                options: .init(rawValue: 0)),
+                                                           &error)
 
         let userPrivateKeyPassphrase = String(data: userPrivPassSlic!, encoding: .utf8)!
         if error != nil {

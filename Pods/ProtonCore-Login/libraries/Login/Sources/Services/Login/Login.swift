@@ -209,8 +209,8 @@ extension AvailabilityError: Equatable {
     }
 }
 
-public extension AvailabilityError {
-    var userFacingMessageInLogin: String {
+extension AvailabilityError: LocalizedError {
+    public var errorDescription: String? {
         switch self {
         case .protonDomainUsedForExternalAccount(_, _, let message):
             assertionFailure("This error should be handled without user-facing error message")
@@ -218,7 +218,9 @@ public extension AvailabilityError {
         case .generic(let message, _, _), .notAvailable(let message), .apiMightBeBlocked(let message, _): return message
         }
     }
-    
+}
+
+public extension AvailabilityError {
     var codeInLogin: Int {
         switch self {
         case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode

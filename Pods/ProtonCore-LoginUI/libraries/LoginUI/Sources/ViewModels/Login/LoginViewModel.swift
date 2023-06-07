@@ -21,7 +21,9 @@
 
 import Foundation
 import ProtonCore_Challenge
+import ProtonCore_CoreTranslation
 import ProtonCore_Login
+import ProtonCore_DataModel
 
 final class LoginViewModel {
     enum LoginResult {
@@ -37,12 +39,29 @@ final class LoginViewModel {
     let error = Publisher<LoginError>()
     let isLoading = Observable<Bool>(false)
 
+    var isSSOEnabled = false
+    let subtitleLabel = CoreString._ls_screen_subtitle
+    var loginTextFieldTitle: String {
+        isSSOEnabled ? CoreString._su_email_field_title : CoreString._ls_username_title
+    }
+    var titleLabel: String {
+        isSSOEnabled ? CoreString._ls_sign_in_with_sso_title : CoreString._ls_screen_title
+    }
+    let signInWithSSOButtonTitle = CoreString._ls_sign_in_with_sso_button
+    let passwordTextFieldTitle = CoreString._ls_password_title
+    let signInButtonTitle = CoreString._ls_sign_in_button
+    var signUpButtonTitle: String {
+        isSSOEnabled ? CoreString._ls_sign_in_button_with_password : CoreString._ls_create_account_button
+    }
+    
     private let login: Login
     let challenge: PMChallenge
+    let clientApp: ClientApp
 
-    init(login: Login, challenge: PMChallenge) {
+    init(login: Login, challenge: PMChallenge, clientApp: ClientApp) {
         self.login = login
         self.challenge = challenge
+        self.clientApp = clientApp
     }
 
     // MARK: - Actions

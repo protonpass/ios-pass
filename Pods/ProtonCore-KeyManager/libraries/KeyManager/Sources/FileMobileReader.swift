@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 
 @available(*, deprecated, message: "please to use ProtonCore-Crypto module FileMobileReader")
 class FileMobileReader: NSObject, HelperMobileReaderProtocol {
@@ -35,7 +35,7 @@ class FileMobileReader: NSObject, HelperMobileReaderProtocol {
     
     func read(_ max: Int) throws -> HelperMobileReadResult {
         let data = self.file.readData(ofLength: max)
-        guard let helper = HelperMobileReadResult(data.count, eof: data.isEmpty, data: data) else {
+        guard let helper = CryptoGo.HelperMobileReadResult(data.count, eof: data.isEmpty, data: data) else {
             assertionFailure("Failed to create Helper of Crypto - should not happen")
             throw Errors.failedToCreateCryptoHelper
         }

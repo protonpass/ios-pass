@@ -1,3 +1,6 @@
+/* Plan details number of email aliases message */
+"%@ email aliases" = "%@ псеўданімаў электроннай пошты";
+
 /* Plan details storage */
 "%@ storage" = "%@ сховішча";
 
@@ -199,6 +202,9 @@
 /* Enter email code label */
 "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Увядзіце праверачны код, які быў адпраўлены на %@. Калі вы не знайшлі яго ва ўваходных, праверце папку са спамам.";
 
+/* Title of a page asking to enter your password. */
+"Enter your password" = "Увядзіце пароль";
+
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Увядзіце звесткі ўліковага запісу Proton.";
 
@@ -211,6 +217,9 @@
 
 /* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
 "for %@" = "за %@";
+
+/* Description of the Pass plan */
+"For next-level password management and identity protection." = "Для больш высокага ўзроўню кіравання паролямі і абароны асобы.";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Для вашай бяспекі, нам неабходна пераканацца, што ўведзены адрас належыць менавіта вам. Мы адправілі праверачны код на %@. Увядзіце яго ніжэй:";
@@ -241,7 +250,7 @@
 "Government block" = "Дзяржаўная блакіроўка";
 
 /* Help button */
-"Help" = "Дапамога";
+"Help" = "Даведка";
 
 /* Plan details high speed message */
 "High speed" = "Высокая хуткасць";
@@ -264,6 +273,9 @@
 
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Няправільны пароль паштовай скрыні";
+
+/* Plan details `Integrated 2FA authenticator` message */
+"Integrated 2FA authenticator" = "Інтэграваная аўтэнтыфікацыя 2ФА";
 
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Праблема з пастаўшчыком паслуг інтэрнэту (ISP)";
@@ -310,74 +322,74 @@
  * Networking */
 "Network connection error" = "Памылка падключэння да сеткі";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ з %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ з %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Доступ да сэрвісаў з трансляцыямі па ўсім свеце";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Доступ да сэрвісаў з трансляцыямі па ўсім свеце";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Убудаваная блакіроўка рэкламы (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Убудаваная блакіроўка рэкламы (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Праверце сваё падключэнне да інтэрнэту";
+/* Plan connection error description */
+"Check your internet connection" = "Праверце сваё падключэнне да інтэрнэту";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Праблемы з падключэннем";
+/* Plan connection error title */
+"Connection issues" = "Праблемы з падключэннем";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Падоўжыць падпіску";
+/* Extend subscription button */
+"Extend subscription" = "Падоўжыць падпіску";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Бясплатны VPN на адной прыладзе";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "Бясплатны VPN на адной прыладзе";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Перайсці на %@";
+/* Get plan button */
+"Get %@" = "Перайсці на %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Атрымаць Proton бясплатна";
+/* Get free plan button */
+"Get Proton for free" = "Атрымаць Proton бясплатна";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Найвышэйшая хуткасць VPN";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Найвышэйшая хуткасць VPN";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Адзін тарыфны план для ўсіх сэрвісаў Proton";
+/* */
+"One plan for all Proton services" = "Адзін тарыфны план для ўсіх сэрвісаў Proton";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Праз гэту праграму даступны толькі гадавыя падпіскі без падаўжэння";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "Праз гэту праграму даступны толькі гадавыя падпіскі без падаўжэння";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Тарыфны план паспяхова палепшаны";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Тарыфны план паспяхова палепшаны";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Серверы Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Серверы Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Палітыка строгай адсутнасці журналаў актыўнасці";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Палітыка строгай адсутнасці журналаў актыўнасці";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Бясплатны стартавы ўліковы запіс распрацаваны для кожнага хто лічыць, што прыватнасць неад'емная частка жыцця.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "Бясплатны стартавы ўліковы запіс распрацаваны для кожнага хто лічыць, што прыватнасць неад'емная частка жыцця.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Электронная пошта з акцэнтам на прыватнасць і каляндар для вашых штодзённых патрабаванняў у зносінах.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "Электронная пошта з акцэнтам на прыватнасць і каляндар для вашых штодзённых патрабаванняў у зносінах.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарыфны план са сховішчам, які арыентаваны на 200 ГБ воблачнай прасторы для бяспечнага захоўвання вашых файлаў.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарыфны план са сховішчам, які арыентаваны на 200 ГБ воблачнай прасторы для бяспечнага захоўвання вашых файлаў.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Максімальны пакет прыватнасці з доступам да ўсіх прэміяльных сэрвісаў Proton.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "Максімальны пакет прыватнасці з доступам да ўсіх прэміяльных сэрвісаў Proton.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor праз VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor праз VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Да %@ сховішча";
+/* Plan details up to storage */
+"Up to %@ storage" = "Да %@ сховішча";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Ваша прыватнасць і бяспека - наш прыярытэт.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Ваша прыватнасць і бяспека - наш прыярытэт.";
 
 /* Next button */
 "Next" = "Далей";
@@ -464,6 +476,9 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "Прыярытэтная падтрымка кліентаў";
+
+/* Plan details `Priority support` message */
+"Priority support" = "Прыярытэтная падтрымка";
 
 /* Welcome screen */
 "Privacy by default" = "Прадвызначаная прыватнасць";
@@ -642,12 +657,24 @@
 /* 2FA screen field title */
 "Two-factor code" = "Двухфактарны код";
 
+/* Plan details `Unlimited devices` message */
+"Unlimited devices" = "Неабмежаваная колькасць прылад";
+
+/* Plan details `Unlimited email aliases` message */
+"Unlimited email aliases" = "Неабмежаваная колькасць псеўданімаў электроннай пошты";
+
+/* Plan details `Unlimited logins and notes` message */
+"Unlimited logins and notes" = "Неабмежаваная колькасць лагінаў і нататак";
+
 /* Mailbox unlock screen action button title */
 "Unlock" = "Разблакіраваць";
 
 /* *
  * Login unlock mailbox */
 "Unlock your mailbox" = "Разблакіруйце вашу паштовую скрыню";
+
+/* Plan details `Up to %@ forwarding mailboxes` message */
+"Up to %@ forwarding mailboxes" = "Да %@ паштовых скрынь для пераадрасацыі";
 
 /* update button */
 "Update" = "Абнавіць";

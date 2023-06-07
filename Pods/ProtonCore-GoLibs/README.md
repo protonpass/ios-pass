@@ -414,7 +414,7 @@ Platforms supported: iOS, macOS
 
 ## Example app
 
-The example app is located in [the example-app directory](example-app).
+The example app is located in [the ExampleApp directory](ExampleApp).
 
 ## License
 
