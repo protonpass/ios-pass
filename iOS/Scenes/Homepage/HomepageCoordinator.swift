@@ -795,7 +795,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToRateApp() {
-        urlOpener.open(urlString: kAppStoreUrlString)
+        urlOpener.open(urlString: Constants.appStoreUrl)
     }
 
     func profileTabViewModelWantsToQaFeatures() {
