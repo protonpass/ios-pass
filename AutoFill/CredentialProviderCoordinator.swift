@@ -50,7 +50,7 @@ public final class CredentialProviderCoordinator {
     private let logger: Logger
     private let preferences: Preferences
     private let rootViewController: UIViewController
-    private var notificationService: LocalNotificationServicing
+    private var notificationService: LocalNotificationServiceProtocol
 
     /// Derived properties
     private var lastChildViewController: UIViewController?

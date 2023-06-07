@@ -54,7 +54,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     let appVersion: String
     let passPlanRepository: PassPlanRepositoryProtocol
     let vaultsManager: VaultsManager
-    let notificationService: LocalNotificationServicing
+    let notificationService: LocalNotificationServiceProtocol
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
@@ -80,7 +80,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          logManager: LogManager,
          passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager,
-         notificationService: LocalNotificationServicing) {
+         notificationService: LocalNotificationServiceProtocol) {
         self.apiService = apiService
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager

@@ -574,6 +574,8 @@
 		5B0C74FD2A2F606C00272CE8 /* Services+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* Services+DependencyInjections.swift */; };
 		5B0C74FF2A2F617900272CE8 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74FE2A2F617900272CE8 /* Factory */; };
 		5B0C75002A2F61D000272CE8 /* Services+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* Services+DependencyInjections.swift */; };
+		5B0C75022A30776100272CE8 /* Tooling+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */; };
+		5B0C75032A30806D00272CE8 /* Tooling+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1271,6 +1273,7 @@
 		5B0C74F12A2E2CDB00272CE8 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		5B0C74F42A2F45EC00272CE8 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5B0C74FB2A2F5F3400272CE8 /* Services+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Services+DependencyInjections.swift"; sourceTree = "<group>"; };
+		5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tooling+DependencyInjection.swift"; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
@@ -2640,6 +2643,7 @@
 			isa = PBXGroup;
 			children = (
 				5B0C74FB2A2F5F3400272CE8 /* Services+DependencyInjections.swift */,
+				5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */,
 			);
 			path = DependencyInjection;
 			sourceTree = "<group>";
@@ -3732,6 +3736,7 @@
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3561C9F929E6E65600D6E518 /* VaultThumbnail.swift in Sources */,
 				354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */,
+				5B0C75032A30806D00272CE8 /* Tooling+DependencyInjection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3830,6 +3835,7 @@
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
+				5B0C75022A30776100272CE8 /* Tooling+DependencyInjection.swift in Sources */,
 				3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */,
