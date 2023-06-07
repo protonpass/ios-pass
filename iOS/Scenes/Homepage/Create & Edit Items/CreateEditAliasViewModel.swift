@@ -150,9 +150,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
         getAliasAndAliasOptions()
 
-        _title
-            .projectedValue
-            .dropFirst(mode.isEditMode ? 1 : 3)
+        $title
+            .dropFirst(1)
             .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
                 if !prefixManuallyEdited {
@@ -161,9 +160,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             }
             .store(in: &cancellables)
 
-        _prefix
-            .projectedValue
-            .dropFirst(mode.isEditMode ? 1 : 3)
+        $prefix
+            .dropFirst(1)
             .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
                 self.validatePrefix()
