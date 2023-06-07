@@ -152,7 +152,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
         $prefix
             .removeDuplicates()
-            .dropFirst(1)
+            .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
                 self.validatePrefix()
@@ -161,7 +161,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         
         $title
             .removeDuplicates()
-            .dropFirst(1)
+            .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [unowned self] title in
                 if !prefixManuallyEdited {
