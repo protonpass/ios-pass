@@ -236,9 +236,8 @@ extension PMActionSheet {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = PMActionSheetConfig.shared.actionSheetBackgroundColor
         tableView.bounces = false
-        if #available(iOS 13.0, *) {
-            tableView.automaticallyAdjustsScrollIndicatorInsets = false
-        }
+        tableView.automaticallyAdjustsScrollIndicatorInsets = false
+
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }

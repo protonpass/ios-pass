@@ -24,6 +24,7 @@ import ProtonCore_Payments
 enum PaymentsConstants {
     static let inAppPurchaseIdentifiers: ListOfIAPIdentifiers = [
         "iospass_pass2023_12_usd_non_renewing",
+        "iospass_pass2023_passlaunch_12_usd_non_renewing",
         "iospass_bundle2022_12_usd_non_renewing"
     ]
 

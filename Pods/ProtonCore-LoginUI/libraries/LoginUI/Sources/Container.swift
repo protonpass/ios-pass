@@ -95,7 +95,7 @@ final class Container {
     
     func makeLoginViewModel() -> LoginViewModel {
         challenge.reset()
-        return LoginViewModel(login: login, challenge: challenge)
+        return LoginViewModel(login: login, challenge: challenge, clientApp: clientApp)
     }
     
     func makeCreateAddressViewModel(data: CreateAddressData, defaultUsername: String?) -> CreateAddressViewModel {
@@ -106,8 +106,8 @@ final class Container {
         return MailboxPasswordViewModel(login: login)
     }
     
-    func makeTwoFactorViewModel() -> TwoFactorViewModel {
-        return TwoFactorViewModel(login: login)
+    func makeTwoFactorViewModel(username: String, password: String) -> TwoFactorViewModel {
+        return TwoFactorViewModel(login: login, username: username, password: password)
     }
     
     // MARK: Signup view models

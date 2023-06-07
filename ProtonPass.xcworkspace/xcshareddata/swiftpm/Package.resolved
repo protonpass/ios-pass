@@ -21,9 +21,8 @@
     {
       "identity" : "onetimepassword",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mattrubin/OneTimePassword",
+      "location" : "https://github.com/mattrubin/OneTimePassword.git",
       "state" : {
-        "branch" : "develop",
         "revision" : "66f284e22c170ffcc2c9dcf055a1efeb260c766d"
       }
     }

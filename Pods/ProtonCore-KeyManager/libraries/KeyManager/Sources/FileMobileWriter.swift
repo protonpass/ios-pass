@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 
 @available(*, deprecated, message: "please to use ProtonCore-Crypto module FileMobileWriter")
 class FileMobileWriter: NSObject, CryptoWriterProtocol {

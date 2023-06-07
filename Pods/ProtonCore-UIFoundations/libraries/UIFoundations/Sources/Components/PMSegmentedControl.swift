@@ -55,11 +55,8 @@ public final class PMSegmentedControl: UISegmentedControl, AccessibleView {
         setTitleTextAttributes(titleTextAttributes, for: .normal)
         
         backgroundColor = ColorProvider.SeparatorNorm
-        if #available(iOS 13.0, *) {
-            selectedSegmentTintColor = ColorProvider.BackgroundNorm
-        } else {
-            tintColor = ColorProvider.BackgroundNorm
-        }
+        selectedSegmentTintColor = ColorProvider.BackgroundNorm
+
         generateAccessibilityIdentifiers()
     }
 }

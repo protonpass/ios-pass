@@ -56,6 +56,6 @@ public extension HumanVerifyDelegate {
         let endTime = CFAbsoluteTimeGetCurrent()
         let duration = endTime - startTime
         // Convert to milliseconds and round to two decimal places
-        return round(duration*1000*100)/100
+        return round(duration * 1000 * 100) / 100
     }
 }

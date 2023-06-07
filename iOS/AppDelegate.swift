@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import ProtonCore_CryptoGoImplementation
+import ProtonCore_CryptoGoInterface
 import Sentry
 import UIKit
 
@@ -26,6 +28,7 @@ import UIKit
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        injectDefaultCryptoImplementation()
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
         return true

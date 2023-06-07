@@ -184,7 +184,7 @@ extension CurrentPlanDetails {
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                            (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                            (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                             (.shield, details.UVPNConnectionsDescription)
                           ])
 
@@ -207,7 +207,7 @@ extension CurrentPlanDetails {
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                            (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                            (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                             (.shield, details.UVPNConnectionsDescription)
                           ])
 
@@ -234,7 +234,7 @@ extension CurrentPlanDetails {
                               optDetails: [
                                 (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                                 (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                                (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                                (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                                 (.shield, details.UVPNConnectionsDescription)
                               ])
             }
@@ -244,7 +244,7 @@ extension CurrentPlanDetails {
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                            (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                            (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                             (.shield, details.UVPNConnectionsDescription)
                           ])
         case "349669448939e91acc4b777fabe73559c67bd1de4362e9bb93734a1266ff34eb":
@@ -253,7 +253,7 @@ extension CurrentPlanDetails {
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                            (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                            (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                             (.shield, details.UVPNConnectionsDescription)
                           ])
         case "f6b76fa97bf94acb7ca1add9302fafd370a6e29a634900239f1ea6920b05d542":
@@ -262,7 +262,7 @@ extension CurrentPlanDetails {
                           optDetails: [
                             (.user, details.WUsersDescription),
                             (.envelope, details.YAddressesPerUserDescriptionV5),
-                            (.calendarCheckmark, details.ZPersonalCalendarsPerUserDescription)
+                            (.calendarCheckmark, details.ZCalendarsPerUserDescription)
                           ])
             
         case "edec477fd23bc034218f4db7932a71540517ebb2247ccaf408d1ffbfe12c4d43":
@@ -271,7 +271,7 @@ extension CurrentPlanDetails {
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                            (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                            (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                             (.shield, details.UVPNConnectionsDescription)
                           ])
             
@@ -281,7 +281,7 @@ extension CurrentPlanDetails {
                           optDetails: [
                             (.user, details.WUsersDescription),
                             (.envelope, details.YAddressesPerUserDescriptionV5),
-                            (.calendarCheckmark, details.ZPersonalCalendarsPerUserDescription),
+                            (.calendarCheckmark, details.ZCalendarsPerUserDescription),
                             (.shield, details.UConnectionsPerUserDescription)
                           ])
             
@@ -290,7 +290,7 @@ extension CurrentPlanDetails {
                           shouldShowUsedSpace: true,
                           optDetails: [
                             (.envelope, details.YAddressesPerUserDescriptionV5),
-                            (.calendarCheckmark, details.ZPersonalCalendarsPerUserDescription),
+                            (.calendarCheckmark, details.ZCalendarsPerUserDescription),
                             (.shield, details.UConnectionsPerUserDescription)
                           ])
 
@@ -335,7 +335,7 @@ extension CurrentPlanDetails {
                               optDetails: [
                                 (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                                 (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
-                                (.calendarCheckmark, details.QZPersonalCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
+                                (.calendarCheckmark, details.QZCalendarsDescription(usedCalendars: currentSubscription?.organization?.usedCalendars)),
                                 (.shield, details.UVPNConnectionsDescription)
                               ])
             }

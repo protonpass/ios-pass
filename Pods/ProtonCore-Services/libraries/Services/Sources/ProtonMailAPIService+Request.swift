@@ -466,7 +466,7 @@ extension PMAPIService {
                     authenticated: authenticated,
                     authRetry: authRetry,
                     authRetryRemains: authRetryRemains,
-                    customAuthCredential: nil,
+                    customAuthCredential: authCredential,
                     nonDefaultTimeout: nonDefaultTimeout,
                     retryPolicy: retryPolicy,
                     task: task

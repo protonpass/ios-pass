@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Observability",
-  "version": "6.1.0",
+  "version": "7.1.0",
   "summary": "ProtonCore-Observability provides the API for tracking relevant anonymous events",
   "description": "ProtonCore-Observability provides the API to all Proton Clients for tracking relevant anonymous events",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": null,
-    "tag": "6.1.0"
+    "tag": "7.1.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -34,10 +34,10 @@
   "source_files": "libraries/Observability/Sources/**/*.swift",
   "dependencies": {
     "ProtonCore-Utilities": [
-      "6.1.0"
+      "7.1.0"
     ],
     "ProtonCore-Networking": [
-      "6.1.0"
+      "7.1.0"
     ]
   },
   "testspecs": [
@@ -49,7 +49,7 @@
 
         ],
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "6.1.0"
+          "7.1.0"
         ]
       },
       "source_files": "libraries/Observability/UnitTests/**/*.swift"
@@ -59,19 +59,19 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Networking": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Services": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-Authentication": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "6.1.0"
+          "7.1.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "6.1.0"
+          "7.1.0"
         ]
       },
       "source_files": "libraries/Observability/IntegrationTests/**/*.swift",
