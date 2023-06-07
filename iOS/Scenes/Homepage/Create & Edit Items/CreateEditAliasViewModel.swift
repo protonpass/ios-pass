@@ -150,21 +150,23 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
         getAliasAndAliasOptions()
 
-        $title
+        $prefix
+            .removeDuplicates()
             .dropFirst(1)
             .receive(on: RunLoop.main)
-            .sink { [unowned self] _ in
+            .sink { [unowned self] prefix in
+                self.validatePrefix()
+            }
+            .store(in: &cancellables)
+        
+        $title
+            .removeDuplicates()
+            .dropFirst(1)
+            .receive(on: RunLoop.main)
+            .sink { [unowned self] title in
                 if !prefixManuallyEdited {
                     prefix = PrefixUtils.generatePrefix(fromTitle: title)
                 }
-            }
-            .store(in: &cancellables)
-
-        $prefix
-            .dropFirst(1)
-            .receive(on: RunLoop.main)
-            .sink { [unowned self] _ in
-                self.validatePrefix()
             }
             .store(in: &cancellables)
 
@@ -180,7 +182,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         Publishers
             .CombineLatest($title, $prefix)
             .combineLatest($note)
-            .dropFirst(mode.isEditMode ? 1 : 3)
+            .dropFirst(1)
             .sink(receiveValue: { [unowned self] _ in
                 self.didEditSomething = true
             })
