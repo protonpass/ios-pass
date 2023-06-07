@@ -24,6 +24,7 @@ import Client
 import Core
 import CoreData
 import CryptoKit
+import Factory
 import MBProgressHUD
 import ProtonCore_Authentication
 import ProtonCore_Keymaker
@@ -48,6 +49,7 @@ public final class CredentialProviderCoordinator {
     private let logger: Logger
     private let preferences: Preferences
     private let rootViewController: UIViewController
+    private var notificationService: LocalNotificationServiceProtocol
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -96,6 +98,7 @@ public final class CredentialProviderCoordinator {
         self.logManager = logManager
         self.logger = .init(manager: logManager)
         self.preferences = preferences
+        self.notificationService = ServiceContainer.shared.notificationService()
         self.rootViewController = rootViewController
 
         // Post init
@@ -141,7 +144,8 @@ public final class CredentialProviderCoordinator {
             shareRepository: shareRepository,
             passPlanRepository: upgradeChecker.passPlanRepository,
             logManager: logManager,
-            preferences: preferences)
+            preferences: preferences,
+            notificationService: notificationService)
         viewModel.delegate = self
         let view = ExtensionSettingsView(viewModel: viewModel)
         showView(view)
@@ -366,7 +370,7 @@ private extension CredentialProviderCoordinator {
                 }
 
                 if preferences.automaticallyCopyTotpCode, let totpData = await getTotpData() {
-                    clipboardManager.copy(text: totpData.code, bannerMessage: "")
+                    copyAndNotify(totpData: totpData)
                 }
 
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
@@ -399,8 +403,27 @@ private extension CredentialProviderCoordinator {
             }
         }
     }
+        
+    func copyAndNotify(totpData: TOTPData) {
+        clipboardManager.copy(text: totpData.code, bannerMessage: "")
+        let content = UNMutableNotificationContent()
+        content.title = "Two Factor Authentication code copied"
+        if let username = totpData.username {
+            content.subtitle = username
+        }
+        // swiftlint:disable:next line_length
+        content.body = "\"\(totpData.code)\" is copied to clipboard. Expiring in \(totpData.timerData.remaining) seconds"
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString,
+                                            content: content,
+                                            trigger: nil) // Deliver immediately
+        // There seems to be a 5 second limit to autofill extension.
+        // if the delay goes above it stops working and doesn't remove the notification
+        let delay = min(totpData.timerData.remaining, 5)
+        notificationService.addWithTimer(for: request, and: Double(delay))
+    }
 }
-
+    
 // MARK: - Views
 private extension CredentialProviderCoordinator {
     func showView(_ view: some View) {

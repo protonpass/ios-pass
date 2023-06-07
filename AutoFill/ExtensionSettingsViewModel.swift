@@ -34,6 +34,9 @@ final class ExtensionSettingsViewModel: ObservableObject {
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {
         didSet {
+            if automaticallyCopyTotpCode {
+                notificationService.requestNotificationPermission()
+            }
             preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         }
     }
@@ -47,7 +50,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     let logger: Logger
     let logManager: LogManager
     let preferences: Preferences
-
+    private let notificationService: LocalNotificationServiceProtocol
     weak var delegate: ExtensionSettingsViewModelDelegate?
 
     init(credentialManager: CredentialManagerProtocol,
@@ -55,7 +58,8 @@ final class ExtensionSettingsViewModel: ObservableObject {
          shareRepository: ShareRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          logManager: LogManager,
-         preferences: Preferences) {
+         preferences: Preferences,
+         notificationService: LocalNotificationServiceProtocol) {
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
@@ -63,7 +67,8 @@ final class ExtensionSettingsViewModel: ObservableObject {
         self.logManager = logManager
         self.logger = .init(manager: logManager)
         self.preferences = preferences
-
+        self.notificationService = notificationService
+        
         self.quickTypeBar = preferences.quickTypeBar
         self.automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
         self.isLocked = preferences.biometricAuthenticationEnabled

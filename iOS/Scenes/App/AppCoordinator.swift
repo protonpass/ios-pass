@@ -23,6 +23,7 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import Factory
 import MBProgressHUD
 import ProtonCore_Authentication
 import ProtonCore_FeatureSwitch
@@ -62,10 +63,8 @@ final class AppCoordinator {
     init(window: UIWindow) {
         self.window = window
         self.appStateObserver = .init()
-        let logManager = LogManager(module: .hostApp)
-        let logger = Logger(manager: logManager)
-        self.logManager = logManager
-        self.logger = logger
+        self.logManager = ToolingContainer.shared.hostAppLogManager()
+        self.logger = ToolingContainer.shared.mainAppLoger()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)

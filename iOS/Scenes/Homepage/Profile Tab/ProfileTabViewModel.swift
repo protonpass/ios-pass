@@ -54,12 +54,15 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     let appVersion: String
     let passPlanRepository: PassPlanRepositoryProtocol
     let vaultsManager: VaultsManager
-
+    let notificationService: LocalNotificationServiceProtocol
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {
         didSet {
+            if automaticallyCopyTotpCode {
+                notificationService.requestNotificationPermission()
+            }
             preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         }
     }
@@ -76,7 +79,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          preferences: Preferences,
          logManager: LogManager,
          passPlanRepository: PassPlanRepositoryProtocol,
-         vaultsManager: VaultsManager) {
+         vaultsManager: VaultsManager,
+         notificationService: LocalNotificationServiceProtocol) {
         self.apiService = apiService
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager
@@ -87,7 +91,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
-
+        self.notificationService = notificationService
         self.autoFillEnabled = false
         self.quickTypeBar = preferences.quickTypeBar
         self.automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
