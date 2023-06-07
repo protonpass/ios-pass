@@ -154,17 +154,14 @@ final class APIManager {
     }
 
     // UserData with new access token & refresh token can be updated from AutoFill extension
-    // Recreate authHelper here to take the new tokens into account
+    // Update the session of AuthHelper here to take the new tokens into account
     // Otherwise old token are used and user would be logged out
     private func useNewTokensWhenAppBackToForegound() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
                 guard let userData = self.appData.userData else { return }
-                let updatedAuthHelper = AuthHelper(credential: userData.getCredential)
-                updatedAuthHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-                self.authHelper = updatedAuthHelper
-                self.apiService.authDelegate = updatedAuthHelper
+                self.authHelper.onSessionObtaining(credential: userData.getCredential)
             }
             .store(in: &cancellables)
     }
