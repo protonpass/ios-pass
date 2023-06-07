@@ -57,7 +57,6 @@ public final class NotificationService: LocalNotificationServiceProtocol {
     }
     
     public func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval = 5) {
-        //swiftlint:disable:next line_length
         logger.info("Adding following timed notification: \(request.description), with removal delay: \(delay)")
 
         unUserNotificationCenter.add(request)

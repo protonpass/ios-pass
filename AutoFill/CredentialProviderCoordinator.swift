@@ -420,7 +420,7 @@ private extension CredentialProviderCoordinator {
                                             trigger: nil) // Deliver immediately
         // There seems to be a 5 second limit to autofill extension.
         // if the delay goes above it stops working and doesn't remove the notification
-        let delay = totpData.timerData.remaining > 5 ? 5 : totpData.timerData.remaining
+        let delay = min(totpData.timerData.remaining, 5)
         notificationService.addWithTimer(for: request, and: Double(delay))
     }
 }
