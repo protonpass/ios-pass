@@ -52,19 +52,20 @@ public final class NotificationService: LocalNotificationServiceProtocol {
     }
     
     public func add(for request: UNNotificationRequest) {
-        logger.info("NotificationService: Adding following non timed notification: \(request.description)")
+        logger.info("Adding following non timed notification: \(request.description)")
         unUserNotificationCenter.add(request)
     }
     
     public func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval = 5) {
-        logger.info("NotificationService: Adding following timed notification: \(request.description), with removal delay: \(delay)")
+        //swiftlint:disable:next line_length
+        logger.info("Adding following timed notification: \(request.description), with removal delay: \(delay)")
 
         unUserNotificationCenter.add(request)
         currentTimers[request.identifier] = .scheduledTimer(withTimeInterval: delay,
                                                             repeats: false) { [weak self] _ in
             guard let self else { return }
             let id = request.identifier
-            self.logger.info("NotificationService: Clearing notification with id: \(id)")
+            self.logger.info("Clearing notification with id: \(id)")
             self.unUserNotificationCenter.removeDeliveredNotifications(withIdentifiers: [id])
             self.stopTimer(with: id)
         }
