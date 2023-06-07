@@ -154,7 +154,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .removeDuplicates()
             .dropFirst(1)
             .receive(on: RunLoop.main)
-            .sink { [unowned self] prefix in
+            .sink { [unowned self] _ in
                 self.validatePrefix()
             }
             .store(in: &cancellables)
