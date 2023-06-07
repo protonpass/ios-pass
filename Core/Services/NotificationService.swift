@@ -18,50 +18,62 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Foundation
 import UserNotifications
 
-public protocol LocalNotificationServicing {
+public protocol LocalNotificationServiceProtocol {
     func requestNotificationPermission(with options: UNAuthorizationOptions)
     
     func add(for request: UNNotificationRequest)
     func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval)
 }
 
-public extension LocalNotificationServicing {
+public extension LocalNotificationServiceProtocol {
     func requestNotificationPermission(with options: UNAuthorizationOptions = [.alert]) {
         requestNotificationPermission(with: options)
     }
 }
 
-public final class NotificationService: LocalNotificationServicing {
+public final class NotificationService: LocalNotificationServiceProtocol {
     private let unUserNotificationCenter: UNUserNotificationCenter
     private var currentTimers: [String: Timer] = [:]
+    private let logger: Logger
     
-    public init(unUserNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
+    public init(logger: Logger,
+                unUserNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         self.unUserNotificationCenter = unUserNotificationCenter
+        self.logger = logger
     }
     
-    public  func requestNotificationPermission(with options: UNAuthorizationOptions = []) {
-        unUserNotificationCenter.requestAuthorization(options: options) { _, _ in }
+    public func requestNotificationPermission(with options: UNAuthorizationOptions = []) {
+        unUserNotificationCenter.requestAuthorization(options: options) { [weak self] _, error in
+            self?.logger.error("unUserNotificationCenter authorization request error: \(error.debugDescription)")
+        }
     }
     
     public func add(for request: UNNotificationRequest) {
+        logger.info("NotificationService: Adding following non timed notification: \(request.description)")
         unUserNotificationCenter.add(request)
     }
     
     public func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval = 5) {
+        logger.info("NotificationService: Adding following timed notification: \(request.description), with removal delay: \(delay)")
+
         unUserNotificationCenter.add(request)
         currentTimers[request.identifier] = .scheduledTimer(withTimeInterval: delay,
                                                             repeats: false) { [weak self] _ in
             guard let self else { return }
-            self.unUserNotificationCenter.removeDeliveredNotifications(withIdentifiers: [request.identifier])
-            self.stopTimer(with: request.identifier)
+            let id = request.identifier
+            self.logger.info("NotificationService: Clearing notification with id: \(id)")
+            self.unUserNotificationCenter.removeDeliveredNotifications(withIdentifiers: [id])
+            self.stopTimer(with: id)
         }
     }
-    
-    private func stopTimer(with id: String) {
+}
+
+// MARK: Utils
+private extension NotificationService {
+    func stopTimer(with id: String) {
         if let timer = self.currentTimers[id] {
             timer.invalidate()
         }

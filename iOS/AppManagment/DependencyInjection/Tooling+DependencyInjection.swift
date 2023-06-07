@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 06/06/2023.
+// Tooling+DependencyInjection.swift
+// Proton Pass - Created on 07/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,18 +21,23 @@
 import Core
 import Factory
 
-final class ServiceContainer: SharedContainer {
-    static let shared = ServiceContainer()
+final class ToolingContainer: SharedContainer {
+    static let shared = ToolingContainer()
     let manager = ContainerManager()
 }
 
-extension ServiceContainer {
-    var notificationService: Factory<LocalNotificationServiceProtocol> {
-        self { NotificationService(logger: ToolingContainer.shared.mainAppLoger()) }
+// MARK: Logging tools
+extension ToolingContainer {
+    var hostAppLogManager: Factory<LogManager> {
+        self { LogManager(module: .hostApp) }
+    }
+    
+    var mainAppLoger: Factory<Logger> {
+        self { Logger(manager: self.hostAppLogManager()) }
     }
 }
 
-extension ServiceContainer: AutoRegistering {
+extension ToolingContainer: AutoRegistering {
     func autoRegister() {
         manager.defaultScope = .singleton
     }

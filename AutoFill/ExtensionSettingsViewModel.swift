@@ -50,7 +50,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     let logger: Logger
     let logManager: LogManager
     let preferences: Preferences
-    private let notificationService: LocalNotificationServicing
+    private let notificationService: LocalNotificationServiceProtocol
     weak var delegate: ExtensionSettingsViewModelDelegate?
 
     init(credentialManager: CredentialManagerProtocol,
@@ -59,7 +59,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
          passPlanRepository: PassPlanRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
-         notificationService: LocalNotificationServicing) {
+         notificationService: LocalNotificationServiceProtocol) {
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
