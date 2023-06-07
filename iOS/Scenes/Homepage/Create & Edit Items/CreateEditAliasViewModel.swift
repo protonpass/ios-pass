@@ -182,7 +182,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         Publishers
             .CombineLatest($title, $prefix)
             .combineLatest($note)
-            .dropFirst(1)
+            .dropFirst()
             .sink(receiveValue: { [unowned self] _ in
                 self.didEditSomething = true
             })
