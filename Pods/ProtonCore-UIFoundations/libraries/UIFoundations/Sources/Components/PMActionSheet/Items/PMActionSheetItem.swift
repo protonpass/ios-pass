@@ -176,7 +176,7 @@ extension PMActionSheetItem {
             case .checkMark:
                 return IconProvider.checkmarkCircleFilled
             case .dash:
-                return IconProvider.minusCircle1
+                return IconProvider.minusCircle
             }
         }
 

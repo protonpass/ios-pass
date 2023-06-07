@@ -26,8 +26,7 @@ import ProtonCore_Networking
 extension PMAPIService {
     func missingScopesHandler<T>(username: String,
                                  responseHandler: PMResponseHandlerData,
-                                 completion: PMAPIService.APIResponseCompletion<T>,
-                                 responseError: ResponseError) where T: Decodable {
+                                 completion: PMAPIService.APIResponseCompletion<T>) where T: Decodable {
         missingScopesDelegate?.getAuthInfo(username: username) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -37,7 +36,6 @@ extension PMAPIService {
                         authInfo: authInfo,
                         username: username,
                         responseHandlerData: responseHandler,
-                        responseError: responseError,
                         completion: completion
                     )
                 }
@@ -56,7 +54,6 @@ extension PMAPIService {
     private func missingPasswordScopesUIHandler<T>(authInfo: AuthInfoResponse,
                                                    username: String,
                                                    responseHandlerData: PMResponseHandlerData,
-                                                   responseError: ResponseError,
                                                    completion: APIResponseCompletion<T>) where T: Decodable {
         self.isPasswordVerifyUIPresented.mutate { $0 = true }
 
@@ -77,14 +74,12 @@ extension PMAPIService {
                     completion: completion
                 )
             case .closed:
-                completion.call(task: responseHandlerData.task, error: responseError as NSError)
+                completion.call(task: responseHandlerData.task, error: NSError())
                 if self.isPasswordVerifyUIPresented.transform({ $0 }) {
                     self.isPasswordVerifyUIPresented.mutate { $0 = false }
                 }
             case .closedWithError(let code, let description):
-                var newResponseError = responseError
-                newResponseError.code = code
-                newResponseError.errorMessage = description
+                let newResponseError = APIError.protonMailError(code, localizedDescription: description)
                 completion.call(task: responseHandlerData.task, error: newResponseError as NSError)
                 if self.isPasswordVerifyUIPresented.transform({ $0 }) {
                     self.isPasswordVerifyUIPresented.mutate { $0 = false }

@@ -394,7 +394,7 @@ public extension APIService {
     /// Asynchronous variant of `perform(request:callCompletionBlockUsing:jsonDictionaryCompletion)`.
     ///  - Return a tuple of type `(URLSessionDataTask?, JSONDictionary)` if success.
     ///  - Throw an error of type `ResponseError` if failure.
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     func perform(request route: Request,
                  callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
     async throws -> (URLSessionDataTask?, JSONDictionary) {
@@ -459,7 +459,7 @@ public extension APIService {
 
     /// Asynchronous variant of `perform(request:response:callCompletionBlockUsing:responseCompletion)`.
     /// - Return a tuple of type `(URLSessionDataTask?, some ResponseType)`
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     func perform<R>(request route: Request,
                     response: R,
                     callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
@@ -508,7 +508,7 @@ public extension APIService {
     /// Asynchronous variant of `perform(request:callCompletionBlockUsing:decodableCompletion)`.
     /// - Return a tuple of type `(URLSessionDataTask?, APIDecodableResponse)` if success.
     /// - Throw an error of type `ResponseError` if failure.
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     func perform<R>(request route: Request,
                     callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
     async throws -> (URLSessionDataTask?, R) where R: APIDecodableResponse {

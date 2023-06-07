@@ -20,9 +20,9 @@
 
 import Core
 import CryptoKit
-import GoLibs
 import ProtonCore_Authentication
 import ProtonCore_Challenge
+import ProtonCore_CryptoGoInterface
 import ProtonCore_Environment
 import ProtonCore_FeatureSwitch
 import ProtonCore_ForceUpgrade
@@ -196,7 +196,7 @@ extension APIManager: APIServiceDelegate {
     func onDohTroubleshot() {}
 
     func onUpdate(serverTime: Int64) {
-        CryptoUpdateTime(serverTime)
+        CryptoGo.CryptoUpdateTime(serverTime)
     }
 
     func isReachable() -> Bool {

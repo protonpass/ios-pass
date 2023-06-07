@@ -50,11 +50,7 @@ enum DetailType {
         case .arrowsSwitch: return IconProvider.arrowsSwitch
         case .eyeSlash: return IconProvider.eyeSlash
         case .user: return IconProvider.user
-        case .infinity: if #available(iOS 13.0, *) {
-            return UIImage(systemName: "infinity")!
-        } else {
-            return IconProvider.checkmarkTriple
-        }
+        case .infinity: return UIImage(systemName: "infinity")!
         case .lock: return IconProvider.lock
         case .vault: return IconProvider.vault
         case .alias: return IconProvider.alias
@@ -104,7 +100,7 @@ extension PlanPresentation {
                            hasPaymentMethods: Bool,
                            endDate: NSAttributedString?,
                            price protonPrice: String?) -> PlanPresentation? {
-        guard let plan = InAppPurchasePlan(protonName: details.name, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers) else { return nil }
+        guard let plan = InAppPurchasePlan(protonPlan: details, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers) else { return nil }
         var planPresentationType: PlanPresentationType
         let countriesCount = servicePlan.countriesCount?.first { $0.maxTier == details.maxTier ?? 0 }?.count
         if isCurrent {
@@ -118,11 +114,10 @@ extension PlanPresentation {
     }
     
     static var unavailableBecauseUserHasNoAccessToPlanDetails: PlanPresentation {
-        PlanPresentation(accountPlan: InAppPurchasePlan(protonName: InAppPurchasePlan.freePlanName, listOfIAPIdentifiers: [])!, planPresentationType: .current(.unavailable))
+        PlanPresentation(accountPlan: InAppPurchasePlan.freePlan, planPresentationType: .current(.unavailable))
     }
     
-    static func getLocale(from name: String, storeKitManager: StoreKitManagerProtocol) -> Locale? {
-        guard let plan = InAppPurchasePlan(protonName: name, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers) else { return nil }
+    static func getLocale(from plan: InAppPurchasePlan, storeKitManager: StoreKitManagerProtocol) -> Locale? {
         return plan.planLocale(from: storeKitManager)
     }
 }

@@ -20,7 +20,6 @@
 
 import Client
 import Core
-import GoLibs
 import ProtonCore_Doh
 import ProtonCore_ForceUpgrade
 import ProtonCore_Login

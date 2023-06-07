@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Login
 
@@ -28,19 +28,19 @@ public enum CryptoUtils {
     public static func generateKey(name: String, email: String) throws -> (String, String) {
         let keyPassphrase = String.random(length: 32)
         let key = try throwing { error in
-            HelperGenerateKey(name,
-                              email,
-                              Data(keyPassphrase.utf8),
-                              "x25519",
-                              0,
-                              &error)
+            CryptoGo.HelperGenerateKey(name,
+                                       email,
+                                       Data(keyPassphrase.utf8),
+                                       "x25519",
+                                       0,
+                                       &error)
         }
         return (key, keyPassphrase)
     }
 
     public static func getFingerprint(key: String) throws -> String {
         let data = try throwing { error in
-            HelperGetJsonSHA256Fingerprints(key, &error)
+            CryptoGo.HelperGetJsonSHA256Fingerprints(key, &error)
         }
         guard let data else {
             throw PPClientError.crypto(.failedToGetFingerprint)
@@ -53,7 +53,7 @@ public enum CryptoUtils {
     }
 
     public static func splitPGPMessage(_ message: String) throws -> (keyPacket: Data, dataPacket: Data) {
-        let splitMessage = try unwrap { CryptoPGPSplitMessage(fromArmored: message) }
+        let splitMessage = try unwrap { CryptoGo.CryptoPGPSplitMessage(fromArmored: message) }
         guard let keyPacket = splitMessage.keyPacket,
               let dataPacket = splitMessage.dataPacket else {
             throw PPClientError.crypto(.failedToSplitPGPMessage)
@@ -70,19 +70,19 @@ public enum CryptoUtils {
 
     public static func armorSignature(_ signature: Data) throws -> String {
         try throwing { error in
-            ArmorArmorWithType(signature, "SIGNATURE", &error)
+            CryptoGo.ArmorArmorWithType(signature, "SIGNATURE", &error)
         }
     }
 
     public static func armorMessage(_ message: Data) throws -> String {
         try throwing { error in
-            ArmorArmorWithType(message, "MESSAGE", &error)
+            CryptoGo.ArmorArmorWithType(message, "MESSAGE", &error)
         }
     }
 
     public static func generateSessionKey() throws -> CryptoSessionKey {
         var error: NSError?
-        guard let sessionKey = CryptoGenerateSessionKey(&error) else {
+        guard let sessionKey = CryptoGo.CryptoGenerateSessionKey(&error) else {
             throw PPClientError.crypto(.failedToGenerateSessionKey)
         }
         if let error { throw error }
