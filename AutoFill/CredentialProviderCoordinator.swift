@@ -27,6 +27,8 @@ import CryptoKit
 import Factory
 import MBProgressHUD
 import ProtonCore_Authentication
+import ProtonCore_CryptoGoImplementation
+import ProtonCore_CryptoGoInterface
 import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
@@ -78,6 +80,7 @@ public final class CredentialProviderCoordinator {
     }
 
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
+        injectDefaultCryptoImplementation()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let logManager = LogManager(module: .autoFillExtension)
