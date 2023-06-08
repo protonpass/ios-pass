@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import CryptoKit
 import ProtonCore_Authentication
@@ -49,6 +50,8 @@ final class APIManager {
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
+    private var cancellables = Set<AnyCancellable>()
+
     weak var delegate: APIManagerDelegate?
 
     init(logManager: LogManager, appVer: String, appData: AppData) {
@@ -77,7 +80,7 @@ final class APIManager {
             self.authHelper = AuthHelper()
         }
 
-        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
+        self.authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
         self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
 
@@ -98,6 +101,7 @@ final class APIManager {
 
         self.setUpCore()
         self.fetchUnauthSessionIfNeeded()
+        self.useNewTokensWhenAppBackToForegound()
     }
 
     func sessionIsAvailable(authCredential: AuthCredential, scopes: Scopes) {
@@ -147,6 +151,19 @@ final class APIManager {
                 self.logger.error(error)
             }
         }
+    }
+
+    // UserData with new access token & refresh token can be updated from AutoFill extension
+    // Update the session of AuthHelper here to take the new tokens into account
+    // Otherwise old token are used and user would be logged out
+    private func useNewTokensWhenAppBackToForegound() {
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [unowned self] _ in
+                guard let userData = self.appData.userData else { return }
+                self.authHelper.onSessionObtaining(credential: userData.getCredential)
+            }
+            .store(in: &cancellables)
     }
 
     // Create a new instance of UserData with everything copied except credential
