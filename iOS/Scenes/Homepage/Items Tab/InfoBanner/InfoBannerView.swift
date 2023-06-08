@@ -29,54 +29,87 @@ struct InfoBannerView: View {
     static let height: CGFloat = 140
 
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                Button(action: dismiss) {
-                    Image(systemName: "xmark")
-                        .resizable()
-                        .scaledToFit()
-                        .padding(4)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(Color(uiColor: PassColor.textInvert))
-                }
-            }
-
-            HStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(banner.detail.title)
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .fixedSize(horizontal: false, vertical: true)
-
-                    Text(banner.detail.description)
-                        .font(.caption)
-                        .fixedSize(horizontal: false, vertical: true)
-
-                    if let ctaTitle = banner.detail.ctaTitle {
-                        Button(action: action) {
-                            Label(ctaTitle, systemImage: "chevron.right")
-                                .labelStyle(.rightIcon)
-                                .font(.caption.weight(.semibold))
-                        }
-                    }
-                }
-                .foregroundColor(Color(uiColor: PassColor.textInvert))
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-
-                if let icon = banner.detail.icon {
-                    Image(uiImage: icon)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 100)
-                }
-            }
-
-            Spacer()
+        ZStack(alignment: .topTrailing) {
+            informationDisplayView
+                .padding(.horizontal, 25)
+                .padding(.vertical, 5)
+            closeButtonView
+                .padding(.top, 25)
+                .padding(.horizontal, 20)
         }
-        .padding()
         .frame(height: Self.height)
         .background(Color(uiColor: banner.detail.backgroundColor))
         .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+}
+
+private extension InfoBannerView {
+    var informationDisplayView: some View {
+        HStack(alignment: .center, spacing: 10) {
+            VStack(alignment: .leading, spacing: 8) {
+                Spacer()
+                Text(banner.detail.title)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.3)
+
+                Text(banner.detail.description)
+                    .minimumScaleFactor(0.4)
+                    .font(.caption)
+
+                if let ctaTitle = banner.detail.ctaTitle {
+                    ctaButtonView(ctaTitle: ctaTitle)
+                }
+                Spacer()
+            }
+            .foregroundColor(PassColor.textInvert.toColor)
+
+            if let icon = banner.detail.icon {
+                Image(uiImage: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 64)
+            }
+        }
+    }
+}
+
+private extension InfoBannerView {
+    var closeButtonView: some View {
+        Button(action: dismiss) {
+            Image(systemName: "xmark")
+                .resizable()
+                .frame(width: 12, height: 12)
+                .scaledToFit()
+                .foregroundColor(PassColor.textInvert.toColor)
+        }
+    }
+}
+
+private extension InfoBannerView {
+    func ctaButtonView(ctaTitle: String) -> some View {
+        Button(action: action) {
+            Label {
+                Text(ctaTitle)
+                    .minimumScaleFactor(0.2)
+                    .font(.caption2.weight(.semibold))
+            } icon: {
+                Image(systemName: "chevron.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 12)
+            }.labelStyle(.rightIcon)
+        }
+        .buttonStyle(.plain)
+        .frame(maxHeight: 17)
+    }
+}
+
+struct MissionView_Previews: PreviewProvider {
+    static var previews: some View {
+        InfoBannerView(banner: InfoBanner.autofill,
+                       dismiss: {},
+                       action: {})
     }
 }
