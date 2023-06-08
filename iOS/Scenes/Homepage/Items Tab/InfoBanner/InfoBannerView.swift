@@ -34,8 +34,6 @@ struct InfoBannerView: View {
                 .padding(.horizontal, 25)
                 .padding(.vertical, 5)
             closeButtonView
-                .padding(.top, 25)
-                .padding(.horizontal, 20)
         }
         .frame(height: Self.height)
         .background(Color(uiColor: banner.detail.backgroundColor))
@@ -49,8 +47,7 @@ private extension InfoBannerView {
             VStack(alignment: .leading, spacing: 8) {
                 Spacer()
                 Text(banner.detail.title)
-                    .font(.headline)
-                    .fontWeight(.bold)
+                    .font(.body.weight(.bold))
                     .lineLimit(1)
                     .minimumScaleFactor(0.3)
 
@@ -64,7 +61,9 @@ private extension InfoBannerView {
                 Spacer()
             }
             .foregroundColor(PassColor.textInvert.toColor)
-
+            
+            Spacer()
+            
             if let icon = banner.detail.icon {
                 Image(uiImage: icon)
                     .resizable()
@@ -81,6 +80,7 @@ private extension InfoBannerView {
             Image(systemName: "xmark")
                 .resizable()
                 .frame(width: 12, height: 12)
+                .padding()
                 .scaledToFit()
                 .foregroundColor(PassColor.textInvert.toColor)
         }
@@ -98,7 +98,7 @@ private extension InfoBannerView {
                 Image(systemName: "chevron.right")
                     .resizable()
                     .scaledToFit()
-                    .frame(maxHeight: 12)
+                    .frame(maxHeight: 10)
             }.labelStyle(.rightIcon)
         }
         .buttonStyle(.plain)
