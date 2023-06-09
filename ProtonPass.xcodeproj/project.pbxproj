@@ -243,6 +243,9 @@
 		355895AF29D76E67001E2207 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AE29D76E67001E2207 /* LogsView.swift */; };
 		355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B029D76E9F001E2207 /* LogsViewModel.swift */; };
 		355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B229D79565001E2207 /* FeedbackChannelsView.swift */; };
+		355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C22A33583D0053B7F6 /* BackOffManager.swift */; };
+		355938C52A335DA50053B7F6 /* BackOffManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */; };
+		355938C82A3360030053B7F6 /* CurrentDateProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
@@ -990,6 +993,9 @@
 		355895AE29D76E67001E2207 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		355895B029D76E9F001E2207 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
 		355895B229D79565001E2207 /* FeedbackChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackChannelsView.swift; sourceTree = "<group>"; };
+		355938C22A33583D0053B7F6 /* BackOffManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManager.swift; sourceTree = "<group>"; };
+		355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManagerTests.swift; sourceTree = "<group>"; };
+		355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProviderMock.swift; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1791,6 +1797,14 @@
 			path = Events;
 			sourceTree = "<group>";
 		};
+		355938C62A335FDD0053B7F6 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		355CA56229F1901E000B8248 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -2451,15 +2465,17 @@
 		35E50691286F87A700A3F6EA /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				3553C224296570B80087518A /* Logging */,
 				3573CD24292C165700A9EF82 /* AliasPrefixValidatorTests.swift */,
+				355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */,
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				35608C2F29F0559A00CA3864 /* Data+RandomTests.swift */,
 				3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */,
+				3553C224296570B80087518A /* Logging */,
+				355938C62A335FDD0053B7F6 /* Mocks */,
 				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
-				355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */,
 				35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */,
+				355AA32629E9D3FD00C20F5F /* StringExtensionTests.swift */,
 				356A34BC2977C6ED00969BA2 /* URLExtensionTests.swift */,
 				3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */,
 				356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */,
@@ -2551,6 +2567,7 @@
 				3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */,
 				3565FD52298D3D6500E2A0EE /* Array+Chunked.swift */,
 				355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */,
+				355938C22A33583D0053B7F6 /* BackOffManager.swift */,
 				3531B5402902A9DD0070D2EE /* BiometricAuthenticator.swift */,
 				353E8B73287622F300A2C5E3 /* BundleExtensions.swift */,
 				3565621F29BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift */,
@@ -4222,6 +4239,7 @@
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,
 				355222ED293F67A600786F64 /* URLExtensions.swift in Sources */,
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
+				355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */,
 				3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */,
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
 				3553C21B296570090087518A /* LogEntry.swift in Sources */,
@@ -4238,6 +4256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				355938C82A3360030053B7F6 /* CurrentDateProviderMock.swift in Sources */,
 				3553C226296570CB0087518A /* LogFormatterTests.swift in Sources */,
 				356A34BD2977C6ED00969BA2 /* URLExtensionTests.swift in Sources */,
 				356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */,
@@ -4252,6 +4271,7 @@
 				355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
 				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
+				355938C52A335DA50053B7F6 /* BackOffManagerTests.swift in Sources */,
 				3553C228296571440087518A /* LoggerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

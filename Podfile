@@ -78,6 +78,7 @@ target 'Core' do
   pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Settings', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-TestingToolkit/UnitTests/Core", :git => proton_core_path, :tag => proton_core_version
 
   target 'CoreTests' do
     pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
