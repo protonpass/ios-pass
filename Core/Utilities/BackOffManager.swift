@@ -38,7 +38,18 @@ public extension BackOffManagerProtocol {
         failureDates.append(currentDateProvider.getCurrentDate())
     }
 
-    func canProceed() -> Bool { false }
+    func canProceed() -> Bool {
+        guard let mostRecentFailureDate = failureDates.last else { return true }
+        let stride = BackOffStride.stride(failureCount: failureDates.count)
+        let thresholdDate = mostRecentFailureDate.adding(component: .second,
+                                                         value: stride.valueInSeconds.toInt)
+        let currentDate = currentDateProvider.getCurrentDate()
+        let canProceed = currentDate >= thresholdDate
+        if canProceed {
+            failureDates.removeAll()
+        }
+        return canProceed
+    }
 }
 
 public final class BackOffManager: BackOffManagerProtocol {
@@ -48,5 +59,47 @@ public final class BackOffManager: BackOffManagerProtocol {
     public init(currentDateProvider: CurrentDateProviderProtocol) {
         self.failureDates = []
         self.currentDateProvider = currentDateProvider
+    }
+}
+
+enum BackOffStride: CaseIterable {
+    case zeroSecond
+    case oneSecond, twoSeconds, fiveSeconds, tenSeconds, thirtySeconds
+    case oneMinute, twoMinutes, fiveMinutes, tenMinutes, thirtyMinutes
+
+    var valueInSeconds: Double {
+        switch self {
+        case .zeroSecond:
+            return 0
+        case .oneSecond:
+            return 1
+        case .twoSeconds:
+            return 2
+        case .fiveSeconds:
+            return 5
+        case .tenSeconds:
+            return 10
+        case .thirtySeconds:
+            return 30
+        case .oneMinute:
+            return 60
+        case .twoMinutes:
+            return 2 * 60
+        case .fiveMinutes:
+            return 5 * 60
+        case .tenMinutes:
+            return 10 * 60
+        case .thirtyMinutes:
+            return 30 * 60
+        }
+    }
+
+    static func stride(failureCount: Int) -> BackOffStride {
+        guard failureCount > 0 else { return .zeroSecond }
+        if failureCount >= BackOffStride.allCases.count {
+            return BackOffStride.allCases.last ?? .thirtyMinutes
+        } else {
+            return BackOffStride.allCases[safeIndex: failureCount] ?? .zeroSecond
+        }
     }
 }
