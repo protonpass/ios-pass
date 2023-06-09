@@ -41,7 +41,7 @@ install_framework()
 
   if [ -L "${source}" ]; then
     echo "Symlinked..."
-    source="$(readlink -f "${source}")"
+    source="$(readlink "${source}")"
   fi
 
   if [ -d "${source}/${BCSYMBOLMAP_DIR}" ]; then
@@ -210,6 +210,7 @@ if [[ "$CONFIGURATION" == "Debug-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -247,6 +248,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-QA" ]]; then
@@ -284,6 +286,7 @@ if [[ "$CONFIGURATION" == "Release-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-TF" ]]; then
@@ -321,6 +324,7 @@ if [[ "$CONFIGURATION" == "Release-TF" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCore_TroubleShooting.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
