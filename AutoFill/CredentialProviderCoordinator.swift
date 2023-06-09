@@ -65,6 +65,7 @@ public final class CredentialProviderCoordinator {
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
     private var telemetryEventRepository: TelemetryEventRepositoryProtocol?
     private var upgradeChecker: UpgradeCheckerProtocol?
+    private var featureFlagsRepository: FeatureFlagsRepositoryProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
@@ -279,6 +280,7 @@ public final class CredentialProviderCoordinator {
         self.remoteSyncEventsDatasource = repositoryManager.remoteSyncEventsDatasource
         self.telemetryEventRepository = repositoryManager.telemetryEventRepository
         self.upgradeChecker = repositoryManager.upgradeChecker
+        self.featureFlagsRepository = repositoryManager.featureFlagsRepository
     }
 
     func addNewEvent(type: TelemetryEventType) {
@@ -489,6 +491,7 @@ private extension CredentialProviderCoordinator {
                              itemRepository: ItemRepositoryProtocol,
                              aliasRepository: AliasRepositoryProtocol,
                              upgradeChecker: UpgradeCheckerProtocol,
+                             featureFlagsRepository: FeatureFlagsRepositoryProtocol,
                              vaults: [Vault],
                              url: URL?) {
         do {
@@ -496,15 +499,13 @@ private extension CredentialProviderCoordinator {
                                                       url: url?.schemeAndHost,
                                                       autofill: true)
             let emailAddress = appData.userData?.addresses.first?.email ?? ""
-            let remoteCustomFieldsFlagDatasource =
-            RemoteCustomFieldsFlagDatasource(apiService: apiManager.apiService)
             let viewModel = try CreateEditLoginViewModel(
                 mode: .create(shareId: shareId,
                               type: creationType),
                 itemRepository: itemRepository,
                 aliasRepository: aliasRepository,
                 upgradeChecker: upgradeChecker,
-                remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
+                featureFlagsRepository: featureFlagsRepository,
                 vaults: vaults,
                 preferences: preferences,
                 logManager: logManager,
@@ -635,12 +636,14 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
               let aliasRepository,
               let shareRepository,
               let upgradeChecker,
+              let featureFlagsRepository,
         let symmetricKey else { return }
         if let vaultListUiModels {
             showCreateLoginView(shareId: shareId,
                                 itemRepository: itemRepository,
                                 aliasRepository: aliasRepository,
                                 upgradeChecker: upgradeChecker,
+                                featureFlagsRepository: featureFlagsRepository,
                                 vaults: vaultListUiModels.map { $0.vault },
                                 url: url)
         } else {

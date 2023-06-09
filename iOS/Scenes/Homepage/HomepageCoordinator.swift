@@ -64,6 +64,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let userData: UserData
     private let passPlanRepository: PassPlanRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private let vaultsManager: VaultsManager
 
     // Lazily initialized properties
@@ -175,6 +176,11 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
                                              counter: vaultsManager,
                                              totpChecker: itemRepository)
+        self.featureFlagsRepository = FeatureFlagsRepository(
+            localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
+            remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+            userId: userData.user.ID,
+            logManager: logManager)
         self.vaultsManager = vaultsManager
         super.init()
         self.finalizeInitialization()
@@ -182,6 +188,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.start()
         self.eventLoop.start()
         self.refreshPlan()
+        self.refreshFeatureFlags()
         self.sendAllEventsIfApplicable()
     }
 
@@ -275,6 +282,16 @@ private extension HomepageCoordinator {
         }
     }
 
+    func refreshFeatureFlags() {
+        Task {
+            do {
+                try await featureFlagsRepository.refreshFlags()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
     func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = true) {
         present(UIHostingController(rootView: view),
                 userInterfaceStyle: preferences.theme.userInterfaceStyle,
@@ -301,7 +318,7 @@ private extension HomepageCoordinator {
             aliasRepository: aliasRepository,
             itemRepository: itemRepository,
             upgradeChecker: upgradeChecker,
-            remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasource(apiService: apiService),
+            featureFlagsRepository: featureFlagsRepository,
             logManager: logManager,
             preferences: preferences,
             vaultsManager: vaultsManager,
@@ -318,7 +335,7 @@ private extension HomepageCoordinator {
             itemRepository: itemRepository,
             favIconRepository: favIconRepository,
             upgradeChecker: upgradeChecker,
-            remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasource(apiService: apiService),
+            featureFlagsRepository: featureFlagsRepository,
             logManager: logManager,
             preferences: preferences,
             vaultsManager: vaultsManager,

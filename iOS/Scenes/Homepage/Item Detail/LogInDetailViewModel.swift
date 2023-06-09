@@ -59,7 +59,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                   favIconRepository: FavIconRepositoryProtocol,
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
-                  remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
+                  featureFlagsRepository: FeatureFlagsRepositoryProtocol,
                   vault: Vault?,
                   logManager: LogManager,
                   theme: Theme) {
@@ -69,7 +69,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                    favIconRepository: favIconRepository,
                    itemRepository: itemRepository,
                    upgradeChecker: upgradeChecker,
-                   remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
+                   featureFlagsRepository: featureFlagsRepository,
                    vault: vault,
                    logManager: logManager,
                    theme: theme)
