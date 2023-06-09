@@ -50,7 +50,7 @@ class BaseItemDetailViewModel {
     let favIconRepository: FavIconRepositoryProtocol
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
-    let remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol
+    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private(set) var itemContent: ItemContent {
         didSet {
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
@@ -71,7 +71,7 @@ class BaseItemDetailViewModel {
          favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          vault: Vault?,
          logManager: LogManager,
          theme: Theme) {
@@ -81,7 +81,7 @@ class BaseItemDetailViewModel {
         self.favIconRepository = favIconRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
-        self.remoteCustomFieldsFlagDatasource = remoteCustomFieldsFlagDatasource
+        self.featureFlagsRepository = featureFlagsRepository
         self.vault = vault
         self.logger = .init(manager: logManager)
         self.logManager = logManager
@@ -211,8 +211,8 @@ private extension BaseItemDetailViewModel {
     func checkIfCustomFieldsAreSupported() {
         Task { @MainActor in
             do {
-                let flag = try await remoteCustomFieldsFlagDatasource.getCustomFieldsFlag()
-                customFieldsSupported = flag.value
+                let featureFlags = try await featureFlagsRepository.getFlags()
+                customFieldsSupported = featureFlags.customFields
             } catch {
                 logger.error(error)
                 delegate?.itemDetailViewModelDidEncounter(error: error)

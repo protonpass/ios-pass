@@ -209,7 +209,7 @@
 		3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */; };
 		3555C17A2A2F810B00A257D7 /* iOS-Release-TF.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555C1792A2F810B00A257D7 /* iOS-Release-TF.xcconfig */; };
 		3555EC7D2A27D16300069996 /* GetCustomFieldsFlagEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555EC7C2A27D16300069996 /* GetCustomFieldsFlagEndpoint.swift */; };
-		3555EC7F2A27D20F00069996 /* RemoteCustomFieldsFlagDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555EC7E2A27D20F00069996 /* RemoteCustomFieldsFlagDatasource.swift */; };
+		3555EC7F2A27D20F00069996 /* RemoteFeatureFlagsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555EC7E2A27D20F00069996 /* RemoteFeatureFlagsDatasource.swift */; };
 		3556949929D44DAE005DD2EB /* MoveItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949829D44DAE005DD2EB /* MoveItemEndpoint.swift */; };
 		3556949B29D44DEF005DD2EB /* MoveItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949A29D44DEF005DD2EB /* MoveItemRequest.swift */; };
 		3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */; };
@@ -246,6 +246,11 @@
 		355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C22A33583D0053B7F6 /* BackOffManager.swift */; };
 		355938C52A335DA50053B7F6 /* BackOffManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */; };
 		355938C82A3360030053B7F6 /* CurrentDateProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */; };
+		355938B92A331B220053B7F6 /* FeatureFlagsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938B82A331B220053B7F6 /* FeatureFlagsEntity.swift */; };
+		355938BB2A331BFF0053B7F6 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938BA2A331BFF0053B7F6 /* FeatureFlags.swift */; };
+		355938BD2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938BC2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift */; };
+		355938BF2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938BE2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift */; };
+		355938C12A333B010053B7F6 /* FeatureFlagsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C02A333B010053B7F6 /* FeatureFlagsRepository.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
@@ -964,7 +969,7 @@
 		3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+SanitizerTests.swift"; sourceTree = "<group>"; };
 		3555C1792A2F810B00A257D7 /* iOS-Release-TF.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Release-TF.xcconfig"; sourceTree = "<group>"; };
 		3555EC7C2A27D16300069996 /* GetCustomFieldsFlagEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCustomFieldsFlagEndpoint.swift; sourceTree = "<group>"; };
-		3555EC7E2A27D20F00069996 /* RemoteCustomFieldsFlagDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCustomFieldsFlagDatasource.swift; sourceTree = "<group>"; };
+		3555EC7E2A27D20F00069996 /* RemoteFeatureFlagsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlagsDatasource.swift; sourceTree = "<group>"; };
 		3556949829D44DAE005DD2EB /* MoveItemEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemEndpoint.swift; sourceTree = "<group>"; };
 		3556949A29D44DEF005DD2EB /* MoveItemRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemRequest.swift; sourceTree = "<group>"; };
 		3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveVaultListView.swift; sourceTree = "<group>"; };
@@ -996,6 +1001,11 @@
 		355938C22A33583D0053B7F6 /* BackOffManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManager.swift; sourceTree = "<group>"; };
 		355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManagerTests.swift; sourceTree = "<group>"; };
 		355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProviderMock.swift; sourceTree = "<group>"; };
+		355938B82A331B220053B7F6 /* FeatureFlagsEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsEntity.swift; sourceTree = "<group>"; };
+		355938BA2A331BFF0053B7F6 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
+		355938BC2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureFlagsDatasource.swift; sourceTree = "<group>"; };
+		355938BE2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureFlagsDatasourceTests.swift; sourceTree = "<group>"; };
+		355938C02A333B010053B7F6 /* FeatureFlagsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsRepository.swift; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1725,6 +1735,7 @@
 			children = (
 				3552F48928D344E100547146 /* Alias.swift */,
 				354146D028D1F1E1007E45A6 /* AliasOptions.swift */,
+				355938BA2A331BFF0053B7F6 /* FeatureFlags.swift */,
 				355454C729E5EB0C005289E7 /* ItemKey.swift */,
 				3593DCF828A824FE00C235D3 /* ItemRevision.swift */,
 				355A5B0B2A03D3450089E0AC /* PassPlan.swift */,
@@ -1883,15 +1894,16 @@
 		35610B8528ABCE1900955ACB /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				35533BB629D58C8F00EC58DE /* RepositoryManager.swift */,
 				354146D928D1F585007E45A6 /* AliasRepository.swift */,
 				355AA31D29E97B0900C20F5F /* FavIconRepository.swift */,
+				355938C02A333B010053B7F6 /* FeatureFlagsRepository.swift */,
 				3542E2CA28D9FE8600194F24 /* ItemRepository.swift */,
 				355A5B132A041FCC0089E0AC /* PassPlanRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
-				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
+				35533BB629D58C8F00EC58DE /* RepositoryManager.swift */,
 				35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */,
 				356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */,
+				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
 				357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */,
 			);
 			path = Repositories;
@@ -2128,6 +2140,7 @@
 		357D9FCE28A9815500F012BB /* Datasources */ = {
 			isa = PBXGroup;
 			children = (
+				355938BE2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift */,
 				3542E2C628D9EB8000194F24 /* LocalItemDatasourceTests.swift */,
 				355A5B0F2A03D7D70089E0AC /* LocalPassPlanDatasourceTests.swift */,
 				358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */,
@@ -2225,6 +2238,7 @@
 		3593DD1428A8417100C235D3 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				355938B82A331B220053B7F6 /* FeatureFlagsEntity.swift */,
 				3542E2C428D9E2E700194F24 /* ItemEntity.swift */,
 				355A5B092A03D1F10089E0AC /* PassPlanEntity.swift */,
 				358A509128AD856D00F5285C /* PublicKeyEntity.swift */,
@@ -2250,6 +2264,7 @@
 			isa = PBXGroup;
 			children = (
 				3593DCE628A790F800C235D3 /* LocalDatasource.swift */,
+				355938BC2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift */,
 				3542E2C228D9E16600194F24 /* LocalItemDatasource.swift */,
 				355A5B0D2A03D6A20089E0AC /* LocalPassPlanDatasource.swift */,
 				358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */,
@@ -2265,10 +2280,10 @@
 		3593DD1A28A8462000C235D3 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
-				35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */,
 				354146D528D1F466007E45A6 /* RemoteAliasDatasource.swift */,
-				3555EC7E2A27D20F00069996 /* RemoteCustomFieldsFlagDatasource.swift */,
+				35610B7D28ABC9D200955ACB /* RemoteDatasource.swift */,
 				355AA31729E9525E00C20F5F /* RemoteFavIconDatasource.swift */,
+				3555EC7E2A27D20F00069996 /* RemoteFeatureFlagsDatasource.swift */,
 				3554747D29A8E71F0060B555 /* RemoteItemKeyDatasource.swift */,
 				35610B8328ABCCFF00955ACB /* RemoteItemRevisionDatasource.swift */,
 				355A5B112A041F550089E0AC /* RemotePassPlanDatasource.swift */,
@@ -4014,6 +4029,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */,
+				355938B92A331B220053B7F6 /* FeatureFlagsEntity.swift in Sources */,
 				3563401D2A23849200E22BFE /* GetUserSettingsEndpoint.swift in Sources */,
 				3542E2B828D9BE8200194F24 /* SymmetricKey+ChaChaPoly.swift in Sources */,
 				358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */,
@@ -4037,6 +4053,7 @@
 				35581806290A7DBF00DD94DB /* ShareEventIDEntity.swift in Sources */,
 				354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */,
 				358BD36D287D52AC00802A91 /* vault_v1.pb.swift in Sources */,
+				355938BD2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift in Sources */,
 				3552F49228D37CA800547146 /* ChangeMailboxesRequest.swift in Sources */,
 				35581817290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift in Sources */,
 				355888A429AE5EC3009AA775 /* AESGCM+ConvenientSealOpen.swift in Sources */,
@@ -4069,7 +4086,7 @@
 				3552F48A28D344E100547146 /* Alias.swift in Sources */,
 				3565362429EDD6F8007A43D3 /* SendEventsEndpoint.swift in Sources */,
 				355792E429E876B7001198DA /* DataResponse.swift in Sources */,
-				3555EC7F2A27D20F00069996 /* RemoteCustomFieldsFlagDatasource.swift in Sources */,
+				3555EC7F2A27D20F00069996 /* RemoteFeatureFlagsDatasource.swift in Sources */,
 				3554730829CDD3CC0092E0E4 /* UpdateVaultRequest.swift in Sources */,
 				35366AA428A4580E0085C24D /* GetItemsEndpoint.swift in Sources */,
 				355A5B122A041F550089E0AC /* RemotePassPlanDatasource.swift in Sources */,
@@ -4089,6 +4106,7 @@
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
 				354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */,
 				3529432E28DB455100E1F11B /* ItemSearchResult.swift in Sources */,
+				355938C12A333B010053B7F6 /* FeatureFlagsRepository.swift in Sources */,
 				356E88CC293899B100B27104 /* PullToRefreshable.swift in Sources */,
 				354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */,
 				3565621A29B9E1D200C43F72 /* ItemSortable.swift in Sources */,
@@ -4126,6 +4144,7 @@
 				358BD35E287D4E8000802A91 /* CryptoUtils.swift in Sources */,
 				350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */,
 				3593DD1328A8415300C235D3 /* PersistentContainerBuilder.swift in Sources */,
+				355938BB2A331BFF0053B7F6 /* FeatureFlags.swift in Sources */,
 				356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */,
 				355454C829E5EB0C005289E7 /* ItemKey.swift in Sources */,
 				358AB4992886FA7B00818B44 /* ShareKey.swift in Sources */,
@@ -4162,6 +4181,7 @@
 				3542E2BA28D9C12100194F24 /* SymmetricKey+ChaChaPolyTests.swift in Sources */,
 				3558180C290A829100DD94DB /* LocalShareEventIDDatasourceTests.swift in Sources */,
 				35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */,
+				355938BF2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift in Sources */,
 				357E13FD2A1BB7A9001B5791 /* PassPlanTests.swift in Sources */,
 				350A97DA2885C95D00A7168B /* UserData+Test.swift in Sources */,
 				355454C629E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift in Sources */,
