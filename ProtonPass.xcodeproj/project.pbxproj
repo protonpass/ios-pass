@@ -577,6 +577,7 @@
 		5B0C75002A2F61D000272CE8 /* Services+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* Services+DependencyInjections.swift */; };
 		5B0C75022A30776100272CE8 /* Tooling+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */; };
 		5B0C75032A30806D00272CE8 /* Tooling+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */; };
+		5B0C750D2A321DCD00272CE8 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1279,6 +1280,7 @@
 		5B0C74F42A2F45EC00272CE8 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5B0C74FB2A2F5F3400272CE8 /* Services+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Services+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tooling+DependencyInjection.swift"; sourceTree = "<group>"; };
+		5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5ED83C579352551B8FC8475F /* Pods-macOS.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-tf.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-tf.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
@@ -2470,6 +2472,7 @@
 		35E506AB286F920300A3F6EA /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				5B0C750B2A321DAE00272CE8 /* Extensions */,
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
 				3565FD47298CF8BB00E2A0EE /* Buttons */,
 				355DC72029E15E6D00946867 /* TextView */,
@@ -2659,6 +2662,14 @@
 				5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */,
 			);
 			path = DependencyInjection;
+			sourceTree = "<group>";
+		};
+		5B0C750B2A321DAE00272CE8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
@@ -4269,6 +4280,7 @@
 				355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */,
 				3562BCF529BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift in Sources */,
 				355DC72929E15EAF00946867 /* Modifiers.swift in Sources */,
+				5B0C750D2A321DCD00272CE8 /* Color+Extensions.swift in Sources */,
 				3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */,
 				355DC72629E15EAF00946867 /* Coordinator.swift in Sources */,
 				35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */,
