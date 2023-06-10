@@ -142,7 +142,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
             }
         }.compactMap { URL(string: $0) }
 
-        self.syncEventLoop = .init(userId: userId,
+        self.syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
+                                   userId: userId,
                                    shareRepository: shareRepository,
                                    shareEventIDRepository: shareEventIDRepository,
                                    remoteSyncEventsDatasource: remoteSyncEventsDatasource,
