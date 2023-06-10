@@ -60,6 +60,7 @@ public protocol SyncEventLoopDelegate: AnyObject {
 public enum SyncEventLoopSkipReason {
     case noInternetConnection
     case previousLoopNotFinished
+    case backOff
 }
 
 private let kThresholdRange = 5...15
@@ -69,6 +70,7 @@ public final class SyncEventLoop: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params
+    private let backOffManager: BackOffManagerProtocol
     private var reachability: Reachability?
     private var isReachable = true
     private var timer: Timer?
@@ -88,13 +90,15 @@ public final class SyncEventLoop: DeinitPrintable {
     public weak var delegate: SyncEventLoopDelegate?
     public weak var pullToRefreshDelegate: SyncEventLoopPullToRefreshDelegate?
 
-    public init(userId: String,
+    public init(currentDateProvider: CurrentDateProviderProtocol,
+                userId: String,
                 shareRepository: ShareRepositoryProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
                 itemRepository: ItemRepositoryProtocol,
                 shareKeyRepository: ShareKeyRepositoryProtocol,
                 logManager: LogManager) {
+        self.backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.userId = userId
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
@@ -180,6 +184,12 @@ private extension SyncEventLoop {
             return
         }
 
+        guard backOffManager.canProceed() else {
+            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+            delegate?.syncEventLoopDidSkipLoop(reason: .backOff)
+            return
+        }
+
         if ongoingTask != nil {
             delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished)
         } else {
@@ -196,6 +206,12 @@ private extension SyncEventLoop {
                 } catch {
                     logger.error(error)
                     delegate?.syncEventLoopDidFailLoop(error: error)
+                    if let responseError = error as? ResponseError,
+                       let httpCode = responseError.httpCode,
+                       (500...599).contains(httpCode) {
+                        // Server is down, backing off
+                        backOffManager.recordFailure()
+                    }
                 }
             }
         }
