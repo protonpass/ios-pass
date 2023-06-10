@@ -216,7 +216,6 @@ if [[ "$CONFIGURATION" == "Debug-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -260,7 +259,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-QA" ]]; then
@@ -304,7 +302,6 @@ if [[ "$CONFIGURATION" == "Release-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-TF" ]]; then
@@ -348,7 +345,6 @@ if [[ "$CONFIGURATION" == "Release-TF" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-KeyManager/ProtonCore_KeyManager.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Settings/ProtonCore_Settings.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

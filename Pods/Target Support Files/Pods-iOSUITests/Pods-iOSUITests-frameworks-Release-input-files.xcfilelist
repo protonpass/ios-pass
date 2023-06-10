@@ -12,8 +12,8 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCore_Observability.framewor
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework
 ${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework
-${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework
 ${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-ObfuscatedConstants/ProtonCore_ObfuscatedConstants.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework
 ${BUILT_PRODUCTS_DIR}/SwiftOTP/SwiftOTP.framework
+${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework
