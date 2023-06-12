@@ -164,6 +164,7 @@ final class PaymentsUICoordinator {
                 paymentsViewController.modalPresentation = true
                 let navigationController = LoginNavigationViewController(rootViewController: paymentsViewController)
                 navigationController.modalPresentationStyle = .pageSheet
+                navigationController.overrideUserInterfaceStyle = customization.inAppTheme().userInterfaceStyle
                 topViewController?.present(navigationController, animated: true)
                 completionHandler?(.open(vc: paymentsViewController, opened: true))
             case .none:

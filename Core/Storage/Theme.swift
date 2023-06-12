@@ -57,4 +57,15 @@ public enum Theme: Int, CustomStringConvertible, CaseIterable {
             return .unspecified
         }
     }
+    
+    public var inAppTheme: InAppTheme {
+        switch self {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        case .matchSystem:
+            return .matchSystem
+        }
+    }
 }

@@ -70,9 +70,12 @@ final class AppCoordinator {
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
         self.appData = appData
         self.keymaker = keymaker
-        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
-        self.apiManager = apiManager
         let preferences = Preferences()
+        let apiManager = APIManager(logManager: logManager,
+                                    appVer: appVersion,
+                                    appData: appData,
+                                    preferences: preferences)
+        self.apiManager = apiManager
         self.container = .Builder.build(name: kProtonPassContainerName,
                                         inMemory: false)
         self.credentialManager = CredentialManager(logManager: logManager)
@@ -171,7 +174,8 @@ final class AppCoordinator {
     }
 
     private func showWelcomeScene(reason: LogOutReason) {
-        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService)
+        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
+                                                    preferences: preferences)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         self.homepageCoordinator = nil
