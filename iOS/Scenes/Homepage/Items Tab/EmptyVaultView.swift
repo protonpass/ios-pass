@@ -23,60 +23,44 @@ import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
-    let viewModel: EmptyVaultViewModel
+    let onCreate: (ItemContentType) -> Void
 
     var body: some View {
-        ZStack {
-            VStack(alignment: .center) {
-                Text("Your vault is empty")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    .padding(.bottom, 8)
+        VStack(alignment: .center) {
+            Text("Your vault is empty")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .padding(.bottom, 8)
 
-                Text("Let's get started by creating your first item")
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 32)
+            Text("Let's get started by creating your first item")
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.bottom, 32)
 
-                ForEach(ItemContentType.allCases, id: \.rawValue) { type in
-                    CreateItemButton(icon: type.icon,
-                                     title: type.createItemTitle,
-                                     tintColor: type.normColor,
-                                     backgroundColor: type.normMinor1Color) {
-                        switch type {
-                        case .login:
-                            viewModel.createLogin()
-                        case .alias:
-                            viewModel.createAlias()
-                        case .note:
-                            viewModel.createNote()
-                        }
-                    }
+            ForEach(ItemContentType.allCases, id: \.self) { type in
+                CreateItemButton(type: type) {
+                    onCreate(type)
                 }
             }
-            .padding()
         }
+        .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 private struct CreateItemButton: View {
-    let icon: UIImage
-    let title: String
-    let tintColor: UIColor
-    let backgroundColor: UIColor
+    let type: ItemContentType
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             ZStack {
-                Color(uiColor: backgroundColor)
+                type.normMinor1Color.toColor
                 HStack {
                     iconImage
                     Spacer()
-                    Text(title)
-                        .foregroundColor(Color(uiColor: tintColor))
+                    Text(type.createItemTitle)
                     Spacer()
                     // Gimmick image to help center text
                     iconImage
@@ -86,15 +70,15 @@ private struct CreateItemButton: View {
             }
             .frame(height: 52)
             .clipShape(Capsule())
+            .foregroundColor(type.normColor.toColor)
         }
     }
 
     private var iconImage: some View {
-        Image(uiImage: icon)
+        Image(uiImage: type.icon)
             .resizable()
             .scaledToFit()
             .frame(maxWidth: 16, maxHeight: 16)
-            .foregroundColor(Color(uiColor: tintColor))
     }
 }
 

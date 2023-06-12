@@ -243,7 +243,6 @@ private extension HomepageCoordinator {
                                                   syncEventLoop: eventLoop,
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
-        itemsTabViewModel.emptyVaultViewModelDelegate = self
 
         let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
                                                       credentialManager: credentialManager,
@@ -625,6 +624,10 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         addNewEvent(type: .searchTriggered)
     }
 
+    func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType) {
+        presentCreateItemView(for: type.type)
+    }
+
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
         let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager,
                                                    logManager: logManager)
@@ -709,21 +712,6 @@ extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
 
     func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
         present(view, dismissible: dismissable)
-    }
-}
-
-// MARK: - EmptyVaultViewModelDelegate
-extension HomepageCoordinator: EmptyVaultViewModelDelegate {
-    func emptyVaultViewModelWantsToCreateLoginItem() {
-        presentCreateItemView(for: .login)
-    }
-
-    func emptyVaultViewModelWantsToCreateAliasItem() {
-        presentCreateItemView(for: .alias)
-    }
-
-    func emptyVaultViewModelWantsToCreateNoteItem() {
-        presentCreateItemView(for: .note)
     }
 }
 
