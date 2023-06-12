@@ -23,7 +23,7 @@ import XCTest
 
 final class BackOffManagerTests: XCTestCase {
     private var currentDateProviderMock: CurrentDateProviderMock!
-    private var sut: BackOffManagerProtocol!
+    private var sut: BackOffManager!
 
     override func setUp() {
         super.setUp()

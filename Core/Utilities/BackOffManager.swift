@@ -20,11 +20,8 @@
 
 import Foundation
 
-/// Keep track of failures and double the wait time when failure occurs
-public protocol BackOffManagerProtocol: AnyObject {
-    var failureDates: [Date] { get set }
-    var currentDateProvider: CurrentDateProviderProtocol { get }
-
+/// Keep track of failures and increase the wait time when failure occurs
+public protocol BackOffManagerProtocol {
     /// Call this function when failure occurs and we want to back off
     func recordFailure()
 
@@ -33,12 +30,22 @@ public protocol BackOffManagerProtocol: AnyObject {
     func canProceed() -> Bool
 }
 
-public extension BackOffManagerProtocol {
-    func recordFailure() {
+public final class BackOffManager {
+    public var failureDates: [Date]
+    public let currentDateProvider: CurrentDateProviderProtocol
+
+    public init(currentDateProvider: CurrentDateProviderProtocol) {
+        self.failureDates = []
+        self.currentDateProvider = currentDateProvider
+    }
+}
+
+extension BackOffManager: BackOffManagerProtocol {
+    public func recordFailure() {
         failureDates.append(currentDateProvider.getCurrentDate())
     }
 
-    func canProceed() -> Bool {
+    public func canProceed() -> Bool {
         guard let mostRecentFailureDate = failureDates.last else { return true }
         let stride = BackOffStride.stride(failureCount: failureDates.count)
         let thresholdDate = mostRecentFailureDate.adding(component: .second,
@@ -49,16 +56,6 @@ public extension BackOffManagerProtocol {
             failureDates.removeAll()
         }
         return canProceed
-    }
-}
-
-public final class BackOffManager: BackOffManagerProtocol {
-    public var failureDates: [Date]
-    public let currentDateProvider: CurrentDateProviderProtocol
-
-    public init(currentDateProvider: CurrentDateProviderProtocol) {
-        self.failureDates = []
-        self.currentDateProvider = currentDateProvider
     }
 }
 
