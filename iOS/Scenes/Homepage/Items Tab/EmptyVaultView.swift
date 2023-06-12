@@ -23,29 +23,33 @@ import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
+    private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     let onCreate: (ItemContentType) -> Void
 
     var body: some View {
-        VStack(alignment: .center) {
-            Text("Your vault is empty")
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                .padding(.bottom, 8)
+        ScrollView {
+            VStack(alignment: .center, spacing: 0) {
+                Text("Your vault is empty")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .padding(.bottom, 8)
 
-            Text("Let's get started by creating your first item")
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.bottom, 32)
+                Text("Let's get started by creating your first item")
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 32)
 
-            ForEach(ItemContentType.allCases, id: \.self) { type in
-                CreateItemButton(type: type) {
-                    onCreate(type)
+                LazyVGrid(columns: columns) {
+                    ForEach(ItemContentType.allCases, id: \.self) { type in
+                        CreateItemButton(type: type) {
+                            onCreate(type)
+                        }
+                    }
                 }
             }
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -55,30 +59,26 @@ private struct CreateItemButton: View {
 
     var body: some View {
         Button(action: action) {
-            ZStack {
-                type.normMinor1Color.toColor
-                HStack {
-                    iconImage
-                    Spacer()
-                    Text(type.createItemTitle)
-                    Spacer()
-                    // Gimmick image to help center text
-                    iconImage
-                        .opacity(0)
-                }
-                .padding(.horizontal)
-            }
-            .frame(height: 52)
-            .clipShape(Capsule())
-            .foregroundColor(type.normColor.toColor)
-        }
-    }
+            VStack {
+                Image(uiImage: type.icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 20, maxHeight: 20)
+                    .padding(.top, 28)
 
-    private var iconImage: some View {
-        Image(uiImage: type.icon)
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: 16, maxHeight: 16)
+                Text(type.createItemTitle)
+                    .lineLimit(2)
+                    .font(.callout)
+
+                Spacer()
+            }
+            .frame(height: 122)
+            .frame(maxWidth: .infinity, alignment: .top)
+            .padding(.horizontal)
+            .foregroundColor(type.normColor.toColor)
+            .background(type.normMinor1Color.toColor)
+            .clipShape(RoundedRectangle(cornerRadius: 32))
+        }
     }
 }
 
