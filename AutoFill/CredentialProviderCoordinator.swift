@@ -87,9 +87,12 @@ public final class CredentialProviderCoordinator {
         let logManager = LogManager(module: .autoFillExtension)
         let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
-        let apiManager = APIManager(logManager: logManager, appVer: appVersion, appData: appData)
-        let bannerManager = BannerManager(container: rootViewController)
         let preferences = Preferences()
+        let apiManager = APIManager(logManager: logManager,
+                                    appVer: appVersion,
+                                    appData: appData,
+                                    preferences: preferences)
+        let bannerManager = BannerManager(container: rootViewController)
 
         self.apiManager = apiManager
         self.appData = appData
