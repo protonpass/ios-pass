@@ -81,6 +81,7 @@ target 'Core' do
 
   target 'CoreTests' do
     pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+    pod "ProtonCore-TestingToolkit/UnitTests/Core", :git => proton_core_path, :tag => proton_core_version
   end
 
 end

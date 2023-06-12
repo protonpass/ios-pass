@@ -131,7 +131,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.apiService = apiService
         self.clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        self.eventLoop = .init(userId: userData.user.ID,
+        self.eventLoop = .init(currentDateProvider: CurrentDateProvider(),
+                               userId: userData.user.ID,
                                shareRepository: shareRepository,
                                shareEventIDRepository: shareEventIDRepository,
                                remoteSyncEventsDatasource: remoteSyncEventsDatasource,
