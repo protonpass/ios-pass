@@ -205,3 +205,28 @@ public extension Plan {
         )
     }
 }
+
+extension Plan {
+    static func sortPurchasablePlans(lhs: Plan, rhs: Plan) -> Bool {
+        // There are three rules to sorting plans:
+        // 1. Sort by offer: if plan has offer, rise it to the top
+        //    We detect the offer by checking if pricing and defaultPricing differ
+        // 2. Sort by pricing: if plan is more expensive, rise to the top
+        // 3. Keep server order
+        let leftCycle = lhs.cycle.map(String.init) ?? InAppPurchasePlan.defaultCycle
+        let rightCycle = rhs.cycle.map(String.init) ?? InAppPurchasePlan.defaultCycle
+        let isLeftAnOffer = lhs.hasAnOffer(cycle: leftCycle)
+        let isRightAnOffer = rhs.hasAnOffer(cycle: rightCycle)
+        if isLeftAnOffer, !isRightAnOffer { return true }
+        if !isLeftAnOffer, isRightAnOffer { return false }
+        return lhs.pricing(for: leftCycle) ?? 0 > rhs.pricing(for: rightCycle) ?? 0
+    }
+    
+    private func hasAnOffer(cycle: String) -> Bool {
+        guard let pricing = pricing(for: cycle),
+              let defaultPricing = defaultPricing(for: cycle) else {
+            return false
+        }
+        return pricing != defaultPricing
+    }
+}

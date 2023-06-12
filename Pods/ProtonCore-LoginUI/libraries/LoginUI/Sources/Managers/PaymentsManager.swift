@@ -37,7 +37,7 @@ class PaymentsManager {
     private var loginData: LoginData?
     private weak var existingDelegate: StoreKitManagerDelegate?
     
-    init(apiService: APIService, iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, clientApp: ClientApp, reportBugAlertHandler: BugAlertHandler) {
+    init(apiService: APIService, iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, clientApp: ClientApp, customization: PaymentsUICustomizationOptions, reportBugAlertHandler: BugAlertHandler) {
         self.api = apiService
         self.payments = Payments(inAppPurchaseIdentifiers: iaps,
                                  apiService: api,
@@ -48,7 +48,9 @@ class PaymentsManager {
         }
         storeExistingDelegate()
         payments.storeKitManager.delegate = self
-        paymentsUI = PaymentsUI(payments: payments, clientApp: clientApp, shownPlanNames: shownPlanNames)
+        paymentsUI = PaymentsUI(
+            payments: payments, clientApp: clientApp, shownPlanNames: shownPlanNames, customization: customization
+        )
     }
     
     func startPaymentProcess(signupViewController: SignupViewController,

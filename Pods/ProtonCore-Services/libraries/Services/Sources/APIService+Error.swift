@@ -69,6 +69,8 @@ public class APIErrorCode {
     public static let badApiVersion = 5005
     public static let appVersionTooOldForExternalAccounts = 5098
     public static let appVersionNotSupportedForExternalAccounts = 5099
+    public static let switchToSSOError = 8100
+    public static let switchToSRPError = 8101
     public static let humanVerificationRequired = 9001
     public static let deviceVerificationRequired = 9002
     public static let invalidVerificationCode = 12087
@@ -96,6 +98,16 @@ public extension ResponseError {
         guard let responseCode = responseCode else { return false }
         return responseCode == APIErrorCode.appVersionNotSupportedForExternalAccounts
     }
+    
+    var isSwitchToSSOError: Bool {
+        guard let responseCode = responseCode else { return false }
+        return responseCode == APIErrorCode.switchToSSOError
+    }
+    
+    var isSwitchToSRPError: Bool {
+        guard let responseCode = responseCode else { return false }
+        return responseCode == APIErrorCode.switchToSRPError
+    }
 }
 
 public extension AuthErrors {
@@ -106,6 +118,10 @@ public extension AuthErrors {
             return .externalAccountsNotSupported(message: responseError.localizedDescription, title: CoreString._ls_external_accounts_update_required_popup_title, originalError: responseError)
         } else if responseError.isAppVersionNotSupportedForExternalAccountsError {
             return .externalAccountsNotSupported(message: responseError.localizedDescription, title: CoreString._ls_external_accounts_address_required_popup_title, originalError: responseError)
+        } else if responseError.isSwitchToSRPError {
+            return .switchToSSOError
+        } else if responseError.isSwitchToSRPError {
+            return .switchToSRPError
         } else {
             return .networkingError(responseError)
         }

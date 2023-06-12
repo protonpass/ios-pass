@@ -58,65 +58,38 @@ extension PMAPIService {
         self.isPasswordVerifyUIPresented.mutate { $0 = true }
 
         missingScopesDelegate?.onMissingScopesHandling(authInfo: authInfo, username: username, responseHandlerData: responseHandlerData) { [weak self] reason in
+            
             guard let self else { return }
+            
+            if self.isPasswordVerifyUIPresented.transform({ $0 }) {
+                self.isPasswordVerifyUIPresented.mutate { $0 = false }
+            }
+            
             switch reason {
-            case .verified(let srpClientInfo):
+            case .unlocked:
                 self.verificationHandler(
-                    srpClientInfo: srpClientInfo,
-                    srpSession: authInfo.srpSession,
-                    headers: responseHandlerData.headers,
-                    authenticated: responseHandlerData.authenticated,
-                    authRetry: responseHandlerData.authRetry,
-                    authRetryRemains: responseHandlerData.authRetryRemains,
-                    customAuthCredential: responseHandlerData.customAuthCredential,
-                    nonDefaultTimeout: responseHandlerData.nonDefaultTimeout,
-                    retryPolicy: responseHandlerData.retryPolicy,
+                    responseHandlerData: responseHandlerData,
                     completion: completion
                 )
             case .closed:
                 completion.call(task: responseHandlerData.task, error: NSError())
-                if self.isPasswordVerifyUIPresented.transform({ $0 }) {
-                    self.isPasswordVerifyUIPresented.mutate { $0 = false }
-                }
             case .closedWithError(let code, let description):
                 let newResponseError = APIError.protonMailError(code, localizedDescription: description)
                 completion.call(task: responseHandlerData.task, error: newResponseError as NSError)
-                if self.isPasswordVerifyUIPresented.transform({ $0 }) {
-                    self.isPasswordVerifyUIPresented.mutate { $0 = false }
-                }
             }
         }
     }
     
     // swiftlint:disable function_parameter_count
-    private func verificationHandler<T>(srpClientInfo: SRPClientInfo,
-                                        srpSession: String,
-                                        headers: [String: Any]?,
-                                        authenticated: Bool,
-                                        authRetry: Bool,
-                                        authRetryRemains: Int,
-                                        customAuthCredential: AuthCredential? = nil,
-                                        nonDefaultTimeout: TimeInterval?,
-                                        retryPolicy: ProtonRetryPolicy.RetryMode,
+    private func verificationHandler<T>(responseHandlerData: PMResponseHandlerData,
                                         completion: APIResponseCompletion<T>) where T: Decodable {
-       
-        let parameters: [String: String] = [
-            "ClientEphemeral": srpClientInfo.clientEphemeral.base64EncodedString(),
-            "ClientProof": srpClientInfo.clientProof.base64EncodedString(),
-            "SRPSession": srpSession
-        ]
-        
-        self.startRequest(
-            method: .put,
-            path: "/users/unlock",
-            parameters: parameters,
-            headers: headers,
-            authenticated: authenticated,
-            authRetry: authRetry,
-            authRetryRemains: authRetryRemains,
-            customAuthCredential: customAuthCredential,
-            nonDefaultTimeout: nonDefaultTimeout,
-            retryPolicy: retryPolicy,
+        startRequest(
+            method: responseHandlerData.method,
+            path: responseHandlerData.path,
+            parameters: responseHandlerData.parameters,
+            headers: responseHandlerData.headers,
+            nonDefaultTimeout: responseHandlerData.nonDefaultTimeout,
+            retryPolicy: responseHandlerData.retryPolicy,
             completion: completion
         )
     }

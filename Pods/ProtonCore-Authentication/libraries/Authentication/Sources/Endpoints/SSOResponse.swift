@@ -1,6 +1,6 @@
 //
-//  UIStoryboard+Extensions.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  AuthService.swift
+//  ProtonCore-Authentication - Created on 20/02/2020.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,17 +20,23 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import UIKit
-import ProtonCore_UIFoundations
+import ProtonCore_Services
+import ProtonCore_Networking
+import ProtonCore_Utilities
 
-extension UIStoryboard {
-    static func instantiate<T: UIViewController>(
-        storyboardName: String, controllerType: T.Type, inAppTheme: () -> InAppTheme
-    ) -> T {
-        let storyboard = UIStoryboard(name: storyboardName, bundle: PaymentsUI.bundle)
-        let name = "\(controllerType)".replacingOccurrences(of: "ViewController", with: "")
-        let viewController = storyboard.instantiateViewController(withIdentifier: name) as! T
-        viewController.overrideUserInterfaceStyle = inAppTheme().userInterfaceStyle
-        return viewController
+final class SSOResponse: Response, APIDecodableResponse {
+    var ssoChallengeToken: String
+    
+    public init(ssoChallengeToken: String) {
+        self.ssoChallengeToken = ssoChallengeToken
+    }
+    
+    @available(*, unavailable)
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case ssoChallengeToken = "SSOChallengeToken"
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Settings",
-  "version": "7.1.0",
+  "version": "8.0.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": null,
-    "tag": "7.1.0"
+    "tag": "8.0.1"
   },
   "platforms": {
     "ios": "14.0"
@@ -47,7 +47,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "7.1.0"
+          "8.0.1"
         ]
       },
       "source_files": "libraries/Settings/Tests/**/*.swift"
