@@ -101,7 +101,7 @@ final class APIManagerTests: XCTestCase {
         let appData = givenAppData()
 
         // WHEN
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         // THEN
         XCTAssertEqual(apiService.apiService.sessionUID, .empty)
@@ -120,7 +120,7 @@ final class APIManagerTests: XCTestCase {
         let appData = givenAppData()
 
         // WHEN
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         // THEN
         XCTAssertEqual(apiService.apiService.sessionUID, "test_session_id")
@@ -140,7 +140,7 @@ final class APIManagerTests: XCTestCase {
         let appData = givenAppData()
 
         // WHEN
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         // THEN
         XCTAssertEqual(apiService.apiService.sessionUID, "test_session_id")
@@ -152,7 +152,7 @@ final class APIManagerTests: XCTestCase {
         // GIVEN
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         // WHEN
         apiService.sessionIsAvailable(authCredential: unauthSessionCredentials, scopes: .empty)
@@ -176,7 +176,7 @@ final class APIManagerTests: XCTestCase {
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         // WHEN
         apiService.sessionIsAvailable(authCredential: userData.credential,
@@ -204,7 +204,7 @@ final class APIManagerTests: XCTestCase {
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         // WHEN
         apiService.clearCredentials()
@@ -227,7 +227,7 @@ final class APIManagerTests: XCTestCase {
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         final class TestAPIManagerDelegate: APIManagerDelegate {
             @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
@@ -256,7 +256,7 @@ final class APIManagerTests: XCTestCase {
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         final class TestAPIManagerDelegate: APIManagerDelegate {
             @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
@@ -285,7 +285,7 @@ final class APIManagerTests: XCTestCase {
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         let newUnauthCredentials = AuthCredential(sessionID: "new_test_session_id",
                                                   accessToken: "new_test_access_token",
@@ -321,7 +321,7 @@ final class APIManagerTests: XCTestCase {
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData)
+        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
 
         let newUnauthCredentials = AuthCredential(sessionID: "new_test_session_id",
                                                   accessToken: "new_test_access_token",
