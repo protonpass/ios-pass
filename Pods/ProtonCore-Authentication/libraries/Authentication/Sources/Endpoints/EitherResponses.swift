@@ -1,6 +1,6 @@
 //
-//  UIStoryboard+Extensions.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  EitherResponses.swift
+//  ProtonCore-Authentication - Created on 25/05/2023.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,18 +19,23 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
-import UIKit
-import ProtonCore_UIFoundations
+import ProtonCore_Services
+import ProtonCore_Networking
+import ProtonCore_Utilities
 
-extension UIStoryboard {
-    static func instantiate<T: UIViewController>(
-        storyboardName: String, controllerType: T.Type, inAppTheme: () -> InAppTheme
-    ) -> T {
-        let storyboard = UIStoryboard(name: storyboardName, bundle: PaymentsUI.bundle)
-        let name = "\(controllerType)".replacingOccurrences(of: "ViewController", with: "")
-        let viewController = storyboard.instantiateViewController(withIdentifier: name) as! T
-        viewController.overrideUserInterfaceStyle = inAppTheme().userInterfaceStyle
-        return viewController
+final class EitherResponses: Response, APIDecodableResponse {
+    var response: Either<AuthInfoResponse, SSOResponse>
+    
+    required init(from decoder: Decoder) throws {
+        do {
+            let authInfoResponse = try AuthInfoResponse(from: decoder)
+            response = .left(authInfoResponse)
+        } catch {
+            try response = .right(SSOResponse(from: decoder))
+        }
+    }
+    
+    required init() {
+        response = .left(AuthInfoResponse(modulus: "", serverEphemeral: "", version: 0, salt: "", srpSession: ""))
     }
 }

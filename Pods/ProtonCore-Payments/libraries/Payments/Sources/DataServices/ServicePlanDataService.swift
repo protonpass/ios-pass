@@ -227,11 +227,7 @@ extension ServicePlanDataService {
             .filter {
                 InAppPurchasePlan.protonPlanIsPresentInIAPIdentifierList(protonPlan: $0, identifiers: self.listOfIAPIdentifiers())
             }
-            .sorted {
-                let leftCycle = $0.cycle.map(String.init) ?? InAppPurchasePlan.defaultCycle
-                let rightCycle = $1.cycle.map(String.init) ?? InAppPurchasePlan.defaultCycle
-                return $0.pricing(for: leftCycle) ?? 0 > $1.pricing(for: rightCycle) ?? 0
-            }
+            .sorted(by: Plan.sortPurchasablePlans)
             ?? []
 
         let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)

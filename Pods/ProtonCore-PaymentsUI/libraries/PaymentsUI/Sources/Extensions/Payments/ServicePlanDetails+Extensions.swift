@@ -274,6 +274,10 @@ extension Plan {
     func forwardingMailboxesDescription(number: Int) -> String {
         String(format: CoreString._plan_details_forwarding_mailboxes, "\(number)")
     }
+    
+    var customFieldsDescription: String {
+        CoreString._plan_details_custom_fields
+    }
 
     var prioritySupportDescription: String {
         CoreString._plan_details_priority_support

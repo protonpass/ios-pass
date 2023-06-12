@@ -86,7 +86,6 @@ open class SnapshotTestCase: XCTestCase {
 }
 
 #if os(iOS)
-@available(iOS 12.0, *)
 extension UIUserInterfaceStyle: CustomStringConvertible {
     public var description: String {
         switch self {

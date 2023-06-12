@@ -29,8 +29,8 @@ public class PMCountryPicker {
         countryCodeViewModel = CountryCodeViewModel(searchBarPlaceholderText: searchBarPlaceholderText)
     }
 
-    public func getCountryPickerViewController() -> CountryPickerViewController {
-        let countryPickerViewController = instatntiateVC(method: CountryPickerViewController.self, identifier: "CountryPickerViewController")
+    public func getCountryPickerViewController(inAppTheme: () -> InAppTheme) -> CountryPickerViewController {
+        let countryPickerViewController = instantiateVC(method: CountryPickerViewController.self, identifier: "CountryPickerViewController", inAppTheme: inAppTheme)
         countryPickerViewController.viewModel = countryCodeViewModel
         return countryPickerViewController
     }
@@ -41,9 +41,12 @@ public class PMCountryPicker {
 }
 
 extension PMCountryPicker {
-    private func instatntiateVC <T: UIViewController>(method: T.Type, identifier: String) -> T {
+    private func instantiateVC<T: UIViewController>(
+        method: T.Type, identifier: String, inAppTheme: () -> InAppTheme
+    ) -> T {
         let storyboard = UIStoryboard.init(name: "CountryPicker", bundle: PMUIFoundations.bundle)
         let customViewController = storyboard.instantiateViewController(withIdentifier: identifier) as! T
+        customViewController.overrideUserInterfaceStyle = inAppTheme().userInterfaceStyle
         return customViewController
     }
 }

@@ -29,7 +29,7 @@ public protocol MissingScopesDelegate: AnyObject {
 }
 
 public enum MissingScopesFinishReason {
-    case verified(SRPClientInfo)
+    case unlocked
     case closed
     case closedWithError(code: Int, description: String)
 }
