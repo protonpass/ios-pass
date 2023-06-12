@@ -42,7 +42,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     private let aliasRepository: AliasRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private let logManager: LogManager
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
@@ -57,7 +57,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     init(aliasRepository: AliasRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
          vaultsManager: VaultsManager,
@@ -66,7 +66,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
         self.aliasRepository = aliasRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
-        self.remoteCustomFieldsFlagDatasource = remoteCustomFieldsFlagDatasource
+        self.featureFlagsRepository = featureFlagsRepository
         self.logManager = logManager
         self.preferences = preferences
         self.vaultsManager = vaultsManager
@@ -129,7 +129,7 @@ private extension CreateEditItemCoordinator {
             itemRepository: itemRepository,
             aliasRepository: aliasRepository,
             upgradeChecker: upgradeChecker,
-            remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
+            featureFlagsRepository: featureFlagsRepository,
             vaults: vaultsManager.getAllVaults(),
             preferences: preferences,
             logManager: logManager,
@@ -147,7 +147,7 @@ private extension CreateEditItemCoordinator {
             itemRepository: itemRepository,
             aliasRepository: aliasRepository,
             upgradeChecker: upgradeChecker,
-            remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
+            featureFlagsRepository: featureFlagsRepository,
             vaults: vaultsManager.getAllVaults(),
             preferences: preferences,
             logManager: logManager)
@@ -163,7 +163,7 @@ private extension CreateEditItemCoordinator {
             mode: mode,
             itemRepository: itemRepository,
             upgradeChecker: upgradeChecker,
-            remoteCustomFieldsFlagDatasource: remoteCustomFieldsFlagDatasource,
+            featureFlagsRepository: featureFlagsRepository,
             vaults: vaultsManager.getAllVaults(),
             preferences: preferences,
             logManager: logManager)

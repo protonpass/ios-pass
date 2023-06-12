@@ -1,5 +1,5 @@
 //
-// RemoteCustomFieldsFlagDatasource.swift
+// RemoteFeatureFlagsDatasource.swift
 // Proton Pass - Created on 31/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,11 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteCustomFieldsFlagDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteFeatureFlagsDatasourceProtocol: RemoteDatasourceProtocol {
     func getCustomFieldsFlag() async throws -> CustomFieldsFlag
 }
 
-public extension RemoteCustomFieldsFlagDatasourceProtocol {
+public extension RemoteFeatureFlagsDatasourceProtocol {
     func getCustomFieldsFlag() async throws -> CustomFieldsFlag {
         let endpoint = GetCustomFieldsFlagEndpoint()
         let response = try await apiService.exec(endpoint: endpoint)
@@ -30,4 +30,4 @@ public extension RemoteCustomFieldsFlagDatasourceProtocol {
     }
 }
 
-public final class RemoteCustomFieldsFlagDatasource: RemoteDatasource, RemoteCustomFieldsFlagDatasourceProtocol {}
+public final class RemoteFeatureFlagsDatasource: RemoteDatasource, RemoteFeatureFlagsDatasourceProtocol {}

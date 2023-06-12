@@ -75,7 +75,7 @@ class BaseCreateEditItemViewModel {
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
-    let remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol
+    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     let preferences: Preferences
     let logger: Logger
     let vaults: [Vault]
@@ -89,7 +89,7 @@ class BaseCreateEditItemViewModel {
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         remoteCustomFieldsFlagDatasource: RemoteCustomFieldsFlagDatasourceProtocol,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) throws {
@@ -109,7 +109,7 @@ class BaseCreateEditItemViewModel {
         self.mode = mode
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
-        self.remoteCustomFieldsFlagDatasource = remoteCustomFieldsFlagDatasource
+        self.featureFlagsRepository = featureFlagsRepository
         self.preferences = preferences
         self.logger = .init(manager: logManager)
         self.vaults = vaults
@@ -170,8 +170,8 @@ private extension BaseCreateEditItemViewModel {
     func checkIfCustomFieldsAreSupported() {
         Task { @MainActor in
             do {
-                let flag = try await remoteCustomFieldsFlagDatasource.getCustomFieldsFlag()
-                customFieldsSupported = flag.value
+                let featureFlags = try await featureFlagsRepository.getFlags()
+                customFieldsSupported = featureFlags.customFields
             } catch {
                 logger.error(error)
                 delegate?.createEditItemViewModelDidEncounter(error: error)
