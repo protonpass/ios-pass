@@ -47,16 +47,13 @@ enum ItemSquircleThumbnailSize {
 struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
-    let data: ItemThumbnailData
-    let repository: FavIconRepositoryProtocol
-    let size: ItemSquircleThumbnailSize
+    private let data: ItemThumbnailData
+    private let repository: FavIconRepositoryProtocol
+    private let size: ItemSquircleThumbnailSize
 
     init(data: ItemThumbnailData,
          repository: FavIconRepositoryProtocol,
          size: ItemSquircleThumbnailSize = .regular) {
-        if let url = data.url, let cachedFavIcon = repository.getCachedIcon(for: url) {
-            self._image = .init(initialValue: .init(data: cachedFavIcon.data))
-        }
         self.data = data
         self.repository = repository
         self.size = size
@@ -117,13 +114,21 @@ struct ItemSquircleThumbnail: View {
     }
 
     private func loadFavIcon(url: String, force: Bool) {
-        if !force, image != nil { return }
-        if force { image = nil }
-        Task { @MainActor in
+        if !force, image != nil {
+            return
+        }
+        
+        if force {
+            image = nil
+        }
+        
+        Task {
             do {
                 if let favIcon = try await repository.getIcon(for: url),
                    let image = UIImage(data: favIcon.data) {
-                    self.image = image
+                    await MainActor.run {
+                        self.image = image
+                    }
                 }
             } catch {
                 print(error)
