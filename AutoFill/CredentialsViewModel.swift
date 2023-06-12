@@ -34,10 +34,6 @@ struct CredentialsFetchResult {
     var isEmpty: Bool {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
     }
-    
-    static var `default`: CredentialsFetchResult {
-        CredentialsFetchResult(vaults: [], searchableItems: [], matchedItems: [], notMatchedItems: [])
-    }
 }
 
 protocol CredentialsViewModelDelegate: AnyObject {
@@ -105,7 +101,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger: Logger
-    private var results = CredentialsFetchResult.default
     
     let favIconRepository: FavIconRepositoryProtocol
     let logManager: LogManager
@@ -139,6 +134,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
         self.urls = serviceIdentifiers.compactMap { serviceIdentifier in
+            // ".domain" means in app context where identifiers don't have protocol,
+            // so we manually add https as protocol otherwise URL comparison would not work without protocol.
             let id = serviceIdentifier.type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
             return URL(string: id)
         }
@@ -269,8 +266,7 @@ private extension CredentialsViewModel {
             state = .loaded(fetchResult, .idle)
             return
         }
-         // run your work
-    
+         
         lastTask?.cancel()
         lastTask = Task { @MainActor [weak self] in
             guard let self else {
@@ -301,7 +297,10 @@ private extension CredentialsViewModel {
         syncEventLoop.start()
         fetchItems()
         
-        cleanQuery
+        $query
+            .debounce(for: 0.2, scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink { [weak self] term in
@@ -327,16 +326,6 @@ private extension CredentialsViewModel {
                 self?.isShowingConfirmationAlert = true
             }
             .store(in: &cancellables)
-    }
-    
-    var cleanQuery: AnyPublisher<String, Never> {
-        $query
-            .debounce(for: 0.5, scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .map { query in
-                query.trimmingCharacters(in: .whitespacesAndNewlines)
-            }
-            .eraseToAnyPublisher()
     }
 }
 
