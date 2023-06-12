@@ -28,9 +28,7 @@ import UIComponents
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
-    @State private var query = ""
     @State private var isLocked: Bool
-    @State private var selectedNotMatchedItem: TitledItemIdentifiable?
     private let preferences: Preferences
 
     init(viewModel: CredentialsViewModel, preferences: Preferences) {
@@ -40,14 +38,6 @@ struct CredentialsView: View {
     }
 
     var body: some View {
-        let isShowingConfirmationAlert = Binding<Bool>(get: {
-            viewModel.urls.first != nil && selectedNotMatchedItem != nil
-        }, set: { newValue in
-            if !newValue {
-                selectedNotMatchedItem = nil
-            }
-        })
-
         ZStack {
             Color(uiColor: PassColor.backgroundNorm)
                 .ignoresSafeArea()
@@ -81,9 +71,9 @@ struct CredentialsView: View {
         .animation(.default, value: isLocked)
         .alert(
             "Associate URL?",
-            isPresented: isShowingConfirmationAlert,
+            isPresented: $viewModel.isShowingConfirmationAlert,
             actions: {
-                if let selectedNotMatchedItem {
+                if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem {
                     Button(action: {
                         viewModel.associateAndAutofill(item: selectedNotMatchedItem)
                     }, label: {
@@ -102,7 +92,7 @@ struct CredentialsView: View {
                 }
             },
             message: {
-                if let selectedNotMatchedItem,
+                if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem,
                    let schemeAndHost = viewModel.urls.first?.schemeAndHost {
                     // swiftlint:disable:next line_length
                     Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.itemTitle)\"?")
@@ -116,7 +106,7 @@ private extension CredentialsView {
     func resultView(result: CredentialsFetchResult,
                     state: CredentialsViewLoadedState) -> some View {
         VStack(spacing: 0) {
-            SearchBar(query: $query,
+            SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
                       onCancel: viewModel.cancel)
@@ -133,7 +123,7 @@ private extension CredentialsView {
                 ProgressView()
 
             case .noSearchResults:
-                NoSearchResultsInAllVaultView(query: query)
+                NoSearchResultsInAllVaultView(query: viewModel.query)
 
             case .searchResults(let results):
                 searchResults(results)
@@ -148,7 +138,6 @@ private extension CredentialsView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: state)
         .animation(.default, value: viewModel.planType)
-        .onChange(of: query) { viewModel.search(term: $0) }
     }
     
     func itemList(matchedItems: [ItemUiModel],
@@ -401,7 +390,7 @@ private extension CredentialsView {
             // before asking if user wants to "associate & autofill".
             if let schemeAndHost = viewModel.urls.first?.schemeAndHost,
                !schemeAndHost.isEmpty {
-                selectedNotMatchedItem = item
+                viewModel.selectedNotMatchedItem = item
             } else {
                 viewModel.select(item: item)
             }

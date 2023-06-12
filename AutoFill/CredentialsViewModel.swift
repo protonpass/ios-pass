@@ -34,6 +34,10 @@ struct CredentialsFetchResult {
     var isEmpty: Bool {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
     }
+    
+    static var `default`: CredentialsFetchResult {
+        CredentialsFetchResult(vaults: [], searchableItems: [], matchedItems: [], notMatchedItems: [])
+    }
 }
 
 protocol CredentialsViewModelDelegate: AnyObject {
@@ -84,11 +88,14 @@ enum CredentialItem {
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
     @Published private(set) var planType: PassPlan.PlanType?
-
+    @Published var query = ""
+    @Published var selectedNotMatchedItem: TitledItemIdentifiable?
+    @Published var isShowingConfirmationAlert = false
+    
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+
     var selectedSortType = SortType.mostRecent
 
-    private let searchTermSubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
@@ -98,6 +105,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger: Logger
+    private var results = CredentialsFetchResult.default
+    
     let favIconRepository: FavIconRepositoryProtocol
     let logManager: LogManager
     let urls: [URL]
@@ -110,7 +119,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
-
+    
     init(userId: String,
          shareRepository: ShareRepositoryProtocol,
          shareEventIDRepository: ShareEventIDRepositoryProtocol,
@@ -129,18 +138,10 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
         self.favIconRepository = favIconRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
-        self.urls = serviceIdentifiers.map { serviceIdentifier in
-            switch serviceIdentifier.type {
-            case .URL:
-                // Web context
-                return serviceIdentifier.identifier
-            case .domain:
-                // App context
-                return "https://\(serviceIdentifier.identifier)"
-            @unknown default:
-                return serviceIdentifier.identifier
-            }
-        }.compactMap { URL(string: $0) }
+        self.urls = serviceIdentifiers.compactMap { serviceIdentifier in
+            let id = serviceIdentifier.type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
+            return URL(string: id)
+        }
 
         self.syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
                                    userId: userId,
@@ -155,40 +156,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
         self.logger = .init(manager: logManager)
         self.preferences = preferences
 
-        self.syncEventLoop.delegate = self
-        syncEventLoop.start()
-        fetchItems()
-        searchTermSubject
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .sink { [unowned self] term in
-                self.doSearch(term: term)
-            }
-            .store(in: &cancellables)
-    }
-
-    private func doSearch(term: String) {
-        guard case let .loaded(fetchResult, _) = state else { return }
-
-        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !term.isEmpty else {
-            state = .loaded(fetchResult, .idle)
-            return
-        }
-
-        lastTask?.cancel()
-        lastTask = Task { @MainActor in
-            let hashedTerm = term.sha256
-            logger.trace("Searching for term \(hashedTerm)")
-            state = .loaded(fetchResult, .searching)
-            let searchResults = fetchResult.searchableItems.result(for: term)
-            if searchResults.isEmpty {
-                state = .loaded(fetchResult, .noSearchResults)
-                logger.trace("No results for term \(hashedTerm)")
-            } else {
-                state = .loaded(fetchResult, .searchResults(searchResults))
-                logger.trace("Found results for term \(hashedTerm)")
-            }
-        }
+        setup()
     }
 }
 
@@ -275,14 +243,6 @@ extension CredentialsViewModel {
         }
     }
 
-    func search(term: String) {
-        if term.isEmpty {
-            doSearch(term: term)
-        } else {
-            searchTermSubject.send(term)
-        }
-    }
-
     func handleAuthenticationFailure() {
         delegate?.credentialsViewModelDidFail(PPError.credentialProvider(.failedToAuthenticate))
     }
@@ -299,6 +259,84 @@ extension CredentialsViewModel {
 
     func upgrade() {
         delegate?.credentialsViewModelWantsToUpgrade()
+    }
+}
+
+private extension CredentialsViewModel {
+     func doSearch(term: String) {
+        guard case let .loaded(fetchResult, _) = state else { return }
+        guard !term.isEmpty else {
+            state = .loaded(fetchResult, .idle)
+            return
+        }
+         // run your work
+    
+        lastTask?.cancel()
+        lastTask = Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            let hashedTerm = term.sha256
+            self.logger.trace("Searching for term \(hashedTerm)")
+            self.state = .loaded(fetchResult, .searching)
+            let searchResults = fetchResult.searchableItems.result(for: term)
+            if Task.isCancelled {
+                return
+            }
+            if searchResults.isEmpty {
+                self.state = .loaded(fetchResult, .noSearchResults)
+                self.logger.trace("No results for term \(hashedTerm)")
+            } else {
+                self.state = .loaded(fetchResult, .searchResults(searchResults))
+                self.logger.trace("Found results for term \(hashedTerm)")
+            }
+        }
+    }
+}
+
+// MARK: Setup & utils functions
+private extension CredentialsViewModel {
+    func setup() {
+        syncEventLoop.delegate = self
+        syncEventLoop.start()
+        fetchItems()
+        
+        cleanQuery
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] term in
+                self?.doSearch(term: term)
+            }
+            .store(in: &cancellables)
+        
+        Publishers.CombineLatest($isShowingConfirmationAlert, $selectedNotMatchedItem)
+            .filter { !$0 && $1 != nil }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _, _ in
+                self?.selectedNotMatchedItem = nil
+            }
+            .store(in: &cancellables)
+        
+        $selectedNotMatchedItem
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard self?.urls.first != nil else {
+                    return
+                }
+                self?.isShowingConfirmationAlert = true
+            }
+            .store(in: &cancellables)
+    }
+    
+    var cleanQuery: AnyPublisher<String, Never> {
+        $query
+            .debounce(for: 0.5, scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .map { query in
+                query.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            .eraseToAnyPublisher()
     }
 }
 
