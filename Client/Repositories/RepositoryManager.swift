@@ -35,6 +35,7 @@ public final class RepositoryManager: DeinitPrintable {
     public let shareRepository: ShareRepositoryProtocol
     public let shareKeyRepository: ShareKeyRepositoryProtocol
     public let telemetryEventRepository: TelemetryEventRepositoryProtocol
+    public let featureFlagsRepository: FeatureFlagsRepositoryProtocol
 
     public let localSearchEntryDatasource: LocalSearchEntryDatasourceProtocol
     public let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
@@ -126,6 +127,11 @@ public final class RepositoryManager: DeinitPrintable {
             logManager: logManager,
             scheduler: telemetryScheduler,
             userId: userId)
+        self.featureFlagsRepository = FeatureFlagsRepository(
+            localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
+            remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+            userId: userId,
+            logManager: logManager)
 
         self.localSearchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
