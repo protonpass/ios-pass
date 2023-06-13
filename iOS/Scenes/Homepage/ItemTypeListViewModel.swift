@@ -27,6 +27,16 @@ enum ItemType: CaseIterable {
     case login, alias, note, password
 }
 
+extension ItemContentType {
+    var type: ItemType {
+        switch self {
+        case .login: return .login
+        case .alias: return .alias
+        case .note: return .note
+        }
+    }
+}
+
 protocol ItemTypeListViewModelDelegate: AnyObject {
     func itemTypeListViewModelDidSelect(type: ItemType)
     func itemTypeListViewModelDidEncounter(error: Error)
