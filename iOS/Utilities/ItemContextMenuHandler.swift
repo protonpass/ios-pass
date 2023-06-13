@@ -190,29 +190,3 @@ private extension ItemContextMenuHandler {
         clipboardManager.bannerManager?.displayTopErrorMessage(error)
     }
 }
-
-extension ItemContentType {
-    var trashMessage: String {
-        switch self {
-        case .alias: return "Alias moved to trash"
-        case .login: return "Login moved to trash"
-        case .note: return "Note moved to trash"
-        }
-    }
-
-    var restoreMessage: String {
-        switch self {
-        case .alias: return "Alias restored"
-        case .login: return "Login restored"
-        case .note: return "Note restored"
-        }
-    }
-
-    var deleteMessage: String {
-        switch self {
-        case .alias: return "Alias permanently deleted"
-        case .login: return "Login permanently deleted"
-        case .note: return "Note permanently deleted"
-        }
-    }
-}

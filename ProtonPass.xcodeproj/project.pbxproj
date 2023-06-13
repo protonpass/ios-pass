@@ -243,14 +243,14 @@
 		355895AF29D76E67001E2207 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895AE29D76E67001E2207 /* LogsView.swift */; };
 		355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B029D76E9F001E2207 /* LogsViewModel.swift */; };
 		355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355895B229D79565001E2207 /* FeedbackChannelsView.swift */; };
-		355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C22A33583D0053B7F6 /* BackOffManager.swift */; };
-		355938C52A335DA50053B7F6 /* BackOffManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */; };
-		355938C82A3360030053B7F6 /* CurrentDateProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */; };
 		355938B92A331B220053B7F6 /* FeatureFlagsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938B82A331B220053B7F6 /* FeatureFlagsEntity.swift */; };
 		355938BB2A331BFF0053B7F6 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938BA2A331BFF0053B7F6 /* FeatureFlags.swift */; };
 		355938BD2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938BC2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift */; };
 		355938BF2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938BE2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift */; };
 		355938C12A333B010053B7F6 /* FeatureFlagsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C02A333B010053B7F6 /* FeatureFlagsRepository.swift */; };
+		355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C22A33583D0053B7F6 /* BackOffManager.swift */; };
+		355938C52A335DA50053B7F6 /* BackOffManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */; };
+		355938C82A3360030053B7F6 /* CurrentDateProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
@@ -997,14 +997,14 @@
 		355895AE29D76E67001E2207 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		355895B029D76E9F001E2207 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
 		355895B229D79565001E2207 /* FeedbackChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackChannelsView.swift; sourceTree = "<group>"; };
-		355938C22A33583D0053B7F6 /* BackOffManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManager.swift; sourceTree = "<group>"; };
-		355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManagerTests.swift; sourceTree = "<group>"; };
-		355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProviderMock.swift; sourceTree = "<group>"; };
 		355938B82A331B220053B7F6 /* FeatureFlagsEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsEntity.swift; sourceTree = "<group>"; };
 		355938BA2A331BFF0053B7F6 /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		355938BC2A331DB30053B7F6 /* LocalFeatureFlagsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureFlagsDatasource.swift; sourceTree = "<group>"; };
 		355938BE2A33250B0053B7F6 /* LocalFeatureFlagsDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureFlagsDatasourceTests.swift; sourceTree = "<group>"; };
 		355938C02A333B010053B7F6 /* FeatureFlagsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsRepository.swift; sourceTree = "<group>"; };
+		355938C22A33583D0053B7F6 /* BackOffManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManager.swift; sourceTree = "<group>"; };
+		355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManagerTests.swift; sourceTree = "<group>"; };
+		355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProviderMock.swift; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1632,8 +1632,8 @@
 				3560843929DD4909001F7487 /* AppearanceSettings.swift */,
 				3571B59929BF173A008D4350 /* BannerManager.swift */,
 				3557441A295A064F00EA4AF0 /* ClipboardManager.swift */,
-				3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */,
 				356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */,
+				3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */,
 				356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */,
 				3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */,
 				3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */,

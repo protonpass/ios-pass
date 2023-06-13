@@ -32,6 +32,9 @@ enum ItemContextMenu {
                onEdit: () -> Void,
                onTrash: () -> Void)
 
+    case creditCard(onEdit: () -> Void,
+                    onTrash: () -> Void)
+
     case note(onEdit: () -> Void,
               onTrash: () -> Void)
 
@@ -55,6 +58,10 @@ enum ItemContextMenu {
                                           icon: IconProvider.alias,
                                           action: onCopyAlias)]),
                     .init(options: [.editOption(action: onEdit)]),
+                    .init(options: [.trashOption(action: onTrash)])]
+
+        case let .creditCard(onEdit, onTrash):
+            return [.init(options: [.editOption(action: onEdit)]),
                     .init(options: [.trashOption(action: onTrash)])]
 
         case let .note(onEdit, onTrash):
@@ -156,6 +163,10 @@ extension View {
                 return itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
                                               onEdit: { handler.edit(item) },
                                               onTrash: { handler.trash(item) }))
+
+            case .creditCard:
+                return itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
+                                                   onTrash: { handler.trash(item) }))
 
             case .note:
                 return itemContextMenu(.note(onEdit: { handler.edit(item) },

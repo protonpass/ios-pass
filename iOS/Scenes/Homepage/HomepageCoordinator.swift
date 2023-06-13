@@ -1030,39 +1030,21 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
-        let message: String
-        switch type {
-        case .login:
-            message = "Login created"
-        case .alias:
-            message = "Alias created"
-        case .note:
-            message = "Note created"
-        }
         addNewEvent(type: .create(type))
         dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomInfoMessage(message)
+            bannerManager.displayBottomInfoMessage(type.creationMessage)
         }
         vaultsManager.refresh()
         homepageTabDelegete?.homepageTabShouldChange(tab: .items)
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
-        let message: String
-        switch type {
-        case .login:
-            message = "Login updated"
-        case .alias:
-            message = "Alias updated"
-        case .note:
-            message = "Note updated"
-        }
         addNewEvent(type: .update(type))
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
         dismissTopMostViewController { [unowned self] in
-            self.bannerManager.displayBottomInfoMessage(message)
+            self.bannerManager.displayBottomInfoMessage(type.updateMessage)
         }
     }
 
