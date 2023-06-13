@@ -54,7 +54,7 @@ final class APIManager {
 
     weak var delegate: APIManagerDelegate?
 
-    init(logManager: LogManager, appVer: String, appData: AppData) {
+    init(logManager: LogManager, appVer: String, appData: AppData, preferences: Preferences) {
         let logger = Logger(manager: logManager)
         let trustKitDelegate = LoggingTrustKitDelegate(logger: logger)
         APIManager.setUpCertificatePinning(trustKitDelegate: trustKitDelegate)
@@ -84,7 +84,9 @@ final class APIManager {
         self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
 
-        self.humanHelper = HumanCheckHelper(apiService: apiService, clientApp: .pass)
+        self.humanHelper = HumanCheckHelper(apiService: apiService,
+                                            inAppTheme: { preferences.theme.inAppTheme },
+                                            clientApp: .pass)
         self.apiService.humanDelegate = humanHelper
 
         if let appStoreUrl = URL(string: Constants.appStoreUrl) {

@@ -40,7 +40,7 @@ final class PaymentsUICoordinator {
     private let storeKitManager: StoreKitManagerProtocol
     private let purchaseManager: PurchaseManagerProtocol
     private let shownPlanNames: ListOfShownPlanNames
-    private let customPlansDescription: CustomPlansDescription
+    private let customization: PaymentsUICustomizationOptions
     private let alertManager: PaymentsUIAlertManager
     private let clientApp: ClientApp
     private let storyboardName: String
@@ -61,7 +61,7 @@ final class PaymentsUICoordinator {
          purchaseManager: PurchaseManagerProtocol,
          clientApp: ClientApp,
          shownPlanNames: ListOfShownPlanNames,
-         customPlansDescription: CustomPlansDescription,
+         customization: PaymentsUICustomizationOptions,
          alertManager: PaymentsUIAlertManager,
          onDohTroubleshooting: @escaping () -> Void) {
         self.planService = planService
@@ -70,7 +70,7 @@ final class PaymentsUICoordinator {
         self.shownPlanNames = shownPlanNames
         self.alertManager = alertManager
         self.clientApp = clientApp
-        self.customPlansDescription = customPlansDescription
+        self.customization = customization
         self.storyboardName = "PaymentsUI"
         self.onDohTroubleshooting = onDohTroubleshooting
     }
@@ -93,7 +93,9 @@ final class PaymentsUICoordinator {
     
     private func showPaymentsUI(servicePlan: ServicePlanDataServiceProtocol, backendFetch: Bool) {
         
-        let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self, storyboardName: storyboardName)
+        let paymentsUIViewController = UIStoryboard.instantiate(
+            PaymentsUIViewController.self, storyboardName: storyboardName, inAppTheme: customization.inAppTheme
+        )
         paymentsUIViewController.delegate = self
         paymentsUIViewController.onDohTroubleshooting = { [weak self] in
             self?.onDohTroubleshooting()
@@ -104,7 +106,7 @@ final class PaymentsUICoordinator {
                                         servicePlan: servicePlan,
                                         shownPlanNames: shownPlanNames,
                                         clientApp: clientApp,
-                                        customPlansDescription: customPlansDescription) { [weak self] updatedPlan in
+                                        customPlansDescription: customization.customPlansDescription) { [weak self] updatedPlan in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentsUIViewController?.reloadData()
                 if updatedPlan != nil {
@@ -162,6 +164,7 @@ final class PaymentsUICoordinator {
                 paymentsViewController.modalPresentation = true
                 let navigationController = LoginNavigationViewController(rootViewController: paymentsViewController)
                 navigationController.modalPresentationStyle = .pageSheet
+                navigationController.overrideUserInterfaceStyle = customization.inAppTheme().userInterfaceStyle
                 topViewController?.present(navigationController, animated: true)
                 completionHandler?(.open(vc: paymentsViewController, opened: true))
             case .none:
@@ -291,7 +294,9 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
 }
 
 private extension UIStoryboard {
-    static func instantiate<T: UIViewController>(_ controllerType: T.Type, storyboardName: String) -> T {
-        instantiate(storyboardName: storyboardName, controllerType: controllerType)
+    static func instantiate<T: UIViewController>(
+        _ controllerType: T.Type, storyboardName: String, inAppTheme: () -> InAppTheme
+    ) -> T {
+        instantiate(storyboardName: storyboardName, controllerType: controllerType, inAppTheme: inAppTheme)
     }
 }

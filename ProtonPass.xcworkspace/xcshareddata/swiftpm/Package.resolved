@@ -1,0 +1,40 @@
+{
+  "pins" : [
+    {
+      "identity" : "base32",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattrubin/Base32.git",
+      "state" : {
+        "revision" : "6389546e8e9a34a9d9db452726900383f3e4ac57",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "codescanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/twostraws/CodeScanner",
+      "state" : {
+        "revision" : "c7859712034a08bb5a018fbe8751c1f1edc4b248",
+        "version" : "2.2.1"
+      }
+    },
+    {
+      "identity" : "factory",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hmlongco/Factory",
+      "state" : {
+        "revision" : "bf4e0ab7cfc45a921856d9ca196d834b7abf15a0",
+        "version" : "2.1.5"
+      }
+    },
+    {
+      "identity" : "onetimepassword",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattrubin/OneTimePassword.git",
+      "state" : {
+        "revision" : "66f284e22c170ffcc2c9dcf055a1efeb260c766d"
+      }
+    }
+  ],
+  "version" : 2
+}

@@ -65,7 +65,10 @@ final class PaymentsManager {
     func createPaymentsUI() -> PaymentsUI {
         PaymentsUI(payments: payments,
                    clientApp: PaymentsConstants.clientApp,
-                   shownPlanNames: PaymentsConstants.shownPlanNames)
+                   shownPlanNames: PaymentsConstants.shownPlanNames,
+                   customization: .init(
+                    inAppTheme: { [weak self] in self?.preferences.theme.inAppTheme ?? .default }
+                   ))
     }
 
     private func initializePaymentsStack() {
@@ -104,10 +107,8 @@ final class PaymentsManager {
         case let .purchasedPlan(accountPlan: plan):
             self.logger.trace("Purchased plan: \(plan.protonName)")
             completion(.success(plan))
-        case let .open(viewController, opened):
-            assert(opened == true)
-            viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
-            viewController.navigationController?.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        case .open:
+            break
         case let .planPurchaseProcessingInProgress(accountPlan: plan):
             self.logger.trace("Purchasing \(plan.protonName)")
         case .close:

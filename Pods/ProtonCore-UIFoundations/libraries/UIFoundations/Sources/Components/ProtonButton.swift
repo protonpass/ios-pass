@@ -168,14 +168,17 @@ public class ProtonButton: UIButton, AccessibleView {
         switch Brand.currentBrand {
         case .proton, .vpn:
             setBackgroundColor(ColorProvider.InteractionNorm, forState: .normal)
+            setBackgroundColor(ColorProvider.BrandDarken20, forState: .highlighted)
+            setBackgroundColor(ColorProvider.BrandDarken20, forState: .selected)
+            setBackgroundColor(ColorProvider.BrandLighten40, forState: .disabled)
         case .pass:
             setBackgroundColor(.dynamic(light: ColorProvider.InteractionNorm,
                                         dark: ColorProvider.InteractionNormMajor1PassTheme),
                                forState: .normal)
+            setBackgroundColor(ColorProvider.InteractionNormPressed, forState: .highlighted)
+            setBackgroundColor(ColorProvider.InteractionNormPressed, forState: .selected)
+            setBackgroundColor(ColorProvider.InteractionNormDisabled, forState: .disabled)
         }
-        setBackgroundColor(ColorProvider.BrandDarken20, forState: .highlighted)
-        setBackgroundColor(ColorProvider.BrandDarken20, forState: .selected)
-        setBackgroundColor(ColorProvider.BrandLighten40, forState: .disabled)
     }
 
     private func nonSolidLayout() {

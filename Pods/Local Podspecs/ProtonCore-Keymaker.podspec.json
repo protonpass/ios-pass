@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Keymaker",
-  "version": "7.1.0",
+  "version": "8.0.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": null,
-    "tag": "7.1.0"
+    "tag": "8.0.1"
   },
   "platforms": {
     "ios": "14.0",
@@ -73,7 +73,7 @@
       "name": "Crypto-Go",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "7.1.0"
+          "8.0.1"
         ]
       },
       "source_files": [
@@ -114,7 +114,7 @@
       "name": "Crypto-patched-Go",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "7.1.0"
+          "8.0.1"
         ]
       },
       "source_files": [
@@ -155,7 +155,7 @@
       "name": "Crypto+VPN-patched-Go",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "7.1.0"
+          "8.0.1"
         ]
       },
       "source_files": [
@@ -196,7 +196,7 @@
       "name": "Crypto+Search-Go",
       "dependencies": {
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "7.1.0"
+          "8.0.1"
         ]
       },
       "source_files": [

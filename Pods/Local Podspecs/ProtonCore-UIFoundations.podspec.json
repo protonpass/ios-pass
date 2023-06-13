@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-UIFoundations",
-  "version": "7.1.0",
+  "version": "8.0.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": null,
-    "tag": "7.1.0"
+    "tag": "8.0.1"
   },
   "platforms": {
     "ios": "14.0",
@@ -33,16 +33,16 @@
   ],
   "dependencies": {
     "ProtonCore-Log": [
-      "7.1.0"
+      "8.0.1"
     ],
     "ProtonCore-CoreTranslation": [
-      "7.1.0"
+      "8.0.1"
     ],
     "ProtonCore-Foundations": [
-      "7.1.0"
+      "8.0.1"
     ],
     "ProtonCore-Utilities": [
-      "7.1.0"
+      "8.0.1"
     ]
   },
   "ios": {
@@ -68,6 +68,7 @@
       "libraries/UIFoundations/Sources/Colors/**/*.swift",
       "libraries/UIFoundations/Sources/Components/Extension/NSColor+Helper.swift",
       "libraries/UIFoundations/Sources/Utils/Brand.swift",
+      "libraries/UIFoundations/Sources/Utils/InAppTheme.swift",
       "libraries/UIFoundations/Sources/Icons/**/*.swift"
     ],
     "resource_bundles": {
@@ -82,7 +83,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "7.1.0"
+          "8.0.1"
         ]
       },
       "source_files": "libraries/UIFoundations/Tests/**/*"
