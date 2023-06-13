@@ -72,7 +72,7 @@ struct ItemsTabView: View {
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
                     case .all, .precise:
-                        EmptyVaultView(viewModel: viewModel.emptyVaultViewModel)
+                        EmptyVaultView(onCreate: viewModel.createNewItem(type:))
                             .padding(.bottom, safeAreaInsets.bottom)
                     case .trash:
                         EmptyTrashView()

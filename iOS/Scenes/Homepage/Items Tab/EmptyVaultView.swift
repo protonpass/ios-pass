@@ -23,11 +23,12 @@ import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
-    let viewModel: EmptyVaultViewModel
+    private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    let onCreate: (ItemContentType) -> Void
 
     var body: some View {
-        ZStack {
-            VStack(alignment: .center) {
+        ScrollView {
+            VStack(alignment: .center, spacing: 0) {
                 Text("Your vault is empty")
                     .font(.title2)
                     .fontWeight(.bold)
@@ -39,62 +40,45 @@ struct EmptyVaultView: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 32)
 
-                ForEach(ItemContentType.allCases, id: \.rawValue) { type in
-                    CreateItemButton(icon: type.icon,
-                                     title: type.createItemTitle,
-                                     tintColor: type.normColor,
-                                     backgroundColor: type.normMinor1Color) {
-                        switch type {
-                        case .login:
-                            viewModel.createLogin()
-                        case .alias:
-                            viewModel.createAlias()
-                        case .note:
-                            viewModel.createNote()
+                LazyVGrid(columns: columns) {
+                    ForEach(ItemContentType.allCases, id: \.self) { type in
+                        CreateItemButton(type: type) {
+                            onCreate(type)
                         }
                     }
                 }
             }
-            .padding()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
     }
 }
 
 private struct CreateItemButton: View {
-    let icon: UIImage
-    let title: String
-    let tintColor: UIColor
-    let backgroundColor: UIColor
+    let type: ItemContentType
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            ZStack {
-                Color(uiColor: backgroundColor)
-                HStack {
-                    iconImage
-                    Spacer()
-                    Text(title)
-                        .foregroundColor(Color(uiColor: tintColor))
-                    Spacer()
-                    // Gimmick image to help center text
-                    iconImage
-                        .opacity(0)
-                }
-                .padding(.horizontal)
-            }
-            .frame(height: 52)
-            .clipShape(Capsule())
-        }
-    }
+            VStack {
+                Image(uiImage: type.icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 20, maxHeight: 20)
+                    .padding(.top, 28)
 
-    private var iconImage: some View {
-        Image(uiImage: icon)
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: 16, maxHeight: 16)
-            .foregroundColor(Color(uiColor: tintColor))
+                Text(type.createItemTitle)
+                    .lineLimit(2)
+                    .font(.callout)
+
+                Spacer()
+            }
+            .frame(height: 122)
+            .frame(maxWidth: .infinity, alignment: .top)
+            .padding(.horizontal)
+            .foregroundColor(type.normColor.toColor)
+            .background(type.normMinor1Color.toColor)
+            .clipShape(RoundedRectangle(cornerRadius: 32))
+        }
     }
 }
 
