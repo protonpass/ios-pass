@@ -163,7 +163,18 @@ private extension CreateEditItemCoordinator {
     }
 
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
-        print(#function)
+        let viewModel = try CreateEditCreditCardViewModel(
+            mode: mode,
+            itemRepository: itemRepository,
+            upgradeChecker: upgradeChecker,
+            featureFlagsRepository: featureFlagsRepository,
+            vaults: vaultsManager.getAllVaults(),
+            preferences: preferences,
+            logManager: logManager)
+        viewModel.delegate = createEditItemDelegates
+        let view = CreateEditCreditCardView(viewModel: viewModel)
+        present(view, dismissable: false)
+        currentViewModel = viewModel
     }
 
     func presentCreateEditNoteView(mode: ItemMode) throws {
