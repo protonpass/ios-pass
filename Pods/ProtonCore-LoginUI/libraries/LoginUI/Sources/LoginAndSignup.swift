@@ -78,17 +78,20 @@ public struct LoginCustomizationOptions {
     let customErrorPresenter: LoginErrorPresenter?
     let initialError: String?
     let helpDecorator: ([[HelpItem]]) -> [[HelpItem]]
+    let inAppTheme: () -> InAppTheme
     
     public init(username: String? = nil,
                 performBeforeFlow: WorkBeforeFlow? = nil,
                 customErrorPresenter: LoginErrorPresenter? = nil,
                 initialError: String? = nil,
-                helpDecorator: @escaping ([[HelpItem]]) -> [[HelpItem]] = { $0 }) {
+                helpDecorator: @escaping ([[HelpItem]]) -> [[HelpItem]] = { $0 },
+                inAppTheme: @escaping () -> InAppTheme = { .default }) {
         self.username = username
         self.performBeforeFlow = performBeforeFlow
         self.customErrorPresenter = customErrorPresenter
         self.initialError = initialError
         self.helpDecorator = helpDecorator
+        self.inAppTheme = inAppTheme
     }
 }
 
@@ -134,7 +137,9 @@ public protocol LoginAndSignupInterface {
     
     // helper API
 
-    func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void)
+    func presentMailboxPasswordFlow(over viewController: UIViewController,
+                                    inAppTheme: InAppTheme,
+                                    completion: @escaping (String) -> Void)
     
     func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void)
 }
@@ -162,6 +167,11 @@ extension LoginAndSignupInterface {
     public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant,
                                                completion: @escaping (LoginResult) -> Void) -> UIViewController {
         welcomeScreenForPresentingFlow(variant: welcomeScreen, customization: .empty, completion: completion)
+    }
+    
+    public func presentMailboxPasswordFlow(over viewController: UIViewController,
+                                           completion: @escaping (String) -> Void) {
+        presentMailboxPasswordFlow(over: viewController, inAppTheme: .matchSystem, completion: completion)
     }
 }
 
@@ -249,8 +259,7 @@ public final class LoginAndSignup {
                                               isCloseButton: isCloseButtonAvailable,
                                               paymentsAvailability: paymentsAvailability,
                                               signupAvailability: signupAvailability,
-                                              performBeforeFlow: customization.performBeforeFlow,
-                                              customErrorPresenter: customization.customErrorPresenter)
+                                              customization: customization)
         signupCoordinator?.delegate = self
         signupCoordinator?.start(kind: start)
     }
@@ -278,10 +287,11 @@ extension LoginAndSignup: LoginAndSignupInterface {
     }
     
     public func presentMailboxPasswordFlow(over viewController: UIViewController,
+                                           inAppTheme: InAppTheme = .matchSystem,
                                            completion: @escaping (String) -> Void) {
         self.viewController = viewController
         self.mailboxPasswordCompletion = completion
-        mailboxPasswordCoordinator = MailboxPasswordCoordinator(container: container, delegate: self)
+        mailboxPasswordCoordinator = MailboxPasswordCoordinator(container: container, delegate: self, inAppTheme: inAppTheme)
         mailboxPasswordCoordinator?.start(viewController: viewController)
     }
     

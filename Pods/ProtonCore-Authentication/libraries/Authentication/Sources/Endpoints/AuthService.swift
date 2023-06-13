@@ -24,6 +24,7 @@ import ProtonCore_Services
 import ProtonCore_APIClient
 import ProtonCore_DataModel
 import ProtonCore_Networking
+import ProtonCore_FeatureSwitch
 
 public class AuthService: Client {
     public var apiService: APIService
@@ -33,8 +34,15 @@ public class AuthService: Client {
     
     public func info(username: String, complete: @escaping(_ response: AuthInfoResponse) -> Void) {
         let route = InfoEndpoint(username: username)
-        let response = AuthInfoResponse(modulus: "", serverEphemeral: "", version: 0, salt: "", srpSession: "")
-        self.apiService.perform(request: route, response: response, responseCompletion: { _, response in complete(response) })
+        let response = EitherResponses()
+        switch response.response {
+        case .left(let authInfo):
+            self.apiService.perform(request: route, response: authInfo, responseCompletion: { _, response in
+                complete(response)
+            })
+        case .right:
+            fatalError("not ready, don't use")
+        }
     }
     
     // swiftlint:disable function_parameter_count
@@ -44,7 +52,16 @@ public class AuthService: Client {
               session: String,
               challenge: ChallengeProperties?,
               complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, ResponseError>) -> Void) {
-        let route = AuthEndpoint(username: username, ephemeral: ephemeral, proof: proof, session: session, challenge: challenge)
+        let route = AuthEndpoint(data: .left(.init(username: username, ephemeral: ephemeral, proof: proof, session: session, challenge: challenge)))
+        guard isSessionUIDValid(session) else { return }
         self.apiService.perform(request: route, decodableCompletion: { _, result in complete(result) })
+    }
+    
+    private func isSessionUIDValid(_ session: String) -> Bool {
+        if !FeatureFactory.shared.isEnabled(.ssoSignIn) {
+            return true
+        }
+        
+        return session == apiService.sessionUID
     }
 }

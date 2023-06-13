@@ -29,7 +29,7 @@ enum DetailType {
     case checkmark, storage, envelope, globe, tag, calendarCheckmark, shield
     case powerOff, rocket, servers, play, locks, brandTor, arrowsSwitch, eyeSlash
     case user
-    case infinity, lock, vault, alias, at, forward, eye
+    case infinity, lock, vault, alias, at, forward, eye, penSquare
     case custom(UIImage)
     
     var icon: UIImage {
@@ -57,6 +57,7 @@ enum DetailType {
         case .at: return IconProvider.at
         case .forward: return IconProvider.forward
         case .eye: return IconProvider.eye
+        case .penSquare: return IconProvider.penSquare
         case .custom(let image): return image
         }
     }

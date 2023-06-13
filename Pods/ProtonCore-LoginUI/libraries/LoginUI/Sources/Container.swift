@@ -142,8 +142,8 @@ final class Container {
                                 screenVariant: screenVariant, clientApp: clientApp)
     }
     
-    func makePaymentsCoordinator(for iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, reportBugAlertHandler: BugAlertHandler) -> PaymentsManager {
-        let paymentsManager = PaymentsManager(apiService: api, iaps: iaps, shownPlanNames: shownPlanNames, clientApp: clientApp, reportBugAlertHandler: reportBugAlertHandler)
+    func makePaymentsCoordinator(for iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, customization: PaymentsUICustomizationOptions, reportBugAlertHandler: BugAlertHandler) -> PaymentsManager {
+        let paymentsManager = PaymentsManager(apiService: api, iaps: iaps, shownPlanNames: shownPlanNames, clientApp: clientApp, customization: customization, reportBugAlertHandler: reportBugAlertHandler)
         self.paymentsManager = paymentsManager
         return paymentsManager
     }

@@ -222,7 +222,7 @@ extension CurrentPlanDetails {
                                 (.vault, details.vaultsDescription(number: 20)),
                                 (.alias, details.unlimitedEmailAliasesDescription),
                                 (.lock, details.integrated2FADescription),
-                                (.forward, details.forwardingMailboxesDescription(number: 5)),
+                                (.penSquare, details.customFieldsDescription),
                                 (.storage, details.XGBStorageDescription),
                                 (.envelope, details.YAddressesDescription),
                                 (.shield, details.VPNUDevicesDescription),
@@ -303,7 +303,7 @@ extension CurrentPlanDetails {
                             (.vault, details.vaultsDescription(number: 20)),
                             (.alias, details.unlimitedEmailAliasesDescription),
                             (.lock, details.integrated2FADescription),
-                            (.forward, details.forwardingMailboxesDescription(number: 5)),
+                            (.penSquare, details.customFieldsDescription),
                             (.eye, details.prioritySupportDescription)
                           ])
 

@@ -947,6 +947,9 @@ public enum LocalizedStringAccessors: CaseIterable {
 
     case __plan_details_forwarding_mailboxes
     public var _plan_details_forwarding_mailboxes: LocalizedStringAccessors { .__plan_details_forwarding_mailboxes }
+    
+    case __plan_details_custom_fields
+    public var _plan_details_custom_fields: LocalizedStringAccessors { .__plan_details_custom_fields }
 
     case __plan_pass_description
     public var _plan_pass_description: LocalizedStringAccessors { .__plan_pass_description }
@@ -1258,6 +1261,7 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__plan_details_email_aliases_unlimited: return localizedStringInstance._plan_details_email_aliases_unlimited
         case .__plan_details_logins_and_notes_unlimited: return localizedStringInstance._plan_details_logins_and_notes_unlimited
         case .__plan_details_forwarding_mailboxes: return localizedStringInstance._plan_details_forwarding_mailboxes
+        case .__plan_details_custom_fields: return localizedStringInstance._plan_details_custom_fields
         case .__plan_pass_description: return localizedStringInstance._plan_pass_description
         case .__plan_details_n_vaults: return localizedStringInstance._plan_details_n_vaults
         }
@@ -2084,6 +2088,8 @@ public class LocalizedString {
     public lazy var _plan_details_logins_and_notes_unlimited = NSLocalizedString("Unlimited logins and notes", bundle: Common.bundle, comment: "Plan details `Unlimited logins and notes` message")
     /// Plan details formarding mailboxes
     public lazy var _plan_details_forwarding_mailboxes = NSLocalizedString("Up to %@ forwarding mailboxes", bundle: Common.bundle, comment: "Plan details `Up to %@ forwarding mailboxes` message")
+    // Plan details custom fields
+    public lazy var _plan_details_custom_fields = NSLocalizedString("Custom fields", bundle: Common.bundle, comment: "Plan details `Custom fields` message")
     /// Description of the Pass plan
     public lazy var _plan_pass_description = NSLocalizedString("For next-level password management and identity protection.", bundle: Common.bundle, comment: "Description of the Pass plan")
 

@@ -40,19 +40,24 @@ final class WelcomeCoordinator: DeinitPrintable {
     private lazy var logInAndSignUp = makeLoginAndSignUp()
 
     private let apiService: APIService
+    private let preferences: Preferences
 
     weak var delegate: WelcomeCoordinatorDelegate?
     var rootViewController: UIViewController { welcomeViewController }
 
-    init(apiService: APIService) {
+    init(apiService: APIService, preferences: Preferences) {
         self.apiService = apiService
+        self.preferences = preferences
     }
 
     private func makeWelcomeViewController() -> UIViewController {
-        WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more")),
-                              delegate: self,
-                              username: nil,
-                              signupAvailable: true)
+        let welcomeViewController = WelcomeViewController(
+            variant: .pass(.init(body: "Secure password manager and more")),
+            delegate: self,
+            username: nil,
+            signupAvailable: true)
+        welcomeViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        return welcomeViewController
     }
 
     private func makeLoginAndSignUp() -> LoginAndSignup {
@@ -71,7 +76,11 @@ final class WelcomeCoordinator: DeinitPrintable {
 // MARK: - WelcomeViewControllerDelegate
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     func userWantsToLogIn(username: String?) {
-        logInAndSignUp.presentLoginFlow(over: welcomeViewController) { [weak self] result in
+        let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
+            self?.preferences.theme.inAppTheme ?? .default
+        })
+        logInAndSignUp.presentLoginFlow(over: welcomeViewController,
+                                        customization: customization) { [weak self] result in
             guard let self else { return }
             switch result {
             case .dismissed:
@@ -85,7 +94,11 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     }
 
     func userWantsToSignUp() {
-        logInAndSignUp.presentSignupFlow(over: welcomeViewController) { [weak self] result in
+        let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
+            self?.preferences.theme.inAppTheme ?? .default
+        })
+        logInAndSignUp.presentSignupFlow(over: welcomeViewController,
+                                         customization: customization) { [weak self] result in
             guard let self else { return }
             switch result {
             case .dismissed:
