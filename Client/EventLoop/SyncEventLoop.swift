@@ -203,13 +203,14 @@ private extension SyncEventLoop {
                     delegate?.syncEventLoopDidBeginNewLoop()
                     let hasNewEvents = try await sync()
                     delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
+                    backOffManager.recordSuccess()
                 } catch {
                     logger.error(error)
                     delegate?.syncEventLoopDidFailLoop(error: error)
                     if let responseError = error as? ResponseError,
                        let httpCode = responseError.httpCode,
                        (500...599).contains(httpCode) {
-                        // Server is down, backing off
+                        logger.debug("Server is down, backing off")
                         backOffManager.recordFailure()
                     }
                 }

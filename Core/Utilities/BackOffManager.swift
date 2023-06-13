@@ -25,7 +25,10 @@ public protocol BackOffManagerProtocol {
     /// Call this function when failure occurs and we want to back off
     func recordFailure()
 
-    /// Return `true` when no need to back off, internally reset state
+    /// Call this function when continuing with success
+    func recordSuccess()
+
+    /// Return `true` when no need to back off
     /// Return `false` when back-off is still needed
     func canProceed() -> Bool
 }
@@ -45,17 +48,17 @@ extension BackOffManager: BackOffManagerProtocol {
         failureDates.append(currentDateProvider.getCurrentDate())
     }
 
+    public func recordSuccess() {
+        failureDates.removeAll()
+    }
+
     public func canProceed() -> Bool {
         guard let mostRecentFailureDate = failureDates.last else { return true }
         let stride = BackOffStride.stride(failureCount: failureDates.count)
         let thresholdDate = mostRecentFailureDate.adding(component: .second,
                                                          value: stride.valueInSeconds.toInt)
         let currentDate = currentDateProvider.getCurrentDate()
-        let canProceed = currentDate >= thresholdDate
-        if canProceed {
-            failureDates.removeAll()
-        }
-        return canProceed
+        return currentDate >= thresholdDate
     }
 }
 
