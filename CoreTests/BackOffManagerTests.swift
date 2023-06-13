@@ -114,6 +114,13 @@ extension BackOffManagerTests {
 
         // Then
         XCTAssertTrue(sut.canProceed())
+        XCTAssertEqual(sut.failureDates.count, 1)
+
+        // When
+        sut.recordSuccess()
+
+        // Then
+        XCTAssertTrue(sut.canProceed())
         XCTAssertTrue(sut.failureDates.isEmpty)
     }
 
@@ -140,6 +147,13 @@ extension BackOffManagerTests {
         // Retry 2 secs later
         currentDateProviderMock.currentDateStub.bodyIs { _ in failureDate1.adding(component: .second,
                                                                                   value: 2) }
+
+        // Then
+        XCTAssertTrue(sut.canProceed())
+        XCTAssertEqual(sut.failureDates.count, 2)
+
+        // When
+        sut.recordSuccess()
 
         // Then
         XCTAssertTrue(sut.canProceed())
@@ -200,6 +214,13 @@ extension BackOffManagerTests {
         // Retry 5 secs later
         currentDateProviderMock.currentDateStub.bodyIs { _ in failureDate2.adding(component: .second,
                                                                                   value: 5) }
+
+        // Then
+        XCTAssertTrue(sut.canProceed())
+        XCTAssertEqual(sut.failureDates.count, 3)
+
+        // When
+        sut.recordSuccess()
 
         // Then
         XCTAssertTrue(sut.canProceed())
