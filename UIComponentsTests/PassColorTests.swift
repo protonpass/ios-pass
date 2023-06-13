@@ -25,13 +25,6 @@ final class PassColorTests: XCTestCase {
     // swiftlint:disable:next function_body_length
     func testGetColors() {
         let expectation = expectation(description: "Should be able to get colors")
-
-        _ = PassColor.aliasInteractionNorm
-        _ = PassColor.aliasInteractionNormMajor1
-        _ = PassColor.aliasInteractionNormMajor2
-        _ = PassColor.aliasInteractionNormMinor1
-        _ = PassColor.aliasInteractionNormMinor2
-
         _ = PassColor.backdrop
 
         _ = PassColor.backgroundMedium
@@ -47,6 +40,19 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.interactionNormMajor2
         _ = PassColor.interactionNormMinor1
         _ = PassColor.interactionNormMajor2
+
+        // Items
+        _ = PassColor.aliasInteractionNorm
+        _ = PassColor.aliasInteractionNormMajor1
+        _ = PassColor.aliasInteractionNormMajor2
+        _ = PassColor.aliasInteractionNormMinor1
+        _ = PassColor.aliasInteractionNormMinor2
+
+        _ = PassColor.cardInteractionNorm
+        _ = PassColor.cardInteractionNormMajor1
+        _ = PassColor.cardInteractionNormMajor2
+        _ = PassColor.cardInteractionNormMinor1
+        _ = PassColor.cardInteractionNormMinor2
 
         _ = PassColor.loginInteractionNorm
         _ = PassColor.loginInteractionNormMajor1
@@ -66,6 +72,7 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.passwordInteractionNormMinor1
         _ = PassColor.passwordInteractionNormMinor2
 
+        // Signals
         _ = PassColor.signalDanger
         _ = PassColor.signalInfo
         _ = PassColor.signalSuccess
@@ -73,12 +80,14 @@ final class PassColorTests: XCTestCase {
 
         _ = PassColor.tabBarBackground
 
+        // Texts
         _ = PassColor.textDisabled
         _ = PassColor.textHint
         _ = PassColor.textInvert
         _ = PassColor.textNorm
         _ = PassColor.textWeak
 
+        // Vaults
         _ = PassColor.vaultChestnutRose
         _ = PassColor.vaultDeYork
         _ = PassColor.vaultHeliotrope

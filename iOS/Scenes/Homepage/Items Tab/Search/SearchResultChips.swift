@@ -95,16 +95,3 @@ private struct ItemCountChip: View {
         .animationsDisabled()
     }
 }
-
-extension ItemContentType {
-    var chipTitle: String {
-        switch self {
-        case .login:
-            return "Login"
-        case .alias:
-            return "Alias"
-        case .note:
-            return "Note"
-        }
-    }
-}

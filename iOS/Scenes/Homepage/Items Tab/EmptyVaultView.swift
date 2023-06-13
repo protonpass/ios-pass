@@ -81,16 +81,3 @@ private struct CreateItemButton: View {
         }
     }
 }
-
-private extension ItemContentType {
-    var createItemTitle: String {
-        switch self {
-        case .login:
-            return "Create a login"
-        case .alias:
-            return "Create a Hide My Email alias"
-        case .note:
-            return "Create a note"
-        }
-    }
-}
