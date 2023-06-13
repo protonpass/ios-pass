@@ -25,13 +25,6 @@ final class PassColorTests: XCTestCase {
     // swiftlint:disable:next function_body_length
     func testGetColors() {
         let expectation = expectation(description: "Should be able to get colors")
-        _ = PassColor.backdrop
-
-        _ = PassColor.backgroundMedium
-        _ = PassColor.backgroundNorm
-        _ = PassColor.backgroundStrong
-        _ = PassColor.backgroundWeak
-
         _ = PassColor.inputBackgroundNorm
         _ = PassColor.inputBorderNorm
 
@@ -40,6 +33,14 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.interactionNormMajor2
         _ = PassColor.interactionNormMinor1
         _ = PassColor.interactionNormMajor2
+
+        // Backgrounds
+        _ = PassColor.backdrop
+        _ = PassColor.backgroundMedium
+        _ = PassColor.backgroundNorm
+        _ = PassColor.backgroundStrong
+        _ = PassColor.backgroundWeak
+        _ = PassColor.tabBarBackground
 
         // Items
         _ = PassColor.aliasInteractionNorm
@@ -77,8 +78,6 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.signalInfo
         _ = PassColor.signalSuccess
         _ = PassColor.signalWarning
-
-        _ = PassColor.tabBarBackground
 
         // Texts
         _ = PassColor.textDisabled
