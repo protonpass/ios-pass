@@ -24,13 +24,6 @@ import UIKit
 public enum PassColor {}
 
 public extension PassColor {
-    static var backdrop = UIColor(named: "Backdrop")
-
-    static var backgroundMedium = UIColor(named: "BackgroundMedium")!
-    static var backgroundNorm = UIColor(named: "BackgroundNorm")!
-    static var backgroundStrong = UIColor(named: "BackgroundStrong")!
-    static var backgroundWeak = UIColor(named: "BackgroundWeak")!
-
     static var inputBackgroundNorm = UIColor(named: "InputBackgroundNorm")!
     static var inputBorderNorm = UIColor(named: "InputBorderNorm")!
 
@@ -39,7 +32,15 @@ public extension PassColor {
     static var interactionNormMajor2 = UIColor(named: "InteractionNormMajor2")!
     static var interactionNormMinor1 = UIColor(named: "InteractionNormMinor1")!
     static var interactionNormMinor2 = UIColor(named: "InteractionNormMinor2")!
+}
 
+// MARK: - Background
+public extension PassColor {
+    static var backdrop = UIColor(named: "Backdrop")
+    static var backgroundMedium = UIColor(named: "BackgroundMedium")!
+    static var backgroundNorm = UIColor(named: "BackgroundNorm")!
+    static var backgroundStrong = UIColor(named: "BackgroundStrong")!
+    static var backgroundWeak = UIColor(named: "BackgroundWeak")!
     static var tabBarBackground = UIColor(named: "TabBarBackground")!
 }
 
