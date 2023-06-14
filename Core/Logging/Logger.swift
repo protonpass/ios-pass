@@ -32,10 +32,10 @@ public enum LoggerConsolePrintOption {
 public struct Logger {
     let subsystem: String
     let category: String
-    let manager: LogManager
+    let manager: LogManagerProtocol
     let consolePrintOption: LoggerConsolePrintOption
 
-    public init(manager: LogManager,
+    public init(manager: LogManagerProtocol,
                 subsystem: String = Bundle.main.bundleIdentifier ?? "",
                 category: String = "\(Self.self)",
                 consolePrintOption: LoggerConsolePrintOption = .debug) {
@@ -196,8 +196,10 @@ private extension Logger {
     }
 
     func log(entry: LogEntry) {
-        manager.log(entry: entry)
-        printToConsoleIfNecessary(entry: entry)
+        Task {
+            await manager.log(entry: entry)
+            printToConsoleIfNecessary(entry: entry)
+        }
     }
 
     func printToConsoleIfNecessary(entry: LogEntry) {
