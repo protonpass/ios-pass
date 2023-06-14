@@ -31,7 +31,7 @@ final class LogManagerTests: XCTestCase {
         super.setUp()
         // swiftlint:disable:next force_unwrapping
         let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-        sut = LogManager(url: url, fileName: LogManagerTests.destinationFile, config: LogManagerConfig(maxLogLines: 5, dumpThreshold: 5, timerInterval: 1))
+        sut = LogManager(url: url, fileName: LogManagerTests.destinationFile, config: LogManagerConfig(maxLogLines: 10, dumpThreshold: 5, timerInterval: 1))
     }
     
     override func tearDown() {
@@ -56,6 +56,15 @@ final class LogManagerTests: XCTestCase {
         }
         let newLogEntries = try await sut.getLogEntries()
         XCTAssertEqual(newLogEntries.count, 5)
+    }
+    
+    func testLocalLogFileDoesntGoAboveMaxEntry() async throws {
+        await sut.removeAllLogs()
+        await LogEntryFactory.createMockArray(count: 30).asyncForEach { entry in
+            await sut.log(entry: entry)
+        }
+        let newLogEntries = try await sut.getLogEntries()
+        XCTAssertEqual(newLogEntries.count, 10)
     }
     
     func testRemoveLogEntry() async throws {
@@ -90,5 +99,6 @@ final class LogManagerTests: XCTestCase {
 
         let newLogEntries = try await sut.getLogEntries()
         XCTAssertTrue(newLogEntries.isEmpty)
+        await sut.toggleLogging(shouldLog: true)
     }
 }
