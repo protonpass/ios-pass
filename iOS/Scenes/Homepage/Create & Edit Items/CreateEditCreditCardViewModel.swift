@@ -18,9 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import SwiftUI
 
 final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
+
+    @Published var title = ""
+    @Published var cardholderName = ""
+    @Published var cardNumber = ""
+    @Published var verificationNumber = ""
+    @Published var expirationDate = ""
+    @Published var note = ""
+
+    override func itemContentType() -> ItemContentType { .creditCard }
+
+    override var isSaveable: Bool { !title.isEmpty }
 }

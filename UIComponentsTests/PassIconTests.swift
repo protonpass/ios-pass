@@ -53,7 +53,6 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.onboardAutoFillStep4
         _ = PassIcon.onboardAutoFillStep5
 
-        _ = PassIcon.passCreditCard
         _ = PassIcon.passIcon
         _ = PassIcon.passTextLogo
         _ = PassIcon.swirls
