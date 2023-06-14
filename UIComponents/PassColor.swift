@@ -24,19 +24,6 @@ import UIKit
 public enum PassColor {}
 
 public extension PassColor {
-    static var aliasInteractionNorm = UIColor(named: "AliasInteractionNorm")!
-    static var aliasInteractionNormMajor1 = UIColor(named: "AliasInteractionNormMajor1")!
-    static var aliasInteractionNormMajor2 = UIColor(named: "AliasInteractionNormMajor2")!
-    static var aliasInteractionNormMinor1 = UIColor(named: "AliasInteractionNormMinor1")!
-    static var aliasInteractionNormMinor2 = UIColor(named: "AliasInteractionNormMinor2")!
-
-    static var backdrop = UIColor(named: "Backdrop")
-
-    static var backgroundMedium = UIColor(named: "BackgroundMedium")!
-    static var backgroundNorm = UIColor(named: "BackgroundNorm")!
-    static var backgroundStrong = UIColor(named: "BackgroundStrong")!
-    static var backgroundWeak = UIColor(named: "BackgroundWeak")!
-
     static var inputBackgroundNorm = UIColor(named: "InputBackgroundNorm")!
     static var inputBorderNorm = UIColor(named: "InputBorderNorm")!
 
@@ -45,6 +32,31 @@ public extension PassColor {
     static var interactionNormMajor2 = UIColor(named: "InteractionNormMajor2")!
     static var interactionNormMinor1 = UIColor(named: "InteractionNormMinor1")!
     static var interactionNormMinor2 = UIColor(named: "InteractionNormMinor2")!
+}
+
+// MARK: - Background
+public extension PassColor {
+    static var backdrop = UIColor(named: "Backdrop")
+    static var backgroundMedium = UIColor(named: "BackgroundMedium")!
+    static var backgroundNorm = UIColor(named: "BackgroundNorm")!
+    static var backgroundStrong = UIColor(named: "BackgroundStrong")!
+    static var backgroundWeak = UIColor(named: "BackgroundWeak")!
+    static var tabBarBackground = UIColor(named: "TabBarBackground")!
+}
+
+// MARK: - Items
+public extension PassColor {
+    static var aliasInteractionNorm = UIColor(named: "AliasInteractionNorm")!
+    static var aliasInteractionNormMajor1 = UIColor(named: "AliasInteractionNormMajor1")!
+    static var aliasInteractionNormMajor2 = UIColor(named: "AliasInteractionNormMajor2")!
+    static var aliasInteractionNormMinor1 = UIColor(named: "AliasInteractionNormMinor1")!
+    static var aliasInteractionNormMinor2 = UIColor(named: "AliasInteractionNormMinor2")!
+
+    static var cardInteractionNorm = UIColor(named: "CardInteractionNorm")!
+    static var cardInteractionNormMajor1 = UIColor(named: "CardInteractionNormMajor1")!
+    static var cardInteractionNormMajor2 = UIColor(named: "CardInteractionNormMajor2")!
+    static var cardInteractionNormMinor1 = UIColor(named: "CardInteractionNormMinor1")!
+    static var cardInteractionNormMinor2 = UIColor(named: "CardInteractionNormMinor2")!
 
     static var loginInteractionNorm = UIColor(named: "LoginInteractionNorm")!
     static var loginInteractionNormMajor1 = UIColor(named: "LoginInteractionNormMajor1")!
@@ -63,20 +75,27 @@ public extension PassColor {
     static var passwordInteractionNormMajor2 = UIColor(named: "PasswordInteractionNormMajor2")!
     static var passwordInteractionNormMinor1 = UIColor(named: "PasswordInteractionNormMinor1")!
     static var passwordInteractionNormMinor2 = UIColor(named: "PasswordInteractionNormMinor2")!
+}
 
+// MARK: - Signals
+public extension PassColor {
     static var signalDanger = UIColor(named: "SignalDanger")!
     static var signalInfo = UIColor(named: "SignalInfo")!
     static var signalSuccess = UIColor(named: "SignalSuccess")!
     static var signalWarning = UIColor(named: "SignalWarning")!
+}
 
-    static var tabBarBackground = UIColor(named: "TabBarBackground")!
-
+// MARK: - Texts
+public extension PassColor {
     static var textDisabled = UIColor(named: "TextDisabled")!
     static var textHint = UIColor(named: "TextHint")!
     static var textInvert = UIColor(named: "TextInvert")!
     static var textNorm = UIColor(named: "TextNorm")!
     static var textWeak = UIColor(named: "TextWeak")!
+}
 
+// MARK: - Vaults
+public extension PassColor {
     static var vaultChestnutRose = UIColor(named: "VaultChestnutRose")!
     static var vaultDeYork = UIColor(named: "VaultDeYork")!
     static var vaultHeliotrope = UIColor(named: "VaultHeliotrope")!

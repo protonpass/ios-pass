@@ -89,6 +89,8 @@ extension CreateEditItemCoordinator {
             try presentCreateEditLoginView(mode: mode)
         case .note:
             try presentCreateEditNoteView(mode: mode)
+        case .creditCard:
+            try presentCreateEditCreditCardView(mode: mode)
         case .alias:
             try presentCreateEditAliasView(mode: mode)
         }
@@ -102,6 +104,8 @@ extension CreateEditItemCoordinator {
             try presentCreateEditLoginView(mode: .create(shareId: shareId, type: logInType))
         case .alias:
             try presentCreateEditAliasView(mode: .create(shareId: shareId, type: .alias))
+        case .creditCard:
+            try presentCreateEditCreditCardView(mode: .create(shareId: shareId, type: .other))
         case .note:
             try presentCreateEditNoteView(mode: .create(shareId: shareId, type: .other))
         case .password:
@@ -154,6 +158,21 @@ private extension CreateEditItemCoordinator {
         viewModel.delegate = createEditItemDelegates
         viewModel.createEditAliasViewModelDelegate = createEditItemDelegates
         let view = CreateEditAliasView(viewModel: viewModel)
+        present(view, dismissable: false)
+        currentViewModel = viewModel
+    }
+
+    func presentCreateEditCreditCardView(mode: ItemMode) throws {
+        let viewModel = try CreateEditCreditCardViewModel(
+            mode: mode,
+            itemRepository: itemRepository,
+            upgradeChecker: upgradeChecker,
+            featureFlagsRepository: featureFlagsRepository,
+            vaults: vaultsManager.getAllVaults(),
+            preferences: preferences,
+            logManager: logManager)
+        viewModel.delegate = createEditItemDelegates
+        let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
     }
