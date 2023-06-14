@@ -45,11 +45,11 @@ enum PassLogModule: CaseIterable {
 
 extension LogManager {
     /// Convenience initialize for iOS & extensions which creates a log file in shared container.
-    convenience init(module: PassLogModule) {
+    init(module: PassLogModule) {
         guard let fileContainer =
                 FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
             fatalError("Shared file container could not be created.")
         }
-        self.init(url: fileContainer, fileName: module.logFileName, maxLogLines: 5_000)
+        self.init(url: fileContainer, fileName: module.logFileName)
     }
 }

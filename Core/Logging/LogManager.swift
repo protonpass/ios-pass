@@ -18,99 +18,195 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
+
+public protocol LogManagerProtocol: Actor {
+    var shouldLog: Bool { get }
+    
+    func log(entry: LogEntry)
+    func getLogEntries() async throws -> [LogEntry]
+    func removeAllLogs()
+    func savedLogLocaly()
+    func toggleLogging(shouldLog: Bool)
+}
 
 enum LogManagerError: Error {
     case failedToSerializeLogEntry
 }
 
-public final class LogManager {
-    let url: URL
-    let maxLogLines: UInt
-    let queue = DispatchQueue(label: "me.proton.core.log-manager")
+public struct LogManagerConfig {
+    let maxLogLines: Int
+    let dumpThreshold: Int
+    let timerInterval: Double
+    
+    public init(maxLogLines: Int, dumpThreshold: Int = 300, timerInterval: Double = 30) {
+        self.maxLogLines = maxLogLines
+        self.dumpThreshold = dumpThreshold
+        self.timerInterval = timerInterval
+    }
+    
+    public static var `default`: LogManagerConfig {
+        LogManagerConfig(maxLogLines: 5_000, dumpThreshold: 300, timerInterval: 30)
+    }
+}
+
+public actor LogManager: LogManagerProtocol {
+    private let url: URL
+    private var fileExists = false
+    private var currentSavedlogs = [String]()
+    private var currentMemoryLogs = [LogEntry]()
+    private let config: LogManagerConfig
+    private var timer: Timer?
+    
+    public private(set) var shouldLog = true
+
+    private var numberOfLogAfterMerge: Int {
+        currentSavedlogs.count + currentMemoryLogs.count
+    }
+    
+    private var numberOfLogsToRemove: Int {
+        numberOfLogAfterMerge - Int(config.maxLogLines)
+    }
 
     /// Manage (read/write) the log file on disk
     /// - Parameters:
     ///    - url: The URL of the folder that contains the log file
     ///    - fileName: The name of the log file. E.g "proton.log"
     ///    - maxLogLines: Maximum number of log entries
-    public init(url: URL, fileName: String, maxLogLines: UInt) {
+    public init(url: URL, fileName: String, config: LogManagerConfig = .default) {
         self.url = url.appendingPathComponent(fileName, isDirectory: false)
-        self.maxLogLines = maxLogLines
+        self.config = config
+        fileExists = FileManager.default.fileExists(atPath: self.url.path)
+        if let logContents = try? String(contentsOf: url, encoding: .utf8) {
+            currentSavedlogs = logContents.components(separatedBy: .newlines)
+        }
+        Task {
+            await setUp()
+        }
+    }
+    
+    deinit {
+        timer?.invalidate()
+        timer = nil
     }
 }
 
 // MARK: - Public APIs
 public extension LogManager {
     func log(entry: LogEntry) {
-        queue.sync {
-            do {
-                try createLogFileIfNotExist()
-                try pruneLogs()
-                try store(entry: entry)
-            } catch {
-                print("Failed to log: \(error.localizedDescription)")
-            }
+        guard shouldLog else {
+            return
         }
+        currentMemoryLogs.append(entry)
+        guard currentMemoryLogs.count >= config.dumpThreshold else {
+            return
+        }
+        savedLogLocaly()
     }
 
     func getLogEntries() async throws -> [LogEntry] {
-        try await Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self = self else { return [] }
-            try self.createLogFileIfNotExist()
-            let logContents = try String(contentsOf: self.url, encoding: .utf8)
-            let lines = logContents.components(separatedBy: .newlines).filter { !$0.isEmpty }
-            let entries = lines.compactMap { line in
-                if let data = line.data(using: .utf8) {
-                    do {
-                        let entry = try JSONDecoder().decode(LogEntry.self, from: data)
-                        return entry
-                    } catch {
-                        print("Corrupted log line: \(line)")
-                        return nil
-                    }
-                } else {
-                    return nil
-                }
-            }
-            return entries
-        }.value
+       guard fileExists else { return [] }
+       let logContents = try String(contentsOf: url, encoding: .utf8)
+       let lines = logContents.components(separatedBy: .newlines).filter { !$0.isEmpty }
+       let entries = lines.compactMap { $0.toLogEntry }
+       return entries
     }
 
     func removeAllLogs() {
-        if FileManager.default.fileExists(atPath: url.path) {
-            try? FileManager.default.removeItem(atPath: url.path)
+        guard fileExists else {
+            return
         }
+        do {
+            try FileManager.default.removeItem(atPath: url.path)
+            fileExists = false
+            currentSavedlogs.removeAll()
+            currentMemoryLogs.removeAll()
+        } catch {
+            print("Failed to remove log file: \(error.localizedDescription)")
+        }
+    }
+    
+    func savedLogLocaly() {
+        guard shouldLog else {
+            return
+        }
+        do {
+            try createLogFileIfNotExist()
+            pruneLogs()
+            mergeAndClear()
+            try savedOnFile()
+        } catch {
+            print("Failed to log: \(error.localizedDescription)")
+        }
+    }
+    
+    func toggleLogging(shouldLog: Bool) {
+        self.shouldLog = shouldLog
     }
 }
 
 // MARK: - Private APIs
-extension LogManager {
+private extension LogManager {
     func createLogFileIfNotExist() throws {
-        if !FileManager.default.fileExists(atPath: url.path) {
+        guard !fileExists else {
+            return
+        }
+        do {
             try Data().write(to: url)
+            fileExists = true
+        } catch {
+            throw error
         }
     }
-
-    func pruneLogs() throws {
-        let logContents = try String(contentsOf: url, encoding: .utf8)
-        let lines = logContents.components(separatedBy: .newlines)
-        if lines.count > maxLogLines {
-            let prunedLines = Array(lines.dropFirst(lines.count - Int(maxLogLines)))
-            let replacementText = prunedLines.joined(separator: "\n")
-            try replacementText.data(using: .utf8)?.write(to: url)
+    
+    func pruneLogs() {
+        if numberOfLogAfterMerge > config.maxLogLines {
+            currentSavedlogs.removeFirst(numberOfLogsToRemove)
         }
     }
+    
+    func mergeAndClear() {
+        currentSavedlogs.append(contentsOf: currentMemoryLogs.compactMap { $0.toString })
+        currentMemoryLogs.removeAll()
+    }
+    
+    func savedOnFile() throws {
+        let updatedLogs = currentSavedlogs.joined(separator: "\n")
+        try updatedLogs.data(using: .utf8)?.write(to: url)
+    }
+}
 
-    func store(entry: LogEntry) throws {
-        let jsonData = try JSONEncoder().encode(entry)
-        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
-            throw LogManagerError.failedToSerializeLogEntry
+// MARK: - Utils
+private extension LogManager {
+    func setUp() {
+        timer = Timer.scheduledTimer(withTimeInterval: config.timerInterval,
+                                     repeats: true) { _ in
+            Task { [weak self] in
+                guard let self, await self.currentMemoryLogs.count > 50, await self.shouldLog else { return }
+                await self.savedLogLocaly()
+            }
         }
-        let dataToLog = Data("\(jsonString)\n".utf8)
-        let fileHandle = try FileHandle(forWritingTo: url)
-        try fileHandle.seekToEnd()
-        try fileHandle.write(contentsOf: dataToLog)
-        try fileHandle.close()
+    }
+}
+
+// MARK: Utils Extensions
+private extension LogEntry {
+    var toString: String? {
+        guard let jsonData = try? JSONEncoder().encode(self),
+                let jsonString = String(data: jsonData, encoding: .utf8) else {
+           return nil
+        }
+        return jsonString
+    }
+}
+
+private extension String {
+    var toLogEntry: LogEntry? {
+        guard let data = self.data(using: .utf8),
+              let entry = try? JSONDecoder().decode(LogEntry.self, from: data)  else {
+            return nil
+        }
+        
+        return entry
     }
 }
