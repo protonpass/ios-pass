@@ -64,7 +64,10 @@ public struct InAppPurchasePlan: Equatable, Hashable {
     }
 
     private static let regex: NSRegularExpression = {
-        guard let instance = try? NSRegularExpression(pattern: "^ios[^_]*_([^_]*)_?(.*)_(\\d+)_\\w+_non_renewing$", options: [.anchorsMatchLines]) else {
+        guard let instance = try? NSRegularExpression(
+            pattern: "^ios[^_]*_([^_]*)_?(.*)_(\\d+)_\\w+_non_renewing(?:_v\\d+)?$",
+            options: [.anchorsMatchLines]
+        ) else {
             assertionFailure("The regular expression was not compiled right")
             return NSRegularExpression()
         }
