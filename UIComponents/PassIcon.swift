@@ -51,8 +51,11 @@ public extension PassIcon {
     static var onboardAutoFillStep4 = UIImage(named: "OnboardAutoFillStep4")!
     static var onboardAutoFillStep5 = UIImage(named: "OnboardAutoFillStep5")!
 
+    static var passCreditCardOneStripe = UIImage(named: "PassCreditCardOneStripe")!
+    static var passCreditCardTwoStripes = UIImage(named: "PassCreditCardTwoStripes")!
     static var passIcon = UIImage(named: "PassIcon")!
     static var passTextLogo = UIImage(named: "PassTextLogo")!
+    static var shieldCheck = UIImage(named: "ShieldCheck")!
     static var swirls = UIImage(named: "Swirls")!
 
     static var tabProfilePaidSelected = UIImage(named: "TabProfilePaidSelected")!

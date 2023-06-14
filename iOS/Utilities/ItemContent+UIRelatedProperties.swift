@@ -34,7 +34,7 @@ extension ItemContentType {
         case .note:
             return IconProvider.fileLines
         case .creditCard:
-            return IconProvider.creditCard
+            return PassIcon.passCreditCardOneStripe
         }
     }
 
