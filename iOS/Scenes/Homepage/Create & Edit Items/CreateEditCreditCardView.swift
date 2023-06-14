@@ -72,6 +72,7 @@ private extension CreateEditCreditCardView {
                 .padding()
             }
         }
+        .background(PassColor.backgroundNorm.toColor)
         .accentColor(tintColor.toColor) // Remove when dropping iOS 15
         .tint(tintColor.toColor)
         .onFirstAppear {
@@ -180,12 +181,12 @@ private extension CreateEditCreditCardView {
 
     var verificationNumberRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.shield)
+            ItemDetailSectionIcon(icon: PassIcon.shieldCheck)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Verification number")
                     .sectionTitleText()
-                TextField("1234 1234 1234", text: $viewModel.verificationNumber)
+                TextField("123", text: $viewModel.verificationNumber)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .verificationNumber)
@@ -209,7 +210,7 @@ private extension CreateEditCreditCardView {
 
     var expirationDateRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.calendarToday)
+            ItemDetailSectionIcon(icon: IconProvider.calendarDay)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Expires on")
