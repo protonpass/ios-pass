@@ -26,12 +26,13 @@ struct CreateEditCreditCardView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditCreditCardViewModel
     @FocusState private var focusedField: Field?
+    @State private var selectedNumber = 0
     @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
 
     enum Field {
-        case title, cardholderName, cardNumber, verificationNumber, expirationDate, note
+        case title, cardholderName, cardNumber, verificationNumber, note
     }
 
     init(viewModel: CreateEditCreditCardViewModel) {
@@ -192,7 +193,7 @@ private extension CreateEditCreditCardView {
                     .focused($focusedField, equals: .verificationNumber)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .submitLabel(.next)
-                    .onSubmit { focusedField = .expirationDate }
+                    .onSubmit { focusedField = .note }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -215,25 +216,13 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Expires on")
                     .sectionTitleText()
-                TextField("MM/YYYY", text: $viewModel.expirationDate)
-                    .keyboardType(.numberPad)
-                    .autocorrectionDisabled()
-                    .focused($focusedField, equals: .expirationDate)
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .submitLabel(.next)
-                    .onSubmit { focusedField = .note }
+                MonthYearTextField(placeholder: "MM/YYYY",
+                                   tintColor: tintColor,
+                                   month: $viewModel.month,
+                                   year: $viewModel.year)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
-            if !viewModel.expirationDate.isEmpty {
-                Button(action: {
-                    viewModel.expirationDate = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: viewModel.expirationDate.isEmpty)
     }
 }

@@ -392,6 +392,7 @@
 		356A34BD2977C6ED00969BA2 /* URLExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A34BC2977C6ED00969BA2 /* URLExtensionTests.swift */; };
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
+		356A4EF42A3A01090069804F /* MonthYearTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A4EF32A3A01090069804F /* MonthYearTextField.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
@@ -1123,6 +1124,7 @@
 		356A34B82977B46300969BA2 /* OTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTP.swift; sourceTree = "<group>"; };
 		356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParserTests.swift"; sourceTree = "<group>"; };
 		356A34BC2977C6ED00969BA2 /* URLExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensionTests.swift; sourceTree = "<group>"; };
+		356A4EF32A3A01090069804F /* MonthYearTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthYearTextField.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -2513,6 +2515,7 @@
 				3562BCF629BDE77900564508 /* AnimatingGradient.swift */,
 				358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */,
 				35661CB529B91990003BBAD6 /* EdgeInsets+Zero.swift */,
+				356A4EF32A3A01090069804F /* MonthYearTextField.swift */,
 				355696DF290BC4B1005C96FB /* ObsoleteItemAlertModifier.swift */,
 				3560845329DDE305001F7487 /* PassColor.swift */,
 				3567E46129B08ABE00511D62 /* PassDivider.swift */,
@@ -4323,6 +4326,7 @@
 				3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */,
 				355BDEC8299E1506009FDBB1 /* CapsuleTextButton.swift in Sources */,
 				3562BCF529BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift in Sources */,
+				356A4EF42A3A01090069804F /* MonthYearTextField.swift in Sources */,
 				355DC72929E15EAF00946867 /* Modifiers.swift in Sources */,
 				5B0C750D2A321DCD00272CE8 /* Color+Extensions.swift in Sources */,
 				3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */,

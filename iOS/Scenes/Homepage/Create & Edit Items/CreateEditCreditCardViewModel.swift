@@ -29,7 +29,8 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     @Published var cardholderName = ""
     @Published var cardNumber = ""
     @Published var verificationNumber = ""
-    @Published var expirationDate = ""
+    @Published var month = Calendar.current.component(.month, from: .now)
+    @Published var year = Calendar.current.component(.year, from: .now)
     @Published var note = ""
 
     override func itemContentType() -> ItemContentType { .creditCard }
