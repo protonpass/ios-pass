@@ -33,4 +33,15 @@ final class StringExtensionTests: XCTestCase {
         XCTAssertEqual("j".initialsRemovingEmojis(), "J")
         XCTAssertEqual("".initialsRemovingEmojis(), "")
     }
+
+    func testConvertToCardNumber() {
+        XCTAssertEqual("341234569865".toCreditCardNumber(),
+                       "3412 345698 65")
+        XCTAssertEqual("341234569865857".toCreditCardNumber(),
+                       "3412 345698 65857")
+        XCTAssertEqual("3712345698658579".toCreditCardNumber(),
+                       "3712 3456 9865 8579")
+        XCTAssertEqual("671934946329032".toCreditCardNumber(),
+                       "6719 3494 6329 032")
+    }
 }

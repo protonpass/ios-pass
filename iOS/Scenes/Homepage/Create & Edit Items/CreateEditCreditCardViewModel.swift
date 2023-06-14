@@ -36,4 +36,29 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     override func itemContentType() -> ItemContentType { .creditCard }
 
     override var isSaveable: Bool { !title.isEmpty }
+
+    override init(mode: ItemMode,
+                  itemRepository: ItemRepositoryProtocol,
+                  upgradeChecker: UpgradeCheckerProtocol,
+                  featureFlagsRepository: FeatureFlagsRepositoryProtocol,
+                  vaults: [Vault],
+                  preferences: Preferences,
+                  logManager: LogManager) throws {
+        try super.init(mode: mode,
+                       itemRepository: itemRepository,
+                       upgradeChecker: upgradeChecker,
+                       featureFlagsRepository: featureFlagsRepository,
+                       vaults: vaults,
+                       preferences: preferences,
+                       logManager: logManager)
+
+        $cardNumber
+            .removeDuplicates()
+            .receive(on: RunLoop.main)
+            .map { $0.toCreditCardNumber() }
+            .sink { [unowned self] formattedCardNumber in
+                self.cardNumber = formattedCardNumber
+            }
+            .store(in: &cancellables)
+    }
 }
