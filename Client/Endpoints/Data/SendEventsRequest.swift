@@ -145,6 +145,8 @@ private extension ItemContentType {
             return "alias"
         case .note:
             return "note"
+        case .creditCard:
+            return "credit_card"
         }
     }
 }

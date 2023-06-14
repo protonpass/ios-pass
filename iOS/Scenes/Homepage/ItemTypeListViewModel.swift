@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 import UIComponents
 
 enum ItemType: CaseIterable {
-    case login, alias, note, password
+    case login, alias, creditCard, note, password
 }
 
 extension ItemContentType {
@@ -32,6 +32,7 @@ extension ItemContentType {
         switch self {
         case .login: return .login
         case .alias: return .alias
+        case .creditCard: return .creditCard
         case .note: return .note
         }
     }
@@ -71,6 +72,8 @@ extension ItemType {
             return IconProvider.user
         case .alias:
             return IconProvider.alias
+        case .creditCard:
+            return PassIcon.passCreditCard
         case .note:
             return IconProvider.fileLines
         case .password:
@@ -84,6 +87,8 @@ extension ItemType {
             return ItemContentType.login.normMajor2Color
         case .alias:
             return ItemContentType.alias.normMajor2Color
+        case .creditCard:
+            return ItemContentType.creditCard.normMajor2Color
         case .note:
             return ItemContentType.note.normMajor2Color
         case .password:
@@ -97,6 +102,8 @@ extension ItemType {
             return ItemContentType.login.normMinor1Color
         case .alias:
             return ItemContentType.alias.normMinor1Color
+        case .creditCard:
+            return ItemContentType.creditCard.normMinor1Color
         case .note:
             return ItemContentType.note.normMinor1Color
         case .password:
@@ -112,6 +119,8 @@ extension ItemType {
             return "Alias"
         case .note:
             return "Note"
+        case .creditCard:
+            return "Credit card"
         case .password:
             return "Password"
         }
@@ -123,6 +132,8 @@ extension ItemType {
             return "Add login details for an app or site"
         case .alias:
             return "Get an email alias to use on new apps"
+        case .creditCard:
+            return "Securely store your payment information"
         case .note:
             return "Jot down a PIN, code, or note to self"
         case .password:

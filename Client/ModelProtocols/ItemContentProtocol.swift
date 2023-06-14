@@ -21,21 +21,12 @@
 import Core
 import CryptoKit
 
+// RawValue is used for telemetry, we need to know the item type of the actions
 public enum ItemContentType: Int, CaseIterable {
     case login = 0
     case alias = 1
     case note = 2
-
-    public var creationMessage: String {
-        switch self {
-        case .login:
-            return "Login created"
-        case .alias:
-            return "Alias created"
-        case .note:
-            return "Note created"
-        }
-    }
+    case creditCard = 3
 }
 
 extension ItemContentType: CustomDebugStringConvertible {
@@ -44,6 +35,7 @@ extension ItemContentType: CustomDebugStringConvertible {
         case .login: return "login"
         case .alias: return "alias"
         case .note: return "note"
+        case .creditCard: return "creditCard"
         }
     }
 }
