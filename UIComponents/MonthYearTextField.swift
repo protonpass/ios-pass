@@ -30,13 +30,13 @@ public struct MonthYearTextField: UIViewRepresentable {
     let tintColor: UIColor
     let font: UIFont
     let currentYear: Int
-    @Binding var month: Int
-    @Binding var year: Int
+    @Binding var month: Int?
+    @Binding var year: Int?
 
     public init(placeholder: String,
                 tintColor: UIColor,
-                month: Binding<Int>,
-                year: Binding<Int>,
+                month: Binding<Int?>,
+                year: Binding<Int?>,
                 textColor: UIColor = PassColor.textNorm,
                 font: UIFont = .preferredFont(forTextStyle: .body),
                 currentYear: Int = Calendar.current.component(.year, from: .now)) {
@@ -67,14 +67,25 @@ public struct MonthYearTextField: UIViewRepresentable {
         textField.inputView = picker
         textField.inputAccessoryView = toolbar
 
-        toolbar.items = [.flexibleSpace(),
-                         .init(systemItem: .done,
-                               primaryAction: .init(handler: { _ in textField.resignFirstResponder() }))]
+        let doneButon = UIBarButtonItem(systemItem: .done,
+                                        primaryAction: .init(handler: { _ in
+            if month == nil {
+                month = Calendar.current.component(.month, from: .now)
+            }
+            if year == nil {
+                year = Calendar.current.component(.year, from: .now)
+            }
+            textField.resignFirstResponder()
+        }))
+        toolbar.items = [.flexibleSpace(), doneButon]
+
         return textField
     }
 
     public func updateUIView(_ uiView: UITextField, context: Context) {
-        uiView.text = "\(String(format: "%02d", month)) / \(year)"
+        if let month, let year {
+            uiView.text = "\(String(format: "%02d", month)) / \(year)"
+        }
     }
 
     public func makeCoordinator() -> Coordinator { Coordinator(self) }
@@ -84,12 +95,16 @@ public struct MonthYearTextField: UIViewRepresentable {
 
         // Default to current month
         assert(picker.numberOfRows(inComponent: 0) == 12, "Must have 12 months")
-        picker.selectRow(month - 1, inComponent: 0, animated: false)
+        if let month {
+            picker.selectRow(month - 1, inComponent: 0, animated: false)
+        }
 
         // Default to current year
         assert(picker.numberOfRows(inComponent: 1) == kNumberOfYearsAhead,
                "Must have \(kNumberOfYearsAhead) years")
-        picker.selectRow(year - currentYear, inComponent: 1, animated: false)
+        if let year {
+            picker.selectRow(year - currentYear, inComponent: 1, animated: false)
+        }
     }
 }
 

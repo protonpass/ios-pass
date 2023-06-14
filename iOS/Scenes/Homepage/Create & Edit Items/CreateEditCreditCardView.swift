@@ -158,7 +158,7 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Card number")
                     .sectionTitleText()
-                TextField("1234 1234 1234", text: $viewModel.cardNumber)
+                TextField("1234 1234 1234 1234", text: $viewModel.cardNumber)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .cardNumber)
