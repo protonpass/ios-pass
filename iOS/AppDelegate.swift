@@ -45,15 +45,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        Task {
-           await ToolingContainer.shared.hostAppLogManager().savedLogLocaly()
-        }
+        saveAllPendingLogs()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        Task {
-           await ToolingContainer.shared.hostAppLogManager().savedLogLocaly()
-        }
+        saveAllPendingLogs()
     }
 }
 
@@ -76,5 +72,11 @@ private extension AppDelegate {
         let appVersionValue = "\(Bundle.main.fullAppVersionName())(\(Bundle.main.buildNumber))"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
         kSharedUserDefaults.set(appVersionValue, forKey: appVersionKey)
+    }
+
+    func saveAllPendingLogs() {
+        Task {
+            await ToolingContainer.shared.hostAppLogManager().saveAllLogs()
+        }
     }
 }

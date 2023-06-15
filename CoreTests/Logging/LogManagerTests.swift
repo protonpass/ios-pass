@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
 @testable import Core
 import XCTest
 
@@ -29,9 +27,12 @@ final class LogManagerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // swiftlint:disable:next force_unwrapping
         let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-        sut = LogManager(url: url, fileName: LogManagerTests.destinationFile, config: LogManagerConfig(maxLogLines: 10, dumpThreshold: 5, timerInterval: 1))
+        sut = LogManager(url: url,
+                         fileName: LogManagerTests.destinationFile,
+                         config: LogManagerConfig(maxLogLines: 10,
+                                                  dumpThreshold: 5,
+                                                  timerInterval: 1))
     }
     
     override func tearDown() {
@@ -83,7 +84,7 @@ final class LogManagerTests: XCTestCase {
         await LogEntryFactory.createMockArray(count: 3).asyncForEach { entry in
             await sut.log(entry: entry)
         }
-        await sut.savedLogLocaly()
+        await sut.saveAllLogs()
 
         let newLogEntries = try await sut.getLogEntries()
         XCTAssertEqual(newLogEntries.count, 3)
@@ -95,7 +96,7 @@ final class LogManagerTests: XCTestCase {
         await LogEntryFactory.createMockArray(count: 3).asyncForEach { entry in
             await sut.log(entry: entry)
         }
-        await sut.savedLogLocaly()
+        await sut.saveAllLogs()
 
         let newLogEntries = try await sut.getLogEntries()
         XCTAssertTrue(newLogEntries.isEmpty)

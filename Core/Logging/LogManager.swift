@@ -24,7 +24,7 @@ public protocol LogManagerProtocol: Actor {
     func log(entry: LogEntry)
     func getLogEntries() async throws -> [LogEntry]
     func removeAllLogs()
-    func savedLogLocaly()
+    func saveAllLogs()
     func toggleLogging(shouldLog: Bool)
 }
 
@@ -99,7 +99,7 @@ public extension LogManager {
         guard currentMemoryLogs.count >= config.dumpThreshold else {
             return
         }
-        savedLogLocaly()
+        saveAllLogs()
     }
 
     func getLogEntries() async throws -> [LogEntry] {
@@ -124,7 +124,7 @@ public extension LogManager {
         }
     }
     
-    func savedLogLocaly() {
+    func saveAllLogs() {
         guard shouldLog else {
             return
         }
@@ -183,7 +183,7 @@ private extension LogManager {
                 guard let self,
                       await self.currentMemoryLogs.count > self.config.dumpThreshold,
                       await self.shouldLog else { return }
-                await self.savedLogLocaly()
+                await self.saveAllLogs()
             }
         }
     }

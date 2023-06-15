@@ -18,10 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 @testable import Core
 
-struct LogEntryFactory {
+enum LogEntryFactory {
     static func createMock(timestamp: TimeInterval = 0,
                            subsystem: String = "",
                            category: String = "",
@@ -31,15 +30,15 @@ struct LogEntryFactory {
                            function: String = "",
                            line: UInt = 0,
                            column: UInt = 0) -> LogEntry {
-        return LogEntry(timestamp: timestamp,
-                        subsystem: subsystem,
-                        category: category,
-                        level: level,
-                        message: message,
-                        file: file,
-                        function: function,
-                        line: line,
-                        column: column)
+        .init(timestamp: timestamp,
+              subsystem: subsystem,
+              category: category,
+              level: level,
+              message: message,
+              file: file,
+              function: function,
+              line: line,
+              column: column)
     }
     
     static func createMockArray(count: Int,
@@ -52,21 +51,6 @@ struct LogEntryFactory {
                                 function: String = "",
                                 line: UInt = 0,
                                 column: UInt = 0) -> [LogEntry] {
-        var logEntries: [LogEntry] = []
-        
-        for _ in 0..<count {
-            let logEntry = createMock(timestamp: timestamp,
-                                      subsystem: subsystem,
-                                      category: category,
-                                      level: level,
-                                      message: message,
-                                      file: file,
-                                      function: function,
-                                      line: line,
-                                      column: column)
-            logEntries.append(logEntry)
-        }
-        
-        return logEntries
+        .init(repeating: LogEntryFactory.createMock(), count: count)
     }
 }
