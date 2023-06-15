@@ -31,17 +31,3 @@ public struct LogEntry: Codable {
     public let line: UInt
     public let column: UInt
 }
-
-extension LogEntry: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(timestamp)
-        hasher.combine(subsystem)
-        hasher.combine(category)
-        hasher.combine(level)
-        hasher.combine(message)
-        hasher.combine(file)
-        hasher.combine(function)
-        hasher.combine(line)
-        hasher.combine(column)
-    }
-}

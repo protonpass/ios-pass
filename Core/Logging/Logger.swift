@@ -183,7 +183,7 @@ private extension Logger {
                        line: UInt,
                        column: UInt) -> LogEntry {
         // Make "path/to/folder/MyClass.swift" becomes "MyClass"
-        let formattedFile = ((file as NSString).deletingPathExtension as NSString).lastPathComponent
+        let formattedFile = URL(fileURLWithPath: file).deletingPathExtension().lastPathComponent
         return .init(timestamp: timestamp,
                      subsystem: subsystem,
                      category: category,
