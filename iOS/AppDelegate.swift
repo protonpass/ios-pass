@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import ProtonCore_CryptoGoImplementation
 import ProtonCore_CryptoGoInterface
 import Sentry
@@ -42,6 +43,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        saveAllPendingLogs()
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        saveAllPendingLogs()
+    }
 }
 
 private extension AppDelegate {
@@ -63,5 +72,11 @@ private extension AppDelegate {
         let appVersionValue = "\(Bundle.main.fullAppVersionName())(\(Bundle.main.buildNumber))"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
         kSharedUserDefaults.set(appVersionValue, forKey: appVersionKey)
+    }
+
+    func saveAllPendingLogs() {
+        Task {
+            await ToolingContainer.shared.hostAppLogManager().saveAllLogs()
+        }
     }
 }

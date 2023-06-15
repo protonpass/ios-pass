@@ -142,34 +142,17 @@ public extension LogFormatter {
 extension LogFormatter {
     func txtFormat(entry: LogEntry) -> String {
         // Always include date
-        let date = Date(timeIntervalSince1970: entry.timestamp)
-        let dateString = dateFormatter.string(from: date)
+        let dateString = dateFormatter.string(from: .init(timeIntervalSince1970: entry.timestamp))
 
-        // Log level
-        let logLevelString: String
-        if options.contains(.logLevelEmoji) {
-            logLevelString = entry.level.descriptionWithEmoji
-        } else {
-            logLevelString = entry.level.rawValue
-        }
+        let logLevelString = options.contains(.logLevelEmoji) ?
+        entry.level.descriptionWithEmoji : entry.level.rawValue
 
-        // Subsystem
-        var subsystemString: String?
-        if options.contains(.subsystem) {
-            subsystemString = entry.subsystem
-        }
+        let subsystemString = options.contains(.subsystem) ? entry.subsystem : nil
 
-        // Category
-        var categoryString: String?
-        if options.contains(.category) {
-            categoryString = entry.category
-        }
+        let categoryString = options.contains(.category) ? entry.category : nil
 
-        // File, function, line & column
-        var fileFunctionLineColumnString: String?
-        if options.contains(.fileFunctionLineColumn) {
-            fileFunctionLineColumnString = "\(entry.file).\(entry.function):\(entry.line):\(entry.column)"
-        }
+        let fileFunctionLineColumnString = options.contains(.fileFunctionLineColumn) ?
+        "\(entry.file).\(entry.function):\(entry.line):\(entry.column)" : nil
 
         // Get except message because we want to concatenate message with a different separator
         let strings = [dateString,
@@ -184,17 +167,10 @@ extension LogFormatter {
     }
 
     func htmlFormat(entry: LogEntry, style: LogFormatStyle) -> String {
-        // Always include date
-        let date = Date(timeIntervalSince1970: entry.timestamp)
-        let dateString = dateFormatter.string(from: date)
+        let dateString = dateFormatter.string(from: .init(timeIntervalSince1970: entry.timestamp))
 
-        // Log level
-        let logLevelString: String
-        if options.contains(.logLevelEmoji) {
-            logLevelString = entry.level.descriptionWithEmoji
-        } else {
-            logLevelString = entry.level.rawValue
-        }
+        let logLevelString = options.contains(.logLevelEmoji) ?
+        entry.level.descriptionWithEmoji : entry.level.rawValue
 
         // Subsystem
         var subsystemString: String?
@@ -217,10 +193,8 @@ extension LogFormatter {
         }
 
         // File, function, line & column
-        var fileFunctionLineColumnString: String?
-        if options.contains(.fileFunctionLineColumn) {
-            fileFunctionLineColumnString = "\(entry.file).\(entry.function):\(entry.line):\(entry.column)"
-        }
+        let fileFunctionLineColumnString = options.contains(.fileFunctionLineColumn) ?
+        "\(entry.file).\(entry.function):\(entry.line):\(entry.column)" : nil
 
         // Get except message because we want to concatenate message with a different separator
         let strings = [dateString,

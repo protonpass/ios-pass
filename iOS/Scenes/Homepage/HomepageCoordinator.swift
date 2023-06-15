@@ -947,9 +947,13 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        let modules = PassLogModule.allCases.map(LogManager.init)
-        modules.forEach { $0.removeAllLogs() }
-        bannerManager.displayBottomSuccessMessage("All logs cleared")
+        Task {
+            let modules = PassLogModule.allCases.map(LogManager.init)
+            await modules.asyncForEach { await $0.removeAllLogs() }
+            await MainActor.run { [weak self] in
+                self?.bannerManager.displayBottomSuccessMessage("All logs cleared")
+            }
+        }
     }
 
     func settingsViewModelDidDisableFavIcons() {

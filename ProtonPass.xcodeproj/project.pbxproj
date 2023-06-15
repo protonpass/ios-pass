@@ -588,6 +588,9 @@
 		5B0C75022A30776100272CE8 /* Tooling+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */; };
 		5B0C75032A30806D00272CE8 /* Tooling+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */; };
 		5B0C750D2A321DCD00272CE8 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */; };
+		5B0C75122A39CB3D00272CE8 /* LogManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */; };
+		5B0C75142A39DC7600272CE8 /* LogEntryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */; };
+		5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1301,6 +1304,9 @@
 		5B0C74FB2A2F5F3400272CE8 /* Services+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Services+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B0C75012A30776100272CE8 /* Tooling+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tooling+DependencyInjection.swift"; sourceTree = "<group>"; };
 		5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
+		5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManagerTests.swift; sourceTree = "<group>"; };
+		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5ED83C579352551B8FC8475F /* Pods-macOS.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-tf.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-tf.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
@@ -1718,6 +1724,7 @@
 			children = (
 				3553C225296570CB0087518A /* LogFormatterTests.swift */,
 				3553C227296571440087518A /* LoggerTests.swift */,
+				5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */,
 			);
 			path = Logging;
 			sourceTree = "<group>";
@@ -1816,6 +1823,7 @@
 			isa = PBXGroup;
 			children = (
 				355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */,
+				5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -2585,6 +2593,7 @@
 		35E50704286FB39800A3F6EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				5B0C750E2A38C4FA00272CE8 /* Extensions */,
 				3573CD22292C139900A9EF82 /* AliasPrefixValidator.swift */,
 				3565FD52298D3D6500E2A0EE /* Array+Chunked.swift */,
 				355BDECF299E3807009FDBB1 /* Array+InsertOrRemove.swift */,
@@ -2706,6 +2715,14 @@
 			isa = PBXGroup;
 			children = (
 				5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5B0C750E2A38C4FA00272CE8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4234,6 +4251,7 @@
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35426B6628EF195700F89BB7 /* ParsedHost.swift in Sources */,
 				3565622029BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift in Sources */,
+				5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
 				3553C223296570710087518A /* Logger.swift in Sources */,
 				354036DD28F451AE00F9E729 /* URLUtils.swift in Sources */,
@@ -4285,9 +4303,11 @@
 			files = (
 				355938C82A3360030053B7F6 /* CurrentDateProviderMock.swift in Sources */,
 				3553C226296570CB0087518A /* LogFormatterTests.swift in Sources */,
+				5B0C75122A39CB3D00272CE8 /* LogManagerTests.swift in Sources */,
 				356A34BD2977C6ED00969BA2 /* URLExtensionTests.swift in Sources */,
 				356A34BB2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift in Sources */,
 				35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */,
+				5B0C75142A39DC7600272CE8 /* LogEntryFactory.swift in Sources */,
 				3552A28829EBFE2800ABDB6E /* FileUtilsTests.swift in Sources */,
 				35855AC72A0AB9350091992F /* WordProviderTests.swift in Sources */,
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,

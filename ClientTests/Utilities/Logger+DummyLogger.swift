@@ -22,14 +22,13 @@ import Core
 
 extension Logger {
     static func dummyLogger() -> Logger {
-        .init(manager: .dummyLogManager())
+        .init(manager: LogManager.dummyLogManager())
     }
 }
 
 extension LogManager {
     static func dummyLogManager() -> LogManager {
         .init(url: FileUtils.getDocumentsDirectory(),
-              fileName: .random(),
-              maxLogLines: 0)
+              fileName: .random(), config: .default)
     }
 }
