@@ -44,4 +44,17 @@ final class StringExtensionTests: XCTestCase {
         XCTAssertEqual("671934946329032".toCreditCardNumber(),
                        "6719 3494 6329 032")
     }
+
+    func testConvertToMaskedCardNumber() {
+        XCTAssertEqual("341234569865".toMaskedCreditCardNumber(),
+                       "3412 •••• 9865")
+        XCTAssertEqual("341234569865857".toMaskedCreditCardNumber(),
+                       "3412 •••••• 65857")
+        XCTAssertEqual("3712345698658579".toMaskedCreditCardNumber(),
+                       "3712 •••• •••• 8579")
+        XCTAssertEqual("671934946329032".toMaskedCreditCardNumber(),
+                       "6719 •••• •••• 032")
+        XCTAssertEqual("67193494632903247021".toMaskedCreditCardNumber(),
+                       "6719 •••• •••• •••• 7021")
+    }
 }

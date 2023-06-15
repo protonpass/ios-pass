@@ -68,7 +68,10 @@ extension SymmetricallyEncryptedItem {
             note = item.aliasEmail ?? ""
             isAlias = true
 
-        default:
+        case .creditCard(let data):
+            note = data.number.toMaskedCreditCardNumber()
+
+        case .note:
             note = String(itemContent.note.prefix(50))
         }
 
