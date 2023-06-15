@@ -31,17 +31,20 @@ extension FeatureFlagsEntity {
         NSFetchRequest<FeatureFlagsEntity>(entityName: "FeatureFlagsEntity")
     }
 
+    @NSManaged var creditCardV1: Bool
     @NSManaged var customFields: Bool
     @NSManaged var userID: String?
 }
 
 extension FeatureFlagsEntity {
     func toFeatureFlags() -> FeatureFlags {
-        .init(customFields: customFields)
+        .init(creditCardV1: creditCardV1,
+              customFields: customFields)
     }
 
     func hydrate(from flags: FeatureFlags, userId: String) {
-        self.userID = userId
+        self.creditCardV1 = flags.creditCardV1
         self.customFields = flags.customFields
+        self.userID = userId
     }
 }

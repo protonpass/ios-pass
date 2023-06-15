@@ -23,11 +23,24 @@ import ProtonCore_Services
 
 public struct GetCustomFieldsFlagResponse: Decodable {
     let code: Int
-    let feature: CustomFieldsFlag
+    let feature: FeatureFlagResponse
 }
 
-public struct CustomFieldsFlag: Decodable {
+public struct FeatureFlagResponse: Decodable {
     public let value: Bool
+}
+
+public enum FeatureFlagType {
+    case creditCardV1, customFields
+
+    var path: String {
+        switch self {
+        case .creditCardV1:
+            return "PassCreditCardsV1"
+        case .customFields:
+            return "PassCustomFields"
+        }
+    }
 }
 
 public struct GetCustomFieldsFlagEndpoint: Endpoint {
@@ -37,8 +50,8 @@ public struct GetCustomFieldsFlagEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
 
-    public init() {
-        self.debugDescription = "Get custom fields flag"
-        self.path = "/core/v4/features/PassCustomFields"
+    public init(flagType: FeatureFlagType) {
+        self.debugDescription = "Get feature flag \(flagType.path)"
+        self.path = "/core/v4/features/\(flagType.path)"
     }
 }

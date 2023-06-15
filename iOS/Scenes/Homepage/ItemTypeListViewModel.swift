@@ -45,13 +45,35 @@ protocol ItemTypeListViewModelDelegate: AnyObject {
 
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
+    @Published private(set) var creditCardV1 = false
+
+    var supportedItemTypes: [ItemType] {
+        if creditCardV1 {
+            return ItemType.allCases
+        } else {
+            return ItemType.allCases.filter { $0 != .creditCard }
+        }
+    }
 
     weak var delegate: ItemTypeListViewModelDelegate?
 
-    init(upgradeChecker: UpgradeCheckerProtocol, logManager: LogManager) {
+    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
+         upgradeChecker: UpgradeCheckerProtocol,
+         logManager: LogManager) {
         Task { @MainActor in
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
+            } catch {
+                let logger = Logger(manager: logManager)
+                logger.error(error)
+                delegate?.itemTypeListViewModelDidEncounter(error: error)
+            }
+        }
+
+        Task { @MainActor in
+            do {
+                let flags = try await featureFlagsRepository.getFlags()
+                creditCardV1 = flags.creditCardV1
             } catch {
                 let logger = Logger(manager: logManager)
                 logger.error(error)
