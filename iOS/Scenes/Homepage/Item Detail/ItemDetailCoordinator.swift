@@ -81,6 +81,8 @@ final class ItemDetailCoordinator: DeinitPrintable {
             itemDetailPage = makeNoteDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
         case .alias:
             itemDetailPage = makeAliasItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+        case .creditCard:
+            itemDetailPage = makeCreditCardDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
         }
 
         itemDetailPage.viewModel.delegate = itemDetailViewModelDelegate
@@ -149,6 +151,13 @@ private extension ItemDetailCoordinator {
             logManager: logManager,
             theme: preferences.theme)
         return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
+    }
+
+    // swiftlint:disable:next unavailable_function
+    func makeCreditCardDetailPage(from itemContent: ItemContent,
+                                  asSheet: Bool,
+                                  vault: Vault?) -> ItemDetailPage {
+        fatalError("To be implemented")
     }
 }
 

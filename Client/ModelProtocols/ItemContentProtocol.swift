@@ -44,6 +44,7 @@ public enum ItemContentData {
     case alias
     case login(LogInItemData)
     case note
+    case creditCard(CreditCardData)
 
     public var type: ItemContentType {
         switch self {
@@ -53,6 +54,8 @@ public enum ItemContentData {
             return .login
         case .note:
             return .note
+        case .creditCard:
+            return .creditCard
         }
     }
 }
@@ -68,6 +71,37 @@ public struct LogInItemData {
         self.password = password
         self.totpUri = totpUri
         self.urls = urls
+    }
+}
+
+public struct CreditCardData {
+    public let cardholderName: String
+    public let type: ProtonPassItemV1_CardType
+    public let number: String
+    public let cvv: String
+    public let expirationDate: String // YYYY-MM
+    public let issuerBank: String
+    public let pin: String
+
+    public init(cardholderName: String,
+                type: ProtonPassItemV1_CardType,
+                number: String,
+                cvv: String,
+                expirationDate: String,
+                issuerBank: String,
+                pin: String) {
+        let monthYear = expirationDate.components(separatedBy: "-")
+        let month = Int(monthYear.last ?? "")
+        let year = Int(monthYear.first ?? "")
+        assert(month != nil && year != nil, "Bad expirationDate format")
+
+        self.cardholderName = cardholderName
+        self.type = type
+        self.number = number
+        self.cvv = cvv
+        self.expirationDate = expirationDate
+        self.issuerBank = issuerBank
+        self.pin = pin
     }
 }
 
@@ -127,8 +161,19 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         switch content.content {
         case .alias:
             return .alias
+
         case .note:
             return .note
+
+        case .creditCard(let data):
+            return .creditCard(.init(cardholderName: data.cardholderName,
+                                     type: data.cardType,
+                                     number: data.number,
+                                     cvv: data.cvv,
+                                     expirationDate: data.expirationDate,
+                                     issuerBank: data.issuerBank,
+                                     pin: data.pin))
+
         case .login(let data):
             return .login(.init(username: data.username,
                                 password: data.password,
@@ -169,6 +214,16 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             content.login.password = logInData.password
             content.login.totpUri = logInData.totpUri
             content.login.urls = logInData.urls
+
+        case .creditCard(let data):
+            content.creditCard = .init()
+            content.creditCard.cardholderName = data.cardholderName
+            content.creditCard.cardType = data.type
+            content.creditCard.number = data.number
+            content.creditCard.cvv = data.cvv
+            content.creditCard.expirationDate = data.expirationDate
+            content.creditCard.issuerBank = data.issuerBank
+            content.creditCard.pin = data.pin
 
         case .note:
             content.note = .init()
