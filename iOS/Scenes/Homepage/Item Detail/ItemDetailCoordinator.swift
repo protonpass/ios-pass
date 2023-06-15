@@ -153,11 +153,20 @@ private extension ItemDetailCoordinator {
         return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
 
-    // swiftlint:disable:next unavailable_function
     func makeCreditCardDetailPage(from itemContent: ItemContent,
                                   asSheet: Bool,
                                   vault: Vault?) -> ItemDetailPage {
-        fatalError("To be implemented")
+        let viewModel = CreditCardDetailViewModel(
+            isShownAsSheet: asSheet,
+            itemContent: itemContent,
+            favIconRepository: favIconRepository,
+            itemRepository: itemRepository,
+            upgradeChecker: upgradeChecker,
+            featureFlagsRepository: featureFlagsRepository,
+            vault: vault,
+            logManager: logManager,
+            theme: preferences.theme)
+        return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
     }
 }
 

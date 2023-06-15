@@ -25,7 +25,7 @@ import UIKit
 
 // MARK: - Colors & icons
 extension ItemContentType {
-    var icon: UIImage {
+    var regularIcon: UIImage {
         switch self {
         case .alias:
             return IconProvider.alias
@@ -35,6 +35,15 @@ extension ItemContentType {
             return IconProvider.fileLines
         case .creditCard:
             return PassIcon.passCreditCardOneStripe
+        }
+    }
+
+    var largeIcon: UIImage {
+        switch self {
+        case .creditCard:
+            return PassIcon.passCreditCardTwoStripes
+        default:
+            return regularIcon
         }
     }
 

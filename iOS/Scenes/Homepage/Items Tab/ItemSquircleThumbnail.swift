@@ -62,10 +62,11 @@ struct ItemSquircleThumbnail: View {
     var body: some View {
         switch data {
         case .icon(let type):
-            SquircleThumbnail(data: .icon(type.icon),
-                              tintColor: type.normMajor2Color,
-                              backgroundColor: type.normMinor1Color,
-                              height: size.height)
+            SquircleThumbnail(
+                data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
+                tintColor: type.normMajor2Color,
+                backgroundColor: type.normMinor1Color,
+                height: size.height)
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),

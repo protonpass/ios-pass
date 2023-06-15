@@ -45,7 +45,7 @@ struct SearchResultChips: View {
     }
 
     private func chip(for type: ItemContentType, count: Int) -> some View {
-        ItemCountChip(icon: type.icon,
+        ItemCountChip(icon: type.regularIcon,
                       title: type.chipTitle,
                       count: count,
                       isSelected: selectedType == type,
