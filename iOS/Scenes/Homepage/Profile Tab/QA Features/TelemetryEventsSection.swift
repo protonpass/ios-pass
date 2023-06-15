@@ -143,13 +143,13 @@ private extension TelemetryEventType {
     var icon: UIImage {
         switch self {
         case .create(let type):
-            return type.icon
+            return type.regularIcon
         case .read(let type):
-            return type.icon
+            return type.regularIcon
         case .update(let type):
-            return type.icon
+            return type.regularIcon
         case .delete(let type):
-            return type.icon
+            return type.regularIcon
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             // swiftlint:disable:next force_unwrapping
             return UIImage(systemName: "rectangle.and.pencil.and.ellipsis")!

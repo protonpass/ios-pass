@@ -39,6 +39,7 @@ struct ItemCountView: View {
                 HStack {
                     ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
                     ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
+                    ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCardCount)
                     ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
                 }
                 .padding(.horizontal)
@@ -70,7 +71,7 @@ private struct ItemContentTypeCountView: View {
 
     var body: some View {
         HStack {
-            CircleButton(icon: type.icon,
+            CircleButton(icon: type.regularIcon,
                          iconColor: type.normColor,
                          backgroundColor: type.normMinor1Color,
                          type: .small)

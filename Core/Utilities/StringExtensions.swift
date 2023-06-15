@@ -74,21 +74,47 @@ public extension String {
         // Amex format: NNNN-NNNNNN-NNNNN (4-6-5)
         let isAmex = ["34", "37"].contains(prefix(2))
 
-        var temp = self.spacesRemoved
+        let noSpacesCardNumber = spacesRemoved
 
         // Only consider amex card if number of character <= 15
         // otherwise treat it as normal card
         if isAmex, count <= 15 {
-            if temp.count > 4 {
-                temp.insert(" ", at: temp.index(temp.startIndex, offsetBy: 4))
+            var formatted = noSpacesCardNumber
+            if formatted.count > 4 {
+                formatted.insert(" ", at: formatted.index(formatted.startIndex, offsetBy: 4))
             }
-            if temp.count > 11 {
-                temp.insert(" ", at: temp.index(temp.startIndex, offsetBy: 11))
+            if formatted.count > 11 {
+                formatted.insert(" ", at: formatted.index(formatted.startIndex, offsetBy: 11))
             }
-            return temp
+            return formatted
         } else {
-            let chunks = Array(temp).chunked(into: 4)
+            let chunks = Array(noSpacesCardNumber).chunked(into: 4)
             return chunks.map { String($0) }.joined(separator: " ")
+        }
+    }
+
+    func toMaskedCreditCardNumber() -> String {
+        let isAmex = ["34", "37"].contains(prefix(2))
+
+        let noSpacesCardNumber = spacesRemoved
+
+        if isAmex, count == 15 {
+            return "\(noSpacesCardNumber.prefix(4)) •••••• \(noSpacesCardNumber.suffix(5))"
+        } else {
+            let chunks = Array(noSpacesCardNumber).chunked(into: 4)
+            var formatted = ""
+
+            for (index, chunk) in chunks.enumerated() {
+                if index == 0 {
+                    formatted += String(chunk)
+                } else if index == chunks.count - 1 {
+                    formatted += " \(String(chunk))"
+                } else {
+                    formatted += " ••••"
+                }
+            }
+
+            return formatted
         }
     }
 }

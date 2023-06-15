@@ -61,4 +61,36 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             }
             .store(in: &cancellables)
     }
+
+    override func generateItemContent() -> ItemContentProtobuf {
+        let month = month ?? Calendar.current.component(.month, from: .now)
+        let year = year ?? Calendar.current.component(.year, from: .now)
+        let data = CreditCardData(cardholderName: cardholderName,
+                                  type: .unspecified,
+                                  number: cardNumber.spacesRemoved,
+                                  cvv: verificationNumber,
+                                  expirationDate: String(format: "%d-%02d", year, month),
+                                  issuerBank: "",
+                                  pin: "")
+        return .init(name: title,
+                     note: note,
+                     itemUuid: UUID().uuidString,
+                     data: .creditCard(data),
+                     customFields: customFieldUiModels.map { $0.customField })
+    }
+
+    override func bindValues() {
+        guard case .edit(let itemContent) = mode,
+              case .creditCard(let data) = itemContent.contentData else { return }
+        self.title = itemContent.name
+        self.cardholderName = data.cardholderName
+        self.cardNumber = data.number
+        self.verificationNumber = data.cvv
+
+        let monthYear = data.expirationDate.components(separatedBy: "-")
+        self.month = Int(monthYear.last ?? "")
+        self.year = Int(monthYear.first ?? "")
+
+        self.note = itemContent.note
+    }
 }
