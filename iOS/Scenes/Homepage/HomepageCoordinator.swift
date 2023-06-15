@@ -250,6 +250,7 @@ private extension HomepageCoordinator {
                                                       shareRepository: shareRepository,
                                                       preferences: preferences,
                                                       logManager: logManager,
+                                                      featureFlagsRepository: featureFlagsRepository,
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
                                                       notificationService:
@@ -356,7 +357,9 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel(upgradeChecker: upgradeChecker, logManager: logManager)
+        let viewModel = ItemTypeListViewModel(featureFlagsRepository: featureFlagsRepository,
+                                              upgradeChecker: upgradeChecker,
+                                              logManager: logManager)
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -615,6 +618,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                                         logManager: logManager,
                                         searchEntryDatasource: searchEntryDatasource,
                                         shareRepository: shareRepository,
+                                        featureFlagsRepository: featureFlagsRepository,
                                         symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
         viewModel.delegate = self

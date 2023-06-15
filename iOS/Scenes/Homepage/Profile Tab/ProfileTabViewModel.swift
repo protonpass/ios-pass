@@ -52,6 +52,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     let logger: Logger
     let preferences: Preferences
     let appVersion: String
+    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     let passPlanRepository: PassPlanRepositoryProtocol
     let vaultsManager: VaultsManager
     let notificationService: LocalNotificationServiceProtocol
@@ -68,6 +69,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published private(set) var plan: PassPlan?
+    @Published private(set) var creditCardV1 = false
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
@@ -78,6 +80,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          shareRepository: ShareRepositoryProtocol,
          preferences: Preferences,
          logManager: LogManager,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager,
          notificationService: LocalNotificationServiceProtocol) {
@@ -89,6 +92,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.logger = .init(manager: logManager)
         self.preferences = preferences
         self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
+        self.featureFlagsRepository = featureFlagsRepository
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
         self.notificationService = notificationService
@@ -186,6 +190,18 @@ private extension ProfileTabViewModel {
         biometricAuthenticator.initializeBiometryType()
         biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
         refreshPlan()
+        refreshFeatureFlags()
+    }
+
+    func refreshFeatureFlags() {
+        Task { @MainActor in
+            do {
+                let flags = try await featureFlagsRepository.getFlags()
+                creditCardV1 = flags.creditCardV1
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 
     func updateAutoFillAvalability() {

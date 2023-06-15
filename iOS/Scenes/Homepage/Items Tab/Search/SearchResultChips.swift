@@ -26,6 +26,7 @@ import UIComponents
 struct SearchResultChips: View {
     @Binding var selectedType: ItemContentType?
     let itemCount: ItemCount
+    let creditCardV1: Bool
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -38,7 +39,9 @@ struct SearchResultChips: View {
 
                 chip(for: .login, count: itemCount.loginCount)
                 chip(for: .alias, count: itemCount.aliasCount)
-                chip(for: .creditCard, count: itemCount.creditCardCount)
+                if creditCardV1 {
+                    chip(for: .creditCard, count: itemCount.creditCardCount)
+                }
                 chip(for: .note, count: itemCount.noteCount)
             }
             .padding(.horizontal)
