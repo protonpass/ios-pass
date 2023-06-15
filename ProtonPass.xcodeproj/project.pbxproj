@@ -127,6 +127,8 @@
 		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
 		354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */; };
 		354E19F6293F90F500A3F853 /* ColoredRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */; };
+		354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */; };
+		354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E1A132A3B43D600519F58 /* CreditCardDetailViewModel.swift */; };
 		354EA82929EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82829EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift */; };
 		354EA82B29EF4FE300F1FB95 /* TelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */; };
 		354EA82D29EF53B500F1FB95 /* TelemetryEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */; };
@@ -907,6 +909,8 @@
 		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
 		354DCCF8291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+AdaptiveScrollDisabled.swift"; sourceTree = "<group>"; };
 		354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredRoundedButton.swift; sourceTree = "<group>"; };
+		354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailView.swift; sourceTree = "<group>"; };
+		354E1A132A3B43D600519F58 /* CreditCardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailViewModel.swift; sourceTree = "<group>"; };
 		354EA82829EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasource.swift; sourceTree = "<group>"; };
 		354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEvent.swift; sourceTree = "<group>"; };
 		354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventTests.swift; sourceTree = "<group>"; };
@@ -1987,6 +1991,8 @@
 				354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */,
 				3552F48D28D3467100547146 /* AliasDetailView.swift */,
 				3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */,
+				354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */,
+				354E1A132A3B43D600519F58 /* CreditCardDetailViewModel.swift */,
 				354F769128C8678100EB2383 /* LogInDetailView.swift */,
 				354F769328C8679E00EB2383 /* LogInDetailViewModel.swift */,
 				354F769528C879AA00EB2383 /* NoteDetailView.swift */,
@@ -3912,6 +3918,7 @@
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
+				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
@@ -3996,6 +4003,7 @@
 				35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
+				354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */,

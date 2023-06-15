@@ -60,7 +60,7 @@ private struct CreateItemButton: View {
     var body: some View {
         Button(action: action) {
             VStack {
-                Image(uiImage: type.icon)
+                Image(uiImage: type.regularIcon)
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 20, maxHeight: 20)

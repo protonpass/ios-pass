@@ -70,7 +70,7 @@ private struct ItemContentTypeCountView: View {
 
     var body: some View {
         HStack {
-            CircleButton(icon: type.icon,
+            CircleButton(icon: type.regularIcon,
                          iconColor: type.normColor,
                          backgroundColor: type.normMinor1Color,
                          type: .small)
