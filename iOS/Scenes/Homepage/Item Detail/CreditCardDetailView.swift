@@ -155,7 +155,8 @@ private extension CreditCardDetailView {
                         .placeholderText()
                 } else {
                     Text(isShowingCardNumber ?
-                         viewModel.cardNumber : viewModel.cardNumber.toMaskedCreditCardNumber())
+                         viewModel.cardNumber.toCreditCardNumber() :
+                            viewModel.cardNumber.toMaskedCreditCardNumber())
                         .sectionContentText()
                         .animation(.default, value: isShowingCardNumber)
                 }
