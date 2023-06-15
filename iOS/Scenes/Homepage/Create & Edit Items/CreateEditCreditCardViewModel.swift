@@ -78,4 +78,19 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                      data: .creditCard(data),
                      customFields: customFieldUiModels.map { $0.customField })
     }
+
+    override func bindValues() {
+        guard case .edit(let itemContent) = mode,
+              case .creditCard(let data) = itemContent.contentData else { return }
+        self.title = itemContent.name
+        self.cardholderName = data.cardholderName
+        self.cardNumber = data.number
+        self.verificationNumber = data.cvv
+
+        let monthYear = data.expirationDate.components(separatedBy: "-")
+        self.month = Int(monthYear.last ?? "")
+        self.year = Int(monthYear.first ?? "")
+
+        self.note = itemContent.note
+    }
 }
