@@ -38,6 +38,7 @@ struct SearchResultChips: View {
 
                 chip(for: .login, count: itemCount.loginCount)
                 chip(for: .alias, count: itemCount.aliasCount)
+                chip(for: .creditCard, count: itemCount.creditCardCount)
                 chip(for: .note, count: itemCount.noteCount)
             }
             .padding(.horizontal)
@@ -45,7 +46,7 @@ struct SearchResultChips: View {
     }
 
     private func chip(for type: ItemContentType, count: Int) -> some View {
-        ItemCountChip(icon: type.icon,
+        ItemCountChip(icon: type.regularIcon,
                       title: type.chipTitle,
                       count: count,
                       isSelected: selectedType == type,

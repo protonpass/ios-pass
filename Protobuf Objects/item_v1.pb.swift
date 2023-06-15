@@ -20,6 +20,58 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
+public enum ProtonPassItemV1_CardType: SwiftProtobuf.Enum {
+  public typealias RawValue = Int
+  case unspecified // = 0
+  case other // = 1
+  case visa // = 2
+  case mastercard // = 3
+  case americanExpress // = 4
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .unspecified
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .unspecified
+    case 1: self = .other
+    case 2: self = .visa
+    case 3: self = .mastercard
+    case 4: self = .americanExpress
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .unspecified: return 0
+    case .other: return 1
+    case .visa: return 2
+    case .mastercard: return 3
+    case .americanExpress: return 4
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+}
+
+#if swift(>=4.2)
+
+extension ProtonPassItemV1_CardType: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static var allCases: [ProtonPassItemV1_CardType] = [
+    .unspecified,
+    .other,
+    .visa,
+    .mastercard,
+    .americanExpress,
+  ]
+}
+
+#endif  // swift(>=4.2)
+
 public struct ProtonPassItemV1_ItemNote {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -52,6 +104,44 @@ public struct ProtonPassItemV1_ItemAlias {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+/// Credit cards
+public struct ProtonPassItemV1_CustomCardType {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var name: String = String()
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+public struct ProtonPassItemV1_ItemCreditCard {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var cardholderName: String = String()
+
+  public var cardType: ProtonPassItemV1_CardType = .unspecified
+
+  public var number: String = String()
+
+  public var cvv: String = String()
+
+  /// Expected format: YYYY-MM, always containing two numbers for the month, even if is 01
+  public var expirationDate: String = String()
+
+  public var issuerBank: String = String()
+
+  public var pin: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -232,6 +322,7 @@ public struct ProtonPassItemV1_Content {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  /// No case 1 to avoid having a default
   public var content: ProtonPassItemV1_Content.OneOf_Content? = nil
 
   public var note: ProtonPassItemV1_ItemNote {
@@ -258,12 +349,22 @@ public struct ProtonPassItemV1_Content {
     set {content = .alias(newValue)}
   }
 
+  public var creditCard: ProtonPassItemV1_ItemCreditCard {
+    get {
+      if case .creditCard(let v)? = content {return v}
+      return ProtonPassItemV1_ItemCreditCard()
+    }
+    set {content = .creditCard(newValue)}
+  }
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
+  /// No case 1 to avoid having a default
   public enum OneOf_Content: Equatable {
     case note(ProtonPassItemV1_ItemNote)
     case login(ProtonPassItemV1_ItemLogin)
     case alias(ProtonPassItemV1_ItemAlias)
+    case creditCard(ProtonPassItemV1_ItemCreditCard)
 
   #if !swift(>=4.1)
     public static func ==(lhs: ProtonPassItemV1_Content.OneOf_Content, rhs: ProtonPassItemV1_Content.OneOf_Content) -> Bool {
@@ -281,6 +382,10 @@ public struct ProtonPassItemV1_Content {
       }()
       case (.alias, .alias): return {
         guard case .alias(let l) = lhs, case .alias(let r) = rhs else { preconditionFailure() }
+        return l == r
+      }()
+      case (.creditCard, .creditCard): return {
+        guard case .creditCard(let l) = lhs, case .creditCard(let r) = rhs else { preconditionFailure() }
         return l == r
       }()
       default: return false
@@ -336,9 +441,12 @@ public struct ProtonPassItemV1_Item {
 }
 
 #if swift(>=5.5) && canImport(_Concurrency)
+extension ProtonPassItemV1_CardType: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemNote: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemLogin: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemAlias: @unchecked Sendable {}
+extension ProtonPassItemV1_CustomCardType: @unchecked Sendable {}
+extension ProtonPassItemV1_ItemCreditCard: @unchecked Sendable {}
 extension ProtonPassItemV1_AllowedAndroidApp: @unchecked Sendable {}
 extension ProtonPassItemV1_AndroidSpecific: @unchecked Sendable {}
 extension ProtonPassItemV1_PlatformSpecific: @unchecked Sendable {}
@@ -356,6 +464,16 @@ extension ProtonPassItemV1_Item: @unchecked Sendable {}
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "proton_pass_item_v1"
+
+extension ProtonPassItemV1_CardType: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "Unspecified"),
+    1: .same(proto: "Other"),
+    2: .same(proto: "Visa"),
+    3: .same(proto: "Mastercard"),
+    4: .same(proto: "AmericanExpress"),
+  ]
+}
 
 extension ProtonPassItemV1_ItemNote: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemNote"
@@ -440,6 +558,106 @@ extension ProtonPassItemV1_ItemAlias: SwiftProtobuf.Message, SwiftProtobuf._Mess
   }
 
   public static func ==(lhs: ProtonPassItemV1_ItemAlias, rhs: ProtonPassItemV1_ItemAlias) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ProtonPassItemV1_CustomCardType: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".CustomCardType"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "name"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.name.isEmpty {
+      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_CustomCardType, rhs: ProtonPassItemV1_CustomCardType) -> Bool {
+    if lhs.name != rhs.name {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".ItemCreditCard"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "cardholder_name"),
+    2: .standard(proto: "card_type"),
+    3: .same(proto: "number"),
+    4: .same(proto: "cvv"),
+    5: .standard(proto: "expiration_date"),
+    6: .standard(proto: "issuer_bank"),
+    7: .same(proto: "pin"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.cardholderName) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.cardType) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.number) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.cvv) }()
+      case 5: try { try decoder.decodeSingularStringField(value: &self.expirationDate) }()
+      case 6: try { try decoder.decodeSingularStringField(value: &self.issuerBank) }()
+      case 7: try { try decoder.decodeSingularStringField(value: &self.pin) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.cardholderName.isEmpty {
+      try visitor.visitSingularStringField(value: self.cardholderName, fieldNumber: 1)
+    }
+    if self.cardType != .unspecified {
+      try visitor.visitSingularEnumField(value: self.cardType, fieldNumber: 2)
+    }
+    if !self.number.isEmpty {
+      try visitor.visitSingularStringField(value: self.number, fieldNumber: 3)
+    }
+    if !self.cvv.isEmpty {
+      try visitor.visitSingularStringField(value: self.cvv, fieldNumber: 4)
+    }
+    if !self.expirationDate.isEmpty {
+      try visitor.visitSingularStringField(value: self.expirationDate, fieldNumber: 5)
+    }
+    if !self.issuerBank.isEmpty {
+      try visitor.visitSingularStringField(value: self.issuerBank, fieldNumber: 6)
+    }
+    if !self.pin.isEmpty {
+      try visitor.visitSingularStringField(value: self.pin, fieldNumber: 7)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: ProtonPassItemV1_ItemCreditCard, rhs: ProtonPassItemV1_ItemCreditCard) -> Bool {
+    if lhs.cardholderName != rhs.cardholderName {return false}
+    if lhs.cardType != rhs.cardType {return false}
+    if lhs.number != rhs.number {return false}
+    if lhs.cvv != rhs.cvv {return false}
+    if lhs.expirationDate != rhs.expirationDate {return false}
+    if lhs.issuerBank != rhs.issuerBank {return false}
+    if lhs.pin != rhs.pin {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -797,6 +1015,7 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
     2: .same(proto: "note"),
     3: .same(proto: "login"),
     4: .same(proto: "alias"),
+    5: .standard(proto: "credit_card"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -844,6 +1063,19 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
           self.content = .alias(v)
         }
       }()
+      case 5: try {
+        var v: ProtonPassItemV1_ItemCreditCard?
+        var hadOneofValue = false
+        if let current = self.content {
+          hadOneofValue = true
+          if case .creditCard(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.content = .creditCard(v)
+        }
+      }()
       default: break
       }
     }
@@ -866,6 +1098,10 @@ extension ProtonPassItemV1_Content: SwiftProtobuf.Message, SwiftProtobuf._Messag
     case .alias?: try {
       guard case .alias(let v)? = self.content else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    }()
+    case .creditCard?: try {
+      guard case .creditCard(let v)? = self.content else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
     }()
     case nil: break
     }
