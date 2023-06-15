@@ -69,4 +69,26 @@ public extension String {
     var spacesRemoved: String {
         self.replacingOccurrences(of: " ", with: "")
     }
+
+    func toCreditCardNumber() -> String {
+        // Amex format: NNNN-NNNNNN-NNNNN (4-6-5)
+        let isAmex = ["34", "37"].contains(prefix(2))
+
+        var temp = self.spacesRemoved
+
+        // Only consider amex card if number of character <= 15
+        // otherwise treat it as normal card
+        if isAmex, count <= 15 {
+            if temp.count > 4 {
+                temp.insert(" ", at: temp.index(temp.startIndex, offsetBy: 4))
+            }
+            if temp.count > 11 {
+                temp.insert(" ", at: temp.index(temp.startIndex, offsetBy: 11))
+            }
+            return temp
+        } else {
+            let chunks = Array(temp).chunked(into: 4)
+            return chunks.map { String($0) }.joined(separator: " ")
+        }
+    }
 }

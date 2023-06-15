@@ -73,7 +73,7 @@ extension ItemType {
         case .alias:
             return IconProvider.alias
         case .creditCard:
-            return PassIcon.passCreditCard
+            return PassIcon.passCreditCardOneStripe
         case .note:
             return IconProvider.fileLines
         case .password:

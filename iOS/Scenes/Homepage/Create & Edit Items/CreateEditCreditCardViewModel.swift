@@ -18,9 +18,47 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import SwiftUI
 
 final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
+
+    @Published var title = ""
+    @Published var cardholderName = ""
+    @Published var cardNumber = ""
+    @Published var verificationNumber = ""
+    @Published var month: Int?
+    @Published var year: Int?
+    @Published var note = ""
+
+    override func itemContentType() -> ItemContentType { .creditCard }
+
+    override var isSaveable: Bool { !title.isEmpty }
+
+    override init(mode: ItemMode,
+                  itemRepository: ItemRepositoryProtocol,
+                  upgradeChecker: UpgradeCheckerProtocol,
+                  featureFlagsRepository: FeatureFlagsRepositoryProtocol,
+                  vaults: [Vault],
+                  preferences: Preferences,
+                  logManager: LogManager) throws {
+        try super.init(mode: mode,
+                       itemRepository: itemRepository,
+                       upgradeChecker: upgradeChecker,
+                       featureFlagsRepository: featureFlagsRepository,
+                       vaults: vaults,
+                       preferences: preferences,
+                       logManager: logManager)
+
+        $cardNumber
+            .removeDuplicates()
+            .receive(on: RunLoop.main)
+            .map { $0.toCreditCardNumber() }
+            .sink { [unowned self] formattedCardNumber in
+                self.cardNumber = formattedCardNumber
+            }
+            .store(in: &cancellables)
+    }
 }
