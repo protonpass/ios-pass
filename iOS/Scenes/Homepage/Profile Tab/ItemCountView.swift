@@ -39,6 +39,7 @@ struct ItemCountView: View {
                 HStack {
                     ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
                     ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
+                    ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCardCount)
                     ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
                 }
                 .padding(.horizontal)
