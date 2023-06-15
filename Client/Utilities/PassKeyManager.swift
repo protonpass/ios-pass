@@ -123,6 +123,7 @@ private extension PassKeyManager {
         let shareId = encryptedShareKey.shareId
         let keyRotation = encryptedShareKey.shareKey.keyRotation
         let keyDescription = "share id \(shareId), keyRotation: \(keyRotation)"
+        logger.trace("Decrypting share key \(keyDescription)")
 
         let decryptedKey = try symmetricKey.decrypt(encryptedShareKey.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {
@@ -133,6 +134,7 @@ private extension PassKeyManager {
                                                   keyData: decryptedKeyData)
         decryptedShareKeys.insert(decryptedShareKey)
 
+        logger.info("Decrypted & cached share key share \(keyDescription)")
         return decryptedShareKey
     }
 }

@@ -63,14 +63,14 @@ public actor LogManager: LogManagerProtocol {
     }
     
     private var numberOfLogsToRemove: Int {
-        numberOfLogAfterMerge - Int(config.maxLogLines)
+        numberOfLogAfterMerge - config.maxLogLines
     }
 
     /// Manage (read/write) the log file on disk
     /// - Parameters:
     ///    - url: The URL of the folder that contains the log file
     ///    - fileName: The name of the log file. E.g "proton.log"
-    ///    - maxLogLines: Maximum number of log entries
+    ///    - config: Configurations
     public init(url: URL, fileName: String, config: LogManagerConfig = .default) {
         self.url = url.appendingPathComponent(fileName, isDirectory: false)
         self.config = config
@@ -180,7 +180,9 @@ private extension LogManager {
         timer = Timer.scheduledTimer(withTimeInterval: config.timerInterval,
                                      repeats: true) { _ in
             Task { [weak self] in
-                guard let self, await self.currentMemoryLogs.count > 50, await self.shouldLog else { return }
+                guard let self,
+                      await self.currentMemoryLogs.count > self.config.dumpThreshold,
+                      await self.shouldLog else { return }
                 await self.savedLogLocaly()
             }
         }
@@ -201,7 +203,7 @@ private extension LogEntry {
 private extension String {
     var toLogEntry: LogEntry? {
         guard let data = self.data(using: .utf8),
-              let entry = try? JSONDecoder().decode(LogEntry.self, from: data)  else {
+              let entry = try? JSONDecoder().decode(LogEntry.self, from: data) else {
             return nil
         }
         
