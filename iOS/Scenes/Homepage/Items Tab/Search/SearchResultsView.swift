@@ -33,6 +33,7 @@ struct SearchResultsView: View {
     let itemCount: ItemCount
     let results: [ItemSearchResult]
     let isTrash: Bool
+    let creditCardV1: Bool
     let safeAreaInsets: EdgeInsets
     let onScroll: () -> Void
     let onSelectItem: (ItemSearchResult) -> Void
@@ -40,7 +41,9 @@ struct SearchResultsView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            SearchResultChips(selectedType: $selectedType, itemCount: itemCount)
+            SearchResultChips(selectedType: $selectedType,
+                              itemCount: itemCount,
+                              creditCardV1: creditCardV1)
 
             HStack {
                 Text("\(results.count)")

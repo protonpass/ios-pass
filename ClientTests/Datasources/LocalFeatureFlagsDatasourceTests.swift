@@ -37,24 +37,17 @@ final class LocalFeatureFlagsDatasourceTests: XCTestCase {
 }
 
 extension LocalFeatureFlagsDatasourceTests {
-    func testUpsertCustomFieldsAndGetFlags() async throws {
+    func testUpsertAndGetFlags() async throws {
         // Given
         let givenUserId = String.random()
+        let givenFlags = FeatureFlags(creditCardV1: .random(), customFields: .random())
 
         // When
-        try await sut.upsertCustomFieldsFlag(false, userId: givenUserId)
-        let flags0 = try await sut.getFeatureFlags(userId: givenUserId)
-        let nonNilFlags0 = try XCTUnwrap(flags0)
+        try await sut.upsertFlags(givenFlags, userId: givenUserId)
+        let flags = try await sut.getFeatureFlags(userId: givenUserId)
+        let nonNilFlags = try XCTUnwrap(flags)
 
         // Then
-        XCTAssertFalse(nonNilFlags0.customFields)
-
-        // When
-        try await sut.upsertCustomFieldsFlag(true, userId: givenUserId)
-        let flags1 = try await sut.getFeatureFlags(userId: givenUserId)
-        let nonNilFlag1 = try XCTUnwrap(flags1)
-
-        // Then
-        XCTAssertTrue(nonNilFlag1.customFields)
+        XCTAssertEqual(nonNilFlags, givenFlags)
     }
 }

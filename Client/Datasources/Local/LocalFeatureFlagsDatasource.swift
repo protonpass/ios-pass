@@ -22,7 +22,7 @@ import CoreData
 
 public protocol LocalFeatureFlagsDatasourceProtocol: LocalDatasourceProtocol {
     func getFeatureFlags(userId: String) async throws -> FeatureFlags?
-    func upsertCustomFieldsFlag(_ flag: Bool, userId: String) async throws
+    func upsertFlags(_ flags: FeatureFlags, userId: String) async throws
 }
 
 public extension LocalFeatureFlagsDatasourceProtocol {
@@ -36,14 +36,12 @@ public extension LocalFeatureFlagsDatasourceProtocol {
         return entities.compactMap { $0.toFeatureFlags() }.first
     }
 
-    func upsertCustomFieldsFlag(_ flag: Bool, userId: String) async throws {
+    func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
-        // Will need to retrieve the current flags object and change only
-        // the custom fields one. It's okay for now as we only have 1 flag.
         let batchInsertRequest =
         newBatchInsertRequest(entity: FeatureFlagsEntity.entity(context: taskContext),
-                              sourceItems: [FeatureFlags(customFields: flag)]) { managedObject, flags in
+                              sourceItems: [flags]) { managedObject, flags in
             (managedObject as? FeatureFlagsEntity)?.hydrate(from: flags, userId: userId)
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)

@@ -50,6 +50,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var state = SearchViewState.initializing
+    @Published private(set) var creditCardV1 = false
     @Published var selectedType: ItemContentType?
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -86,6 +87,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
          logManager: LogManager,
          searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
          shareRepository: ShareRepositoryProtocol,
+         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          symmetricKey: SymmetricKey,
          vaultSelection: VaultSelection) {
         self.favIconRepository = favIconRepository
@@ -111,6 +113,15 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
                 self.filterResults()
             }
             .store(in: &cancellables)
+
+        Task { @MainActor in
+            do {
+                let flags = try await featureFlagsRepository.getFlags()
+                creditCardV1 = flags.creditCardV1
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }
 

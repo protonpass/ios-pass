@@ -32,7 +32,7 @@ struct ItemTypeListView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    ForEach(ItemType.allCases, id: \.self) { type in
+                    ForEach(viewModel.supportedItemTypes, id: \.self) { type in
                         itemRow(for: type)
                             .padding(.horizontal)
                         if type != ItemType.allCases.last {

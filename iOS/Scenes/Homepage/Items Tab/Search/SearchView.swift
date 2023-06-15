@@ -96,6 +96,7 @@ struct SearchView: View {
                                   itemCount: itemCount,
                                   results: results,
                                   isTrash: viewModel.vaultSelection == .trash,
+                                  creditCardV1: viewModel.creditCardV1,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) },

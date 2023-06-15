@@ -26,6 +26,7 @@ private let kChipHeight: CGFloat = 56
 
 struct ItemCountView: View {
     @StateObject var vaultsManager: VaultsManager
+    let creditCardV1: Bool
 
     var body: some View {
         switch vaultsManager.state {
@@ -39,7 +40,9 @@ struct ItemCountView: View {
                 HStack {
                     ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
                     ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
-                    ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCardCount)
+                    if creditCardV1 {
+                        ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCardCount)
+                    }
                     ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
                 }
                 .padding(.horizontal)
