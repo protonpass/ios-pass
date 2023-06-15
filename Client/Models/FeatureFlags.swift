@@ -20,6 +20,7 @@
 
 import Foundation
 
-public struct FeatureFlags {
+public struct FeatureFlags: Hashable {
+    public let creditCardV1: Bool
     public let customFields: Bool
 }

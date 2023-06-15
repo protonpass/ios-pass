@@ -91,7 +91,8 @@ struct ProfileTabView: View {
             Text("Items")
                 .profileSectionTitle()
                 .padding(.horizontal)
-            ItemCountView(vaultsManager: viewModel.vaultsManager)
+            ItemCountView(vaultsManager: viewModel.vaultsManager,
+                          creditCardV1: viewModel.creditCardV1)
         }
     }
 

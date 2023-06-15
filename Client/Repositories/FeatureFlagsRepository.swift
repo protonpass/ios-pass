@@ -46,12 +46,17 @@ public extension FeatureFlagsRepositoryProtocol {
     }
 
     func refreshFlags() async throws -> FeatureFlags {
+        logger.trace("Getting remote credit card v1 flag for user \(userId)")
+        let creditCardV1 = try await remoteFeatureFlagsDatasource.getFlag(type: .creditCardV1)
+
         logger.trace("Getting remote custom fields flag for user \(userId)")
-        let customFieldsFlag = try await remoteFeatureFlagsDatasource.getCustomFieldsFlag()
-        logger.trace("Got remote custom fields flags for user \(userId). Upserting to local database.")
-        try await localFeatureFlagsDatasource.upsertCustomFieldsFlag(customFieldsFlag.value,
-                                                                     userId: userId)
-        return .init(customFields: customFieldsFlag.value)
+        let customFields = try await remoteFeatureFlagsDatasource.getFlag(type: .customFields)
+
+        logger.trace("Got remote flags for user \(userId). Upserting to local database.")
+        let flags = FeatureFlags(creditCardV1: creditCardV1, customFields: customFields)
+        try await localFeatureFlagsDatasource.upsertFlags(flags, userId: userId)
+
+        return flags
     }
 }
 
