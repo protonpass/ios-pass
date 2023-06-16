@@ -28,7 +28,6 @@ struct CustomFieldSections: View {
     let itemContentType: ItemContentType
     let uiModels: [CustomFieldUiModel]
     let isFreeUser: Bool
-    let hasReachedTotpLimit: Bool
     let logManager: LogManager
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
@@ -56,7 +55,7 @@ struct CustomFieldSections: View {
                 TotpCustomFieldSection(title: title,
                                        content: content,
                                        itemContentType: itemContentType,
-                                       hasReachedTotpLimit: hasReachedTotpLimit,
+                                       isFreeUser: isFreeUser,
                                        logManager: logManager,
                                        onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
@@ -154,14 +153,14 @@ struct TotpCustomFieldSection: View {
     let title: String
     let content: String
     let itemContentType: ItemContentType
-    let hasReachedTotpLimit: Bool
+    let isFreeUser: Bool
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
 
     init(title: String,
          content: String,
          itemContentType: ItemContentType,
-         hasReachedTotpLimit: Bool,
+         isFreeUser: Bool,
          logManager: LogManager,
          onSelectTotpToken: @escaping (String) -> Void,
          onUpgrade: @escaping () -> Void) {
@@ -169,7 +168,7 @@ struct TotpCustomFieldSection: View {
         self.title = title
         self.content = content
         self.itemContentType = itemContentType
-        self.hasReachedTotpLimit = hasReachedTotpLimit
+        self.isFreeUser = isFreeUser
         self.onSelectTotpToken = onSelectTotpToken
         self.onUpgrade = onUpgrade
     }
@@ -183,7 +182,7 @@ struct TotpCustomFieldSection: View {
                 Text(title)
                     .sectionTitleText()
 
-                if hasReachedTotpLimit {
+                if isFreeUser {
                     UpgradeButtonLite(action: onUpgrade)
                 } else {
                     switch totpManager.state {
@@ -204,16 +203,18 @@ struct TotpCustomFieldSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
             .onTapGesture {
-                if !hasReachedTotpLimit, let code = totpManager.totpData?.code {
+                if !isFreeUser, let code = totpManager.totpData?.code {
                     onSelectTotpToken(code)
                 }
             }
 
-            switch totpManager.state {
-            case .valid(let data):
-                TOTPCircularTimer(data: data.timerData)
-            default:
-                EmptyView()
+            if !isFreeUser {
+                switch totpManager.state {
+                case .valid(let data):
+                    TOTPCircularTimer(data: data.timerData)
+                default:
+                    EmptyView()
+                }
             }
         }
         .padding(kItemDetailSectionPadding)
@@ -222,7 +223,7 @@ struct TotpCustomFieldSection: View {
         .roundedDetailSection()
         .padding(.top, 8)
         .onFirstAppear {
-            if !hasReachedTotpLimit {
+            if !isFreeUser {
                 totpManager.bind(uri: content)
             }
         }
