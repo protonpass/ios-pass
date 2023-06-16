@@ -76,7 +76,6 @@ struct LogInDetailView: View {
                                 itemContentType: viewModel.itemContent.type,
                                 uiModels: viewModel.customFieldUiModels,
                                 isFreeUser: viewModel.isFreeUser,
-                                hasReachedTotpLimit: viewModel.totpTokenState == .notAllowed,
                                 logManager: viewModel.logManager,
                                 onSelectTotpToken: { token in
                                     viewModel.copyToClipboard(
