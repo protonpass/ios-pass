@@ -306,13 +306,6 @@ private extension HomepageCoordinator {
                 dismissible: dismissible)
     }
 
-    @available(iOS 16.0, *)
-    func makeCustomDetent(height: Int) -> UISheetPresentationController.Detent {
-        UISheetPresentationController.Detent.custom { _ in
-            CGFloat(height)
-        }
-    }
-
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
         let coordinator = CreateEditItemCoordinator(
             aliasRepository: aliasRepository,
@@ -363,13 +356,12 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16.0, *) {
-            // 66 per row + nav bar height
-            let customDetent = makeCustomDetent(height: ItemType.allCases.count * 66 + 72)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
+
+        // 66 per row + nav bar height
+        let customHeight = ItemType.allCases.count * 66 + 72
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -395,13 +387,11 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 150
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent, .large()]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 150
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -413,13 +403,11 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent, .large()]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -430,13 +418,11 @@ private extension HomepageCoordinator {
         viewModel.delegate = delegate
         let view = SortTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -638,14 +624,12 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            // Num of vaults + all items + trash + create vault button
-            let height = 66 * vaultsManager.getVaultCount() + 66 + 66 + 120
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent, .large()]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        // Num of vaults + all items + trash + create vault button
+        let customHeight = 66 * vaultsManager.getVaultCount() + 66 + 66 + 120
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
@@ -736,13 +720,11 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToEditAppLockTime() {
         let view = EditAppLockTimeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * AppLockTime.allCases.count + 60
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * AppLockTime.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -793,13 +775,11 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
             self.urlOpener.open(urlString: selectedChannel.urlString)
         }
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = 52 * FeedbackChannel.allCases.count + 80
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
+
+        let customHeight = 52 * FeedbackChannel.allCases.count + 80
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -884,13 +864,11 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
         let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * supportedBrowsers.count + 140
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * supportedBrowsers.count + 140
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -898,13 +876,11 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     func settingsViewModelWantsToEditTheme() {
         let view = EditThemeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.short.value) * Theme.allCases.count + 60
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.short.value) * Theme.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -912,13 +888,11 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     func settingsViewModelWantsToEditClipboardExpiration() {
         let view = EditClipboardExpirationView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * ClipboardExpiration.allCases.count + 60
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * ClipboardExpiration.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -931,13 +905,11 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         viewModel.delegate = self
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.medium.value) * vaultsManager.getVaultCount() + 60
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.medium.value) * vaultsManager.getVaultCount() + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -1007,13 +979,11 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = 66 * vaultsManager.getVaultCount() + 180 // Space for upsell banner
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent, .large()]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = 66 * vaultsManager.getVaultCount() + 180
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -1258,13 +1228,11 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = 66 * allVaults.count + 180
-            let customDetent = makeCustomDetent(height: height)
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = 66 * allVaults.count + 180
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }

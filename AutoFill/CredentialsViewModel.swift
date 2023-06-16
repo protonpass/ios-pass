@@ -308,14 +308,6 @@ private extension CredentialsViewModel {
             }
             .store(in: &cancellables)
         
-        Publishers.CombineLatest($isShowingConfirmationAlert, $selectedNotMatchedItem)
-            .filter { !$0 && $1 != nil }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _, _ in
-                self?.selectedNotMatchedItem = nil
-            }
-            .store(in: &cancellables)
-        
         $selectedNotMatchedItem
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
