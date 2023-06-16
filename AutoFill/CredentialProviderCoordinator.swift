@@ -621,15 +621,11 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         viewModel.delegate = delegate
         let view = SortTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(height)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, dismissible: true)
     }
@@ -724,15 +720,11 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = 66 * vaultListUiModels.count + 180  // Space for upsell banner
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(height)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent, .large()]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = 66 * vaultListUiModels.count + 180 // Space for upsell banner
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, dismissible: true)
     }
@@ -817,15 +809,11 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         viewModel.delegate = self
         let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 150
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(height)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent, .large()]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 150
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -838,15 +826,11 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(height)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent, .large()]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
-        }
+
+        let customHeight = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
+        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
