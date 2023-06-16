@@ -52,16 +52,28 @@ struct EditCustomFieldView: View {
                         .opacity(0)
                 } else {
                     switch uiModel.customField.type {
-                    case .text, .totp:
-                        TextField("", text: $uiModel.customField.content)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    case .text:
+                        TextEditorWithPlaceholder(text: $uiModel.customField.content,
+                                                  focusedField: $focusedField,
+                                                  field: .dummy,
+                                                  placeholder: "Text")
+
+                    case .totp:
+                        SensitiveTextField(text: $uiModel.customField.content,
+                                           placeholder: "2FA secret (TOTP)",
+                                           focusedField: $focusedField,
+                                           field: .dummy)
+                        .foregroundColor(PassColor.textNorm.toColor)
+                        .keyboardType(.URL)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
 
                     case .hidden:
                         SensitiveTextField(text: $uiModel.customField.content,
-                                           placeholder: "",
+                                           placeholder: "Hidden",
                                            focusedField: $focusedField,
                                            field: .dummy)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        .foregroundColor(PassColor.textNorm.toColor)
                     }
                 }
             }
