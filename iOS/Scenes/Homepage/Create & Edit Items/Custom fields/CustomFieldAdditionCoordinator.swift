@@ -21,6 +21,7 @@
 import Client
 import Core
 import SwiftUI
+import UIComponents
 
 protocol CustomFieldAdditionDelegate: AnyObject {
     func customFieldAdded(_ customField: CustomField)
@@ -49,15 +50,11 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable {
             }
         }
         let viewController = UIHostingController(rootView: view)
-        if #available(iOS 16, *) {
-            let height = Int(OptionRowHeight.short.value) * CustomFieldType.allCases.count
-            let customDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(height)
-            }
-            viewController.sheetPresentationController?.detents = [customDetent]
-        } else {
-            viewController.sheetPresentationController?.detents = [.medium()]
-        }
+
+        let customHeight = Int(OptionRowHeight.short.value) * CustomFieldType.allCases.count
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         rootViewController.topMostViewController.present(viewController, animated: true)
