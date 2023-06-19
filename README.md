@@ -6,10 +6,11 @@ You can print to the console Sentry activities by activating `me.proton.pass.Sen
 
 # Make a new build and upload to TestFlight
 Create an "App-specific password" via [https://appleid.apple.com](https://appleid.apple.com)
+Create Sentry auth token by going to User settings > Auth Tokens > Create new token with default selected scopes
 
 Run this command
 
-> FASTLANE_USER=<apple_id_email> FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=<app_specific_password> fastlane build_and_upload
+> SENTRY_AUTH_TOKEN=<sentry_auth_token> FASTLANE_USER=<apple_id_email> FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=<app_specific_password> fastlane build_and_upload
 
 You will be asked for Apple ID's password on first run.
 
