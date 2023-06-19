@@ -8,6 +8,10 @@
 	<string>$(IS_QA_BUILD)</string>
 	<key>IS_TF_BUILD</key>
 	<string>$(IS_TF_BUILD)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>ITSEncryptionExportComplianceCode</key>

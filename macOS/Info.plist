@@ -6,5 +6,9 @@
 	<string>$(APP_VERSION_IDENTIFIER)</string>
 	<key>IS_QA_BUILD</key>
 	<string>$(IS_QA_BUILD)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
 </dict>
 </plist>
