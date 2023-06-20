@@ -20,16 +20,14 @@
 
 import SwiftUI
 
-private let kTwoComponentsMessage = "Must have 2 components"
-private let kNumberOfYearsAhead = 30
-
 /// TextField that has month year picker as keyboard
 public struct MonthYearTextField: UIViewRepresentable {
     let placeholder: String
     let textColor: UIColor
     let tintColor: UIColor
     let font: UIFont
-    let currentYear: Int
+    let months: [Int]
+    let years: [Int]
     @Binding var month: Int?
     @Binding var year: Int?
 
@@ -38,13 +36,18 @@ public struct MonthYearTextField: UIViewRepresentable {
                 month: Binding<Int?>,
                 year: Binding<Int?>,
                 textColor: UIColor = PassColor.textNorm,
-                font: UIFont = .preferredFont(forTextStyle: .body),
-                currentYear: Int = Calendar.current.component(.year, from: .now)) {
+                font: UIFont = .preferredFont(forTextStyle: .body)) {
         self.placeholder = placeholder
         self.textColor = textColor
         self.tintColor = tintColor
         self.font = font
-        self.currentYear = currentYear
+        self.months = Array(1...12)
+
+        let currentYear = Calendar.current.component(.year, from: .now)
+        let startYear = currentYear - 10
+        let endYear = currentYear + 30
+        self.years = Array(startYear...endYear)
+
         self._month = month
         self._year = year
     }
@@ -91,19 +94,15 @@ public struct MonthYearTextField: UIViewRepresentable {
     public func makeCoordinator() -> Coordinator { Coordinator(self) }
 
     private func selectDefaultMonthAndYear(picker: UIPickerView) {
-        assert(picker.numberOfComponents == 2, kTwoComponentsMessage)
-
-        // Default to current month
-        assert(picker.numberOfRows(inComponent: 0) == 12, "Must have 12 months")
-        if let month {
-            picker.selectRow(month - 1, inComponent: 0, animated: false)
+        // Default to current month & year when no selected month & no selected year
+        let month = month ?? Calendar.current.component(.month, from: .now)
+        if let monthIndex = months.firstIndex(of: month) {
+            picker.selectRow(monthIndex, inComponent: 0, animated: false)
         }
 
-        // Default to current year
-        assert(picker.numberOfRows(inComponent: 1) == kNumberOfYearsAhead,
-               "Must have \(kNumberOfYearsAhead) years")
-        if let year {
-            picker.selectRow(year - currentYear, inComponent: 1, animated: false)
+        let year = year ?? Calendar.current.component(.year, from: .now)
+        if let yearIndex = years.firstIndex(of: year) {
+            picker.selectRow(yearIndex, inComponent: 1, animated: false)
         }
     }
 }
@@ -120,12 +119,12 @@ public extension MonthYearTextField {
             switch component {
             case 0:
                 // Month
-                parent.month = row + 1
+                parent.month = parent.months[row]
             case 1:
                 // Year
-                parent.year = parent.currentYear + row
+                parent.year = parent.years[row]
             default:
-                assertionFailure(kTwoComponentsMessage)
+                break
             }
         }
 
@@ -137,12 +136,11 @@ public extension MonthYearTextField {
             switch component {
             case 0:
                 // Month
-                return 12
+                return parent.months.count
             case 1:
                 // Year
-                return kNumberOfYearsAhead
+                return parent.years.count
             default:
-                assertionFailure(kTwoComponentsMessage)
                 return 0
             }
         }
@@ -156,9 +154,8 @@ public extension MonthYearTextField {
                 return String(format: "%02d", row + 1)
             case 1:
                 // Year
-                return "\(parent.currentYear + row)"
+                return "\(parent.years[row])"
             default:
-                assertionFailure(kTwoComponentsMessage)
                 return nil
             }
         }

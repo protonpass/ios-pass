@@ -54,8 +54,21 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .removeDuplicates()
             .receive(on: RunLoop.main)
             .map { $0.toCreditCardNumber() }
-            .sink { [unowned self] formattedCardNumber in
-                self.cardNumber = formattedCardNumber
+            .sink { [weak self] formattedCardNumber in
+                guard let self else { return }
+                // Maximum 19 numbers
+                let spacesCount = formattedCardNumber.characterCount(" ")
+                self.cardNumber = formattedCardNumber.prefix(19 + spacesCount).toString
+            }
+            .store(in: &cancellables)
+
+        $verificationNumber
+            .removeDuplicates()
+            .receive(on: RunLoop.main)
+            .map { $0.prefix(4).toString }
+            .sink { [weak self] formattedVerificationNumber in
+                guard let self else { return }
+                self.verificationNumber = formattedVerificationNumber
             }
             .store(in: &cancellables)
     }
