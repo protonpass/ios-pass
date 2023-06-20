@@ -216,7 +216,7 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Expires on")
                     .sectionTitleText()
-                MonthYearTextField(placeholder: "MM/YYYY",
+                MonthYearTextField(placeholder: "MM / YYYY",
                                    tintColor: tintColor,
                                    month: $viewModel.month,
                                    year: $viewModel.year)
