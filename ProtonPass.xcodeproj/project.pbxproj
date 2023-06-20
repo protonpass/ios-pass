@@ -3008,6 +3008,7 @@
 				3544BCBB28E1E42B00EFE130 /* Embed Frameworks */,
 				3544F5F228E2341900834CA4 /* Embed App Extensions */,
 				35C2162A29EA92A4001720FF /* Copy appropriate Settings.bundle base on configuration */,
+				35610BC22A41C75B0065710D /* Update git commit hash */,
 			);
 			buildRules = (
 			);
@@ -3463,6 +3464,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		35610BC22A41C75B0065710D /* Update git commit hash */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Update git commit hash";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "INFOPLIST_PATH=\"${TARGET_BUILD_DIR}/${EXECUTABLE_NAME}.app/Info.plist\"\n\n# Location of PlistBuddy\nPLISTBUDDY=\"/usr/libexec/PlistBuddy\"\n\n# Get the current git commmit hash (first 7 characters of the SHA)\nCOMMIT_HASH=$(git --git-dir=\"${PROJECT_DIR}/.git\" --work-tree=\"${PROJECT_DIR}\" rev-parse --short HEAD)\n\n# Set the Git hash in the info plist for reference\n$PLISTBUDDY -c \"Set :GIT_COMMIT_HASH $COMMIT_HASH\" \"${INFOPLIST_PATH}\"\n";
 		};
 		35C2162A29EA92A4001720FF /* Copy appropriate Settings.bundle base on configuration */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -74,7 +74,8 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             do {
                 delegate?.logsViewModelWantsToShowSpinner()
-                let file = FileManager.default.temporaryDirectory.appendingPathComponent(module.logFileName)
+                let fileName = module.logFileName(suffix: Bundle.main.gitCommitHash ?? "?")
+                let file = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
                 let log = await logFormatter.format(entries: entries)
                 try log.write(to: file, atomically: true, encoding: .utf8)
                 fileToDelete = file
@@ -84,6 +85,16 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
                 delegate?.logsViewModelWantsToHideSpinner()
                 delegate?.logsViewModelDidEncounter(error: error)
             }
+        }
+    }
+}
+
+private extension PassLogModule {
+    func logFileName(suffix: String) -> String {
+        switch self {
+        case .hostApp: return "pass_host_application_\(suffix).log"
+        case .autoFillExtension: return "pass_autofill_extension_\(suffix).log"
+        case .keyboardExtension: return "pass_keyboard_extension_\(suffix).log"
         }
     }
 }

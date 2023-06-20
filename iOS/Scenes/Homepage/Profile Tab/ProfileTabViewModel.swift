@@ -91,7 +91,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.shareRepository = shareRepository
         self.logger = .init(manager: logManager)
         self.preferences = preferences
-        self.appVersion = "Version \(Bundle.main.fullAppVersionName()) (\(Bundle.main.buildNumber))"
+        self.appVersion = "Version \(Bundle.main.displayedAppVersion())"
         self.featureFlagsRepository = featureFlagsRepository
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
