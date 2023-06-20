@@ -215,7 +215,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftOTP/SwiftOTP.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
 fi
-if [[ "$CONFIGURATION" == "Release-QA" ]]; then
+if [[ "$CONFIGURATION" == "Release-Beta" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
@@ -235,7 +235,7 @@ if [[ "$CONFIGURATION" == "Release-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftOTP/SwiftOTP.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
 fi
-if [[ "$CONFIGURATION" == "Release-TF" ]]; then
+if [[ "$CONFIGURATION" == "Release-QA" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"

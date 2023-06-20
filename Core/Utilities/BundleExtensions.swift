@@ -25,7 +25,7 @@ public extension Bundle {
     var buildNumber: String { string(forKey: "CFBundleVersion") ?? "0" }
     var versionIdentifier: String? { string(forKey: "APP_VERSION_IDENTIFIER") }
     var isQaBuild: Bool { bool(forKey: "IS_QA_BUILD") }
-    var isTfBuild: Bool { bool(forKey: "IS_TF_BUILD") }
+    var isBetaBuild: Bool { bool(forKey: "IS_BETA_BUILD") }
 
     private func string(forKey key: String) -> String? {
         infoDictionary?[key] as? String
