@@ -80,7 +80,7 @@ final class PaymentsManager {
     }
 
     func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
-        guard !Bundle.main.isTfBuild else { return }
+        guard !Bundle.main.isBetaBuild else { return }
 
         let paymentsUI = createPaymentsUI()
         // keep reference to avoid being deallocated
@@ -91,7 +91,7 @@ final class PaymentsManager {
     }
 
     func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
-        guard !Bundle.main.isTfBuild else { return }
+        guard !Bundle.main.isBetaBuild else { return }
 
         let paymentsUI = createPaymentsUI()
         // keep reference to avoid being deallocated
