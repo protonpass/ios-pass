@@ -89,11 +89,10 @@ extension LocalShareDatasourceTests {
             try await sut.upsertShares([.random()], userId: givenUserId)
         }
 
-        let share = try await sut.getShare(userId: givenUserId,
-                                           shareId: givenInsertedShare.share.shareID)
-        XCTAssertNotNil(share)
-        let nonNilShare = try XCTUnwrap(share)
-        assertEqual(nonNilShare, givenInsertedShare)
+        let share =
+        try await XCTUnwrapAsync(await sut.getShare(userId: givenUserId,
+                                                    shareId: givenInsertedShare.share.shareID))
+        assertEqual(share, givenInsertedShare)
     }
 
     func testInsertShares() async throws {
