@@ -145,7 +145,6 @@ final class CoreDataEntityStructureTests: XCTestCase {
     func testFeatureFlagsEntity() {
         let sut = entity(byName: "FeatureFlagsEntity")
         verifyAttribute(named: "creditCardV1", on: sut, hasType: .boolean)
-        verifyAttribute(named: "customFields", on: sut, hasType: .boolean)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 }

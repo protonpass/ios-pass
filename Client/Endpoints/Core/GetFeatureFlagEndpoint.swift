@@ -1,5 +1,5 @@
 //
-// GetCustomFieldsFlagEndpoint.swift
+// GetFeatureFlagEndpoint.swift
 // Proton Pass - Created on 31/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct GetCustomFieldsFlagResponse: Decodable {
+public struct GetFeatureFlagEndpointResponse: Decodable {
     let code: Int
     let feature: FeatureFlagResponse
 }
@@ -31,21 +31,19 @@ public struct FeatureFlagResponse: Decodable {
 }
 
 public enum FeatureFlagType {
-    case creditCardV1, customFields
+    case creditCardV1
 
     var path: String {
         switch self {
         case .creditCardV1:
             return "PassCreditCardsV1"
-        case .customFields:
-            return "PassCustomFields"
         }
     }
 }
 
-public struct GetCustomFieldsFlagEndpoint: Endpoint {
+public struct GetFeatureFlagEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetCustomFieldsFlagResponse
+    public typealias Response = GetFeatureFlagEndpointResponse
 
     public var debugDescription: String
     public var path: String

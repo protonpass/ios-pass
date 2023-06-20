@@ -59,7 +59,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                   favIconRepository: FavIconRepositoryProtocol,
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
-                  featureFlagsRepository: FeatureFlagsRepositoryProtocol,
                   vault: Vault?,
                   logManager: LogManager,
                   theme: Theme) {
@@ -69,7 +68,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                    favIconRepository: favIconRepository,
                    itemRepository: itemRepository,
                    upgradeChecker: upgradeChecker,
-                   featureFlagsRepository: featureFlagsRepository,
                    vault: vault,
                    logManager: logManager,
                    theme: theme)

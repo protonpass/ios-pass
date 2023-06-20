@@ -34,7 +34,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
     private let itemRepository: ItemRepositoryProtocol
     private let favIconRepository: FavIconRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private let logManager: LogManager
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
@@ -47,7 +46,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
          itemRepository: ItemRepositoryProtocol,
          favIconRepository: FavIconRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          logManager: LogManager,
          preferences: Preferences,
          vaultsManager: VaultsManager,
@@ -56,7 +54,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
         self.itemRepository = itemRepository
         self.favIconRepository = favIconRepository
         self.upgradeChecker = upgradeChecker
-        self.featureFlagsRepository = featureFlagsRepository
         self.logManager = logManager
         self.preferences = preferences
         self.vaultsManager = vaultsManager
@@ -112,7 +109,6 @@ private extension ItemDetailCoordinator {
             favIconRepository: favIconRepository,
             itemRepository: itemRepository,
             upgradeChecker: upgradeChecker,
-            featureFlagsRepository: featureFlagsRepository,
             vault: vault,
             logManager: logManager,
             theme: preferences.theme)
@@ -130,7 +126,6 @@ private extension ItemDetailCoordinator {
             itemRepository: itemRepository,
             aliasRepository: aliasRepository,
             upgradeChecker: upgradeChecker,
-            featureFlagsRepository: featureFlagsRepository,
             vault: vault,
             logManager: logManager,
             theme: preferences.theme)
@@ -146,7 +141,6 @@ private extension ItemDetailCoordinator {
             favIconRepository: favIconRepository,
             itemRepository: itemRepository,
             upgradeChecker: upgradeChecker,
-            featureFlagsRepository: featureFlagsRepository,
             vault: vault,
             logManager: logManager,
             theme: preferences.theme)
@@ -162,7 +156,6 @@ private extension ItemDetailCoordinator {
             favIconRepository: favIconRepository,
             itemRepository: itemRepository,
             upgradeChecker: upgradeChecker,
-            featureFlagsRepository: featureFlagsRepository,
             vault: vault,
             logManager: logManager,
             theme: preferences.theme)

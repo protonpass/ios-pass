@@ -40,14 +40,12 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     override init(mode: ItemMode,
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
-                  featureFlagsRepository: FeatureFlagsRepositoryProtocol,
                   vaults: [Vault],
                   preferences: Preferences,
                   logManager: LogManager) throws {
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
-                       featureFlagsRepository: featureFlagsRepository,
                        vaults: vaults,
                        preferences: preferences,
                        logManager: logManager)
