@@ -6,8 +6,8 @@
 	<string>$(APP_VERSION_IDENTIFIER =
 	<key>IS_QA_BUILD =
 	<string>$(IS_QA_BUILD =
-	<key>IS_TF_BUILD</key>
-	<string>$(IS_TF_BUILD)</string>
+	<key>IS_BETA_BUILD =
+	<string>$(IS_BETA_BUILD =
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>ITSEncryptionExportComplianceCode</key>

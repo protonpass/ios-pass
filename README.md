@@ -16,7 +16,7 @@ You will be asked for Apple ID's password on first run.
 
 Select a build variant when prompted:
 1. App Store: public builds for App Store
-2. TestFlight: beta builds for TestFlight (In-App Purchase disabled)
+2. Beta: beta builds for TestFlight (In-App Purchase disabled)
 3. QA: internal builds for QA
 
 Enter version number in semver format when prompted.

@@ -24,4 +24,4 @@
 #include "../../Pods/Target Support Files/Pods-iOS/Pods-iOS.debug-qa.xcconfig"
 APP_VERSION_IDENTIFIER =
 IS_QA_BUILD =
-IS_TF_BUILD = NO
+IS_BETA_BUILD =
