@@ -83,7 +83,7 @@ class CompleteViewModel {
         }
     }
 
-    func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String,
+    func createNewExternalAccount(email: String, password: String, verifyToken: String?, tokenType: String?,
                                   completion: @escaping (Result<(LoginData), Error>) -> Void) {
         DispatchQueue.main.async {
             self.progressStepWait(progressStep: .createAccount)
