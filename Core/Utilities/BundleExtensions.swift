@@ -24,6 +24,7 @@ public extension Bundle {
     var versionNumber: String { string(forKey: "CFBundleShortVersionString") ?? "0.0.0" }
     var buildNumber: String { string(forKey: "CFBundleVersion") ?? "0" }
     var versionIdentifier: String? { string(forKey: "APP_VERSION_IDENTIFIER =
+    var gitCommitHash: String? { string(forKey: "GIT_COMMIT_HASH") }
     var isQaBuild: Bool { bool(forKey: "IS_QA_BUILD =
     var isBetaBuild: Bool { bool(forKey: "IS_BETA_BUILD =
 
@@ -43,5 +44,18 @@ public extension Bundle {
             return "\(versionNumber)-\(versionIdentifier)"
         }
         return versionNumber
+    }
+
+    /// Full app version name + build number + git commit hash
+    /// E.g: 1.0.0 (1) (abcdef)
+    func displayedAppVersion() -> String {
+        let fullAppVersionName = Bundle.main.fullAppVersionName()
+        let buildNumber = Bundle.main.buildNumber
+        if let gitCommitHash = Bundle.main.gitCommitHash {
+            return "\(fullAppVersionName) (\(buildNumber)) (\(gitCommitHash))"
+        } else {
+            assertionFailure("Missing git commit hash")
+            return "\(fullAppVersionName) (\(buildNumber))"
+        }
     }
 }
