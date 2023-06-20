@@ -63,7 +63,6 @@ enum ItemCreationType {
 class BaseCreateEditItemViewModel {
     @Published private(set) var selectedVault: Vault
     @Published private(set) var isSaving = false
-    @Published private(set) var customFieldsSupported = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
@@ -75,7 +74,6 @@ class BaseCreateEditItemViewModel {
     let mode: ItemMode
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
-    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     let preferences: Preferences
     let logger: Logger
     let vaults: [Vault]
@@ -89,7 +87,6 @@ class BaseCreateEditItemViewModel {
     init(mode: ItemMode,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager) throws {
@@ -109,13 +106,11 @@ class BaseCreateEditItemViewModel {
         self.mode = mode
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
-        self.featureFlagsRepository = featureFlagsRepository
         self.preferences = preferences
         self.logger = .init(manager: logManager)
         self.vaults = vaults
         self.bindValues()
         self.pickPrimaryVaultIfApplicable()
-        self.checkIfCustomFieldsAreSupported()
         self.checkIfAbleToAddMoreCustomFields()
     }
 
@@ -160,18 +155,6 @@ private extension BaseCreateEditItemViewModel {
                 if isFreeUser, let primaryVault = vaults.first(where: { $0.isPrimary }) {
                     selectedVault = primaryVault
                 }
-            } catch {
-                logger.error(error)
-                delegate?.createEditItemViewModelDidEncounter(error: error)
-            }
-        }
-    }
-
-    func checkIfCustomFieldsAreSupported() {
-        Task { @MainActor in
-            do {
-                let featureFlags = try await featureFlagsRepository.getFlags()
-                customFieldsSupported = featureFlags.customFields
             } catch {
                 logger.error(error)
                 delegate?.createEditItemViewModelDidEncounter(error: error)

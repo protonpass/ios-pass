@@ -24,7 +24,7 @@ public protocol RemoteFeatureFlagsDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteFeatureFlagsDatasourceProtocol {
     func getFlag(type: FeatureFlagType) async throws -> Bool {
-        let endpoint = GetCustomFieldsFlagEndpoint(flagType: type)
+        let endpoint = GetFeatureFlagEndpoint(flagType: type)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.feature.value
     }
