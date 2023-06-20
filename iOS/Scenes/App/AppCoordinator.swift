@@ -48,7 +48,7 @@ final class AppCoordinator {
     private let credentialManager: CredentialManagerProtocol
     private var preferences: Preferences
     private var isUITest: Bool
-    private let appVersion = "ios-pass@\(Bundle.main.fullAppVersionName())"
+    private let appVersion = "ios-pass@\(Bundle.main.fullAppVersionName)"
 
     private var homepageCoordinator: HomepageCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?

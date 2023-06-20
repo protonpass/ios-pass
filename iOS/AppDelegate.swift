@@ -70,7 +70,7 @@ private extension AppDelegate {
     func setUpDefaultValuesForSettingsBundle() {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
-        kSharedUserDefaults.set(Bundle.main.displayedAppVersion(), forKey: appVersionKey)
+        kSharedUserDefaults.set(Bundle.main.displayedAppVersion, forKey: appVersionKey)
     }
 
     func saveAllPendingLogs() {
