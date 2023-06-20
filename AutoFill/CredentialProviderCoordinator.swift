@@ -85,7 +85,7 @@ public final class CredentialProviderCoordinator {
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let logManager = LogManager(module: .autoFillExtension)
-        let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName())"
+        let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
         let preferences = Preferences()
         let apiManager = APIManager(logManager: logManager,
