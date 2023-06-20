@@ -78,7 +78,7 @@ public extension String {
 
         // Only consider amex card if number of character <= 15
         // otherwise treat it as normal card
-        if isAmex, count <= 15 {
+        if isAmex, noSpacesCardNumber.count <= 15 {
             var formatted = noSpacesCardNumber
             if formatted.count > 4 {
                 formatted.insert(" ", at: formatted.index(formatted.startIndex, offsetBy: 4))

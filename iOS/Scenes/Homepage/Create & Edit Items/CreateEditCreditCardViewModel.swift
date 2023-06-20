@@ -55,7 +55,9 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .receive(on: RunLoop.main)
             .map { $0.toCreditCardNumber() }
             .sink { [unowned self] formattedCardNumber in
-                self.cardNumber = formattedCardNumber
+                // Maximum 19 numbers
+                let spacesCount = formattedCardNumber.filter { $0 == " " }.count
+                self.cardNumber = String(formattedCardNumber.prefix(19 + spacesCount))
             }
             .store(in: &cancellables)
     }
