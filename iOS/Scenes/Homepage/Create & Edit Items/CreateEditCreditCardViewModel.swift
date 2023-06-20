@@ -60,6 +60,15 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                 self.cardNumber = String(formattedCardNumber.prefix(19 + spacesCount))
             }
             .store(in: &cancellables)
+
+        $verificationNumber
+            .removeDuplicates()
+            .receive(on: RunLoop.main)
+            .map { String($0.prefix(4)) }
+            .sink { [unowned self] formattedVerificationNumber in
+                self.verificationNumber = formattedVerificationNumber
+            }
+            .store(in: &cancellables)
     }
 
     override func generateItemContent() -> ItemContentProtobuf {
