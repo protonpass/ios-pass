@@ -70,6 +70,10 @@ public extension String {
         self.replacingOccurrences(of: " ", with: "")
     }
 
+    func characterCount(_ character: Character) -> Int {
+        filter { $0 == character }.count
+    }
+
     func toCreditCardNumber() -> String {
         // Amex format: NNNN-NNNNNN-NNNNN (4-6-5)
         let isAmex = ["34", "37"].contains(prefix(2))
@@ -117,4 +121,8 @@ public extension String {
             return formatted
         }
     }
+}
+
+public extension Substring {
+    var toString: String { String(self) }
 }
