@@ -71,18 +71,16 @@ struct LogInDetailView: View {
                             .padding(.top, 8)
                         }
 
-                        if viewModel.customFieldsSupported {
-                            CustomFieldSections(
-                                itemContentType: viewModel.itemContent.type,
-                                uiModels: viewModel.customFieldUiModels,
-                                isFreeUser: viewModel.isFreeUser,
-                                logManager: viewModel.logManager,
-                                onSelectTotpToken: { token in
-                                    viewModel.copyToClipboard(
-                                        text: token,
-                                        message: "Two Factor Authentication code copied") },
-                                onUpgrade: viewModel.upgrade)
-                        }
+                        CustomFieldSections(
+                            itemContentType: viewModel.itemContent.type,
+                            uiModels: viewModel.customFieldUiModels,
+                            isFreeUser: viewModel.isFreeUser,
+                            logManager: viewModel.logManager,
+                            onSelectTotpToken: { token in
+                                viewModel.copyToClipboard(
+                                    text: token,
+                                    message: "Two Factor Authentication code copied") },
+                            onUpgrade: viewModel.upgrade)
 
                         ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)
@@ -92,7 +90,6 @@ struct LogInDetailView: View {
                     .padding()
                 }
                 .animation(.default, value: isShowingPassword)
-                .animation(.default, value: viewModel.customFieldsSupported)
                 .onChange(of: isMoreInfoSectionExpanded) { _ in
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }

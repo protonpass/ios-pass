@@ -49,11 +49,8 @@ public extension FeatureFlagsRepositoryProtocol {
         logger.trace("Getting remote credit card v1 flag for user \(userId)")
         let creditCardV1 = try await remoteFeatureFlagsDatasource.getFlag(type: .creditCardV1)
 
-        logger.trace("Getting remote custom fields flag for user \(userId)")
-        let customFields = try await remoteFeatureFlagsDatasource.getFlag(type: .customFields)
-
         logger.trace("Got remote flags for user \(userId). Upserting to local database.")
-        let flags = FeatureFlags(creditCardV1: creditCardV1, customFields: customFields)
+        let flags = FeatureFlags(creditCardV1: creditCardV1)
         try await localFeatureFlagsDatasource.upsertFlags(flags, userId: userId)
 
         return flags

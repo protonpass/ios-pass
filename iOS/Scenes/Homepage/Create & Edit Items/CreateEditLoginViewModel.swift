@@ -82,7 +82,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          vaults: [Vault],
          preferences: Preferences,
          logManager: LogManager,
@@ -92,7 +91,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
-                       featureFlagsRepository: featureFlagsRepository,
                        vaults: vaults,
                        preferences: preferences,
                        logManager: logManager)

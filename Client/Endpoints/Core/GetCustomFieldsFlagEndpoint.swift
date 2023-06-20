@@ -31,14 +31,12 @@ public struct FeatureFlagResponse: Decodable {
 }
 
 public enum FeatureFlagType {
-    case creditCardV1, customFields
+    case creditCardV1
 
     var path: String {
         switch self {
         case .creditCardV1:
             return "PassCreditCardsV1"
-        case .customFields:
-            return "PassCustomFields"
         }
     }
 }
