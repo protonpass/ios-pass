@@ -79,9 +79,9 @@ extension LocalItemDatasourceTests {
         }
 
         // Then
-        let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
-        let nonNilItem = try XCTUnwrap(item)
-        XCTAssertEqual(nonNilItem, givenInsertedItem)
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
+                                                              itemId: givenItemId))
+        XCTAssertEqual(item, givenInsertedItem)
     }
 
     func testGetAliasItem() async throws {
@@ -99,9 +99,8 @@ extension LocalItemDatasourceTests {
         }
 
         // Then
-        let item = try await sut.getAliasItem(email: givenAliasEmail)
-        let nonNilItem = try XCTUnwrap(item)
-        XCTAssertEqual(nonNilItem, givenInsertedItem)
+        let item = try await XCTUnwrapAsync(await sut.getAliasItem(email: givenAliasEmail))
+        XCTAssertEqual(item, givenInsertedItem)
     }
 
     func testInsertItems() async throws {
@@ -159,10 +158,9 @@ extension LocalItemDatasourceTests {
         let itemCount = try await sut.getItemCount(shareId: givenShareId)
         XCTAssertEqual(itemCount, 1)
 
-        let item = try await sut.getItem(shareId: givenShareId,
-                                         itemId: givenItemId)
-        let notNilItem = try XCTUnwrap(item)
-        XCTAssertEqual(notNilItem, updatedItem)
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId:givenShareId,
+                                                              itemId: givenItemId))
+        XCTAssertEqual(item, updatedItem)
     }
 
     func testTrashItems() async throws {
@@ -182,9 +180,9 @@ extension LocalItemDatasourceTests {
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
 
         // Then
-        let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
-        let notNilItem = try XCTUnwrap(item)
-        XCTAssertEqual(notNilItem.item.itemState, .trashed)
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
+                                                              itemId: givenItemId))
+        XCTAssertEqual(item.item.itemState, .trashed)
     }
 
     func testUntrashItems() async throws {
@@ -204,9 +202,9 @@ extension LocalItemDatasourceTests {
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
 
         // Then
-        let item = try await sut.getItem(shareId: givenShareId, itemId: givenItemId)
-        let notNilItem = try XCTUnwrap(item)
-        XCTAssertEqual(notNilItem.item.itemState, .active)
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
+                                                              itemId: givenItemId))
+        XCTAssertEqual(item.item.itemState, .active)
     }
 
     func testDeleteItems() async throws {

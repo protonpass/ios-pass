@@ -44,10 +44,9 @@ extension LocalFeatureFlagsDatasourceTests {
 
         // When
         try await sut.upsertFlags(givenFlags, userId: givenUserId)
-        let flags = try await sut.getFeatureFlags(userId: givenUserId)
-        let nonNilFlags = try XCTUnwrap(flags)
+        let flags = try await XCTUnwrapAsync(await sut.getFeatureFlags(userId: givenUserId))
 
         // Then
-        XCTAssertEqual(nonNilFlags, givenFlags)
+        XCTAssertEqual(flags, givenFlags)
     }
 }
