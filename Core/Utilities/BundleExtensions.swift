@@ -28,18 +28,8 @@ public extension Bundle {
     var isQaBuild: Bool { bool(forKey: "IS_QA_BUILD") }
     var isBetaBuild: Bool { bool(forKey: "IS_BETA_BUILD") }
 
-    private func string(forKey key: String) -> String? {
-        infoDictionary?[key] as? String
-    }
-
-    /// Default to `false` if the key does not exist
-    private func bool(forKey key: String) -> Bool {
-        let boolString = infoDictionary?[key] as? String
-        return boolString == "YES"
-    }
-
     /// Get the full name of the current version e.g "1.0.0-dev" or "1.2.0"
-    func fullAppVersionName() -> String {
+    var fullAppVersionName: String {
         if let versionIdentifier, !versionIdentifier.isEmpty {
             return "\(versionNumber)-\(versionIdentifier)"
         }
@@ -48,8 +38,8 @@ public extension Bundle {
 
     /// Full app version name + build number + git commit hash
     /// E.g: 1.0.0 (1) (abcdef)
-    func displayedAppVersion() -> String {
-        let fullAppVersionName = Bundle.main.fullAppVersionName()
+    var displayedAppVersion: String {
+        let fullAppVersionName = Bundle.main.fullAppVersionName
         let buildNumber = Bundle.main.buildNumber
         if let gitCommitHash = Bundle.main.gitCommitHash {
             return "\(fullAppVersionName) (\(buildNumber)) (\(gitCommitHash))"
@@ -57,5 +47,17 @@ public extension Bundle {
             assertionFailure("Missing git commit hash")
             return "\(fullAppVersionName) (\(buildNumber))"
         }
+    }
+}
+
+private extension Bundle {
+    func string(forKey key: String) -> String? {
+        infoDictionary?[key] as? String
+    }
+
+    /// Default to `false` if the key does not exist
+    func bool(forKey key: String) -> Bool {
+        let boolString = infoDictionary?[key] as? String
+        return boolString == "YES"
     }
 }
