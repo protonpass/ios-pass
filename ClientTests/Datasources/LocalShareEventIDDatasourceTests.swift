@@ -57,9 +57,9 @@ extension LocalShareEventIDDatasourceTests {
                                         lastEventId: givenEventId1)
 
         // Then
-        let eventId1 = try await sut.getLastEventId(userId: userId, shareId: shareId)
-        let notNilEventId1 = try XCTUnwrap(eventId1)
-        XCTAssertEqual(notNilEventId1, givenEventId1)
+        let eventId1 = try await XCTUnwrapAsync(await sut.getLastEventId(userId: userId,
+                                                                         shareId: shareId))
+        XCTAssertEqual(eventId1, givenEventId1)
 
         // Given
         let givenEventId2 = String.random()
@@ -70,9 +70,9 @@ extension LocalShareEventIDDatasourceTests {
                                         lastEventId: givenEventId2)
 
         // Then
-        let eventId2 = try await sut.getLastEventId(userId: userId, shareId: shareId)
-        let notNitEventId2 = try XCTUnwrap(eventId2)
-        XCTAssertEqual(notNitEventId2, givenEventId2)
+        let eventId2 = try await XCTUnwrapAsync(await sut.getLastEventId(userId: userId,
+                                                                         shareId: shareId))
+        XCTAssertEqual(eventId2, givenEventId2)
     }
 
     func testRemoveAllEntries() async throws {
