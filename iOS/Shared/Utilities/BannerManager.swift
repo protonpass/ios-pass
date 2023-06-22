@@ -21,7 +21,7 @@
 import ProtonCore_UIFoundations
 
 final class BannerManager {
-    let container: UIViewController
+    weak var container: UIViewController!
 
     init(container: UIViewController) {
         self.container = container
