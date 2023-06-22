@@ -34,7 +34,7 @@ public struct GetUserSettingsEndpoint: Endpoint {
     public var path: String
 
     public init() {
-        self.debugDescription = "Get user settings"
-        self.path = "/core/v4/settings"
+        debugDescription = "Get user settings"
+        path = "/core/v4/settings"
     }
 }

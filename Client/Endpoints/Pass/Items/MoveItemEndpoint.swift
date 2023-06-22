@@ -36,9 +36,9 @@ public struct MoveItemEndpoint: Endpoint {
     public var body: MoveItemRequest?
 
     public init(request: MoveItemRequest, itemId: String, fromShareId: String) {
-        self.debugDescription = "Move item"
-        self.path = "/pass/v1/share/\(fromShareId)/item/\(itemId)/share"
-        self.method = .put
-        self.body = request
+        debugDescription = "Move item"
+        path = "/pass/v1/share/\(fromShareId)/item/\(itemId)/share"
+        method = .put
+        body = request
     }
 }

@@ -42,71 +42,66 @@ struct AccountView: View {
         ScrollView {
             VStack {
                 VStack(spacing: 0) {
-                    OptionRow(
-                        title: "Username",
-                        height: .tall,
-                        content: {
-                            Text(viewModel.username)
-                                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                        })
+                    OptionRow(title: "Username",
+                              height: .tall,
+                              content: {
+                                  Text(viewModel.username)
+                                      .foregroundColor(Color(uiColor: PassColor.textNorm))
+                              })
 
                     if let plan = viewModel.plan {
                         PassSectionDivider()
 
-                        OptionRow(
-                            title: "Subscription plan",
-                            height: .tall,
-                            content: {
-                                Text(plan.displayName)
-                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            })
+                        OptionRow(title: "Subscription plan",
+                                  height: .tall,
+                                  content: {
+                                      Text(plan.displayName)
+                                          .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                  })
                     }
                 }
                 .roundedEditableSection()
 
-                OptionRow(
-                    action: viewModel.manageSubscription,
-                    height: .tall,
-                    content: {
-                        Text("Manage subscription")
-                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
-                    },
-                    trailing: {
-                        CircleButton(icon: IconProvider.arrowOutSquare,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1)
-                    })
-                    .roundedEditableSection()
-                    .padding(.top)
+                OptionRow(action: viewModel.manageSubscription,
+                          height: .tall,
+                          content: {
+                              Text("Manage subscription")
+                                  .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                          },
+                          trailing: {
+                              CircleButton(icon: IconProvider.arrowOutSquare,
+                                           iconColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1)
+                          })
+                          .roundedEditableSection()
+                          .padding(.top)
 
-                OptionRow(
-                    action: { isShowingSignOutConfirmation.toggle() },
-                    height: .tall,
-                    content: {
-                        Text("Sign out")
-                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
-                    },
-                    trailing: {
-                        CircleButton(icon: IconProvider.arrowOutFromRectangle,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1)
-                    })
-                .roundedEditableSection()
-                .padding(.vertical)
+                OptionRow(action: { isShowingSignOutConfirmation.toggle() },
+                          height: .tall,
+                          content: {
+                              Text("Sign out")
+                                  .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                          },
+                          trailing: {
+                              CircleButton(icon: IconProvider.arrowOutFromRectangle,
+                                           iconColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1)
+                          })
+                          .roundedEditableSection()
+                          .padding(.vertical)
 
-                OptionRow(
-                    action: viewModel.deleteAccount,
-                    height: .tall,
-                    content: {
-                        Text("Delete account")
-                            .foregroundColor(Color(uiColor: PassColor.signalDanger))
-                    },
-                    trailing: {
-                        CircleButton(icon: IconProvider.trash,
-                                     iconColor: PassColor.signalDanger,
-                                     backgroundColor: PassColor.passwordInteractionNormMinor1)
-                    })
-                .roundedEditableSection()
+                OptionRow(action: viewModel.deleteAccount,
+                          height: .tall,
+                          content: {
+                              Text("Delete account")
+                                  .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                          },
+                          trailing: {
+                              CircleButton(icon: IconProvider.trash,
+                                           iconColor: PassColor.signalDanger,
+                                           backgroundColor: PassColor.passwordInteractionNormMinor1)
+                          })
+                          .roundedEditableSection()
 
                 // swiftlint:disable:next line_length
                 Text("This will permanently delete your Proton account and all of its data, including email, calendars and data stored in Drive. You will not be able to reactivate this account.")
@@ -124,26 +119,24 @@ struct AccountView: View {
         .navigationBarTitleDisplayMode(.large)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
-        .alert(
-            "You will be signed out",
-            isPresented: $isShowingSignOutConfirmation,
-            actions: {
-                Button(role: .destructive,
-                       action: viewModel.signOut,
-                       label: { Text("Yes, sign me out") })
+        .alert("You will be signed out",
+               isPresented: $isShowingSignOutConfirmation,
+               actions: {
+                   Button(role: .destructive,
+                          action: viewModel.signOut,
+                          label: { Text("Yes, sign me out") })
 
-                Button(role: .cancel, label: { Text("Cancel") })
-            })
+                   Button(role: .cancel, label: { Text("Cancel") })
+               })
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(
-                icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
-                iconColor: PassColor.interactionNormMajor2,
-                backgroundColor: PassColor.interactionNormMinor1,
-                action: viewModel.goBack)
+            CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         action: viewModel.goBack)
         }
         ToolbarItem(placement: .navigationBarTrailing) {
             if let plan = viewModel.plan, plan.planType != .plus {

@@ -49,7 +49,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
             .CombineLatest($title, $note)
             .dropFirst(mode.isEditMode ? 1 : 3)
             .sink(receiveValue: { [unowned self] _ in
-                self.didEditSomething = true
+                didEditSomething = true
             })
             .store(in: &cancellables)
     }
@@ -57,8 +57,8 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     override func bindValues() {
         if case let .edit(itemContent) = mode,
            case .note = itemContent.contentData {
-            self.title = itemContent.name
-            self.note = itemContent.note
+            title = itemContent.name
+            note = itemContent.note
         }
     }
 

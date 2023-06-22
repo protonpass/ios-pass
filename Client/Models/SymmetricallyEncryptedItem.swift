@@ -58,18 +58,18 @@ public struct ScoredSymmetricallyEncryptedItem {
 private typealias AreInDecreasingOrder = (SymmetricallyEncryptedItem,
                                           SymmetricallyEncryptedItem) -> Bool
 
-public extension Array where Element == SymmetricallyEncryptedItem {
+public extension [SymmetricallyEncryptedItem] {
     // swiftlint:disable opening_brace
     /// Sort by `lastUseTime` & `modifyTime` in decreasing order
     func sorted() -> Self {
         let predicates: [AreInDecreasingOrder] =
-        [
-            { ($0.item.lastUseTime ?? 0) > ($1.item.lastUseTime ?? 0) },
-            { $0.item.modifyTime > $1.item.modifyTime }
-        ]
+            [
+                { ($0.item.lastUseTime ?? 0) > ($1.item.lastUseTime ?? 0) },
+                { $0.item.modifyTime > $1.item.modifyTime }
+            ]
         return sorted { lhs, rhs in
             for predicate in predicates {
-                if !predicate(lhs, rhs) && !predicate(rhs, lhs) {
+                if !predicate(lhs, rhs), !predicate(rhs, lhs) {
                     continue
                 }
 
@@ -87,18 +87,18 @@ extension SymmetricallyEncryptedItem: ItemIdentifiable {
 private typealias ScoredAreInDecreasingOrder = (ScoredSymmetricallyEncryptedItem,
                                                 ScoredSymmetricallyEncryptedItem) -> Bool
 
-public extension Array where Element == ScoredSymmetricallyEncryptedItem {
+public extension [ScoredSymmetricallyEncryptedItem] {
     /// Sort by `lastUseTime` & `modifyTime` in decreasing order
     func sorted() -> Self {
         let predicates: [ScoredAreInDecreasingOrder] =
-        [
-            { $0.matchScore > $1.matchScore },
-            { ($0.item.item.lastUseTime ?? 0) > ($1.item.item.lastUseTime ?? 0) },
-            { $0.item.item.modifyTime > $1.item.item.modifyTime }
-        ]
+            [
+                { $0.matchScore > $1.matchScore },
+                { ($0.item.item.lastUseTime ?? 0) > ($1.item.item.lastUseTime ?? 0) },
+                { $0.item.item.modifyTime > $1.item.item.modifyTime }
+            ]
         return sorted { lhs, rhs in
             for predicate in predicates {
-                if !predicate(lhs, rhs) && !predicate(rhs, lhs) {
+                if !predicate(lhs, rhs), !predicate(rhs, lhs) {
                     continue
                 }
 
@@ -108,4 +108,5 @@ public extension Array where Element == ScoredSymmetricallyEncryptedItem {
         }
     }
 }
+
 // swiftlint:enable opening_brace

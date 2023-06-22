@@ -52,9 +52,9 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     init(module: PassLogModule) {
         self.module = module
-        self.logManager = .init(module: module)
-        self.logFormatter = .default
-        self.loadLogs()
+        logManager = .init(module: module)
+        logFormatter = .default
+        loadLogs()
     }
 
     func loadLogs() {

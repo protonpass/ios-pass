@@ -70,11 +70,10 @@ public final class RepositoryManager: DeinitPrintable {
         let remoteTelemetryEventDatasource = RemoteTelemetryEventDatasource(apiService: apiService)
         let localTelemetryEventDatasource = LocalTelemetryEventDatasource(container: container)
 
-        let passPlanRepository = PassPlanRepository(
-            localPassPlanDatasource: localPassPlanDatasource,
-            remotePassPlanDatasource: remotePassPlanDatasource,
-            userId: userData.user.ID,
-            logManager: logManager)
+        let passPlanRepository = PassPlanRepository(localPassPlanDatasource: localPassPlanDatasource,
+                                                    remotePassPlanDatasource: remotePassPlanDatasource,
+                                                    userId: userData.user.ID,
+                                                    logManager: logManager)
 
         let shareKeyRepository = ShareKeyRepository(localShareKeyDatasource: localShareKeyDatasource,
                                                     remoteShareKeyDatasource: remoteShareKeyDatasource,
@@ -87,10 +86,10 @@ public final class RepositoryManager: DeinitPrintable {
                                             logManager: logManager,
                                             symmetricKey: symmetricKey)
 
-        let shareEventIDRepository = ShareEventIDRepository(
-            localShareEventIDDatasource: localShareEventIDDatasource,
-            remoteShareEventIDDatasource: remoteShareEventIDDatasource,
-            logManager: logManager)
+        let shareEventIDRepository =
+            ShareEventIDRepository(localShareEventIDDatasource: localShareEventIDDatasource,
+                                   remoteShareEventIDDatasource: remoteShareEventIDDatasource,
+                                   logManager: logManager)
 
         let shareRepository = ShareRepository(symmetricKey: symmetricKey,
                                               userData: userData,
@@ -106,38 +105,38 @@ public final class RepositoryManager: DeinitPrintable {
 
         let userId = userData.user.ID
 
-        self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
-        self.itemRepository = ItemRepository(userData: userData,
-                                             symmetricKey: symmetricKey,
-                                             localItemDatasoure: localItemDatasource,
-                                             remoteItemRevisionDatasource: remoteItemDatasource,
-                                             shareEventIDRepository: shareEventIDRepository,
-                                             passKeyManager: passKeyManager,
-                                             logManager: logManager)
+        aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+        itemRepository = ItemRepository(userData: userData,
+                                        symmetricKey: symmetricKey,
+                                        localItemDatasoure: localItemDatasource,
+                                        remoteItemRevisionDatasource: remoteItemDatasource,
+                                        shareEventIDRepository: shareEventIDRepository,
+                                        passKeyManager: passKeyManager,
+                                        logManager: logManager)
         self.passKeyManager = passKeyManager
         self.passPlanRepository = passPlanRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.shareRepository = shareRepository
         self.shareKeyRepository = shareKeyRepository
-        self.telemetryEventRepository = TelemetryEventRepository(
-            localTelemetryEventDatasource: localTelemetryEventDatasource,
-            remoteTelemetryEventDatasource: remoteTelemetryEventDatasource,
-            remoteUserSettingsDatasource: remoteUserSettingsDatasource,
-            passPlanRepository: passPlanRepository,
-            logManager: logManager,
-            scheduler: telemetryScheduler,
-            userId: userId)
-        self.featureFlagsRepository = FeatureFlagsRepository(
-            localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
-            remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
-            userId: userId,
-            logManager: logManager)
+        telemetryEventRepository =
+            TelemetryEventRepository(localTelemetryEventDatasource: localTelemetryEventDatasource,
+                                     remoteTelemetryEventDatasource: remoteTelemetryEventDatasource,
+                                     remoteUserSettingsDatasource: remoteUserSettingsDatasource,
+                                     passPlanRepository: passPlanRepository,
+                                     logManager: logManager,
+                                     scheduler: telemetryScheduler,
+                                     userId: userId)
+        featureFlagsRepository =
+            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
+                                   remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+                                   userId: userId,
+                                   logManager: logManager)
 
-        self.localSearchEntryDatasource = LocalSearchEntryDatasource(container: container)
-        self.remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
+        localSearchEntryDatasource = LocalSearchEntryDatasource(container: container)
+        remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
 
-        self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                             counter: limitationCounter,
-                                             totpChecker: itemRepository)
+        upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
+                                        counter: limitationCounter,
+                                        totpChecker: itemRepository)
     }
 }

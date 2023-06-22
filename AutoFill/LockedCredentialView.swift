@@ -39,7 +39,7 @@ struct LockedCredentialView: View {
                           delayed: true,
                           onSuccess: viewModel.getAndReturnCredential,
                           onFailure: viewModel.handleAuthenticationFailure)
-            .toolbar { toolbarContent }
+                .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
         .theme(preferences.theme)

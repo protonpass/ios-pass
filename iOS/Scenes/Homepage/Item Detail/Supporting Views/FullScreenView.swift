@@ -90,7 +90,7 @@ struct FullScreenView: View {
 
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(action: {
-                self.mode = mode.oppositeMode
+                mode = mode.oppositeMode
             }, label: {
                 Image(systemName: mode.oppositeMode.systemImageName)
                     .foregroundColor(Color(uiColor: PassColor.interactionNorm))

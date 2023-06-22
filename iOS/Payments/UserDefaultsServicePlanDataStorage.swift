@@ -63,12 +63,12 @@ final class UserDefaultsServicePlanDataStorage: ServicePlanDataStorage {
     private let storageHelper: StorageHelper<StorageKeys>
 
     init(storage: UserDefaults) {
-        self.storageHelper = StorageHelper(storage: storage)
+        storageHelper = StorageHelper(storage: storage)
     }
 }
 
 private final class StorageHelper<StorageKeys>
-where StorageKeys: RawRepresentable, StorageKeys.RawValue == String {
+    where StorageKeys: RawRepresentable, StorageKeys.RawValue == String {
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
     private let storage: UserDefaults
@@ -85,7 +85,7 @@ where StorageKeys: RawRepresentable, StorageKeys.RawValue == String {
         return value
     }
 
-    func setter<T>(value: T?, key: StorageKeys) where T: Codable {
+    func setter(value: (some Codable)?, key: StorageKeys) {
         guard let value else {
             storage.removeObject(forKey: key.rawValue)
             return

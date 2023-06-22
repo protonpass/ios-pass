@@ -31,14 +31,13 @@ struct EditClipboardExpirationView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(ClipboardExpiration.allCases, id: \.rawValue) { expiration in
-                        SelectableOptionRow(
-                            action: { preferences.clipboardExpiration = expiration; dismiss() },
-                            height: .compact,
-                            content: {
-                                Text(expiration.description)
-                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            },
-                            isSelected: expiration == preferences.clipboardExpiration)
+                        SelectableOptionRow(action: { preferences.clipboardExpiration = expiration; dismiss() },
+                                            height: .compact,
+                                            content: {
+                                                Text(expiration.description)
+                                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                            },
+                                            isSelected: expiration == preferences.clipboardExpiration)
 
                         PassDivider()
                     }

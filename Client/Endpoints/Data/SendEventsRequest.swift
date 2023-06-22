@@ -47,8 +47,8 @@ public struct EventInfo: Encodable {
         let userTier: String
 
         enum CodingKeys: String, CodingKey {
-            case type = "type"
-            case location = "location"
+            case type
+            case location
             case userTier = "user_tier"
         }
 
@@ -68,11 +68,11 @@ public struct EventInfo: Encodable {
 
 public extension EventInfo {
     init(event: TelemetryEvent, userTier: String) {
-        self.measurementGroup = "pass.any.user_actions"
+        measurementGroup = "pass.any.user_actions"
         self.event = event.eventName
-        self.dimensions = .init(type: event.dimensionType,
-                                location: event.dimensionLocation,
-                                userTier: userTier)
+        dimensions = .init(type: event.dimensionType,
+                           location: event.dimensionLocation,
+                           userTier: userTier)
     }
 }
 
@@ -100,19 +100,19 @@ private extension TelemetryEvent {
 
     var dimensionType: String? {
         switch type {
-        case .create(let itemContentType):
+        case let .create(itemContentType):
             return itemContentType.dimensionType
-        case .read(let itemContentType):
+        case let .read(itemContentType):
             return itemContentType.dimensionType
-        case .update(let itemContentType):
+        case let .update(itemContentType):
             return itemContentType.dimensionType
-        case .delete(let itemContentType):
+        case let .delete(itemContentType):
             return itemContentType.dimensionType
         case .autofillDisplay,
-                .autofillTriggeredFromSource,
-                .autofillTriggeredFromApp,
-                .searchClick,
-                .searchTriggered:
+             .autofillTriggeredFromApp,
+             .autofillTriggeredFromSource,
+             .searchClick,
+             .searchTriggered:
             return nil
         }
     }
@@ -126,11 +126,11 @@ private extension TelemetryEvent {
         case .autofillTriggeredFromApp:
             return "app"
         case .create,
-                .read,
-                .update,
-                .delete,
-                .searchClick,
-                .searchTriggered:
+             .delete,
+             .read,
+             .searchClick,
+             .searchTriggered,
+             .update:
             return nil
         }
     }

@@ -59,13 +59,13 @@ private extension UIViewController {
             return [.large()]
         case .mediumAndLarge:
             return [.medium(), .large()]
-        case .custom(let height):
+        case let .custom(height):
             if height > screenHeight {
                 return [.large()]
             } else {
                 return [customDetent(height)]
             }
-        case .customAndLarge(let height):
+        case let .customAndLarge(height):
             if height > screenHeight {
                 return [.large()]
             } else {
@@ -83,13 +83,13 @@ private extension UIViewController {
             return [.large()]
         case .mediumAndLarge:
             return [.medium(), .large()]
-        case .custom(let height):
+        case let .custom(height):
             if height > screenHeight / 2 {
                 return [.large()]
             } else {
                 return [.medium()]
             }
-        case .customAndLarge(let height):
+        case let .customAndLarge(height):
             if height > screenHeight / 2 {
                 return [.large()]
             } else {

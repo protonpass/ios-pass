@@ -61,12 +61,11 @@ struct ItemSquircleThumbnail: View {
 
     var body: some View {
         switch data {
-        case .icon(let type):
-            SquircleThumbnail(
-                data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
-                tintColor: type.normMajor2Color,
-                backgroundColor: type.normMinor1Color,
-                height: size.height)
+        case let .icon(type):
+            SquircleThumbnail(data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
+                              tintColor: type.normMajor2Color,
+                              backgroundColor: type.normMinor1Color,
+                              height: size.height)
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
@@ -118,11 +117,11 @@ struct ItemSquircleThumbnail: View {
         if !force, image != nil {
             return
         }
-        
+
         if force {
             image = nil
         }
-        
+
         Task {
             do {
                 if let favIcon = try await repository.getIcon(for: url),

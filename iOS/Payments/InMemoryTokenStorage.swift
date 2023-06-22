@@ -26,10 +26,12 @@ final class InMemoryTokenStorage: PaymentTokenStorage {
     func add(_ token: PaymentToken) {
         self.token = token
     }
+
     func get() -> PaymentToken? {
         token
     }
+
     func clear() {
-        self.token = nil
+        token = nil
     }
 }

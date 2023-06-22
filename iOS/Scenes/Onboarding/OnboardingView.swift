@@ -72,7 +72,7 @@ struct OnboardingView: View {
                                       backgroundColor: PassColor.interactionNormMajor1,
                                       height: 60,
                                       action: viewModel.primaryAction)
-                    .padding(.vertical, 26)
+                        .padding(.vertical, 26)
 
                     if let secondaryButtonTitle = viewModel.state.secondaryButtonTitle {
                         Button(action: viewModel.secondaryAction) {
@@ -110,11 +110,10 @@ struct OnboardingAutoFillView: View {
                 stepImage(PassIcon.onboardAutoFillStep4)
                 stepImage(PassIcon.onboardAutoFillStep5)
             }
-            .background(
-                Image(uiImage: PassIcon.onboardAutoFillGradient)
-                    .resizable()
-                    .frame(width: 2)
-                    .padding(.vertical, 36))
+            .background(Image(uiImage: PassIcon.onboardAutoFillGradient)
+                .resizable()
+                .frame(width: 2)
+                .padding(.vertical, 36))
 
             VStack(alignment: .leading, spacing: 24) {
                 Text("Open **Settings** app")
@@ -162,9 +161,9 @@ private struct OnboardingBiometricAuthenticationView: View {
                 .resizable()
                 .scaledToFit()
             Image(uiImage: enabled ? PassIcon.onboardAuthenticationEnabled : PassIcon.onboardAuthentication)
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: 180)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 180)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

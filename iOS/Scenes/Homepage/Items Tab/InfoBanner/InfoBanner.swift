@@ -30,13 +30,13 @@ enum InfoBanner: String, CaseIterable {
     var detail: InfoBannerDetail {
         switch self {
         case .trial:
-            return .init(
-                title: "Enjoy your free trial",
-                description: "Check out all the exclusive features that are available to you for a limited time.",
-                icon: nil,
-                ctaTitle: "Learn more",
-                backgroundColor: PassColor.noteInteractionNormMajor1)
-
+            // swiftlint:disable line_length
+            return .init(title: "Enjoy your free trial",
+                         description: "Check out all the exclusive features that are available to you for a limited time.",
+                         icon: nil,
+                         ctaTitle: "Learn more",
+                         backgroundColor: PassColor.noteInteractionNormMajor1)
+        // swiftlint:enable line_length
         case .autofill:
             return .init(title: "Enjoy the magic of AutoFill",
                          description: "One tap and⏤presto!⏤your username and password are filled in instantly.",

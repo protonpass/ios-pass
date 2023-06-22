@@ -39,7 +39,7 @@ final class SortTypeListViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SortTypeListViewModelDelegate?
 
     init(sortType: SortType) {
-        self.selectedSortType = sortType
+        selectedSortType = sortType
     }
 }
 
@@ -51,18 +51,18 @@ struct SortTypeListView: View {
         NavigationView {
             VStack(alignment: .center, spacing: 0) {
                 ForEach(SortType.allCases, id: \.self) { type in
-                    SelectableOptionRow(
-                        action: {
-                            viewModel.selectedSortType = type
-                            dismiss()
-                        },
-                        height: .compact,
-                        content: {
-                            Text(type.title)
-                                .foregroundColor(Color(uiColor: type == viewModel.selectedSortType ?
-                                                       PassColor.interactionNormMajor2 : PassColor.textNorm))
-                        },
-                        isSelected: type == viewModel.selectedSortType)
+                    SelectableOptionRow(action: {
+                                            viewModel.selectedSortType = type
+                                            dismiss()
+                                        },
+                                        height: .compact,
+                                        content: {
+                                            Text(type.title)
+                                                .foregroundColor(Color(uiColor: type == viewModel
+                                                        .selectedSortType ?
+                                                        PassColor.interactionNormMajor2 : PassColor.textNorm))
+                                        },
+                                        isSelected: type == viewModel.selectedSortType)
 
                     PassDivider()
                 }

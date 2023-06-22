@@ -34,7 +34,7 @@ public struct GetAliasDetailsEndpoint: Endpoint {
     public var path: String
 
     public init(shareId: String, itemId: String) {
-        self.debugDescription = "Get alias details"
-        self.path = "/pass/v1/share/\(shareId)/alias/\(itemId)"
+        debugDescription = "Get alias details"
+        path = "/pass/v1/share/\(shareId)/alias/\(itemId)"
     }
 }

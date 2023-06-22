@@ -66,9 +66,9 @@ enum CredentialsViewLoadedState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle),
-            (.searching, .searching),
-            (.noSearchResults, .noSearchResults),
-            (.searchResults, .searchResults):
+             (.noSearchResults, .noSearchResults),
+             (.searching, .searching),
+             (.searchResults, .searchResults):
             return true
         default:
             return false
@@ -87,7 +87,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published var query = ""
     @Published var selectedNotMatchedItem: TitledItemIdentifiable?
     @Published var isShowingConfirmationAlert = false
-    
+
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
 
     var selectedSortType = SortType.mostRecent
@@ -101,7 +101,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger: Logger
-    
+
     let favIconRepository: FavIconRepositoryProtocol
     let logManager: LogManager
     let urls: [URL]
@@ -114,7 +114,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
-    
+
     init(userId: String,
          shareRepository: ShareRepositoryProtocol,
          shareEventIDRepository: ShareEventIDRepositoryProtocol,
@@ -133,24 +133,25 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
         self.favIconRepository = favIconRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
-        self.urls = serviceIdentifiers.compactMap { serviceIdentifier in
+        urls = serviceIdentifiers.compactMap { serviceIdentifier in
             // ".domain" means in app context where identifiers don't have protocol,
             // so we manually add https as protocol otherwise URL comparison would not work without protocol.
-            let id = serviceIdentifier.type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
+            let id = serviceIdentifier
+                .type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
             return URL(string: id)
         }
 
-        self.syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                                   userId: userId,
-                                   shareRepository: shareRepository,
-                                   shareEventIDRepository: shareEventIDRepository,
-                                   remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                                   itemRepository: itemRepository,
-                                   shareKeyRepository: shareKeyRepository,
-                                   logManager: logManager)
+        syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
+                              userId: userId,
+                              shareRepository: shareRepository,
+                              shareEventIDRepository: shareEventIDRepository,
+                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                              itemRepository: itemRepository,
+                              shareKeyRepository: shareKeyRepository,
+                              logManager: logManager)
 
         self.logManager = logManager
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.preferences = preferences
 
         setup()
@@ -158,6 +159,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 }
 
 // MARK: - Public actions
+
 extension CredentialsViewModel {
     func cancel() {
         delegate?.credentialsViewModelWantsToCancel()
@@ -197,7 +199,7 @@ extension CredentialsViewModel {
                 logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await getItemTask(item: item).value
                 let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                guard case .login(let oldData) = oldContent.contentData else {
+                guard case let .login(oldData) = oldContent.contentData else {
                     throw PPError.credentialProvider(.notLogInItem)
                 }
                 guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
@@ -260,13 +262,13 @@ extension CredentialsViewModel {
 }
 
 private extension CredentialsViewModel {
-     func doSearch(term: String) {
+    func doSearch(term: String) {
         guard case let .loaded(fetchResult, _) = state else { return }
         guard !term.isEmpty else {
             state = .loaded(fetchResult, .idle)
             return
         }
-         
+
         lastTask?.cancel()
         lastTask = Task { @MainActor [weak self] in
             guard let self else {
@@ -291,12 +293,13 @@ private extension CredentialsViewModel {
 }
 
 // MARK: Setup & utils functions
+
 private extension CredentialsViewModel {
     func setup() {
         syncEventLoop.delegate = self
         syncEventLoop.start()
         fetchItems()
-        
+
         $query
             .debounce(for: 0.2, scheduler: DispatchQueue.main)
             .removeDuplicates()
@@ -307,7 +310,7 @@ private extension CredentialsViewModel {
                 self?.doSearch(term: term)
             }
             .store(in: &cancellables)
-        
+
         $selectedNotMatchedItem
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
@@ -322,12 +325,13 @@ private extension CredentialsViewModel {
 }
 
 // MARK: - Private supporting tasks
+
 private extension CredentialsViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) {
             guard let encryptedItem =
-                    try await self.itemRepository.getItem(shareId: item.shareId,
-                                                          itemId: item.itemId) else {
+                try await self.itemRepository.getItem(shareId: item.shareId,
+                                                      itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return encryptedItem
@@ -356,9 +360,9 @@ private extension CredentialsViewModel {
                 assert(vault != nil, "Must have at least 1 vault")
                 let shouldTakeIntoAccount = self.shouldTakeIntoAccount(vault: vault, withPlan: plan)
 
-                if case .login(let data) = decryptedItemContent.contentData {
+                if case let .login(data) = decryptedItemContent.contentData {
                     if shouldTakeIntoAccount {
-                        searchableItems.append(try SearchableItem(from: encryptedItem,
+                        try searchableItems.append(SearchableItem(from: encryptedItem,
                                                                   symmetricKey: self.symmetricKey,
                                                                   allVaults: vaults))
                     }
@@ -404,13 +408,13 @@ private extension CredentialsViewModel {
     func getCredentialTask(for item: ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
         Task.detached(priority: .userInitiated) {
             guard let itemContent =
-                    try await self.itemRepository.getItemContent(shareId: item.shareId,
-                                                                 itemId: item.itemId) else {
+                try await self.itemRepository.getItemContent(shareId: item.shareId,
+                                                             itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
 
             switch itemContent.contentData {
-            case .login(let data):
+            case let .login(data):
                 let credential = ASPasswordCredential(user: data.username, password: data.password)
                 return (credential, itemContent)
             default:
@@ -433,6 +437,7 @@ private extension CredentialsViewModel {
 }
 
 // MARK: - SortTypeListViewModelDelegate
+
 extension CredentialsViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
@@ -440,6 +445,7 @@ extension CredentialsViewModel: SortTypeListViewModelDelegate {
 }
 
 // MARK: - SyncEventLoopPullToRefreshDelegate
+
 extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
         stopRefreshing()
@@ -447,6 +453,7 @@ extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
 }
 
 // MARK: - SyncEventLoopDelegate
+
 extension CredentialsViewModel: SyncEventLoopDelegate {
     func syncEventLoopDidStartLooping() {
         logger.info("Started looping")
@@ -495,27 +502,27 @@ extension ItemSearchResult: TitledItemIdentifiable {
 extension CredentialItem: DateSortable, AlphabeticalSortable, Identifiable {
     var id: String {
         switch self {
-        case .normal(let itemUiModel):
+        case let .normal(itemUiModel):
             return itemUiModel.itemId + itemUiModel.shareId
-        case .searchResult(let itemSearchResult):
+        case let .searchResult(itemSearchResult):
             return itemSearchResult.itemId + itemSearchResult.shareId
         }
     }
 
     var dateForSorting: Date {
         switch self {
-        case .normal(let itemUiModel):
+        case let .normal(itemUiModel):
             return itemUiModel.dateForSorting
-        case .searchResult(let itemSearchResult):
+        case let .searchResult(itemSearchResult):
             return itemSearchResult.dateForSorting
         }
     }
 
     var alphabeticalSortableString: String {
         switch self {
-        case .normal(let itemUiModel):
+        case let .normal(itemUiModel):
             return itemUiModel.alphabeticalSortableString
-        case .searchResult(let itemSearchResult):
+        case let .searchResult(itemSearchResult):
             return itemSearchResult.alphabeticalSortableString
         }
     }

@@ -28,8 +28,8 @@ struct TelemetryEventsSection: View {
 
     var body: some View {
         NavigationLink(destination: {
-            let viewModel = TelemetryEventsViewModel(
-                telemetryEventRepository: telemetryEventRepository, userId: userId)
+            let viewModel = TelemetryEventsViewModel(telemetryEventRepository: telemetryEventRepository,
+                                                     userId: userId)
             TelemetryEventsView(viewModel: viewModel)
         }, label: {
             Text("Telemetry events")
@@ -44,8 +44,8 @@ private struct TelemetryEventUiModel: Identifiable {
 
     init(event: TelemetryEvent, formatter: RelativeDateTimeFormatter) {
         self.event = event
-        self.relativeDate = formatter.localizedString(for: Date(timeIntervalSince1970: event.time),
-                                                      relativeTo: .now)
+        relativeDate = formatter.localizedString(for: Date(timeIntervalSince1970: event.time),
+                                                 relativeTo: .now)
     }
 }
 
@@ -60,7 +60,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
     init(telemetryEventRepository: TelemetryEventRepositoryProtocol, userId: String) {
         self.telemetryEventRepository = telemetryEventRepository
         self.userId = userId
-        self.refresh()
+        refresh()
     }
 
     func refresh() {
@@ -72,7 +72,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
                     self.relativeThreshold = "Next batch \(relativeDate)"
                 }
                 let events =
-                try await telemetryEventRepository.localTelemetryEventDatasource.getAllEvents(userId: userId)
+                    try await telemetryEventRepository.localTelemetryEventDatasource.getAllEvents(userId: userId)
                 // Reverse to move new events to the top of the list
                 self.uiModels = events.reversed().map { TelemetryEventUiModel(event: $0,
                                                                               formatter: formatter) }
@@ -142,13 +142,13 @@ private struct EventView: View {
 private extension TelemetryEventType {
     var icon: UIImage {
         switch self {
-        case .create(let type):
+        case let .create(type):
             return type.regularIcon
-        case .read(let type):
+        case let .read(type):
             return type.regularIcon
-        case .update(let type):
+        case let .update(type):
             return type.regularIcon
-        case .delete(let type):
+        case let .delete(type):
             return type.regularIcon
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             // swiftlint:disable:next force_unwrapping
@@ -161,13 +161,13 @@ private extension TelemetryEventType {
 
     var iconColor: UIColor {
         switch self {
-        case .create(let type):
+        case let .create(type):
             return type.normMajor1Color
-        case .read(let type):
+        case let .read(type):
             return type.normMajor1Color
-        case .update(let type):
+        case let .update(type):
             return type.normMajor1Color
-        case .delete(let type):
+        case let .delete(type):
             return type.normMajor1Color
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             return PassColor.signalInfo
@@ -178,13 +178,13 @@ private extension TelemetryEventType {
 
     var backgroundColor: UIColor {
         switch self {
-        case .create(let type):
+        case let .create(type):
             return type.normMinor1Color
-        case .read(let type):
+        case let .read(type):
             return type.normMinor1Color
-        case .update(let type):
+        case let .update(type):
             return type.normMinor1Color
-        case .delete(let type):
+        case let .delete(type):
             return type.normMinor1Color
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             return PassColor.signalInfo.withAlphaComponent(0.16)

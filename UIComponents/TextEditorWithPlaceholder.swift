@@ -36,7 +36,7 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
                 font: UIFont = .body,
                 fontWeight: UIFont.Weight = .regular,
                 onSubmit: (() -> Void)? = nil) {
-        self._text = text
+        _text = text
         self.font = font
         self.fontWeight = fontWeight
         self.focusedField = focusedField

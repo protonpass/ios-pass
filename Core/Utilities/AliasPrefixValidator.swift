@@ -31,7 +31,6 @@ public enum AliasPrefixError: LocalizedError {
         case .emptyPrefix:
             return "Prefix can not be empty"
         case .disallowedCharacters:
-            // swiftlint:disable:next line_length
             return "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)."
         case .twoConsecutiveDots:
             return "Prefix can not contain 2 consecutive dots (..)"

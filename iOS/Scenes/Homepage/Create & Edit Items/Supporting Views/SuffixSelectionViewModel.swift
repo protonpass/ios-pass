@@ -41,21 +41,21 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
     init(suffixSelection: SuffixSelection,
          upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager) {
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.suffixSelection = suffixSelection
 
         suffixSelection.attach(to: self, storeIn: &cancellables)
 
         /*
-        Task { @MainActor in
-            do {
-                shouldUpgrade = try await upgradeChecker.isFreeUser()
-            } catch {
-                logger.error(error)
-                delegate?.suffixSelectionViewModelDidEncounter(error: error)
-            }
-        }
-         */
+         Task { @MainActor in
+             do {
+                 shouldUpgrade = try await upgradeChecker.isFreeUser()
+             } catch {
+                 logger.error(error)
+                 delegate?.suffixSelectionViewModelDidEncounter(error: error)
+             }
+         }
+          */
     }
 
     func upgrade() {

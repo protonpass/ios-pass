@@ -40,19 +40,19 @@ public struct DomainParser {
         let hostComponents = host.split(separator: ".")
         let isMatching: (Rule) -> Bool = { $0.isMatching(hostLabels: hostComponents) }
         let rule = parsedRules.exceptions.first(where: isMatching) ??
-        parsedRules.wildcardRules.first(where: isMatching)
+            parsedRules.wildcardRules.first(where: isMatching)
         return rule?.parse(hostLabels: hostComponents)
     }
 }
 
 public extension Bundle {
     static var current: Bundle {
-#if SWIFT_PACKAGE
+        #if SWIFT_PACKAGE
         return .module
-#else
+        #else
         class ClassInCurrentBundle {}
         return .init(for: ClassInCurrentBundle.self)
-#endif
+        #endif
     }
 }
 

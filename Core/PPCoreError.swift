@@ -31,11 +31,11 @@ public enum PPCoreError: Error, CustomDebugStringConvertible {
         switch self {
         case .biometryTypeNotInitialized:
             return "Biometry type not initialized"
-        case .failedToConvertBase64StringToData(let string):
+        case let .failedToConvertBase64StringToData(string):
             return "Failed to convert base 64 string to data \"\(string)\""
         case .failedToRandomizeData:
             return "Failed to randomize data"
-        case .totp(let reason):
+        case let .totp(reason):
             return reason.debugDescription
         }
     }

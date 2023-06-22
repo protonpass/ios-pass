@@ -88,20 +88,20 @@ extension ItemEntity {
 
     func hydrate(from symmetricallyEncryptedItem: SymmetricallyEncryptedItem) {
         let item = symmetricallyEncryptedItem.item
-        self.aliasEmail = item.aliasEmail
-        self.content = item.content
-        self.contentFormatVersion = item.contentFormatVersion
-        self.createTime = item.createTime
-        self.isLogInItem = symmetricallyEncryptedItem.isLogInItem
-        self.itemID = item.itemID
-        self.itemKey = item.itemKey
-        self.keyRotation = item.keyRotation
-        self.lastUseTime = item.lastUseTime ?? 0
-        self.modifyTime = item.modifyTime
-        self.revision = item.revision
-        self.revisionTime = item.revisionTime
-        self.shareID = symmetricallyEncryptedItem.shareId
-        self.state = item.state
-        self.symmetricallyEncryptedContent = symmetricallyEncryptedItem.encryptedContent
+        aliasEmail = item.aliasEmail
+        content = item.content
+        contentFormatVersion = item.contentFormatVersion
+        createTime = item.createTime
+        isLogInItem = symmetricallyEncryptedItem.isLogInItem
+        itemID = item.itemID
+        itemKey = item.itemKey
+        keyRotation = item.keyRotation
+        lastUseTime = item.lastUseTime ?? 0
+        modifyTime = item.modifyTime
+        revision = item.revision
+        revisionTime = item.revisionTime
+        shareID = symmetricallyEncryptedItem.shareId
+        state = item.state
+        symmetricallyEncryptedContent = symmetricallyEncryptedItem.encryptedContent
     }
 }

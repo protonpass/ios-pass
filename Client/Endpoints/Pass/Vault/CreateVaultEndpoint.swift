@@ -36,9 +36,9 @@ public struct CreateVaultEndpoint: Endpoint {
     public var body: CreateVaultRequest?
 
     public init(request: CreateVaultRequest) {
-        self.debugDescription = "Create vault"
-        self.path = "/pass/v1/vault"
-        self.method = .post
-        self.body = request
+        debugDescription = "Create vault"
+        path = "/pass/v1/vault"
+        method = .post
+        body = request
     }
 }

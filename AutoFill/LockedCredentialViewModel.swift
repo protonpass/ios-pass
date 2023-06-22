@@ -42,7 +42,7 @@ final class LockedCredentialViewModel: ObservableObject {
         self.symmetricKey = symmetricKey
         self.credentialIdentity = credentialIdentity
         self.logManager = logManager
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 
     func getAndReturnCredential() {
@@ -60,7 +60,7 @@ final class LockedCredentialViewModel: ObservableObject {
                 let itemContent = try item.getItemContent(symmetricKey: self.symmetricKey)
 
                 switch itemContent.contentData {
-                case .login(let data):
+                case let .login(data):
                     let credential = ASPasswordCredential(user: data.username,
                                                           password: data.password)
                     onSuccess?(credential, itemContent)

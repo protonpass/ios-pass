@@ -98,14 +98,14 @@ public final class SyncEventLoop: DeinitPrintable {
                 itemRepository: ItemRepositoryProtocol,
                 shareKeyRepository: ShareKeyRepositoryProtocol,
                 logManager: LogManager) {
-        self.backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
+        backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.userId = userId
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
         self.itemRepository = itemRepository
         self.shareKeyRepository = shareKeyRepository
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 
     func makeReachabilityIfNecessary() throws {
@@ -118,6 +118,7 @@ public final class SyncEventLoop: DeinitPrintable {
 }
 
 // MARK: - Public APIs
+
 public extension SyncEventLoop {
     /// Start looping
     func start() {
@@ -166,7 +167,9 @@ public extension SyncEventLoop {
     e. Upsert `LatestEventID` of the share.
     f. If `EventsPending` is `true`. Repeat this step with the given `LatestEventID`.
  */
+
 // MARK: - Private APIs
+
 private extension SyncEventLoop {
     /// The repeated task of the timer
     func timerTask() {

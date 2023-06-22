@@ -41,10 +41,10 @@ struct AppLockedView: View {
          delayed: Bool,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        self._authenticator = .init(wrappedValue: .init(preferences: preferences,
-                                                        logManager: logManager))
-        self._preferences = .init(wrappedValue: preferences)
-        self.logger = .init(manager: logManager)
+        _authenticator = .init(wrappedValue: .init(preferences: preferences,
+                                                   logManager: logManager))
+        _preferences = .init(wrappedValue: preferences)
+        logger = .init(manager: logManager)
         self.delayed = delayed
         self.onSuccess = onSuccess
         self.onFailure = onFailure
@@ -95,7 +95,7 @@ struct AppLockedView: View {
                     }
                 }
 
-            case .error(let error):
+            case let .error(error):
                 VStack {
                     passLogo
                     Text(error.localizedDescription)

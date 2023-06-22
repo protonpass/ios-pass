@@ -31,7 +31,7 @@ public enum TOTPState: Equatable {
 public struct TOTPTimerData: Hashable {
     public let total: Int
     public let remaining: Int
-    
+
     public init(total: Int, remaining: Int) {
         self.total = total
         self.remaining = remaining
@@ -53,12 +53,12 @@ public extension TOTPData {
         var username: String?
         var issuer: String?
         var timeInterval: Double = Constants.TotpBase.timer
-        
+
         if uri.contains("otpauth") {
             // "otpauth" as protocol, parse information
             let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
             if otpComponents.type == .totp,
-                let secretData = MF_Base32CodecPass.data(fromBase32String: otpComponents.secret) {
+               let secretData = MF_Base32CodecPass.data(fromBase32String: otpComponents.secret) {
                 username = otpComponents.label
                 issuer = otpComponents.issuer
                 timeInterval = Double(otpComponents.period)
@@ -68,7 +68,7 @@ public extension TOTPData {
                                                digits: otpComponents.digits)
             }
         } else if let secretData =
-                    MF_Base32CodecPass.data(fromBase32String: uri.spacesRemoved) {
+            MF_Base32CodecPass.data(fromBase32String: uri.spacesRemoved) {
             // Treat the whole string as secret
             tokenGenerator = try Generator(secret: secretData)
         }
@@ -76,7 +76,7 @@ public extension TOTPData {
         guard let tokenGenerator else {
             throw PPCoreError.totp(.failedToInitializeTOTPObject)
         }
-        
+
         let token = Token(name: username ?? "", issuer: issuer ?? "", generator: tokenGenerator)
         let code = token.currentPassword ?? ""
         let timerData = timeInterval.timerData()
@@ -104,34 +104,34 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
     private var timer: Timer?
     private let logger: Logger
     private var timeInterval: Double = Constants.TotpBase.timer
-    
+
     @Published public private(set) var state = TOTPState.empty
-    
+
     /// The current `URI` whether it's valid or not
     public private(set) var uri = ""
-    
+
     public init(logManager: LogManager) {
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
-    
+
     deinit {
         timer?.invalidate()
         print(deinitMessage)
     }
-    
+
     public var totpData: TOTPData? {
-        if case .valid(let data) = state {
+        if case let .valid(data) = state {
             return data
         }
         return nil
     }
-    
+
     public func reset() {
         timer?.invalidate()
         uri = ""
         state = .empty
     }
-    
+
     public func bind(uri: String) {
         self.uri = uri
         timer?.invalidate()
@@ -140,7 +140,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
             state = .empty
             return
         }
-        
+
         do {
             var tokenGenerator: Generator?
             var username: String?
@@ -162,16 +162,16 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
                 // Treat the whole string as secret
                 tokenGenerator = try Generator(secret: secretData)
             }
-            
+
             guard let tokenGenerator else {
                 state = .invalid
                 return
             }
-            
+
             let token = Token(name: username ?? "",
                               issuer: issuer ?? "",
                               generator: tokenGenerator)
-            
+
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
                 self?.calculate(token: token, username: username, issuer: issuer)
             }
@@ -181,7 +181,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
             state = .invalid
         }
     }
-    
+
     private func calculate(token: Token, username: String?, issuer: String?) {
         let code = token.currentPassword ?? ""
         let timerData = timeInterval.timerData()
@@ -195,7 +195,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
 private extension Double {
     func timerData(secondsPast1970: Double = Date().timeIntervalSince1970) -> TOTPTimerData {
         let remainingSeconds = self - secondsPast1970.truncatingRemainder(dividingBy: self)
-        return .init(total: self.toInt, remaining: remainingSeconds.toInt)
+        return .init(total: toInt, remaining: remainingSeconds.toInt)
     }
 }
 

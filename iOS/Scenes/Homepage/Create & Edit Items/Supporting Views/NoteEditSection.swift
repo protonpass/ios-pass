@@ -39,7 +39,7 @@ struct NoteEditSection<Field: Hashable>: View {
                                           focusedField: focusedField,
                                           field: field,
                                           placeholder: "Add note")
-                .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
+                    .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

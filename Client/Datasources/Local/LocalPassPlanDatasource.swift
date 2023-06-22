@@ -39,10 +39,10 @@ public extension LocalPassPlanDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: PassPlanEntity.entity(context: taskContext),
-                              sourceItems: [passPlan]) { managedObject, passPlan in
-            (managedObject as? PassPlanEntity)?.hydrate(from: passPlan, userId: userId)
-        }
+            newBatchInsertRequest(entity: PassPlanEntity.entity(context: taskContext),
+                                  sourceItems: [passPlan]) { managedObject, passPlan in
+                (managedObject as? PassPlanEntity)?.hydrate(from: passPlan, userId: userId)
+            }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }

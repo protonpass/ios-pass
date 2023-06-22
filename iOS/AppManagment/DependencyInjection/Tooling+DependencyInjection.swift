@@ -27,11 +27,12 @@ final class ToolingContainer: SharedContainer {
 }
 
 // MARK: Logging tools
+
 extension ToolingContainer {
     var hostAppLogManager: Factory<LogManager> {
         self { LogManager(module: .hostApp) }
     }
-    
+
     var mainAppLoger: Factory<Logger> {
         self { Logger(manager: self.hostAppLogManager()) }
     }

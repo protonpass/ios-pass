@@ -29,18 +29,16 @@ struct EditPrimaryVaultView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.allVaults, id: \.vault.shareId) { vault in
-                        OptionRow(
-                            action: { viewModel.setAsPrimary(vault: vault.vault) },
-                            height: .medium,
-                            horizontalPadding: 0,
-                            content: {
-                                VaultRow(
-                                    thumbnail: { VaultThumbnail(vault: vault.vault) },
-                                    title: vault.vault.name,
-                                    itemCount: vault.itemCount,
-                                    isSelected: vault.vault.shareId == viewModel.primaryVault.shareId,
-                                    height: 44)
-                            })
+                        OptionRow(action: { viewModel.setAsPrimary(vault: vault.vault) },
+                                  height: .medium,
+                                  horizontalPadding: 0,
+                                  content: {
+                                      VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
+                                               title: vault.vault.name,
+                                               itemCount: vault.itemCount,
+                                               isSelected: vault.vault.shareId == viewModel.primaryVault.shareId,
+                                               height: 44)
+                                  })
 
                         PassDivider()
                     }

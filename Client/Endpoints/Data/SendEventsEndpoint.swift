@@ -31,9 +31,9 @@ struct SendEventsEndpoint: Endpoint {
     var body: SendEventsRequest?
 
     init(events: [EventInfo]) {
-        self.debugDescription = "Send a list of events to the data telemetry system"
-        self.path = "/data/v1/stats/multiple"
-        self.method = .post
-        self.body = .init(eventInfo: events)
+        debugDescription = "Send a list of events to the data telemetry system"
+        path = "/data/v1/stats/multiple"
+        method = .post
+        body = .init(eventInfo: events)
     }
 }

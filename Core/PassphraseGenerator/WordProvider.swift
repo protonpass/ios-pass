@@ -24,7 +24,7 @@ public enum DiceValue: Int, CaseIterable {
     case one = 1, two = 2, three = 3, four = 4, five = 5, six = 6
 
     // https://developer.apple.com/documentation/swift/randomnumbergenerator
-    static func random<G: RandomNumberGenerator>(using generator: inout G) -> DiceValue {
+    static func random(using generator: inout some RandomNumberGenerator) -> DiceValue {
         DiceValue.allCases.randomElement(using: &generator) ?? .one
     }
 
@@ -76,7 +76,7 @@ public final class WordProvider: WordProviderProtocol {
 
         assert(dict.keys.count == 7_776, "Corrupted dictionary")
 
-        self.dictionary = dict
+        dictionary = dict
     }
 
     public func word(for result: DiceResult) -> String {

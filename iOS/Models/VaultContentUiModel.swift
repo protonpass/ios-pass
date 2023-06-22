@@ -28,12 +28,12 @@ struct VaultContentUiModel: Hashable {
 
 extension VaultListUiModel {
     init(vaultContent: VaultContentUiModel) {
-        self.vault = vaultContent.vault
-        self.itemCount = vaultContent.items.count
+        vault = vaultContent.vault
+        itemCount = vaultContent.items.count
     }
 }
 
-extension Array where Element == VaultContentUiModel {
+extension [VaultContentUiModel] {
     mutating func sortAlphabetically() {
         sort(by: { $0.vault.name < $1.vault.name })
     }

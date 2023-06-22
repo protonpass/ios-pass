@@ -45,19 +45,19 @@ struct TurnOnAutoFillView: View {
                     Spacer()
 
                     Text(viewModel.enabled ?
-                         OnboardingViewState.autoFillEnabled.title :
-                            OnboardingViewState.autoFill.title)
-                    .font(.title2)
-                    .fontWeight(.medium)
-                    .padding(.vertical, 24)
+                        OnboardingViewState.autoFillEnabled.title :
+                        OnboardingViewState.autoFill.title)
+                        .font(.title2)
+                        .fontWeight(.medium)
+                        .padding(.vertical, 24)
 
                     Spacer()
 
                     Text(viewModel.enabled ?
-                         OnboardingViewState.autoFillEnabled.description :
-                            OnboardingViewState.autoFill.description)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    .multilineTextAlignment(.center)
+                        OnboardingViewState.autoFillEnabled.description :
+                        OnboardingViewState.autoFill.description)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                        .multilineTextAlignment(.center)
 
                     Spacer()
                 }
@@ -90,11 +90,9 @@ struct TurnOnAutoFillView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .background(
-            LinearGradient(colors: [Color(uiColor: PassColor.interactionNorm).opacity(0.2), .clear],
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
-        )
+        .background(LinearGradient(colors: [Color(uiColor: PassColor.interactionNorm).opacity(0.2), .clear],
+                                   startPoint: .topLeading,
+                                   endPoint: .bottomTrailing))
         .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.all)
     }

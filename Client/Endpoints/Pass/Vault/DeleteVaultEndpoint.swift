@@ -30,8 +30,8 @@ public struct DeleteVaultEndpoint: Endpoint {
     public var method: HTTPMethod
 
     public init(shareId: String) {
-        self.debugDescription = "Delete vault"
-        self.path = "/pass/v1/vault/\(shareId)"
-        self.method = .delete
+        debugDescription = "Delete vault"
+        path = "/pass/v1/vault/\(shareId)"
+        method = .delete
     }
 }

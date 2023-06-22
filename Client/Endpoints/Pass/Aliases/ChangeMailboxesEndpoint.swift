@@ -33,9 +33,9 @@ public struct ChangeMailboxesEndpoint: Endpoint {
     public init(shareId: String,
                 itemId: String,
                 mailboxIDs: [Int]) {
-        self.debugDescription = "Change alias target mailboxes"
-        self.path = "/pass/v1/share/\(shareId)/alias/\(itemId)/mailbox"
-        self.method = .post
-        self.body = .init(mailboxIDs: mailboxIDs)
+        debugDescription = "Change alias target mailboxes"
+        path = "/pass/v1/share/\(shareId)/alias/\(itemId)/mailbox"
+        method = .post
+        body = .init(mailboxIDs: mailboxIDs)
     }
 }

@@ -31,9 +31,9 @@ public struct UntrashItemsEndpoint: Endpoint {
     public var body: ModifyItemRequest?
 
     public init(shareId: String, items: [ItemRevision]) {
-        self.debugDescription = "Untrash items"
-        self.path = "/pass/v1/share/\(shareId)/item/untrash"
-        self.method = .post
-        self.body = .init(items: items, skipTrash: false)
+        debugDescription = "Untrash items"
+        path = "/pass/v1/share/\(shareId)/item/untrash"
+        method = .post
+        body = .init(items: items, skipTrash: false)
     }
 }

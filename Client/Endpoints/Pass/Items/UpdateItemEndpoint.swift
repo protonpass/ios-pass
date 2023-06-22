@@ -36,9 +36,9 @@ public struct UpdateItemEndpoint: Endpoint {
     public var body: UpdateItemRequest?
 
     public init(shareId: String, itemId: String, request: UpdateItemRequest) {
-        self.debugDescription = "Update item"
-        self.path = "/pass/v1/share/\(shareId)/item/\(itemId)"
-        self.method = .put
-        self.body = request
+        debugDescription = "Update item"
+        path = "/pass/v1/share/\(shareId)/item/\(itemId)"
+        method = .put
+        body = request
     }
 }

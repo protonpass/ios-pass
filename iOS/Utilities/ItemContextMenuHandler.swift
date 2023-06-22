@@ -43,11 +43,12 @@ final class ItemContextMenuHandler {
          logManager: LogManager) {
         self.clipboardManager = clipboardManager
         self.itemRepository = itemRepository
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 }
 
 // MARK: - Public APIs
+
 // Only show & hide spinner when trashing because API calls are needed.
 // Other operations are local so no need.
 extension ItemContextMenuHandler {
@@ -72,7 +73,7 @@ extension ItemContextMenuHandler {
 
                 let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                     banner.dismiss()
-                    self.restore(item)
+                    restore(item)
                 }
                 clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.trashMessage,
                                                                          dismissButtonTitle: "Undo",
@@ -123,7 +124,7 @@ extension ItemContextMenuHandler {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContent(for: item)
-                if case .login(let data) = itemContent.contentData {
+                if case let .login(data) = itemContent.contentData {
                     clipboardManager.copy(text: data.username,
                                           bannerMessage: "Username copied")
                     logger.info("Copied username \(item.debugInformation)")
@@ -140,7 +141,7 @@ extension ItemContextMenuHandler {
         Task { @MainActor in
             do {
                 let itemContent = try await getDecryptedItemContent(for: item)
-                if case .login(let data) = itemContent.contentData {
+                if case let .login(data) = itemContent.contentData {
                     clipboardManager.copy(text: data.password,
                                           bannerMessage: "Password copied")
                     logger.info("Copied Password \(item.debugInformation)")
@@ -171,10 +172,11 @@ extension ItemContextMenuHandler {
 }
 
 // MARK: - Private APIs
+
 private extension ItemContextMenuHandler {
     func getDecryptedItemContent(for item: ItemIdentifiable) async throws -> ItemContent {
-        let symmetricKey = self.itemRepository.symmetricKey
-        let encryptedItem = try await self.getEncryptedItem(for: item)
+        let symmetricKey = itemRepository.symmetricKey
+        let encryptedItem = try await getEncryptedItem(for: item)
         return try encryptedItem.getItemContent(symmetricKey: symmetricKey)
     }
 

@@ -103,11 +103,10 @@ private extension ShareKeyRepositoryProtocol {
                           passphrase: .init(value: userData.passphrases[$0.keyID] ?? ""))
         }
 
-        let verificationKeys = userData.user.keys.map { $0.publicKey }.map { ArmoredKey(value: $0) }
-        let decryptedKey: VerifiedData = try Decryptor.decryptAndVerify(
-            decryptionKeys: decryptionKeys,
-            value: .init(value: armoredEncryptedKeyData),
-            verificationKeys: verificationKeys)
+        let verificationKeys = userData.user.keys.map(\.publicKey).map { ArmoredKey(value: $0) }
+        let decryptedKey: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: decryptionKeys,
+                                                                        value: .init(value: armoredEncryptedKeyData),
+                                                                        verificationKeys: verificationKeys)
 
         logger.trace("Decrypted share key \(keyDescription)")
         return decryptedKey.content
@@ -128,7 +127,7 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
                 userData: UserData) {
         self.localShareKeyDatasource = localShareKeyDatasource
         self.remoteShareKeyDatasource = remoteShareKeyDatasource
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.symmetricKey = symmetricKey
         self.userData = userData
     }
@@ -138,9 +137,9 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
                 logManager: LogManager,
                 symmetricKey: CryptoKit.SymmetricKey,
                 userData: UserData) {
-        self.localShareKeyDatasource = LocalShareKeyDatasource(container: container)
-        self.remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
-        self.logger = .init(manager: logManager)
+        localShareKeyDatasource = LocalShareKeyDatasource(container: container)
+        remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
+        logger = .init(manager: logManager)
         self.symmetricKey = symmetricKey
         self.userData = userData
     }

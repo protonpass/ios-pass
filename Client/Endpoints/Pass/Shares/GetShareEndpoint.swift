@@ -34,8 +34,8 @@ public struct GetShareEndpoint: Endpoint {
     public var method: HTTPMethod
 
     public init(shareId: String) {
-        self.debugDescription = "Get share data"
-        self.path = "/pass/v1/share/\(shareId)"
-        self.method = .get
+        debugDescription = "Get share data"
+        path = "/pass/v1/share/\(shareId)"
+        method = .get
     }
 }

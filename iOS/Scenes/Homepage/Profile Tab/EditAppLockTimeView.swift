@@ -31,14 +31,13 @@ struct EditAppLockTimeView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(AppLockTime.allCases, id: \.rawValue) { time in
-                        SelectableOptionRow(
-                            action: { preferences.appLockTime = time; dismiss() },
-                            height: .compact,
-                            content: {
-                                Text(time.description)
-                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            },
-                            isSelected: time == preferences.appLockTime)
+                        SelectableOptionRow(action: { preferences.appLockTime = time; dismiss() },
+                                            height: .compact,
+                                            content: {
+                                                Text(time.description)
+                                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                            },
+                                            isSelected: time == preferences.appLockTime)
 
                         PassDivider()
                     }

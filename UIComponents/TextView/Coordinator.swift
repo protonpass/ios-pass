@@ -1,6 +1,5 @@
 import SwiftUI
 
-// swiftlint:disable line_length
 extension TextView.Representable {
     final class Coordinator: NSObject, UITextViewDelegate {
         internal let textView: UIKitTextView
@@ -17,8 +16,7 @@ extension TextView.Representable {
              calculatedHeight: Binding<CGFloat>,
              shouldEditInRange: ((Range<String.Index>, String) -> Bool)?,
              onEditingChanged: (() -> Void)?,
-             onCommit: (() -> Void)?
-        ) {
+             onCommit: (() -> Void)?) {
             textView = UIKitTextView()
             textView.backgroundColor = .clear
             textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -43,7 +41,9 @@ extension TextView.Representable {
             onEditingChanged?()
         }
 
-        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        func textView(_ textView: UITextView,
+                      shouldChangeTextIn range: NSRange,
+                      replacementText text: String) -> Bool {
             if onCommit != nil, text == "\n" {
                 onCommit?()
                 originalText = NSAttributedString(attributedString: textView.attributedText)
@@ -53,13 +53,6 @@ extension TextView.Representable {
 
             return true
         }
-
-//        func textViewDidEndEditing(_ textView: UITextView) {
-//            // this check is to ensure we always commit text when we're not using a closure
-//            if onCommit != nil {
-//                text.wrappedValue = originalText
-//            }
-//        }
     }
 }
 
@@ -116,4 +109,3 @@ extension TextView.Representable.Coordinator {
         }
     }
 }
-// swiftlint:enable line_length

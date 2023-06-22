@@ -32,14 +32,13 @@ struct EditDefaultBrowserView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(supportedBrowsers, id: \.rawValue) { browser in
-                        SelectableOptionRow(
-                            action: { preferences.browser = browser; dismiss() },
-                            height: .compact,
-                            content: {
-                                Text(browser.description)
-                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            },
-                            isSelected: browser == preferences.browser)
+                        SelectableOptionRow(action: { preferences.browser = browser; dismiss() },
+                                            height: .compact,
+                                            content: {
+                                                Text(browser.description)
+                                                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                            },
+                                            isSelected: browser == preferences.browser)
 
                         PassDivider()
                     }

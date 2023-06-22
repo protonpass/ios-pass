@@ -34,7 +34,7 @@ struct EditableVaultListView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     switch vaultsManager.state {
-                    case .loading, .error:
+                    case .error, .loading:
                         // Should never happen
                         ProgressView()
                     case let .loaded(vaults, _):
@@ -61,7 +61,7 @@ struct EditableVaultListView: View {
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   action: viewModel.createNewVault)
-                .fixedSize(horizontal: true, vertical: true)
+                    .fixedSize(horizontal: true, vertical: true)
                 Spacer()
             }
             .padding([.bottom, .horizontal])
@@ -79,16 +79,15 @@ struct EditableVaultListView: View {
                 dismiss()
                 vaultsManager.select(selection)
             }, label: {
-                VaultRow(
-                    thumbnail: {
-                        CircleButton(icon: selection.icon,
-                                     iconColor: selection.color,
-                                     backgroundColor: selection.color.withAlphaComponent(0.16))
-                    },
-                    title: selection.title,
-                    itemCount: vaultsManager.getItemCount(for: selection),
-                    isSelected: vaultsManager.isSelected(selection),
-                    height: 74)
+                VaultRow(thumbnail: {
+                             CircleButton(icon: selection.icon,
+                                          iconColor: selection.color,
+                                          backgroundColor: selection.color.withAlphaComponent(0.16))
+                         },
+                         title: selection.title,
+                         itemCount: vaultsManager.getItemCount(for: selection),
+                         isSelected: vaultsManager.isSelected(selection),
+                         height: 74)
             })
             .buttonStyle(.plain)
 
@@ -98,7 +97,7 @@ struct EditableVaultListView: View {
             case .all:
                 // Gimmick view to take up space
                 threeDotsIcon().opacity(0)
-            case .precise(let vault):
+            case let .precise(vault):
                 vaultTrailingView(vault)
             case .trash:
                 trashTrailingView
@@ -129,16 +128,15 @@ struct EditableVaultListView: View {
 
             Divider()
 
-            Button(
-                role: .destructive,
-                action: { viewModel.delete(vault: vault) },
-                label: {
-                    Label(title: {
-                        Text("Delete vault")
-                    }, icon: {
-                        Image(uiImage: IconProvider.trash)
-                    })
-                })
+            Button(role: .destructive,
+                   action: { viewModel.delete(vault: vault) },
+                   label: {
+                       Label(title: {
+                           Text("Delete vault")
+                       }, icon: {
+                           Image(uiImage: IconProvider.trash)
+                       })
+                   })
         }, label: threeDotsIcon)
     }
 
@@ -156,30 +154,28 @@ struct EditableVaultListView: View {
 
                 Divider()
 
-                Button(
-                    role: .destructive,
-                    action: {
-                        isShowingEmptyTrashAlert.toggle()
-                    },
-                    label: {
-                        Label(title: {
-                            Text("Empty trash")
-                        }, icon: {
-                            Image(uiImage: IconProvider.trashCross)
-                        })
-                    })
+                Button(role: .destructive,
+                       action: {
+                           isShowingEmptyTrashAlert.toggle()
+                       },
+                       label: {
+                           Label(title: {
+                               Text("Empty trash")
+                           }, icon: {
+                               Image(uiImage: IconProvider.trashCross)
+                           })
+                       })
             }, label: threeDotsIcon)
-            .alert(
-                "Empty trash",
-                isPresented: $isShowingEmptyTrashAlert,
-                actions: {
-                    Button(role: .destructive,
-                           action: viewModel.emptyTrash,
-                           label: { Text("Empty trash") })
+                .alert("Empty trash",
+                       isPresented: $isShowingEmptyTrashAlert,
+                       actions: {
+                           Button(role: .destructive,
+                                  action: viewModel.emptyTrash,
+                                  label: { Text("Empty trash") })
 
-                    Button(role: .cancel, label: { Text("Cancel") })
-                },
-                message: { Text("All items in trash will be permanently deleted") })
+                           Button(role: .cancel, label: { Text("Cancel") })
+                       },
+                       message: { Text("All items in trash will be permanently deleted") })
         }
     }
 }
@@ -189,7 +185,7 @@ extension VaultSelection {
         switch self {
         case .all:
             return "All vaults"
-        case .precise(let vault):
+        case let .precise(vault):
             return vault.name
         case .trash:
             return "Trash"
@@ -200,7 +196,7 @@ extension VaultSelection {
         switch self {
         case .all:
             return PassIcon.brandPass
-        case .precise(let vault):
+        case let .precise(vault):
             return vault.displayPreferences.icon.icon.bigImage
         case .trash:
             return IconProvider.trash
@@ -211,7 +207,7 @@ extension VaultSelection {
         switch self {
         case .all:
             return PassColor.interactionNormMajor2
-        case .precise(let vault):
+        case let .precise(vault):
             return vault.displayPreferences.color.color.color
         case .trash:
             return PassColor.textWeak

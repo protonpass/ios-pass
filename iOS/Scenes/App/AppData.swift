@@ -36,11 +36,11 @@ final class AppData {
     private var symmetricKey: String?
 
     init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
-        self._userData.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
-        self._unauthSessionCredentials.inject(keychain: keychain,
-                                              mainKeyProvider: mainKeyProvider,
-                                              logManager: logManager)
-        self._symmetricKey.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
+        _userData.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
+        _unauthSessionCredentials.inject(keychain: keychain,
+                                         mainKeyProvider: mainKeyProvider,
+                                         logManager: logManager)
+        _symmetricKey.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
@@ -62,7 +62,7 @@ final class AppData {
             }
         } else {
             let randomData = try Data.random()
-            self.symmetricKey = randomData.encodeBase64()
+            symmetricKey = randomData.encodeBase64()
             return .init(data: randomData)
         }
     }

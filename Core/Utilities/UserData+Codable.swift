@@ -34,12 +34,12 @@ extension UserData: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.init(credential: try container.decode(AuthCredential.self, forKey: .credential),
-                  user: try container.decode(User.self, forKey: .user),
-                  salts: try container.decode([KeySalt].self, forKey: .salts),
-                  passphrases: try container.decode([String: String].self, forKey: .passphrases),
-                  addresses: try container.decode([Address].self, forKey: .addresses),
-                  scopes: try container.decode([String].self, forKey: .scopes))
+        try self.init(credential: container.decode(AuthCredential.self, forKey: .credential),
+                      user: container.decode(User.self, forKey: .user),
+                      salts: container.decode([KeySalt].self, forKey: .salts),
+                      passphrases: container.decode([String: String].self, forKey: .passphrases),
+                      addresses: container.decode([Address].self, forKey: .addresses),
+                      scopes: container.decode([String].self, forKey: .scopes))
     }
 
     public func encode(to encoder: Encoder) throws {
