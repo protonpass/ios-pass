@@ -53,12 +53,10 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         $cardNumber
             .removeDuplicates()
             .receive(on: RunLoop.main)
-            .map { $0.toCreditCardNumber() }
+            .map(transformAndLimit)
             .sink { [weak self] formattedCardNumber in
                 guard let self else { return }
-                // Maximum 19 numbers
-                let spacesCount = formattedCardNumber.characterCount(" ")
-                self.cardNumber = formattedCardNumber.prefix(19 + spacesCount).toString
+                self.cardNumber = formattedCardNumber
             }
             .store(in: &cancellables)
 
@@ -95,7 +93,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
               case .creditCard(let data) = itemContent.contentData else { return }
         self.title = itemContent.name
         self.cardholderName = data.cardholderName
-        self.cardNumber = data.number
+        self.cardNumber = data.number.toCreditCardNumber()
         self.verificationNumber = data.cvv
 
         let monthYear = data.expirationDate.components(separatedBy: "-")
@@ -103,5 +101,11 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         self.year = Int(monthYear.first ?? "")
 
         self.note = itemContent.note
+    }
+}
+
+private extension CreateEditCreditCardViewModel {
+    func transformAndLimit(newNumber: String) -> String {
+        newNumber.spacesRemoved.prefix(19).toString.toCreditCardNumber()
     }
 }
