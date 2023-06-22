@@ -1,5 +1,5 @@
 //
-// View+AuthenticationRequired.swift
+// View+LocalAuthentication.swift
 // Proton Pass - Created on 22/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import SwiftUI
 
 enum LocalAuthenticationType {
@@ -31,35 +32,42 @@ enum LocalAuthenticationRequirement {
 
 struct LocalAuthenticationModifier: ViewModifier {
     @State private var authenticated = false
-    let requirement: LocalAuthenticationRequirement
+    let preferences: Preferences
+    let logManager: LogManager
     let onSuccess: () -> Void
+    let onFailure: () -> Void
 
     func body(content: Content) -> some View {
-        switch requirement {
-        case .notRequired:
-            content
-        case let .required(type):
+        if preferences.biometricAuthenticationEnabled {
             ZStack {
                 content
                 if !authenticated {
-                    LocalAuthenticationView(type: type,
-                                            onSuccess: {
-                        authenticated = true
-                        onSuccess()
-                    })
+                    LocalAuthenticationView(viewModel:
+                            .init(type: .biometric,
+                                  preferences: preferences,
+                                  logManager: logManager,
+                                  onSuccess: { authenticated = true; onSuccess() },
+                                  onFailure: onFailure))
                     // Set zIndex otherwise animation won't occur
                     // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
                     .zIndex(1)
                 }
             }
             .animation(.default, value: authenticated)
+        } else {
+            content
         }
     }
 }
 
 extension View {
-    func authenticationRequired(_ requirement: LocalAuthenticationRequirement,
-                                onSuccess: @escaping () -> Void) -> some View {
-        modifier(LocalAuthenticationModifier(requirement: requirement, onSuccess: onSuccess))
+    func localAuthentication(preferences: Preferences,
+                             logManager: LogManager,
+                             onSuccess: @escaping () -> Void,
+                             onFailure: @escaping () -> Void) -> some View {
+        modifier(LocalAuthenticationModifier(preferences: preferences,
+                                             logManager: logManager,
+                                             onSuccess: onSuccess,
+                                             onFailure: onFailure))
     }
 }

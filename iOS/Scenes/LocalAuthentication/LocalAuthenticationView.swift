@@ -21,13 +21,16 @@
 import SwiftUI
 
 struct LocalAuthenticationView: View {
-    let type: LocalAuthenticationType
-    let onSuccess: () -> Void
+    @StateObject private var viewModel: LocalAuthenticationViewModel
+
+    init(viewModel: LocalAuthenticationViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
-        switch type {
+        switch viewModel.type {
         case .biometric:
-            BiometricAuthenticationView(onSuccess: onSuccess)
+            BiometricAuthenticationView(viewModel: viewModel)
         case .pin:
             PinAuthenticationView()
         }

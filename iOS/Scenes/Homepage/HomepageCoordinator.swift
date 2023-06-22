@@ -272,9 +272,17 @@ private extension HomepageCoordinator {
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
-            .authenticationRequired(.required(.biometric)) {
-                print("AAAA")
-            }
+            .localAuthentication(
+                preferences: preferences,
+                logManager: logManager,
+                onSuccess: { [weak self] in
+                    self?.logger.info("Local authentication succesful")
+                },
+                onFailure: { [weak self] in
+                    guard let self else { return }
+                    self.logger.error("Failed to local authenticate. Logging out.")
+                    self.delegate?.homepageCoordinatorWantsToLogOut()
+                })
 
         start(with: homeView, secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
