@@ -23,12 +23,9 @@ import SwiftUI
 import UIComponents
 
 struct BiometricAuthenticationView: View {
-    @StateObject private var authenticator: BiometricAuthenticator
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
 
     init(viewModel: LocalAuthenticationViewModel) {
-        _authenticator = .init(wrappedValue: .init(preferences: viewModel.preferences,
-                                                   logManager: viewModel.logManager))
         _viewModel = .init(wrappedValue: viewModel)
     }
 
@@ -37,13 +34,13 @@ struct BiometricAuthenticationView: View {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
 
-            switch authenticator.biometryTypeState {
-            case .idle, .initializing:
+            switch viewModel.state {
+            case .initializing:
                 passLogo
                 ProgressView()
 
-            case .initialized:
-                initializedView
+            case let .initialized(state):
+                initializedView(for: state)
 
             case let .error(error):
                 VStack {
@@ -54,7 +51,6 @@ struct BiometricAuthenticationView: View {
                 }
             }
         }
-        .onFirstAppear(perform: authenticator.initializeBiometryType)
     }
 }
 
@@ -67,27 +63,13 @@ private extension BiometricAuthenticationView {
     }
 
     var retryButton: some View {
-        Button(action: authenticate) {
+        Button(action: viewModel.biometricallyAuthenticate) {
             Text("Try again")
                 .foregroundColor(PassColor.interactionNormMajor2.toColor)
         }
     }
 
-    func authenticate() {
-        Task {
-            do {
-                if try await authenticator.authenticate(reason: "Please authenticate") {
-                    viewModel.recordSuccess()
-                } else {
-                    viewModel.recordFailure(nil)
-                }
-            } catch {
-                viewModel.recordFailure(error)
-            }
-        }
-    }
-
-    var initializedView: some View {
+    func initializedView(for state: LocalAuthenticationInitializedState) -> some View {
         GeometryReader { proxy in
             VStack {
                 VStack {
@@ -95,7 +77,7 @@ private extension BiometricAuthenticationView {
 
                     passLogo
 
-                    switch viewModel.state {
+                    switch state {
                     case .noAttempts:
                         EmptyView()
 
@@ -113,19 +95,20 @@ private extension BiometricAuthenticationView {
                         retryButton
                             .padding(.top)
                     }
+
+                    Spacer()
+                        .frame(height: proxy.size.height / 2)
                 }
-                Spacer()
-                    .frame(height: proxy.size.height / 2)
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .onFirstAppear {
-            if case .noAttempts = viewModel.state {
-                // Only automatically prompt for biometric authentication when no attempts were made
-                // Otherwise let the users know how many attempts are remaining
-                // and let them retry explicitly
-                authenticate()
+            .onFirstAppear {
+                if case .noAttempts = state {
+                    // Only automatically prompt for biometric authentication when no attempts were made
+                    // Otherwise let the users know how many attempts are remaining
+                    // and let them retry explicitly
+                    viewModel.biometricallyAuthenticate()
+                }
             }
         }
     }

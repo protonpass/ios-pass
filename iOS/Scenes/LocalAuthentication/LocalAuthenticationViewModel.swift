@@ -24,6 +24,12 @@ import Core
 private let kMaxAttemptCount = 3
 
 enum LocalAuthenticationState {
+    case initializing
+    case initialized(LocalAuthenticationInitializedState)
+    case error(Error)
+}
+
+enum LocalAuthenticationInitializedState {
     case noAttempts
     case remainingAttempts(Int)
     case lastAttempt
@@ -36,26 +42,13 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     let preferences: Preferences
     let logManager: LogManager
 
+    private let biometricAuthenticator: BiometricAuthenticator
     private let logger: Logger
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
 
-    var state: LocalAuthenticationState {
-        switch preferences.failedAttemptCount {
-        case 0:
-            return .noAttempts
-        case kMaxAttemptCount - 1:
-            return .lastAttempt
-        default:
-            let remainingAttempts = kMaxAttemptCount - preferences.failedAttemptCount
-            if remainingAttempts >= 1 {
-                return .remainingAttempts(remainingAttempts)
-            } else {
-                return .lastAttempt
-            }
-        }
-    }
+    @Published private(set) var state: LocalAuthenticationState = .initializing
 
     init(type: LocalAuthenticationType,
          preferences: Preferences,
@@ -64,20 +57,74 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
          onFailure: @escaping () -> Void) {
         self.type = type
         self.preferences = preferences
+        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.logManager = logManager
         self.logger = .init(manager: logManager)
         self.onSuccess = onSuccess
         self.onFailure = onFailure
+
         preferences.attach(to: self, storeIn: &cancellables)
 
         preferences.objectWillChange
             .sink { [weak self] _ in
+                self?.updateStateBasedOnFailedAttemptCount()
+            }
+            .store(in: &cancellables)
+
+        biometricAuthenticator.$biometryTypeState
+            .sink { [weak self] biometryTypeState in
                 guard let self else { return }
-                if self.preferences.failedAttemptCount >= kMaxAttemptCount {
-                    onFailure()
+                switch biometryTypeState {
+                case .idle, .initializing:
+                    self.state = .initializing
+                case .initialized:
+                    self.updateStateBasedOnFailedAttemptCount()
+                case let .error(error):
+                    self.state = .error(error)
                 }
             }
             .store(in: &cancellables)
+
+        // When supporting pin authentication, check for authentication type
+        biometricAuthenticator.initializeBiometryType()
+    }
+
+    func biometricallyAuthenticate() {
+        switch biometricAuthenticator.biometryTypeState {
+        case .initialized:
+            Task { @MainActor in
+                do {
+                    if try await biometricAuthenticator.authenticate(reason: "Please authenticate") {
+                        recordSuccess()
+                    } else {
+                        recordFailure(nil)
+                    }
+                } catch {
+                    recordFailure(error)
+                }
+            }
+        default:
+            assertionFailure("biometricAuthenticator not initialized")
+            onFailure()
+        }
+    }
+}
+
+private extension LocalAuthenticationViewModel {
+    func updateStateBasedOnFailedAttemptCount() {
+        switch preferences.failedAttemptCount {
+        case 0:
+            self.state = .initialized(.noAttempts)
+        case kMaxAttemptCount - 1:
+            self.state = .initialized(.lastAttempt)
+        default:
+            let remainingAttempts = kMaxAttemptCount - preferences.failedAttemptCount
+            if remainingAttempts >= 1 {
+                self.state = .initialized(.remainingAttempts(remainingAttempts))
+            } else {
+                onFailure()
+            }
+        }
     }
 
     func recordFailure(_ error: Error?) {
