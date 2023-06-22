@@ -79,10 +79,10 @@ private extension BiometricAuthenticationView {
                 if try await authenticator.authenticate(reason: "Please authenticate") {
                     viewModel.recordSuccess()
                 } else {
-                    viewModel.recordFailure()
+                    viewModel.recordFailure(nil)
                 }
             } catch {
-                viewModel.recordFailure()
+                viewModel.recordFailure(error)
             }
         }
     }

@@ -36,6 +36,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     let preferences: Preferences
     let logManager: LogManager
 
+    private let logger: Logger
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
@@ -64,6 +65,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         self.type = type
         self.preferences = preferences
         self.logManager = logManager
+        self.logger = .init(manager: logManager)
         self.onSuccess = onSuccess
         self.onFailure = onFailure
         preferences.attach(to: self, storeIn: &cancellables)
@@ -78,8 +80,15 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
             .store(in: &cancellables)
     }
 
-    func recordFailure() {
+    func recordFailure(_ error: Error?) {
         preferences.failedAttemptCount += 1
+
+        let logMessage = "Biometric authentication failed. Increased failed attempt count."
+        if let error {
+            logger.error(logMessage + " Reason \(error)")
+        } else {
+            logger.error(logMessage)
+        }
     }
 
     func recordSuccess() {
