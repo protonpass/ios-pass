@@ -38,8 +38,8 @@ public extension URLUtils.OTPParser {
                 return lScheme == rScheme
             case let (.invalidHost(lHost), .invalidHost(rHost)):
                 return lHost == rHost
-            case (.tooManyPaths, .tooManyPaths),
-                (.missingSecret, .missingSecret):
+            case (.missingSecret, .missingSecret),
+                 (.tooManyPaths, .tooManyPaths):
                 return true
             default:
                 return false

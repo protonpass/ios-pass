@@ -69,44 +69,41 @@ struct SettingsView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(
-                icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
-                iconColor: PassColor.interactionNormMajor2,
-                backgroundColor: PassColor.interactionNormMinor1,
-                action: viewModel.goBack)
+            CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         action: viewModel.goBack)
         }
     }
 
     private var untitledSection: some View {
         VStack(spacing: 0) {
-            OptionRow(
-                action: viewModel.editDefaultBrowser,
-                title: "Default browser",
-                height: .tall,
-                content: {
-                    Text(viewModel.selectedBrowser.description)
-                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                },
-                trailing: { ChevronRight() })
+            OptionRow(action: viewModel.editDefaultBrowser,
+                      title: "Default browser",
+                      height: .tall,
+                      content: {
+                          Text(viewModel.selectedBrowser.description)
+                              .foregroundColor(Color(uiColor: PassColor.textNorm))
+                      },
+                      trailing: { ChevronRight() })
 
             PassSectionDivider()
 
-            OptionRow(
-                action: viewModel.editTheme,
-                title: "Theme",
-                height: .tall,
-                content: {
-                    Label(title: {
-                        Text(viewModel.selectedTheme.description)
-                    }, icon: {
-                        Image(uiImage: viewModel.selectedTheme.icon)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 14, height: 14)
-                    })
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-                },
-                trailing: { ChevronRight() })
+            OptionRow(action: viewModel.editTheme,
+                      title: "Theme",
+                      height: .tall,
+                      content: {
+                          Label(title: {
+                              Text(viewModel.selectedTheme.description)
+                          }, icon: {
+                              Image(uiImage: viewModel.selectedTheme.icon)
+                                  .resizable()
+                                  .scaledToFit()
+                                  .frame(width: 14, height: 14)
+                          })
+                          .foregroundColor(Color(uiColor: PassColor.textNorm))
+                      },
+                      trailing: { ChevronRight() })
 
             PassSectionDivider()
 
@@ -128,15 +125,14 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
-                OptionRow(
-                    action: viewModel.editClipboardExpiration,
-                    title: "Clear clipboard",
-                    height: .tall,
-                    content: {
-                        Text(viewModel.selectedClipboardExpiration.description)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
-                    },
-                    trailing: { ChevronRight() })
+                OptionRow(action: viewModel.editClipboardExpiration,
+                          title: "Clear clipboard",
+                          height: .tall,
+                          content: {
+                              Text(viewModel.selectedClipboardExpiration.description)
+                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                          },
+                          trailing: { ChevronRight() })
 
                 PassSectionDivider()
 
@@ -165,7 +161,7 @@ struct SettingsView: View {
                       content: { Text(vault.name).foregroundColor(Color(uiColor: PassColor.textNorm)) },
                       leading: { VaultThumbnail(vault: vault) },
                       trailing: { ChevronRight() })
-            .roundedEditableSection()
+                .roundedEditableSection()
 
             Text("You can not delete a primary vault")
                 .sectionTitleText()
@@ -191,20 +187,19 @@ struct SettingsView: View {
             }
             .roundedEditableSection()
 
-            OptionRow(
-                action: viewModel.clearLogs,
-                height: .medium,
-                content: {
-                    Text("Clear all logs")
-                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
-                },
-                trailing: {
-                    CircleButton(icon: IconProvider.trash,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1)
-                })
-            .roundedEditableSection()
-            .padding(.top, kItemDetailSectionPadding / 2)
+            OptionRow(action: viewModel.clearLogs,
+                      height: .medium,
+                      content: {
+                          Text("Clear all logs")
+                              .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                      },
+                      trailing: {
+                          CircleButton(icon: IconProvider.trash,
+                                       iconColor: PassColor.interactionNormMajor2,
+                                       backgroundColor: PassColor.interactionNormMinor1)
+                      })
+                      .roundedEditableSection()
+                      .padding(.top, kItemDetailSectionPadding / 2)
         }
     }
 
@@ -215,19 +210,18 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, kItemDetailSectionPadding)
 
-            OptionRow(
-                action: viewModel.forceSync,
-                height: .medium,
-                content: {
-                    Text("Force synchronization")
-                        .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
-                },
-                trailing: {
-                    CircleButton(icon: IconProvider.arrowRotateRight,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1)
-                })
-            .roundedEditableSection()
+            OptionRow(action: viewModel.forceSync,
+                      height: .medium,
+                      content: {
+                          Text("Force synchronization")
+                              .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                      },
+                      trailing: {
+                          CircleButton(icon: IconProvider.arrowRotateRight,
+                                       iconColor: PassColor.interactionNormMajor2,
+                                       backgroundColor: PassColor.interactionNormMinor1)
+                      })
+                      .roundedEditableSection()
 
             Text("Download all your items again to make sure you are in sync")
                 .sectionTitleText()

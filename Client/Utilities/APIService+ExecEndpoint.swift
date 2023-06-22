@@ -37,7 +37,7 @@ public extension APIService {
     /// As of the moment of writting this, `APIService` doesn't support `perform` function
     /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
     /// from the error object.
-    func execExpectingData<E: Endpoint>(endpoint: E) async throws -> DataResponse {
+    func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
         try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
 
@@ -48,7 +48,7 @@ public extension APIService {
                 case .success:
                     continuation.resume(throwing: PPClientError.errorExpected)
 
-                case .failure(let error):
+                case let .failure(error):
                     if let responseError = error.underlyingError as? SessionResponseError,
                        case let .responseBodyIsNotADecodableObject(body, _) = responseError {
                         continuation.resume(returning: .init(httpCode: error.httpCode,
@@ -68,7 +68,7 @@ private enum NetworkDebugger {
         ProcessInfo.processInfo.environment["me.proton.pass.NetworkDebug"] == "1"
     }
 
-    static func printDebugInfo<E: Endpoint>(endpoint: E) {
+    static func printDebugInfo(endpoint: some Endpoint) {
         guard shouldDebugNetworkTraffic() else { return }
         print("\n[\(endpoint.debugDescription)]")
         print("==> \(endpoint.method.rawValue) \(endpoint.path)")
@@ -89,7 +89,7 @@ private enum NetworkDebugger {
         if let parameters = endpoint.parameters,
            !parameters.isEmpty {
             print("Parameters:")
-            for(key, value) in parameters {
+            for (key, value) in parameters {
                 print("   \(key): \(value)")
             }
         }
@@ -113,10 +113,10 @@ private enum NetworkDebugger {
         }
 
         switch result {
-        case .success(let object):
+        case let .success(object):
             print("Success:")
             dump(object)
-        case .failure(let error):
+        case let .failure(error):
             print("Failure:")
             dump(error)
         }

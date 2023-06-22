@@ -28,7 +28,7 @@ struct TOTPCircularTimer: View {
 
     init(data: TOTPTimerData) {
         self.data = data
-        self.percentage = CGFloat(data.remaining) / CGFloat(data.total)
+        percentage = CGFloat(data.remaining) / CGFloat(data.total)
     }
 
     var body: some View {

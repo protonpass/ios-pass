@@ -27,7 +27,7 @@ enum AppearanceSettings {
         Brand.currentBrand = .pass
 
         UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
-        PassColor.interactionNorm
+            PassColor.interactionNorm
 
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: PassColor.textNorm]

@@ -47,7 +47,7 @@ struct CreateEditNoteView: View {
                                                itemContentType: viewModel.itemContentType(),
                                                isEditMode: viewModel.mode.isEditMode,
                                                onChangeVault: viewModel.changeVault)
-                    .padding(.bottom, 18)
+                        .padding(.bottom, 18)
 
                     TextEditorWithPlaceholder(text: $viewModel.title,
                                               focusedField: $focusedField,
@@ -72,21 +72,20 @@ struct CreateEditNoteView: View {
                 }
             }
             .toolbar {
-                CreateEditItemToolbar(
-                    saveButtonTitle: viewModel.saveButtonTitle(),
-                    isSaveable: viewModel.isSaveable,
-                    isSaving: viewModel.isSaving,
-                    itemContentType: viewModel.itemContentType(),
-                    shouldUpgrade: false,
-                    onGoBack: {
-                        if viewModel.didEditSomething {
-                            isShowingDiscardAlert.toggle()
-                        } else {
-                            dismiss()
-                        }
-                    },
-                    onUpgrade: { /* Not applicable */ },
-                    onSave: viewModel.save)
+                CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
+                                      isSaveable: viewModel.isSaveable,
+                                      isSaving: viewModel.isSaving,
+                                      itemContentType: viewModel.itemContentType(),
+                                      shouldUpgrade: false,
+                                      onGoBack: {
+                                          if viewModel.didEditSomething {
+                                              isShowingDiscardAlert.toggle()
+                                          } else {
+                                              dismiss()
+                                          }
+                                      },
+                                      onUpgrade: { /* Not applicable */ },
+                                      onSave: viewModel.save)
             }
         }
         .navigationViewStyle(.stack)

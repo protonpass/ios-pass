@@ -35,11 +35,10 @@ public extension LocalShareEventIDDatasourceProtocol {
     func getLastEventId(userId: String, shareId: String) async throws -> String? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ShareEventIDEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "userID = %@", userId),
-                .init(format: "shareID = %@", shareId)
-            ])
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId),
+            .init(format: "shareID = %@", shareId)
+        ])
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         assert(entities.count <= 1, "Maximum 1 ShareEventIDEntity per shareID")
         return entities.first?.lastEventID
@@ -48,12 +47,12 @@ public extension LocalShareEventIDDatasourceProtocol {
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
-        newBatchInsertRequest(entity: ShareEventIDEntity.entity(context: taskContext),
-                              sourceItems: [lastEventId]) { managedObject, lastEventId in
-            (managedObject as? ShareEventIDEntity)?.hydrate(userId: userId,
-                                                            shareId: shareId,
-                                                            lastEventId: lastEventId)
-        }
+            newBatchInsertRequest(entity: ShareEventIDEntity.entity(context: taskContext),
+                                  sourceItems: [lastEventId]) { managedObject, lastEventId in
+                (managedObject as? ShareEventIDEntity)?.hydrate(userId: userId,
+                                                                shareId: shareId,
+                                                                lastEventId: lastEventId)
+            }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 

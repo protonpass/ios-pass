@@ -64,7 +64,7 @@ public final class PassKeyManager {
                 symmetricKey: SymmetricKey) {
         self.shareKeyRepository = shareKeyRepository
         self.itemKeyDatasource = itemKeyDatasource
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.symmetricKey = symmetricKey
     }
 }
@@ -75,7 +75,8 @@ extension PassKeyManager: PassKeyManagerProtocol {
         // when decrypting items. As IO operations caused by the log system take time
         // this will slow down dramatically the decryping process
         if let cachedKey = decryptedShareKeys.first(where: {
-            $0.shareId == shareId && $0.keyRotation == keyRotation }) {
+            $0.shareId == shareId && $0.keyRotation == keyRotation
+        }) {
             return cachedKey
         }
 

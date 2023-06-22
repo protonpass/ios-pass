@@ -62,9 +62,9 @@ final class AppCoordinator {
 
     init(window: UIWindow) {
         self.window = window
-        self.appStateObserver = .init()
-        self.logManager = ToolingContainer.shared.hostAppLogManager()
-        self.logger = ToolingContainer.shared.mainAppLoger()
+        appStateObserver = .init()
+        logManager = ToolingContainer.shared.hostAppLogManager()
+        logger = ToolingContainer.shared.mainAppLoger()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
@@ -76,18 +76,18 @@ final class AppCoordinator {
                                     appData: appData,
                                     preferences: preferences)
         self.apiManager = apiManager
-        self.container = .Builder.build(name: kProtonPassContainerName,
-                                        inMemory: false)
-        self.credentialManager = CredentialManager(logManager: logManager)
+        container = .Builder.build(name: kProtonPassContainerName,
+                                   inMemory: false)
+        credentialManager = CredentialManager(logManager: logManager)
         self.preferences = preferences
-        self.isUITest = false
+        isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
 
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
-            self.isUITest = true
-            self.wipeAllData(includingUnauthSession: true)
+            isUITest = true
+            wipeAllData(includingUnauthSession: true)
         }
         self.apiManager.delegate = self
     }
@@ -105,7 +105,7 @@ final class AppCoordinator {
             .sink { [weak self] appState in
                 guard let self else { return }
                 switch appState {
-                case .loggedOut(let reason):
+                case let .loggedOut(reason):
                     self.logger.info("Logged out \(reason)")
                     let shouldWipeUnauthSession = reason != .noAuthSessionButUnauthSessionAvailable
                     self.wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
@@ -178,15 +178,15 @@ final class AppCoordinator {
                                                     preferences: preferences)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
-        self.homepageCoordinator = nil
+        homepageCoordinator = nil
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
             switch reason {
             case .expiredRefreshToken:
-                self.alertRefreshTokenExpired()
+                alertRefreshTokenExpired()
             case .failedBiometricAuthentication:
-                self.alertFailedBiometricAuthentication()
+                alertFailedBiometricAuthentication()
             case .sessionInvalidated:
-                self.alertSessionInvalidated()
+                alertSessionInvalidated()
             default:
                 break
             }
@@ -243,7 +243,7 @@ final class AppCoordinator {
             apiManager.clearCredentials()
             keymaker.wipeMainKey()
         }
-        preferences.reset(isUITests: self.isUITest)
+        preferences.reset(isUITests: isUITest)
         Task {
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running
@@ -297,6 +297,7 @@ final class AppCoordinator {
 }
 
 // MARK: - WelcomeCoordinatorDelegate
+
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
         guard userData.scopes.contains("pass") else {
@@ -305,11 +306,11 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
             // if their account lacks keys — however, after the credentials refresh, the scope is properly set
             apiManager.apiService.refreshCredential(userData.getCredential) { result in
                 switch result {
-                case .success(let refreshedCredentials) where refreshedCredentials.scopes.contains("pass"):
+                case let .success(refreshedCredentials) where refreshedCredentials.scopes.contains("pass"):
                     self.apiManager.apiService.setSessionUID(uid: refreshedCredentials.UID)
                     self.apiManager.authHelper.onSessionObtaining(credential: refreshedCredentials)
                     self.appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
-                case .success, .failure:
+                case .failure, .success:
                     self.appData.userData = nil
                     self.apiManager.clearCredentials()
                     self.alertNoPassScope()
@@ -340,6 +341,7 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 }
 
 // MARK: - APIManagerDelegate
+
 extension AppCoordinator: APIManagerDelegate {
     func appLoggedOutBecauseSessionWasInvalidated() {
         // Run on main thread because the callback that triggers this function
@@ -351,6 +353,7 @@ extension AppCoordinator: APIManagerDelegate {
 }
 
 // MARK: - Biometric authentication
+
 private extension AppCoordinator {
     func makeAutoLocker(appLockTime: AppLockTime) -> Autolocker {
         struct AutolockerSettingsProvider: SettingsProvider {
@@ -367,24 +370,23 @@ private extension AppCoordinator {
     }
 
     func makeAppLockedViewController() -> UIViewController {
-        let view = AppLockedView(
-            preferences: preferences,
-            logManager: logManager,
-            delayed: false,
-            onSuccess: { [unowned self] in
-                self.dismissAppLockedViewController()
-            },
-            onFailure: { [unowned self] in
-                self.appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
-            })
+        let view = AppLockedView(preferences: preferences,
+                                 logManager: logManager,
+                                 delayed: false,
+                                 onSuccess: { [unowned self] in
+                                     dismissAppLockedViewController()
+                                 },
+                                 onFailure: { [unowned self] in
+                                     appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
+                                 })
         let viewController = UIHostingController(rootView: view)
         viewController.modalPresentationStyle = .fullScreen
         return viewController
     }
 
     func dismissAppLockedViewController() {
-        self.appLockedViewController?.dismiss(animated: true)
-        self.appLockedViewController = nil
+        appLockedViewController?.dismiss(animated: true)
+        appLockedViewController = nil
     }
 
     func requestBiometricAuthenticationIfNecessary() {
@@ -393,10 +395,10 @@ private extension AppCoordinator {
         if let autolocker, !autolocker.shouldAutolockNow() { return }
         autolocker?.releaseCountdown()
 
-        self.appLockedViewController = self.makeAppLockedViewController()
-        guard let appLockedViewController = self.appLockedViewController else { return }
-        self.rootViewController?.topMostViewController.present(appLockedViewController,
-                                                               animated: false)
+        self.appLockedViewController = makeAppLockedViewController()
+        guard let appLockedViewController else { return }
+        rootViewController?.topMostViewController.present(appLockedViewController,
+                                                          animated: false)
     }
 
     func alertFailedBiometricAuthentication() {
@@ -409,6 +411,7 @@ private extension AppCoordinator {
 }
 
 // MARK: - HomepageCoordinatorDelegate
+
 extension AppCoordinator: HomepageCoordinatorDelegate {
     func homepageCoordinatorWantsToLogOut() {
         appStateObserver.updateAppState(.loggedOut(.userInitiated))

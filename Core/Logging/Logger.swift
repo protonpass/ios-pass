@@ -47,6 +47,7 @@ public struct Logger {
 }
 
 // MARK: - Public APIs
+
 public extension Logger {
     @discardableResult
     func fatal(_ message: String,
@@ -173,6 +174,7 @@ public extension Logger {
 }
 
 // MARK: - Private APIs
+
 private extension Logger {
     // swiftlint:disable:next function_parameter_count
     func generateEntry(message: String,
@@ -213,7 +215,7 @@ private extension Logger {
             #if DEBUG
             printToConsole()
             #endif
-        case .conditioned(let condition):
+        case let .conditioned(condition):
             if condition {
                 printToConsole()
             }

@@ -33,7 +33,7 @@ struct ItemCountView: View {
         case .loading:
             skeleton
         case let .loaded(vaults, trashedItems):
-            let activeItems = vaults.map { $0.items }.reduce(into: [], { $0 += $1 })
+            let activeItems = vaults.map(\.items).reduce(into: []) { $0 += $1 }
             let allItems = activeItems + trashedItems
             let itemCount = ItemCount(items: allItems)
             ScrollView(.horizontal, showsIndicators: false) {
@@ -47,7 +47,7 @@ struct ItemCountView: View {
                 }
                 .padding(.horizontal)
             }
-        case .error(let error):
+        case let .error(error):
             Text(error.localizedDescription)
                 .foregroundColor(Color(uiColor: PassColor.signalDanger))
         }

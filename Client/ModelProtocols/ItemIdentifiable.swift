@@ -75,15 +75,15 @@ public enum ItemThumbnailData: Equatable {
 }
 
 public extension Array where Element: ItemIdentifiable {
-    func contains<T: ItemIdentifiable>(_ item: T) -> Bool {
+    func contains(_ item: some ItemIdentifiable) -> Bool {
         contains(where: { $0.shareId == item.shareId && $0.itemId == item.itemId })
     }
 
-    mutating func remove<T: ItemIdentifiable>(item: T) {
+    mutating func remove(item: some ItemIdentifiable) {
         removeAll { $0.shareId == item.shareId && $0.itemId == item.itemId }
     }
 
-    func removing<T: ItemIdentifiable>(item: T) -> Self {
+    func removing(item: some ItemIdentifiable) -> Self {
         var copiedArray = self
         copiedArray.remove(item: item)
         return copiedArray

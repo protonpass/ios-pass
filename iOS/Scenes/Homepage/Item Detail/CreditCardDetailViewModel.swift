@@ -40,16 +40,16 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable,
     }
 
     override func bindValues() {
-        if case .creditCard(let data) = itemContent.contentData {
-            self.cardholderName = data.cardholderName
-            self.cardNumber = data.number
-            self.verificationNumber = data.cvv
+        if case let .creditCard(data) = itemContent.contentData {
+            cardholderName = data.cardholderName
+            cardNumber = data.number
+            verificationNumber = data.cvv
 
             let monthYear = data.expirationDate.components(separatedBy: "-")
             month = Int(monthYear.last ?? "")
             year = Int(monthYear.first ?? "")
 
-            self.note = itemContent.note
+            note = itemContent.note
         } else {
             fatalError("Expecting credit card type")
         }
@@ -57,6 +57,7 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable,
 }
 
 // MARK: - Public APIs
+
 extension CreditCardDetailViewModel {
     func copyCardholderName() {
         copyToClipboard(text: cardholderName, message: "Cardholder name copied")

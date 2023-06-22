@@ -41,9 +41,9 @@ public struct CreateAliasAndAnotherItemEndpoint: Endpoint {
     public var body: CreateAliasAndAnotherItemRequest?
 
     public init(shareId: String, request: CreateAliasAndAnotherItemRequest) {
-        self.debugDescription = "Create alias and another item"
-        self.path = "/pass/v1/share/\(shareId)/item/with_alias"
-        self.method = .post
-        self.body = request
+        debugDescription = "Create alias and another item"
+        path = "/pass/v1/share/\(shareId)/item/with_alias"
+        method = .post
+        body = request
     }
 }

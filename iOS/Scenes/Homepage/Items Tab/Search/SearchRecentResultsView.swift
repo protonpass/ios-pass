@@ -37,7 +37,7 @@ struct SearchRecentResultsView: View {
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" (\(results.count))")
+                    Text(" (\(results.count))")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -59,8 +59,8 @@ struct SearchRecentResultsView: View {
                                     favIconRepository: favIconRepository,
                                     onSelect: { onSelect(result) },
                                     onRemove: { onRemove(result) })
-                    .plainListRow()
-                    .padding(.horizontal)
+                        .plainListRow()
+                        .padding(.horizontal)
                 }
             }
             .listStyle(.plain)
@@ -78,13 +78,12 @@ private struct SearchEntryView: View {
     var body: some View {
         HStack {
             Button(action: onSelect) {
-                GeneralItemRow(
-                    thumbnailView: {
-                        ItemSquircleThumbnail(data: uiModel.thumbnailData(),
-                                              repository: favIconRepository)
-                    },
-                    title: uiModel.title,
-                    description: uiModel.description)
+                GeneralItemRow(thumbnailView: {
+                                   ItemSquircleThumbnail(data: uiModel.thumbnailData(),
+                                                         repository: favIconRepository)
+                               },
+                               title: uiModel.title,
+                               description: uiModel.description)
             }
             .buttonStyle(.plain)
 

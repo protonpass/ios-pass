@@ -73,11 +73,11 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
                      shareId: String) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
-    func createAliasAndOtherItem(
-        info: AliasCreationInfo,
-        aliasItemContent: ProtobufableItemContentProtocol,
-        otherItemContent: ProtobufableItemContentProtocol,
-        shareId: String) async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)
+    func createAliasAndOtherItem(info: AliasCreationInfo,
+                                 aliasItemContent: ProtobufableItemContentProtocol,
+                                 otherItemContent: ProtobufableItemContentProtocol,
+                                 shareId: String) async throws
+        -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem)
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
@@ -106,6 +106,7 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
 
     // MARK: - AutoFill operations
+
     /// Get active log in items of all shares
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 
@@ -204,8 +205,8 @@ public extension ItemRepositoryProtocol {
         let createAliasRequest = CreateCustomAliasRequest(info: info,
                                                           item: createItemRequest)
         let createdItemRevision =
-        try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
-                                                           request: createAliasRequest)
+            try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
+                                                               request: createAliasRequest)
         logger.trace("Saving newly created alias \(createdItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
@@ -217,7 +218,7 @@ public extension ItemRepositoryProtocol {
                                  aliasItemContent: ProtobufableItemContentProtocol,
                                  otherItemContent: ProtobufableItemContentProtocol,
                                  shareId: String)
-    async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
+        async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         logger.trace("Creating alias and another item")
         let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent, shareId: shareId)
         let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent, shareId: shareId)
@@ -244,8 +245,8 @@ public extension ItemRepositoryProtocol {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Trashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                try await remoteItemRevisionDatasource.trashItemRevisions(batch.map { $0.item },
-                                                                          shareId: shareId)
+                    try await remoteItemRevisionDatasource.trashItemRevisions(batch.map(\.item),
+                                                                              shareId: shareId)
                 try await localItemDatasoure.upsertItems(batch,
                                                          modifiedItems: modifiedItems)
                 logger.trace("Trashed \(batch.count) items for share \(shareId)")
@@ -277,8 +278,8 @@ public extension ItemRepositoryProtocol {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Untrashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                try await remoteItemRevisionDatasource.untrashItemRevisions(batch.map { $0.item },
-                                                                            shareId: shareId)
+                    try await remoteItemRevisionDatasource.untrashItemRevisions(batch.map(\.item),
+                                                                                shareId: shareId)
                 try await localItemDatasoure.upsertItems(batch,
                                                          modifiedItems: modifiedItems)
                 logger.trace("Untrashed \(batch.count) items for share \(shareId)")
@@ -300,7 +301,7 @@ public extension ItemRepositoryProtocol {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Deleting \(batch.count) items for share \(shareId)")
-                try await remoteItemRevisionDatasource.deleteItemRevisions(batch.map { $0.item },
+                try await remoteItemRevisionDatasource.deleteItemRevisions(batch.map(\.item),
                                                                            shareId: shareId,
                                                                            skipTrash: skipTrash)
                 try await localItemDatasoure.deleteItems(batch)
@@ -340,16 +341,16 @@ public extension ItemRepositoryProtocol {
                                             latestItemKey: latestItemKey,
                                             itemContent: newItemContent)
         let updatedItemRevision =
-        try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
-                                                          itemId: itemId,
-                                                          request: request)
+            try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
+                                                              itemId: itemId,
+                                                              request: request)
         logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localItemDatasoure.upsertItems([encryptedItem])
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
 
-        if case .login(let oldData) = oldItemContentData?.contentData,
-           case .login(let newData) = newItemContent.contentData {
+        if case let .login(oldData) = oldItemContentData?.contentData,
+           case let .login(newData) = newItemContent.contentData {
             let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
             let deletedCredentials = oldData.urls.map { oldUrl in
                 AutoFillCredential(ids: ids,
@@ -407,9 +408,9 @@ public extension ItemRepositoryProtocol {
     func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws {
         logger.trace("Updating lastUsedTime \(item.debugInformation)")
         let updatedItem =
-        try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
-                                                                 itemId: item.itemId,
-                                                                 lastUseTime: lastUseTime)
+            try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
+                                                                     itemId: item.itemId,
+                                                                     lastUseTime: lastUseTime)
         let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
                                                                   shareId: item.shareId)
         try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
@@ -427,6 +428,7 @@ public extension ItemRepositoryProtocol {
 }
 
 // MARK: - Private util functions
+
 private extension ItemRepositoryProtocol {
     func symmetricallyEncrypt(itemRevision: ItemRevision,
                               shareId: String) async throws -> SymmetricallyEncryptedItem {
@@ -454,7 +456,7 @@ private extension ItemRepositoryProtocol {
         var credentials = [AutoFillCredential]()
         for encryptedLogInItem in encryptedLogInItems {
             let decryptedLogInItem = try encryptedLogInItem.getItemContent(symmetricKey: symmetricKey)
-            if case .login(let data) = decryptedLogInItem.contentData {
+            if case let .login(data) = decryptedLogInItem.contentData {
                 for url in data.urls {
                     credentials.append(.init(ids: .init(shareId: decryptedLogInItem.shareId,
                                                         itemId: decryptedLogInItem.item.itemID),
@@ -475,23 +477,24 @@ private extension ItemRepositoryProtocol {
 }
 
 // MARK: - TOTPCheckerProtocol
+
 public extension ItemRepositoryProtocol {
     func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64? {
         let items = try await localItemDatasoure.getAllItems()
 
         let loginItemsWithTotp =
-        try items
-            .filter { $0.isLogInItem }
-            .map { try $0.getItemContent(symmetricKey: symmetricKey) }
-            .filter { item in
-                switch item.contentData {
-                case .login(let loginData):
-                    return !loginData.totpUri.isEmpty
-                default:
-                    return false
+            try items
+                .filter(\.isLogInItem)
+                .map { try $0.getItemContent(symmetricKey: symmetricKey) }
+                .filter { item in
+                    switch item.contentData {
+                    case let .login(loginData):
+                        return !loginData.totpUri.isEmpty
+                    default:
+                        return false
+                    }
                 }
-            }
-            .sorted(by: { $0.item.createTime < $1.item.createTime })
+                .sorted(by: { $0.item.createTime < $1.item.createTime })
 
         // Number of TOTP is not reached
         if loginItemsWithTotp.count < numberOfTotp {
@@ -525,7 +528,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 
     public init(userData: UserData,
@@ -535,21 +538,21 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 logManager: LogManager) {
         self.userData = userData
         self.symmetricKey = symmetricKey
-        self.localItemDatasoure = LocalItemDatasource(container: container)
-        self.remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
-        self.shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                             apiService: apiService,
-                                                             logManager: logManager)
+        localItemDatasoure = LocalItemDatasource(container: container)
+        remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
+        shareEventIDRepository = ShareEventIDRepository(container: container,
+                                                        apiService: apiService,
+                                                        logManager: logManager)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
                                                     symmetricKey: symmetricKey,
                                                     userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        self.passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
-                                             itemKeyDatasource: itemKeyDatasource,
-                                             logManager: logManager,
-                                             symmetricKey: symmetricKey)
-        self.logger = .init(manager: logManager)
+        passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
+                                        itemKeyDatasource: itemKeyDatasource,
+                                        logManager: logManager,
+                                        symmetricKey: symmetricKey)
+        logger = .init(manager: logManager)
     }
 }

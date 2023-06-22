@@ -33,11 +33,11 @@ struct InfoBannerViewStack: View {
                 InfoBannerView(banner: banner,
                                dismiss: { dismiss(banner) },
                                action: { action(banner) })
-                .offset(y: -CGFloat(index) * offset)
-                .scaleEffect(1.0 - (CGFloat(index) * 0.1))
-                .brightness(brightness(for: index))
-                .opacity(index <= numOfVisibleBanners - 1 ? 1 : 0)
-                .zIndex(Double(banners.count - index))
+                    .offset(y: -CGFloat(index) * offset)
+                    .scaleEffect(1.0 - (CGFloat(index) * 0.1))
+                    .brightness(brightness(for: index))
+                    .opacity(index <= numOfVisibleBanners - 1 ? 1 : 0)
+                    .zIndex(Double(banners.count - index))
             }
         }
         .animation(.default, value: banners.count)

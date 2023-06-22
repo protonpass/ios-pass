@@ -1,6 +1,6 @@
 import SwiftUI
 
-// swiftlint:disable line_length force_unwrapping
+// swiftlint:disable force_unwrapping
 public extension UIFont {
     static var caption2: UIFont = .preferredFont(forTextStyle: .caption2)
     static var caption: UIFont = .preferredFont(forTextStyle: .caption1)
@@ -25,7 +25,9 @@ public extension UIFont {
         UIFont(descriptor: fontDescriptor.addingAttributes(attributes), size: pointSize)
     }
 
-    static func system(size: CGFloat, weight: UIFont.Weight, design: UIFontDescriptor.SystemDesign = .default) -> UIFont {
+    static func system(size: CGFloat,
+                       weight: UIFont.Weight,
+                       design: UIFontDescriptor.SystemDesign = .default) -> UIFont {
         let descriptor = UIFont.systemFont(ofSize: size).fontDescriptor
             .addingAttributes([
                 UIFontDescriptor.AttributeName.traits: [
@@ -59,7 +61,8 @@ public extension UIFont {
     }
 
     func leading(_ leading: Leading) -> UIFont {
-        let descriptor = fontDescriptor.withSymbolicTraits(leading == .loose ? .traitLooseLeading : .traitTightLeading)!
+        let descriptor = fontDescriptor
+            .withSymbolicTraits(leading == .loose ? .traitLooseLeading : .traitTightLeading)!
         return UIFont(descriptor: descriptor, size: 0)
     }
 
@@ -111,4 +114,5 @@ public extension UIFont {
         ])
     }
 }
-// swiftlint:enable force_unwrapping line_length
+
+// swiftlint:enable force_unwrapping

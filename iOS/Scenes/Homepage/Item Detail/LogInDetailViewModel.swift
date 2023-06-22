@@ -62,7 +62,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                   vault: Vault?,
                   logManager: LogManager,
                   theme: Theme) {
-        self.totpManager = .init(logManager: logManager)
+        totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    favIconRepository: favIconRepository,
@@ -71,16 +71,16 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                    vault: vault,
                    logManager: logManager,
                    theme: theme)
-        self.totpManager.attach(to: self, storeIn: &cancellables)
+        totpManager.attach(to: self, storeIn: &cancellables)
     }
 
     override func bindValues() {
-        if case .login(let data) = itemContent.contentData {
-            self.name = itemContent.name
-            self.note = itemContent.note
-            self.username = data.username
-            self.password = data.password
-            self.urls = data.urls
+        if case let .login(data) = itemContent.contentData {
+            name = itemContent.name
+            note = itemContent.note
+            username = data.username
+            password = data.password
+            urls = data.urls
             totpManager.bind(uri: data.totpUri)
             getAliasItem(username: data.username)
 
@@ -96,6 +96,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 }
 
 // MARK: - Private APIs
+
 private extension LogInDetailViewModel {
     func getAliasItem(username: String) {
         Task { @MainActor in
@@ -125,6 +126,7 @@ private extension LogInDetailViewModel {
 }
 
 // MARK: - Public actions
+
 extension LogInDetailViewModel {
     func copyUsername() {
         copyToClipboard(text: username, message: "Username copied")

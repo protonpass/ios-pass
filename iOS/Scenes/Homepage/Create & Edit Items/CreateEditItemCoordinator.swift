@@ -30,11 +30,11 @@ protocol CreateEditItemCoordinatorDelegate: AnyObject {
 }
 
 typealias CreateEditItemDelegates =
-GeneratePasswordViewModelDelegate &
-GeneratePasswordCoordinatorDelegate &
-CreateEditItemViewModelDelegate &
-CreateEditLoginViewModelDelegate &
-CreateEditAliasViewModelDelegate
+    GeneratePasswordViewModelDelegate &
+    GeneratePasswordCoordinatorDelegate &
+    CreateEditItemViewModelDelegate &
+    CreateEditLoginViewModelDelegate &
+    CreateEditAliasViewModelDelegate
 
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -73,6 +73,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 }
 
 // MARK: - Public APIs
+
 extension CreateEditItemCoordinator {
     /// Refresh currently shown create edit page
     func refresh() {
@@ -117,6 +118,7 @@ extension CreateEditItemCoordinator {
 }
 
 // MARK: - Private APIs
+
 private extension CreateEditItemCoordinator {
     func present(_ view: any View, dismissable: Bool) {
         assert(delegate != nil, "delegate is not set")
@@ -125,15 +127,14 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let emailAddress = userData.addresses.first?.email ?? ""
-        let viewModel = try CreateEditLoginViewModel(
-            mode: mode,
-            itemRepository: itemRepository,
-            aliasRepository: aliasRepository,
-            upgradeChecker: upgradeChecker,
-            vaults: vaultsManager.getAllVaults(),
-            preferences: preferences,
-            logManager: logManager,
-            emailAddress: emailAddress)
+        let viewModel = try CreateEditLoginViewModel(mode: mode,
+                                                     itemRepository: itemRepository,
+                                                     aliasRepository: aliasRepository,
+                                                     upgradeChecker: upgradeChecker,
+                                                     vaults: vaultsManager.getAllVaults(),
+                                                     preferences: preferences,
+                                                     logManager: logManager,
+                                                     emailAddress: emailAddress)
         viewModel.delegate = createEditItemDelegates
         viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
         let view = CreateEditLoginView(viewModel: viewModel)
@@ -142,14 +143,13 @@ private extension CreateEditItemCoordinator {
     }
 
     func presentCreateEditAliasView(mode: ItemMode) throws {
-        let viewModel = try CreateEditAliasViewModel(
-            mode: mode,
-            itemRepository: itemRepository,
-            aliasRepository: aliasRepository,
-            upgradeChecker: upgradeChecker,
-            vaults: vaultsManager.getAllVaults(),
-            preferences: preferences,
-            logManager: logManager)
+        let viewModel = try CreateEditAliasViewModel(mode: mode,
+                                                     itemRepository: itemRepository,
+                                                     aliasRepository: aliasRepository,
+                                                     upgradeChecker: upgradeChecker,
+                                                     vaults: vaultsManager.getAllVaults(),
+                                                     preferences: preferences,
+                                                     logManager: logManager)
         viewModel.delegate = createEditItemDelegates
         viewModel.createEditAliasViewModelDelegate = createEditItemDelegates
         let view = CreateEditAliasView(viewModel: viewModel)
@@ -158,13 +158,12 @@ private extension CreateEditItemCoordinator {
     }
 
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
-        let viewModel = try CreateEditCreditCardViewModel(
-            mode: mode,
-            itemRepository: itemRepository,
-            upgradeChecker: upgradeChecker,
-            vaults: vaultsManager.getAllVaults(),
-            preferences: preferences,
-            logManager: logManager)
+        let viewModel = try CreateEditCreditCardViewModel(mode: mode,
+                                                          itemRepository: itemRepository,
+                                                          upgradeChecker: upgradeChecker,
+                                                          vaults: vaultsManager.getAllVaults(),
+                                                          preferences: preferences,
+                                                          logManager: logManager)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -172,13 +171,12 @@ private extension CreateEditItemCoordinator {
     }
 
     func presentCreateEditNoteView(mode: ItemMode) throws {
-        let viewModel = try CreateEditNoteViewModel(
-            mode: mode,
-            itemRepository: itemRepository,
-            upgradeChecker: upgradeChecker,
-            vaults: vaultsManager.getAllVaults(),
-            preferences: preferences,
-            logManager: logManager)
+        let viewModel = try CreateEditNoteViewModel(mode: mode,
+                                                    itemRepository: itemRepository,
+                                                    upgradeChecker: upgradeChecker,
+                                                    vaults: vaultsManager.getAllVaults(),
+                                                    preferences: preferences,
+                                                    logManager: logManager)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -194,10 +192,10 @@ private extension CreateEditItemCoordinator {
                 assertionFailure("wordProvider should not be null")
                 return
             }
-            let coordinator = GeneratePasswordCoordinator(
-                generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
-                mode: mode,
-                wordProvider: wordProvider)
+            let coordinator =
+                GeneratePasswordCoordinator(generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
+                                            mode: mode,
+                                            wordProvider: wordProvider)
             coordinator.delegate = createEditItemDelegates
             coordinator.start()
             generatePasswordCoordinator = coordinator

@@ -36,14 +36,13 @@ extension TextView {
 
         @discardableResult
         func makeCoordinator() -> Coordinator {
-            Coordinator(
-                text: $text,
-                calculatedHeight: $calculatedHeight,
-                shouldEditInRange: shouldEditInRange,
-                onEditingChanged: onEditingChanged,
-                onCommit: onCommit
-            )
+            Coordinator(text: $text,
+                        calculatedHeight: $calculatedHeight,
+                        shouldEditInRange: shouldEditInRange,
+                        onEditingChanged: onEditingChanged,
+                        onCommit: onCommit)
         }
     }
 }
+
 // swiftlint:enable discouraged_optional_boolean

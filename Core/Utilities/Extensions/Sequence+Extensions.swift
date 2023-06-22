@@ -21,11 +21,10 @@
 import Foundation
 
 // These extensions are taken from the following article written by Sundell
-// [Building async and concurrent versions of forEach and map](https://www.swiftbysundell.com/articles/async-and-concurrent-forEach-and-map/)
+// [Building async and concurrent versions of forEach and
+// map](https://www.swiftbysundell.com/articles/async-and-concurrent-forEach-and-map/)
 public extension Sequence {
-    func asyncMap<T>(
-        _ transform: (Element) async throws -> T
-    ) async rethrows -> [T] {
+    func asyncMap<T>(_ transform: (Element) async throws -> T) async rethrows -> [T] {
         var values = [T]()
 
         for element in self {
@@ -34,10 +33,8 @@ public extension Sequence {
 
         return values
     }
-    
-    func asyncForEach(
-        _ operation: (Element) async throws -> Void
-    ) async rethrows {
+
+    func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {
         for element in self {
             try await operation(element)
         }

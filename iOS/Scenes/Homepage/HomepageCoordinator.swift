@@ -39,6 +39,7 @@ protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
 }
 
+// swiftlint:disable line_length
 final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -68,7 +69,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let vaultsManager: VaultsManager
 
     // Lazily initialized properties
-    private lazy var bannerManager: BannerManager = { .init(container: rootViewController) }()
+    private lazy var bannerManager: BannerManager = .init(container: rootViewController)
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
@@ -115,11 +116,11 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                               apiService: apiService,
                                               logManager: logManager)
 
-        let passPlanRepository = PassPlanRepository(
-            localPassPlanDatasource: LocalPassPlanDatasource(container: container),
-            remotePassPlanDatasource: RemotePassPlanDatasource(apiService: apiService),
-            userId: userData.user.ID,
-            logManager: logManager)
+        let passPlanRepository =
+            PassPlanRepository(localPassPlanDatasource: LocalPassPlanDatasource(container: container),
+                               remotePassPlanDatasource: RemotePassPlanDatasource(apiService: apiService),
+                               userId: userData.user.ID,
+                               logManager: logManager)
 
         let vaultsManager = VaultsManager(itemRepository: itemRepository,
                                           manualLogIn: manualLogIn,
@@ -128,68 +129,69 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                           symmetricKey: symmetricKey,
                                           preferences: preferences)
 
-        self.aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+        aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
         self.apiService = apiService
-        self.clipboardManager = .init(preferences: preferences)
+        clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        self.eventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                               userId: userData.user.ID,
-                               shareRepository: shareRepository,
-                               shareEventIDRepository: shareEventIDRepository,
-                               remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                               itemRepository: itemRepository,
-                               shareKeyRepository: shareKeyRepository,
-                               logManager: logManager)
-        self.favIconRepository = FavIconRepository(apiService: apiService,
-                                                   containerUrl: URL.favIconsContainerURL(),
-                                                   preferences: preferences,
-                                                   symmetricKey: symmetricKey)
-        self.itemContextMenuHandler = .init(clipboardManager: clipboardManager,
-                                            itemRepository: itemRepository,
-                                            logManager: logManager)
+        eventLoop = .init(currentDateProvider: CurrentDateProvider(),
+                          userId: userData.user.ID,
+                          shareRepository: shareRepository,
+                          shareEventIDRepository: shareEventIDRepository,
+                          remoteSyncEventsDatasource: remoteSyncEventsDatasource,
+                          itemRepository: itemRepository,
+                          shareKeyRepository: shareKeyRepository,
+                          logManager: logManager)
+        favIconRepository = FavIconRepository(apiService: apiService,
+                                              containerUrl: URL.favIconsContainerURL(),
+                                              preferences: preferences,
+                                              symmetricKey: symmetricKey)
+        itemContextMenuHandler = .init(clipboardManager: clipboardManager,
+                                       itemRepository: itemRepository,
+                                       logManager: logManager)
         self.itemRepository = itemRepository
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.logManager = logManager
         self.manualLogIn = manualLogIn
-        self.paymentsManager = PaymentsManager(apiService: apiService,
-                                               userDataProvider: appData,
-                                               mainKeyProvider: mainKeyProvider,
-                                               logger: logger,
-                                               preferences: preferences,
-                                               storage: kSharedUserDefaults)
+        paymentsManager = PaymentsManager(apiService: apiService,
+                                          userDataProvider: appData,
+                                          mainKeyProvider: mainKeyProvider,
+                                          logger: logger,
+                                          preferences: preferences,
+                                          storage: kSharedUserDefaults)
         self.preferences = preferences
-        self.searchEntryDatasource = LocalSearchEntryDatasource(container: container)
+        searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
-        self.telemetryEventRepository = TelemetryEventRepository(
-            localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
-            remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-            remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
-            passPlanRepository: passPlanRepository,
-            logManager: logManager,
-            scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                          thresholdProvider: preferences),
-            userId: userData.user.ID)
-        self.urlOpener = .init(preferences: preferences)
+        telemetryEventRepository =
+            TelemetryEventRepository(localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
+                                     remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
+
+                                     remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
+                                     passPlanRepository: passPlanRepository,
+                                     logManager: logManager,
+                                     scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
+                                                                   thresholdProvider: preferences),
+                                     userId: userData.user.ID)
+        urlOpener = .init(preferences: preferences)
         self.userData = userData
         self.passPlanRepository = passPlanRepository
-        self.upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                             counter: vaultsManager,
-                                             totpChecker: itemRepository)
-        self.featureFlagsRepository = FeatureFlagsRepository(
-            localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
-            remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
-            userId: userData.user.ID,
-            logManager: logManager)
+        upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
+                                        counter: vaultsManager,
+                                        totpChecker: itemRepository)
+        featureFlagsRepository =
+            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
+                                   remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+                                   userId: userData.user.ID,
+                                   logManager: logManager)
         self.vaultsManager = vaultsManager
         super.init()
-        self.finalizeInitialization()
+        finalizeInitialization()
         self.vaultsManager.refresh()
-        self.start()
-        self.eventLoop.start()
-        self.refreshPlan()
-        self.refreshFeatureFlags()
-        self.sendAllEventsIfApplicable()
+        start()
+        eventLoop.start()
+        refreshPlan()
+        refreshFeatureFlags()
+        sendAllEventsIfApplicable()
     }
 
     override func coordinatorDidDismiss() {
@@ -198,6 +200,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 }
 
 // MARK: - Private APIs
+
 private extension HomepageCoordinator {
     /// Some properties are dependant on other propeties which are in turn not initialized
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
@@ -254,12 +257,12 @@ private extension HomepageCoordinator {
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
                                                       notificationService:
-                                                        ServiceContainer.shared.notificationService())
+                                                      ServiceContainer.shared.notificationService())
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
         let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
-            self.popTopViewController(animated: true)
+            popTopViewController(animated: true)
         }
 
         start(with: HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
@@ -292,7 +295,7 @@ private extension HomepageCoordinator {
         }
     }
 
-    func present<V: View>(_ view: V, animated: Bool = true, dismissible: Bool = true) {
+    func present(_ view: some View, animated: Bool = true, dismissible: Bool = true) {
         present(UIHostingController(rootView: view),
                 userInterfaceStyle: preferences.theme.userInterfaceStyle,
                 animated: animated,
@@ -307,30 +310,28 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(
-            aliasRepository: aliasRepository,
-            itemRepository: itemRepository,
-            upgradeChecker: upgradeChecker,
-            logManager: logManager,
-            preferences: preferences,
-            vaultsManager: vaultsManager,
-            userData: userData,
-            createEditItemDelegates: self)
+        let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
+                                                    itemRepository: itemRepository,
+                                                    upgradeChecker: upgradeChecker,
+                                                    logManager: logManager,
+                                                    preferences: preferences,
+                                                    vaultsManager: vaultsManager,
+                                                    userData: userData,
+                                                    createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(
-            aliasRepository: aliasRepository,
-            itemRepository: itemRepository,
-            favIconRepository: favIconRepository,
-            upgradeChecker: upgradeChecker,
-            logManager: logManager,
-            preferences: preferences,
-            vaultsManager: vaultsManager,
-            itemDetailViewModelDelegate: self)
+        let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
+                                                itemRepository: itemRepository,
+                                                favIconRepository: favIconRepository,
+                                                upgradeChecker: upgradeChecker,
+                                                logManager: logManager,
+                                                preferences: preferences,
+                                                vaultsManager: vaultsManager,
+                                                itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
         itemDetailCoordinator = coordinator
@@ -447,7 +448,7 @@ private extension HomepageCoordinator {
         !UIDevice.current.isIpad || (UIDevice.current.isIpad && isCollapsed())
     }
 
-    func showView<V: View>(view: V, asSheet: Bool) {
+    func showView(view: some View, asSheet: Bool) {
         if asSheet {
             present(view)
         } else {
@@ -494,11 +495,10 @@ private extension HomepageCoordinator {
     func updateCredentials(forceRemoval: Bool) {
         Task {
             do {
-                try await credentialManager.insertAllCredentials(
-                    itemRepository: itemRepository,
-                    shareRepository: shareRepository,
-                    passPlanRepository: passPlanRepository,
-                    forceRemoval: forceRemoval)
+                try await credentialManager.insertAllCredentials(itemRepository: itemRepository,
+                                                                 shareRepository: shareRepository,
+                                                                 passPlanRepository: passPlanRepository,
+                                                                 forceRemoval: forceRemoval)
                 logger.info("Updated all credentials.")
             } catch {
                 logger.error(error)
@@ -508,16 +508,16 @@ private extension HomepageCoordinator {
 
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [unowned self] in
-            self.paymentsManager.upgradeSubscription { [unowned self] result in
+            paymentsManager.upgradeSubscription { [unowned self] result in
                 switch result {
-                case .success(let inAppPurchasePlan):
+                case let .success(inAppPurchasePlan):
                     if inAppPurchasePlan != nil {
-                        self.refreshPlan()
+                        refreshPlan()
                     } else {
                         logger.debug("Payment is done but no plan is purchased")
                     }
-                case .failure(let error):
-                    self.bannerManager.displayTopErrorMessage(error)
+                case let .failure(error):
+                    bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
@@ -525,6 +525,7 @@ private extension HomepageCoordinator {
 }
 
 // MARK: - Public APIs
+
 extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
@@ -541,6 +542,7 @@ extension HomepageCoordinator {
 }
 
 // MARK: - PassPlanRepositoryDelegate
+
 extension HomepageCoordinator: PassPlanRepositoryDelegate {
     func passPlanRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
@@ -551,11 +553,12 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
 }
 
 // MARK: - HomepageTabBarControllerDelegate
+
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
         if !isCollapsed() {
             let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
-                self.popTopViewController(animated: true)
+                popTopViewController(animated: true)
             }
             push(placeholderView)
         }
@@ -573,10 +576,11 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
 }
 
 // MARK: - ItemTypeListViewModelDelegate
+
 extension HomepageCoordinator: ItemTypeListViewModelDelegate {
     func itemTypeListViewModelDidSelect(type: ItemType) {
         dismissTopMostViewController { [unowned self] in
-            self.presentCreateItemView(for: type)
+            presentCreateItemView(for: type)
         }
     }
 
@@ -586,6 +590,7 @@ extension HomepageCoordinator: ItemTypeListViewModelDelegate {
 }
 
 // MARK: - ItemsTabViewModelDelegate
+
 extension HomepageCoordinator: ItemsTabViewModelDelegate {
     func itemsTabViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -650,10 +655,9 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
                 hideLoadingHud()
 
-                let view = TrialDetailView(
-                    daysLeft: abs(daysLeft),
-                    onUpgrade: startUpgradeFlow,
-                    onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
+                let view = TrialDetailView(daysLeft: abs(daysLeft),
+                                           onUpgrade: startUpgradeFlow,
+                                           onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
                 present(view)
             } catch {
                 logger.error(error)
@@ -672,6 +676,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 }
 
 // MARK: - ItemDetailCoordinatorDelegate
+
 extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
     func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool) {
         if asSheet {
@@ -683,6 +688,7 @@ extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
 }
 
 // MARK: - CreateEditItemCoordinatorDelegate
+
 extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
     func createEditItemCoordinatorWantsWordProvider() async -> WordProviderProtocol? {
         do {
@@ -702,6 +708,7 @@ extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
 }
 
 // MARK: - ProfileTabViewModelDelegate
+
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -770,7 +777,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowFeedback() {
         let view = FeedbackChannelsView { [unowned self] selectedChannel in
-            self.urlOpener.open(urlString: selectedChannel.urlString)
+            urlOpener.open(urlString: selectedChannel.urlString)
         }
         let viewController = UIHostingController(rootView: view)
 
@@ -806,6 +813,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 }
 
 // MARK: - AccountViewModelDelegate
+
 extension HomepageCoordinator: AccountViewModelDelegate {
     func accountViewModelWantsToGoBack() {
         adaptivelyDismissCurrentDetailView()
@@ -821,31 +829,34 @@ extension HomepageCoordinator: AccountViewModelDelegate {
         let accountDeletion = AccountDeletionService(api: apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
-        accountDeletion.initiateAccountDeletionProcess(
-            over: topMostViewController,
-            performAfterShowingAccountDeletionScreen: { [weak self] in
-                self?.hideLoadingHud(view)
-            },
-            completion: { [weak self] result in
-                guard let self else { return }
-                self.hideLoadingHud(view)
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success:
-                        self.logger.trace("Account deletion successful")
-                        self.accountViewModelWantsToSignOut()
-                    case .failure(AccountDeletionError.closedByUser):
-                        self.logger.trace("Accpunt deletion form closed by user")
-                    case .failure(let error):
-                        self.logger.error(error)
-                        self.bannerManager.displayTopErrorMessage(error.userFacingMessageInAccountDeletion)
-                    }
-                }
-            })
+        accountDeletion.initiateAccountDeletionProcess(over: topMostViewController,
+                                                       performAfterShowingAccountDeletionScreen: { [weak self] in
+                                                           self?.hideLoadingHud(view)
+                                                       },
+                                                       completion: { [weak self] result in
+                                                           guard let self else { return }
+                                                           self.hideLoadingHud(view)
+                                                           DispatchQueue.main.async {
+                                                               switch result {
+                                                               case .success:
+                                                                   self.logger.trace("Account deletion successful")
+                                                                   self.accountViewModelWantsToSignOut()
+                                                               case .failure(AccountDeletionError.closedByUser):
+                                                                   self.logger
+                                                                       .trace("Accpunt deletion form closed by user")
+                                                               case let .failure(error):
+                                                                   self.logger.error(error)
+                                                                   self.bannerManager
+                                                                       .displayTopErrorMessage(error
+                                                                           .userFacingMessageInAccountDeletion)
+                                                               }
+                                                           }
+                                                       })
     }
 }
 
 // MARK: - SettingsViewModelDelegate
+
 extension HomepageCoordinator: SettingsViewModelDelegate {
     func settingsViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -951,6 +962,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 }
 
 // MARK: - GeneratePasswordCoordinatorDelegate
+
 extension HomepageCoordinator: GeneratePasswordCoordinatorDelegate {
     func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
         present(viewController)
@@ -958,6 +970,7 @@ extension HomepageCoordinator: GeneratePasswordCoordinatorDelegate {
 }
 
 // MARK: - CreateEditItemViewModelDelegate
+
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelWantsToShowLoadingHud() {
         showLoadingHud()
@@ -1020,7 +1033,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
         dismissTopMostViewController { [unowned self] in
-            self.bannerManager.displayBottomInfoMessage(type.updateMessage)
+            bannerManager.displayBottomInfoMessage(type.updateMessage)
         }
     }
 
@@ -1030,6 +1043,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 }
 
 // MARK: - CreateEditLoginViewModelDelegate
+
 extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGenerateAlias(options: AliasOptions,
                                                       creationInfo: AliasCreationLiteInfo,
@@ -1059,6 +1073,7 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
 }
 
 // MARK: - CreateEditAliasViewModelDelegate
+
 extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
                                                         titleMode: MailboxSection.Mode) {
@@ -1077,6 +1092,7 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
 }
 
 // MARK: - MailboxSelectionViewModelDelegate
+
 extension HomepageCoordinator: MailboxSelectionViewModelDelegate {
     func mailboxSelectionViewModelWantsToUpgrade() {
         startUpgradeFlow()
@@ -1088,6 +1104,7 @@ extension HomepageCoordinator: MailboxSelectionViewModelDelegate {
 }
 
 // MARK: - SuffixSelectionViewModelDelegate
+
 extension HomepageCoordinator: SuffixSelectionViewModelDelegate {
     func suffixSelectionViewModelWantsToUpgrade() {
         startUpgradeFlow()
@@ -1099,6 +1116,7 @@ extension HomepageCoordinator: SuffixSelectionViewModelDelegate {
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate
+
 extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
         presentMailboxSelectionView(selection: mailboxSelection,
@@ -1116,15 +1134,17 @@ extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
+
 extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.clipboardManager.copy(text: password, bannerMessage: "Password copied")
+            clipboardManager.copy(text: password, bannerMessage: "Password copied")
         }
     }
 }
 
 // MARK: - EditableVaultListViewModelDelegate
+
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
     func editableVaultListViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -1171,6 +1191,7 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 }
 
 // MARK: - ItemDetailViewModelDelegate
+
 extension HomepageCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -1208,7 +1229,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
+            bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
         }
         refresh()
         addNewEvent(type: .update(item.type))
@@ -1218,11 +1239,10 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         let allVaults = vaultsManager.getAllVaultContents()
         guard !allVaults.isEmpty,
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
-        let viewModel = MoveVaultListViewModel(
-            allVaults: allVaults.map { .init(vaultContent: $0) },
-            currentVault: .init(vaultContent: currentVault),
-            upgradeChecker: upgradeChecker,
-            logManager: logManager)
+        let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
+                                               currentVault: .init(vaultContent: currentVault),
+                                               upgradeChecker: upgradeChecker,
+                                               logManager: logManager)
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -1244,11 +1264,11 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                 banner.dismiss()
-                self.itemContextMenuHandler.restore(item)
+                itemContextMenuHandler.restore(item)
             }
-            self.bannerManager.displayBottomInfoMessage(item.type.trashMessage,
-                                                        dismissButtonTitle: "Undo",
-                                                        onDismiss: undoBlock)
+            bannerManager.displayBottomInfoMessage(item.type.trashMessage,
+                                                   dismissButtonTitle: "Undo",
+                                                   onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
     }
@@ -1256,7 +1276,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
         refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+            bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
         addNewEvent(type: .update(item.type))
     }
@@ -1264,7 +1284,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
         refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+            bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
         addNewEvent(type: .delete(item.type))
     }
@@ -1275,6 +1295,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 }
 
 // MARK: - ItemContextMenuHandlerDelegate
+
 extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     func itemContextMenuHandlerWantsToShowSpinner() {
         showLoadingHud()
@@ -1305,6 +1326,7 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 }
 
 // MARK: - SearchViewModelDelegate
+
 extension HomepageCoordinator: SearchViewModelDelegate {
     func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: true)
@@ -1322,6 +1344,7 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 }
 
 // MARK: - CreateEditVaultViewModelDelegate
+
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     func createEditVaultViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -1337,14 +1360,14 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 
     func createEditVaultViewModelDidCreateVault() {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager.displayBottomSuccessMessage("Vault created")
+            bannerManager.displayBottomSuccessMessage("Vault created")
         }
         vaultsManager.refresh()
     }
 
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager.displayBottomInfoMessage("Changes saved")
+            bannerManager.displayBottomInfoMessage("Changes saved")
         }
         vaultsManager.refresh()
     }
@@ -1355,6 +1378,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 }
 
 // MARK: - EditPrimaryVaultViewModelDelegate
+
 extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
     func editPrimaryVaultViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -1366,7 +1390,7 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
 
     func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
         dismissTopMostViewController(animated: true) { [unowned self] in
-            self.bannerManager.displayBottomSuccessMessage("Primary vault updated")
+            bannerManager.displayBottomSuccessMessage("Primary vault updated")
         }
         vaultsManager.refresh()
     }
@@ -1377,6 +1401,7 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
 }
 
 // MARK: - LogsViewModelDelegate
+
 extension HomepageCoordinator: LogsViewModelDelegate {
     func logsViewModelWantsToShowSpinner() {
         showLoadingHud()
@@ -1397,6 +1422,7 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 }
 
 // MARK: - SyncEventLoopDelegate
+
 extension HomepageCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidStartLooping() {
         logger.info("Started looping")
@@ -1429,3 +1455,5 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.error(error)
     }
 }
+
+// swiftlint:enable line_length

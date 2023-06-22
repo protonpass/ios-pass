@@ -45,7 +45,7 @@ extension PublicKeyEntity {
     }
 
     func hydrate(from publicKey: PublicKey, email: String) {
-        self.value = publicKey.value
+        value = publicKey.value
         self.email = email
     }
 }

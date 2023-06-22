@@ -29,8 +29,8 @@ final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obser
 
     override func bindValues() {
         if case .note = itemContent.contentData {
-            self.name = itemContent.name
-            self.note = itemContent.note
+            name = itemContent.name
+            note = itemContent.note
         } else {
             fatalError("Expecting note type")
         }

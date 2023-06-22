@@ -45,9 +45,9 @@ public struct CreateCustomAliasRequest {
     public let item: CreateItemRequest
 
     public init(info: AliasCreationInfo, item: CreateItemRequest) {
-        self.prefix = info.prefix
-        self.signedSuffix = info.suffix.signedSuffix
-        self.mailboxIDs = info.mailboxIds
+        prefix = info.prefix
+        signedSuffix = info.suffix.signedSuffix
+        mailboxIDs = info.mailboxIds
         self.item = item
     }
 }

@@ -54,6 +54,7 @@ class BaseItemDetailViewModel {
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
     }
+
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger: Logger
@@ -74,16 +75,16 @@ class BaseItemDetailViewModel {
          theme: Theme) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
-        self.customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+        customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.favIconRepository = favIconRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
         self.vault = vault
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.logManager = logManager
         self.theme = theme
-        self.bindValues()
-        self.checkIfFreeUser()
+        bindValues()
+        checkIfFreeUser()
     }
 
     /// To be overidden by subclasses
@@ -108,8 +109,8 @@ class BaseItemDetailViewModel {
     func refresh() {
         Task { @MainActor in
             guard let updatedItemContent =
-                    try await itemRepository.getItemContent(shareId: itemContent.shareId,
-                                                            itemId: itemContent.item.itemID) else {
+                try await itemRepository.getItemContent(shareId: itemContent.shareId,
+                                                        itemId: itemContent.item.itemID) else {
                 return
             }
             itemContent = updatedItemContent
@@ -191,6 +192,7 @@ class BaseItemDetailViewModel {
 }
 
 // MARK: - Private APIs
+
 private extension BaseItemDetailViewModel {
     func checkIfFreeUser() {
         Task { @MainActor in
@@ -231,6 +233,7 @@ private extension BaseItemDetailViewModel {
 }
 
 // MARK: - MoveVaultListViewModelDelegate
+
 extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
     func moveVaultListViewModelWantsToUpgrade() {
         delegate?.itemDetailViewModelWantsToUpgrade()

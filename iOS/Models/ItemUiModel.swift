@@ -59,7 +59,7 @@ extension SymmetricallyEncryptedItem {
         var hasTotpUri = false
 
         switch itemContent.contentData {
-        case .login(let data):
+        case let .login(data):
             note = data.username
             url = data.urls.first
             hasTotpUri = !data.totpUri.isEmpty
@@ -68,7 +68,7 @@ extension SymmetricallyEncryptedItem {
             note = item.aliasEmail ?? ""
             isAlias = true
 
-        case .creditCard(let data):
+        case let .creditCard(data):
             note = data.number.toMaskedCreditCardNumber()
 
         case .note:

@@ -23,10 +23,8 @@ import Foundation
 // swiftlint:disable identifier_name
 // https://gist.github.com/wilg/47a04c8f5083a6938da6087f77333784
 public extension Collection {
-    func parallelMap<T>(
-        parallelism requestedParallelism: Int? = nil,
-        _ transform: @escaping (Element) async throws -> T
-    ) async rethrows -> [T] {
+    func parallelMap<T>(parallelism requestedParallelism: Int? = nil,
+                        _ transform: @escaping (Element) async throws -> T) async rethrows -> [T] {
         let defaultParallelism = 2
         let parallelism = requestedParallelism ?? defaultParallelism
 
@@ -52,7 +50,7 @@ public extension Collection {
             }
 
             // submit first initial tasks
-            for _ in 0 ..< parallelism {
+            for _ in 0..<parallelism {
                 try await submitNext()
             }
 
@@ -69,13 +67,12 @@ public extension Collection {
         }
     }
 
-    func parallelEach(
-        parallelism requestedParallelism: Int? = nil,
-        _ work: @escaping (Element) async throws -> Void
-    ) async rethrows {
+    func parallelEach(parallelism requestedParallelism: Int? = nil,
+                      _ work: @escaping (Element) async throws -> Void) async rethrows {
         _ = try await parallelMap {
             try await work($0)
         }
     }
 }
+
 // swiftlint:enable identifier_name

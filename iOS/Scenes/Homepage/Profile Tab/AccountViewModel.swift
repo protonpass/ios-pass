@@ -52,11 +52,11 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         self.isShownAsSheet = isShownAsSheet
         self.apiService = apiService
         self.paymentsManager = paymentsManager
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.username = username
         self.theme = theme
         self.passPlanRepository = passPlanRepository
-        self.refreshUserPlan()
+        refreshUserPlan()
     }
 
     private func refreshUserPlan() {
@@ -92,14 +92,14 @@ extension AccountViewModel {
 
     private func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
         switch result {
-        case .success(let inAppPurchasePlan):
+        case let .success(inAppPurchasePlan):
             if inAppPurchasePlan != nil {
                 refreshUserPlan()
             } else {
                 logger.debug("Payment is done but no plan is purchased")
             }
 
-        case .failure(let error):
+        case let .failure(error):
             logger.error(error)
         }
     }

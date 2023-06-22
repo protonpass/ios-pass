@@ -103,15 +103,14 @@ private extension ItemDetailCoordinator {
     func makeLoginItemDetailPage(from itemContent: ItemContent,
                                  asSheet: Bool,
                                  vault: Vault?) -> ItemDetailPage {
-        let viewModel = LogInDetailViewModel(
-            isShownAsSheet: asSheet,
-            itemContent: itemContent,
-            favIconRepository: favIconRepository,
-            itemRepository: itemRepository,
-            upgradeChecker: upgradeChecker,
-            vault: vault,
-            logManager: logManager,
-            theme: preferences.theme)
+        let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
+                                             itemContent: itemContent,
+                                             favIconRepository: favIconRepository,
+                                             itemRepository: itemRepository,
+                                             upgradeChecker: upgradeChecker,
+                                             vault: vault,
+                                             logManager: logManager,
+                                             theme: preferences.theme)
         viewModel.logInDetailViewModelDelegate = self
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
     }
@@ -119,51 +118,49 @@ private extension ItemDetailCoordinator {
     func makeAliasItemDetailPage(from itemContent: ItemContent,
                                  asSheet: Bool,
                                  vault: Vault?) -> ItemDetailPage {
-        let viewModel = AliasDetailViewModel(
-            isShownAsSheet: asSheet,
-            itemContent: itemContent,
-            favIconRepository: favIconRepository,
-            itemRepository: itemRepository,
-            aliasRepository: aliasRepository,
-            upgradeChecker: upgradeChecker,
-            vault: vault,
-            logManager: logManager,
-            theme: preferences.theme)
+        let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
+                                             itemContent: itemContent,
+                                             favIconRepository: favIconRepository,
+                                             itemRepository: itemRepository,
+                                             aliasRepository: aliasRepository,
+                                             upgradeChecker: upgradeChecker,
+                                             vault: vault,
+                                             logManager: logManager,
+                                             theme: preferences.theme)
         return .init(viewModel: viewModel, view: AliasDetailView(viewModel: viewModel))
     }
 
     func makeNoteDetailPage(from itemContent: ItemContent,
                             asSheet: Bool,
                             vault: Vault?) -> ItemDetailPage {
-        let viewModel = NoteDetailViewModel(
-            isShownAsSheet: asSheet,
-            itemContent: itemContent,
-            favIconRepository: favIconRepository,
-            itemRepository: itemRepository,
-            upgradeChecker: upgradeChecker,
-            vault: vault,
-            logManager: logManager,
-            theme: preferences.theme)
+        let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
+                                            itemContent: itemContent,
+                                            favIconRepository: favIconRepository,
+                                            itemRepository: itemRepository,
+                                            upgradeChecker: upgradeChecker,
+                                            vault: vault,
+                                            logManager: logManager,
+                                            theme: preferences.theme)
         return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
 
     func makeCreditCardDetailPage(from itemContent: ItemContent,
                                   asSheet: Bool,
                                   vault: Vault?) -> ItemDetailPage {
-        let viewModel = CreditCardDetailViewModel(
-            isShownAsSheet: asSheet,
-            itemContent: itemContent,
-            favIconRepository: favIconRepository,
-            itemRepository: itemRepository,
-            upgradeChecker: upgradeChecker,
-            vault: vault,
-            logManager: logManager,
-            theme: preferences.theme)
+        let viewModel = CreditCardDetailViewModel(isShownAsSheet: asSheet,
+                                                  itemContent: itemContent,
+                                                  favIconRepository: favIconRepository,
+                                                  itemRepository: itemRepository,
+                                                  upgradeChecker: upgradeChecker,
+                                                  vault: vault,
+                                                  logManager: logManager,
+                                                  theme: preferences.theme)
         return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
     }
 }
 
 // MARK: - LogInDetailViewModelDelegate
+
 extension ItemDetailCoordinator: LogInDetailViewModelDelegate {
     func logInDetailViewModelWantsToShowAliasDetail(_ itemContent: ItemContent) {
         showDetail(for: itemContent, asSheet: true)

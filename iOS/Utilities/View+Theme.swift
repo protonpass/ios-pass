@@ -35,8 +35,7 @@ private struct ThemeModifier: ViewModifier {
 
 extension View {
     func theme(_ theme: Theme) -> some View {
-        self
-            .modifier(ThemeModifier(theme: theme))
+        modifier(ThemeModifier(theme: theme))
             .animation(.default, value: theme)
     }
 }

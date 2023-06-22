@@ -51,12 +51,12 @@ extension ShareKeyEntity {
     }
 
     func hydrate(from symmetricallyEncryptedShareKey: SymmetricallyEncryptedShareKey) {
-        self.createTime = symmetricallyEncryptedShareKey.shareKey.createTime
-        self.key = symmetricallyEncryptedShareKey.shareKey.key
-        self.keyRotation = symmetricallyEncryptedShareKey.shareKey.keyRotation
-        self.shareID = symmetricallyEncryptedShareKey.shareId
-        self.symmetricallyEncryptedKey = symmetricallyEncryptedShareKey.encryptedKey
-        self.userKeyID = symmetricallyEncryptedShareKey.shareKey.userKeyID
+        createTime = symmetricallyEncryptedShareKey.shareKey.createTime
+        key = symmetricallyEncryptedShareKey.shareKey.key
+        keyRotation = symmetricallyEncryptedShareKey.shareKey.keyRotation
+        shareID = symmetricallyEncryptedShareKey.shareId
+        symmetricallyEncryptedKey = symmetricallyEncryptedShareKey.encryptedKey
+        userKeyID = symmetricallyEncryptedShareKey.shareKey.userKeyID
     }
 }
 

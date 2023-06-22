@@ -85,23 +85,23 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          vaultsManager: VaultsManager,
          notificationService: LocalNotificationServiceProtocol) {
         self.apiService = apiService
-        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
+        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.preferences = preferences
-        self.appVersion = "Version \(Bundle.main.displayedAppVersion)"
+        appVersion = "Version \(Bundle.main.displayedAppVersion)"
         self.featureFlagsRepository = featureFlagsRepository
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
         self.notificationService = notificationService
-        self.autoFillEnabled = false
-        self.quickTypeBar = preferences.quickTypeBar
-        self.automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
+        autoFillEnabled = false
+        quickTypeBar = preferences.quickTypeBar
+        automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
 
-        self.biometricAuthenticator.attach(to: self, storeIn: &cancellables)
-        self.refresh()
+        biometricAuthenticator.attach(to: self, storeIn: &cancellables)
+        refresh()
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
@@ -128,6 +128,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 }
 
 // MARK: - Public APIs
+
 extension ProfileTabViewModel {
     func upgrade() {
         delegate?.profileTabViewModelWantsToUpgrade()
@@ -184,6 +185,7 @@ extension ProfileTabViewModel {
 }
 
 // MARK: - Private APIs
+
 private extension ProfileTabViewModel {
     func refresh() {
         updateAutoFillAvalability()
@@ -222,11 +224,10 @@ private extension ProfileTabViewModel {
                 logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
                 delegate?.profileTabViewModelWantsToShowSpinner()
                 if quickTypeBar {
-                    try await credentialManager.insertAllCredentials(
-                        itemRepository: itemRepository,
-                        shareRepository: shareRepository,
-                        passPlanRepository: passPlanRepository,
-                        forceRemoval: true)
+                    try await credentialManager.insertAllCredentials(itemRepository: itemRepository,
+                                                                     shareRepository: shareRepository,
+                                                                     passPlanRepository: passPlanRepository,
+                                                                     forceRemoval: true)
                     logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
                 } else {
                     try await credentialManager.removeAllCredentials()

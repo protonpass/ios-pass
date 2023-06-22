@@ -43,9 +43,9 @@ public struct Suffix: Decodable {
 extension Suffix: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.suffix == rhs.suffix &&
-        lhs.domain == rhs.domain &&
-        lhs.signedSuffix == rhs.signedSuffix &&
-        lhs.isCustom == rhs.isCustom
+            lhs.domain == rhs.domain &&
+            lhs.signedSuffix == rhs.signedSuffix &&
+            lhs.isCustom == rhs.isCustom
     }
 }
 

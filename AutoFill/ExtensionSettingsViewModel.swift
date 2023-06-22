@@ -65,17 +65,18 @@ final class ExtensionSettingsViewModel: ObservableObject {
         self.shareRepository = shareRepository
         self.passPlanRepository = passPlanRepository
         self.logManager = logManager
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.preferences = preferences
         self.notificationService = notificationService
-        
-        self.quickTypeBar = preferences.quickTypeBar
-        self.automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
-        self.isLocked = preferences.biometricAuthenticationEnabled
+
+        quickTypeBar = preferences.quickTypeBar
+        automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
+        isLocked = preferences.biometricAuthenticationEnabled
     }
 }
 
 // MARK: - Public APIs
+
 extension ExtensionSettingsViewModel {
     func dismiss() {
         delegate?.extensionSettingsViewModelWantsToDismiss()
@@ -87,6 +88,7 @@ extension ExtensionSettingsViewModel {
 }
 
 // MARK: - Private APIs
+
 private extension ExtensionSettingsViewModel {
     func populateOrRemoveCredentials() {
         guard quickTypeBar != preferences.quickTypeBar else { return }
@@ -96,11 +98,10 @@ private extension ExtensionSettingsViewModel {
                 logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
                 delegate?.extensionSettingsViewModelWantsToShowSpinner()
                 if quickTypeBar {
-                    try await credentialManager.insertAllCredentials(
-                        itemRepository: itemRepository,
-                        shareRepository: shareRepository,
-                        passPlanRepository: passPlanRepository,
-                        forceRemoval: true)
+                    try await credentialManager.insertAllCredentials(itemRepository: itemRepository,
+                                                                     shareRepository: shareRepository,
+                                                                     passPlanRepository: passPlanRepository,
+                                                                     forceRemoval: true)
                     logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
                 } else {
                     try await credentialManager.removeAllCredentials()

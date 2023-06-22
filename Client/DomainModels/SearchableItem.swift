@@ -38,33 +38,33 @@ public struct SearchableItem: ItemTypeIdentifiable {
     public init(from item: SymmetricallyEncryptedItem,
                 symmetricKey: SymmetricKey,
                 allVaults: [Vault]) throws {
-        self.itemId = item.item.itemID
-        self.shareId = item.shareId
+        itemId = item.item.itemID
+        shareId = item.shareId
 
         if allVaults.count > 1 {
-            self.vault = allVaults.first { $0.shareId == item.shareId }
+            vault = allVaults.first { $0.shareId == item.shareId }
         } else {
-            self.vault = nil
+            vault = nil
         }
 
         let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
-        self.type = itemContent.contentData.type
-        self.name = itemContent.name
-        self.note = itemContent.note
+        type = itemContent.contentData.type
+        name = itemContent.name
+        note = itemContent.note
 
         switch itemContent.contentData {
-        case .login(let data):
-            self.url = data.urls.first
-            self.requiredExtras = [data.username]
-            self.optionalExtras = data.urls
+        case let .login(data):
+            url = data.urls.first
+            requiredExtras = [data.username]
+            optionalExtras = data.urls
         default:
-            self.url = nil
-            self.requiredExtras = []
-            self.optionalExtras = []
+            url = nil
+            requiredExtras = []
+            optionalExtras = []
         }
 
-        self.lastUseTime = itemContent.item.lastUseTime ?? 0
-        self.modifyTime = item.item.modifyTime
+        lastUseTime = itemContent.item.lastUseTime ?? 0
+        modifyTime = item.item.modifyTime
     }
 }
 
@@ -122,7 +122,7 @@ extension SearchableItem {
     }
 }
 
-public extension Array where Element == SearchableItem {
+public extension [SearchableItem] {
     func result(for term: String) -> [ItemSearchResult] {
         compactMap { $0.result(for: term) }
     }

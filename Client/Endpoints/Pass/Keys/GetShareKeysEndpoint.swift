@@ -36,9 +36,9 @@ public struct GetShareKeysEndpoint: Endpoint {
     public var queries: [String: Any]?
 
     public init(shareId: String, page: Int, pageSize: Int) {
-        self.debugDescription = "Get keys for share"
-        self.path = "/pass/v1/share/\(shareId)/key"
-        self.method = .get
-        self.queries = .paginationQuery(page: page, pageSize: pageSize)
+        debugDescription = "Get keys for share"
+        path = "/pass/v1/share/\(shareId)/key"
+        method = .get
+        queries = .paginationQuery(page: page, pageSize: pageSize)
     }
 }

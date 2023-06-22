@@ -24,6 +24,7 @@ import UIComponents
 import UIKit
 
 // MARK: - Colors & icons
+
 extension ItemContentType {
     var regularIcon: UIImage {
         switch self {
@@ -114,6 +115,7 @@ extension ItemContentType {
 }
 
 // MARK: - Messages
+
 extension ItemContentType {
     var chipTitle: String {
         switch self {

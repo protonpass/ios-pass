@@ -144,10 +144,10 @@ struct CreateEditVaultView: View {
                     HStack {
                         ForEach(chunkedColorIcons, id: \.self) { colorIcon in
                             switch colorIcon {
-                            case .color(let color):
+                            case let .color(color):
                                 VaultColorView(color: color, selectedColor: $viewModel.selectedColor)
                                     .frame(width: rowWidth, height: rowWidth)
-                            case .icon(let icon):
+                            case let .icon(icon):
                                 VaultIconView(icon: icon, selectedIcon: $viewModel.selectedIcon)
                                     .frame(width: rowWidth, height: rowWidth)
                             }

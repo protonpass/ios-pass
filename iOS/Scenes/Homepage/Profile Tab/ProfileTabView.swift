@@ -109,7 +109,7 @@ struct ProfileTabView: View {
                 }
                 .roundedEditableSection()
 
-            case .initialized(let biometryType):
+            case let .initialized(biometryType):
                 if let uiModel = biometryType.uiModel {
                     VStack(spacing: 0) {
                         OptionRow(height: .medium) {
@@ -132,15 +132,14 @@ struct ProfileTabView: View {
                         if viewModel.biometricAuthenticator.enabled {
                             PassSectionDivider()
 
-                            OptionRow(
-                                action: viewModel.editAppLockTime,
-                                title: "App lock time",
-                                height: .tall,
-                                content: {
-                                    Text(viewModel.preferences.appLockTime.description)
-                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                                },
-                                trailing: { ChevronRight() })
+                            OptionRow(action: viewModel.editAppLockTime,
+                                      title: "App lock time",
+                                      height: .tall,
+                                      content: {
+                                          Text(viewModel.preferences.appLockTime.description)
+                                              .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                      },
+                                      trailing: { ChevronRight() })
                         }
                     }
                     .animation(.default, value: viewModel.biometricAuthenticator.enabled)
@@ -153,7 +152,7 @@ struct ProfileTabView: View {
                     }
                     .roundedEditableSection()
                 }
-            case .error(let error):
+            case let .error(error):
                 OptionRow(height: .medium) {
                     Text(error.localizedDescription)
                         .foregroundColor(Color(uiColor: PassColor.signalDanger))
@@ -161,7 +160,7 @@ struct ProfileTabView: View {
                 .roundedEditableSection()
             }
 
-            if case .initialized(let biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
+            if case let .initialized(biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
                biometryType != .none {
                 Text("Unlock Proton Pass with a glance")
                     .sectionTitleText()
@@ -226,31 +225,30 @@ struct ProfileTabView: View {
 
     private var accountAndSettingsSection: some View {
         VStack(spacing: 0) {
-            OptionRow(
-                action: viewModel.showAccountMenu,
-                content: {
-                    HStack {
-                        Text("Account")
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            OptionRow(action: viewModel.showAccountMenu,
+                      content: {
+                          HStack {
+                              Text("Account")
+                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
 
-                        Spacer()
+                              Spacer()
 
-                        if let associatedPlanInfo = viewModel.plan?.associatedPlanInfo {
-                            Label(title: {
-                                Text(associatedPlanInfo.title)
-                                    .font(.callout)
-                            }, icon: {
-                                Image(uiImage: associatedPlanInfo.icon)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxWidth: associatedPlanInfo.iconWidth)
-                            })
-                            .foregroundColor(Color(uiColor: associatedPlanInfo.tintColor))
-                            .padding(.horizontal)
-                        }
-                    }
-                },
-                trailing: { ChevronRight() })
+                              if let associatedPlanInfo = viewModel.plan?.associatedPlanInfo {
+                                  Label(title: {
+                                      Text(associatedPlanInfo.title)
+                                          .font(.callout)
+                                  }, icon: {
+                                      Image(uiImage: associatedPlanInfo.icon)
+                                          .resizable()
+                                          .scaledToFit()
+                                          .frame(maxWidth: associatedPlanInfo.iconWidth)
+                                  })
+                                  .foregroundColor(Color(uiColor: associatedPlanInfo.tintColor))
+                                  .padding(.horizontal)
+                              }
+                          }
+                      },
+                      trailing: { ChevronRight() })
 
             PassSectionDivider()
 
@@ -303,7 +301,7 @@ struct ProfileTabView: View {
 
 private extension View {
     func profileSectionTitle() -> some View {
-        self.foregroundColor(Color(uiColor: PassColor.textNorm))
+        foregroundColor(Color(uiColor: PassColor.textNorm))
             .font(.callout.weight(.bold))
             .frame(maxWidth: .infinity, alignment: .leading)
     }

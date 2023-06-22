@@ -38,7 +38,7 @@ enum VaultSelection {
         switch self {
         case .all:
             return "Search in all vaults..."
-        case .precise(let vault):
+        case let .precise(vault):
             return "Search in \(vault.name)..."
         case .trash:
             return "Search in trash..."
@@ -71,7 +71,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
          preferences: Preferences) {
         self.itemRepository = itemRepository
         self.manualLogIn = manualLogIn
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         self.preferences = preferences
@@ -79,6 +79,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 }
 
 // MARK: - Private APIs
+
 private extension VaultsManager {
     @MainActor
     func createDefaultVault(isPrimary: Bool) async throws {
@@ -114,7 +115,7 @@ private extension VaultsManager {
         let trashedItems = allItemUiModels.filter { $0.state == .trashed }
 
         // Reset to `all` when last selected vault is deleted
-        if case .precise(let selectedVault) = vaultSelection {
+        if case let .precise(selectedVault) = vaultSelection {
             if !vaults.contains(where: { $0 == selectedVault }) {
                 vaultSelection = .all
             }
@@ -125,6 +126,7 @@ private extension VaultsManager {
 }
 
 // MARK: - Public APIs
+
 extension VaultsManager {
     func refresh() {
         guard !isRefreshing else { return }
@@ -175,8 +177,8 @@ extension VaultsManager {
         await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in remoteShares {
                 taskGroup.addTask { [unowned self] in
-                    try await self.shareRepository.upsertShares([share])
-                    try await self.itemRepository.refreshItems(shareId: share.shareID)
+                    try await shareRepository.upsertShares([share])
+                    try await itemRepository.refreshItems(shareId: share.shareID)
                 }
             }
         }
@@ -213,10 +215,10 @@ extension VaultsManager {
         guard case let .loaded(vaults, trashedItems) = state else { return [] }
         switch vaultSelection {
         case .all:
-            return vaults.map { $0.items }.reduce(into: []) { $0 += $1 }
-        case .precise(let selectedVault):
+            return vaults.map(\.items).reduce(into: []) { $0 += $1 }
+        case let .precise(selectedVault):
             return vaults.first { $0.vault == selectedVault }?.items ?? []
-        case  .trash:
+        case .trash:
             return trashedItems
         }
     }
@@ -225,8 +227,8 @@ extension VaultsManager {
         guard case let .loaded(vaults, trashedItems) = state else { return 0 }
         switch selection {
         case .all:
-            return vaults.map { $0.items.count }.reduce(into: 0) { $0 += $1 }
-        case .precise(let vault):
+            return vaults.map(\.items.count).reduce(into: 0) { $0 += $1 }
+        case let .precise(vault):
             return vaults.first { $0.vault == vault }?.items.count ?? 0
         case .trash:
             return trashedItems.count
@@ -240,7 +242,7 @@ extension VaultsManager {
 
     func getAllVaults() -> [Vault] {
         guard case let .loaded(vaults, _) = state else { return [] }
-        return vaults.map { $0.vault }
+        return vaults.map(\.vault)
     }
 
     func vaultHasTrashedItems(_ vault: Vault) -> Bool {
@@ -256,15 +258,14 @@ extension VaultsManager {
         case let .loaded(vaults, trashedItems):
             logger.trace("Deleting local active items of vault \(shareId)")
             if let deletedVault = vaults.first(where: { $0.vault.shareId == shareId }) {
-                let itemIds = deletedVault.items.map { $0.itemId }
+                let itemIds = deletedVault.items.map(\.itemId)
                 try await itemRepository.deleteItemsLocally(itemIds: itemIds, shareId: shareId)
             }
 
             logger.trace("Deleting local trashed items of vault \(shareId)")
             let trashedItemsToBeRemoved = trashedItems.filter { $0.shareId == shareId }
-            try await itemRepository.deleteItemsLocally(
-                itemIds: trashedItemsToBeRemoved.map { $0.itemId },
-                shareId: shareId)
+            try await itemRepository.deleteItemsLocally(itemIds: trashedItemsToBeRemoved.map(\.itemId),
+                                                        shareId: shareId)
 
         default:
             break
@@ -288,8 +289,8 @@ extension VaultsManager {
     }
 
     func getPrimaryVault() -> Vault? {
-        guard case .loaded(let uiModels, _) = state else { return nil }
-        let vaults = uiModels.map { $0.vault }
+        guard case let .loaded(uiModels, _) = state else { return nil }
+        let vaults = uiModels.map(\.vault)
         return vaults.first(where: { $0.isPrimary }) ?? vaults.first
     }
 
@@ -297,19 +298,20 @@ extension VaultsManager {
         switch vaultSelection {
         case .all, .trash:
             return getPrimaryVault()?.shareId
-        case .precise(let vault):
+        case let .precise(vault):
             return vault.shareId
         }
     }
 }
 
 // MARK: - LimitationCounterProtocol
+
 extension VaultsManager: LimitationCounterProtocol {
     func getAliasCount() -> Int {
         switch state {
         case let .loaded(vaults, trash):
-            let activeAliases = vaults.flatMap { $0.items }.filter { $0.isAlias }
-            let trashedAliases = trash.filter { $0.isAlias }
+            let activeAliases = vaults.flatMap(\.items).filter(\.isAlias)
+            let trashedAliases = trash.filter(\.isAlias)
             return activeAliases.count + trashedAliases.count
         default:
             return 0
@@ -318,8 +320,8 @@ extension VaultsManager: LimitationCounterProtocol {
 
     func getTOTPCount() -> Int {
         guard case let .loaded(vaults, trashedItems) = state else { return 0 }
-        let activeItemsWithTotpUri = vaults.flatMap { $0.items }.filter { $0.hasTotpUri }.count
-        let trashedItemsWithTotpUri = trashedItems.filter { $0.hasTotpUri }.count
+        let activeItemsWithTotpUri = vaults.flatMap(\.items).filter(\.hasTotpUri).count
+        let trashedItemsWithTotpUri = trashedItems.filter(\.hasTotpUri).count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
     }
 
@@ -340,7 +342,7 @@ extension VaultManagerState: Equatable {
             return true
         case let (.loaded(lhsVaults, lhsTrashedItems), .loaded(rhsVaults, rhsTrashedItems)):
             return lhsVaults.hashValue == rhsVaults.hashValue &&
-            lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
+                lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
         case let (.error(lhsError), .error(rhsError)):
             return lhsError.localizedDescription == rhsError.localizedDescription
         default:

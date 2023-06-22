@@ -25,20 +25,19 @@ public struct ObsoleteItemAlertModifier: ViewModifier {
     let onAction: () -> Void
 
     public init(isPresented: Binding<Bool>, onAction: @escaping () -> Void) {
-        self._isPresented = isPresented
+        _isPresented = isPresented
         self.onAction = onAction
     }
 
     public func body(content: Content) -> some View {
         content
-            .alert(
-                "This item is obsolete",
-                isPresented: $isPresented,
-                actions: {
-                    Button("OK", role: .cancel, action: onAction)
-                }, message: {
-                    Text("Some changes happened to this item, heading back to the previous page.")
-                })
+            .alert("This item is obsolete",
+                   isPresented: $isPresented,
+                   actions: {
+                       Button("OK", role: .cancel, action: onAction)
+                   }, message: {
+                       Text("Some changes happened to this item, heading back to the previous page.")
+                   })
     }
 }
 

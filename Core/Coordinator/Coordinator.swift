@@ -48,20 +48,20 @@ public protocol CoordinatorProtocol: AnyObject {
 }
 
 public extension CoordinatorProtocol {
-    func start<PrimaryView: View, SecondaryView: View>(with view: PrimaryView,
-                                                       secondaryView: SecondaryView) {
+    func start(with view: some View,
+               secondaryView: some View) {
         start(with: UIHostingController(rootView: view),
               secondaryViewController: UIHostingController(rootView: secondaryView))
     }
 
-    func push<V: View>(_ view: V, animated: Bool = true, hidesBackButton: Bool = true) {
+    func push(_ view: some View, animated: Bool = true, hidesBackButton: Bool = true) {
         push(UIHostingController(rootView: view), animated: animated, hidesBackButton: hidesBackButton)
     }
 
-    func present<V: View>(_ view: V,
-                          userInterfaceStyle: UIUserInterfaceStyle,
-                          animated: Bool = true,
-                          dismissible: Bool = true) {
+    func present(_ view: some View,
+                 userInterfaceStyle: UIUserInterfaceStyle,
+                 animated: Bool = true,
+                 dismissible: Bool = true) {
         present(UIHostingController(rootView: view),
                 userInterfaceStyle: userInterfaceStyle,
                 animated: animated,
@@ -101,9 +101,9 @@ enum CoordinatorType {
 
     var controller: UIViewController {
         switch self {
-        case .navigation(let navigationController):
+        case let .navigation(navigationController):
             return navigationController
-        case .split(let splitViewController):
+        case let .split(splitViewController):
             return splitViewController
         }
     }
@@ -132,18 +132,18 @@ open class Coordinator: CoordinatorProtocol {
 
     public func setStatusBarStyle(_ style: UIStatusBarStyle) {
         switch type {
-        case .navigation(let navigationController):
+        case let .navigation(navigationController):
             navigationController.setStatusBarStyle(style)
-        case .split(let splitViewController):
+        case let .split(splitViewController):
             splitViewController.setStatusBarStyle(style)
         }
     }
 
     public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
         switch type {
-        case .navigation(let navigationController):
+        case let .navigation(navigationController):
             navigationController.setViewControllers([viewController], animated: true)
-        case .split(let splitViewController):
+        case let .split(splitViewController):
             splitViewController.setViewController(viewController, for: .primary)
             if let secondaryViewController {
                 splitViewController.setViewController(secondaryViewController, for: .secondary)
@@ -157,9 +157,9 @@ open class Coordinator: CoordinatorProtocol {
             topMostNavigationController.pushViewController(viewController, animated: true)
         } else {
             switch type {
-            case .navigation(let navigationController):
+            case let .navigation(navigationController):
                 navigationController.pushViewController(viewController, animated: animated)
-            case .split(let splitViewController):
+            case let .split(splitViewController):
                 /// Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
                 /// instead of pushing it into the navigation stack of the current secondary view controller.
                 /// This is to reduce memory footprint.
@@ -175,9 +175,9 @@ open class Coordinator: CoordinatorProtocol {
             topMostNavigationController.popViewController(animated: animated)
         } else {
             switch type {
-            case .navigation(let navigationController):
+            case let .navigation(navigationController):
                 navigationController.popViewController(animated: animated)
-            case .split(let splitViewController):
+            case let .split(splitViewController):
                 /// Show primary view controller if it's hidden
                 /// Hide primary view controller if it's visible
                 switch splitViewController.displayMode {
@@ -201,9 +201,9 @@ open class Coordinator: CoordinatorProtocol {
             topMostNavigationController.popToRootViewController(animated: animated)
         } else {
             switch type {
-            case .navigation(let navigationController):
+            case let .navigation(navigationController):
                 navigationController.popToRootViewController(animated: animated)
-            case .split(let splitViewController):
+            case let .split(splitViewController):
                 splitViewController.show(.primary)
                 if let secondaryViewController {
                     secondaryViewController.navigationItem.hidesBackButton = true
@@ -220,7 +220,7 @@ open class Coordinator: CoordinatorProtocol {
     public func isAtRootViewController() -> Bool {
         if topMostViewController == rootViewController {
             switch type {
-            case .navigation(let navigationController):
+            case let .navigation(navigationController):
                 return navigationController.viewControllers.count == 1
             case .split:
                 return true
@@ -237,7 +237,7 @@ open class Coordinator: CoordinatorProtocol {
         switch type {
         case .navigation:
             return true
-        case .split(let splitViewController):
+        case let .split(splitViewController):
             return splitViewController.isCollapsed
         }
     }

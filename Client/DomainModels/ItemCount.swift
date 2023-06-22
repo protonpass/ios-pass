@@ -27,7 +27,7 @@ public struct ItemCount {
     public let noteCount: Int
 
     public var total: Int {
-        [loginCount, aliasCount, creditCardCount, noteCount].reduce(into: 0, { $0 += $1 })
+        [loginCount, aliasCount, creditCardCount, noteCount].reduce(into: 0) { $0 += $1 }
     }
 
     public static var zero = ItemCount(loginCount: 0,
@@ -46,9 +46,9 @@ public struct ItemCount {
     }
 
     public init(items: [ItemTypeIdentifiable]) {
-        self.loginCount = items.filter { $0.type == .login }.count
-        self.aliasCount = items.filter { $0.type == .alias }.count
-        self.creditCardCount = items.filter { $0.type == .creditCard }.count
-        self.noteCount = items.filter { $0.type == .note }.count
+        loginCount = items.filter { $0.type == .login }.count
+        aliasCount = items.filter { $0.type == .alias }.count
+        creditCardCount = items.filter { $0.type == .creditCard }.count
+        noteCount = items.filter { $0.type == .note }.count
     }
 }

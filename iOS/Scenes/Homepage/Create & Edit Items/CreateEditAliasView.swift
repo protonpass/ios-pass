@@ -45,14 +45,14 @@ struct CreateEditAliasView: View {
         NavigationView {
             ZStack {
                 switch viewModel.state {
-                case .loading, .loaded:
+                case .loaded, .loading:
                     content
 
-                case .error(let error):
+                case let .error(error):
                     RetryableErrorView(errorMessage: error.localizedDescription,
                                        onRetry: viewModel.getAliasAndAliasOptions)
-                    .padding()
-                    .toolbar { closeButtonToolbar }
+                        .padding()
+                        .toolbar { closeButtonToolbar }
                 }
             }
             .background(Color(uiColor: PassColor.backgroundNorm))
@@ -80,21 +80,20 @@ struct CreateEditAliasView: View {
                         AliasLimitView(backgroundColor: PassColor.aliasInteractionNormMinor1)
                     }
 
-                    CreateEditItemTitleSection(
-                        title: $viewModel.title,
-                        focusedField: $focusedField,
-                        field: .title,
-                        selectedVault: viewModel.selectedVault,
-                        itemContentType: viewModel.itemContentType(),
-                        isEditMode: viewModel.mode.isEditMode,
-                        onChangeVault: viewModel.changeVault,
-                        onSubmit: {
-                            if case .create = viewModel.mode, isShowingAdvancedOptions {
-                                focusedField = .prefix
-                            } else {
-                                focusedField = .note
-                            }
-                        })
+                    CreateEditItemTitleSection(title: $viewModel.title,
+                                               focusedField: $focusedField,
+                                               field: .title,
+                                               selectedVault: viewModel.selectedVault,
+                                               itemContentType: viewModel.itemContentType(),
+                                               isEditMode: viewModel.mode.isEditMode,
+                                               onChangeVault: viewModel.changeVault,
+                                               onSubmit: {
+                                                   if case .create = viewModel.mode, isShowingAdvancedOptions {
+                                                       focusedField = .prefix
+                                                   } else {
+                                                       focusedField = .note
+                                                   }
+                                               })
 
                     if case .edit = viewModel.mode {
                         aliasReadonlySection
@@ -126,7 +125,7 @@ struct CreateEditAliasView: View {
                     NoteEditSection(note: $viewModel.note,
                                     focusedField: $focusedField,
                                     field: .note)
-                    .id(noteID)
+                        .id(noteID)
                 }
                 .padding()
                 .animation(.default, value: viewModel.shouldUpgrade)
@@ -165,21 +164,20 @@ struct CreateEditAliasView: View {
             }
         }
         .toolbar {
-            CreateEditItemToolbar(
-                saveButtonTitle: viewModel.saveButtonTitle(),
-                isSaveable: viewModel.isSaveable,
-                isSaving: viewModel.isSaving,
-                itemContentType: viewModel.itemContentType(),
-                shouldUpgrade: viewModel.shouldUpgrade,
-                onGoBack: {
-                    if viewModel.didEditSomething {
-                        isShowingDiscardAlert.toggle()
-                    } else {
-                        dismiss()
-                    }
-                },
-                onUpgrade: viewModel.upgrade,
-                onSave: viewModel.save)
+            CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
+                                  isSaveable: viewModel.isSaveable,
+                                  isSaving: viewModel.isSaving,
+                                  itemContentType: viewModel.itemContentType(),
+                                  shouldUpgrade: viewModel.shouldUpgrade,
+                                  onGoBack: {
+                                      if viewModel.didEditSomething {
+                                          isShowingDiscardAlert.toggle()
+                                      } else {
+                                          dismiss()
+                                      }
+                                  },
+                                  onUpgrade: viewModel.upgrade,
+                                  onSave: viewModel.save)
         }
     }
 
@@ -235,7 +233,7 @@ struct CreateEditAliasView: View {
                     default:
                         Text(viewModel.prefix)
                             .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                        Text(viewModel.suffix)
+                            Text(viewModel.suffix)
                             .foregroundColor(Color(uiColor: viewModel.itemContentType().normMajor2Color))
                     }
                 }
