@@ -18,21 +18,114 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import SwiftUI
 import UIComponents
 
 struct BiometricAuthenticationView: View {
-    let onSuccess: () -> Void
+    @StateObject private var authenticator: BiometricAuthenticator
+    @ObservedObject private var viewModel: LocalAuthenticationViewModel
+
+    init(viewModel: LocalAuthenticationViewModel) {
+        _authenticator = .init(wrappedValue: .init(preferences: viewModel.preferences,
+                                                   logManager: viewModel.logManager))
+        _viewModel = .init(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ZStack {
             PassColor.backgroundNorm.toColor
-                .edgesIgnoringSafeArea(.all)
-            Text("Biometric authentication")
+                .ignoresSafeArea()
+
+            switch authenticator.biometryTypeState {
+            case .idle, .initializing:
+                passLogo
+                ProgressView()
+
+            case .initialized:
+                initializedView
+
+            case let .error(error):
+                VStack {
+                    passLogo
+                    Text(error.localizedDescription)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                }
+            }
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                onSuccess()
+        .onFirstAppear(perform: authenticator.initializeBiometryType)
+    }
+}
+
+private extension BiometricAuthenticationView {
+    var passLogo: some View {
+        Image(uiImage: PassIcon.passIcon)
+            .resizable()
+            .scaledToFit()
+            .frame(maxWidth: 160)
+    }
+
+    var retryButton: some View {
+        Button(action: authenticate) {
+            Text("Try again")
+                .foregroundColor(PassColor.interactionNormMajor2.toColor)
+        }
+    }
+
+    func authenticate() {
+        Task {
+            do {
+                if try await authenticator.authenticate(reason: "Please authenticate") {
+                    viewModel.recordSuccess()
+                } else {
+                    viewModel.recordFailure()
+                }
+            } catch {
+                viewModel.recordFailure()
+            }
+        }
+    }
+
+    var initializedView: some View {
+        GeometryReader { proxy in
+            VStack {
+                VStack {
+                    Spacer()
+
+                    passLogo
+
+                    switch viewModel.state {
+                    case .noAttempts:
+                        EmptyView()
+
+                    case .lastAttempt:
+                        // swiftlint:disable:next line_length
+                        Text("This is your last attempt. You will be logged out after failling to authenticate again.")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(PassColor.textNorm.toColor)
+                        retryButton
+                            .padding(.top)
+
+                    case let .remainingAttempts(count):
+                        Text("\(count) remaining attempt(s)")
+                            .foregroundColor(PassColor.textNorm.toColor)
+                        retryButton
+                            .padding(.top)
+                    }
+                }
+                Spacer()
+                    .frame(height: proxy.size.height / 2)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .onFirstAppear {
+            if case .noAttempts = viewModel.state {
+                // Only automatically prompt for biometric authentication when no attempts were made
+                // Otherwise let the users know how many attempts are remaining
+                // and let them retry explicitly
+                authenticate()
             }
         }
     }
