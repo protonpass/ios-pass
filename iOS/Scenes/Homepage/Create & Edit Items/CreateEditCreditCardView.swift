@@ -158,13 +158,14 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Card number")
                     .sectionTitleText()
-                TextField("1234 1234 1234 1234", text: $viewModel.cardNumber)
-                    .keyboardType(.numberPad)
-                    .autocorrectionDisabled()
-                    .focused($focusedField, equals: .cardNumber)
+                WrappedUITextField(text: $viewModel.cardNumber,
+                                   placeHolder: "1234 1234 1234 1234") { isEditing in
+                    guard !isEditing else {
+                        return
+                    }
+                    focusedField = .verificationNumber
+                }.focused($focusedField, equals: .cardNumber)
                     .foregroundColor(PassColor.textNorm.toColor)
-                    .submitLabel(.next)
-                    .onSubmit { focusedField = .verificationNumber }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
