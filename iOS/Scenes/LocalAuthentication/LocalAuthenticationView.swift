@@ -18,13 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import SwiftUI
 
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
 
-    init(viewModel: LocalAuthenticationViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
+    init(type: LocalAuthenticationType,
+         preferences: Preferences,
+         logManager: LogManager,
+         onSuccess: @escaping () -> Void,
+         onFailure: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(type: type,
+                                               preferences: preferences,
+                                               logManager: logManager,
+                                               onSuccess: onSuccess,
+                                               onFailure: onFailure))
     }
 
     var body: some View {
