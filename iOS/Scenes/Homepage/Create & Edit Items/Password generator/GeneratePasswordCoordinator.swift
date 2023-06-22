@@ -83,6 +83,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
 }
 
 // MARK: - Private APIs
+
 extension GeneratePasswordCoordinator {
     func updateSheetHeight(passwordType: PasswordType, isShowingAdvancedOptions: Bool) {
         guard let sheetPresentationController else {
@@ -119,6 +120,7 @@ extension GeneratePasswordCoordinator {
 }
 
 // MARK: - GeneratePasswordViewModelUiDelegate
+
 extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
     func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
                                                            isShowingAdvancedOptions: Bool) {

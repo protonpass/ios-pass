@@ -61,9 +61,9 @@ private extension InfoBannerView {
                 Spacer()
             }
             .foregroundColor(PassColor.textInvert.toColor)
-            
+
             Spacer()
-            
+
             if let icon = banner.detail.icon {
                 Image(uiImage: icon)
                     .resizable()

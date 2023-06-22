@@ -29,16 +29,14 @@ struct TOTPText: View {
         var texts = [Text]()
 
         for (index, segment) in segments.enumerated() {
-            texts.append(
-                Text(segment)
+            texts.append(Text(segment)
                 .font(.callout)
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)))
             if index != segments.count - 1 {
-                texts.append(
-                    Text(" • ")
-                        .font(.callout)
-                        .foregroundColor(Color(uiColor: PassColor.textHint)))
+                texts.append(Text(" • ")
+                    .font(.callout)
+                    .foregroundColor(Color(uiColor: PassColor.textHint)))
             }
         }
         self.texts = texts

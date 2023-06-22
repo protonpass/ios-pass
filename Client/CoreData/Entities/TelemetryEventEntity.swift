@@ -46,9 +46,9 @@ extension TelemetryEventEntity {
     }
 
     func hydrate(from event: TelemetryEvent, userId: String) {
-        self.uuid = event.uuid
-        self.rawValue = event.type.rawValue
-        self.time = event.time
-        self.userID = userId
+        uuid = event.uuid
+        rawValue = event.type.rawValue
+        time = event.time
+        userID = userId
     }
 }

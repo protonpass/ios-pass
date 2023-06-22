@@ -31,21 +31,20 @@ struct EditThemeView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(Theme.allCases, id: \.rawValue) { theme in
-                        SelectableOptionRow(
-                            action: { preferences.theme = theme; dismiss() },
-                            height: .short,
-                            content: {
-                                Label(title: {
-                                    Text(theme.description)
-                                }, icon: {
-                                    Image(uiImage: theme.icon)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(maxWidth: 20, maxHeight: 20)
-                                })
-                                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            },
-                            isSelected: theme == preferences.theme )
+                        SelectableOptionRow(action: { preferences.theme = theme; dismiss() },
+                                            height: .short,
+                                            content: {
+                                                Label(title: {
+                                                    Text(theme.description)
+                                                }, icon: {
+                                                    Image(uiImage: theme.icon)
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(maxWidth: 20, maxHeight: 20)
+                                                })
+                                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                            },
+                                            isSelected: theme == preferences.theme)
 
                         PassDivider()
                     }

@@ -86,6 +86,6 @@ public final class PassPlanRepository: PassPlanRepositoryProtocol {
         self.localPassPlanDatasource = localPassPlanDatasource
         self.remotePassPlanDatasource = remotePassPlanDatasource
         self.userId = userId
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 }

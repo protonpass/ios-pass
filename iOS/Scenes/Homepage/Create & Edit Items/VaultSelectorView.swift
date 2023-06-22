@@ -61,13 +61,12 @@ struct VaultSelectorView: View {
             viewModel.select(vault: vault.vault)
             dismiss()
         }, label: {
-            VaultRow(
-                thumbnail: { VaultThumbnail(vault: vault.vault) },
-                title: vault.vault.name,
-                itemCount: vault.itemCount,
-                isSelected: vault.vault.shareId == viewModel.selectedVault.shareId,
-                height: 74)
-            .padding(.horizontal)
+            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
+                     title: vault.vault.name,
+                     itemCount: vault.itemCount,
+                     isSelected: vault.vault.shareId == viewModel.selectedVault.shareId,
+                     height: 74)
+                .padding(.horizontal)
         })
         .buttonStyle(.plain)
         .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)

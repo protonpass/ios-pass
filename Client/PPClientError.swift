@@ -39,27 +39,27 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
 
     public var debugDescription: String {
         switch self {
-        case .coreData(let reason):
+        case let .coreData(reason):
             return reason.debugDescription
         case .corruptedEncryptedContent:
             return "Corrupted encrypted content"
-        case .corruptedUserData(let reason):
+        case let .corruptedUserData(reason):
             return reason.debugDescription
-        case .crypto(let reason):
+        case let .crypto(reason):
             return reason.debugDescription
         case .errorExpected:
             return "An error is expected"
-        case .itemNotFound(let item):
+        case let .itemNotFound(item):
             return "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
-        case .keysNotFound(let shareID):
+        case let .keysNotFound(shareID):
             return "Keys not found for share \"\(shareID)\""
-        case .shareNotFoundInLocalDB(let shareID):
+        case let .shareNotFoundInLocalDB(shareID):
             return "Share not found in local DB \"\(shareID)\""
-        case .symmetricEncryption(let reason):
+        case let .symmetricEncryption(reason):
             return reason.debugDescription
         case .unexpectedError:
             return "Unexpected error"
-        case .unexpectedHttpStatusCode(let statusCode):
+        case let .unexpectedHttpStatusCode(statusCode):
             return "Unexpected HTTP status code \(String(describing: statusCode))"
         case .unknownShareType:
             return "Unknown share type"
@@ -70,6 +70,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible {
 }
 
 // MARK: - CoreDataFailureReason
+
 public extension PPClientError {
     enum CoreDataFailureReason: CustomDebugStringConvertible {
         case corrupted(object: NSManagedObject, property: String)
@@ -79,7 +80,7 @@ public extension PPClientError {
             switch self {
             case let .corrupted(object, property):
                 return "Corrupted \(type(of: object)): missing value for \(property)"
-            case .corruptedShareKeys(let shareId):
+            case let .corruptedShareKeys(shareId):
                 return "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
             }
         }
@@ -87,6 +88,7 @@ public extension PPClientError {
 }
 
 // MARK: - UserDataCorruptionReason
+
 public extension PPClientError {
     enum UserDataCorruptionReason: CustomDebugStringConvertible {
         case noAddresses
@@ -107,6 +109,7 @@ public extension PPClientError {
 }
 
 // MARK: - CryptoFailureReason
+
 public extension PPClientError {
     enum CryptoFailureReason: CustomDebugStringConvertible {
         case failedToSplitPGPMessage
@@ -136,9 +139,9 @@ public extension PPClientError {
             switch self {
             case .failedToSplitPGPMessage:
                 return "Failed to split PGP message"
-            case .failedToUnarmor(let string):
+            case let .failedToUnarmor(string):
                 return "Failed to unarmor \(string)"
-            case .failedToArmor(let string):
+            case let .failedToArmor(string):
                 return "Failed to armor \(string)"
             case .failedToBase64Decode:
                 return "Failed to base 64 decode"
@@ -160,19 +163,19 @@ public extension PPClientError {
                 return "Failed to generate session key"
             case .failedToDecode:
                 return "Failed to decode"
-            case .failedToEncode(let string):
+            case let .failedToEncode(string):
                 return "Failed to encode \"\(string)\""
             case .failedToAESEncrypt:
                 return "Failed to AES encrypt"
-            case .inactiveUserKey(let userKeyId):
+            case let .inactiveUserKey(userKeyId):
                 return "Inactive user key \(userKeyId)"
-            case .addressNotFound(let addressID):
+            case let .addressNotFound(addressID):
                 return "Address not found \"\(addressID)\""
-            case .corruptedShareContent(let shareID):
+            case let .corruptedShareContent(shareID):
                 return "Corrupted share content shareID \"\(shareID)\""
-            case .missingUserKey(let userID):
+            case let .missingUserKey(userID):
                 return "Missing user key \"\(userID)\""
-            case .missingPassphrase(let keyID):
+            case let .missingPassphrase(keyID):
                 return "Missing passphrase \"\(keyID)\""
             case .missingKeys:
                 return "Missing keys"
@@ -191,9 +194,9 @@ public extension PPClientError {
 
         public var debugDescription: String {
             switch self {
-            case .failedToUtf8ConvertToData(let string):
+            case let .failedToUtf8ConvertToData(string):
                 return "Failed to UTF8 convert to data \"\(string)\""
-            case .failedToBase64Decode(let string):
+            case let .failedToBase64Decode(string):
                 return "Failed to base 64 decode \"\(string)\""
             case .failedToUtf8Decode:
                 return "Failed to UTF8 decode"

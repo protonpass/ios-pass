@@ -41,7 +41,7 @@ final class OnboardingViewModel: ObservableObject {
          logManager: LogManager) {
         self.credentialManager = credentialManager
         self.preferences = preferences
-        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
+        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.bannerManager = bannerManager
 
         biometricAuthenticator.initializeBiometryType()
@@ -74,7 +74,7 @@ final class OnboardingViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }
-                if case .error(let error) = state {
+                if case let .error(error) = state {
                     self.bannerManager.displayTopErrorMessage(error)
                 }
             }
@@ -96,7 +96,7 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     private func showAppropriateBiometricAuthenticationStep() {
-        if case .initialized(let type) = biometricAuthenticator.biometryTypeState {
+        if case let .initialized(type) = biometricAuthenticator.biometryTypeState {
             switch type {
             case .faceID:
                 if preferences.biometricAuthenticationEnabled {
@@ -121,6 +121,7 @@ final class OnboardingViewModel: ObservableObject {
 }
 
 // MARK: - Public actions
+
 extension OnboardingViewModel {
     func primaryAction() {
         switch state {
@@ -147,9 +148,9 @@ extension OnboardingViewModel {
             showAppropriateBiometricAuthenticationStep()
 
         case .biometricAuthenticationFaceID,
-                .biometricAuthenticationTouchID,
-                .faceIDEnabled,
-                .touchIDEnabled:
+             .biometricAuthenticationTouchID,
+             .faceIDEnabled,
+             .touchIDEnabled:
             state = .aliases
 
         case .aliases:

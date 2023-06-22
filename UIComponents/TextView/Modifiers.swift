@@ -24,7 +24,7 @@ public extension TextView {
     ///         .placeholder("placeholder") { view in
     ///             view.foregroundColor(.red)
     ///         }
-    func placeholder<V: View>(_ placeholder: String, _ configure: (Text) -> V) -> TextView {
+    func placeholder(_ placeholder: String, _ configure: (Text) -> some View) -> TextView {
         var view = self
         let text = Text(placeholder)
         view.placeholderView = AnyView(configure(text))
@@ -32,7 +32,7 @@ public extension TextView {
     }
 
     /// Specify a custom placeholder view
-    func placeholder<V: View>(_ placeholder: V) -> TextView {
+    func placeholder(_ placeholder: some View) -> TextView {
         var view = self
         view.placeholderView = AnyView(placeholder)
         return view
@@ -96,7 +96,7 @@ public extension TextView {
     /// - Parameter disable: If true, autocorrection will be disabled
     func disableAutocorrection(_ disable: Bool?) -> TextView {
         var view = self
-        if let disable = disable {
+        if let disable {
             view.autocorrection = disable ? .no : .yes
         } else {
             view.autocorrection = .default
@@ -158,4 +158,5 @@ public extension TextView {
         return view
     }
 }
+
 // swiftlint:enable discouraged_optional_boolean

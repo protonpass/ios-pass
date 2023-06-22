@@ -59,6 +59,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
             }
         }
     }
+
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
     weak var delegate: SettingsViewModelDelegate?
@@ -69,7 +70,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
          preferences: Preferences,
          vaultsManager: VaultsManager) {
         self.isShownAsSheet = isShownAsSheet
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.preferences = preferences
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
@@ -81,22 +82,22 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         }
 
         switch preferences.browser {
-        case .safari, .inAppSafari:
-            self.selectedBrowser = preferences.browser
+        case .inAppSafari, .safari:
+            selectedBrowser = preferences.browser
         default:
             if installedBrowsers.contains(preferences.browser) {
-                self.selectedBrowser = preferences.browser
+                selectedBrowser = preferences.browser
             } else {
-                self.selectedBrowser = .safari
+                selectedBrowser = .safari
             }
         }
 
-        self.supportedBrowsers = [.safari, .inAppSafari] + installedBrowsers
+        supportedBrowsers = [.safari, .inAppSafari] + installedBrowsers
 
-        self.selectedTheme = preferences.theme
-        self.selectedClipboardExpiration = preferences.clipboardExpiration
-        self.displayFavIcons = preferences.displayFavIcons
-        self.shareClipboard = preferences.shareClipboard
+        selectedTheme = preferences.theme
+        selectedClipboardExpiration = preferences.clipboardExpiration
+        displayFavIcons = preferences.displayFavIcons
+        shareClipboard = preferences.shareClipboard
         self.vaultsManager = vaultsManager
 
         preferences
@@ -104,9 +105,9 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
             .sink { [unowned self] in
                 // These options are changed in other pages by passing a references
                 // of Preferences. So we listen to changes and update here.
-                self.selectedBrowser = self.preferences.browser
-                self.selectedTheme = self.preferences.theme
-                self.selectedClipboardExpiration = self.preferences.clipboardExpiration
+                selectedBrowser = self.preferences.browser
+                selectedTheme = self.preferences.theme
+                selectedClipboardExpiration = self.preferences.clipboardExpiration
             }
             .store(in: &cancellables)
 
@@ -115,6 +116,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 }
 
 // MARK: - Public APIs
+
 extension SettingsViewModel {
     func goBack() {
         delegate?.settingsViewModelWantsToGoBack()

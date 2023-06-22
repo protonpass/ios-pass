@@ -21,9 +21,8 @@
 import AuthenticationServices
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
-    private lazy var coordinator: CredentialProviderCoordinator = {
-        .init(context: extensionContext, rootViewController: self)
-    }()
+    private lazy var coordinator: CredentialProviderCoordinator = .init(context: extensionContext,
+                                                                        rootViewController: self)
 
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
@@ -34,21 +33,21 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         coordinator.start(with: serviceIdentifiers)
     }
 
-     /*Implement this method if your extension supports showing credentials in the QuickType bar.
+    /* Implement this method if your extension supports showing credentials in the QuickType bar.
      When the user selects a credential from your app, this method will be called with the
      ASPasswordCredentialIdentity your app has previously saved to the ASCredentialIdentityStore.
      Provide the password by completing the extension request with the associated ASPasswordCredential.
      If using the credential would require showing custom UI for authenticating the user, cancel
-     the request with error code ASExtensionError.userInteractionRequired.*/
+     the request with error code ASExtensionError.userInteractionRequired. */
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         coordinator.provideCredentialWithoutUserInteraction(for: credentialIdentity)
     }
 
-    /*Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
+    /* Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
      ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
      UI and call this method. Show appropriate UI for authenticating the user then provide the password
-     by completing the extension request with the associated ASPasswordCredential.*/
+     by completing the extension request with the associated ASPasswordCredential. */
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
         coordinator.provideCredentialWithBiometricAuthentication(for: credentialIdentity)

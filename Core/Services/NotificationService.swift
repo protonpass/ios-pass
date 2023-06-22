@@ -23,7 +23,7 @@ import UserNotifications
 
 public protocol LocalNotificationServiceProtocol {
     func requestNotificationPermission(with options: UNAuthorizationOptions)
-    
+
     func add(for request: UNNotificationRequest)
     func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval)
 }
@@ -38,24 +38,24 @@ public final class NotificationService: LocalNotificationServiceProtocol {
     private let unUserNotificationCenter: UNUserNotificationCenter
     private var currentTimers: [String: Timer] = [:]
     private let logger: Logger
-    
+
     public init(logger: Logger,
                 unUserNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         self.unUserNotificationCenter = unUserNotificationCenter
         self.logger = logger
     }
-    
+
     public func requestNotificationPermission(with options: UNAuthorizationOptions = []) {
         unUserNotificationCenter.requestAuthorization(options: options) { [weak self] _, error in
             self?.logger.error("unUserNotificationCenter authorization request error: \(error.debugDescription)")
         }
     }
-    
+
     public func add(for request: UNNotificationRequest) {
         logger.info("Adding following non timed notification: \(request.description)")
         unUserNotificationCenter.add(request)
     }
-    
+
     public func addWithTimer(for request: UNNotificationRequest, and delay: TimeInterval = 5) {
         logger.info("Adding following timed notification: \(request.description), with removal delay: \(delay)")
 
@@ -72,9 +72,10 @@ public final class NotificationService: LocalNotificationServiceProtocol {
 }
 
 // MARK: Utils
+
 private extension NotificationService {
     func stopTimer(with id: String) {
-        if let timer = self.currentTimers[id] {
+        if let timer = currentTimers[id] {
             timer.invalidate()
         }
         currentTimers.removeValue(forKey: id)

@@ -44,7 +44,7 @@ struct NoCameraPermissionView: View {
                                           titleColor: PassColor.textInvert,
                                           backgroundColor: PassColor.interactionNormMajor1,
                                           action: onOpenSettings)
-                        .frame(width: 250)
+                            .frame(width: 250)
                     } else {
                         Text("Please allow camera access in Settings")
                             .multilineTextAlignment(.center)

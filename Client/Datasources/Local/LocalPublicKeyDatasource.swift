@@ -40,10 +40,10 @@ public extension LocalPublicKeyDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: PublicKeyEntity.entity(context: taskContext),
-                              sourceItems: publicKeys) { managedObject, publicKey in
-            (managedObject as? PublicKeyEntity)?.hydrate(from: publicKey, email: email)
-        }
+            newBatchInsertRequest(entity: PublicKeyEntity.entity(context: taskContext),
+                                  sourceItems: publicKeys) { managedObject, publicKey in
+                (managedObject as? PublicKeyEntity)?.hydrate(from: publicKey, email: email)
+            }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }

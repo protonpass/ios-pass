@@ -146,7 +146,7 @@ analyzer_rules: # Rules run by `swiftlint analyze`
 # rules that have both warning and error levels, can set just the warning level
 # implicitly
 line_length:
-  warning: 115
+  warning: 120
   error: 200
   ignores_urls: true
   ignores_comments: true

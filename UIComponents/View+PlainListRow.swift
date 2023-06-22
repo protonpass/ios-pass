@@ -22,8 +22,7 @@ import SwiftUI
 
 public extension View {
     func plainListRow() -> some View {
-        self
-            .listRowSeparator(.hidden)
+        listRowSeparator(.hidden)
             .listRowInsets(.zero)
             .listRowBackground(Color.clear)
     }

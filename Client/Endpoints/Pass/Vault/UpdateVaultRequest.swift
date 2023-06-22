@@ -43,13 +43,13 @@ public extension UpdateVaultRequest {
 
         let encryptedContent = try AES.GCM.seal(vault.data(),
                                                 key: vaultKey,
-                                                associatedData: .vaultcontent)
+                                                associatedData: .vaultContent)
 
         guard let content = encryptedContent.combined?.base64EncodedString(), content.count >= 28 else {
             throw PPClientError.crypto(.failedToAESEncrypt)
         }
         self.content = content
-        self.keyRotation = Int(shareKey.keyRotation)
+        keyRotation = Int(shareKey.keyRotation)
     }
 }
 

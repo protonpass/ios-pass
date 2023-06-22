@@ -38,7 +38,7 @@ public extension AutoFillCredential {
          username: String,
          url: String,
          lastUseTime: Int64) {
-        self.ids = .init(shareId: shareId, itemId: itemId)
+        ids = .init(shareId: shareId, itemId: itemId)
         self.username = username
         self.url = url
         self.lastUseTime = lastUseTime

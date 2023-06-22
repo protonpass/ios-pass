@@ -38,6 +38,7 @@ protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
 }
 
+// swiftlint:disable line_length
 final class APIManager {
     private let logManager: LogManager
     private let logger: Logger
@@ -67,45 +68,43 @@ final class APIManager {
 
         let apiService: PMAPIService
         if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
-            apiService = PMAPIService.createAPIService(
-                doh: ProtonPassDoH(),
-                sessionUID: credential.sessionID,
-                challengeParametersProvider: .forAPIService(clientApp: .pass, challenge: .init())
-            )
-            self.authHelper = AuthHelper(authCredential: credential)
+            apiService = PMAPIService.createAPIService(doh: ProtonPassDoH(),
+                                                       sessionUID: credential.sessionID,
+                                                       challengeParametersProvider: .forAPIService(clientApp: .pass,
+                                                                                                   challenge: .init()))
+            authHelper = AuthHelper(authCredential: credential)
         } else {
-            apiService = PMAPIService.createAPIServiceWithoutSession(
-                doh: ProtonPassDoH(),
-                challengeParametersProvider: .forAPIService(clientApp: .pass, challenge: .init())
-            )
-            self.authHelper = AuthHelper()
+            apiService = PMAPIService.createAPIServiceWithoutSession(doh: ProtonPassDoH(),
+                                                                     challengeParametersProvider: .forAPIService(clientApp: .pass,
+                                                                                                                 challenge: .init()))
+            authHelper = AuthHelper()
         }
         self.apiService = apiService
-        self.authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
+        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
         self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
         apiService.loggingDelegate = self
 
-        self.humanHelper = HumanCheckHelper(apiService: apiService,
-                                            inAppTheme: { preferences.theme.inAppTheme },
-                                            clientApp: .pass)
-        self.apiService.humanDelegate = humanHelper
+        humanHelper = HumanCheckHelper(apiService: apiService,
+                                       inAppTheme: { preferences.theme.inAppTheme },
+                                       clientApp: .pass)
+        apiService.humanDelegate = humanHelper
 
         if let appStoreUrl = URL(string: Constants.appStoreUrl) {
-            self.forceUpgradeHelper = .init(config: .mobile(appStoreUrl), responseDelegate: self)
+            forceUpgradeHelper = .init(config: .mobile(appStoreUrl), responseDelegate: self)
         } else {
             // Should never happen
             let message = "Can not parse App Store URL"
             assertionFailure(message)
             logger.warning(message)
-            self.forceUpgradeHelper = .init(config: .desktop, responseDelegate: self)
+            forceUpgradeHelper = .init(config: .desktop, responseDelegate: self)
         }
 
-        self.apiService.forceUpgradeDelegate = forceUpgradeHelper
+        apiService.forceUpgradeDelegate = forceUpgradeHelper
 
-        self.setUpCore()
-        self.fetchUnauthSessionIfNeeded()
-        self.useNewTokensWhenAppBackToForegound()
+        setUpCore()
+        fetchUnauthSessionIfNeeded()
+        useNewTokensWhenAppBackToForegound()
     }
 
     func sessionIsAvailable(authCredential: AuthCredential, scopes: Scopes) {
@@ -150,7 +149,7 @@ final class APIManager {
                 // reached but returned 4xx/5xx.
                 // In both cases we're done here
                 break
-            case .failure(let error):
+            case let .failure(error):
                 // servers not reachable
                 self.logger.error(error)
             }
@@ -164,8 +163,8 @@ final class APIManager {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [unowned self] _ in
-                guard let userData = self.appData.userData else { return }
-                self.authHelper.onSessionObtaining(credential: userData.getCredential)
+                guard let userData = appData.userData else { return }
+                authHelper.onSessionObtaining(credential: userData.getCredential)
             }
             .store(in: &cancellables)
     }
@@ -178,12 +177,13 @@ final class APIManager {
                                        passphrases: userData.passphrases,
                                        addresses: userData.addresses,
                                        scopes: userData.scopes)
-        self.appData.userData = updatedUserData
-        self.appData.unauthSessionCredentials = nil
+        appData.userData = updatedUserData
+        appData.unauthSessionCredentials = nil
     }
 }
 
 // MARK: - AuthHelperDelegate
+
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
         clearCredentials()
@@ -208,6 +208,7 @@ extension APIManager: AuthHelperDelegate {
 }
 
 // MARK: - APIServiceDelegate
+
 extension APIManager: APIServiceDelegate {
     var appVersion: String { appVer }
     var userAgent: String? { UserAgent.default.ua }
@@ -223,11 +224,12 @@ extension APIManager: APIServiceDelegate {
     func isReachable() -> Bool {
         // swiftlint:disable:next todo
         // TODO: Handle this
-        return true
+        true
     }
 }
 
 // MARK: - ForceUpgradeResponseDelegate
+
 extension APIManager: ForceUpgradeResponseDelegate {
     func onQuitButtonPressed() {
         logger.info("Quit force upgrade page")
@@ -239,32 +241,34 @@ extension APIManager: ForceUpgradeResponseDelegate {
 }
 
 // MARK: - APIServiceLoggingDelegate
+
 extension APIManager: APIServiceLoggingDelegate {
     func accessTokenRefreshDidStart(for sessionID: String,
                                     sessionType: APISessionTypeForLogging) {
         logger.info("Access token refresh did start for \(sessionType) session \(sessionID)")
     }
-    
+
     func accessTokenRefreshDidSucceed(for sessionID: String,
                                       sessionType: APISessionTypeForLogging,
                                       reason: APIServiceAccessTokenRefreshSuccessReasonForLogging) {
         logger.info("""
-                    Access token refresh did succeed for \(sessionType) session \(sessionID)
-                    with reason \(reason)
-                    """)
+        Access token refresh did succeed for \(sessionType) session \(sessionID)
+        with reason \(reason)
+        """)
     }
-    
+
     func accessTokenRefreshDidFail(for sessionID: String,
                                    sessionType: APISessionTypeForLogging,
                                    error: APIServiceAccessTokenRefreshErrorForLogging) {
         logger.info("""
-                    Access token refresh did fail for \(sessionType) session \(sessionID)
-                    with error \(error.localizedDescription)
-                    """)
+        Access token refresh did fail for \(sessionType) session \(sessionID)
+        with error \(error.localizedDescription)
+        """)
     }
 }
 
 // MARK: - TrustKitDelegate
+
 private class LoggingTrustKitDelegate: TrustKitDelegate {
     let logger: Logger
 
@@ -282,3 +286,5 @@ private class LoggingTrustKitDelegate: TrustKitDelegate {
         }
     }
 }
+
+// swiftlint:enable line_length

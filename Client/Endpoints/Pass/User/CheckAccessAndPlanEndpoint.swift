@@ -38,8 +38,8 @@ public struct CheckAccessAndPlanEndpoint: Endpoint {
     public var method: HTTPMethod
 
     public init() {
-        self.debugDescription = "Check access to Pass"
-        self.path = "/pass/v1/user/access"
-        self.method = .get
+        debugDescription = "Check access to Pass"
+        path = "/pass/v1/user/access"
+        method = .get
     }
 }

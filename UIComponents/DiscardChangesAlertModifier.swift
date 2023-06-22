@@ -25,22 +25,21 @@ public struct DiscardChangesAlertModifier: ViewModifier {
     let onDiscard: () -> Void
 
     public init(isPresented: Binding<Bool>, onDiscard: @escaping () -> Void) {
-        self._isPresented = isPresented
+        _isPresented = isPresented
         self.onDiscard = onDiscard
     }
 
     public func body(content: Content) -> some View {
         content
-            .alert(
-                "Discard changes?",
-                isPresented: $isPresented,
-                actions: {
-                    Button("Keep Editing", role: .cancel, action: {})
-                    Button("Discard Changes", role: .destructive, action: onDiscard)
-                },
-                message: {
-                    Text("You will lose all unsaved changes")
-                })
+            .alert("Discard changes?",
+                   isPresented: $isPresented,
+                   actions: {
+                       Button("Keep Editing", role: .cancel, action: {})
+                       Button("Discard Changes", role: .destructive, action: onDiscard)
+                   },
+                   message: {
+                       Text("You will lose all unsaved changes")
+                   })
     }
 }
 

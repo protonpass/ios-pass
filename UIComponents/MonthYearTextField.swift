@@ -41,15 +41,15 @@ public struct MonthYearTextField: UIViewRepresentable {
         self.textColor = textColor
         self.tintColor = tintColor
         self.font = font
-        self.months = Array(1...12)
+        months = Array(1...12)
 
         let currentYear = Calendar.current.component(.year, from: .now)
         let startYear = currentYear - 10
         let endYear = currentYear + 30
-        self.years = Array(startYear...endYear)
+        years = Array(startYear...endYear)
 
-        self._month = month
-        self._year = year
+        _month = month
+        _year = year
     }
 
     public func makeUIView(context: Context) -> UITextField {
@@ -72,14 +72,14 @@ public struct MonthYearTextField: UIViewRepresentable {
 
         let doneButon = UIBarButtonItem(systemItem: .done,
                                         primaryAction: .init(handler: { _ in
-            if month == nil {
-                month = Calendar.current.component(.month, from: .now)
-            }
-            if year == nil {
-                year = Calendar.current.component(.year, from: .now)
-            }
-            textField.resignFirstResponder()
-        }))
+                                            if month == nil {
+                                                month = Calendar.current.component(.month, from: .now)
+                                            }
+                                            if year == nil {
+                                                year = Calendar.current.component(.year, from: .now)
+                                            }
+                                            textField.resignFirstResponder()
+                                        }))
         toolbar.items = [.flexibleSpace(), doneButon]
 
         return textField

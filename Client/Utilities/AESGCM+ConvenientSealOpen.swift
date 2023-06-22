@@ -23,7 +23,7 @@ import CryptoKit
 enum AssociatedData: String {
     case itemContent = "itemcontent"
     case itemKey = "itemkey"
-    case vaultcontent = "vaultcontent"
+    case vaultContent = "vaultcontent"
 
     var data: Data { rawValue.data(using: .utf8) ?? .init() }
 }

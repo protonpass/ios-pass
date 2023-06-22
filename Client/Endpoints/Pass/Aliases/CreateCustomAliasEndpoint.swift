@@ -31,9 +31,9 @@ public struct CreateCustomAliasEndpoint: Endpoint {
     public var body: CreateCustomAliasRequest?
 
     public init(shareId: String, request: CreateCustomAliasRequest) {
-        self.debugDescription = "Create a custom alias"
-        self.path = "/pass/v1/share/\(shareId)/alias/custom"
-        self.method = .post
-        self.body = request
+        debugDescription = "Create a custom alias"
+        path = "/pass/v1/share/\(shareId)/alias/custom"
+        method = .post
+        body = request
     }
 }

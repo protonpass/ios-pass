@@ -62,9 +62,9 @@ private struct TrashItemsView: View {
         switch viewModel.state {
         case .loading:
             ProgressView()
-        case .loaded(let uiModels):
+        case let .loaded(uiModels):
             vaultList(uiModels)
-        case .error(let error):
+        case let .error(error):
             RetryableErrorView(errorMessage: error.localizedDescription,
                                onRetry: viewModel.loadVaults)
         }
@@ -88,16 +88,15 @@ private struct TrashItemsView: View {
                     Button(action: {
                         selectedUiModel = uiModel
                     }, label: {
-                        VaultRow(
-                            thumbnail: {
-                                CircleButton(icon: icon,
-                                             iconColor: color,
-                                             backgroundColor: color.withAlphaComponent(0.16))
-                            },
-                            title: vault.name,
-                            itemCount: uiModel.itemCount,
-                            isSelected: false,
-                            height: 44)
+                        VaultRow(thumbnail: {
+                                     CircleButton(icon: icon,
+                                                  iconColor: color,
+                                                  backgroundColor: color.withAlphaComponent(0.16))
+                                 },
+                                 title: vault.name,
+                                 itemCount: uiModel.itemCount,
+                                 isSelected: false,
+                                 height: 44)
                     })
                     .buttonStyle(.plain)
                 }
@@ -106,27 +105,25 @@ private struct TrashItemsView: View {
             })
         }
         .navigationTitle("Select to trash all items")
-        .alert(
-            "Trash all items",
-            isPresented: showingAlert,
-            actions: {
-                Button(role: .cancel, label: { Text("Cancel") })
-                Button(
-                    role: .destructive,
-                    action: {
-                        if let selectedUiModel {
-                            viewModel.trashItems(for: selectedUiModel.vault)
-                        }
-                    },
-                    label: {
-                        Text("Yes")
-                    })
-            },
-            message: {
-                if let selectedUiModel {
-                    Text("Vault \"\(selectedUiModel.vault.name)\" with \(selectedUiModel.itemCount) item(s)")
-                }
-            })
+        .alert("Trash all items",
+               isPresented: showingAlert,
+               actions: {
+                   Button(role: .cancel, label: { Text("Cancel") })
+                   Button(role: .destructive,
+                          action: {
+                              if let selectedUiModel {
+                                  viewModel.trashItems(for: selectedUiModel.vault)
+                              }
+                          },
+                          label: {
+                              Text("Yes")
+                          })
+               },
+               message: {
+                   if let selectedUiModel {
+                       Text("Vault \"\(selectedUiModel.vault.name)\" with \(selectedUiModel.itemCount) item(s)")
+                   }
+               })
     }
 }
 
@@ -149,7 +146,7 @@ private final class TrashItemsViewModel: ObservableObject {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.bannerManager = bannerManager
-        self.loadVaults()
+        loadVaults()
     }
 
     func loadVaults() {
@@ -161,7 +158,7 @@ private final class TrashItemsViewModel: ObservableObject {
 
                 let vaultListUiModels: [VaultListUiModel] = vaults.map { vault in
                     let activeItems =
-                    items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
+                        items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
                     return .init(vault: vault, itemCount: activeItems.count)
                 }
                 state = .loaded(vaultListUiModels)

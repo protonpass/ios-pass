@@ -44,7 +44,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
          logManager: LogManager) {
         self.allVaults = allVaults
         self.currentVault = currentVault
-        self.selectedVault = currentVault
+        selectedVault = currentVault
 
         Task { @MainActor in
             do {

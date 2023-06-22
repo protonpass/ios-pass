@@ -46,13 +46,13 @@ extension PPKeychain: SettingsProvider {
 
     public var lockTime: AutolockTimeout {
         get {
-            guard let string = self.string(forKey: Self.LockTimeKey), let intValue = Int(string) else {
+            guard let string = string(forKey: Self.LockTimeKey), let intValue = Int(string) else {
                 return .never
             }
             return AutolockTimeout(rawValue: intValue)
         }
         set {
-            self.set(String(newValue.rawValue), forKey: Self.LockTimeKey)
+            set(String(newValue.rawValue), forKey: Self.LockTimeKey)
         }
     }
 }

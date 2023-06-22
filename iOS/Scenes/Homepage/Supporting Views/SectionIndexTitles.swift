@@ -42,12 +42,10 @@ struct SectionIndexTitles: View {
                     .background(dragObserver(title: letter.character))
             }
         }
-        .gesture(
-            DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                .updating($dragLocation) { value, state, _ in
-                    state = value.location
-                }
-        )
+        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
+            .updating($dragLocation) { value, state, _ in
+                state = value.location
+            })
     }
 
     func dragObserver(title: String) -> some View {

@@ -20,7 +20,7 @@
 
 public protocol LogManagerProtocol: Actor {
     var shouldLog: Bool { get }
-    
+
     func log(entry: LogEntry)
     func getLogEntries() async throws -> [LogEntry]
     func removeAllLogs()
@@ -36,13 +36,13 @@ public struct LogManagerConfig {
     let maxLogLines: Int
     let dumpThreshold: Int
     let timerInterval: Double
-    
+
     public init(maxLogLines: Int, dumpThreshold: Int = 300, timerInterval: Double = 30) {
         self.maxLogLines = maxLogLines
         self.dumpThreshold = dumpThreshold
         self.timerInterval = timerInterval
     }
-    
+
     public static var `default`: LogManagerConfig {
         LogManagerConfig(maxLogLines: 5_000, dumpThreshold: 300, timerInterval: 30)
     }
@@ -55,13 +55,13 @@ public actor LogManager: LogManagerProtocol {
     private var currentMemoryLogs = [LogEntry]()
     private let config: LogManagerConfig
     private var timer: Timer?
-    
+
     public private(set) var shouldLog = true
 
     private var numberOfLogAfterMerge: Int {
         currentSavedlogs.count + currentMemoryLogs.count
     }
-    
+
     private var numberOfLogsToRemove: Int {
         numberOfLogAfterMerge - config.maxLogLines
     }
@@ -82,7 +82,7 @@ public actor LogManager: LogManagerProtocol {
             await setUp()
         }
     }
-    
+
     deinit {
         timer?.invalidate()
         timer = nil
@@ -90,6 +90,7 @@ public actor LogManager: LogManagerProtocol {
 }
 
 // MARK: - Public APIs
+
 public extension LogManager {
     func log(entry: LogEntry) {
         guard shouldLog else {
@@ -103,11 +104,11 @@ public extension LogManager {
     }
 
     func getLogEntries() async throws -> [LogEntry] {
-       guard fileExists else { return [] }
-       let logContents = try String(contentsOf: url, encoding: .utf8)
-       let lines = logContents.components(separatedBy: .newlines).filter { !$0.isEmpty }
-       let entries = lines.compactMap { $0.toLogEntry }
-       return entries
+        guard fileExists else { return [] }
+        let logContents = try String(contentsOf: url, encoding: .utf8)
+        let lines = logContents.components(separatedBy: .newlines).filter { !$0.isEmpty }
+        let entries = lines.compactMap(\.toLogEntry)
+        return entries
     }
 
     func removeAllLogs() {
@@ -123,7 +124,7 @@ public extension LogManager {
             print("Failed to remove log file: \(error.localizedDescription)")
         }
     }
-    
+
     func saveAllLogs() {
         guard shouldLog else {
             return
@@ -137,13 +138,14 @@ public extension LogManager {
             print("Failed to log: \(error.localizedDescription)")
         }
     }
-    
+
     func toggleLogging(shouldLog: Bool) {
         self.shouldLog = shouldLog
     }
 }
 
 // MARK: - Private APIs
+
 private extension LogManager {
     func createLogFileIfNotExist() throws {
         guard !fileExists else {
@@ -156,18 +158,18 @@ private extension LogManager {
             throw error
         }
     }
-    
+
     func pruneLogs() {
         if numberOfLogAfterMerge > config.maxLogLines {
             currentSavedlogs.removeFirst(numberOfLogsToRemove)
         }
     }
-    
+
     func mergeAndClear() {
-        currentSavedlogs.append(contentsOf: currentMemoryLogs.compactMap { $0.toString })
+        currentSavedlogs.append(contentsOf: currentMemoryLogs.compactMap(\.toString))
         currentMemoryLogs.removeAll()
     }
-    
+
     func savedOnFile() throws {
         let updatedLogs = currentSavedlogs.joined(separator: "\n")
         try updatedLogs.data(using: .utf8)?.write(to: url)
@@ -175,6 +177,7 @@ private extension LogManager {
 }
 
 // MARK: - Utils
+
 private extension LogManager {
     func setUp() {
         timer = Timer.scheduledTimer(withTimeInterval: config.timerInterval,
@@ -190,11 +193,12 @@ private extension LogManager {
 }
 
 // MARK: Utils Extensions
+
 private extension LogEntry {
     var toString: String? {
         guard let jsonData = try? JSONEncoder().encode(self),
-                let jsonString = String(data: jsonData, encoding: .utf8) else {
-           return nil
+              let jsonString = String(data: jsonData, encoding: .utf8) else {
+            return nil
         }
         return jsonString
     }
@@ -202,11 +206,11 @@ private extension LogEntry {
 
 private extension String {
     var toLogEntry: LogEntry? {
-        guard let data = self.data(using: .utf8),
+        guard let data = data(using: .utf8),
               let entry = try? JSONDecoder().decode(LogEntry.self, from: data) else {
             return nil
         }
-        
+
         return entry
     }
 }

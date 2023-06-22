@@ -54,7 +54,7 @@ struct LogInDetailView: View {
                         ItemDetailTitleView(itemContent: viewModel.itemContent,
                                             vault: viewModel.vault,
                                             favIconRepository: viewModel.favIconRepository)
-                        .padding(.bottom, 40)
+                            .padding(.bottom, 40)
 
                         usernamePassword2FaSection
 
@@ -68,24 +68,23 @@ struct LogInDetailView: View {
                                               vault: viewModel.vault,
                                               theme: viewModel.theme,
                                               favIconRepository: viewModel.favIconRepository)
-                            .padding(.top, 8)
+                                .padding(.top, 8)
                         }
 
-                        CustomFieldSections(
-                            itemContentType: viewModel.itemContent.type,
-                            uiModels: viewModel.customFieldUiModels,
-                            isFreeUser: viewModel.isFreeUser,
-                            logManager: viewModel.logManager,
-                            onSelectTotpToken: { token in
-                                viewModel.copyToClipboard(
-                                    text: token,
-                                    message: "Two Factor Authentication code copied") },
-                            onUpgrade: viewModel.upgrade)
+                        CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                                            uiModels: viewModel.customFieldUiModels,
+                                            isFreeUser: viewModel.isFreeUser,
+                                            logManager: viewModel.logManager,
+                                            onSelectTotpToken: { token in
+                                                viewModel.copyToClipboard(text: token,
+                                                                          message: "Two Factor Authentication code copied") // swiftlint:disable:this line_length
+                                            },
+                                            onUpgrade: viewModel.upgrade)
 
                         ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)
-                        .padding(.top, 24)
-                        .id(bottomID)
+                            .padding(.top, 24)
+                            .id(bottomID)
                     }
                     .padding()
                 }
@@ -191,6 +190,7 @@ struct LogInDetailView: View {
             })
         }
     }
+
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
@@ -222,8 +222,8 @@ struct LogInDetailView: View {
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
                              action: { isShowingPassword.toggle() })
-                .fixedSize(horizontal: true, vertical: true)
-                .animationsDisabled()
+                    .fixedSize(horizontal: true, vertical: true)
+                    .animationsDisabled()
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
@@ -273,7 +273,7 @@ struct LogInDetailView: View {
                     EmptyView()
                 case .loading:
                     ProgressView()
-                case .valid(let data):
+                case let .valid(data):
                     TOTPText(code: data.code)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 case .invalid:
@@ -287,7 +287,7 @@ struct LogInDetailView: View {
             .onTapGesture(perform: viewModel.copyTotpCode)
 
             switch viewModel.totpManager.state {
-            case .valid(let data):
+            case let .valid(data):
                 TOTPCircularTimer(data: data.timerData)
                     .animation(nil, value: isShowingPassword)
             default:
@@ -344,7 +344,7 @@ struct LogInDetailView: View {
             Text("View and edit details for this alias on the separate alias page. ")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-            Text("View")
+                Text("View")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
                 .underline(color: Color(uiColor: viewModel.itemContent.type.normMajor2Color))

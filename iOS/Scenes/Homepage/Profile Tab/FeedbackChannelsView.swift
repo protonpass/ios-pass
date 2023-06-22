@@ -37,24 +37,23 @@ struct FeedbackChannelsView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(FeedbackChannel.allCases) { channel in
-                        OptionRow(
-                            action: {
-                                dismiss()
-                                onSelectChannel(channel)
-                            },
-                            height: .short,
-                            horizontalPadding: 0,
-                            content: {
-                                Label(title: {
-                                    Text(channel.description)
-                                }, icon: {
-                                    Image(uiImage: channel.icon)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(maxWidth: 20, maxHeight: 20)
-                                })
-                                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            })
+                        OptionRow(action: {
+                                      dismiss()
+                                      onSelectChannel(channel)
+                                  },
+                                  height: .short,
+                                  horizontalPadding: 0,
+                                  content: {
+                                      Label(title: {
+                                          Text(channel.description)
+                                      }, icon: {
+                                          Image(uiImage: channel.icon)
+                                              .resizable()
+                                              .scaledToFit()
+                                              .frame(maxWidth: 20, maxHeight: 20)
+                                      })
+                                      .foregroundColor(Color(uiColor: PassColor.textNorm))
+                                  })
 
                         PassDivider()
                     }

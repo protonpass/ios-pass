@@ -95,7 +95,7 @@ public enum CryptoUtils {
             throw PPClientError.crypto(.addressNotFound(addressID: addressID))
         }
         return firstAddress.keys.compactMap { key -> DecryptionKey? in
-            let binKeys = userData.user.keys.map { $0.privateKey }.compactMap { $0.unArmor }
+            let binKeys = userData.user.keys.map(\.privateKey).compactMap(\.unArmor)
             for passphrase in userData.passphrases {
                 if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: binKeys,
                                                                      mailboxPassphrase: passphrase.value) {

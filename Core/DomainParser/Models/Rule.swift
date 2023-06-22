@@ -41,7 +41,7 @@ extension Rule {
     ///     and continuing for all labels in the rule, one finds that for every pair,
     ///     either they are identical, or that the label from the rule is "*".
     func isMatching(hostLabels: [Substring]) -> Bool {
-        let delta = hostLabels.count - self.parts.count
+        let delta = hostLabels.count - parts.count
 
         /// The url should have at least the same number of labels than the url
         guard delta >= 0 else { return false }
@@ -49,26 +49,26 @@ extension Rule {
         /// Drop the excedent so we have two arrays of the same size
         let trimmedHostLabels = hostLabels.dropFirst(delta)
 
-        let zipped = zip(self.parts, trimmedHostLabels)
+        let zipped = zip(parts, trimmedHostLabels)
         /// Closure that check if a RuleLabel match a given string
         let matchingClosure: (RuleLabel, Substring) -> Bool = { ruleComponent, hostComponent in
             ruleComponent.isMatching(label: hostComponent)
         }
 
-#if swift(>=4.2)
+        #if swift(>=4.2)
         return zipped.allSatisfy(matchingClosure)
-#else
+        #else
         let notMatchingClosure: (RuleLabel, String) -> Bool = { ruleComponent, hostComponent in
             !matchingClosure(ruleComponent, hostComponent)
         }
         return !zipped.contains(where: notMatchingClosure)
-#endif
+        #endif
         // return matching
     }
 
     /// ⚠️ Should be called only for host matching the rule
     func parse(hostLabels: [Substring]) -> ParsedHost {
-        let partsCount = parts.count - (self.exception ? 1 : 0)
+        let partsCount = parts.count - (exception ? 1 : 0)
         let delta = hostLabels.count - partsCount
 
         let domain = delta == 0 ? nil : hostLabels.dropFirst(delta - 1).joined(separator: ".")
@@ -80,6 +80,7 @@ extension Rule {
 }
 
 // MARK: - Comparable
+
 extension Rule: Comparable {
     static func < (lhs: Rule, rhs: Rule) -> Bool {
         lhs.rankingScore < rhs.rankingScore

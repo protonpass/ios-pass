@@ -36,9 +36,9 @@ public struct UpdateLastUseTimeEndpoint: Endpoint {
     public var body: UpdateLastUseTimeRequest?
 
     public init(shareId: String, itemId: String, lastUseTime: TimeInterval) {
-        self.debugDescription = "Update item"
-        self.path = "/pass/v1/share/\(shareId)/item/\(itemId)/lastuse"
-        self.method = .put
-        self.body = .init(lastUseTime: Int(lastUseTime))
+        debugDescription = "Update item"
+        path = "/pass/v1/share/\(shareId)/item/\(itemId)/lastuse"
+        method = .put
+        body = .init(lastUseTime: Int(lastUseTime))
     }
 }

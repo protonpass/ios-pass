@@ -39,8 +39,8 @@ extension ShareEventIDEntity {
 
 extension ShareEventIDEntity {
     func hydrate(userId: String, shareId: String, lastEventId: String) {
-        self.userID = userId
-        self.shareID = shareId
-        self.lastEventID = lastEventId
+        userID = userId
+        shareID = shareId
+        lastEventID = lastEventId
     }
 }

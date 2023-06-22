@@ -128,7 +128,7 @@ public extension CredentialManagerProtocol {
             guard shouldTakeIntoAccount else { continue }
 
             let itemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-            if case .login(let data) = itemContent.contentData {
+            if case let .login(data) = itemContent.contentData {
                 for url in data.urls {
                     credentials.append(.init(shareId: itemContent.shareId,
                                              itemId: itemContent.item.itemID,
@@ -161,7 +161,7 @@ public final class CredentialManager: CredentialManagerProtocol {
     public init(logManager: LogManager,
                 store: ASCredentialIdentityStore = .shared) {
         self.store = store
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 }
 
@@ -193,9 +193,9 @@ extension CredentialManager: ItemRepositoryDelegate {
 
 private extension ASPasswordCredentialIdentity {
     convenience init(_ credential: AutoFillCredential) throws {
-        self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
-                  user: credential.username,
-                  recordIdentifier: try credential.ids.serializeBase64())
-        self.rank = Int(credential.lastUseTime)
+        try self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
+                      user: credential.username,
+                      recordIdentifier: credential.ids.serializeBase64())
+        rank = Int(credential.lastUseTime)
     }
 }

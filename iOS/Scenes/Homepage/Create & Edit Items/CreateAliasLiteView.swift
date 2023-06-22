@@ -112,7 +112,7 @@ struct CreateAliasLiteView: View {
                 .font(.title2)
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-            Text(viewModel.suffixSelection.selectedSuffixString)
+                Text(viewModel.suffixSelection.selectedSuffixString)
                 .font(.title2)
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: PassColor.loginInteractionNormMajor1))

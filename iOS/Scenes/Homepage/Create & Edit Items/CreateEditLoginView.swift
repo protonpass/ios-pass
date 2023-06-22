@@ -58,17 +58,17 @@ struct CreateEditLoginView: View {
                                                    isEditMode: viewModel.mode.isEditMode,
                                                    onChangeVault: viewModel.changeVault,
                                                    onSubmit: { focusedField = .username })
-                        .padding(.bottom, kItemDetailSectionPadding / 2)
+                            .padding(.bottom, kItemDetailSectionPadding / 2)
                         usernamePasswordTOTPSection
                         WebsiteSection(viewModel: viewModel,
                                        focusedField: $focusedField,
                                        field: .websites,
                                        onSubmit: { focusedField = .note })
-                        .id(websitesID)
+                            .id(websitesID)
                         NoteEditSection(note: $viewModel.note,
                                         focusedField: $focusedField,
                                         field: .note)
-                        .id(noteID)
+                            .id(noteID)
 
                         EditCustomFieldSections(contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
@@ -120,25 +120,24 @@ struct CreateEditLoginView: View {
                 }
             }
             .toolbar {
-                CreateEditItemToolbar(
-                    saveButtonTitle: viewModel.saveButtonTitle(),
-                    isSaveable: viewModel.isSaveable,
-                    isSaving: viewModel.isSaving,
-                    itemContentType: viewModel.itemContentType(),
-                    shouldUpgrade: false,
-                    onGoBack: {
-                        if viewModel.didEditSomething {
-                            isShowingDiscardAlert.toggle()
-                        } else {
-                            dismiss()
-                        }
-                    },
-                    onUpgrade: { /* Not applicable */ },
-                    onSave: {
-                        if viewModel.validateURLs() {
-                            viewModel.save()
-                        }
-                    })
+                CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
+                                      isSaveable: viewModel.isSaveable,
+                                      isSaving: viewModel.isSaving,
+                                      itemContentType: viewModel.itemContentType(),
+                                      shouldUpgrade: false,
+                                      onGoBack: {
+                                          if viewModel.didEditSomething {
+                                              isShowingDiscardAlert.toggle()
+                                          } else {
+                                              dismiss()
+                                          }
+                                      },
+                                      onUpgrade: { /* Not applicable */ },
+                                      onSave: {
+                                          if viewModel.validateURLs() {
+                                              viewModel.save()
+                                          }
+                                      })
             }
             .toolbar { keyboardToolbar }
         }
@@ -318,13 +317,12 @@ struct CreateEditLoginView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Menu(content: {
-                Button(
-                    role: .destructive,
-                    action: { isShowingDeleteAliasAlert.toggle() },
-                    label: {
-                        Label(title: { Text("Delete alias") },
-                              icon: { Image(uiImage: IconProvider.trash) })
-                    })
+                Button(role: .destructive,
+                       action: { isShowingDeleteAliasAlert.toggle() },
+                       label: {
+                           Label(title: { Text("Delete alias") },
+                                 icon: { Image(uiImage: IconProvider.trash) })
+                       })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: viewModel.itemContentType().normMajor1Color,
@@ -333,19 +331,18 @@ struct CreateEditLoginView: View {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.username.isEmpty)
-        .alert(
-            "Delete alias?",
-            isPresented: $isShowingDeleteAliasAlert,
-            actions: {
-                Button(role: .destructive,
-                       action: viewModel.removeAlias,
-                       label: { Text("Yes, delete alias") })
+        .alert("Delete alias?",
+               isPresented: $isShowingDeleteAliasAlert,
+               actions: {
+                   Button(role: .destructive,
+                          action: viewModel.removeAlias,
+                          label: { Text("Yes, delete alias") })
 
-                Button(role: .cancel, label: { Text("Cancel") })
-            },
-            message: {
-                Text("The alias will be deleted permanently.")
-            })
+                   Button(role: .cancel, label: { Text("Cancel") })
+               },
+               message: {
+                   Text("The alias will be deleted permanently.")
+               })
     }
 
     private var pendingAliasRow: some View {
@@ -364,12 +361,11 @@ struct CreateEditLoginView: View {
                     Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.pencil) })
                 }
 
-                Button(
-                    role: .destructive,
-                    action: viewModel.removeAlias,
-                    label: {
-                        Label(title: { Text("Remove alias") }, icon: { Image(uiImage: IconProvider.trash) })
-                    })
+                Button(role: .destructive,
+                       action: viewModel.removeAlias,
+                       label: {
+                           Label(title: { Text("Remove alias") }, icon: { Image(uiImage: IconProvider.trash) })
+                       })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: viewModel.itemContentType().normMajor1Color,
@@ -393,10 +389,10 @@ struct CreateEditLoginView: View {
                                    focusedField: $focusedField,
                                    field: Field.password,
                                    onSubmit: { focusedField = .totp })
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .foregroundColor(Color(uiColor: PassColor.textNorm))
-                .submitLabel(.done)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .foregroundColor(Color(uiColor: PassColor.textNorm))
+                    .submitLabel(.done)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -471,6 +467,7 @@ struct CreateEditLoginView: View {
 }
 
 // MARK: - WrappedCodeScannerView
+
 private struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
@@ -479,29 +476,28 @@ private struct WrappedCodeScannerView: View {
 
     var body: some View {
         NavigationView {
-            CodeScannerView(
-                codeTypes: [.qr],
-                simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
-                isGalleryPresented: $isGaleryPresented,
-                completion: { result in dismiss(); completion(result) })
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    CircleButton(icon: IconProvider.cross,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 action: dismiss.callAsFunction)
-                }
+            CodeScannerView(codeTypes: [.qr],
+                            simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
+                            isGalleryPresented: $isGaleryPresented,
+                            completion: { result in dismiss(); completion(result) })
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        CircleButton(icon: IconProvider.cross,
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1,
+                                     action: dismiss.callAsFunction)
+                    }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isGaleryPresented.toggle()
-                    }, label: {
-                        Image(systemName: "photo.on.rectangle.angled")
-                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
-                    })
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            isGaleryPresented.toggle()
+                        }, label: {
+                            Image(systemName: "photo.on.rectangle.angled")
+                                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
+                        })
+                    }
                 }
-            }
         }
         .navigationViewStyle(.stack)
         .theme(theme)
@@ -509,6 +505,7 @@ private struct WrappedCodeScannerView: View {
 }
 
 // MARK: - WebsiteSection
+
 private struct WebsiteSection<Field: Hashable>: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
     let focusedField: FocusState<Field?>.Binding
@@ -534,7 +531,7 @@ private struct WebsiteSection<Field: Hashable>: View {
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled()
                                 .foregroundColor(Color(uiColor: isValid(url) ?
-                                                       PassColor.textNorm : PassColor.signalDanger))
+                                        PassColor.textNorm : PassColor.signalDanger))
                                 .onSubmit(onSubmit)
 
                             if !url.value.isEmpty {
@@ -589,4 +586,5 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
+
 // swiftlint:enable type_body_length

@@ -58,18 +58,17 @@ struct ItemTypeListView: View {
         Button(action: {
             viewModel.select(type: type)
         }, label: {
-            GeneralItemRow(
-                thumbnailView: {
-                    SquircleThumbnail(data: .icon(type.icon),
-                                      tintColor: type.tintColor,
-                                      backgroundColor: type.backgroundColor)
-                },
-                title: type.title,
-                description: type.description,
-                descriptionMinScaleFactor: 0.9,
-                secondaryTitle: secondaryTitle(for: type),
-                secondaryTitleColor: secondaryTitleColor(for: type))
-            .frame(height: 66)
+            GeneralItemRow(thumbnailView: {
+                               SquircleThumbnail(data: .icon(type.icon),
+                                                 tintColor: type.tintColor,
+                                                 backgroundColor: type.backgroundColor)
+                           },
+                           title: type.title,
+                           description: type.description,
+                           descriptionMinScaleFactor: 0.9,
+                           secondaryTitle: secondaryTitle(for: type),
+                           secondaryTitleColor: secondaryTitleColor(for: type))
+                .frame(height: 66)
         })
         .buttonStyle(.plain)
     }

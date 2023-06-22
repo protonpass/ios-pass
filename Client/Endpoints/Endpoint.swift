@@ -57,9 +57,10 @@ public extension Endpoint {
 
         if let body,
            let data = try? JSONEncoder().encode(body),
-           let bodyParams = (try? JSONSerialization.jsonObject(
-            with: data,
-            options: .allowFragments)).flatMap({ $0 as? [String: Any] }) {
+           let bodyParams = (try? JSONSerialization.jsonObject(with: data,
+                                                               options: .allowFragments)).flatMap({ $0 as? [
+               String: Any
+           ] }) {
             finalParams.merge(bodyParams) { _, new in new }
         }
 
@@ -67,7 +68,7 @@ public extension Endpoint {
     }
 }
 
-extension Dictionary where Key == String, Value == Any {
+extension [String: Any] {
     static func paginationQuery(page: Int, pageSize: Int) -> Self {
         ["Page": page, "PageSize": pageSize]
     }

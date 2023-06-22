@@ -57,14 +57,14 @@ extension PassPlanEntity {
     }
 
     func hydrate(from passPlan: PassPlan, userId: String) {
-        self.displayName = passPlan.displayName
-        self.internalName = passPlan.internalName
-        self.hideUpgrade = passPlan.hideUpgrade
-        self.type = passPlan.type
-        self.userID = userId
-        self.aliasLimit = Int64(passPlan.aliasLimit ?? -1)
-        self.totpLimit = Int64(passPlan.totpLimit ?? -1)
-        self.trialEnd = Int64(passPlan.trialEnd ?? -1)
-        self.vaultLimit = Int64(passPlan.vaultLimit ?? -1)
+        displayName = passPlan.displayName
+        internalName = passPlan.internalName
+        hideUpgrade = passPlan.hideUpgrade
+        type = passPlan.type
+        userID = userId
+        aliasLimit = Int64(passPlan.aliasLimit ?? -1)
+        totpLimit = Int64(passPlan.totpLimit ?? -1)
+        trialEnd = Int64(passPlan.trialEnd ?? -1)
+        vaultLimit = Int64(passPlan.vaultLimit ?? -1)
     }
 }

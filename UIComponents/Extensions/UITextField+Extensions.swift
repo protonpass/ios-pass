@@ -22,9 +22,9 @@ import UIKit
 
 public extension UITextField {
     var cursorCurrentPosition: Int {
-        guard let selectedRange = self.selectedTextRange else {
+        guard let selectedRange = selectedTextRange else {
             return 0
         }
-        return self.offset(from: self.beginningOfDocument, to: selectedRange.start)
+        return offset(from: beginningOfDocument, to: selectedRange.start)
     }
 }

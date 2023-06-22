@@ -93,7 +93,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
         self.favIconRepository = favIconRepository
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.searchEntryDatasource = searchEntryDatasource
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
@@ -102,7 +102,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
         searchQuerySubject
             .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
             .sink { [unowned self] term in
-                self.doSearch(query: term)
+                doSearch(query: term)
             }
             .store(in: &cancellables)
 
@@ -110,7 +110,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [unowned self] _ in
-                self.filterResults()
+                filterResults()
             }
             .store(in: &cancellables)
 
@@ -126,6 +126,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 }
 
 // MARK: - Private APIs
+
 private extension SearchViewModel {
     func indexItems() async {
         do {
@@ -138,7 +139,7 @@ private extension SearchViewModel {
             switch vaultSelection {
             case .all:
                 allItems = try await itemRepository.getItems(state: .active)
-            case .precise(let vault):
+            case let .precise(vault):
                 allItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
             case .trash:
                 allItems = try await itemRepository.getItems(state: .trashed)
@@ -155,7 +156,7 @@ private extension SearchViewModel {
     @MainActor
     func refreshSearchHistory() async throws {
         var shareId: String?
-        if case .precise(let vault) = vaultSelection {
+        if case let .precise(vault) = vaultSelection {
             shareId = vault.shareId
         }
 
@@ -163,7 +164,8 @@ private extension SearchViewModel {
         let symmetricKey = itemRepository.symmetricKey
         history = try searchEntries.compactMap { entry in
             if let item = allItems.first(where: {
-                $0.shareId == entry.shareID && $0.itemId == entry.itemID }) {
+                $0.shareId == entry.shareID && $0.itemId == entry.itemID
+            }) {
                 return try item.toSearchEntryUiModel(symmetricKey)
             } else {
                 return nil
@@ -218,11 +220,12 @@ private extension SearchViewModel {
             filteredResults = results
         }
 
-        self.state = .results(.init(items: results), filteredResults)
+        state = .results(.init(items: results), filteredResults)
     }
 }
 
 // MARK: - Public APIs
+
 extension SearchViewModel {
     func refreshResults() {
         Task { @MainActor in
@@ -284,6 +287,7 @@ extension SearchViewModel {
 }
 
 // MARK: - SortTypeListViewModelDelegate
+
 extension SearchViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
@@ -293,7 +297,7 @@ extension SearchViewModel: SortTypeListViewModelDelegate {
 extension SearchViewState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.initializing, .initializing), (.empty, .empty):
+        case (.empty, .empty), (.initializing, .initializing):
             return true
 
         case let (.history(lhsHistory), .history(rhsHistory)):

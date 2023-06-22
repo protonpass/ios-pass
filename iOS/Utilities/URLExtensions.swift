@@ -22,8 +22,8 @@ import Core
 
 extension URL {
     static func favIconsContainerURL() -> URL {
-        guard let fileContainer = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
+        guard let fileContainer = FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
             fatalError("Can not create folder for fav icons")
         }
         return fileContainer.appendingPathComponent("FavIcons", isDirectory: true)

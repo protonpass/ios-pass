@@ -50,7 +50,7 @@ struct SearchResultsView: View {
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" result(s)")
+                    Text(" result(s)")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -169,18 +169,17 @@ struct SearchResultsView: View {
         .plainListRow()
         .padding(.horizontal)
         .padding(.vertical, 12)
-        .modifier(ItemSwipeModifier(
-            itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
-            item: item,
-            isTrashed: isTrash,
-            itemContextMenuHandler: itemContextMenuHandler))
-        .modifier(PermenentlyDeleteItemModifier(
-            isShowingAlert: permanentlyDeleteBinding,
-            onDelete: {
-                if let itemToBePermanentlyDeleted {
-                    itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
-                }
-            }))
+        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
+                                    item: item,
+                                    isTrashed: isTrash,
+                                    itemContextMenuHandler: itemContextMenuHandler))
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: permanentlyDeleteBinding,
+                                                onDelete: {
+                                                    if let itemToBePermanentlyDeleted {
+                                                        itemContextMenuHandler
+                                                            .deletePermanently(itemToBePermanentlyDeleted)
+                                                    }
+                                                }))
     }
 }
 

@@ -39,7 +39,7 @@ enum PasswordUtils {
             if AllowedCharacter.digit.rawValue.contains(char) {
                 color = Color(uiColor: PassColor.loginInteractionNormMajor2)
             } else if AllowedCharacter.special.rawValue.contains(char) ||
-                        AllowedCharacter.separator.rawValue.contains(char) {
+                AllowedCharacter.separator.rawValue.contains(char) {
                 color = Color(uiColor: PassColor.aliasInteractionNormMajor2)
             }
             texts.append(Text(String(char)).foregroundColor(color))
@@ -107,11 +107,12 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
         self.mode = mode
         self.wordProvider = wordProvider
-        self.regenerate()
+        regenerate()
     }
 }
 
 // MARK: - Public APIs
+
 extension GeneratePasswordViewModel {
     func regenerate(forceRefresh: Bool = true) {
         switch type {
@@ -127,7 +128,7 @@ extension GeneratePasswordViewModel {
     }
 
     func changeWordSeparator(_ separator: WordSeparator) {
-        self.wordSeparator = separator
+        wordSeparator = separator
     }
 
     func confirm() {
@@ -136,6 +137,7 @@ extension GeneratePasswordViewModel {
 }
 
 // MARK: - Private APIs
+
 private extension GeneratePasswordViewModel {
     func regenerateRandomPassword() {
         var allowedCharacters: [AllowedCharacter] = [.lowercase]
@@ -152,7 +154,7 @@ private extension GeneratePasswordViewModel {
 
         var words = cachedWords
 
-        if capitalizingWords { words = words.map { $0.capitalized } }
+        if capitalizingWords { words = words.map(\.capitalized) }
 
         if includingNumbers {
             if let randomIndex = words.indices.randomElement(),
@@ -173,8 +175,8 @@ private extension GeneratePasswordViewModel {
     }
 
     func requestHeightUpdate() {
-        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(
-            passwordType: type,
-            isShowingAdvancedOptions: isShowingAdvancedOptions)
+        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: type,
+                                                                      isShowingAdvancedOptions:
+                                                                      isShowingAdvancedOptions)
     }
 }

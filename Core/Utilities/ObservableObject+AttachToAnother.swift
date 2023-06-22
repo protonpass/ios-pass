@@ -26,7 +26,7 @@ public extension ObservableObject {
     /// E.g: ViewModel1 depends on ViewModel2 and ViewModel1 needs to trigger its `objectWillChange`
     /// whenever ViewModel2 is changed.
     func attach<T: ObservableObject>(to another: T, storeIn cancellable: inout Set<AnyCancellable>)
-    where T.ObjectWillChangePublisher == ObservableObjectPublisher {
+        where T.ObjectWillChangePublisher == ObservableObjectPublisher {
         objectWillChange.sink { [unowned another] _ in
             another.objectWillChange.send()
         }

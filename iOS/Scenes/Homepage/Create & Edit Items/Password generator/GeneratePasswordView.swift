@@ -94,7 +94,7 @@ struct GeneratePasswordView: View {
                                  iconColor: PassColor.interactionNormMajor1,
                                  backgroundColor: PassColor.interactionNormMinor1,
                                  action: { viewModel.regenerate() })
-                    .opacity(0)
+                        .opacity(0)
                 }
 
                 ToolbarItem(placement: .principal) {
@@ -161,17 +161,16 @@ struct GeneratePasswordView: View {
                               height: 44,
                               action: dismiss.callAsFunction)
 
-            CapsuleTextButton(
-                title: viewModel.mode.confirmTitle,
-                titleColor: PassColor.textInvert,
-                backgroundColor: PassColor.loginInteractionNormMajor1,
-                height: 44,
-                action: {
-                    viewModel.confirm()
-                    if case .createLogin = viewModel.mode {
-                        dismiss()
-                    }
-                })
+            CapsuleTextButton(title: viewModel.mode.confirmTitle,
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.loginInteractionNormMajor1,
+                              height: 44,
+                              action: {
+                                  viewModel.confirm()
+                                  if case .createLogin = viewModel.mode {
+                                      dismiss()
+                                  }
+                              })
         }
         .padding(.vertical)
     }
@@ -185,7 +184,7 @@ struct GeneratePasswordView: View {
             Slider(value: $viewModel.characterCount,
                    in: 4...64,
                    step: 1)
-            .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+                .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
         }
     }
 
@@ -198,7 +197,7 @@ struct GeneratePasswordView: View {
             Slider(value: $viewModel.wordCount,
                    in: 1...10,
                    step: 1)
-            .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
+                .accentColor(Color(uiColor: PassColor.loginInteractionNormMajor1))
         }
     }
 

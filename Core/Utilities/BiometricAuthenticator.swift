@@ -45,6 +45,7 @@ public final class BiometricAuthenticator: ObservableObject {
             toggleEnabled(force: false)
         }
     }
+
     private let preferences: Preferences
     private let context = LAContext()
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
@@ -52,8 +53,8 @@ public final class BiometricAuthenticator: ObservableObject {
 
     public init(preferences: Preferences, logManager: LogManager) {
         self.preferences = preferences
-        self.enabled = preferences.biometricAuthenticationEnabled
-        self.logger = .init(manager: logManager)
+        enabled = preferences.biometricAuthenticationEnabled
+        logger = .init(manager: logManager)
     }
 
     public func initializeBiometryType() {
@@ -83,8 +84,8 @@ public final class BiometricAuthenticator: ObservableObject {
             }
             do {
                 let reason = preferences.biometricAuthenticationEnabled ?
-                "Please authenticate to disable biometric authentication" :
-                "Please authenticate to enable biometric authentication"
+                    "Please authenticate to disable biometric authentication" :
+                    "Please authenticate to enable biometric authentication"
                 let authenticated = try await authenticate(reason: reason)
                 if authenticated {
                     preferences.biometricAuthenticationEnabled.toggle()

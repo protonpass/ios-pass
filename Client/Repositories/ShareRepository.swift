@@ -185,7 +185,7 @@ public extension ShareRepositoryProtocol {
                                                share: clonedShare)
         }
 
-        let primaryShares = updatedShares.filter { $0.share.primary }
+        let primaryShares = updatedShares.filter(\.share.primary)
         assert(primaryShares.count == 1, "Should only have one primary vault")
         assert(primaryShares.first?.share.shareID == shareId)
 
@@ -217,7 +217,7 @@ private extension ShareRepositoryProtocol {
                                                        keyRotation: keyRotation)
         let decryptedContent = try AES.GCM.open(contentData,
                                                 key: key.keyData,
-                                                associatedData: .vaultcontent)
+                                                associatedData: .vaultContent)
         let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)
     }
@@ -242,7 +242,7 @@ public struct ShareRepository: ShareRepositoryProtocol {
         self.localShareDatasource = localShareDatasource
         self.remoteShareDatasouce = remoteShareDatasouce
         self.passKeyManager = passKeyManager
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 
     public init(symmetricKey: SymmetricKey,
@@ -252,18 +252,18 @@ public struct ShareRepository: ShareRepositoryProtocol {
                 logManager: LogManager) {
         self.symmetricKey = symmetricKey
         self.userData = userData
-        self.localShareDatasource = LocalShareDatasource(container: container)
-        self.remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
+        localShareDatasource = LocalShareDatasource(container: container)
+        remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
                                                     symmetricKey: symmetricKey,
                                                     userData: userData)
         let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        self.passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
-                                             itemKeyDatasource: itemKeyDatasource,
-                                             logManager: logManager,
-                                             symmetricKey: symmetricKey)
-        self.logger = .init(manager: logManager)
+        passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
+                                        itemKeyDatasource: itemKeyDatasource,
+                                        logManager: logManager,
+                                        symmetricKey: symmetricKey)
+        logger = .init(manager: logManager)
     }
 }

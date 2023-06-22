@@ -41,7 +41,7 @@ extension FeatureFlagsEntity {
     }
 
     func hydrate(from flags: FeatureFlags, userId: String) {
-        self.creditCardV1 = flags.creditCardV1
-        self.userID = userId
+        creditCardV1 = flags.creditCardV1
+        userID = userId
     }
 }

@@ -85,22 +85,22 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                      note: note,
                      itemUuid: UUID().uuidString,
                      data: .creditCard(data),
-                     customFields: customFieldUiModels.map { $0.customField })
+                     customFields: customFieldUiModels.map(\.customField))
     }
 
     override func bindValues() {
-        guard case .edit(let itemContent) = mode,
-              case .creditCard(let data) = itemContent.contentData else { return }
-        self.title = itemContent.name
-        self.cardholderName = data.cardholderName
-        self.cardNumber = data.number.toCreditCardNumber()
-        self.verificationNumber = data.cvv
+        guard case let .edit(itemContent) = mode,
+              case let .creditCard(data) = itemContent.contentData else { return }
+        title = itemContent.name
+        cardholderName = data.cardholderName
+        cardNumber = data.number.toCreditCardNumber()
+        verificationNumber = data.cvv
 
         let monthYear = data.expirationDate.components(separatedBy: "-")
-        self.month = Int(monthYear.last ?? "")
-        self.year = Int(monthYear.first ?? "")
+        month = Int(monthYear.last ?? "")
+        year = Int(monthYear.first ?? "")
 
-        self.note = itemContent.note
+        note = itemContent.note
     }
 }
 

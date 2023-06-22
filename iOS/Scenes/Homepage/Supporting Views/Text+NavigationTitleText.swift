@@ -23,7 +23,7 @@ import UIComponents
 
 extension Text {
     func navigationTitleText() -> Text {
-        self.font(.callout.bold())
+        font(.callout.bold())
             .foregroundColor(Color(uiColor: PassColor.textNorm))
     }
 }

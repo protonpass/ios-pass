@@ -44,38 +44,50 @@ enum ItemContextMenu {
     var sections: [ItemContextMenuOptionSection] {
         switch self {
         case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
-            return [.init(options: [.init(title: "Copy username",
-                                          icon: IconProvider.user,
-                                          action: onCopyUsername),
-                                    .init(title: "Copy password",
-                                          icon: IconProvider.key,
-                                          action: onCopyPassword)]),
-                    .init(options: [.editOption(action: onEdit)]),
-                    .init(options: [.trashOption(action: onTrash)])]
+            return [
+                .init(options: [
+                    .init(title: "Copy username",
+                          icon: IconProvider.user,
+                          action: onCopyUsername),
+                    .init(title: "Copy password",
+                          icon: IconProvider.key,
+                          action: onCopyPassword)
+                ]),
+                .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.trashOption(action: onTrash)])
+            ]
 
         case let .alias(onCopyAlias, onEdit, onTrash):
-            return [.init(options: [.init(title: "Copy alias address",
-                                          icon: IconProvider.alias,
-                                          action: onCopyAlias)]),
-                    .init(options: [.editOption(action: onEdit)]),
-                    .init(options: [.trashOption(action: onTrash)])]
+            return [
+                .init(options: [.init(title: "Copy alias address",
+                                      icon: IconProvider.alias,
+                                      action: onCopyAlias)]),
+                .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.trashOption(action: onTrash)])
+            ]
 
         case let .creditCard(onEdit, onTrash):
-            return [.init(options: [.editOption(action: onEdit)]),
-                    .init(options: [.trashOption(action: onTrash)])]
+            return [
+                .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.trashOption(action: onTrash)])
+            ]
 
         case let .note(onEdit, onTrash):
-            return [.init(options: [.editOption(action: onEdit)]),
-                    .init(options: [.trashOption(action: onTrash)])]
+            return [
+                .init(options: [.editOption(action: onEdit)]),
+                .init(options: [.trashOption(action: onTrash)])
+            ]
 
         case let .trashedItem(onRestore, onPermanentlyDelete):
-            return [.init(options: [.init(title: "Restore",
-                                          icon: IconProvider.clockRotateLeft,
-                                          action: onRestore)]),
-                    .init(options: [.init(title: "Delete permanently",
-                                          icon: IconProvider.trashCross,
-                                          action: onPermanentlyDelete,
-                                          isDestructive: true)])]
+            return [
+                .init(options: [.init(title: "Restore",
+                                      icon: IconProvider.clockRotateLeft,
+                                      action: onRestore)]),
+                .init(options: [.init(title: "Delete permanently",
+                                      icon: IconProvider.trashCross,
+                                      action: onPermanentlyDelete,
+                                      isDestructive: true)])
+            ]
         }
     }
 }
@@ -110,16 +122,15 @@ private extension View {
             ForEach(menu.sections) { section in
                 Section {
                     ForEach(section.options) { option in
-                        Button(
-                            role: option.isDestructive ? .destructive : nil,
-                            action: option.action,
-                            label: {
-                                Label(title: {
-                                    Text(option.title)
-                                }, icon: {
-                                    Image(uiImage: option.icon)
-                                })}
-                        )
+                        Button(role: option.isDestructive ? .destructive : nil,
+                               action: option.action,
+                               label: {
+                                   Label(title: {
+                                       Text(option.title)
+                                   }, icon: {
+                                       Image(uiImage: option.icon)
+                                   })
+                               })
                     }
                 }
             }
@@ -133,14 +144,13 @@ struct PermenentlyDeleteItemModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .alert(
-                "Permanently delete?",
-                isPresented: $isShowingAlert,
-                actions: {
-                    Button(role: .destructive, action: onDelete, label: { Text("Delete") })
-                    Button(role: .cancel, label: { Text("Cancel") })
-                },
-                message: { Text("You are going to delete the item irreversibly, are you sure?") })
+            .alert("Permanently delete?",
+                   isPresented: $isShowingAlert,
+                   actions: {
+                       Button(role: .destructive, action: onDelete, label: { Text("Delete") })
+                       Button(role: .cancel, label: { Text("Cancel") })
+                   },
+                   message: { Text("You are going to delete the item irreversibly, are you sure?") })
     }
 }
 

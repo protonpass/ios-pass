@@ -102,7 +102,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .combineLatest($note)
             .dropFirst(mode.isEditMode ? 1 : 3)
             .sink(receiveValue: { [unowned self] _ in
-                self.didEditSomething = true
+                didEditSomething = true
             })
             .store(in: &cancellables)
 
@@ -111,11 +111,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
-                if self.aliasOptions != nil {
-                    self.aliasOptions = nil
-                    self.aliasCreationLiteInfo = nil
-                    self.isAlias = false
-                    self.username = ""
+                if aliasOptions != nil {
+                    aliasOptions = nil
+                    aliasCreationLiteInfo = nil
+                    isAlias = false
+                    username = ""
                 }
             }
             .store(in: &cancellables)
@@ -123,16 +123,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func bindValues() {
         switch mode {
-        case .edit(let itemContent):
-            if case .login(let data) = itemContent.contentData {
-                self.title = itemContent.name
-                self.username = data.username
-                self.password = data.password
-                self.totpUri = data.totpUri
+        case let .edit(itemContent):
+            if case let .login(data) = itemContent.contentData {
+                title = itemContent.name
+                username = data.username
+                password = data.password
+                totpUri = data.totpUri
                 if !data.urls.isEmpty {
-                    self.urls = data.urls.map { .init(value: $0) }
+                    urls = data.urls.map { .init(value: $0) }
                 }
-                self.note = itemContent.note
+                note = itemContent.note
 
                 Task { @MainActor in
                     aliasItem = try await itemRepository.getAliasItem(email: username)
@@ -143,7 +143,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .create(_, type):
             if case let .login(title, url, _) = type {
                 self.title = title ?? ""
-                self.urls = [url ?? ""].map { .init(value: $0) }
+                urls = [url ?? ""].map { .init(value: $0) }
             }
 
             Task { @MainActor in
@@ -173,7 +173,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                    note: note,
                                    itemUuid: UUID().uuidString,
                                    data: logInData,
-                                   customFields: customFieldUiModels.map { $0.customField })
+                                   customFields: customFieldUiModels.map(\.customField))
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
@@ -181,7 +181,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
         return .init(prefix: aliasCreationLiteInfo.prefix,
                      suffix: aliasCreationLiteInfo.suffix,
-                     mailboxIds: aliasCreationLiteInfo.mailboxes.map { $0.ID })
+                     mailboxIds: aliasCreationLiteInfo.mailboxes.map(\.ID))
     }
 
     override func generateAliasItemContent() -> ItemContentProtobuf? {
@@ -274,9 +274,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func handleScanResult(_ result: Result<ScanResult, ScanError>) {
         switch result {
-        case .success(let successResult):
+        case let .success(successResult):
             totpUri = successResult.string
-        case .failure(let error):
+        case let .failure(error):
             delegate?.createEditItemViewModelDidEncounter(error: error)
         }
     }
@@ -286,7 +286,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func validateURLs() -> Bool {
-        invalidURLs = urls.map { $0.value }.compactMap { url in
+        invalidURLs = urls.map(\.value).compactMap { url in
             if url.isEmpty { return nil }
             if URLUtils.Sanitizer.sanitize(url) == nil {
                 return url
@@ -302,6 +302,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 }
 
 // MARK: - GeneratePasswordViewModelDelegate
+
 extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         self.password = password
@@ -309,6 +310,7 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
 }
 
 // MARK: - AliasCreationLiteInfoDelegate
+
 extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info

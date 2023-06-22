@@ -34,8 +34,8 @@ public struct GetLatestItemKeyEndpoint: Endpoint {
     public var method: HTTPMethod
 
     public init(shareId: String, itemId: String) {
-        self.debugDescription = "Get latest key for item"
-        self.path = "/pass/v1/share/\(shareId)/item/\(itemId)/key/latest"
-        self.method = .get
+        debugDescription = "Get latest key for item"
+        path = "/pass/v1/share/\(shareId)/item/\(itemId)/key/latest"
+        method = .get
     }
 }

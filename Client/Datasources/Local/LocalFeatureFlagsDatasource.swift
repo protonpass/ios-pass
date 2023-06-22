@@ -40,10 +40,10 @@ public extension LocalFeatureFlagsDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: FeatureFlagsEntity.entity(context: taskContext),
-                              sourceItems: [flags]) { managedObject, flags in
-            (managedObject as? FeatureFlagsEntity)?.hydrate(from: flags, userId: userId)
-        }
+            newBatchInsertRequest(entity: FeatureFlagsEntity.entity(context: taskContext),
+                                  sourceItems: [flags]) { managedObject, flags in
+                (managedObject as? FeatureFlagsEntity)?.hydrate(from: flags, userId: userId)
+            }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }

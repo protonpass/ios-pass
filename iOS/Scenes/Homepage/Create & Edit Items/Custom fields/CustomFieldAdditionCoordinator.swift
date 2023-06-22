@@ -45,7 +45,7 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable {
     func start() {
         let view = CustomFieldTypesView { [rootViewController] type in
             rootViewController.topMostViewController.dismiss(animated: true) { [unowned self] in
-                let alert = self.makeAlert(for: type)
+                let alert = makeAlert(for: type)
                 rootViewController.topMostViewController.present(alert, animated: true)
             }
         }

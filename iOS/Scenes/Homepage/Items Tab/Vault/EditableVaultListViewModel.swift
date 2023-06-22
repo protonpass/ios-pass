@@ -46,12 +46,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     init(vaultsManager: VaultsManager, logManager: LogManager) {
         self.vaultsManager = vaultsManager
-        self.logger = .init(manager: logManager)
-        self.finalizeInitialization()
+        logger = .init(manager: logManager)
+        finalizeInitialization()
     }
 }
 
 // MARK: - Private APIs
+
 private extension EditableVaultListViewModel {
     func finalizeInitialization() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
@@ -73,6 +74,7 @@ private extension EditableVaultListViewModel {
 }
 
 // MARK: - Public APIs
+
 extension EditableVaultListViewModel {
     func createNewVault() {
         delegate?.editableVaultListViewModelWantsToCreateNewVault()
@@ -126,6 +128,7 @@ extension EditableVaultListViewModel {
 }
 
 // MARK: - DeleteVaultConfirmationDelegate
+
 extension EditableVaultListViewModel: DeleteVaultAlertHandlerDelegate {
     func confirmDelete(vault: Vault) {
         doDelete(vault: vault)

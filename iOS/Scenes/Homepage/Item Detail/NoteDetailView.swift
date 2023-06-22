@@ -86,8 +86,8 @@ struct NoteDetailView: View {
 
                     ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
-                    .padding(.top)
-                    .id(bottomID)
+                        .padding(.top)
+                        .id(bottomID)
                 }
                 .padding()
             }

@@ -69,6 +69,7 @@ class BaseCreateEditItemViewModel {
             didEditSomething = true
         }
     }
+
     @Published var isObsolete = false
 
     let mode: ItemMode
@@ -78,7 +79,7 @@ class BaseCreateEditItemViewModel {
     let logger: Logger
     let vaults: [Vault]
 
-    var hasEmptyCustomField: Bool { customFieldUiModels.contains(where: { $0.customField.content.isEmpty }) }
+    var hasEmptyCustomField: Bool { customFieldUiModels.contains(where: \.customField.content.isEmpty) }
     var didEditSomething = false
 
     weak var delegate: CreateEditItemViewModelDelegate?
@@ -92,9 +93,9 @@ class BaseCreateEditItemViewModel {
          logManager: LogManager) throws {
         let vaultShareId: String
         switch mode {
-        case .create(let shareId, _):
+        case let .create(shareId, _):
             vaultShareId = shareId
-        case .edit(let itemContent):
+        case let .edit(itemContent):
             vaultShareId = itemContent.shareId
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
@@ -102,16 +103,16 @@ class BaseCreateEditItemViewModel {
         guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
             throw PPError.vault(.vaultNotFound(vaultShareId))
         }
-        self.selectedVault = vault
+        selectedVault = vault
         self.mode = mode
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
         self.preferences = preferences
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.vaults = vaults
-        self.bindValues()
-        self.pickPrimaryVaultIfApplicable()
-        self.checkIfAbleToAddMoreCustomFields()
+        bindValues()
+        pickPrimaryVaultIfApplicable()
+        checkIfAbleToAddMoreCustomFields()
     }
 
     /// To be overridden by subclasses
@@ -145,6 +146,7 @@ class BaseCreateEditItemViewModel {
 }
 
 // MARK: - Private APIs
+
 private extension BaseCreateEditItemViewModel {
     /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
     func pickPrimaryVaultIfApplicable() {
@@ -193,11 +195,11 @@ private extension BaseCreateEditItemViewModel {
         case .login:
             if let aliasCreationInfo = generateAliasCreationInfo(),
                let aliasItemContent = generateAliasItemContent() {
-                let (_, createdLoginItem) = try await itemRepository.createAliasAndOtherItem(
-                    info: aliasCreationInfo,
-                    aliasItemContent: aliasItemContent,
-                    otherItemContent: itemContent,
-                    shareId: shareId)
+                let (_, createdLoginItem) = try await itemRepository
+                    .createAliasAndOtherItem(info: aliasCreationInfo,
+                                             aliasItemContent: aliasItemContent,
+                                             otherItemContent: itemContent,
+                                             shareId: shareId)
                 return createdLoginItem
             }
 
@@ -224,6 +226,7 @@ private extension BaseCreateEditItemViewModel {
 }
 
 // MARK: - Public APIs
+
 extension BaseCreateEditItemViewModel {
     func addCustomField() {
         delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self)
@@ -247,7 +250,7 @@ extension BaseCreateEditItemViewModel {
                         delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
                     }
 
-                case .edit(let oldItemContent):
+                case let .edit(oldItemContent):
                     logger.trace("Editing \(oldItemContent.debugInformation)")
                     try await editItem(oldItemContent: oldItemContent)
                     logger.info("Edited \(oldItemContent.debugInformation)")
@@ -263,11 +266,11 @@ extension BaseCreateEditItemViewModel {
     /// Refresh the item to detect changes.
     /// When changes happen, announce via `isObsolete` boolean  so the view can act accordingly
     func refresh() {
-        guard case .edit(let itemContent) = mode else { return }
+        guard case let .edit(itemContent) = mode else { return }
         Task { @MainActor in
             guard let updatedItem =
-                    try await itemRepository.getItem(shareId: itemContent.shareId,
-                                                     itemId: itemContent.item.itemID) else {
+                try await itemRepository.getItem(shareId: itemContent.shareId,
+                                                 itemId: itemContent.item.itemID) else {
                 return
             }
             isObsolete = itemContent.item.revision != updatedItem.item.revision
@@ -280,13 +283,14 @@ extension BaseCreateEditItemViewModel {
 }
 
 // MARK: - VaultSelectorViewModelDelegate
+
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     func vaultSelectorViewModelWantsToUpgrade() {
         delegate?.createEditItemViewModelWantsToUpgrade()
     }
 
     func vaultSelectorViewModelDidSelect(vault: Vault) {
-        self.selectedVault = vault
+        selectedVault = vault
     }
 
     func vaultSelectorViewModelDidEncounter(error: Error) {
@@ -295,6 +299,7 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
 }
 
 // MARK: - CustomFieldTitleAlertHandlerDelegate
+
 extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
     func customFieldAdded(_ customField: CustomField) {
         customFieldUiModels.append(.init(customField: customField))
@@ -302,6 +307,7 @@ extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
 }
 
 // MARK: - CustomFieldEditionDelegate
+
 extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
     func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
         guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {

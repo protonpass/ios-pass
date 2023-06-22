@@ -54,15 +54,14 @@ private extension CreateEditCreditCardView {
         ScrollViewReader { _ in
             ScrollView {
                 VStack {
-                    CreateEditItemTitleSection(
-                        title: $viewModel.title,
-                        focusedField: $focusedField,
-                        field: .title,
-                        selectedVault: viewModel.selectedVault,
-                        itemContentType: viewModel.itemContentType(),
-                        isEditMode: viewModel.mode.isEditMode,
-                        onChangeVault: viewModel.changeVault,
-                        onSubmit: { focusedField = .cardholderName })
+                    CreateEditItemTitleSection(title: $viewModel.title,
+                                               focusedField: $focusedField,
+                                               field: .title,
+                                               selectedVault: viewModel.selectedVault,
+                                               itemContentType: viewModel.itemContentType(),
+                                               isEditMode: viewModel.mode.isEditMode,
+                                               onChangeVault: viewModel.changeVault,
+                                               onSubmit: { focusedField = .cardholderName })
 
                     cardDetailSection
 
@@ -88,21 +87,20 @@ private extension CreateEditCreditCardView {
             }
         }
         .toolbar {
-            CreateEditItemToolbar(
-                saveButtonTitle: viewModel.saveButtonTitle(),
-                isSaveable: viewModel.isSaveable,
-                isSaving: viewModel.isSaving,
-                itemContentType: viewModel.itemContentType(),
-                shouldUpgrade: false,
-                onGoBack: {
-                    if viewModel.didEditSomething {
-                        isShowingDiscardAlert.toggle()
-                    } else {
-                        dismiss()
-                    }
-                },
-                onUpgrade: {},
-                onSave: viewModel.save)
+            CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
+                                  isSaveable: viewModel.isSaveable,
+                                  isSaving: viewModel.isSaving,
+                                  itemContentType: viewModel.itemContentType(),
+                                  shouldUpgrade: false,
+                                  onGoBack: {
+                                      if viewModel.didEditSomething {
+                                          isShowingDiscardAlert.toggle()
+                                      } else {
+                                          dismiss()
+                                      }
+                                  },
+                                  onUpgrade: {},
+                                  onSave: viewModel.save)
         }
     }
 }

@@ -24,7 +24,7 @@ import SwiftUI
 public extension View {
     /// Receive a boolean publisher and perform an action if the boolean is `true`
     func onReceiveBoolean<P>(_ publisher: P, perform action: @escaping () -> Void)
-    -> some View where P: Publisher, P.Output == Bool, P.Failure == Never {
+        -> some View where P: Publisher, P.Output == Bool, P.Failure == Never {
         onReceive(publisher) { condition in
             if condition {
                 action()

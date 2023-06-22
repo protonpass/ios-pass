@@ -30,8 +30,8 @@ public struct SetPrimaryVaultEndpoint: Endpoint {
     public var method: HTTPMethod
 
     public init(shareId: String) {
-        self.debugDescription = "Set primary vault"
-        self.path = "/pass/v1/vault/\(shareId)/primary"
-        self.method = .put
+        debugDescription = "Set primary vault"
+        path = "/pass/v1/vault/\(shareId)/primary"
+        method = .put
     }
 }

@@ -50,7 +50,7 @@ extension SymmetricallyEncryptedItem {
         var url: String?
 
         switch itemContent.contentData {
-        case .login(let data):
+        case let .login(data):
             note = data.username
             url = data.urls.first
         case .alias:

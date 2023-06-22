@@ -33,11 +33,10 @@ public extension LocalShareDatasourceProtocol {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = ShareEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "userID = %@", userId),
-                .init(format: "shareID = %@", shareId)
-            ])
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId),
+            .init(format: "shareID = %@", shareId)
+        ])
         let shareEntities = try await execute(fetchRequest: fetchRequest,
                                               context: taskContext)
         return shareEntities.map { $0.toSymmetricallyEncryptedShare() }.first
@@ -58,10 +57,10 @@ public extension LocalShareDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-        newBatchInsertRequest(entity: ShareEntity.entity(context: taskContext),
-                              sourceItems: shares) { managedObject, share in
-            (managedObject as? ShareEntity)?.hydrate(from: share, userId: userId)
-        }
+            newBatchInsertRequest(entity: ShareEntity.entity(context: taskContext),
+                                  sourceItems: shares) { managedObject, share in
+                (managedObject as? ShareEntity)?.hydrate(from: share, userId: userId)
+            }
 
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
@@ -69,11 +68,10 @@ public extension LocalShareDatasourceProtocol {
     func removeShare(shareId: String, userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareEntity")
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "userID = %@", userId),
-                .init(format: "shareID = %@", shareId)
-            ])
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId),
+            .init(format: "shareID = %@", shareId)
+        ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

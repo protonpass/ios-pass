@@ -102,7 +102,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
         self.passPlanRepository = passPlanRepository
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -160,8 +160,8 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
                 // Only applicable when currently selected tab is items tab
                 // https://stackoverflow.com/a/60492031
                 if selectedViewController == viewControllers?.first {
-                    self.select(tab: .profile)
-                    self.select(tab: .items)
+                    select(tab: .profile)
+                    select(tab: .items)
                 }
             }
             .store(in: &cancellables)
@@ -171,6 +171,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 }
 
 // MARK: - Public APIs
+
 extension HomepageTabBarController {
     func select(tab: HomepageTab) {
         switch tab {
@@ -210,6 +211,7 @@ extension HomepageTabBarController {
 }
 
 // MARK: - UITabBarControllerDelegate
+
 extension HomepageTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {

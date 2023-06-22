@@ -26,7 +26,7 @@ public enum Constants {
     public static let keychainGroup = "\(teamId).\(appGroup)"
     public static let sortTypeKey = "sortType"
     public static let appStoreUrl = "itms-apps://itunes.apple.com/app/id6443490629"
-    
+
     enum TotpBase {
         public static let timer: Double = 30.0
         public static let digit: Int = 6

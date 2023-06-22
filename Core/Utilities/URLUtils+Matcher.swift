@@ -31,12 +31,13 @@ public extension URLUtils {
             case notMatched
 
             public var score: Int {
-                if case .matched(let score) = self {
+                if case let .matched(score) = self {
                     return score
                 }
                 return 0
             }
         }
+
         /// Compare if 2 URLs are matched and if they are matched, also indicate match score.
         /// match score starts from `1000` and decreases gradually.
         /// - Parameters:

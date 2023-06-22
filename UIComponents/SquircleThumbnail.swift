@@ -47,7 +47,7 @@ public struct SquircleThumbnail: View {
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
 
             switch data {
-            case .icon(let image):
+            case let .icon(image):
                 Image(uiImage: image)
                     .resizable()
                     .renderingMode(.template)
@@ -55,7 +55,7 @@ public struct SquircleThumbnail: View {
                     .foregroundColor(Color(uiColor: tintColor))
                     .padding(.vertical, height / 3.5)
 
-            case .initials(let string):
+            case let .initials(string):
                 Text(string)
                     .font(.system(size: height / 3))
                     .fontWeight(.medium)

@@ -61,22 +61,22 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
          mode: MailboxSelectionViewModel.Mode,
          titleMode: MailboxSection.Mode) {
         self.mailboxSelection = mailboxSelection
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.mode = mode
         self.titleMode = titleMode
 
         mailboxSelection.attach(to: self, storeIn: &cancellables)
 
         /*
-        Task { @MainActor in
-            do {
-                shouldUpgrade = try await upgradeChecker.isFreeUser()
-            } catch {
-                logger.error(error)
-                delegate?.mailboxSelectionViewModelDidEncounter(error: error)
-            }
-        }
-         */
+         Task { @MainActor in
+             do {
+                 shouldUpgrade = try await upgradeChecker.isFreeUser()
+             } catch {
+                 logger.error(error)
+                 delegate?.mailboxSelectionViewModelDidEncounter(error: error)
+             }
+         }
+          */
     }
 
     func upgrade() {

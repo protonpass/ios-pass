@@ -29,6 +29,7 @@ public enum TelemetryEventSendResult {
 }
 
 // MARK: - TelemetryEventRepositoryProtocol
+
 public protocol TelemetryEventRepositoryProtocol {
     var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
     var remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol { get }
@@ -114,13 +115,14 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
         self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
         self.passPlanRepository = passPlanRepository
         self.eventCount = eventCount
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.scheduler = scheduler
         self.userId = userId
     }
 }
 
 // MARK: - TelemetrySchedulerProtocol
+
 public protocol TelemetrySchedulerProtocol: AnyObject {
     var currentDateProvider: CurrentDateProviderProtocol { get }
     var threshhold: Date? { get set }
@@ -164,6 +166,7 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
             thresholdProvider.setThreshold(newValue?.timeIntervalSince1970)
         }
     }
+
     public let eventCount = 500
     public let minIntervalInHours = 6
     public let maxIntervalInHours = 12

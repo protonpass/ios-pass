@@ -61,7 +61,7 @@ extension ShareEventIDRepositoryProtocol {
     func fetchLastEventIdFromRemoteAndSaveToLocal(userId: String, shareId: String) async throws -> String {
         logger.trace("Getting remote last event id of share \(shareId) of user \(userId)")
         let newLastEventId =
-        try await remoteShareEventIDDatasource.getLastEventId(shareId: shareId)
+            try await remoteShareEventIDDatasource.getLastEventId(shareId: shareId)
         logger.trace("Upserting remote last event id of share \(shareId) of user \(userId)")
         try await localShareEventIDDatasource.upsertLastEventId(userId: userId,
                                                                 shareId: shareId,
@@ -80,14 +80,14 @@ public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
                 logManager: LogManager) {
         self.localShareEventIDDatasource = localShareEventIDDatasource
         self.remoteShareEventIDDatasource = remoteShareEventIDDatasource
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 
     public init(container: NSPersistentContainer,
                 apiService: APIService,
                 logManager: LogManager) {
-        self.localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
-        self.remoteShareEventIDDatasource = RemoteShareEventIDDatasource(apiService: apiService)
-        self.logger = .init(manager: logManager)
+        localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
+        remoteShareEventIDDatasource = RemoteShareEventIDDatasource(apiService: apiService)
+        logger = .init(manager: logManager)
     }
 }

@@ -75,16 +75,17 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.passPlanRepository = passPlanRepository
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.preferences = preferences
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
-        self.finalizeInitialization()
-        self.refreshBanners()
+        finalizeInitialization()
+        refreshBanners()
     }
 }
 
 // MARK: - Private APIs
+
 private extension ItemsTabViewModel {
     func finalizeInitialization() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
@@ -141,6 +142,7 @@ private extension ItemsTabViewModel {
 }
 
 // MARK: - Public APIs
+
 extension ItemsTabViewModel {
     func search() {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
@@ -195,6 +197,7 @@ extension ItemsTabViewModel {
 }
 
 // MARK: - SortTypeListViewModelDelegate
+
 extension ItemsTabViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
@@ -202,6 +205,7 @@ extension ItemsTabViewModel: SortTypeListViewModelDelegate {
 }
 
 // MARK: - SyncEventLoopPullToRefreshDelegate
+
 extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
         stopRefreshing()

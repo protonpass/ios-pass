@@ -34,9 +34,9 @@ public enum SearchResultEither: HighlightableText {
 
     public var fullText: String {
         switch self {
-        case .notMatched(let text):
+        case let .notMatched(text):
             return text
-        case .matched(let searchResult):
+        case let .matched(searchResult):
             return searchResult.matchedPhrase
         }
     }
@@ -45,7 +45,7 @@ public enum SearchResultEither: HighlightableText {
         switch self {
         case .notMatched:
             return nil
-        case .matched(let searchResult):
+        case let .matched(searchResult):
             return searchResult.matchedWord
         }
     }
@@ -54,7 +54,7 @@ public enum SearchResultEither: HighlightableText {
         switch self {
         case .notMatched:
             return true
-        case .matched(let searchResult):
+        case let .matched(searchResult):
             return searchResult.isLeadingPhrase
         }
     }
@@ -63,7 +63,7 @@ public enum SearchResultEither: HighlightableText {
         switch self {
         case .notMatched:
             return true
-        case .matched(let searchResult):
+        case let .matched(searchResult):
             return searchResult.isTrailingPhrase
         }
     }
@@ -73,7 +73,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
     public var id: Int {
         "\(itemId + shareId)".hash
     }
-    
+
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
@@ -96,8 +96,8 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
-        self.highlightableTitle = title
-        self.highlightableDetail = detail
+        highlightableTitle = title
+        highlightableDetail = detail
         self.url = url
         self.vault = vault
         self.lastUseTime = lastUseTime
@@ -127,7 +127,7 @@ extension ItemSearchResult: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(itemId)
         hasher.combine(shareId)
-        let texts = [highlightableTitle.highlightText] + highlightableDetail.map { $0.highlightText }
+        let texts = [highlightableTitle.highlightText] + highlightableDetail.map(\.highlightText)
         hasher.combine(texts)
     }
 }

@@ -22,37 +22,33 @@ import SwiftUI
 
 public extension View {
     func roundedDetailSection() -> some View {
-        overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1)
-        )
+        overlay(RoundedRectangle(cornerRadius: 16)
+            .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1))
     }
 
     func roundedEditableSection() -> some View {
-        self.background(Color(uiColor: PassColor.inputBackgroundNorm))
+        background(Color(uiColor: PassColor.inputBackgroundNorm))
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1)
-            )
+            .overlay(RoundedRectangle(cornerRadius: 16)
+                .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1))
     }
 }
 
 public extension Text {
     func sectionTitleText() -> Text {
-        self.font(.footnote).foregroundColor(Color(uiColor: PassColor.textWeak))
+        font(.footnote).foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     func sectionContentText() -> Text {
-        self.foregroundColor(Color(uiColor: PassColor.textNorm))
+        foregroundColor(Color(uiColor: PassColor.textNorm))
     }
 
     func sectionHeaderText() -> Text {
-        self.foregroundColor(Color(uiColor: PassColor.textWeak))
+        foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 
     /// Used for placeholder `Text`s like `Empty notes`, `No items`...
     func placeholderText() -> Text {
-        self.font(.body.italic()).foregroundColor(Color(uiColor: PassColor.textWeak))
+        font(.body.italic()).foregroundColor(Color(uiColor: PassColor.textWeak))
     }
 }
