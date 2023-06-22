@@ -78,7 +78,7 @@ public extension UpgradeCheckerProtocol {
     }
 }
 
-public protocol LimitationCounterProtocol {
+public protocol LimitationCounterProtocol: AnyObject {
     func getAliasCount() -> Int
     func getVaultCount() -> Int
     func getTOTPCount() -> Int
