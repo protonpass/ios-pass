@@ -39,10 +39,9 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let type: LocalAuthenticationType
-    let preferences: Preferences
-    let logManager: LogManager
 
     private let biometricAuthenticator: BiometricAuthenticator
+    private let preferences: Preferences
     private let logger: Logger
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
@@ -58,7 +57,6 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         self.type = type
         self.preferences = preferences
         self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
-        self.logManager = logManager
         self.logger = .init(manager: logManager)
         self.onSuccess = onSuccess
         self.onFailure = onFailure

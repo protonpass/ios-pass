@@ -82,7 +82,6 @@ private extension BiometricAuthenticationView {
                         EmptyView()
 
                     case .lastAttempt:
-                        // swiftlint:disable:next line_length
                         Text("This is your last attempt. You will be logged out after failling to authenticate again.")
                             .multilineTextAlignment(.center)
                             .foregroundColor(PassColor.textNorm.toColor)
