@@ -21,16 +21,16 @@
 import Foundation
 
 public enum LogLevel: String, Codable {
-    case fatal   = "FATAL"
-    case error   = "ERROR"
+    case fatal = "FATAL"
+    case error = "ERROR"
     case warning = "WARNING"
-    case info    = "INFO"
-    case debug   = "DEBUG"
-    case trace   = "TRACE"
+    case info = "INFO"
+    case debug = "DEBUG"
+    case trace = "TRACE"
 
     private var emoji: String {
         switch self {
-        case .fatal, .error:
+        case .error, .fatal:
             return "🔴"
         case .warning:
             return "🟡"

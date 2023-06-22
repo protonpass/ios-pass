@@ -51,11 +51,11 @@ final class WelcomeCoordinator: DeinitPrintable {
     }
 
     private func makeWelcomeViewController() -> UIViewController {
-        let welcomeViewController = WelcomeViewController(
-            variant: .pass(.init(body: "Secure password manager and more")),
-            delegate: self,
-            username: nil,
-            signupAvailable: true)
+        let welcomeViewController =
+            WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more")),
+                                  delegate: self,
+                                  username: nil,
+                                  signupAvailable: true)
         welcomeViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         return welcomeViewController
     }
@@ -74,6 +74,7 @@ final class WelcomeCoordinator: DeinitPrintable {
 }
 
 // MARK: - WelcomeViewControllerDelegate
+
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     func userWantsToLogIn(username: String?) {
         let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
@@ -85,9 +86,9 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
             switch result {
             case .dismissed:
                 break
-            case .loggedIn(let logInData):
+            case let .loggedIn(logInData):
                 self.handle(logInData: logInData)
-            case .signedUp(let logInData):
+            case let .signedUp(logInData):
                 self.handle(logInData: logInData)
             }
         }
@@ -103,9 +104,9 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
             switch result {
             case .dismissed:
                 break
-            case .loggedIn(let logInData):
+            case let .loggedIn(logInData):
                 self.handle(logInData: logInData)
-            case .signedUp(let logInData):
+            case let .signedUp(logInData):
                 self.handle(logInData: logInData)
             }
         }

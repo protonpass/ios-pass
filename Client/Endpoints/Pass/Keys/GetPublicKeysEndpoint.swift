@@ -34,8 +34,8 @@ public struct GetPublicKeysEndpoint: Endpoint {
     public var parameters: [String: Any]?
 
     init(email: String) {
-        self.debugDescription = "Get public keys"
-        self.path = "/keys"
-        self.parameters = ["Email": email]
+        debugDescription = "Get public keys"
+        path = "/keys"
+        parameters = ["Email": email]
     }
 }

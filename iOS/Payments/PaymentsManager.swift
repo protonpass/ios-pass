@@ -66,9 +66,9 @@ final class PaymentsManager {
         PaymentsUI(payments: payments,
                    clientApp: PaymentsConstants.clientApp,
                    shownPlanNames: PaymentsConstants.shownPlanNames,
-                   customization: .init(
-                    inAppTheme: { [weak self] in self?.preferences.theme.inAppTheme ?? .default }
-                   ))
+                   customization: .init(inAppTheme: { [weak self] in
+                       self?.preferences.theme.inAppTheme ?? .default
+                   }))
     }
 
     private func initializePaymentsStack() {
@@ -105,23 +105,23 @@ final class PaymentsManager {
                                         completion: @escaping (Result<InAppPurchasePlan?, Error>) -> Void) {
         switch result {
         case let .purchasedPlan(accountPlan: plan):
-            self.logger.trace("Purchased plan: \(plan.protonName)")
+            logger.trace("Purchased plan: \(plan.protonName)")
             completion(.success(plan))
         case .open:
             break
         case let .planPurchaseProcessingInProgress(accountPlan: plan):
-            self.logger.trace("Purchasing \(plan.protonName)")
+            logger.trace("Purchasing \(plan.protonName)")
         case .close:
-            self.logger.trace("Payments closed")
+            logger.trace("Payments closed")
             completion(.success(nil))
         case let .purchaseError(error: error):
-            self.logger.trace("Purchase failed with error \(error)")
+            logger.trace("Purchase failed with error \(error)")
             completion(.failure(error))
         case .toppedUpCredits:
-            self.logger.trace("Credits topped up")
+            logger.trace("Credits topped up")
             completion(.success(nil))
         case let .apiMightBeBlocked(message, originalError: error):
-            self.logger.trace("\(message), error \(error)")
+            logger.trace("\(message), error \(error)")
             completion(.failure(error))
         }
     }

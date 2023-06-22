@@ -35,6 +35,7 @@ public extension PassColor {
 }
 
 // MARK: - Background
+
 public extension PassColor {
     static var backdrop = UIColor(named: "Backdrop")
     static var backgroundMedium = UIColor(named: "BackgroundMedium")!
@@ -45,6 +46,7 @@ public extension PassColor {
 }
 
 // MARK: - Items
+
 public extension PassColor {
     static var aliasInteractionNorm = UIColor(named: "AliasInteractionNorm")!
     static var aliasInteractionNormMajor1 = UIColor(named: "AliasInteractionNormMajor1")!
@@ -78,6 +80,7 @@ public extension PassColor {
 }
 
 // MARK: - Signals
+
 public extension PassColor {
     static var signalDanger = UIColor(named: "SignalDanger")!
     static var signalInfo = UIColor(named: "SignalInfo")!
@@ -86,6 +89,7 @@ public extension PassColor {
 }
 
 // MARK: - Texts
+
 public extension PassColor {
     static var textDisabled = UIColor(named: "TextDisabled")!
     static var textHint = UIColor(named: "TextHint")!
@@ -95,6 +99,7 @@ public extension PassColor {
 }
 
 // MARK: - Vaults
+
 public extension PassColor {
     static var vaultChestnutRose = UIColor(named: "VaultChestnutRose")!
     static var vaultDeYork = UIColor(named: "VaultDeYork")!
@@ -107,4 +112,5 @@ public extension PassColor {
     static var vaultPorsche = UIColor(named: "VaultPorsche")!
     static var vaultWaterLeaf = UIColor(named: "VaultWaterLeaf")!
 }
+
 // swiftlint:enable force_unwrapping

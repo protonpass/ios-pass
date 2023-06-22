@@ -36,9 +36,9 @@ public struct UpdateVaultEndpoint: Endpoint {
     public var body: UpdateVaultRequest?
 
     public init(shareId: String, request: UpdateVaultRequest) {
-        self.debugDescription = "Edit vault"
-        self.path = "/pass/v1/vault/\(shareId)"
-        self.method = .put
-        self.body = request
+        debugDescription = "Edit vault"
+        path = "/pass/v1/vault/\(shareId)"
+        method = .put
+        body = request
     }
 }

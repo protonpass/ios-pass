@@ -43,10 +43,10 @@ public extension LocalSearchEntryDatasourceProtocol {
     func upsert(item: ItemIdentifiable, date: Date) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
-        newBatchInsertRequest(entity: SearchEntryEntity.entity(context: taskContext),
-                              sourceItems: [item]) { managedObject, item in
-            (managedObject as? SearchEntryEntity)?.hydrate(from: item, date: date)
-        }
+            newBatchInsertRequest(entity: SearchEntryEntity.entity(context: taskContext),
+                                  sourceItems: [item]) { managedObject, item in
+                (managedObject as? SearchEntryEntity)?.hydrate(from: item, date: date)
+            }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
@@ -60,11 +60,10 @@ public extension LocalSearchEntryDatasourceProtocol {
     func remove(item: ItemIdentifiable) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchEntryEntity")
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "itemID = %@", item.itemId),
-                .init(format: "shareID = %@", item.shareId)
-            ])
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "itemID = %@", item.itemId),
+            .init(format: "shareID = %@", item.shareId)
+        ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

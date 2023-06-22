@@ -58,6 +58,7 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     func removeAllItems(shareId: String) async throws
 
     // MARK: - AutoFill related operations
+
     /// Get all active log in items
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 }
@@ -81,11 +82,10 @@ public extension LocalItemDatasourceProtocol {
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(
-            andPredicateWithSubpredicates: [
-                .init(format: "shareID = %@", shareId),
-                .init(format: "itemID = %@", itemId)
-            ])
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "itemID = %@", itemId)
+        ])
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }.first
     }

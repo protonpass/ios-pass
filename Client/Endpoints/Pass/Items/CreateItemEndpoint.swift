@@ -36,9 +36,9 @@ public struct CreateItemEndpoint: Endpoint {
     public var body: CreateItemRequest?
 
     public init(shareId: String, request: CreateItemRequest) {
-        self.debugDescription = "Create item"
-        self.path = "/pass/v1/share/\(shareId)/item"
-        self.method = .post
-        self.body = request
+        debugDescription = "Create item"
+        path = "/pass/v1/share/\(shareId)/item"
+        method = .post
+        body = request
     }
 }

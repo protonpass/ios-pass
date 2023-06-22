@@ -62,9 +62,10 @@ struct TrialDetailView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                 }
-                .background(LinearGradient(
-                    colors: [.init(red: 174 / 255, green: 80 / 255, blue: 96 / 255),
-                             .init(red: 113 / 255, green: 77 / 255, blue: 255 / 255)],
+                .background(LinearGradient(colors: [
+                        .init(red: 174 / 255, green: 80 / 255, blue: 96 / 255),
+                        .init(red: 113 / 255, green: 77 / 255, blue: 255 / 255)
+                    ], // swiftlint:disable:this literal_expression_end_indentation
                     startPoint: .leading,
                     endPoint: .trailing))
                 .clipShape(Capsule())

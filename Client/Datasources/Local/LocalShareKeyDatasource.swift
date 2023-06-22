@@ -43,10 +43,10 @@ public extension LocalShareKeyDatasourceProtocol {
     func upsertKeys(_ keys: [SymmetricallyEncryptedShareKey]) async throws {
         let taskContext = newTaskContext(type: .insert)
         let batchInsertRequest =
-        newBatchInsertRequest(entity: ShareKeyEntity.entity(context: taskContext),
-                              sourceItems: keys) { managedObject, key in
-            (managedObject as? ShareKeyEntity)?.hydrate(from: key)
-        }
+            newBatchInsertRequest(entity: ShareKeyEntity.entity(context: taskContext),
+                                  sourceItems: keys) { managedObject, key in
+                (managedObject as? ShareKeyEntity)?.hydrate(from: key)
+            }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 

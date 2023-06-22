@@ -40,13 +40,13 @@ struct ItemsTabView: View {
                 switch vaultsManager.vaultSelection {
                 case .all:
                     vaultContent(vaultsManager.getItem(for: .all))
-                case .precise(let selectedVault):
+                case let .precise(selectedVault):
                     vaultContent(vaultsManager.getItem(for: .precise(selectedVault)))
                 case .trash:
                     vaultContent(vaultsManager.getItem(for: .trash))
                 }
 
-            case .error(let error):
+            case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
                                    onRetry: viewModel.vaultsManager.refresh)
             }
@@ -66,7 +66,7 @@ struct ItemsTabView: View {
                     InfoBannerViewStack(banners: viewModel.banners,
                                         dismiss: viewModel.dismiss(banner:),
                                         action: viewModel.handleAction(banner:))
-                    .padding([.horizontal, .top])
+                        .padding([.horizontal, .top])
                 }
 
                 if items.isEmpty {
@@ -97,28 +97,26 @@ struct ItemsTabView: View {
         HStack {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
-                CircleButton(
-                    icon: PassIcon.brandPass,
-                    iconColor: VaultSelection.all.color,
-                    backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
-                    type: .big,
-                    action: viewModel.presentVaultList)
-                .frame(width: kSearchBarHeight)
+                CircleButton(icon: PassIcon.brandPass,
+                             iconColor: VaultSelection.all.color,
+                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
+                             type: .big,
+                             action: viewModel.presentVaultList)
+                    .frame(width: kSearchBarHeight)
 
-            case .precise(let vault):
-                CircleButton(
-                    icon: vault.displayPreferences.icon.icon.bigImage,
-                    iconColor: vault.displayPreferences.color.color.color,
-                    backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
-                    action: viewModel.presentVaultList)
-                .frame(width: kSearchBarHeight)
+            case let .precise(vault):
+                CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
+                             iconColor: vault.displayPreferences.color.color.color,
+                             backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
+                             action: viewModel.presentVaultList)
+                    .frame(width: kSearchBarHeight)
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,
                              iconColor: VaultSelection.trash.color,
                              backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16),
                              action: viewModel.presentVaultList)
-                .frame(width: kSearchBarHeight)
+                    .frame(width: kSearchBarHeight)
             }
 
             ZStack {
@@ -149,7 +147,7 @@ struct ItemsTabView: View {
                 .font(.callout)
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-            Text(" (\(items.count))")
+                Text(" (\(items.count))")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -175,52 +173,49 @@ struct ItemsTabView: View {
     }
 
     private func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
-        ItemListView(
-            safeAreaInsets: safeAreaInsets,
-            content: {
-                section(for: result.today, headerTitle: "Today")
-                section(for: result.yesterday, headerTitle: "Yesterday")
-                section(for: result.last7Days, headerTitle: "Last week")
-                section(for: result.last14Days, headerTitle: "Last two weeks")
-                section(for: result.last30Days, headerTitle: "Last 30 days")
-                section(for: result.last60Days, headerTitle: "Last 60 days")
-                section(for: result.last90Days, headerTitle: "Last 90 days")
-                section(for: result.others, headerTitle: "More than 90 days")
-            },
-            onRefresh: viewModel.forceSync)
+        ItemListView(safeAreaInsets: safeAreaInsets,
+                     content: {
+                         section(for: result.today, headerTitle: "Today")
+                         section(for: result.yesterday, headerTitle: "Yesterday")
+                         section(for: result.last7Days, headerTitle: "Last week")
+                         section(for: result.last14Days, headerTitle: "Last two weeks")
+                         section(for: result.last30Days, headerTitle: "Last 30 days")
+                         section(for: result.last60Days, headerTitle: "Last 60 days")
+                         section(for: result.last90Days, headerTitle: "Last 90 days")
+                         section(for: result.others, headerTitle: "More than 90 days")
+                     },
+                     onRefresh: viewModel.forceSync)
     }
 
     private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
                           direction: SortDirection) -> some View {
         ScrollViewReader { proxy in
-            ItemListView(
-                safeAreaInsets: safeAreaInsets,
-                showScrollIndicators: false,
-                content: {
-                    ForEach(result.buckets, id: \.letter) { bucket in
-                        section(for: bucket.items, headerTitle: bucket.letter.character)
-                            .id(bucket.letter.character)
+            ItemListView(safeAreaInsets: safeAreaInsets,
+                         showScrollIndicators: false,
+                         content: {
+                             ForEach(result.buckets, id: \.letter) { bucket in
+                                 section(for: bucket.items, headerTitle: bucket.letter.character)
+                                     .id(bucket.letter.character)
+                             }
+                         },
+                         onRefresh: viewModel.forceSync)
+                .overlay {
+                    HStack {
+                        Spacer()
+                        SectionIndexTitles(proxy: proxy, direction: direction)
                     }
-                },
-                onRefresh: viewModel.forceSync)
-            .overlay {
-                HStack {
-                    Spacer()
-                    SectionIndexTitles(proxy: proxy, direction: direction)
                 }
-            }
         }
     }
 
     private func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
-        ItemListView(
-            safeAreaInsets: safeAreaInsets,
-            content: {
-                ForEach(result.buckets, id: \.monthYear) { bucket in
-                    section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
-                }
-            },
-            onRefresh: viewModel.forceSync)
+        ItemListView(safeAreaInsets: safeAreaInsets,
+                     content: {
+                         ForEach(result.buckets, id: \.monthYear) { bucket in
+                             section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+                         }
+                     },
+                     onRefresh: viewModel.forceSync)
     }
 
     @ViewBuilder
@@ -255,32 +250,30 @@ struct ItemsTabView: View {
         Button(action: {
             viewModel.viewDetail(of: item)
         }, label: {
-            GeneralItemRow(
-                thumbnailView: {
-                    ItemSquircleThumbnail(data: item.thumbnailData(),
-                                          repository: viewModel.favIconRepository)
-                },
-                title: item.title,
-                description: item.description)
-            .itemContextMenu(item: item,
-                             isTrashed: isTrashed,
-                             onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
-                             handler: viewModel.itemContextMenuHandler)
+            GeneralItemRow(thumbnailView: {
+                               ItemSquircleThumbnail(data: item.thumbnailData(),
+                                                     repository: viewModel.favIconRepository)
+                           },
+                           title: item.title,
+                           description: item.description)
+                .itemContextMenu(item: item,
+                                 isTrashed: isTrashed,
+                                 onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
+                                 handler: viewModel.itemContextMenuHandler)
         })
         .padding(.horizontal, 16)
         .frame(height: 64)
-        .modifier(ItemSwipeModifier(
-            itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
-            item: item,
-            isTrashed: isTrashed,
-            itemContextMenuHandler: viewModel.itemContextMenuHandler))
-        .modifier(PermenentlyDeleteItemModifier(
-            isShowingAlert: permanentlyDeleteBinding,
-            onDelete: {
-                if let itemToBePermanentlyDeleted {
-                    viewModel.itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
-                }
-            }))
+        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
+                                    item: item,
+                                    isTrashed: isTrashed,
+                                    itemContextMenuHandler: viewModel.itemContextMenuHandler))
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: permanentlyDeleteBinding,
+                                                onDelete: {
+                                                    if let itemToBePermanentlyDeleted {
+                                                        viewModel.itemContextMenuHandler
+                                                            .deletePermanently(itemToBePermanentlyDeleted)
+                                                    }
+                                                }))
     }
 }
 

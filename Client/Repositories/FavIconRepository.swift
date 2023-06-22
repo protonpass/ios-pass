@@ -70,7 +70,7 @@ public extension FavIconRepositoryProtocol {
 
         let dataToWrite: Data
         switch result {
-        case .positive(let data):
+        case let .positive(data):
             dataToWrite = data
         case .negative:
             dataToWrite = .init()
@@ -167,7 +167,7 @@ public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable
                 preferences: Preferences,
                 symmetricKey: SymmetricKey,
                 cacheExpirationDays: Int = 14) {
-        self.datasource = RemoteFavIconDatasource(apiService: apiService)
+        datasource = RemoteFavIconDatasource(apiService: apiService)
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays
         self.preferences = preferences

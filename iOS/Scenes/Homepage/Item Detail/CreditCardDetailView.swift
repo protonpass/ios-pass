@@ -56,7 +56,7 @@ private extension CreditCardDetailView {
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
                                         vault: viewModel.vault,
                                         favIconRepository: viewModel.favIconRepository)
-                    .padding(.bottom, 40)
+                        .padding(.bottom, 40)
 
                     detailSection
 
@@ -65,13 +65,13 @@ private extension CreditCardDetailView {
                                           vault: viewModel.vault,
                                           theme: viewModel.theme,
                                           favIconRepository: viewModel.favIconRepository)
-                        .padding(.top, 8)
+                            .padding(.top, 8)
                     }
 
                     ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
-                    .padding(.top, 24)
-                    .id(bottomID)
+                        .padding(.top, 24)
+                        .id(bottomID)
                 }
                 .padding()
                 .onChange(of: isMoreInfoSectionExpanded) { _ in
@@ -155,8 +155,8 @@ private extension CreditCardDetailView {
                         .placeholderText()
                 } else {
                     Text(isShowingCardNumber ?
-                         viewModel.cardNumber.toCreditCardNumber() :
-                            viewModel.cardNumber.toMaskedCreditCardNumber())
+                        viewModel.cardNumber.toCreditCardNumber() :
+                        viewModel.cardNumber.toMaskedCreditCardNumber())
                         .sectionContentText()
                         .animation(.default, value: isShowingCardNumber)
                 }
@@ -172,8 +172,8 @@ private extension CreditCardDetailView {
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
                              action: { isShowingCardNumber.toggle() })
-                .fixedSize(horizontal: true, vertical: true)
-                .animationsDisabled()
+                    .fixedSize(horizontal: true, vertical: true)
+                    .animationsDisabled()
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
@@ -225,8 +225,8 @@ private extension CreditCardDetailView {
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
                              action: { isShowingVerificationNumber.toggle() })
-                .fixedSize(horizontal: true, vertical: true)
-                .animationsDisabled()
+                    .fixedSize(horizontal: true, vertical: true)
+                    .animationsDisabled()
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)

@@ -60,10 +60,12 @@ public struct LogFormatOptions: OptionSet {
 
     // Predefined options
     /// Include everything
-    public static let verbose: LogFormatOptions = [.logLevelEmoji,
-                                                   .subsystem,
-                                                   .category,
-                                                   .fileFunctionLineColumn]
+    public static let verbose: LogFormatOptions = [
+        .logLevelEmoji,
+        .subsystem,
+        .category,
+        .fileFunctionLineColumn
+    ]
 
     /// Only include `subsystem` & `category`
     public static let standard: LogFormatOptions = [.subsystem, .category]
@@ -96,6 +98,7 @@ public struct LogFormatter {
 }
 
 // MARK: - Public APIs
+
 public extension LogFormatter {
     func format(entries: [LogEntry]) async -> String {
         await Task.detached(priority: .userInitiated) {
@@ -105,25 +108,25 @@ public extension LogFormatter {
                 return formattedEntries.joined(separator: "\n")
             case .html:
                 return """
-<!doctype html>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<html>
-    <head>
-        <style>
-            body {
-                padding-left: 12px;
-                padding-right: 12px;
-                font-family: -apple-system;
-                font-size: 17px;
-            }
-        </style>
-    </head>
-    <body>
-\(formattedEntries.joined(separator: "<br/>"))
-    </body>
-</html>
-"""
+                <!doctype html>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <html>
+                    <head>
+                        <style>
+                            body {
+                                padding-left: 12px;
+                                padding-right: 12px;
+                                font-family: -apple-system;
+                                font-size: 17px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                \(formattedEntries.joined(separator: "<br/>"))
+                    </body>
+                </html>
+                """
             }
         }.value
     }
@@ -132,34 +135,37 @@ public extension LogFormatter {
         switch format {
         case .txt:
             return txtFormat(entry: entry)
-        case .html(let style):
+        case let .html(style):
             return htmlFormat(entry: entry, style: style)
         }
     }
 }
 
 // MARK: - Internal APIs
+
 extension LogFormatter {
     func txtFormat(entry: LogEntry) -> String {
         // Always include date
         let dateString = dateFormatter.string(from: .init(timeIntervalSince1970: entry.timestamp))
 
         let logLevelString = options.contains(.logLevelEmoji) ?
-        entry.level.descriptionWithEmoji : entry.level.rawValue
+            entry.level.descriptionWithEmoji : entry.level.rawValue
 
         let subsystemString = options.contains(.subsystem) ? entry.subsystem : nil
 
         let categoryString = options.contains(.category) ? entry.category : nil
 
         let fileFunctionLineColumnString = options.contains(.fileFunctionLineColumn) ?
-        "\(entry.file).\(entry.function):\(entry.line):\(entry.column)" : nil
+            "\(entry.file).\(entry.function):\(entry.line):\(entry.column)" : nil
 
         // Get except message because we want to concatenate message with a different separator
-        let strings = [dateString,
-                       logLevelString,
-                       subsystemString,
-                       categoryString,
-                       fileFunctionLineColumnString].compactMap { $0 }
+        let strings = [
+            dateString,
+            logLevelString,
+            subsystemString,
+            categoryString,
+            fileFunctionLineColumnString
+        ].compactMap { $0 }
 
         let everythingExceptMessage = strings.joined(separator: " | ")
 
@@ -170,7 +176,7 @@ extension LogFormatter {
         let dateString = dateFormatter.string(from: .init(timeIntervalSince1970: entry.timestamp))
 
         let logLevelString = options.contains(.logLevelEmoji) ?
-        entry.level.descriptionWithEmoji : entry.level.rawValue
+            entry.level.descriptionWithEmoji : entry.level.rawValue
 
         // Subsystem
         var subsystemString: String?
@@ -194,14 +200,16 @@ extension LogFormatter {
 
         // File, function, line & column
         let fileFunctionLineColumnString = options.contains(.fileFunctionLineColumn) ?
-        "\(entry.file).\(entry.function):\(entry.line):\(entry.column)" : nil
+            "\(entry.file).\(entry.function):\(entry.line):\(entry.column)" : nil
 
         // Get except message because we want to concatenate message with a different separator
-        let strings = [dateString,
-                       logLevelString,
-                       subsystemString,
-                       categoryString,
-                       fileFunctionLineColumnString].compactMap { $0 }
+        let strings = [
+            dateString,
+            logLevelString,
+            subsystemString,
+            categoryString,
+            fileFunctionLineColumnString
+        ].compactMap { $0 }
 
         let everythingExceptMessage = strings.joined(separator: " | ")
 

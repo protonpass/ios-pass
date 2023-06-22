@@ -135,8 +135,8 @@ struct HiddenCustomFieldSection: View {
                              iconColor: itemContentType.normMajor2Color,
                              backgroundColor: itemContentType.normMinor2Color,
                              action: { isShowingText.toggle() })
-                .fixedSize(horizontal: true, vertical: true)
-                .animationsDisabled()
+                    .fixedSize(horizontal: true, vertical: true)
+                    .animationsDisabled()
             }
         }
         .animation(.default, value: isShowingText)
@@ -164,7 +164,7 @@ struct TotpCustomFieldSection: View {
          logManager: LogManager,
          onSelectTotpToken: @escaping (String) -> Void,
          onUpgrade: @escaping () -> Void) {
-        self._totpManager = .init(wrappedValue: .init(logManager: logManager))
+        _totpManager = .init(wrappedValue: .init(logManager: logManager))
         self.title = title
         self.content = content
         self.itemContentType = itemContentType
@@ -190,7 +190,7 @@ struct TotpCustomFieldSection: View {
                         EmptyView()
                     case .loading:
                         ProgressView()
-                    case .valid(let data):
+                    case let .valid(data):
                         TOTPText(code: data.code)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     case .invalid:
@@ -210,7 +210,7 @@ struct TotpCustomFieldSection: View {
 
             if !isFreeUser {
                 switch totpManager.state {
-                case .valid(let data):
+                case let .valid(data):
                     TOTPCircularTimer(data: data.timerData)
                 default:
                     EmptyView()

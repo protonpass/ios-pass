@@ -121,23 +121,23 @@ public struct CustomField {
     }
 
     init(from extraField: ProtonPassItemV1_ExtraField) {
-        self.title = extraField.fieldName
+        title = extraField.fieldName
         switch extraField.content {
-        case .text(let extraText):
-            self.type = .text
-            self.content = extraText.content
+        case let .text(extraText):
+            type = .text
+            content = extraText.content
 
-        case .totp(let extraTotp):
-            self.type = .totp
-            self.content = extraTotp.totpUri
+        case let .totp(extraTotp):
+            type = .totp
+            content = extraTotp.totpUri
 
-        case .hidden(let extraHidden):
-            self.type = .hidden
-            self.content = extraHidden.content
+        case let .hidden(extraHidden):
+            type = .hidden
+            content = extraHidden.content
 
         default:
-            self.type = .text
-            self.content = ""
+            type = .text
+            content = ""
         }
     }
 }
@@ -165,7 +165,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         case .note:
             return .note
 
-        case .creditCard(let data):
+        case let .creditCard(data):
             return .creditCard(.init(cardholderName: data.cardholderName,
                                      type: data.cardType,
                                      number: data.number,
@@ -174,7 +174,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                                      issuerBank: data.issuerBank,
                                      pin: data.pin))
 
-        case .login(let data):
+        case let .login(data):
             return .login(.init(username: data.username,
                                 password: data.password,
                                 totpUri: data.totpUri,
@@ -187,7 +187,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     public var customFields: [CustomField] { extraFields.map { .init(from: $0) } }
 
     public func data() throws -> Data {
-        try self.serializedData()
+        try serializedData()
     }
 
     public init(data: Data) throws {
@@ -208,14 +208,14 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         case .alias:
             content.alias = .init()
 
-        case .login(let logInData):
+        case let .login(logInData):
             content.login = .init()
             content.login.username = logInData.username
             content.login.password = logInData.password
             content.login.totpUri = logInData.totpUri
             content.login.urls = logInData.urls
 
-        case .creditCard(let data):
+        case let .creditCard(data):
             content.creditCard = .init()
             content.creditCard.cardholderName = data.cardholderName
             content.creditCard.cardType = data.type
@@ -266,11 +266,11 @@ public struct ItemContent: ItemContentProtocol {
                 contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
         self.item = item
-        self.itemUuid = contentProtobuf.uuid
-        self.name = contentProtobuf.name
-        self.note = contentProtobuf.note
-        self.contentData = contentProtobuf.contentData
-        self.customFields = contentProtobuf.customFields
+        itemUuid = contentProtobuf.uuid
+        name = contentProtobuf.name
+        note = contentProtobuf.note
+        contentData = contentProtobuf.contentData
+        customFields = contentProtobuf.customFields
     }
 
     public var protobuf: ItemContentProtobuf {
@@ -295,7 +295,7 @@ extension ItemContent: ItemThumbnailable {
 
     public var url: String? {
         switch contentData {
-        case .login(let data):
+        case let .login(data):
             return data.urls.first
         default:
             return nil
@@ -306,7 +306,7 @@ extension ItemContent: ItemThumbnailable {
 public extension ItemContent {
     /// Get `TOTPData` of the current moment
     func totpData() throws -> TOTPData? {
-        if case .login(let logInData) = contentData,
+        if case let .login(logInData) = contentData,
            !logInData.totpUri.isEmpty {
             return try .init(uri: logInData.totpUri)
         } else {
@@ -316,6 +316,7 @@ public extension ItemContent {
 }
 
 // MARK: - Symmetric encryption/decryption
+
 public extension ItemContentProtobuf {
     /// Symmetrically encrypt and base 64 the binary data
     func encrypt(symmetricKey: SymmetricKey) throws -> String {

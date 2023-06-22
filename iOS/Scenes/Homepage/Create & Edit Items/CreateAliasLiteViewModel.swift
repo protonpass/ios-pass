@@ -58,7 +58,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     }
 
     var mailboxes: String {
-        mailboxSelection.selectedMailboxes.compactMap { $0.email }.joined(separator: "\n")
+        mailboxSelection.selectedMailboxes.map(\.email).joined(separator: "\n")
     }
 
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
@@ -76,25 +76,27 @@ final class CreateAliasLiteViewModel: ObservableObject {
             .projectedValue
             .dropFirst(3) // TextField is edited 3 times when view is loaded
             .sink { [unowned self] _ in
-                self.validatePrefix()
+                validatePrefix()
             }
             .store(in: &cancellables)
     }
 }
 
 // MARK: - Private APIs
+
 private extension CreateAliasLiteViewModel {
     func validatePrefix() {
         do {
             try AliasPrefixValidator.validate(prefix: prefix)
-            self.prefixError = nil
+            prefixError = nil
         } catch {
-            self.prefixError = error as? AliasPrefixError
+            prefixError = error as? AliasPrefixError
         }
     }
 }
 
 // MARK: - Public APIs
+
 extension CreateAliasLiteViewModel {
     func confirm() {
         guard let suffix = suffixSelection.selectedSuffix else { return }

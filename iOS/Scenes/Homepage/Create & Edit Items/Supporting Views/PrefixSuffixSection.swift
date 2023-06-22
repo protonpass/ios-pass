@@ -41,7 +41,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
     let tintColor: UIColor
     let suffixSelection: SuffixSelection
     let prefixError: AliasPrefixError?
-    var onSubmitPrefix: ((() -> Void))?
+    var onSubmitPrefix: (() -> Void)?
     var onSelectSuffix: () -> Void
 
     var body: some View {

@@ -87,7 +87,7 @@ public extension Share {
 
         let decryptedContent = try AES.GCM.open(contentData,
                                                 key: key.keyData,
-                                                associatedData: .vaultcontent)
+                                                associatedData: .vaultContent)
 
         switch shareType {
         case .unknown:

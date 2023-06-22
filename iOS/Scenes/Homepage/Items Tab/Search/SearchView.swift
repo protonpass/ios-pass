@@ -41,7 +41,7 @@ struct SearchView: View {
                 case .empty, .history, .noResults, .results:
                     content
 
-                case .error(let error):
+                case let .error(error):
                     RetryableErrorView(errorMessage: error.localizedDescription,
                                        onRetry: viewModel.refreshResults)
                 }
@@ -68,19 +68,18 @@ struct SearchView: View {
                     .frame(maxHeight: .infinity)
                     .padding(.bottom, safeAreaInsets.bottom + 200)
 
-            case .history(let history):
-                SearchRecentResultsView(
-                    results: history,
-                    favIconRepository: viewModel.favIconRepository,
-                    onSelect: { viewModel.viewDetail(of: $0) },
-                    onRemove: { viewModel.removeFromHistory($0) },
-                    onClearResults: viewModel.removeAllSearchHistory)
+            case let .history(history):
+                SearchRecentResultsView(results: history,
+                                        favIconRepository: viewModel.favIconRepository,
+                                        onSelect: { viewModel.viewDetail(of: $0) },
+                                        onRemove: { viewModel.removeFromHistory($0) },
+                                        onClearResults: viewModel.removeAllSearchHistory)
 
-            case .noResults(let query):
+            case let .noResults(query):
                 switch viewModel.vaultSelection {
                 case .all:
                     NoSearchResultsInAllVaultView(query: query)
-                case .precise(let vault):
+                case let .precise(vault):
                     NoSearchResultsInPreciseVaultView(query: query,
                                                       vaultName: vault.name,
                                                       action: viewModel.searchInAllVaults)

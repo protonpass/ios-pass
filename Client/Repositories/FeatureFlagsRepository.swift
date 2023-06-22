@@ -70,6 +70,6 @@ public final class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
         self.localFeatureFlagsDatasource = localFeatureFlagsDatasource
         self.remoteFeatureFlagsDatasource = remoteFeatureFlagsDatasource
         self.userId = userId
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 }

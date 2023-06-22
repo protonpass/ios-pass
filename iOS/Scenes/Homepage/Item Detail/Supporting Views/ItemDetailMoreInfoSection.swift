@@ -29,8 +29,8 @@ struct ItemDetailMoreInfoSection: View {
 
     init(isExpanded: Binding<Bool>,
          itemContent: ItemContent) {
-        self._isExpanded = isExpanded
-        self.uiModel = .init(itemContent: itemContent)
+        _isExpanded = isExpanded
+        uiModel = .init(itemContent: itemContent)
     }
 
     var body: some View {

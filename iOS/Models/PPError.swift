@@ -30,19 +30,20 @@ enum PPError: Error, CustomDebugStringConvertible {
 
     var debugDescription: String {
         switch self {
-        case .credentialProvider(let reason):
+        case let .credentialProvider(reason):
             return reason.debugDescription
         case .failedToGetOrCreateSymmetricKey:
             return "Failed to get or create symmetric key"
         case let .itemNotFound(shareID, itemID):
             return "Item not found \"\(itemID)\" - Share ID \"\(shareID)\""
-        case .vault(let reason):
+        case let .vault(reason):
             return reason.debugDescription
         }
     }
 }
 
 // MARK: - VaultFailureReason
+
 extension PPError {
     enum VaultFailureReason: CustomDebugStringConvertible {
         case canNotDeleteLastVault
@@ -56,9 +57,9 @@ extension PPError {
                 return "Can not delete last vault"
             case .noSelectedVault:
                 return "No selected vault"
-            case .vaultNotEmpty(let id):
+            case let .vaultNotEmpty(id):
                 return "Vault not empty \"\(id)\""
-            case .vaultNotFound(let id):
+            case let .vaultNotFound(id):
                 return "Vault not found \"\(id)\""
             }
         }
@@ -66,6 +67,7 @@ extension PPError {
 }
 
 // MARK: - CredentialProviderFailureReason
+
 extension PPError {
     enum CredentialProviderFailureReason: CustomDebugStringConvertible {
         case failedToAuthenticate
@@ -78,7 +80,7 @@ extension PPError {
             switch self {
             case .failedToAuthenticate:
                 return "Failed to authenticate"
-            case .invalidURL(let url):
+            case let .invalidURL(url):
                 return "Invalid URL \"\(String(describing: url?.absoluteString))\""
             case .missingRecordIdentifier:
                 return "ASPasswordCredentialIdentity object missing record identifier"

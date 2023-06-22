@@ -34,10 +34,10 @@ public struct AnimatingGradient: View {
             LinearGradient(colors: [.clear, Color(tintColor.withAlphaComponent(0.2)), .clear],
                            startPoint: .leading,
                            endPoint: .trailing)
-            .offset(x: animateGradient ? 300 : -200)
-            .frame(width: 200)
-            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: false),
-                       value: animateGradient)
+                .offset(x: animateGradient ? 300 : -200)
+                .frame(width: 200)
+                .animation(.easeInOut(duration: 1).repeatForever(autoreverses: false),
+                           value: animateGradient)
         }
         .onFirstAppear {
             animateGradient.toggle()

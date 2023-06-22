@@ -32,7 +32,7 @@ final class SuffixSelection: ObservableObject {
 
     init(suffixes: [Suffix]) {
         self.suffixes = suffixes
-        self.selectedSuffix = suffixes.first
+        selectedSuffix = suffixes.first
     }
 }
 
@@ -41,15 +41,15 @@ final class MailboxSelection: ObservableObject {
     let mailboxes: [Mailbox]
 
     var selectedMailboxesString: String {
-        selectedMailboxes.map { $0.email }.joined(separator: "\n")
+        selectedMailboxes.map(\.email).joined(separator: "\n")
     }
 
     init(mailboxes: [Mailbox]) {
         self.mailboxes = mailboxes
         if let defaultMailbox = mailboxes.first {
-            self.selectedMailboxes = [defaultMailbox]
+            selectedMailboxes = [defaultMailbox]
         } else {
-            self.selectedMailboxes = []
+            selectedMailboxes = []
         }
     }
 }
@@ -62,6 +62,7 @@ protocol CreateEditAliasViewModelDelegate: AnyObject {
 }
 
 // MARK: - Initialization
+
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
@@ -143,8 +144,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                        logManager: logManager)
 
         if case let .edit(itemContent) = mode {
-            self.title = itemContent.name
-            self.note = itemContent.note
+            title = itemContent.name
+            note = itemContent.note
         }
         getAliasAndAliasOptions()
 
@@ -153,10 +154,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
-                self.validatePrefix()
+                validatePrefix()
             }
             .store(in: &cancellables)
-        
+
         $title
             .removeDuplicates()
             .dropFirst()
@@ -173,7 +174,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [unowned self] _ in
-                self.getAliasAndAliasOptions()
+                getAliasAndAliasOptions()
             }
             .store(in: &cancellables)
 
@@ -182,7 +183,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .combineLatest($note)
             .dropFirst()
             .sink(receiveValue: { [unowned self] _ in
-                self.didEditSomething = true
+                didEditSomething = true
             })
             .store(in: &cancellables)
     }
@@ -194,7 +195,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                             note: note,
                             itemUuid: UUID().uuidString,
                             data: .alias,
-                            customFields: customFieldUiModels.map { $0.customField })
+                            customFields: customFieldUiModels.map(\.customField))
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
@@ -202,14 +203,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
               let selectedMailboxes = mailboxSelection?.selectedMailboxes else { return nil }
         return .init(prefix: prefix,
                      suffix: selectedSuffix,
-                     mailboxIds: selectedMailboxes.map { $0.ID })
+                     mailboxIds: selectedMailboxes.map(\.ID))
     }
 
     override func additionalEdit() async throws {
-        guard let alias, let mailboxSelection = mailboxSelection else { return }
+        guard let alias, let mailboxSelection else { return }
         if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
         if case let .edit(itemContent) = mode {
-            let mailboxIds = mailboxSelection.selectedMailboxes.map { $0.ID }
+            let mailboxIds = mailboxSelection.selectedMailboxes.map(\.ID)
             _ = try await changeMailboxesTask(shareId: itemContent.shareId,
                                               itemId: itemContent.item.itemID,
                                               mailboxIDs: mailboxIds).value
@@ -219,14 +220,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private func validatePrefix() {
         do {
             try AliasPrefixValidator.validate(prefix: prefix)
-            self.prefixError = nil
+            prefixError = nil
         } catch {
-            self.prefixError = error as? AliasPrefixError
+            prefixError = error as? AliasPrefixError
         }
     }
 }
 
 // MARK: - Public actions
+
 extension CreateEditAliasViewModel {
     func getAliasAndAliasOptions() {
         Task { @MainActor in
@@ -241,10 +243,10 @@ extension CreateEditAliasViewModel {
                 mailboxSelection?.attach(to: self, storeIn: &cancellables)
                 canCreateAlias = aliasOptions.canCreateAlias
 
-                if case .edit(let itemContent) = mode {
+                if case let .edit(itemContent) = mode {
                     let alias =
-                    try await aliasRepository.getAliasDetailsTask(shareId: shareId,
-                                                                  itemId: itemContent.item.itemID).value
+                        try await aliasRepository.getAliasDetailsTask(shareId: shareId,
+                                                                      itemId: itemContent.item.itemID).value
                     self.aliasEmail = alias.email
                     self.alias = alias
                     self.mailboxSelection?.selectedMailboxes = alias.mailboxes
@@ -278,6 +280,7 @@ extension CreateEditAliasViewModel {
 }
 
 // MARK: - Private supporting tasks
+
 private extension CreateEditAliasViewModel {
     func getAliasOptionsTask(shareId: String) -> Task<AliasOptions, Error> {
         Task.detached(priority: .userInitiated) {

@@ -81,27 +81,28 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedColor = .color1
             selectedIcon = .icon1
             title = ""
-        case .edit(let vault):
+        case let .edit(vault):
             selectedColor = vault.displayPreferences.color.color
             selectedIcon = vault.displayPreferences.icon.icon
             title = vault.name
         }
 
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
         self.shareRepository = shareRepository
         self.upgradeChecker = upgradeChecker
         self.theme = theme
-        self.verifyLimitation()
+        verifyLimitation()
     }
 }
 
 // MARK: - Private APIs
+
 private extension CreateEditVaultViewModel {
     func verifyLimitation() {
         Task { @MainActor in
             do {
                 // Primary vault can always be edited
-                if case .edit(let vault) = mode, vault.isPrimary {
+                if case let .edit(vault) = mode, vault.isPrimary {
                     canCreateOrEdit = true
                 } else {
                     canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
@@ -154,10 +155,11 @@ private extension CreateEditVaultViewModel {
 }
 
 // MARK: - Public APIs
+
 extension CreateEditVaultViewModel {
     func save() {
         switch mode {
-        case .edit(let vault):
+        case let .edit(vault):
             editVault(vault)
         case .create:
             createVault()
@@ -172,9 +174,9 @@ extension CreateEditVaultViewModel {
 extension VaultColorIcon: Hashable {
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .color(let color):
+        case let .color(color):
             hasher.combine(color)
-        case .icon(let icon):
+        case let .icon(icon):
             hasher.combine(icon)
         }
     }

@@ -55,8 +55,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     override func bindValues() {
         aliasEmail = itemContent.item.aliasEmail ?? ""
         if case .alias = itemContent.contentData {
-            self.name = itemContent.name
-            self.note = itemContent.note
+            name = itemContent.name
+            note = itemContent.note
         } else {
             fatalError("Expecting alias type")
         }
@@ -66,8 +66,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         Task { @MainActor in
             do {
                 let alias =
-                try await aliasRepository.getAliasDetailsTask(shareId: itemContent.shareId,
-                                                              itemId: itemContent.item.itemID).value
+                    try await aliasRepository.getAliasDetailsTask(shareId: itemContent.shareId,
+                                                                  itemId: itemContent.item.itemID).value
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes
                 logger.info("Get alias detail successfully \(itemContent.debugInformation)")

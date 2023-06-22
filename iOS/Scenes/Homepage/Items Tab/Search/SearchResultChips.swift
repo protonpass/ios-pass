@@ -90,7 +90,7 @@ private struct ItemCountChip: View {
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
             .background(Color(uiColor: isSelected ?
-                              PassColor.interactionNormMajor1 : PassColor.textDisabled))
+                    PassColor.interactionNormMajor1 : PassColor.textDisabled))
             .clipShape(Capsule())
             .animation(.default, value: isSelected)
         }

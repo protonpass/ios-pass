@@ -34,7 +34,7 @@ public struct GetEventsEndpoint: Endpoint {
     public var path: String
 
     public init(shareId: String, lastEventId: String) {
-        self.debugDescription = "Get events since a given eventID"
-        self.path = "/pass/v1/share/\(shareId)/event/\(lastEventId)"
+        debugDescription = "Get events since a given eventID"
+        path = "/pass/v1/share/\(shareId)/event/\(lastEventId)"
     }
 }

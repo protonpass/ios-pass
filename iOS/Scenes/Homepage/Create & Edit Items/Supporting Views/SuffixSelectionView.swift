@@ -45,7 +45,7 @@ struct SuffixSelectionView: View {
                             HStack {
                                 Text(suffix.suffix)
                                     .foregroundColor(Color(uiColor: isSelected(suffix) ?
-                                                           tintColor : PassColor.textNorm))
+                                            tintColor : PassColor.textNorm))
                                 Spacer()
 
                                 if isSelected(suffix) {

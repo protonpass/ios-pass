@@ -99,13 +99,12 @@ struct TextOptionRow: View {
     let action: () -> Void
 
     var body: some View {
-        OptionRow(
-            action: action,
-            content: {
-                Text(title)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-            },
-            trailing: { ChevronRight() })
+        OptionRow(action: action,
+                  content: {
+                      Text(title)
+                          .foregroundColor(Color(uiColor: PassColor.textNorm))
+                  },
+                  trailing: { ChevronRight() })
     }
 }
 
@@ -116,17 +115,16 @@ struct SelectableOptionRow<Content: View>: View {
     let isSelected: Bool
 
     var body: some View {
-        OptionRow(
-            action: action,
-            height: height,
-            horizontalPadding: 0,
-            content: { content() },
-            trailing: {
-                if isSelected {
-                    Label("", systemImage: "checkmark")
-                        .foregroundColor(Color(uiColor: PassColor.interactionNorm))
-                }
-            })
+        OptionRow(action: action,
+                  height: height,
+                  horizontalPadding: 0,
+                  content: { content() },
+                  trailing: {
+                      if isSelected {
+                          Label("", systemImage: "checkmark")
+                              .foregroundColor(Color(uiColor: PassColor.interactionNorm))
+                      }
+                  })
     }
 }
 

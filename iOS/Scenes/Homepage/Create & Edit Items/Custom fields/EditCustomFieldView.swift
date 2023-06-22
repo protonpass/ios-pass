@@ -63,17 +63,17 @@ struct EditCustomFieldView: View {
                                            placeholder: "2FA secret (TOTP)",
                                            focusedField: $focusedField,
                                            field: .dummy)
-                        .foregroundColor(PassColor.textNorm.toColor)
-                        .keyboardType(.URL)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
+                            .foregroundColor(PassColor.textNorm.toColor)
+                            .keyboardType(.URL)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
 
                     case .hidden:
                         SensitiveTextField(text: $uiModel.customField.content,
                                            placeholder: "Hidden",
                                            focusedField: $focusedField,
                                            field: .dummy)
-                        .foregroundColor(PassColor.textNorm.toColor)
+                            .foregroundColor(PassColor.textNorm.toColor)
                     }
                 }
             }

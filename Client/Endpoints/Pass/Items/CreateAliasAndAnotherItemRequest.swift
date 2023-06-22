@@ -27,8 +27,8 @@ public struct CreateAliasAndAnotherItemRequest {
     public init(info: AliasCreationInfo,
                 aliasItem: CreateItemRequest,
                 otherItem: CreateItemRequest) {
-        self.alias = .init(info: info, item: aliasItem)
-        self.item = otherItem
+        alias = .init(info: info, item: aliasItem)
+        item = otherItem
     }
 }
 

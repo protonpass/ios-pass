@@ -39,7 +39,7 @@ public final class KeychainStorage<T: Codable> {
     public func inject(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
         self.keychain = keychain
         self.mainKeyProvider = mainKeyProvider
-        self.logger = .init(manager: logManager)
+        logger = .init(manager: logManager)
     }
 
     public var wrappedValue: T? {

@@ -24,7 +24,7 @@ public typealias VaultProtobuf = ProtonPassVaultV1_Vault
 
 public extension VaultProtobuf {
     func data() throws -> Data {
-        try self.serializedData()
+        try serializedData()
     }
 
     init(data: Data) throws {
@@ -37,8 +37,8 @@ public extension VaultProtobuf {
          icon: ProtonPassVaultV1_VaultIcon) {
         self.init()
         self.name = name
-        self.description_p = description
-        self.display.color = color
-        self.display.icon = icon
+        description_p = description
+        display.color = color
+        display.icon = icon
     }
 }

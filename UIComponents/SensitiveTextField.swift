@@ -37,7 +37,7 @@ public struct SensitiveTextField<Field: Hashable>: View {
                 focusedField: FocusState<Field?>.Binding,
                 field: Field,
                 onSubmit: (() -> Void)? = nil) {
-        self._text = text
+        _text = text
         self.placeholder = placeholder
         self.focusedField = focusedField
         self.field = field
@@ -51,8 +51,8 @@ public struct SensitiveTextField<Field: Hashable>: View {
                                       field: field,
                                       placeholder: placeholder,
                                       onSubmit: onSubmit)
-            .frame(maxHeight: shouldShowTextEditor ? .infinity : 0)
-            .opacity(shouldShowTextEditor ? 1 : 0)
+                .frame(maxHeight: shouldShowTextEditor ? .infinity : 0)
+                .opacity(shouldShowTextEditor ? 1 : 0)
 
             if !text.isEmpty {
                 Button(action: {

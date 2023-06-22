@@ -66,8 +66,8 @@ struct AliasDetailView: View {
 
                     ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
-                    .padding(.top, 24)
-                    .id(bottomID)
+                        .padding(.top, 24)
+                        .id(bottomID)
                 }
                 .padding()
             }

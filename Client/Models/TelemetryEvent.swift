@@ -39,13 +39,13 @@ public enum TelemetryEventType {
 
     public var rawValue: String {
         switch self {
-        case .create(let type):
+        case let .create(type):
             return "create.\(type.rawValue)"
-        case .read(let type):
+        case let .read(type):
             return "read.\(type.rawValue)"
-        case .update(let type):
+        case let .update(type):
             return "update.\(type.rawValue)"
-        case .delete(let type):
+        case let .delete(type):
             return "delete.\(type.rawValue)"
         case .autofillDisplay:
             return "autofill.display"
@@ -115,10 +115,10 @@ extension TelemetryEventType: Equatable {
         case let (.delete(lhsType), .delete(rhsType)):
             return lhsType == rhsType
         case (.autofillDisplay, .autofillDisplay),
-            (.autofillTriggeredFromSource, .autofillTriggeredFromSource),
-            (.autofillTriggeredFromApp, .autofillTriggeredFromApp),
-            (.searchTriggered, .searchTriggered),
-            (.searchClick, .searchClick):
+             (.autofillTriggeredFromApp, .autofillTriggeredFromApp),
+             (.autofillTriggeredFromSource, .autofillTriggeredFromSource),
+             (.searchClick, .searchClick),
+             (.searchTriggered, .searchTriggered):
             return true
         default:
             return false

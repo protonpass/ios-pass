@@ -45,14 +45,13 @@ public final class ProtonPassDoH: DoH, ServerConfig {
                 let defaultHost = userDefaults.string(forKey: "pref_custom_env_default_host")
                 let apiHost = userDefaults.string(forKey: "pref_custom_env_api_host")
                 let defaultPath = userDefaults.string(forKey: "pref_custom_env_default_path")
-                environment = .custom(.init(
-                    signupDomain: signupDomain ?? "proton.me",
-                    captchaHost: captchaHost ?? "https://pass-api.proton.me",
-                    humanVerificationV3Host: hvHost ?? "https://verify.proton.me",
-                    accountHost: accountHost ?? "https://account.proton.me",
-                    defaultHost: defaultHost ?? "https://pass-api.proton.me",
-                    apiHost: apiHost ?? "pass-api.proton.me",
-                    defaultPath: defaultPath ?? "/api"))
+                environment = .custom(.init(signupDomain: signupDomain ?? "proton.me",
+                                            captchaHost: captchaHost ?? "https://pass-api.proton.me",
+                                            humanVerificationV3Host: hvHost ?? "https://verify.proton.me",
+                                            accountHost: accountHost ?? "https://account.proton.me",
+                                            defaultHost: defaultHost ?? "https://pass-api.proton.me",
+                                            apiHost: apiHost ?? "pass-api.proton.me",
+                                            defaultPath: defaultPath ?? "/api"))
             default:
                 // Fallback to "Automatic" mode
                 #if DEBUG
@@ -67,12 +66,12 @@ public final class ProtonPassDoH: DoH, ServerConfig {
         }
 
         let params = environment.parameters
-        self.signupDomain = params.signupDomain
-        self.captchaHost = params.captchaHost
-        self.humanVerificationV3Host = params.humanVerificationV3Host
-        self.accountHost = params.accountHost
-        self.defaultHost = params.defaultHost
-        self.apiHost = params.apiHost
-        self.defaultPath = params.defaultPath
+        signupDomain = params.signupDomain
+        captchaHost = params.captchaHost
+        humanVerificationV3Host = params.humanVerificationV3Host
+        accountHost = params.accountHost
+        defaultHost = params.defaultHost
+        apiHost = params.apiHost
+        defaultPath = params.defaultPath
     }
 }

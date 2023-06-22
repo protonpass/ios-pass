@@ -64,6 +64,7 @@ public protocol DateSortable {
 }
 
 // MARK: - Most recent
+
 public struct MostRecentSortResult<T: DateSortable> {
     public let today: [T]
     public let yesterday: [T]
@@ -123,6 +124,7 @@ public extension Array where Element: DateSortable {
 }
 
 // MARK: - Alphabetical
+
 // swiftlint:disable identifier_name
 public enum AlphabetLetter: Int, CaseIterable {
     case sharp = 0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z
@@ -168,6 +170,7 @@ public enum AlphabetLetter: Int, CaseIterable {
         }
     }
 }
+
 // swiftlint:enable identifier_name
 
 public struct AlphabetBucket<T: AlphabeticalSortable> {
@@ -187,7 +190,7 @@ public extension Array where Element: AlphabeticalSortable {
     // swiftlint:disable cyclomatic_complexity
     func alphabeticalSortResult(direction: SortDirection) -> AlphabeticalSortResult<Element> {
         let sortedAlphabetically =
-        sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
+            sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
 
         let dict = Dictionary(grouping: sortedAlphabetically) { element in
             if let firstCharacter = element.alphabeticalSortableString.first {
@@ -253,6 +256,7 @@ public extension Array where Element: AlphabeticalSortable {
 }
 
 // MARK: - Month year
+
 public struct MonthYear: Hashable {
     public let month: Int
     public let year: Int
@@ -269,8 +273,8 @@ public struct MonthYear: Hashable {
 
     init(date: Date) {
         let components = Calendar.current.dateComponents([.month, .year], from: date)
-        self.month = components.month ?? 0
-        self.year = components.year ?? 0
+        month = components.month ?? 0
+        year = components.year ?? 0
     }
 }
 

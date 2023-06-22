@@ -49,7 +49,7 @@ public struct GetFeatureFlagEndpoint: Endpoint {
     public var path: String
 
     public init(flagType: FeatureFlagType) {
-        self.debugDescription = "Get feature flag \(flagType.path)"
-        self.path = "/core/v4/features/\(flagType.path)"
+        debugDescription = "Get feature flag \(flagType.path)"
+        path = "/core/v4/features/\(flagType.path)"
     }
 }
