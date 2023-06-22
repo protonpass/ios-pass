@@ -65,24 +65,26 @@ final class APIManager {
         self.logger = logger
         self.appData = appData
 
+        let apiService: PMAPIService
         if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
-            self.apiService = PMAPIService.createAPIService(
+            apiService = PMAPIService.createAPIService(
                 doh: ProtonPassDoH(),
                 sessionUID: credential.sessionID,
                 challengeParametersProvider: .forAPIService(clientApp: .pass, challenge: .init())
             )
             self.authHelper = AuthHelper(authCredential: credential)
         } else {
-            self.apiService = PMAPIService.createAPIServiceWithoutSession(
+            apiService = PMAPIService.createAPIServiceWithoutSession(
                 doh: ProtonPassDoH(),
                 challengeParametersProvider: .forAPIService(clientApp: .pass, challenge: .init())
             )
             self.authHelper = AuthHelper()
         }
-
+        self.apiService = apiService
         self.authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
         self.apiService.authDelegate = authHelper
         self.apiService.serviceDelegate = self
+        apiService.loggingDelegate = self
 
         self.humanHelper = HumanCheckHelper(apiService: apiService,
                                             inAppTheme: { preferences.theme.inAppTheme },
@@ -233,6 +235,32 @@ extension APIManager: ForceUpgradeResponseDelegate {
 
     func onUpdateButtonPressed() {
         logger.info("Forced upgrade")
+    }
+}
+
+// MARK: - APIServiceLoggingDelegate
+extension APIManager: APIServiceLoggingDelegate {
+    func accessTokenRefreshDidStart(for sessionID: String,
+                                    sessionType: APISessionTypeForLogging) {
+        logger.info("Access token refresh did start for \(sessionType) session \(sessionID)")
+    }
+    
+    func accessTokenRefreshDidSucceed(for sessionID: String,
+                                      sessionType: APISessionTypeForLogging,
+                                      reason: APIServiceAccessTokenRefreshSuccessReasonForLogging) {
+        logger.info("""
+                    Access token refresh did succeed for \(sessionType) session \(sessionID)
+                    with reason \(reason)
+                    """)
+    }
+    
+    func accessTokenRefreshDidFail(for sessionID: String,
+                                   sessionType: APISessionTypeForLogging,
+                                   error: APIServiceAccessTokenRefreshErrorForLogging) {
+        logger.info("""
+                    Access token refresh did fail for \(sessionType) session \(sessionID)
+                    with error \(error.localizedDescription)
+                    """)
     }
 }
 

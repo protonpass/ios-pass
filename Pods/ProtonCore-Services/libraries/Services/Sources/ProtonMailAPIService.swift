@@ -38,6 +38,17 @@ public protocol TrustKitProvider {
     var trustKit: TrustKit? { get }
 }
 
+public protocol APIServiceLoggingDelegate: AnyObject {
+    func accessTokenRefreshDidStart(for sessionID: String,
+                                    sessionType: APISessionTypeForLogging)
+    func accessTokenRefreshDidSucceed(for sessionID: String,
+                                      sessionType: APISessionTypeForLogging,
+                                      reason: APIServiceAccessTokenRefreshSuccessReasonForLogging)
+    func accessTokenRefreshDidFail(for sessionID: String,
+                                   sessionType: APISessionTypeForLogging,
+                                   error: APIServiceAccessTokenRefreshErrorForLogging)
+}
+
 public protocol URLCacheInterface {
     func removeAllCachedResponses()
 }
@@ -144,6 +155,7 @@ public class PMAPIService: APIService {
     public weak var forceUpgradeDelegate: ForceUpgradeDelegate?
     public weak var humanDelegate: HumanVerifyDelegate?
     public weak var authDelegate: AuthDelegate?
+    public weak var loggingDelegate: APIServiceLoggingDelegate?
     public weak var serviceDelegate: APIServiceDelegate?
     public weak var missingScopesDelegate: MissingScopesDelegate?
     
