@@ -265,13 +265,18 @@ private extension HomepageCoordinator {
             popTopViewController(animated: true)
         }
 
-        start(with: HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
-                                       profileTabViewModel: profileTabViewModel,
-                                       passPlanRepository: passPlanRepository,
-                                       logManager: logManager,
-                                       homepageCoordinator: self,
-                                       delegate: self).ignoresSafeArea(edges: [.top, .bottom]),
-              secondaryView: placeholderView)
+        let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
+                                          profileTabViewModel: profileTabViewModel,
+                                          passPlanRepository: passPlanRepository,
+                                          logManager: logManager,
+                                          homepageCoordinator: self,
+                                          delegate: self)
+            .ignoresSafeArea(edges: [.top, .bottom])
+            .authenticationRequired(.required(.biometric)) {
+                print("AAAA")
+            }
+
+        start(with: homeView, secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
     }
 

@@ -129,6 +129,14 @@
 		354E19F6293F90F500A3F853 /* ColoredRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */; };
 		354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */; };
 		354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E1A132A3B43D600519F58 /* CreditCardDetailViewModel.swift */; };
+		354E9A9C2A443D9700AD2B9A /* LocalAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */; };
+		354E9A9E2A44430D00AD2B9A /* View+AuthenticationRequired.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9D2A44430D00AD2B9A /* View+AuthenticationRequired.swift */; };
+		354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */; };
+		354E9AA32A44435E00AD2B9A /* View+AuthenticationRequired.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9D2A44430D00AD2B9A /* View+AuthenticationRequired.swift */; };
+		354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */; };
+		354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */; };
+		354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */; };
+		354E9AA92A4459C700AD2B9A /* BiometricAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */; };
 		354EA82929EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82829EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift */; };
 		354EA82B29EF4FE300F1FB95 /* TelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */; };
 		354EA82D29EF53B500F1FB95 /* TelemetryEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */; };
@@ -916,6 +924,10 @@
 		354E19F5293F90F500A3F853 /* ColoredRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredRoundedButton.swift; sourceTree = "<group>"; };
 		354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailView.swift; sourceTree = "<group>"; };
 		354E1A132A3B43D600519F58 /* CreditCardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailViewModel.swift; sourceTree = "<group>"; };
+		354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationView.swift; sourceTree = "<group>"; };
+		354E9A9D2A44430D00AD2B9A /* View+AuthenticationRequired.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+AuthenticationRequired.swift"; sourceTree = "<group>"; };
+		354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationView.swift; sourceTree = "<group>"; };
+		354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinAuthenticationView.swift; sourceTree = "<group>"; };
 		354EA82829EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasource.swift; sourceTree = "<group>"; };
 		354EA82A29EF4FE300F1FB95 /* TelemetryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEvent.swift; sourceTree = "<group>"; };
 		354EA82C29EF53B500F1FB95 /* TelemetryEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventTests.swift; sourceTree = "<group>"; };
@@ -1740,6 +1752,17 @@
 				357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		354E9A9A2A443CA200AD2B9A /* LocalAuthentication */ = {
+			isa = PBXGroup;
+			children = (
+				354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */,
+				354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */,
+				354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */,
+				354E9A9D2A44430D00AD2B9A /* View+AuthenticationRequired.swift */,
+			);
+			path = LocalAuthentication;
 			sourceTree = "<group>";
 		};
 		3553C224296570B80087518A /* Logging */ = {
@@ -2659,6 +2682,7 @@
 			children = (
 				35E5070C286FB58800A3F6EA /* App */,
 				35F8CCFE29B617510017DBC6 /* Homepage */,
+				354E9A9A2A443CA200AD2B9A /* LocalAuthentication */,
 				354E19F2293F8EB900A3F853 /* Onboarding */,
 				35E50712286FB5F500A3F6EA /* Welcome */,
 			);
@@ -3889,18 +3913,22 @@
 				354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */,
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
 				3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */,
+				354E9AA92A4459C700AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
+				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
+				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
 				3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */,
 				350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */,
+				354E9AA32A44435E00AD2B9A /* View+AuthenticationRequired.swift in Sources */,
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
 				35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
@@ -4018,6 +4046,7 @@
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
+				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* Tooling+DependencyInjection.swift in Sources */,
 				3531B5432902DA890070D2EE /* AppLockedView.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
@@ -4091,6 +4120,7 @@
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
 				354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */,
+				354E9A9E2A44430D00AD2B9A /* View+AuthenticationRequired.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */,
@@ -4103,6 +4133,7 @@
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
+				354E9A9C2A443D9700AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
 				354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */,
@@ -4123,6 +4154,7 @@
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
+				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
