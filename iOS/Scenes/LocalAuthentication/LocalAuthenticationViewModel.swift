@@ -97,15 +97,16 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     func biometricallyAuthenticate() {
         switch biometricAuthenticator.biometryTypeState {
         case .initialized:
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
                 do {
                     if try await biometricAuthenticator.authenticate(reason: "Please authenticate") {
-                        recordSuccess()
+                        self.recordSuccess()
                     } else {
-                        recordFailure(nil)
+                        self.recordFailure(nil)
                     }
                 } catch {
-                    recordFailure(error)
+                    self.recordFailure(error)
                 }
             }
         default:
