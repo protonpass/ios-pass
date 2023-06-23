@@ -23,7 +23,7 @@ import UIKit
 
 enum InfoBanner: String, CaseIterable {
     // Order of cases matter cause it affects the UI
-    case trial, autofill, aliases, pass
+    case trial, autofill, aliases
 
     var id: String { rawValue }
 
@@ -36,7 +36,7 @@ enum InfoBanner: String, CaseIterable {
                          icon: nil,
                          ctaTitle: "Learn more",
                          backgroundColor: PassColor.noteInteractionNormMajor1)
-        // swiftlint:enable line_length
+            // swiftlint:enable line_length
         case .autofill:
             return .init(title: "Enjoy the magic of AutoFill",
                          description: "One tap and⏤presto!⏤your username and password are filled in instantly.",
@@ -50,13 +50,6 @@ enum InfoBanner: String, CaseIterable {
                          icon: PassIcon.infoBannerAliases,
                          ctaTitle: nil,
                          backgroundColor: PassColor.signalSuccess)
-
-        case .pass:
-            return .init(title: "Why Proton Pass?",
-                         description: "Privacy is a big concern for us. Proton Pass is different.",
-                         icon: PassIcon.infoBannerPass,
-                         ctaTitle: nil,
-                         backgroundColor: PassColor.noteInteractionNormMajor1)
         }
     }
 }
