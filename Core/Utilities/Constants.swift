@@ -41,3 +41,23 @@ public enum ProtonLink {
     public static let privacyPolicy = "https://proton.me/legal/privacy"
     public static let termsOfService = "https://proton.me/legal/terms"
 }
+
+/// The following enum contains all the keys liked to the data contained in the custom plists `Pass-Constant-Black`
+/// and `Pass-Constant-Prod`
+public enum ConstantPlistKey {
+    public enum PlistFiles: String {
+        case black = "Pass-Constant-Black"
+        case prod = "Pass-Constant-Prod"
+    }
+
+    public enum Keys: String {
+        case signupDomain = "SIGNUP_DOMAIN"
+        case captchaHost = "CAPTCHA_HOST"
+        case humanVerificationHost = "HUMAN_VERIFICATION_HOST"
+        case accountHost = "ACCOUNT_HOST"
+        case defaultHost = "DEFAULT_HOST"
+        case apiHost = "API_HOST"
+        case defaultPath = "DEFAULT_PATH"
+        case sentryDSN = "SENTRY_DSN"
+    }
+}
