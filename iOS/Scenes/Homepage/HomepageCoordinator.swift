@@ -261,7 +261,7 @@ private extension HomepageCoordinator {
                                                       ServiceContainer.shared.notificationService())
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
-        
+
         let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
             popTopViewController(animated: true)
         }
