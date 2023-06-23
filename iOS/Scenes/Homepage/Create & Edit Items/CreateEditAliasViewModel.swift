@@ -153,8 +153,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .removeDuplicates()
             .dropFirst()
             .receive(on: RunLoop.main)
-            .sink { [unowned self] _ in
-                validatePrefix()
+            .sink { [weak self] _ in
+                self?.validatePrefix()
             }
             .store(in: &cancellables)
 
@@ -162,10 +162,11 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .removeDuplicates()
             .dropFirst()
             .receive(on: RunLoop.main)
-            .sink { [unowned self] title in
-                if !prefixManuallyEdited {
-                    prefix = PrefixUtils.generatePrefix(fromTitle: title)
+            .sink { [weak self] title in
+                guard let self, !self.prefixManuallyEdited else {
+                    return
                 }
+                self.prefix = PrefixUtils.generatePrefix(fromTitle: title)
             }
             .store(in: &cancellables)
 
@@ -173,8 +174,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .eraseToAnyPublisher()
             .dropFirst()
             .receive(on: RunLoop.main)
-            .sink { [unowned self] _ in
-                getAliasAndAliasOptions()
+            .sink { [weak self] _ in
+                self?.getAliasAndAliasOptions()
             }
             .store(in: &cancellables)
 

@@ -527,16 +527,16 @@ private extension HomepageCoordinator {
 
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [unowned self] in
-            paymentsManager.upgradeSubscription { [unowned self] result in
+            paymentsManager.upgradeSubscription { [weak self] result in
                 switch result {
                 case let .success(inAppPurchasePlan):
                     if inAppPurchasePlan != nil {
-                        refreshPlan()
+                        self?.refreshPlan()
                     } else {
-                        logger.debug("Payment is done but no plan is purchased")
+                        self?.logger.debug("Payment is done but no plan is purchased")
                     }
                 case let .failure(error):
-                    bannerManager.displayTopErrorMessage(error)
+                    self?.bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
