@@ -83,9 +83,9 @@ struct LocalAuthenticationModifier: ViewModifier {
                                             logManager: logManager,
                                             onSuccess: handleSuccess,
                                             onFailure: onFailure)
-                    // Set zIndex otherwise animation won't occur
-                    // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
-                    .zIndex(1)
+                        // Set zIndex otherwise animation won't occur
+                        // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
+                        .zIndex(1)
                 }
             }
             .animation(.default, value: authenticated)

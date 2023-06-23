@@ -604,6 +604,8 @@
 		5B0C75122A39CB3D00272CE8 /* LogManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */; };
 		5B0C75142A39DC7600272CE8 /* LogEntryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */; };
 		5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */; };
+		5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
+		5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -3395,6 +3397,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3560845229DDE2CC001F7487 /* Colors.xcassets in Resources */,
+				5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */,
+				5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
