@@ -54,17 +54,15 @@ struct LocalAuthenticationModifier: ViewModifier {
          logManager: LogManager,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        self.authenticated = !preferences.biometricAuthenticationEnabled
-
-        let autolocker = Autolocker(appLockTime: preferences.appLockTime)
-        autolocker.startCountdown()
-        self._autolocker = .init(initialValue: autolocker)
-
-        self._preferences = .init(initialValue: preferences)
+        authenticated = !preferences.biometricAuthenticationEnabled
+        _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
+        _preferences = .init(initialValue: preferences)
         self.delayed = delayed
         self.logManager = logManager
         self.onSuccess = onSuccess
         self.onFailure = onFailure
+
+        autolocker.startCountdown()
     }
 
     func body(content: Content) -> some View {
