@@ -37,6 +37,7 @@ import UIKit
 
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
+    func homepageCoordinatorDidFailLocallyAuthenticating()
 }
 
 // swiftlint:disable line_length
@@ -265,13 +266,27 @@ private extension HomepageCoordinator {
             popTopViewController(animated: true)
         }
 
-        start(with: HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
-                                       profileTabViewModel: profileTabViewModel,
-                                       passPlanRepository: passPlanRepository,
-                                       logManager: logManager,
-                                       homepageCoordinator: self,
-                                       delegate: self).ignoresSafeArea(edges: [.top, .bottom]),
-              secondaryView: placeholderView)
+        let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
+                                          profileTabViewModel: profileTabViewModel,
+                                          passPlanRepository: passPlanRepository,
+                                          logManager: logManager,
+                                          homepageCoordinator: self,
+                                          delegate: self)
+            .ignoresSafeArea(edges: [.top, .bottom])
+            .localAuthentication(
+                preferences: preferences,
+                delayed: false,
+                logManager: logManager,
+                onSuccess: { [weak self] in
+                    self?.logger.info("Local authentication succesful")
+                },
+                onFailure: { [weak self] in
+                    guard let self else { return }
+                    self.logger.error("Failed to locally authenticate. Logging out.")
+                    self.delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+                })
+
+        start(with: homeView, secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
     }
 

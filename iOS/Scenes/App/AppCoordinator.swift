@@ -55,9 +55,6 @@ final class AppCoordinator {
 
     private var rootViewController: UIViewController? { window.rootViewController }
 
-    private var appLockedViewController: UIViewController?
-    private var autolocker: Autolocker?
-
     private var cancellables = Set<AnyCancellable>()
 
     init(window: UIWindow) {
@@ -129,26 +126,10 @@ final class AppCoordinator {
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { _ in
+            .sink { [weak self] _ in
+                guard let self else { return }
                 // Make sure preferences are up to date
                 self.preferences = .init()
-
-                // Request biometric authentication if user is logged in
-                if self.homepageCoordinator != nil {
-                    self.requestBiometricAuthenticationIfNecessary()
-                }
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UIApplication.didEnterBackgroundNotification)
-            .sink { _ in
-                // Create a new autolocker instance everytime the app goes background
-                // to reflect eventual changes in preferences
-                self.autolocker = self.makeAutoLocker(appLockTime: self.preferences.appLockTime)
-                self.autolocker?.startCountdown()
-
-                self.dismissAppLockedViewController()
             }
             .store(in: &cancellables)
     }
@@ -214,9 +195,6 @@ final class AppCoordinator {
                 animateUpdateRootViewController(homepageCoordinator.rootViewController) {
                     homepageCoordinator.onboardIfNecessary()
                 }
-                if !manualLogIn {
-                    self.requestBiometricAuthenticationIfNecessary()
-                }
             } catch {
                 logger.error(error)
                 wipeAllData(includingUnauthSession: true)
@@ -237,8 +215,6 @@ final class AppCoordinator {
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.userData = nil
-        autolocker?.releaseCountdown()
-        autolocker = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
             keymaker.wipeMainKey()
@@ -338,6 +314,14 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
         alert.addAction(.init(title: "OK", style: .default))
         rootViewController?.present(alert, animated: true)
     }
+
+    private func alertFailedBiometricAuthentication() {
+        let alert = UIAlertController(title: "Failed to authenticate",
+                                      message: "You have to log in again in order to continue using Proton Pass",
+                                      preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default))
+        rootViewController?.present(alert, animated: true)
+    }
 }
 
 // MARK: - APIManagerDelegate
@@ -352,68 +336,14 @@ extension AppCoordinator: APIManagerDelegate {
     }
 }
 
-// MARK: - Biometric authentication
-
-private extension AppCoordinator {
-    func makeAutoLocker(appLockTime: AppLockTime) -> Autolocker {
-        struct AutolockerSettingsProvider: SettingsProvider {
-            let appLockTime: AppLockTime
-            var lockTime: AutolockTimeout {
-                if let intervalInMinutes = appLockTime.intervalInMinutes {
-                    return .minutes(intervalInMinutes)
-                } else {
-                    return .never
-                }
-            }
-        }
-        return Autolocker(lockTimeProvider: AutolockerSettingsProvider(appLockTime: appLockTime))
-    }
-
-    func makeAppLockedViewController() -> UIViewController {
-        let view = AppLockedView(preferences: preferences,
-                                 logManager: logManager,
-                                 delayed: false,
-                                 onSuccess: { [unowned self] in
-                                     dismissAppLockedViewController()
-                                 },
-                                 onFailure: { [unowned self] in
-                                     appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
-                                 })
-        let viewController = UIHostingController(rootView: view)
-        viewController.modalPresentationStyle = .fullScreen
-        return viewController
-    }
-
-    func dismissAppLockedViewController() {
-        appLockedViewController?.dismiss(animated: true)
-        appLockedViewController = nil
-    }
-
-    func requestBiometricAuthenticationIfNecessary() {
-        guard preferences.biometricAuthenticationEnabled else { return }
-
-        if let autolocker, !autolocker.shouldAutolockNow() { return }
-        autolocker?.releaseCountdown()
-
-        self.appLockedViewController = makeAppLockedViewController()
-        guard let appLockedViewController else { return }
-        rootViewController?.topMostViewController.present(appLockedViewController,
-                                                          animated: false)
-    }
-
-    func alertFailedBiometricAuthentication() {
-        let alert = UIAlertController(title: "Failed to authenticate",
-                                      message: "You have to log in again in order to continue using Proton Pass",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
-        rootViewController?.present(alert, animated: true)
-    }
-}
-
 // MARK: - HomepageCoordinatorDelegate
 
 extension AppCoordinator: HomepageCoordinatorDelegate {
     func homepageCoordinatorWantsToLogOut() {
         appStateObserver.updateAppState(.loggedOut(.userInitiated))
+    }
+
+    func homepageCoordinatorDidFailLocallyAuthenticating() {
+        appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
     }
 }
