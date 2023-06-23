@@ -39,9 +39,9 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let type: LocalAuthenticationType
-    let delayed: Bool
     let preferences: Preferences
 
+    private let delayed: Bool
     private let biometricAuthenticator: BiometricAuthenticator
     private let logger: Logger
     private let onSuccess: () -> Void
@@ -49,6 +49,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var state: LocalAuthenticationState = .initializing
+
+    var delayedTime: DispatchTimeInterval {
+        delayed ? .milliseconds(200) : .milliseconds(0)
+    }
 
     init(type: LocalAuthenticationType,
          delayed: Bool,
