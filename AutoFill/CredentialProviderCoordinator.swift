@@ -208,7 +208,7 @@ public final class CredentialProviderCoordinator {
                                                   credentialIdentity: credentialIdentity,
                                                   logManager: logManager)
         viewModel.onFailure = { [unowned self] error in
-            self.handle(error: error)
+            handle(error: error)
         }
         viewModel.onSuccess = { [unowned self] credential, itemContent in
             complete(quickTypeBar: false,
@@ -253,22 +253,22 @@ public final class CredentialProviderCoordinator {
             defaultHandler(error)
         }
     }
-    
+
     final class WeakLimitationCounter: LimitationCounterProtocol {
         weak var actualCounter: LimitationCounterProtocol?
-        
+
         init(actualCounter: LimitationCounterProtocol? = nil) {
             self.actualCounter = actualCounter
         }
-        
+
         func getAliasCount() -> Int {
             actualCounter?.getAliasCount() ?? 0
         }
-        
+
         func getVaultCount() -> Int {
             actualCounter?.getVaultCount() ?? 0
         }
-        
+
         func getTOTPCount() -> Int {
             actualCounter?.getTOTPCount() ?? 0
         }
