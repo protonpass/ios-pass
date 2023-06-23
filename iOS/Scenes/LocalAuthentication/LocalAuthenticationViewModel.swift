@@ -63,8 +63,8 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         self.type = type
         self.delayed = delayed
         self.preferences = preferences
-        self.biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
-        self.logger = .init(manager: logManager)
+        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
+        logger = .init(manager: logManager)
         self.onSuccess = onSuccess
         self.onFailure = onFailure
 
@@ -120,13 +120,13 @@ private extension LocalAuthenticationViewModel {
     func updateStateBasedOnFailedAttemptCount() {
         switch preferences.failedAttemptCount {
         case 0:
-            self.state = .initialized(.noAttempts)
+            state = .initialized(.noAttempts)
         case kMaxAttemptCount - 1:
-            self.state = .initialized(.lastAttempt)
+            state = .initialized(.lastAttempt)
         default:
             let remainingAttempts = kMaxAttemptCount - preferences.failedAttemptCount
             if remainingAttempts >= 1 {
-                self.state = .initialized(.remainingAttempts(remainingAttempts))
+                state = .initialized(.remainingAttempts(remainingAttempts))
             } else {
                 onFailure()
             }
