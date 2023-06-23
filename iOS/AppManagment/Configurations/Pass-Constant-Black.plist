@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SENTRY_DSN</key>
+	<string>https://a053e81a23354f1eb6becdeb3a91440a@pass-api.proton.me/core/v4/reports/sentry/44</string>
+	<key>DEFAULT_PATH</key>
+	<string>/api</string>
+	<key>API_HOST</key>
+	<string>dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz</string>
+	<key>DEFAULT_HOST</key>
+	<string>https://proton.black</string>
+	<key>ACCOUNT_HOST</key>
+	<string>https://account.proton.black</string>
+	<key>CAPTCHA_HOST</key>
+	<string>https://api.proton.black</string>
+	<key>HUMAN_VERIFICATION_HOST</key>
+	<string>https://verify.proton.black</string>
+	<key>SIGNUP_DOMAIN</key>
+	<string>proton.black</string>
+</dict>
+</plist>
