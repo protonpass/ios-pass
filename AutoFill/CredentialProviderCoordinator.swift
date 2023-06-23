@@ -50,7 +50,7 @@ public final class CredentialProviderCoordinator {
     private let logManager: LogManager
     private let logger: Logger
     private let preferences: Preferences
-    private let rootViewController: UIViewController
+    private weak var rootViewController: UIViewController!
     private var notificationService: LocalNotificationServiceProtocol
 
     /// Derived properties
@@ -207,7 +207,9 @@ public final class CredentialProviderCoordinator {
                                                   symmetricKey: symmetricKey,
                                                   credentialIdentity: credentialIdentity,
                                                   logManager: logManager)
-        viewModel.onFailure = handle(error:)
+        viewModel.onFailure = { [unowned self] error in
+            self.handle(error: error)
+        }
         viewModel.onSuccess = { [unowned self] credential, itemContent in
             complete(quickTypeBar: false,
                      credential: credential,
@@ -251,6 +253,26 @@ public final class CredentialProviderCoordinator {
             defaultHandler(error)
         }
     }
+    
+    final class WeakLimitationCounter: LimitationCounterProtocol {
+        weak var actualCounter: LimitationCounterProtocol?
+        
+        init(actualCounter: LimitationCounterProtocol? = nil) {
+            self.actualCounter = actualCounter
+        }
+        
+        func getAliasCount() -> Int {
+            actualCounter?.getAliasCount() ?? 0
+        }
+        
+        func getVaultCount() -> Int {
+            actualCounter?.getVaultCount() ?? 0
+        }
+        
+        func getTOTPCount() -> Int {
+            actualCounter?.getTOTPCount() ?? 0
+        }
+    }
 
     private func makeSymmetricKeyAndRepositories() {
         guard let userData = appData.userData,
@@ -260,7 +282,7 @@ public final class CredentialProviderCoordinator {
         let repositoryManager = RepositoryManager(apiService: apiService,
                                                   container: container,
                                                   currentDateProvider: CurrentDateProvider(),
-                                                  limitationCounter: self,
+                                                  limitationCounter: WeakLimitationCounter(actualCounter: self),
                                                   logManager: logManager,
                                                   symmetricKey: symmetricKey,
                                                   userData: userData,

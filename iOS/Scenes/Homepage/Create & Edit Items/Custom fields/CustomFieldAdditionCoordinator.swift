@@ -30,7 +30,7 @@ protocol CustomFieldAdditionDelegate: AnyObject {
 final class CustomFieldAdditionCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let rootViewController: UIViewController
+    weak var rootViewController: UIViewController!
     let preferences: Preferences
     let delegate: CustomFieldAdditionDelegate
 
@@ -43,7 +43,7 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable {
     }
 
     func start() {
-        let view = CustomFieldTypesView { [rootViewController] type in
+        let view = CustomFieldTypesView { [unowned self] type in
             rootViewController.topMostViewController.dismiss(animated: true) { [unowned self] in
                 let alert = makeAlert(for: type)
                 rootViewController.topMostViewController.present(alert, animated: true)
