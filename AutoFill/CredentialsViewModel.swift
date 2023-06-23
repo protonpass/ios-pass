@@ -108,8 +108,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    /// To be removed
-    private let preferences: Preferences
+    let preferences: Preferences
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?

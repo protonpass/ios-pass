@@ -55,9 +55,6 @@ final class AppCoordinator {
 
     private var rootViewController: UIViewController? { window.rootViewController }
 
-    private var appLockedViewController: UIViewController?
-    private var autolocker: Autolocker?
-
     private var cancellables = Set<AnyCancellable>()
 
     init(window: UIWindow) {
@@ -218,8 +215,6 @@ final class AppCoordinator {
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.userData = nil
-        autolocker?.releaseCountdown()
-        autolocker = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
             keymaker.wipeMainKey()

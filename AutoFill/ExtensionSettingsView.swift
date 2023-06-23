@@ -26,21 +26,6 @@ struct ExtensionSettingsView: View {
     @StateObject var viewModel: ExtensionSettingsViewModel
 
     var body: some View {
-        ZStack {
-            if viewModel.isLocked {
-                AppLockedView(preferences: viewModel.preferences,
-                              logManager: viewModel.logManager,
-                              delayed: false,
-                              onSuccess: { viewModel.isLocked = false },
-                              onFailure: viewModel.logOut)
-            } else {
-                unlockedContent
-            }
-        }
-        .theme(viewModel.preferences.theme)
-    }
-
-    private var unlockedContent: some View {
         NavigationView {
             ScrollView {
                 VStack {
@@ -85,5 +70,10 @@ struct ExtensionSettingsView: View {
         }
         .navigationViewStyle(.stack)
         .theme(viewModel.preferences.theme)
+        .localAuthentication(preferences: viewModel.preferences,
+                             delayed: false,
+                             logManager: viewModel.logManager,
+                             onSuccess: {},
+                             onFailure: viewModel.logOut)
     }
 }

@@ -23,6 +23,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+/// When autofilling from QuickType bar but local authentication is turned on
 struct LockedCredentialView: View {
     let preferences: Preferences
     let viewModel: LockedCredentialViewModel
@@ -34,11 +35,12 @@ struct LockedCredentialView: View {
 
     var body: some View {
         NavigationView {
-            AppLockedView(preferences: preferences,
-                          logManager: viewModel.logManager,
-                          delayed: true,
-                          onSuccess: viewModel.getAndReturnCredential,
-                          onFailure: viewModel.handleAuthenticationFailure)
+            PassColor.backgroundNorm.toColor
+                .localAuthentication(preferences: preferences,
+                                     delayed: true,
+                                     logManager: viewModel.logManager,
+                                     onSuccess: viewModel.getAndReturnCredential,
+                                     onFailure: viewModel.handleAuthenticationFailure)
                 .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)

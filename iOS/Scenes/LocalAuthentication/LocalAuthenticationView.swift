@@ -21,15 +21,18 @@
 import Core
 import SwiftUI
 
+/// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
 
     init(type: LocalAuthenticationType,
+         delayed: Bool,
          preferences: Preferences,
          logManager: LogManager,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(type: type,
+                                               delayed: delayed,
                                                preferences: preferences,
                                                logManager: logManager,
                                                onSuccess: onSuccess,
@@ -41,7 +44,7 @@ struct LocalAuthenticationView: View {
         case .biometric:
             BiometricAuthenticationView(viewModel: viewModel)
         case .pin:
-            PinAuthenticationView()
+            PinAuthenticationView(viewModel: viewModel)
         }
     }
 }
