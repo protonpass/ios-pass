@@ -606,6 +606,11 @@
 		5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
+		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
+		5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
+		5BB2B6EF2A447545005E831C /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */; };
+		5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
+		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1336,6 +1341,9 @@
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
+		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
+		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
+		5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		5ED83C579352551B8FC8475F /* Pods-macOS.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-tf.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-tf.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
@@ -1344,7 +1352,7 @@
 		66CA927C29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsServicePlanDataStorage.swift; sourceTree = "<group>"; };
 		66CA927E29F9719800F2FC59 /* InMemoryTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryTokenStorage.swift; sourceTree = "<group>"; };
 		66CA928029F971CF00F2FC59 /* PaymentsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsConstants.swift; sourceTree = "<group>"; };
-		66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PassLaunchScreen.storyboard; path = "Pods/ProtonCore-UIFoundations/libraries/UIFoundations/LaunchScreens/PassLaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
+		66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PassLaunchScreen.storyboard; path = iOS/App/PassLaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		69062710305A395AF0DBECC5 /* Pods-iOSUITests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.debug-qa.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		690F4F6F7F80FCF4C1866632 /* Pods-Client-iOSTests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-beta.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		692DBE97BA3DF802EC640BC1 /* Pods-Client.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-tf.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-tf.xcconfig"; sourceTree = "<group>"; };
@@ -2471,20 +2479,10 @@
 		35E50652286F826000A3F6EA /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				5BB2B6E62A444B73005E831C /* App */,
 				5B0C74F92A2F5EDC00272CE8 /* AppManagment */,
-				66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */,
-				352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */,
-				356B21D52870F844001220CB /* iOS.entitlements */,
-				35E50658286F838800A3F6EA /* Info.plist */,
-				35E50653286F82DC00A3F6EA /* AppDelegate.swift */,
-				37BE836F29954C6000E42C89 /* APIManager.swift */,
-				35E50655286F830A00A3F6EA /* SceneDelegate.swift */,
-				35E506C9286FA06300A3F6EA /* BuildConfigs */,
-				3542E2CE28DA4E6000194F24 /* Models */,
-				66CA927B29F9713900F2FC59 /* Payments */,
 				35E5070B286FB57800A3F6EA /* Scenes */,
-				35C2162B29EA951E001720FF /* Settings Bundles */,
-				3543615A2941E192000CAE12 /* Utilities */,
+				5BB2B6E72A444DAF005E831C /* Shared */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -2750,6 +2748,7 @@
 		5B0C74F92A2F5EDC00272CE8 /* AppManagment */ = {
 			isa = PBXGroup;
 			children = (
+				5BB2B6E92A4453BD005E831C /* Configurations */,
 				5B0C74FA2A2F5EE600272CE8 /* DependencyInjection */,
 			);
 			path = AppManagment;
@@ -2778,6 +2777,7 @@
 			isa = PBXGroup;
 			children = (
 				5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */,
+				5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2796,6 +2796,49 @@
 				5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */,
 			);
 			path = TextFields;
+			sourceTree = "<group>";
+		};
+		5BB2B6E62A444B73005E831C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */,
+				352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */,
+				356B21D52870F844001220CB /* iOS.entitlements */,
+				35E50658286F838800A3F6EA /* Info.plist */,
+				35E50653286F82DC00A3F6EA /* AppDelegate.swift */,
+				35E50655286F830A00A3F6EA /* SceneDelegate.swift */,
+				35E506C9286FA06300A3F6EA /* BuildConfigs */,
+				35C2162B29EA951E001720FF /* Settings Bundles */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		5BB2B6E72A444DAF005E831C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5BB2B6E82A444E34005E831C /* Network */,
+				66CA927B29F9713900F2FC59 /* Payments */,
+				3542E2CE28DA4E6000194F24 /* Models */,
+				3543615A2941E192000CAE12 /* Utilities */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		5BB2B6E82A444E34005E831C /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				37BE836F29954C6000E42C89 /* APIManager.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		5BB2B6E92A4453BD005E831C /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */,
+				5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */,
+			);
+			path = Configurations;
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
@@ -3326,8 +3369,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3554DAB7293A910700595FC7 /* Icons.xcassets in Resources */,
+				5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */,
 				3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */,
 				3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */,
+				5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3360,7 +3405,9 @@
 				66E960D529F046C6004D96AF /* PassLaunchScreen.storyboard in Resources */,
 				35526B5E28D117820017BB53 /* Icons.xcassets in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
+				5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
+				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
 				3555C17A2A2F810B00A257D7 /* iOS-Release-Beta.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3552,7 +3599,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "BUNDLE_DIR=\"$PROJECT_DIR/iOS/Settings Bundles\"\nBUILD_APP_DIR=\"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app\"\n\nif [[ $CONFIGURATION =~ .*\"QA\" ]]; then\n    # If config's name ends with \"QA\", then copy QA variant of Settings.bundle into app bundle\n    cp -rf \"$BUNDLE_DIR/QA/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nelse\n    # Otherwise copy the regular variant\n    cp -rf \"$BUNDLE_DIR/Regular/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nfi\n";
+			shellScript = "BUNDLE_DIR=\"$PROJECT_DIR/iOS/App/Settings Bundles\"\nBUILD_APP_DIR=\"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app\"\n\nif [[ $CONFIGURATION =~ .*\"QA\" ]]; then\n    # If config's name ends with \"QA\", then copy QA variant of Settings.bundle into app bundle\n    cp -rf \"$BUNDLE_DIR/QA/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nelse\n    # Otherwise copy the regular variant\n    cp -rf \"$BUNDLE_DIR/Regular/Settings.bundle\" \"$BUILD_APP_DIR/Settings.bundle\"\nfi\n";
 		};
 		35E506A1286F8DB400A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4418,6 +4465,7 @@
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
 				355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */,
 				3529432928DAF54900E1F11B /* SearchUtils.swift in Sources */,
+				5BB2B6EF2A447545005E831C /* Bundle+Extensions.swift in Sources */,
 				35426B6228EF18E600F89BB7 /* DomainParser.swift in Sources */,
 				3553C21B296570090087518A /* LogEntry.swift in Sources */,
 				355744192959F68500EA4AF0 /* ClipboardExpiration.swift in Sources */,
@@ -4999,7 +5047,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = iOS/App/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -5007,7 +5055,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -5959,7 +6007,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = iOS/App/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -5967,7 +6015,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -6625,7 +6673,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "iOS/iOSDebug-Black.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "iOS/App/iOSDebug-Black.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -6633,7 +6681,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -6923,7 +6971,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = iOS/App/iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -6931,7 +6979,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
