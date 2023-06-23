@@ -181,7 +181,7 @@ private extension LogManager {
 private extension LogManager {
     func setUp() {
         timer = Timer.scheduledTimer(withTimeInterval: config.timerInterval,
-                                     repeats: true) { _ in
+                                     repeats: true) { [weak self] _ in
             Task { [weak self] in
                 guard let self,
                       await self.currentMemoryLogs.count > self.config.dumpThreshold,
