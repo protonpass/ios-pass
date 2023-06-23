@@ -36,7 +36,7 @@ enum InfoBanner: String, CaseIterable {
                          icon: nil,
                          ctaTitle: "Learn more",
                          backgroundColor: PassColor.noteInteractionNormMajor1)
-            // swiftlint:enable line_length
+        // swiftlint:enable line_length
         case .autofill:
             return .init(title: "Enjoy the magic of AutoFill",
                          description: "One tap and⏤presto!⏤your username and password are filled in instantly.",
