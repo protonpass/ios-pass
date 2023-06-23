@@ -73,6 +73,7 @@ public final class BiometricAuthenticator: ObservableObject {
             throw PPCoreError.biometryTypeNotInitialized
         }
 
+        logger.info("Begin biometric authentication")
         return try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 

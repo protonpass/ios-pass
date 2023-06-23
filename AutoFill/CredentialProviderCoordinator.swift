@@ -478,7 +478,7 @@ private extension CredentialProviderCoordinator {
                                              preferences: preferences)
         viewModel.delegate = self
         credentialsViewModel = viewModel
-        showView(CredentialsView(viewModel: viewModel, preferences: preferences))
+        showView(CredentialsView(viewModel: viewModel))
     }
 
     func showNotLoggedInView() {
