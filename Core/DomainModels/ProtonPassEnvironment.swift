@@ -26,21 +26,21 @@ public enum ProtonPassEnvironment {
     public var parameters: DoHParameters {
         switch self {
         case .black:
-            return .init(signupDomain: "proton.black",
-                         captchaHost: "https://api.proton.black",
-                         humanVerificationV3Host: "https://verify.proton.black",
-                         accountHost: "https://account.proton.black",
-                         defaultHost: "https://proton.black",
-                         apiHost: "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz",
-                         defaultPath: "/api")
+            return .init(signupDomain: Bundle.main.plistString(for: .signupDomain, in: .black),
+                         captchaHost: Bundle.main.plistString(for: .captchaHost, in: .black),
+                         humanVerificationV3Host: Bundle.main.plistString(for: .humanVerificationHost, in: .black),
+                         accountHost: Bundle.main.plistString(for: .accountHost, in: .black),
+                         defaultHost: Bundle.main.plistString(for: .defaultHost, in: .black),
+                         apiHost: Bundle.main.plistString(for: .apiHost, in: .black),
+                         defaultPath: Bundle.main.plistString(for: .defaultPath, in: .black))
         case .prod:
-            return .init(signupDomain: "proton.me",
-                         captchaHost: "https://pass-api.proton.me",
-                         humanVerificationV3Host: "https://verify.proton.me",
-                         accountHost: "https://account.proton.me",
-                         defaultHost: "https://pass-api.proton.me",
-                         apiHost: "pass-api.proton.me",
-                         defaultPath: "")
+            return .init(signupDomain: Bundle.main.plistString(for: .signupDomain, in: .prod),
+                         captchaHost: Bundle.main.plistString(for: .captchaHost, in: .prod),
+                         humanVerificationV3Host: Bundle.main.plistString(for: .humanVerificationHost, in: .prod),
+                         accountHost: Bundle.main.plistString(for: .accountHost, in: .prod),
+                         defaultHost: Bundle.main.plistString(for: .defaultHost, in: .prod),
+                         apiHost: Bundle.main.plistString(for: .apiHost, in: .prod),
+                         defaultPath: Bundle.main.plistString(for: .defaultPath, in: .prod))
         case let .custom(customParams):
             return customParams
         }

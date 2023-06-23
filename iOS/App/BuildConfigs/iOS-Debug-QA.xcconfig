@@ -21,7 +21,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "../../Pods/Target Support Files/Pods-iOS/Pods-iOS.debug-qa.xcconfig"
+#include "../../../Pods/Target Support Files/Pods-iOS/Pods-iOS.debug-qa.xcconfig"
 APP_VERSION_IDENTIFIER = dev
 IS_QA_BUILD = YES
 IS_BETA_BUILD = NO
