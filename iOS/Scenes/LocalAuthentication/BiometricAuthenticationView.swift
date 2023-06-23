@@ -83,7 +83,7 @@ private extension BiometricAuthenticationView {
                         EmptyView()
 
                     case .lastAttempt:
-                        Text("This is your last attempt. You will be logged out after failling to authenticate again.")
+                        Text("This is your last attempt. You will be logged out after failing to authenticate again.")
                             .multilineTextAlignment(.center)
                             .foregroundColor(PassColor.textNorm.toColor)
                         retryButton
