@@ -282,7 +282,7 @@ private extension HomepageCoordinator {
                 },
                 onFailure: { [weak self] in
                     guard let self else { return }
-                    self.logger.error("Failed to local authenticate. Logging out.")
+                    self.logger.error("Failed to locally authenticate. Logging out.")
                     self.delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
                 })
 

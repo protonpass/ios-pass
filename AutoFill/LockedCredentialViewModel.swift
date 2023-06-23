@@ -46,6 +46,7 @@ final class LockedCredentialViewModel: ObservableObject {
     }
 
     func getAndReturnCredential() {
+        logger.info("Local authentication succesful")
         Task {
             do {
                 guard let recordIdentifier = self.credentialIdentity.recordIdentifier else {
@@ -76,6 +77,7 @@ final class LockedCredentialViewModel: ObservableObject {
     }
 
     func handleAuthenticationFailure() {
+        logger.info("Failed to locally authenticate. Logging out.")
         onFailure?(PPError.credentialProvider(.failedToAuthenticate))
     }
 
