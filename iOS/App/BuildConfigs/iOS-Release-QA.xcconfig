@@ -1,5 +1,5 @@
 //
-// iOS-Release.swift
+// iOS-Release-QA.swift
 // Proton Pass - Created on 08/06/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "../../Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"
-APP_VERSION_IDENTIFIER =
-IS_QA_BUILD = NO
+#include "../../../Pods/Target Support Files/Pods-iOS/Pods-iOS.release-qa.xcconfig"
+APP_VERSION_IDENTIFIER = dev
+IS_QA_BUILD = YES
 IS_BETA_BUILD = NO
