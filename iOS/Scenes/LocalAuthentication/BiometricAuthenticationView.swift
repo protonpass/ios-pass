@@ -107,9 +107,7 @@ private extension BiometricAuthenticationView {
                     // Only automatically prompt for biometric authentication when no attempts were made
                     // Otherwise let the users know how many attempts are remaining
                     // and let them retry explicitly
-                    let delay: DispatchTimeInterval =
-                    viewModel.delayed ? .milliseconds(200) : .milliseconds(0)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
                         self.viewModel.biometricallyAuthenticate()
                     }
                 }
