@@ -22,6 +22,7 @@ import Combine
 import Core
 import ProtonCore_Keymaker
 import SwiftUI
+import UIComponents
 
 enum LocalAuthenticationType {
     case biometric, pin

@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
     func onReceive(_ notification: Notification.Name,
                    perform action: @escaping () -> Void) -> some View {
         onReceive(NotificationCenter.default.publisher(for: notification)) { _ in
