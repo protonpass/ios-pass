@@ -34,7 +34,7 @@ protocol CustomFieldEditionDelegate: AnyObject {
 final class CustomFieldEditionCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let rootViewController: UIViewController
+    weak var rootViewController: UIViewController!
     let delegate: CustomFieldEditionDelegate
     let uiModel: CustomFieldUiModel
 
