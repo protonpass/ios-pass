@@ -275,6 +275,7 @@ private extension HomepageCoordinator {
             .ignoresSafeArea(edges: [.top, .bottom])
             .localAuthentication(
                 preferences: preferences,
+                delayed: false,
                 logManager: logManager,
                 onSuccess: { [weak self] in
                     self?.logger.info("Local authentication succesful")

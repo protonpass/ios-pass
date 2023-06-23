@@ -22,6 +22,12 @@ import SwiftUI
 import UIComponents
 
 struct PinAuthenticationView: View {
+    @ObservedObject private var viewModel: LocalAuthenticationViewModel
+
+    init(viewModel: LocalAuthenticationViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
+
     var body: some View {
         ZStack {
             PassColor.backgroundNorm.toColor
@@ -29,6 +35,7 @@ struct PinAuthenticationView: View {
             Text("PIN authentication")
                 .foregroundColor(PassColor.signalDanger.toColor)
         }
+        .theme(viewModel.preferences.theme)
         .onAppear {
             assertionFailure("PIN authentication not yet supported")
         }

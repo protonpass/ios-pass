@@ -28,20 +28,40 @@ enum LocalAuthenticationType {
 }
 
 struct LocalAuthenticationModifier: ViewModifier {
-    @State private var shouldLock: Bool
+    @State private var authenticated: Bool
+
+    // autolocker as @State because it needs to be updated
+    // when user changes appLockTime in setting
     @State private var autolocker: Autolocker
+
     @ObservedObject private var preferences: Preferences
+
+    // When autofill from QuickType bar, we need to wait a bit for the view to be fully loaded
+    // Otherwise we would receive error -1004 when calling biometricallyAuthenticate function
+    //
+    // Error Domain=com.apple.LocalAuthentication Code=-1004
+    // "Caller is not running foreground."
+    // UserInfo={NSDebugDescription=Caller is not running foreground.,
+    // NSLocalizedDescription=User interaction required.}
+    private let delayed: Bool
+
     private let logManager: LogManager
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
     init(preferences: Preferences,
+         delayed: Bool,
          logManager: LogManager,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        self.shouldLock = preferences.biometricAuthenticationEnabled
-        self._autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
+        self.authenticated = !preferences.biometricAuthenticationEnabled
+
+        let autolocker = Autolocker(appLockTime: preferences.appLockTime)
+        autolocker.startCountdown()
+        self._autolocker = .init(initialValue: autolocker)
+
         self._preferences = .init(initialValue: preferences)
+        self.delayed = delayed
         self.logManager = logManager
         self.onSuccess = onSuccess
         self.onFailure = onFailure
@@ -51,14 +71,15 @@ struct LocalAuthenticationModifier: ViewModifier {
         if preferences.biometricAuthenticationEnabled {
             ZStack {
                 content
-                if shouldLock {
+                if !authenticated {
                     let handleSuccess: () -> Void = {
-                        shouldLock = false
+                        authenticated = true
                         autolocker.releaseCountdown()
                         onSuccess()
                     }
 
                     LocalAuthenticationView(type: .biometric,
+                                            delayed: delayed,
                                             preferences: preferences,
                                             logManager: logManager,
                                             onSuccess: handleSuccess,
@@ -68,10 +89,11 @@ struct LocalAuthenticationModifier: ViewModifier {
                     .zIndex(1)
                 }
             }
-            .animation(.default, value: shouldLock)
+            .animation(.default, value: authenticated)
             .onChange(of: preferences.appLockTime) { newAppLockTime in
                 // Take into account right away appLockTime when user updates it
                 autolocker = .init(appLockTime: newAppLockTime)
+                autolocker.startCountdown()
             }
             .onReceive(UIApplication.willResignActiveNotification,
                        perform: autolocker.startCountdown)
@@ -89,10 +111,14 @@ struct LocalAuthenticationModifier: ViewModifier {
             // which makes the content of the app visible for a fraction of second
             // that's not what we want
             .onReceive(UIApplication.willEnterForegroundNotification) {
-                shouldLock = autolocker.shouldAutolockNow()
+                if autolocker.shouldAutolockNow() {
+                    authenticated = false
+                }
             }
             .onReceive(UIApplication.didBecomeActiveNotification) {
-                shouldLock = autolocker.shouldAutolockNow()
+                if autolocker.shouldAutolockNow() {
+                    authenticated = false
+                }
             }
         } else {
             content
@@ -102,10 +128,12 @@ struct LocalAuthenticationModifier: ViewModifier {
 
 extension View {
     func localAuthentication(preferences: Preferences,
+                             delayed: Bool,
                              logManager: LogManager,
                              onSuccess: @escaping () -> Void,
                              onFailure: @escaping () -> Void) -> some View {
         modifier(LocalAuthenticationModifier(preferences: preferences,
+                                             delayed: delayed,
                                              logManager: logManager,
                                              onSuccess: onSuccess,
                                              onFailure: onFailure))

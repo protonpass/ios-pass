@@ -28,13 +28,9 @@ import UIComponents
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
-    @State private var isLocked: Bool
-    private let preferences: Preferences
 
-    init(viewModel: CredentialsViewModel, preferences: Preferences) {
+    init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
-        _isLocked = .init(wrappedValue: preferences.biometricAuthenticationEnabled)
-        self.preferences = preferences
     }
 
     var body: some View {
@@ -42,33 +38,29 @@ struct CredentialsView: View {
             Color(uiColor: PassColor.backgroundNorm)
                 .ignoresSafeArea()
 
-            if isLocked {
-                AppLockedView(preferences: preferences,
-                              logManager: viewModel.logManager,
-                              delayed: true,
-                              onSuccess: { isLocked = false },
-                              onFailure: viewModel.handleAuthenticationFailure)
-            } else {
-                switch viewModel.state {
-                case .loading:
-                    CredentialsSkeletonView()
+            switch viewModel.state {
+            case .loading:
+                CredentialsSkeletonView()
 
-                case let .loaded(result, state):
-                    if result.isEmpty {
-                        NoCredentialsView(onCancel: viewModel.cancel,
-                                          onCreate: viewModel.createLoginItem)
-                    } else {
-                        resultView(result: result, state: state)
-                    }
-
-                case let .error(error):
-                    RetryableErrorView(errorMessage: error.localizedDescription,
-                                       onRetry: viewModel.fetchItems)
+            case let .loaded(result, state):
+                if result.isEmpty {
+                    NoCredentialsView(onCancel: viewModel.cancel,
+                                      onCreate: viewModel.createLoginItem)
+                } else {
+                    resultView(result: result, state: state)
                 }
+
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: viewModel.fetchItems)
             }
         }
-        .theme(preferences.theme)
-        .animation(.default, value: isLocked)
+        .theme(viewModel.preferences.theme)
+        .localAuthentication(preferences: viewModel.preferences,
+                             delayed: false,
+                             logManager: viewModel.logManager,
+                             onSuccess: {},
+                             onFailure: viewModel.handleAuthenticationFailure)
         .alert("Associate URL?",
                isPresented: $viewModel.isShowingConfirmationAlert,
                actions: {
