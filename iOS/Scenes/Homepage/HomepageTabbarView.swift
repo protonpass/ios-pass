@@ -154,14 +154,14 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         }
 
         NotificationCenter.default.publisher(for: .forceRefreshItemsTab)
-            .sink { [unowned self] _ in
+            .sink { [weak self] _ in
                 // Workaround a SwiftUI bug that makes the view at the top untappable
                 // (vaut switcher & search bar) when a sheet is closed.
                 // Only applicable when currently selected tab is items tab
                 // https://stackoverflow.com/a/60492031
-                if selectedViewController == viewControllers?.first {
-                    select(tab: .profile)
-                    select(tab: .items)
+                if self?.selectedViewController == self?.viewControllers?.first {
+                    self?.select(tab: .profile)
+                    self?.select(tab: .items)
                 }
             }
             .store(in: &cancellables)

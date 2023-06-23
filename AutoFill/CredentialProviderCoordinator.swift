@@ -593,8 +593,8 @@ private extension CredentialProviderCoordinator {
         let alert = UIAlertController(title: "Error occured",
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] _ in
-            cancel(errorCode: .failed)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            self?.cancel(errorCode: .failed)
         }
         alert.addAction(cancelAction)
         rootViewController.present(alert, animated: true)
