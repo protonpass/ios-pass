@@ -39,6 +39,7 @@ struct LockedCredentialView: View {
                 .localAuthentication(preferences: preferences,
                                      delayed: true,
                                      logManager: viewModel.logManager,
+                                     onAuth: {},
                                      onSuccess: viewModel.getAndReturnCredential,
                                      onFailure: viewModel.handleAuthenticationFailure)
                 .toolbar { toolbarContent }

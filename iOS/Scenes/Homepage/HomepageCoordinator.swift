@@ -277,7 +277,11 @@ private extension HomepageCoordinator {
             .localAuthentication(preferences: preferences,
                                  delayed: false,
                                  logManager: logManager,
+                                 onAuth: { [weak self] in
+                                     self?.hideSecondaryView()
+                                 },
                                  onSuccess: { [weak self] in
+                                     self?.showSecondaryView()
                                      self?.logger.info("Local authentication succesful")
                                  },
                                  onFailure: { [weak self] in

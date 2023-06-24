@@ -44,6 +44,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let delayed: Bool
     private let biometricAuthenticator: BiometricAuthenticator
     private let logger: Logger
+    private let onAuth: () -> Void
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
@@ -58,6 +59,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
          delayed: Bool,
          preferences: Preferences,
          logManager: LogManager,
+         onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         self.type = type
@@ -65,6 +67,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         self.preferences = preferences
         biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         logger = .init(manager: logManager)
+        self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
 
@@ -100,6 +103,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 do {
+                    onAuth()
                     if try await biometricAuthenticator.authenticate(reason: "Please authenticate") {
                         self.recordSuccess()
                     } else {
