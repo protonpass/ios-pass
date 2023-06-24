@@ -242,6 +242,7 @@ private extension HomepageCoordinator {
                                                   itemRepository: itemRepository,
                                                   credentialManager: credentialManager,
                                                   passPlanRepository: passPlanRepository,
+                                                  featureFlagsRepository: featureFlagsRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
                                                   syncEventLoop: eventLoop,
