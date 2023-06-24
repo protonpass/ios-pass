@@ -59,6 +59,7 @@ struct CredentialsView: View {
         .localAuthentication(preferences: viewModel.preferences,
                              delayed: false,
                              logManager: viewModel.logManager,
+                             onAuth: {},
                              onSuccess: viewModel.handleAuthenticationSuccess,
                              onFailure: viewModel.handleAuthenticationFailure)
         .alert("Associate URL?",

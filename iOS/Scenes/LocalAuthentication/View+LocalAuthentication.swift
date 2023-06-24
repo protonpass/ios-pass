@@ -47,12 +47,14 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let delayed: Bool
 
     private let logManager: LogManager
+    private let onAuth: () -> Void
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
     init(preferences: Preferences,
          delayed: Bool,
          logManager: LogManager,
+         onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         authenticated = !preferences.biometricAuthenticationEnabled
@@ -60,6 +62,7 @@ struct LocalAuthenticationModifier: ViewModifier {
         _preferences = .init(initialValue: preferences)
         self.delayed = delayed
         self.logManager = logManager
+        self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
 
@@ -81,6 +84,7 @@ struct LocalAuthenticationModifier: ViewModifier {
                                             delayed: delayed,
                                             preferences: preferences,
                                             logManager: logManager,
+                                            onAuth: onAuth,
                                             onSuccess: handleSuccess,
                                             onFailure: onFailure)
                         // Set zIndex otherwise animation won't occur
@@ -126,14 +130,17 @@ struct LocalAuthenticationModifier: ViewModifier {
 }
 
 extension View {
+    // swiftlint:disable:next function_parameter_count
     func localAuthentication(preferences: Preferences,
                              delayed: Bool,
                              logManager: LogManager,
+                             onAuth: @escaping () -> Void,
                              onSuccess: @escaping () -> Void,
                              onFailure: @escaping () -> Void) -> some View {
         modifier(LocalAuthenticationModifier(preferences: preferences,
                                              delayed: delayed,
                                              logManager: logManager,
+                                             onAuth: onAuth,
                                              onSuccess: onSuccess,
                                              onFailure: onFailure))
     }
