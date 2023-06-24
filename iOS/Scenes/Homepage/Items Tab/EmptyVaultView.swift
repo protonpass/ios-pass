@@ -19,12 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
+    @StateObject private var viewModel: EmptyVaultViewModel
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
-    let onCreate: (ItemContentType) -> Void
+    private let onCreate: (ItemContentType) -> Void
+
+    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
+         logManager: LogManager,
+         onCreate: @escaping (ItemContentType) -> Void) {
+        _viewModel = .init(wrappedValue: .init(featureFlagsRepository: featureFlagsRepository,
+                                               logManager: logManager))
+        self.onCreate = onCreate
+    }
 
     var body: some View {
         ScrollView {
@@ -41,7 +51,7 @@ struct EmptyVaultView: View {
                     .padding(.bottom, 32)
 
                 LazyVGrid(columns: columns) {
-                    ForEach(ItemContentType.allCases, id: \.self) { type in
+                    ForEach(viewModel.supportedItemContentTypes, id: \.self) { type in
                         CreateItemButton(type: type) {
                             onCreate(type)
                         }
