@@ -829,10 +829,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     // Not applicable
     func createEditLoginViewModelWantsToOpenSettings() {}
-
-    func createEditLoginViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate

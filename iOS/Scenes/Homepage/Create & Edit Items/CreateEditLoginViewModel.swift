@@ -32,7 +32,6 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
     func createEditLoginViewModelWantsToOpenSettings()
-    func createEditLoginViewModelWantsToUpgrade()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -294,10 +293,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return nil
         }
         return invalidURLs.isEmpty
-    }
-
-    func upgrade() {
-        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToUpgrade()
     }
 }
 
