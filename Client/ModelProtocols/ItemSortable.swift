@@ -59,13 +59,15 @@ public enum SortType: Int, CaseIterable {
     }
 }
 
-public protocol DateSortable {
+public protocol DateSortable: Hashable {
     var dateForSorting: Date { get }
 }
 
 // MARK: - Most recent
 
-public struct MostRecentSortResult<T: DateSortable> {
+public struct MostRecentSortResult<T: DateSortable>: SearchResults {
+    public var numberOfItems: Int
+
     public let today: [T]
     public let yesterday: [T]
     public let last7Days: [T]
@@ -112,7 +114,8 @@ public extension Array where Element: DateSortable {
             }
         }
 
-        return .init(today: today,
+        return .init(numberOfItems: sortedElements.count,
+                     today: today,
                      yesterday: yesterday,
                      last7Days: last7Days,
                      last14Days: last14Days,
@@ -173,16 +176,18 @@ public enum AlphabetLetter: Int, CaseIterable {
 
 // swiftlint:enable identifier_name
 
-public struct AlphabetBucket<T: AlphabeticalSortable> {
+public struct AlphabetBucket<T: AlphabeticalSortable>: Hashable {
     public let letter: AlphabetLetter
     public let items: [T]
 }
 
-public protocol AlphabeticalSortable {
+public protocol AlphabeticalSortable: Hashable {
     var alphabeticalSortableString: String { get }
 }
 
-public struct AlphabeticalSortResult<T: AlphabeticalSortable> {
+public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults {
+    public var numberOfItems: Int
+
     public let buckets: [AlphabetBucket<T>]
 }
 
@@ -245,12 +250,8 @@ public extension Array where Element: AlphabeticalSortable {
         buckets.append(.init(letter: .sharp, items: sharpElements))
         buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
 
-        switch direction {
-        case .ascending:
-            return .init(buckets: buckets)
-        case .descending:
-            return .init(buckets: buckets.reversed())
-        }
+        return .init(numberOfItems: sortedAlphabetically.count,
+                     buckets: direction == .ascending ? buckets : buckets.reversed())
     }
     // swiftlint:enable cyclomatic_complexity
 }
@@ -293,12 +294,14 @@ extension MonthYear: Comparable {
     }
 }
 
-public struct MonthYearBucket<T: DateSortable> {
+public struct MonthYearBucket<T: DateSortable>: Hashable {
     public let monthYear: MonthYear
     public let items: [T]
 }
 
-public struct MonthYearSortResult<T: DateSortable> {
+public struct MonthYearSortResult<T: DateSortable>: SearchResults {
+    public var numberOfItems: Int
+
     public let buckets: [MonthYearBucket<T>]
 }
 
@@ -330,6 +333,10 @@ public extension Array where Element: DateSortable {
             }
         })
 
-        return .init(buckets: buckets)
+        return .init(numberOfItems: sortedElements.count, buckets: buckets)
     }
+}
+
+public protocol SearchResults: Hashable {
+    var numberOfItems: Int { get }
 }

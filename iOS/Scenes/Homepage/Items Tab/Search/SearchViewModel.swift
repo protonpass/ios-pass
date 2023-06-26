@@ -34,7 +34,7 @@ enum SearchViewState {
     /// No results for the given search query
     case noResults(String)
     /// Results with a given search query
-    case results(ItemCount, [ItemSearchResult])
+    case results(ItemCount, any SearchResults)
     /// Error
     case error(Error)
 }
@@ -52,9 +52,10 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var state = SearchViewState.initializing
     @Published private(set) var creditCardV1 = false
     @Published var selectedType: ItemContentType?
+    @Published var query = ""
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent { didSet { filterResults() } }
+    var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
 
     // Injected properties
     private let itemRepository: ItemRepositoryProtocol
@@ -68,7 +69,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     // Self-intialized properties
     private var lastSearchQuery = ""
-    private let searchQuerySubject = PassthroughSubject<String, Never>()
     private var lastTask: Task<Void, Never>?
     private var allItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
@@ -99,29 +99,8 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
         self.symmetricKey = symmetricKey
         self.vaultSelection = vaultSelection
 
-        searchQuerySubject
-            .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
-            .sink { [unowned self] term in
-                doSearch(query: term)
-            }
-            .store(in: &cancellables)
-
-        $selectedType
-            .receive(on: DispatchQueue.main)
-            .dropFirst()
-            .sink { [unowned self] _ in
-                filterResults()
-            }
-            .store(in: &cancellables)
-
-        Task { @MainActor in
-            do {
-                let flags = try await featureFlagsRepository.getFlags()
-                creditCardV1 = flags.creditCardV1
-            } catch {
-                logger.error(error)
-            }
-        }
+        setup()
+        checkFeatureFlags(with: featureFlagsRepository)
     }
 }
 
@@ -186,7 +165,6 @@ private extension SearchViewModel {
 
     func doSearch(query: String) {
         lastSearchQuery = query
-        let query = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !query.isEmpty else {
             if history.isEmpty {
                 state = .empty
@@ -201,41 +179,60 @@ private extension SearchViewModel {
             selectedType = nil
             let hashedQuery = query.sha256
             logger.trace("Searching for \"\(hashedQuery)\"")
+            if Task.isCancelled {
+                return
+            }
             results = searchableItems.result(for: query)
-            filterResults()
+            if Task.isCancelled {
+                return
+            }
+            await filterAndSortResults()
             logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
         }
     }
 
-    func filterResults() {
+    func filterAndSortResults() {
         guard !results.isEmpty else {
             state = .noResults(lastSearchQuery)
             return
         }
-
+        
         let filteredResults: [ItemSearchResult]
         if let selectedType {
             filteredResults = results.filter { $0.type == selectedType }
         } else {
             filteredResults = results
         }
+        let filteredAndSortedResults = sortItems(for: filteredResults)
+        
+        state = .results(.init(items: results), filteredAndSortedResults)
+    }
 
-        state = .results(.init(items: results), filteredResults)
+    func sortItems(for items: [ItemSearchResult]) -> any SearchResults {
+        switch selectedSortType {
+        case .mostRecent:
+            return items.mostRecentSortResult()
+        case .alphabeticalAsc:
+            return items.alphabeticalSortResult(direction: .ascending)
+        case .alphabeticalDesc:
+            return items.alphabeticalSortResult(direction: .descending)
+        case .newestToOldest:
+            return items.monthYearSortResult(direction: .descending)
+        case .oldestToNewest:
+            return items.monthYearSortResult(direction: .ascending)
+        }
     }
 }
 
 // MARK: - Public APIs
 
 extension SearchViewModel {
+    @MainActor
     func refreshResults() {
-        Task { @MainActor in
-            await indexItems()
-            doSearch(query: lastSearchQuery)
+        Task { [weak self] in
+            await self?.indexItems()
+            self?.doSearch(query: self?.lastSearchQuery ?? "")
         }
-    }
-
-    func search(_ term: String) {
-        searchQuerySubject.send(term)
     }
 
     func viewDetail(of item: ItemIdentifiable) {
@@ -283,6 +280,46 @@ extension SearchViewModel {
     func searchInAllVaults() {
         vaultSelection = .all
         refreshResults()
+    }
+}
+
+// MARK: SetUP & Utils
+
+private extension SearchViewModel {
+    func setup() {
+        $query
+            .debounce(for: 0.2, scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] term in
+                self?.doSearch(query: term)
+            }
+            .store(in: &cancellables)
+
+        $selectedType
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { [weak self] _ in
+                Task { [weak self] in
+                    await self?.filterAndSortResults()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func checkFeatureFlags(with featureFlagsRepository: FeatureFlagsRepositoryProtocol) {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let flags = try await featureFlagsRepository.getFlags()
+                self.creditCardV1 = flags.creditCardV1
+            } catch {
+                self.logger.error(error)
+            }
+        }
     }
 }
 
