@@ -507,8 +507,8 @@ private extension CredentialProviderCoordinator {
     }
 
     func showNotLoggedInView() {
-        let view = NotLoggedInView(preferences: preferences) { [unowned self] in
-            cancel(errorCode: .userCanceled)
+        let view = NotLoggedInView(preferences: preferences) { [weak self] in
+            self?.cancel(errorCode: .userCanceled)
         }
         showView(view)
     }
@@ -582,8 +582,8 @@ private extension CredentialProviderCoordinator {
     }
 
     func handleCreatedItem(_ itemContentType: ItemContentType) {
-        topMostViewController?.dismiss(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage(itemContentType.creationMessage)
+        topMostViewController?.dismiss(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage(itemContentType.creationMessage)
         }
     }
 
@@ -615,8 +615,8 @@ private extension CredentialProviderCoordinator {
                                       preferredStyle: .alert)
         let okButton = UIAlertAction(title: "OK", style: .default)
         alert.addAction(okButton)
-        rootViewController?.dismiss(animated: true) { [unowned self] in
-            rootViewController?.present(alert, animated: true)
+        rootViewController?.dismiss(animated: true) { [weak self] in
+            self?.rootViewController?.present(alert, animated: true)
         }
     }
 }
