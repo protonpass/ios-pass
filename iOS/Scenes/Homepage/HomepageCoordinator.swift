@@ -1086,10 +1086,6 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToOpenSettings() {
         UIApplication.shared.openAppSettings()
     }
-
-    func createEditLoginViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
 }
 
 // MARK: - CreateEditAliasViewModelDelegate
@@ -1104,10 +1100,6 @@ extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
 
     func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
         presentSuffixSelectionView(selection: suffixSelection)
-    }
-
-    func createEditAliasViewModelWantsToUpgrade() {
-        startUpgradeFlow()
     }
 }
 
