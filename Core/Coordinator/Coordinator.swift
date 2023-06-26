@@ -38,6 +38,8 @@ public protocol CoordinatorProtocol: AnyObject {
                  userInterfaceStyle: UIUserInterfaceStyle,
                  animated: Bool,
                  dismissible: Bool)
+    func hideSecondaryView()
+    func showSecondaryView()
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
     func coordinatorDidDismiss()
@@ -214,6 +216,18 @@ open class Coordinator: CoordinatorProtocol {
                     splitViewController.setViewController(navigationController, for: .secondary)
                 }
             }
+        }
+    }
+
+    public func hideSecondaryView() {
+        guard case let .split(splitViewController) = type else { return }
+        splitViewController.viewController(for: .secondary)?.view.alpha = 0
+    }
+
+    public func showSecondaryView() {
+        guard case let .split(splitViewController) = type else { return }
+        UIView.animate(withDuration: 0.35) {
+            splitViewController.viewController(for: .secondary)?.view.alpha = 1
         }
     }
 

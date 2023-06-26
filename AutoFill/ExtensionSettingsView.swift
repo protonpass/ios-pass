@@ -73,6 +73,7 @@ struct ExtensionSettingsView: View {
         .localAuthentication(preferences: viewModel.preferences,
                              delayed: false,
                              logManager: viewModel.logManager,
+                             onAuth: {},
                              onSuccess: {},
                              onFailure: viewModel.logOut)
     }
