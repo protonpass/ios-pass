@@ -51,7 +51,7 @@ public protocol PassKeyManagerProtocol: AnyObject {
     func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey
 }
 
-public final class PassKeyManager {
+public actor PassKeyManager {
     public let shareKeyRepository: ShareKeyRepositoryProtocol
     public let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
     public let logger: Logger
