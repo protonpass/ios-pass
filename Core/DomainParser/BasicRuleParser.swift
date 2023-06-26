@@ -10,7 +10,7 @@ import Foundation
 public struct BasicRulesParser {
     let suffixes: Set<String>
 
-    init(suffixes: Set<String>) {
+    public init(suffixes: Set<String>) {
         self.suffixes = suffixes
     }
 
