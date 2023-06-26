@@ -32,7 +32,7 @@ struct CreateEditCreditCardView: View {
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
 
     enum Field {
-        case title, cardholderName, cardNumber, verificationNumber, note
+        case title, cardholderName, cardNumber, verificationNumber, pin, note
     }
 
     init(viewModel: CreateEditCreditCardViewModel) {
@@ -114,6 +114,8 @@ private extension CreateEditCreditCardView {
             PassSectionDivider()
             verificationNumberRow
             PassSectionDivider()
+            pinRow
+            PassSectionDivider()
             expirationDateRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
@@ -186,19 +188,54 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Verification number")
                     .sectionTitleText()
-                TextField("123", text: $viewModel.verificationNumber)
+
+                SensitiveTextField(text: $viewModel.verificationNumber,
+                                   placeholder: "123",
+                                   focusedField: $focusedField,
+                                   field: .verificationNumber)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
-                    .focused($focusedField, equals: .verificationNumber)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .submitLabel(.next)
-                    .onSubmit { focusedField = .note }
+                    .onSubmit { focusedField = .pin }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             if !viewModel.verificationNumber.isEmpty {
                 Button(action: {
                     viewModel.verificationNumber = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
+                })
+            }
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: viewModel.verificationNumber.isEmpty)
+    }
+
+    var pinRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.grid3)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("PIN")
+                    .sectionTitleText()
+
+                SensitiveTextField(text: $viewModel.pin,
+                                   placeholder: "123456",
+                                   focusedField: $focusedField,
+                                   field: .pin)
+                    .keyboardType(.numberPad)
+                    .autocorrectionDisabled()
+                    .foregroundColor(PassColor.textNorm.toColor)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .note }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !viewModel.pin.isEmpty {
+                Button(action: {
+                    viewModel.pin = ""
                 }, label: {
                     ItemDetailSectionIcon(icon: IconProvider.cross)
                 })
