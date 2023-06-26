@@ -27,6 +27,7 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable,
     @Published private(set) var cardholderName = ""
     @Published private(set) var cardNumber = ""
     @Published private(set) var verificationNumber = ""
+    @Published private(set) var pin = ""
     @Published private(set) var month: Int?
     @Published private(set) var year: Int?
     @Published private(set) var note = ""
@@ -44,6 +45,7 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable,
             cardholderName = data.cardholderName
             cardNumber = data.number
             verificationNumber = data.verificationNumber
+            pin = data.pin
 
             let monthYear = data.expirationDate.components(separatedBy: "-")
             month = Int(monthYear.last ?? "")
