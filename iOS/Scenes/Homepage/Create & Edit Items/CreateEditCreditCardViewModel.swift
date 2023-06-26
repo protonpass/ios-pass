@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import SwiftUI
 
@@ -61,6 +62,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
         $cardNumber
             .removeDuplicates()
+            .filter { !$0.isEmpty }
             .receive(on: RunLoop.main)
             .map(transformAndLimit)
             .sink { [weak self] formattedCardNumber in
@@ -71,12 +73,27 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
         $verificationNumber
             .removeDuplicates()
+            .filter { !$0.isEmpty }
             .receive(on: RunLoop.main)
             .map { $0.prefix(4).toString }
             .sink { [weak self] formattedVerificationNumber in
                 guard let self else { return }
                 self.verificationNumber = formattedVerificationNumber
             }
+            .store(in: &cancellables)
+
+        Publishers
+            .CombineLatest($title, $cardholderName)
+            .combineLatest($cardNumber)
+            .combineLatest($verificationNumber)
+            .combineLatest($pin)
+            .combineLatest($month)
+            .combineLatest($year)
+            .combineLatest($note)
+            .dropFirst(mode.isEditMode ? 1 : 3)
+            .sink(receiveValue: { [weak self] _ in
+                self?.didEditSomething = true
+            })
             .store(in: &cancellables)
     }
 
