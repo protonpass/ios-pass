@@ -60,11 +60,12 @@ final class ItemTypeListViewModel: ObservableObject {
     init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManager) {
+        let logger = Logger(manager: logManager)
+
         Task { @MainActor in
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
             } catch {
-                let logger = Logger(manager: logManager)
                 logger.error(error)
                 delegate?.itemTypeListViewModelDidEncounter(error: error)
             }
@@ -75,7 +76,6 @@ final class ItemTypeListViewModel: ObservableObject {
                 let flags = try await featureFlagsRepository.getFlags()
                 creditCardV1 = flags.creditCardV1
             } catch {
-                let logger = Logger(manager: logManager)
                 logger.error(error)
                 delegate?.itemTypeListViewModelDidEncounter(error: error)
             }
