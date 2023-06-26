@@ -186,5 +186,9 @@ public protocol TelemetryThresholdProviderProtocol {
 
 extension Preferences: TelemetryThresholdProviderProtocol {
     public func getThreshold() -> TimeInterval? { telemetryThreshold }
-    public func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
+    public func setThreshold(_ threshold: TimeInterval?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.telemetryThreshold = threshold
+        }
+    }
 }

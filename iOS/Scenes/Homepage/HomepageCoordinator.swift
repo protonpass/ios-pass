@@ -772,7 +772,8 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let viewModel = SettingsViewModel(isShownAsSheet: asSheet,
                                           logManager: logManager,
                                           preferences: preferences,
-                                          vaultsManager: vaultsManager)
+                                          vaultsManager: vaultsManager,
+                                          syncEventLoop: eventLoop)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
