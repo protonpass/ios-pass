@@ -114,12 +114,12 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
             }
             .store(in: &cancellables)
 
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
             do {
                 let flags = try await featureFlagsRepository.getFlags()
-                creditCardV1 = flags.creditCardV1
+                self?.creditCardV1 = flags.creditCardV1
             } catch {
-                logger.error(error)
+                self?.logger.error(error)
             }
         }
     }

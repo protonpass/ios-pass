@@ -162,9 +162,9 @@ final class APIManager {
     private func useNewTokensWhenAppBackToForegound() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [unowned self] _ in
-                guard let userData = appData.userData else { return }
-                authHelper.onSessionObtaining(credential: userData.getCredential)
+            .sink { [weak self] _ in
+                guard let userData = self?.appData.userData else { return }
+                self?.authHelper.onSessionObtaining(credential: userData.getCredential)
             }
             .store(in: &cancellables)
     }

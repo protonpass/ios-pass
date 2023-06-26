@@ -45,6 +45,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     let isShownAsSheet: Bool
     private let logger: Logger
     private let preferences: Preferences
+    private let syncEventLoop: SyncEventLoopActionProtocol
     let vaultsManager: VaultsManager
 
     let supportedBrowsers: [Browser]
@@ -68,10 +69,12 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     init(isShownAsSheet: Bool,
          logManager: LogManager,
          preferences: Preferences,
-         vaultsManager: VaultsManager) {
+         vaultsManager: VaultsManager,
+         syncEventLoop: SyncEventLoopActionProtocol) {
         self.isShownAsSheet = isShownAsSheet
         logger = .init(manager: logManager)
         self.preferences = preferences
+        self.syncEventLoop = syncEventLoop
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
@@ -102,12 +105,15 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
         preferences
             .objectWillChange
-            .sink { [unowned self] in
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
                 // These options are changed in other pages by passing a references
                 // of Preferences. So we listen to changes and update here.
-                selectedBrowser = self.preferences.browser
-                selectedTheme = self.preferences.theme
-                selectedClipboardExpiration = self.preferences.clipboardExpiration
+                self.selectedBrowser = self.preferences.browser
+                self.selectedTheme = self.preferences.theme
+                self.selectedClipboardExpiration = self.preferences.clipboardExpiration
             }
             .store(in: &cancellables)
 
@@ -151,17 +157,19 @@ extension SettingsViewModel {
     }
 
     func forceSync() {
-        Task { @MainActor in
-            defer { delegate?.settingsViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            defer { self?.delegate?.settingsViewModelWantsToHideSpinner() }
             do {
-                logger.info("Doing full sync")
-                delegate?.settingsViewModelWantsToShowSpinner()
-                try await vaultsManager.fullSync()
-                logger.info("Done full sync")
-                delegate?.settingsViewModelDidFinishFullSync()
+                self?.syncEventLoop.stop()
+                self?.logger.info("Doing full sync")
+                self?.delegate?.settingsViewModelWantsToShowSpinner()
+                try await self?.vaultsManager.fullSync()
+                self?.logger.info("Done full sync")
+                self?.syncEventLoop.start()
+                self?.delegate?.settingsViewModelDidFinishFullSync()
             } catch {
-                logger.error(error)
-                delegate?.settingsViewModelDidEncounter(error: error)
+                self?.logger.error(error)
+                self?.delegate?.settingsViewModelDidEncounter(error: error)
             }
         }
     }
