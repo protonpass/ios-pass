@@ -44,8 +44,12 @@ public struct MonthYearTextField: UIViewRepresentable {
         months = Array(1...12)
 
         let currentYear = Calendar.current.component(.year, from: .now)
-        let startYear = currentYear - 10
-        let endYear = currentYear + 30
+        var startYear = currentYear - 10
+        var endYear = currentYear + 30
+        if let year = year.wrappedValue {
+            startYear = min(year, startYear)
+            endYear = max(year, endYear)
+        }
         years = Array(startYear...endYear)
 
         _month = month
