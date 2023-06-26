@@ -29,6 +29,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     @Published var cardholderName = ""
     @Published var cardNumber = ""
     @Published var verificationNumber = ""
+    @Published var pin = ""
     @Published var month: Int?
     @Published var year: Int?
     @Published var note = ""
@@ -79,7 +80,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                                   number: cardNumber.spacesRemoved,
                                   verificationNumber: verificationNumber,
                                   expirationDate: String(format: "%d-%02d", year, month),
-                                  pin: "")
+                                  pin: pin)
         return .init(name: title,
                      note: note,
                      itemUuid: UUID().uuidString,
@@ -94,6 +95,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         cardholderName = data.cardholderName
         cardNumber = data.number.toCreditCardNumber()
         verificationNumber = data.verificationNumber
+        pin = data.pin
 
         let monthYear = data.expirationDate.components(separatedBy: "-")
         month = Int(monthYear.last ?? "")
