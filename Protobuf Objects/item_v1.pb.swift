@@ -20,6 +20,7 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
+/// Credit cards
 public enum ProtonPassItemV1_CardType: SwiftProtobuf.Enum {
   public typealias RawValue = Int
   case unspecified // = 0
@@ -110,19 +111,6 @@ public struct ProtonPassItemV1_ItemAlias {
   public init() {}
 }
 
-/// Credit cards
-public struct ProtonPassItemV1_CustomCardType {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  public var name: String = String()
-
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  public init() {}
-}
-
 public struct ProtonPassItemV1_ItemCreditCard {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -134,12 +122,10 @@ public struct ProtonPassItemV1_ItemCreditCard {
 
   public var number: String = String()
 
-  public var cvv: String = String()
+  public var verificationNumber: String = String()
 
   /// Expected format: YYYY-MM, always containing two numbers for the month, even if is 01
   public var expirationDate: String = String()
-
-  public var issuerBank: String = String()
 
   public var pin: String = String()
 
@@ -445,7 +431,6 @@ extension ProtonPassItemV1_CardType: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemNote: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemLogin: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemAlias: @unchecked Sendable {}
-extension ProtonPassItemV1_CustomCardType: @unchecked Sendable {}
 extension ProtonPassItemV1_ItemCreditCard: @unchecked Sendable {}
 extension ProtonPassItemV1_AllowedAndroidApp: @unchecked Sendable {}
 extension ProtonPassItemV1_AndroidSpecific: @unchecked Sendable {}
@@ -563,48 +548,15 @@ extension ProtonPassItemV1_ItemAlias: SwiftProtobuf.Message, SwiftProtobuf._Mess
   }
 }
 
-extension ProtonPassItemV1_CustomCardType: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".CustomCardType"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "name"),
-  ]
-
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      default: break
-      }
-    }
-  }
-
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  public static func ==(lhs: ProtonPassItemV1_CustomCardType, rhs: ProtonPassItemV1_CustomCardType) -> Bool {
-    if lhs.name != rhs.name {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
 extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".ItemCreditCard"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "cardholder_name"),
     2: .standard(proto: "card_type"),
     3: .same(proto: "number"),
-    4: .same(proto: "cvv"),
+    4: .standard(proto: "verification_number"),
     5: .standard(proto: "expiration_date"),
-    6: .standard(proto: "issuer_bank"),
-    7: .same(proto: "pin"),
+    6: .same(proto: "pin"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -616,10 +568,9 @@ extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf.
       case 1: try { try decoder.decodeSingularStringField(value: &self.cardholderName) }()
       case 2: try { try decoder.decodeSingularEnumField(value: &self.cardType) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.number) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self.cvv) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.verificationNumber) }()
       case 5: try { try decoder.decodeSingularStringField(value: &self.expirationDate) }()
-      case 6: try { try decoder.decodeSingularStringField(value: &self.issuerBank) }()
-      case 7: try { try decoder.decodeSingularStringField(value: &self.pin) }()
+      case 6: try { try decoder.decodeSingularStringField(value: &self.pin) }()
       default: break
       }
     }
@@ -635,17 +586,14 @@ extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf.
     if !self.number.isEmpty {
       try visitor.visitSingularStringField(value: self.number, fieldNumber: 3)
     }
-    if !self.cvv.isEmpty {
-      try visitor.visitSingularStringField(value: self.cvv, fieldNumber: 4)
+    if !self.verificationNumber.isEmpty {
+      try visitor.visitSingularStringField(value: self.verificationNumber, fieldNumber: 4)
     }
     if !self.expirationDate.isEmpty {
       try visitor.visitSingularStringField(value: self.expirationDate, fieldNumber: 5)
     }
-    if !self.issuerBank.isEmpty {
-      try visitor.visitSingularStringField(value: self.issuerBank, fieldNumber: 6)
-    }
     if !self.pin.isEmpty {
-      try visitor.visitSingularStringField(value: self.pin, fieldNumber: 7)
+      try visitor.visitSingularStringField(value: self.pin, fieldNumber: 6)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -654,9 +602,8 @@ extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf.
     if lhs.cardholderName != rhs.cardholderName {return false}
     if lhs.cardType != rhs.cardType {return false}
     if lhs.number != rhs.number {return false}
-    if lhs.cvv != rhs.cvv {return false}
+    if lhs.verificationNumber != rhs.verificationNumber {return false}
     if lhs.expirationDate != rhs.expirationDate {return false}
-    if lhs.issuerBank != rhs.issuerBank {return false}
     if lhs.pin != rhs.pin {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
