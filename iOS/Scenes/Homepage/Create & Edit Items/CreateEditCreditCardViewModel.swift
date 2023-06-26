@@ -38,6 +38,14 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override var isSaveable: Bool { !title.isEmpty }
 
+    var shouldUpgrade: Bool {
+        // Free users can not create more credit cards but can only update
+        if case .create = mode, isFreeUser {
+            return true
+        }
+        return false
+    }
+
     override init(mode: ItemMode,
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
