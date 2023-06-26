@@ -103,7 +103,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 do {
-                    onAuth()
+                    self.onAuth()
                     if try await biometricAuthenticator.authenticate(reason: "Please authenticate") {
                         self.recordSuccess()
                     } else {
