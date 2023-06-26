@@ -78,17 +78,15 @@ public struct CreditCardData {
     public let cardholderName: String
     public let type: ProtonPassItemV1_CardType
     public let number: String
-    public let cvv: String
+    public let verificationNumber: String
     public let expirationDate: String // YYYY-MM
-    public let issuerBank: String
     public let pin: String
 
     public init(cardholderName: String,
                 type: ProtonPassItemV1_CardType,
                 number: String,
-                cvv: String,
+                verificationNumber: String,
                 expirationDate: String,
-                issuerBank: String,
                 pin: String) {
         let monthYear = expirationDate.components(separatedBy: "-")
         let month = Int(monthYear.last ?? "")
@@ -98,9 +96,8 @@ public struct CreditCardData {
         self.cardholderName = cardholderName
         self.type = type
         self.number = number
-        self.cvv = cvv
+        self.verificationNumber = verificationNumber
         self.expirationDate = expirationDate
-        self.issuerBank = issuerBank
         self.pin = pin
     }
 }
@@ -169,9 +166,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             return .creditCard(.init(cardholderName: data.cardholderName,
                                      type: data.cardType,
                                      number: data.number,
-                                     cvv: data.cvv,
+                                     verificationNumber: data.verificationNumber,
                                      expirationDate: data.expirationDate,
-                                     issuerBank: data.issuerBank,
                                      pin: data.pin))
 
         case let .login(data):
@@ -220,9 +216,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             content.creditCard.cardholderName = data.cardholderName
             content.creditCard.cardType = data.type
             content.creditCard.number = data.number
-            content.creditCard.cvv = data.cvv
+            content.creditCard.verificationNumber = data.verificationNumber
             content.creditCard.expirationDate = data.expirationDate
-            content.creditCard.issuerBank = data.issuerBank
             content.creditCard.pin = data.pin
 
         case .note:
