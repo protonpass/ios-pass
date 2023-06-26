@@ -75,8 +75,8 @@ final class CreateAliasLiteViewModel: ObservableObject {
         _prefix
             .projectedValue
             .dropFirst(3) // TextField is edited 3 times when view is loaded
-            .sink { [unowned self] _ in
-                validatePrefix()
+            .sink { [weak self] _ in
+                self?.validatePrefix()
             }
             .store(in: &cancellables)
     }
