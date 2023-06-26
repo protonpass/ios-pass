@@ -207,24 +207,24 @@ public final class CredentialProviderCoordinator {
                                                   symmetricKey: symmetricKey,
                                                   credentialIdentity: credentialIdentity,
                                                   logManager: logManager)
-        viewModel.onFailure = { [unowned self] error in
-            handle(error: error)
+        viewModel.onFailure = { [weak self] error in
+            self?.handle(error: error)
         }
-        viewModel.onSuccess = { [unowned self] credential, itemContent in
-            complete(quickTypeBar: false,
-                     credential: credential,
-                     itemContent: itemContent,
-                     itemRepository: itemRepository,
-                     upgradeChecker: upgradeChecker,
-                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+        viewModel.onSuccess = { [weak self] credential, itemContent in
+            self?.complete(quickTypeBar: false,
+                           credential: credential,
+                           itemContent: itemContent,
+                           itemRepository: itemRepository,
+                           upgradeChecker: upgradeChecker,
+                           serviceIdentifiers: [credentialIdentity.serviceIdentifier])
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
     }
 
     private func handle(error: Error) {
-        let defaultHandler: (Error) -> Void = { [unowned self] error in
-            logger.error(error)
-            alert(error: error)
+        let defaultHandler: (Error) -> Void = { [weak self] error in
+            self?.logger.error(error)
+            self?.alert(error: error)
         }
 
         guard let error = error as? PPError,
