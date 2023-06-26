@@ -54,6 +54,10 @@ private extension CreateEditCreditCardView {
         ScrollViewReader { _ in
             ScrollView {
                 VStack {
+                    if viewModel.isFreeUser {
+                        upsellBanner
+                    }
+
                     CreateEditItemTitleSection(title: $viewModel.title,
                                                focusedField: $focusedField,
                                                field: .title,
@@ -91,7 +95,7 @@ private extension CreateEditCreditCardView {
                                   isSaveable: viewModel.isSaveable,
                                   isSaving: viewModel.isSaving,
                                   itemContentType: viewModel.itemContentType(),
-                                  shouldUpgrade: false,
+                                  shouldUpgrade: viewModel.isFreeUser,
                                   onGoBack: {
                                       if viewModel.didEditSomething {
                                           isShowingDiscardAlert.toggle()
@@ -99,9 +103,18 @@ private extension CreateEditCreditCardView {
                                           dismiss()
                                       }
                                   },
-                                  onUpgrade: {},
+                                  onUpgrade: viewModel.upgrade,
                                   onSave: viewModel.save)
         }
+    }
+
+    var upsellBanner: some View {
+        Text("Upgrade to create and edit credit cards")
+            .padding()
+            .foregroundColor(Color(uiColor: PassColor.textNorm))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(PassColor.cardInteractionNormMinor1.toColor)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 

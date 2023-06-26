@@ -62,6 +62,7 @@ enum ItemCreationType {
 
 class BaseCreateEditItemViewModel {
     @Published private(set) var selectedVault: Vault
+    @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
@@ -111,6 +112,7 @@ class BaseCreateEditItemViewModel {
         logger = .init(manager: logManager)
         self.vaults = vaults
         bindValues()
+        checkIfFreeUser()
         pickPrimaryVaultIfApplicable()
         checkIfAbleToAddMoreCustomFields()
     }
@@ -148,6 +150,17 @@ class BaseCreateEditItemViewModel {
 // MARK: - Private APIs
 
 private extension BaseCreateEditItemViewModel {
+    func checkIfFreeUser() {
+        Task { @MainActor in
+            do {
+                self.isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                logger.error(error)
+                delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
     /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
     func pickPrimaryVaultIfApplicable() {
         guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
@@ -236,6 +249,10 @@ extension BaseCreateEditItemViewModel {
         delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(uiModel, delegate: self)
     }
 
+    func upgrade() {
+        delegate?.createEditItemViewModelWantsToUpgrade()
+    }
+
     func save() {
         Task { @MainActor in
             defer { isSaving = false }
@@ -286,7 +303,7 @@ extension BaseCreateEditItemViewModel {
 
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     func vaultSelectorViewModelWantsToUpgrade() {
-        delegate?.createEditItemViewModelWantsToUpgrade()
+        upgrade()
     }
 
     func vaultSelectorViewModelDidSelect(vault: Vault) {
