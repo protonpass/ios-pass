@@ -50,7 +50,7 @@ public final class CredentialProviderCoordinator {
     private let logManager: LogManager
     private let logger: Logger
     private let preferences: Preferences
-    private weak var rootViewController: UIViewController!
+    private weak var rootViewController: UIViewController?
     private var notificationService: LocalNotificationServiceProtocol
 
     /// Derived properties
@@ -75,8 +75,8 @@ public final class CredentialProviderCoordinator {
     private var wordProvider: WordProviderProtocol?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
-    private var topMostViewController: UIViewController {
-        rootViewController.topMostViewController
+    private var topMostViewController: UIViewController? {
+        rootViewController?.topMostViewController
     }
 
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
@@ -207,24 +207,24 @@ public final class CredentialProviderCoordinator {
                                                   symmetricKey: symmetricKey,
                                                   credentialIdentity: credentialIdentity,
                                                   logManager: logManager)
-        viewModel.onFailure = { [unowned self] error in
-            handle(error: error)
+        viewModel.onFailure = { [weak self] error in
+            self?.handle(error: error)
         }
-        viewModel.onSuccess = { [unowned self] credential, itemContent in
-            complete(quickTypeBar: false,
-                     credential: credential,
-                     itemContent: itemContent,
-                     itemRepository: itemRepository,
-                     upgradeChecker: upgradeChecker,
-                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+        viewModel.onSuccess = { [weak self] credential, itemContent in
+            self?.complete(quickTypeBar: false,
+                           credential: credential,
+                           itemContent: itemContent,
+                           itemRepository: itemRepository,
+                           upgradeChecker: upgradeChecker,
+                           serviceIdentifiers: [credentialIdentity.serviceIdentifier])
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
     }
 
     private func handle(error: Error) {
-        let defaultHandler: (Error) -> Void = { [unowned self] error in
-            logger.error(error)
-            alert(error: error)
+        let defaultHandler: (Error) -> Void = { [weak self] error in
+            self?.logger.error(error)
+            self?.alert(error: error)
         }
 
         guard let error = error as? PPError,
@@ -456,6 +456,9 @@ private extension CredentialProviderCoordinator {
 
 private extension CredentialProviderCoordinator {
     func showView(_ view: some View) {
+        guard let rootViewController else {
+            return
+        }
         if let lastChildViewController {
             lastChildViewController.willMove(toParent: nil)
             lastChildViewController.view.removeFromSuperview()
@@ -504,8 +507,8 @@ private extension CredentialProviderCoordinator {
     }
 
     func showNotLoggedInView() {
-        let view = NotLoggedInView(preferences: preferences) { [unowned self] in
-            cancel(errorCode: .userCanceled)
+        let view = NotLoggedInView(preferences: preferences) { [weak self] in
+            self?.cancel(errorCode: .userCanceled)
         }
         showView(view)
     }
@@ -565,16 +568,22 @@ private extension CredentialProviderCoordinator {
     }
 
     func showLoadingHud() {
+        guard let topMostViewController else {
+            return
+        }
         MBProgressHUD.showAdded(to: topMostViewController.view, animated: true)
     }
 
     func hideLoadingHud() {
+        guard let topMostViewController else {
+            return
+        }
         MBProgressHUD.hide(for: topMostViewController.view, animated: true)
     }
 
     func handleCreatedItem(_ itemContentType: ItemContentType) {
-        topMostViewController.dismiss(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage(itemContentType.creationMessage)
+        topMostViewController?.dismiss(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage(itemContentType.creationMessage)
         }
     }
 
@@ -586,18 +595,18 @@ private extension CredentialProviderCoordinator {
     func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = false) {
         viewController.isModalInPresentation = !dismissible
         viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
-        topMostViewController.present(viewController, animated: animated)
+        topMostViewController?.present(viewController, animated: animated)
     }
 
     func alert(error: Error) {
         let alert = UIAlertController(title: "Error occured",
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] _ in
-            cancel(errorCode: .failed)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            self?.cancel(errorCode: .failed)
         }
         alert.addAction(cancelAction)
-        rootViewController.present(alert, animated: true)
+        rootViewController?.present(alert, animated: true)
     }
 
     func startUpgradeFlow() {
@@ -606,8 +615,8 @@ private extension CredentialProviderCoordinator {
                                       preferredStyle: .alert)
         let okButton = UIAlertAction(title: "OK", style: .default)
         alert.addAction(okButton)
-        rootViewController.dismiss(animated: true) { [unowned self] in
-            rootViewController.present(alert, animated: true)
+        rootViewController?.dismiss(animated: true) { [weak self] in
+            self?.rootViewController?.present(alert, animated: true)
         }
     }
 }
@@ -637,6 +646,9 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate) {
+        guard let rootViewController else {
+            return
+        }
         let viewModel = SortTypeListViewModel(sortType: selectedSortType)
         viewModel.delegate = delegate
         let view = SortTypeListView(viewModel: viewModel)
@@ -731,7 +743,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
-        guard let vaultListUiModels, let upgradeChecker else { return }
+        guard let vaultListUiModels, let upgradeChecker, let rootViewController else { return }
         let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels,
                                                selectedVault: selectedVault,
                                                upgradeChecker: upgradeChecker,
@@ -749,6 +761,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
+        guard let rootViewController else {
+            return
+        }
         let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
                                                          preferences: preferences,
                                                          delegate: delegate)
@@ -757,6 +772,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate) {
+        guard let rootViewController else {
+            return
+        }
         let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
                                                         delegate: delegate,
                                                         uiModel: uiModel)
@@ -821,7 +839,7 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
 extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        guard let upgradeChecker else { return }
+        guard let upgradeChecker, let rootViewController else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
                                                   upgradeChecker: upgradeChecker,
                                                   logManager: logManager,
@@ -840,7 +858,7 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     }
 
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        guard let upgradeChecker else { return }
+        guard let upgradeChecker, let rootViewController else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection,
                                                  upgradeChecker: upgradeChecker,
                                                  logManager: logManager)
