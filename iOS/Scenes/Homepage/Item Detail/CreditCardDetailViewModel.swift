@@ -43,7 +43,7 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable,
         if case let .creditCard(data) = itemContent.contentData {
             cardholderName = data.cardholderName
             cardNumber = data.number
-            verificationNumber = data.cvv
+            verificationNumber = data.verificationNumber
 
             let monthYear = data.expirationDate.components(separatedBy: "-")
             month = Int(monthYear.last ?? "")

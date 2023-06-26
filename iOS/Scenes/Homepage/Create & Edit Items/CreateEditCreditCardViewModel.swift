@@ -77,9 +77,8 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         let data = CreditCardData(cardholderName: cardholderName,
                                   type: .unspecified,
                                   number: cardNumber.spacesRemoved,
-                                  cvv: verificationNumber,
+                                  verificationNumber: verificationNumber,
                                   expirationDate: String(format: "%d-%02d", year, month),
-                                  issuerBank: "",
                                   pin: "")
         return .init(name: title,
                      note: note,
@@ -94,7 +93,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         title = itemContent.name
         cardholderName = data.cardholderName
         cardNumber = data.number.toCreditCardNumber()
-        verificationNumber = data.cvv
+        verificationNumber = data.verificationNumber
 
         let monthYear = data.expirationDate.components(separatedBy: "-")
         month = Int(monthYear.last ?? "")
