@@ -77,14 +77,9 @@ private struct ItemCountChip: View {
                     Text(title)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
 
-                    VStack {
-                        Text(" \(count)")
-                            .font(.caption)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
-                            .padding(.top, 4)
-                        Spacer()
-                    }
-                    .fixedSize(horizontal: true, vertical: true)
+                    Text(" \(count)")
+                        .font(.caption)
+                        .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
             }
             .padding(.vertical, 8)

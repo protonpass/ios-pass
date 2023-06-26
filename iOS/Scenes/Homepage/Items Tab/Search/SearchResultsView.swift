@@ -31,7 +31,7 @@ struct SearchResultsView: View {
     let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
-    let results: [ItemSearchResult]
+    let results: any SearchResults
     let isTrash: Bool
     let creditCardV1: Bool
     let safeAreaInsets: EdgeInsets
@@ -45,88 +45,8 @@ struct SearchResultsView: View {
                               itemCount: itemCount,
                               creditCardV1: creditCardV1)
 
-            HStack {
-                Text("\(results.count)")
-                    .font(.callout)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                    Text(" result(s)")
-                    .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
-
-                Spacer()
-
-                SortTypeButton(selectedSortType: $selectedSortType, action: onSelectSortType)
-            }
-            .padding()
-            .animationsDisabled()
-
-            ScrollViewReader { proxy in
-                List {
-                    EmptyView()
-                        .id(uuid)
-                    itemList(results)
-                    Spacer()
-                        .plainListRow()
-                        .frame(height: safeAreaInsets.bottom)
-                }
-                .listStyle(.plain)
-                .animation(.default, value: results.hashValue)
-                .gesture(DragGesture().onChanged { _ in onScroll() })
-                .onChange(of: selectedType) { _ in
-                    proxy.scrollTo(uuid)
-                }
-                .overlay {
-                    if selectedSortType.isAlphabetical {
-                        HStack {
-                            Spacer()
-                            SectionIndexTitles(proxy: proxy,
-                                               direction: selectedSortType.sortDirection ?? .ascending)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func itemList(_ items: [ItemSearchResult]) -> some View {
-        switch selectedSortType {
-        case .mostRecent:
-            itemList(items.mostRecentSortResult())
-        case .alphabeticalAsc:
-            itemList(items.alphabeticalSortResult(direction: .ascending))
-        case .alphabeticalDesc:
-            itemList(items.alphabeticalSortResult(direction: .descending))
-        case .newestToOldest:
-            itemList(items.monthYearSortResult(direction: .descending))
-        case .oldestToNewest:
-            itemList(items.monthYearSortResult(direction: .ascending))
-        }
-    }
-
-    @ViewBuilder
-    private func itemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
-        section(for: result.today, headerTitle: "Today")
-        section(for: result.yesterday, headerTitle: "Yesterday")
-        section(for: result.last7Days, headerTitle: "Last week")
-        section(for: result.last14Days, headerTitle: "Last two weeks")
-        section(for: result.last30Days, headerTitle: "Last 30 days")
-        section(for: result.last60Days, headerTitle: "Last 60 days")
-        section(for: result.last90Days, headerTitle: "Last 90 days")
-        section(for: result.others, headerTitle: "More than 90 days")
-    }
-
-    private func itemList(_ result: AlphabeticalSortResult<ItemSearchResult>) -> some View {
-        ForEach(result.buckets, id: \.letter) { bucket in
-            section(for: bucket.items, headerTitle: bucket.letter.character)
-                .id(bucket.letter.character)
-        }
-    }
-
-    private func itemList(_ result: MonthYearSortResult<ItemSearchResult>) -> some View {
-        ForEach(result.buckets, id: \.monthYear) { bucket in
-            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+            topBarSearchInformations
+            searchListItems
         }
     }
 
@@ -180,6 +100,95 @@ struct SearchResultsView: View {
                                                             .deletePermanently(itemToBePermanentlyDeleted)
                                                     }
                                                 }))
+    }
+}
+
+private extension SearchResultsView {
+    var topBarSearchInformations: some View {
+        HStack {
+            Text("\(results.numberOfItems)")
+                .font(.callout)
+                .fontWeight(.bold)
+                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                Text(" result(s)")
+                .font(.callout)
+                .foregroundColor(Color(uiColor: PassColor.textWeak))
+
+            Spacer()
+
+            SortTypeButton(selectedSortType: $selectedSortType, action: onSelectSortType)
+        }
+        .padding()
+        .animationsDisabled()
+    }
+}
+
+private extension SearchResultsView {
+    var searchListItems: some View {
+        ScrollViewReader { proxy in
+            List {
+                EmptyView()
+                    .id(uuid)
+                mainItemList(for: results)
+                Spacer()
+                    .plainListRow()
+                    .frame(height: safeAreaInsets.bottom)
+            }
+            .listStyle(.plain)
+            .animation(.default, value: results.hashValue)
+            .gesture(DragGesture().onChanged { _ in onScroll() })
+            .onChange(of: selectedType) { _ in
+                proxy.scrollTo(uuid)
+            }
+            .overlay {
+                if selectedSortType.isAlphabetical {
+                    HStack {
+                        Spacer()
+                        SectionIndexTitles(proxy: proxy,
+                                           direction: selectedSortType.sortDirection ?? .ascending)
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    func mainItemList(for items: any SearchResults) -> some View {
+        switch items {
+        case let items as MostRecentSortResult<ItemSearchResult>:
+            mostRecentItemList(items)
+        case let items as AlphabeticalSortResult<ItemSearchResult>:
+            alphabeticalItemList(items)
+        case let items as MonthYearSortResult<ItemSearchResult>:
+            monthYearItemList(items)
+        default:
+            EmptyView()
+        }
+    }
+
+    @ViewBuilder
+    func mostRecentItemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
+        section(for: result.today, headerTitle: "Today")
+        section(for: result.yesterday, headerTitle: "Yesterday")
+        section(for: result.last7Days, headerTitle: "Last week")
+        section(for: result.last14Days, headerTitle: "Last two weeks")
+        section(for: result.last30Days, headerTitle: "Last 30 days")
+        section(for: result.last60Days, headerTitle: "Last 60 days")
+        section(for: result.last90Days, headerTitle: "Last 90 days")
+        section(for: result.others, headerTitle: "More than 90 days")
+    }
+
+    func alphabeticalItemList(_ result: AlphabeticalSortResult<ItemSearchResult>) -> some View {
+        ForEach(result.buckets, id: \.letter) { bucket in
+            section(for: bucket.items, headerTitle: bucket.letter.character)
+                .id(bucket.letter.character)
+        }
+    }
+
+    func monthYearItemList(_ result: MonthYearSortResult<ItemSearchResult>) -> some View {
+        ForEach(result.buckets, id: \.monthYear) { bucket in
+            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+        }
     }
 }
 
