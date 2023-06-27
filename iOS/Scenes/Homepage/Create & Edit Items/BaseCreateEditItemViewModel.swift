@@ -80,7 +80,10 @@ class BaseCreateEditItemViewModel {
     let logger: Logger
     let vaults: [Vault]
 
-    var hasEmptyCustomField: Bool { customFieldUiModels.contains(where: \.customField.content.isEmpty) }
+    var hasEmptyCustomField: Bool {
+        customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
+    }
+
     var didEditSomething = false
 
     weak var delegate: CreateEditItemViewModelDelegate?
