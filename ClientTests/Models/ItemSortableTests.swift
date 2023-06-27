@@ -156,7 +156,7 @@ final class ItemSortableTests: XCTestCase {
         assertEqual(others[2], moreThan90Days1)
     }
 
-    func assertEqual(_ lhs: DateSortable, _ rhs: DateSortable) {
+    func assertEqual(_ lhs: any DateSortable, _ rhs: any DateSortable) {
         XCTAssertEqual(lhs.dateForSorting, rhs.dateForSorting)
     }
 
