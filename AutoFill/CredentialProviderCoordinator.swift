@@ -74,6 +74,7 @@ public final class CredentialProviderCoordinator {
 
     private var wordProvider: WordProviderProtocol?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
+    private var customCoordinator: CustomCoordinator?
 
     private var topMostViewController: UIViewController? {
         rootViewController?.topMostViewController
@@ -764,10 +765,10 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         guard let rootViewController else {
             return
         }
-        let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                         preferences: preferences,
-                                                         delegate: delegate)
-        coordinator.start()
+        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+                                                           preferences: preferences,
+                                                           delegate: delegate)
+        customCoordinator?.start()
     }
 
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
@@ -775,10 +776,10 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         guard let rootViewController else {
             return
         }
-        let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                        delegate: delegate,
-                                                        uiModel: uiModel)
-        coordinator.start()
+        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
+                                                          delegate: delegate,
+                                                          uiModel: uiModel)
+        customCoordinator?.start()
     }
 
     func createEditItemViewModelWantsToUpgrade() {
