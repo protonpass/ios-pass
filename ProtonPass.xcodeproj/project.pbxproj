@@ -2491,7 +2491,7 @@
 			isa = PBXGroup;
 			children = (
 				5BB2B6E62A444B73005E831C /* App */,
-				5B0C74F92A2F5EDC00272CE8 /* AppManagment */,
+				5B0C74F92A2F5EDC00272CE8 /* AppManagement */,
 				35E5070B286FB57800A3F6EA /* Scenes */,
 				5BB2B6E72A444DAF005E831C /* Shared */,
 			);
@@ -2756,13 +2756,13 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		5B0C74F92A2F5EDC00272CE8 /* AppManagment */ = {
+		5B0C74F92A2F5EDC00272CE8 /* AppManagement */ = {
 			isa = PBXGroup;
 			children = (
 				5BB2B6E92A4453BD005E831C /* Configurations */,
 				5B0C74FA2A2F5EE600272CE8 /* DependencyInjection */,
 			);
-			path = AppManagment;
+			path = AppManagement;
 			sourceTree = "<group>";
 		};
 		5B0C74FA2A2F5EE600272CE8 /* DependencyInjection */ = {
