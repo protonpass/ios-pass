@@ -609,6 +609,7 @@
 		5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
+		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -3946,6 +3947,7 @@
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
 				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
+				5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */,
 				3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */,
 				5B0C74FD2A2F606C00272CE8 /* Services+DependencyInjections.swift in Sources */,
 				3562BC3229954334003FCB13 /* ItemDetailSectionIcon.swift in Sources */,
