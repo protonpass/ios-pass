@@ -227,9 +227,8 @@ private extension SearchViewModel {
 // MARK: - Public APIs
 
 extension SearchViewModel {
-    @MainActor
     func refreshResults() {
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             await self?.indexItems()
             self?.doSearch(query: self?.lastSearchQuery ?? "")
         }
@@ -288,7 +287,7 @@ extension SearchViewModel {
 private extension SearchViewModel {
     func setup() {
         $query
-            .debounce(for: 0.2, scheduler: DispatchQueue.main)
+            .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
@@ -301,9 +300,7 @@ private extension SearchViewModel {
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [weak self] _ in
-                Task { [weak self] in
-                    await self?.filterAndSortResults()
-                }
+                self?.filterAndSortResults()
             }
             .store(in: &cancellables)
     }
