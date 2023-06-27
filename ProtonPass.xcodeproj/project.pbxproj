@@ -3736,7 +3736,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=/opt/homebrew/bin/:$PATH\n\nif which swiftformat >/dev/null; then\nswiftformat .\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n\n";
+			shellScript = "scripts/public/swiftformat.sh\n";
 		};
 		7144DBF80B945076EDB59570 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
