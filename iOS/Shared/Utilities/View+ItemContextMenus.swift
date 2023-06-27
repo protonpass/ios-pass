@@ -95,7 +95,7 @@ enum ItemContextMenu {
 struct ItemContextMenuOption: Identifiable {
     var id = UUID()
     let title: String
-    let icon: UIImage
+    let icon: Image
     let action: () -> Void
     var isDestructive = false
 
@@ -128,7 +128,7 @@ private extension View {
                                    Label(title: {
                                        Text(option.title)
                                    }, icon: {
-                                       Image(uiImage: option.icon)
+                                       option.icon
                                    })
                                })
                     }
