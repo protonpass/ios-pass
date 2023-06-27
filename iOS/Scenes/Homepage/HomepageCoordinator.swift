@@ -277,6 +277,7 @@ private extension HomepageCoordinator {
                                  delayed: false,
                                  logManager: logManager,
                                  onAuth: { [weak self] in
+                                     self?.dismissAllViewControllers(animated: false)
                                      self?.hideSecondaryView()
                                  },
                                  onSuccess: { [weak self] in
