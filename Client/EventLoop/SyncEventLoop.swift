@@ -57,6 +57,12 @@ public protocol SyncEventLoopDelegate: AnyObject {
     func syncEventLoopDidFailLoop(error: Error)
 }
 
+public protocol SyncEventLoopActionProtocol {
+    func start()
+    func stop()
+    func forceSync()
+}
+
 public enum SyncEventLoopSkipReason {
     case noInternetConnection
     case previousLoopNotFinished
@@ -119,9 +125,9 @@ public final class SyncEventLoop: DeinitPrintable {
 
 // MARK: - Public APIs
 
-public extension SyncEventLoop {
+extension SyncEventLoop: SyncEventLoopActionProtocol {
     /// Start looping
-    func start() {
+    public func start() {
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
@@ -137,12 +143,12 @@ public extension SyncEventLoop {
     }
 
     /// Force a sync loop e.g when the app goes foreground, pull to refresh is triggered
-    func forceSync() {
+    public func forceSync() {
         timerTask()
     }
 
     /// Stop looping
-    func stop() {
+    public func stop() {
         timer?.invalidate()
         ongoingTask?.cancel()
         delegate?.syncEventLoopDidStopLooping()
@@ -204,6 +210,9 @@ private extension SyncEventLoop {
 
                 do {
                     delegate?.syncEventLoopDidBeginNewLoop()
+                    if Task.isCancelled {
+                        return
+                    }
                     let hasNewEvents = try await sync()
                     delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
                     backOffManager.recordSuccess()
@@ -226,9 +235,21 @@ private extension SyncEventLoop {
         // Need to sync 3 operations in 2 steps:
         // 1. Create & update sync
         // 2. Delete sync
+        if Task.isCancelled {
+            return false
+        }
 
         let localShares = try await shareRepository.getShares()
+
+        if Task.isCancelled {
+            return false
+        }
+
         let remoteShares = try await shareRepository.getRemoteShares()
+
+        if Task.isCancelled {
+            return false
+        }
 
         let hasNewEvents = try await withThrowingTaskGroup(of: Bool.self,
                                                            returning: Bool.self) { taskGroup in
@@ -265,8 +286,17 @@ private extension SyncEventLoop {
                         self.logger.debug("New share \(remoteShare.shareID)")
                         hasNewEvents = true
                         let shareId = remoteShare.shareID
+                        if Task.isCancelled {
+                            return false
+                        }
                         _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
+                        if Task.isCancelled {
+                            return false
+                        }
                         try await self.shareRepository.upsertShares([remoteShare])
+                        if Task.isCancelled {
+                            return false
+                        }
                         try await self.itemRepository.refreshItems(shareId: shareId)
                     }
                     return hasNewEvents
@@ -300,7 +330,13 @@ private extension SyncEventLoop {
                                responseError.responseCode == 300_004 {
                                 // Confirmed that the vault is really deleted
                                 // safe to delete it locally
+                                if Task.isCancelled {
+                                    return false
+                                }
                                 try await self.shareRepository.deleteShareLocally(shareId: shareId)
+                                if Task.isCancelled {
+                                    return false
+                                }
                                 try await self.itemRepository.deleteAllItemsLocally(shareId: shareId)
                                 return true
                             }

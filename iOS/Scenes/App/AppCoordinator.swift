@@ -251,14 +251,14 @@ final class AppCoordinator {
     /// Inform the BE that the users had logged in into Pass
     /// so that welcome or instruction emails can be sent
     private func checkAccessToPass() {
-        Task {
+        Task { [weak self] in
             do {
-                logger.trace("Checking access to Pass")
+                self?.logger.trace("Checking access to Pass")
                 let endpoint = CheckAccessAndPlanEndpoint()
-                _ = try await apiManager.apiService.exec(endpoint: endpoint)
-                logger.info("Checked access to Pass")
+                _ = try await self?.apiManager.apiService.exec(endpoint: endpoint)
+                self?.logger.info("Checked access to Pass")
             } catch {
-                logger.error(error)
+                self?.logger.error(error)
             }
         }
     }
