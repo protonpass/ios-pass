@@ -3640,7 +3640,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		35E506A2286F8E3B00A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3659,7 +3659,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		35E506A3286F8E6700A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3677,7 +3677,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		35E506A4286F90B100A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3695,7 +3695,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		47BE41B48E36213B2392C7B7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
