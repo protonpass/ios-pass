@@ -76,7 +76,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
     private var paymentsUI: PaymentsUI?
-
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var wordProvider: WordProviderProtocol?
@@ -85,7 +84,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
-
 
     init(apiService: APIService,
          container: NSPersistentContainer,
