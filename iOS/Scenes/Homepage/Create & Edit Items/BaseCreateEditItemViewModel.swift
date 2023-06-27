@@ -62,6 +62,7 @@ enum ItemCreationType {
 
 class BaseCreateEditItemViewModel {
     @Published private(set) var selectedVault: Vault
+    @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
@@ -111,6 +112,7 @@ class BaseCreateEditItemViewModel {
         logger = .init(manager: logManager)
         self.vaults = vaults
         bindValues()
+        checkIfFreeUser()
         pickPrimaryVaultIfApplicable()
         checkIfAbleToAddMoreCustomFields()
     }
@@ -148,30 +150,44 @@ class BaseCreateEditItemViewModel {
 // MARK: - Private APIs
 
 private extension BaseCreateEditItemViewModel {
+    func checkIfFreeUser() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                self.isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                self.logger.error(error)
+                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+            }
+        }
+    }
+
     /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
     func pickPrimaryVaultIfApplicable() {
         guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                let isFreeUser = try await upgradeChecker.isFreeUser()
-                if isFreeUser, let primaryVault = vaults.first(where: { $0.isPrimary }) {
-                    selectedVault = primaryVault
+                let isFreeUser = try await self.upgradeChecker.isFreeUser()
+                if isFreeUser, let primaryVault = self.vaults.first(where: { $0.isPrimary }) {
+                    self.selectedVault = primaryVault
                 }
             } catch {
-                logger.error(error)
-                delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.createEditItemViewModelDidEncounter(error: error)
             }
         }
     }
 
     func checkIfAbleToAddMoreCustomFields() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                let isFreeUser = try await upgradeChecker.isFreeUser()
-                canAddMoreCustomFields = !isFreeUser
+                let isFreeUser = try await self.upgradeChecker.isFreeUser()
+                self.canAddMoreCustomFields = !isFreeUser
             } catch {
-                logger.error(error)
-                delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.createEditItemViewModelDidEncounter(error: error)
             }
         }
     }
@@ -236,29 +252,35 @@ extension BaseCreateEditItemViewModel {
         delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(uiModel, delegate: self)
     }
 
+    func upgrade() {
+        delegate?.createEditItemViewModelWantsToUpgrade()
+    }
+
     func save() {
-        Task { @MainActor in
-            defer { isSaving = false }
-            isSaving = true
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+
+            defer { self.isSaving = false }
+            self.isSaving = true
 
             do {
-                switch mode {
+                switch self.mode {
                 case let .create(_, type):
-                    logger.trace("Creating item")
-                    if let createdItem = try await createItem(for: type) {
-                        logger.info("Created \(createdItem.debugInformation)")
-                        delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
+                    self.logger.trace("Creating item")
+                    if let createdItem = try await self.createItem(for: type) {
+                        self.logger.info("Created \(createdItem.debugInformation)")
+                        self.delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
                     }
 
                 case let .edit(oldItemContent):
-                    logger.trace("Editing \(oldItemContent.debugInformation)")
-                    try await editItem(oldItemContent: oldItemContent)
-                    logger.info("Edited \(oldItemContent.debugInformation)")
-                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+                    self.logger.trace("Editing \(oldItemContent.debugInformation)")
+                    try await self.editItem(oldItemContent: oldItemContent)
+                    self.logger.info("Edited \(oldItemContent.debugInformation)")
+                    self.delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
                 }
             } catch {
-                logger.error(error)
-                delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.createEditItemViewModelDidEncounter(error: error)
             }
         }
     }
@@ -267,13 +289,14 @@ extension BaseCreateEditItemViewModel {
     /// When changes happen, announce via `isObsolete` boolean  so the view can act accordingly
     func refresh() {
         guard case let .edit(itemContent) = mode else { return }
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             guard let updatedItem =
-                try await itemRepository.getItem(shareId: itemContent.shareId,
-                                                 itemId: itemContent.item.itemID) else {
+                try await self.itemRepository.getItem(shareId: itemContent.shareId,
+                                                      itemId: itemContent.item.itemID) else {
                 return
             }
-            isObsolete = itemContent.item.revision != updatedItem.item.revision
+            self.isObsolete = itemContent.item.revision != updatedItem.item.revision
         }
     }
 
@@ -286,7 +309,7 @@ extension BaseCreateEditItemViewModel {
 
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     func vaultSelectorViewModelWantsToUpgrade() {
-        delegate?.createEditItemViewModelWantsToUpgrade()
+        upgrade()
     }
 
     func vaultSelectorViewModelDidSelect(vault: Vault) {

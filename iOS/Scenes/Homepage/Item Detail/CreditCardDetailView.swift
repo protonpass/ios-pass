@@ -126,8 +126,11 @@ private extension CreditCardDetailView {
                 Text("Cardholder name")
                     .sectionTitleText()
 
-                Text(viewModel.cardholderName)
-                    .sectionContentText()
+                UpsellableDetailText(text: viewModel.cardholderName,
+                                     placeholder: "Empty cardholder name",
+                                     shouldUpgrade: viewModel.isFreeUser,
+                                     upgradeTextColor: tintColor,
+                                     onUpgrade: viewModel.upgrade)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -135,19 +138,23 @@ private extension CreditCardDetailView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .contextMenu {
-            Button(action: viewModel.copyCardholderName) {
-                Text("Copy")
-            }
+            if !viewModel.isFreeUser, !viewModel.cardholderName.isEmpty {
+                Button(action: viewModel.copyCardholderName) {
+                    Text("Copy")
+                }
 
-            Button(action: {
-                viewModel.showLarge(viewModel.cardholderName)
-            }, label: {
-                Text("Show large")
-            })
+                Button(action: {
+                    viewModel.showLarge(viewModel.cardholderName)
+                }, label: {
+                    Text("Show large")
+                })
+            }
         }
     }
 
+    @ViewBuilder
     var cardNumberRow: some View {
+        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.cardNumber.isEmpty
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.creditCard, color: tintColor)
 
@@ -155,16 +162,14 @@ private extension CreditCardDetailView {
                 Text("Card number")
                     .sectionTitleText()
 
-                if viewModel.cardNumber.isEmpty {
-                    Text("Empty credit card number")
-                        .placeholderText()
-                } else {
-                    Text(isShowingCardNumber ?
-                        viewModel.cardNumber.toCreditCardNumber() :
-                        viewModel.cardNumber.toMaskedCreditCardNumber())
-                        .sectionContentText()
-                        .animation(.default, value: isShowingCardNumber)
-                }
+                UpsellableDetailText(text: isShowingCardNumber ?
+                    viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber
+                    .toMaskedCreditCardNumber(),
+                    placeholder: "Empty credit card number",
+                    shouldUpgrade: viewModel.isFreeUser,
+                    upgradeTextColor: tintColor,
+                    onUpgrade: viewModel.upgrade)
+                    .animation(.default, value: isShowingCardNumber)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -172,7 +177,7 @@ private extension CreditCardDetailView {
 
             Spacer()
 
-            if !viewModel.cardNumber.isEmpty {
+            if shouldShowOptions {
                 CircleButton(icon: isShowingCardNumber ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
@@ -183,40 +188,39 @@ private extension CreditCardDetailView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .contextMenu {
-            Button(action: {
-                withAnimation {
-                    isShowingCardNumber.toggle()
-                }
-            }, label: {
-                Text(isShowingCardNumber ? "Conceal" : "Reveal")
-            })
+            if shouldShowOptions {
+                Button(action: {
+                    withAnimation {
+                        isShowingCardNumber.toggle()
+                    }
+                }, label: {
+                    Text(isShowingCardNumber ? "Conceal" : "Reveal")
+                })
 
-            Button(action: viewModel.copyCardNumber) {
-                Text("Copy")
+                Button(action: viewModel.copyCardNumber) {
+                    Text("Copy")
+                }
             }
         }
     }
 
+    @ViewBuilder
     var verificationNumberRow: some View {
+        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.verificationNumber.isEmpty
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.creditCard, color: tintColor)
+            ItemDetailSectionIcon(icon: PassIcon.shieldCheck, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Verification number")
                     .sectionTitleText()
 
-                if viewModel.cardNumber.isEmpty {
-                    Text("Empty verification number")
-                        .placeholderText()
-                } else {
-                    if isShowingVerificationNumber {
-                        Text(viewModel.verificationNumber)
-                            .sectionContentText()
-                    } else {
-                        Text(String(repeating: "•", count: viewModel.verificationNumber.count))
-                            .sectionContentText()
-                    }
-                }
+                UpsellableDetailText(text: isShowingVerificationNumber ?
+                    viewModel.verificationNumber :
+                    String(repeating: "•", count: viewModel.verificationNumber.count),
+                    placeholder: "Empty verification number",
+                    shouldUpgrade: viewModel.isFreeUser,
+                    upgradeTextColor: tintColor,
+                    onUpgrade: viewModel.upgrade)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -225,7 +229,7 @@ private extension CreditCardDetailView {
 
             Spacer()
 
-            if !viewModel.verificationNumber.isEmpty {
+            if shouldShowOptions {
                 CircleButton(icon: isShowingVerificationNumber ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
@@ -236,21 +240,25 @@ private extension CreditCardDetailView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .contextMenu {
-            Button(action: {
-                withAnimation {
-                    isShowingVerificationNumber.toggle()
-                }
-            }, label: {
-                Text(isShowingVerificationNumber ? "Conceal" : "Reveal")
-            })
+            if shouldShowOptions {
+                Button(action: {
+                    withAnimation {
+                        isShowingVerificationNumber.toggle()
+                    }
+                }, label: {
+                    Text(isShowingVerificationNumber ? "Conceal" : "Reveal")
+                })
 
-            Button(action: viewModel.copyVerificationNumber) {
-                Text("Copy")
+                Button(action: viewModel.copyVerificationNumber) {
+                    Text("Copy")
+                }
             }
         }
     }
 
+    @ViewBuilder
     var pinRow: some View {
+        let shouldShowOptions = !viewModel.isFreeUser && !viewModel.pin.isEmpty
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: tintColor)
 
@@ -258,13 +266,12 @@ private extension CreditCardDetailView {
                 Text("PIN")
                     .sectionTitleText()
 
-                if isShowingPIN {
-                    Text(viewModel.pin)
-                        .sectionContentText()
-                } else {
-                    Text(String(repeating: "•", count: viewModel.pin.count))
-                        .sectionContentText()
-                }
+                UpsellableDetailText(text: isShowingPIN ?
+                    viewModel.pin : String(repeating: "•", count: viewModel.pin.count),
+                    placeholder: nil,
+                    shouldUpgrade: viewModel.isFreeUser,
+                    upgradeTextColor: tintColor,
+                    onUpgrade: viewModel.upgrade)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -272,7 +279,7 @@ private extension CreditCardDetailView {
 
             Spacer()
 
-            if !viewModel.pin.isEmpty {
+            if shouldShowOptions {
                 CircleButton(icon: isShowingPIN ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: viewModel.itemContent.type.normMajor2Color,
                              backgroundColor: viewModel.itemContent.type.normMinor2Color,
@@ -283,13 +290,15 @@ private extension CreditCardDetailView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .contextMenu {
-            Button(action: {
-                withAnimation {
-                    isShowingPIN.toggle()
-                }
-            }, label: {
-                Text(isShowingPIN ? "Conceal" : "Reveal")
-            })
+            if shouldShowOptions {
+                Button(action: {
+                    withAnimation {
+                        isShowingPIN.toggle()
+                    }
+                }, label: {
+                    Text(isShowingPIN ? "Conceal" : "Reveal")
+                })
+            }
         }
     }
 
@@ -301,8 +310,11 @@ private extension CreditCardDetailView {
                 Text("Expires on")
                     .sectionTitleText()
 
-                Text(viewModel.expirationDate)
-                    .sectionContentText()
+                UpsellableDetailText(text: viewModel.expirationDate,
+                                     placeholder: nil,
+                                     shouldUpgrade: viewModel.isFreeUser,
+                                     upgradeTextColor: tintColor,
+                                     onUpgrade: viewModel.upgrade)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
