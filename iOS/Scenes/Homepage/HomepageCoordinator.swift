@@ -1024,7 +1024,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                            delegate: delegate)
         customCoordinator?.start()
     }
-    
+
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate) {
         customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
