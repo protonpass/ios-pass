@@ -76,11 +76,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
     private var paymentsUI: PaymentsUI?
-
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var wordProvider: WordProviderProtocol?
-
+    private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: HomepageCoordinatorDelegate?
@@ -1020,18 +1019,18 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
-        let coordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                         preferences: preferences,
-                                                         delegate: delegate)
-        coordinator.start()
+        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
+                                                           preferences: preferences,
+                                                           delegate: delegate)
+        customCoordinator?.start()
     }
 
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate) {
-        let coordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                        delegate: delegate,
-                                                        uiModel: uiModel)
-        coordinator.start()
+        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
+                                                          delegate: delegate,
+                                                          uiModel: uiModel)
+        customCoordinator?.start()
     }
 
     func createEditItemViewModelWantsToUpgrade() {
