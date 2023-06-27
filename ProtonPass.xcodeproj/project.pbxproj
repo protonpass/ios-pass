@@ -608,6 +608,7 @@
 		5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */; };
 		5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
+		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1344,6 +1345,7 @@
 		5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManagerTests.swift; sourceTree = "<group>"; };
 		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
+		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
@@ -2790,6 +2792,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		5B8256D12A4B25B300BCEE6D /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		5BB2B6E02A4332D4005E831C /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
@@ -2824,6 +2834,7 @@
 		5BB2B6E72A444DAF005E831C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				5B8256D12A4B25B300BCEE6D /* Protocols */,
 				5BB2B6E82A444E34005E831C /* Network */,
 				66CA927B29F9713900F2FC59 /* Payments */,
 				3542E2CE28DA4E6000194F24 /* Models */,
@@ -4201,6 +4212,7 @@
 				354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
+				5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */,
 				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
 				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,
 				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,
