@@ -58,7 +58,6 @@ protocol CreateEditAliasViewModelDelegate: AnyObject {
     func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
                                                         titleMode: MailboxSection.Mode)
     func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
-    func createEditAliasViewModelWantsToUpgrade()
 }
 
 // MARK: - Initialization
@@ -273,10 +272,6 @@ extension CreateEditAliasViewModel {
     func showSuffixSelection() {
         guard let suffixSelection else { return }
         createEditAliasViewModelDelegate?.createEditAliasViewModelWantsToSelectSuffix(suffixSelection)
-    }
-
-    func upgrade() {
-        createEditAliasViewModelDelegate?.createEditAliasViewModelWantsToUpgrade()
     }
 }
 
