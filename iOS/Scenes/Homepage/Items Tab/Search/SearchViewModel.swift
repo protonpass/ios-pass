@@ -70,11 +70,11 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     // Self-intialized properties
     private var lastSearchQuery = ""
     private var lastTask: Task<Void, Never>?
+    private var filteringTask: Task<Void, Never>?
     private var allItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
     private var results = [ItemSearchResult]()
-
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: SearchViewModelDelegate?
@@ -175,19 +175,22 @@ private extension SearchViewModel {
         }
 
         lastTask?.cancel()
-        lastTask = Task { @MainActor in
-            selectedType = nil
+        lastTask = Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            self.selectedType = nil
             let hashedQuery = query.sha256
-            logger.trace("Searching for \"\(hashedQuery)\"")
+            self.logger.trace("Searching for \"\(hashedQuery)\"")
             if Task.isCancelled {
                 return
             }
-            results = searchableItems.result(for: query)
+            self.results = self.searchableItems.result(for: query)
             if Task.isCancelled {
                 return
             }
-            await filterAndSortResults()
-            logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
+            self.filterAndSortResults()
+            self.logger.trace("Get \(self.results.count) result(s) for \"\(hashedQuery)\"")
         }
     }
 
@@ -196,30 +199,43 @@ private extension SearchViewModel {
             state = .noResults(lastSearchQuery)
             return
         }
-        
+
         let filteredResults: [ItemSearchResult]
         if let selectedType {
             filteredResults = results.filter { $0.type == selectedType }
         } else {
             filteredResults = results
         }
-        let filteredAndSortedResults = sortItems(for: filteredResults)
-        
-        state = .results(.init(items: results), filteredAndSortedResults)
+        filteringTask?.cancel()
+        filteringTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            if Task.isCancelled {
+                return
+            }
+            let filteredAndSortedResults = await self.sortItems(for: filteredResults)
+            if Task.isCancelled {
+                return
+            }
+            await MainActor.run {
+                self.state = SearchViewState.results(ItemCount(items: self.results), filteredAndSortedResults)
+            }
+        }
     }
 
-    func sortItems(for items: [ItemSearchResult]) -> any SearchResults {
+    func sortItems(for items: [ItemSearchResult]) async -> any SearchResults {
         switch selectedSortType {
         case .mostRecent:
-            return items.mostRecentSortResult()
+            return await items.asyncMostRecentSortResult()
         case .alphabeticalAsc:
-            return items.alphabeticalSortResult(direction: .ascending)
+            return await items.asyncAlphabeticalSortResult(direction: .ascending)
         case .alphabeticalDesc:
-            return items.alphabeticalSortResult(direction: .descending)
+            return await items.asyncAlphabeticalSortResult(direction: .descending)
         case .newestToOldest:
-            return items.monthYearSortResult(direction: .descending)
+            return await items.asyncMonthYearSortResult(direction: .descending)
         case .oldestToNewest:
-            return items.monthYearSortResult(direction: .ascending)
+            return await items.asyncMonthYearSortResult(direction: .ascending)
         }
     }
 }
@@ -287,7 +303,7 @@ extension SearchViewModel {
 private extension SearchViewModel {
     func setup() {
         $query
-            .debounce(for: 0.3, scheduler: DispatchQueue.main)
+            .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
