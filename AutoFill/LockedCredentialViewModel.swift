@@ -47,31 +47,34 @@ final class LockedCredentialViewModel: ObservableObject {
 
     func getAndReturnCredential() {
         logger.info("Local authentication succesful")
-        Task {
+        Task { [weak self] in
             do {
-                guard let recordIdentifier = self.credentialIdentity.recordIdentifier else {
+                guard let recordIdentifier = self?.credentialIdentity.recordIdentifier else {
                     throw PPError.credentialProvider(.missingRecordIdentifier)
                 }
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
-                logger.trace("Loading credential \(ids.debugInformation)")
-                guard let item = try await self.itemRepository.getItem(shareId: ids.shareId,
-                                                                       itemId: ids.itemId) else {
+                self?.logger.trace("Loading credential \(ids.debugInformation)")
+                guard let item = try await self?.itemRepository.getItem(shareId: ids.shareId,
+                                                                        itemId: ids.itemId) else {
                     throw PPError.itemNotFound(shareID: ids.shareId, itemID: ids.itemId)
                 }
-                let itemContent = try item.getItemContent(symmetricKey: self.symmetricKey)
+                guard let key = self?.symmetricKey else {
+                    throw PPError.failedToGetOrCreateSymmetricKey
+                }
+                let itemContent = try item.getItemContent(symmetricKey: key)
 
                 switch itemContent.contentData {
                 case let .login(data):
                     let credential = ASPasswordCredential(user: data.username,
                                                           password: data.password)
-                    onSuccess?(credential, itemContent)
-                    logger.info("Loaded and returned credential \(ids.debugInformation)")
+                    self?.onSuccess?(credential, itemContent)
+                    self?.logger.info("Loaded and returned credential \(ids.debugInformation)")
                 default:
                     throw PPError.credentialProvider(.notLogInItem)
                 }
             } catch {
-                logger.error(error)
-                onFailure?(error)
+                self?.logger.error(error)
+                self?.onFailure?(error)
             }
         }
     }
