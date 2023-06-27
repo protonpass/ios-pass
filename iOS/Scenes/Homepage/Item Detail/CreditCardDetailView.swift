@@ -27,6 +27,7 @@ struct CreditCardDetailView: View {
     @StateObject private var viewModel: CreditCardDetailViewModel
     @State private var isShowingCardNumber = false
     @State private var isShowingVerificationNumber = false
+    @State private var isShowingPIN = false
     @State private var isMoreInfoSectionExpanded = false
     @Namespace private var bottomID
 
@@ -106,6 +107,10 @@ private extension CreditCardDetailView {
             cardNumberRow
             PassSectionDivider()
             verificationNumberRow
+            if !viewModel.pin.isEmpty {
+                PassSectionDivider()
+                pinRow
+            }
             PassSectionDivider()
             expirationDateRow
         }
@@ -242,6 +247,49 @@ private extension CreditCardDetailView {
             Button(action: viewModel.copyVerificationNumber) {
                 Text("Copy")
             }
+        }
+    }
+
+    var pinRow: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.grid3, color: tintColor)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("PIN")
+                    .sectionTitleText()
+
+                if isShowingPIN {
+                    Text(viewModel.pin)
+                        .sectionContentText()
+                } else {
+                    Text(String(repeating: "•", count: viewModel.pin.count))
+                        .sectionContentText()
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .animation(.default, value: isShowingPIN)
+
+            Spacer()
+
+            if !viewModel.pin.isEmpty {
+                CircleButton(icon: isShowingPIN ? IconProvider.eyeSlash : IconProvider.eye,
+                             iconColor: viewModel.itemContent.type.normMajor2Color,
+                             backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                             action: { isShowingPIN.toggle() })
+                    .fixedSize(horizontal: true, vertical: true)
+                    .animationsDisabled()
+            }
+        }
+        .padding(.horizontal, kItemDetailSectionPadding)
+        .contextMenu {
+            Button(action: {
+                withAnimation {
+                    isShowingPIN.toggle()
+                }
+            }, label: {
+                Text(isShowingPIN ? "Conceal" : "Reveal")
+            })
         }
     }
 
