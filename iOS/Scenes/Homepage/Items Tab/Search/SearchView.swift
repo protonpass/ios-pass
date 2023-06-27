@@ -27,7 +27,6 @@ struct SearchView: View {
     @FocusState private var isFocusedOnSearchBar
     @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var query = ""
 
     var body: some View {
         GeometryReader { proxy in
@@ -57,7 +56,7 @@ struct SearchView: View {
 
     private var content: some View {
         VStack(spacing: 0) {
-            SearchBar(query: $query,
+            SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.searchBarPlaceholder,
                       onCancel: dismiss.callAsFunction)
@@ -110,8 +109,5 @@ struct SearchView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .onFirstAppear { isFocusedOnSearchBar = true }
-        .onChange(of: query) { term in
-            viewModel.search(term)
-        }
     }
 }

@@ -59,13 +59,15 @@ public enum SortType: Int, CaseIterable {
     }
 }
 
-public protocol DateSortable {
+public protocol DateSortable: Hashable {
     var dateForSorting: Date { get }
 }
 
 // MARK: - Most recent
 
-public struct MostRecentSortResult<T: DateSortable> {
+public struct MostRecentSortResult<T: DateSortable>: SearchResults {
+    public var numberOfItems: Int
+
     public let today: [T]
     public let yesterday: [T]
     public let last7Days: [T]
@@ -112,7 +114,8 @@ public extension Array where Element: DateSortable {
             }
         }
 
-        return .init(today: today,
+        return .init(numberOfItems: sortedElements.count,
+                     today: today,
                      yesterday: yesterday,
                      last7Days: last7Days,
                      last14Days: last14Days,
@@ -120,6 +123,54 @@ public extension Array where Element: DateSortable {
                      last60Days: last60Days,
                      last90Days: last90Days,
                      others: others)
+    }
+
+    func asyncMostRecentSortResult() async -> MostRecentSortResult<Element> {
+        await Task {
+            var today = [Element]()
+            var yesterday = [Element]()
+            var last7Days = [Element]()
+            var last14Days = [Element]()
+            var last30Days = [Element]()
+            var last60Days = [Element]()
+            var last90Days = [Element]()
+            var others = [Element]()
+
+            let calendar = Calendar.current
+            let now = Date()
+            let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+            for item in sortedElements {
+                let numberOfDaysFromNow = calendar.numberOfDaysBetween(now, and: item.dateForSorting)
+                switch abs(numberOfDaysFromNow) {
+                case 0:
+                    today.append(item)
+                case 1:
+                    yesterday.append(item)
+                case 2..<7:
+                    last7Days.append(item)
+                case 7..<14:
+                    last14Days.append(item)
+                case 14..<30:
+                    last30Days.append(item)
+                case 30..<60:
+                    last60Days.append(item)
+                case 60..<90:
+                    last90Days.append(item)
+                default:
+                    others.append(item)
+                }
+            }
+
+            return MostRecentSortResult(numberOfItems: sortedElements.count,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        last7Days: last7Days,
+                                        last14Days: last14Days,
+                                        last30Days: last30Days,
+                                        last60Days: last60Days,
+                                        last90Days: last90Days,
+                                        others: others)
+        }.value
     }
 }
 
@@ -173,16 +224,18 @@ public enum AlphabetLetter: Int, CaseIterable {
 
 // swiftlint:enable identifier_name
 
-public struct AlphabetBucket<T: AlphabeticalSortable> {
+public struct AlphabetBucket<T: AlphabeticalSortable>: Hashable {
     public let letter: AlphabetLetter
     public let items: [T]
 }
 
-public protocol AlphabeticalSortable {
+public protocol AlphabeticalSortable: Hashable {
     var alphabeticalSortableString: String { get }
 }
 
-public struct AlphabeticalSortResult<T: AlphabeticalSortable> {
+public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults {
+    public var numberOfItems: Int
+
     public let buckets: [AlphabetBucket<T>]
 }
 
@@ -245,12 +298,71 @@ public extension Array where Element: AlphabeticalSortable {
         buckets.append(.init(letter: .sharp, items: sharpElements))
         buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
 
-        switch direction {
-        case .ascending:
-            return .init(buckets: buckets)
-        case .descending:
-            return .init(buckets: buckets.reversed())
-        }
+        return .init(numberOfItems: sortedAlphabetically.count,
+                     buckets: direction == .ascending ? buckets : buckets.reversed())
+    }
+
+    func asyncAlphabeticalSortResult(direction: SortDirection) async -> AlphabeticalSortResult<Element> {
+        await Task {
+            let sortedAlphabetically =
+                sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
+
+            let dict = Dictionary(grouping: sortedAlphabetically) { element in
+                if let firstCharacter = element.alphabeticalSortableString.first {
+                    return String(firstCharacter).uppercased()
+                } else {
+                    return ""
+                }
+            }
+
+            var buckets = [AlphabetBucket<Element>]()
+            var sharpElements = [Element]()
+            for key in dict.keys {
+                guard let elements = dict[key] else { continue }
+                let letter: AlphabetLetter
+                switch key.uppercased() {
+                case "A": letter = .a
+                case "B": letter = .b
+                case "C": letter = .c
+                case "D": letter = .d
+                case "E": letter = .e
+                case "F": letter = .f
+                case "G": letter = .g
+                case "H": letter = .h
+                case "I": letter = .i
+                case "J": letter = .j
+                case "K": letter = .k
+                case "L": letter = .l
+                case "M": letter = .m
+                case "N": letter = .n
+                case "O": letter = .o
+                case "P": letter = .p
+                case "Q": letter = .q
+                case "R": letter = .r
+                case "S": letter = .s
+                case "T": letter = .t
+                case "U": letter = .u
+                case "V": letter = .v
+                case "W": letter = .w
+                case "X": letter = .x
+                case "Y": letter = .y
+                case "Z": letter = .z
+                default:
+                    letter = .sharp
+                    sharpElements.append(contentsOf: elements)
+                }
+
+                if letter != .sharp {
+                    buckets.append(.init(letter: letter, items: elements))
+                }
+            }
+
+            buckets.append(.init(letter: .sharp, items: sharpElements))
+            buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
+
+            return AlphabeticalSortResult(numberOfItems: sortedAlphabetically.count,
+                                          buckets: direction == .ascending ? buckets : buckets.reversed())
+        }.value
     }
     // swiftlint:enable cyclomatic_complexity
 }
@@ -293,12 +405,14 @@ extension MonthYear: Comparable {
     }
 }
 
-public struct MonthYearBucket<T: DateSortable> {
+public struct MonthYearBucket<T: DateSortable>: Hashable {
     public let monthYear: MonthYear
     public let items: [T]
 }
 
-public struct MonthYearSortResult<T: DateSortable> {
+public struct MonthYearSortResult<T: DateSortable>: SearchResults {
+    public var numberOfItems: Int
+
     public let buckets: [MonthYearBucket<T>]
 }
 
@@ -330,6 +444,42 @@ public extension Array where Element: DateSortable {
             }
         })
 
-        return .init(buckets: buckets)
+        return .init(numberOfItems: sortedElements.count, buckets: buckets)
     }
+
+    func asyncMonthYearSortResult(direction: SortDirection) async -> MonthYearSortResult<Element> {
+        await Task {
+            let sortedElements: [Element]
+            switch direction {
+            case .ascending:
+                sortedElements = sorted(by: { $0.dateForSorting < $1.dateForSorting })
+            case .descending:
+                sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+            }
+            let dict = Dictionary(grouping: sortedElements) { element in
+                MonthYear(date: element.dateForSorting)
+            }
+
+            var buckets = [MonthYearBucket<Element>]()
+            for key in dict.keys {
+                guard let elements = dict[key] else { continue }
+                buckets.append(.init(monthYear: key, items: elements))
+            }
+
+            buckets = buckets.sorted(by: { lhs, rhs in
+                switch direction {
+                case .ascending:
+                    return lhs.monthYear < rhs.monthYear
+                case .descending:
+                    return lhs.monthYear > rhs.monthYear
+                }
+            })
+
+            return MonthYearSortResult(numberOfItems: sortedElements.count, buckets: buckets)
+        }.value
+    }
+}
+
+public protocol SearchResults: Hashable {
+    var numberOfItems: Int { get }
 }
