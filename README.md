@@ -4,15 +4,15 @@ This repository contains the source code for the Proton Pass iOS application.
 * [Installation](#installation)
 * [Technical Choices](#technical-choices)
     * [UI](#ui)
-    * [Dependency manager] (#dependency-manager)
-    * [Modularization] (#dodularization)
+    * [Dependency manager](#dependency-manager)
+    * [Modularization](#modularization)
 * [Debug](#debug)
     * [Debug network traffic](#debug-network-traffic)
     * [Debug Sentry activities](#debug-sentry-activities)
 * [Tools](#tools)
-	* [Dependency injection] (#dependency-injection) 
-	* [SwiftLint] (#swiftlint)
-	* [SwiftFormat] (#swiftformat)
+	* [Dependency injection](#dependency-injection) 
+	* [SwiftLint](#swiftlint)
+	* [SwiftFormat](#swiftformat)
 
 # Installation
 
