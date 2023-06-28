@@ -2491,7 +2491,7 @@
 			isa = PBXGroup;
 			children = (
 				5BB2B6E62A444B73005E831C /* App */,
-				5B0C74F92A2F5EDC00272CE8 /* AppManagment */,
+				5B0C74F92A2F5EDC00272CE8 /* AppManagement */,
 				35E5070B286FB57800A3F6EA /* Scenes */,
 				5BB2B6E72A444DAF005E831C /* Shared */,
 			);
@@ -2756,13 +2756,13 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		5B0C74F92A2F5EDC00272CE8 /* AppManagment */ = {
+		5B0C74F92A2F5EDC00272CE8 /* AppManagement */ = {
 			isa = PBXGroup;
 			children = (
 				5BB2B6E92A4453BD005E831C /* Configurations */,
 				5B0C74FA2A2F5EE600272CE8 /* DependencyInjection */,
 			);
-			path = AppManagment;
+			path = AppManagement;
 			sourceTree = "<group>";
 		};
 		5B0C74FA2A2F5EE600272CE8 /* DependencyInjection */ = {
@@ -3640,7 +3640,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		35E506A2286F8E3B00A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3659,7 +3659,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		35E506A3286F8E6700A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3677,7 +3677,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		35E506A4286F90B100A3F6EA /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3695,7 +3695,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/swiftlint.sh\n";
+			shellScript = "scripts/public/swiftlint.sh\n";
 		};
 		47BE41B48E36213B2392C7B7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3736,7 +3736,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=/opt/homebrew/bin/:$PATH\n\nif which swiftformat >/dev/null; then\nswiftformat .\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n\n";
+			shellScript = "scripts/public/swiftformat.sh\n";
 		};
 		7144DBF80B945076EDB59570 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

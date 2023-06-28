@@ -1,26 +1,43 @@
 # Proton Pass
+This repository contains the source code for the Proton Pass iOS application. 
 
-## Getting Started
 * [Installation](#installation)
 * [Technical Choices](#technical-choices)
     * [UI](#ui)
+    * [Dependency manager] (#dependency-manager)
+    * [Modularization] (#dodularization)
 * [Debug](#debug)
     * [Debug network traffic](#debug-network-traffic)
     * [Debug Sentry activities](#debug-sentry-activities)
-* [CI/CD](#ci/cd)
-    * [Build & Testflight](#make-a-new-build-and-upload-to-testFlight)
 * [Tools](#tools)
+	* [Dependency injection] (#dependency-injection) 
+	* [SwiftLint] (#swiftlint)
+	* [SwiftFormat] (#swiftformat)
 
 # Installation
 
-Just check out the repository and open the project. The project is available for iOS >= 15.
-You will need to have swiftlint and swiftformat installed to be able to compile.
+The app targets iOS 15 and above. Make sure you have Xcode 14+ installed, check out the repo and open `ProtonPass.xcworkspace` to run the project.
 
 # Technical Choices
 
-### UI
+## UI
 
-The project was created using a mix of SwiftUI & UIKit.
+- All the views are written in SwiftUI
+- Navigation between views are done using UIKit:
+  - `UINavigationController` when running on iPhones
+  - `UISplitViewController` when running on iPads
+
+## Dependency manager
+CocoaPods & Swift Package Manager
+
+## Modularization
+The project is modularized into targets:
+
+- iOS: the main app target
+- AutoFill: the AutoFill extension
+- Client: network layer, database operation & models
+- Core: coordinator, domain parser, password/passphrase generator, 2FA token generator, useful extensions...
+- UIComponents: UI utilities (custom views, view modifiers, icons, colors...)
 
 # Debug
 
@@ -30,38 +47,13 @@ You can print to the console information related to requests (HTTP method, path,
 ## Debug Sentry activities
 You can print to the console Sentry activities by activating `me.proton.pass.SentryDebug` environment variable in the scheme configuration. This is disabled by default.
 
-# CI/CD
-
-## Make a new build and upload to TestFlight
-Create an "App-specific password" via [https://appleid.apple.com](https://appleid.apple.com)
-Create Sentry auth token by going to User settings > Auth Tokens > Create new token with default selected scopes
-
-Run this command
-
-```bash
-> SENTRY_AUTH_TOKEN=<sentry_auth_token> FASTLANE_USER=<apple_id_email> FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=<app_specific_password> fastlane build_and_upload
-```
-
-You will be asked for Apple ID's password on first run.
-
-Select a build variant when prompted:
-1. App Store: public builds for App Store
-2. Beta: beta builds for TestFlight (In-App Purchase disabled)
-3. QA: internal builds for QA
-
-Enter version number in semver format when prompted.
-
-The script will automatically gets the latest build number of the given version, increase by 1 to make the new build number and begin the build & upload processes.
-
-The output IPA & dSYM files are stored in "build" folder
-
 # Tools
 
 ## Dependency injection
 
 The main DI tool used is [Factory](https://github.com/hmlongco/Factory). It is very light but yet very powerful.
 
-## Swiftlint
+## SwiftLint
 
 This is the main linter for the project.
 To install run the following [Homebrew](https://brew.sh/) command:
@@ -85,3 +77,8 @@ brew install swiftformat
 
 If you don't have this tool installed please refer to the following link to set it up: [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 The configuration for this tool can be found in the `.swiftformat` file
+
+# License
+The code and data files in this distribution are licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See <https://www.gnu.org/licenses/> for a copy of this license.
+
+See [LICENSE](LICENSE) file
