@@ -34,15 +34,19 @@ extension SendUserFeedBackUseCase {
 final class SendUserFeedBack: SendUserFeedBackUseCase {
     private let feedBackService: FeedBackServiceProtocol
     private let extractLogsToData: ExtractLogsToDataUseCase
+    private let getLogEntries: GetLogEntriesUseCase
 
     init(feedBackService: FeedBackServiceProtocol,
-         extractLogsToData: ExtractLogsToDataUseCase) {
+         extractLogsToData: ExtractLogsToDataUseCase,
+         getLogEntries: GetLogEntriesUseCase) {
         self.feedBackService = feedBackService
         self.extractLogsToData = extractLogsToData
+        self.getLogEntries = getLogEntries
     }
 
     func execute(with title: String, and description: String, tag: String) async -> Bool {
-        let logData = try? await extractLogsToData()
+        let entries = try? await getLogEntries(for: .hostApp)
+        let logData = try? await extractLogsToData(for: entries)
         return await feedBackService.send(with: title, and: description, tag: tag, more: logData)
     }
 }

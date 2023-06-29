@@ -43,8 +43,8 @@ public final class FeedBackService: @unchecked Sendable, FeedBackServiceProtocol
 
     public func send(with title: String,
                      and description: String,
-                     more information: Data?,
-                     tag: String) async -> Bool {
+                     tag: String,
+                     more information: Data?) async -> Bool {
         do {
             let uploadResponse = try await ZDKUploadProvider().upload(file: information,
                                                                       with: "Log-\(Date()).txt",
