@@ -42,6 +42,7 @@ public enum CircleButtonType {
 
 /// A cirle button with an icon inside.
 public struct CircleButton: View {
+    @Environment(\.isEnabled) private var isEnabled
     let icon: UIImage
     let iconColor: UIColor
     let backgroundColor: UIColor
@@ -72,13 +73,18 @@ public struct CircleButton: View {
 
     private var realBody: some View {
         ZStack {
-            Color(uiColor: backgroundColor)
-                .clipShape(Circle())
+            if isEnabled {
+                Color(uiColor: backgroundColor)
+                    .clipShape(Circle())
+            } else {
+                PassColor.backgroundWeak.toColor
+                    .clipShape(Circle())
+            }
             Image(uiImage: icon)
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()
-                .foregroundColor(Color(uiColor: iconColor))
+                .foregroundColor(isEnabled ? Color(uiColor: iconColor) : PassColor.textDisabled.toColor)
                 .frame(width: type.iconWidth, height: type.iconWidth)
         }
         .frame(width: type.width, height: type.width)
