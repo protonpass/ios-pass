@@ -21,12 +21,15 @@
 import Foundation
 
 public protocol FeedBackServiceProtocol: Sendable {
-    func send(with title: String, and description: String, more information: Data?)
+    func send(with title: String, and description: String, tag: String, more information: Data?) async -> Bool
     func setUserIdentity(with identifier: String)
 }
 
 public extension FeedBackServiceProtocol {
-    func send(with title: String, and description: String, more information: Data? = nil) {
-        send(with: title, and: description, more: information)
+    func send(with title: String,
+              and description: String,
+              tag: String,
+              more information: Data? = nil) async -> Bool {
+        await send(with: title, and: description, tag: tag, more: information)
     }
 }

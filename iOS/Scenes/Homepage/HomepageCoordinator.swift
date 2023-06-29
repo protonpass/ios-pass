@@ -258,7 +258,7 @@ private extension HomepageCoordinator {
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
                                                       notificationService:
-                                                      ServiceContainer.shared.notificationService())
+                                                      SharedServiceContainer.shared.notificationService())
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
