@@ -71,7 +71,7 @@ private extension FeedBackViewModel {
         $title.combineLatest($feedBack)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] title, feedBack in
-                self?.cantSendFeedBack = title.isEmpty && feedBack.isEmpty
+                self?.cantSendFeedBack = title.isEmpty || feedBack.isEmpty
             }
             .store(in: &cancellables)
     }
