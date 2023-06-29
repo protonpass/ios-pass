@@ -18,21 +18,152 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 struct FeedBackView: View {
+    @Environment(\.dismiss) private var dismiss
+    @FocusState private var focusedField: FeedBackField?
     @StateObject private var viewModel = FeedBackViewModel()
+//    var tags = ["New feature", "Bug", "Other"]
+
+    private enum FeedBackField {
+        case title, description
+    }
 
     var body: some View {
-        VStack {
-            TextField("Object", text: $viewModel.title)
-            TextField("Give us a feedback", text: $viewModel.feedBack)
-            Button {
-                viewModel.send()
-            } label: {
-                Text("Send")
+        NavigationView {
+            mainContainer
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        CircleButton(icon: IconProvider.chevronDown,
+                                     iconColor: ItemContentType.note.normMajor2Color,
+                                     backgroundColor: ItemContentType.note.normMinor1Color) {
+                            dismiss()
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        CircleButton(icon: IconProvider.paperPlane,
+                                     iconColor: ItemContentType.note.normMajor2Color,
+                                     backgroundColor: ItemContentType.note.normMinor1Color) {
+                            viewModel.send()
+                        }.disabled(viewModel.cantSendFeedBack)
+                    }
+                }
+                .onChange(of: viewModel.hasSentFeedBack) { value in
+                    guard value else {
+                        return
+                    }
+                    dismiss()
+                }
+                .overlay {
+                    if viewModel.isSending {
+                        ProgressView()
+                        ProgressView("Sending your feedback")
+                            .scaleEffect(3)
+                    } else {
+                        EmptyView()
+                    }
+                }
+                .background(Color(uiColor: PassColor.backgroundNorm))
+                .navigationTitle("Feedback")
+                .navigationBarTitleDisplayMode(.inline)
+        }
+        .onFirstAppear {
+            if #available(iOS 16, *) {
+                focusedField = .title
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                    focusedField = .title
+                }
             }
+        }
+        .navigationViewStyle(.stack)
+    }
+}
+
+private extension FeedBackView {
+    var mainContainer: some View {
+        VStack {
+            feedbackObjectField
+            feedbackTag
+            feedBackDescription
             Spacer()
+        }.padding()
+    }
+}
+
+private extension FeedBackView {
+    @ViewBuilder
+    var feedbackObjectField: some View {
+        TextField("Object", text: $viewModel.title)
+            .onSubmit {
+                focusedField = .description
+            }
+            .focused($focusedField, equals: .title)
+            .padding(kItemDetailSectionPadding)
+            .roundedEditableSection()
+            .contentShape(Rectangle())
+    }
+}
+
+private extension FeedBackView {
+    @ViewBuilder
+    var feedbackTag: some View {
+        Picker("Please choose a tag", selection: $viewModel.selectedTag) {
+            ForEach(FeedBackTag.allCases, id: \.self) {
+                Text($0.rawValue)
+            }
+        }
+        .pickerStyle(.segmented)
+    }
+}
+
+private extension FeedBackView {
+    @ViewBuilder
+    var feedBackDescription: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.note)
+
+            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
+                Text("Description")
+                    .sectionTitleText()
+
+                feedBackDescriptionField
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !viewModel.feedBack.isEmpty {
+                Button(action: {
+                    viewModel.feedBack = ""
+                }, label: {
+                    ItemDetailSectionIcon(icon: IconProvider.cross)
+                })
+            }
+        }
+        .padding(kItemDetailSectionPadding)
+        .roundedEditableSection()
+    }
+}
+
+private extension FeedBackView {
+    @ViewBuilder
+    var feedBackDescriptionField: some View {
+        if #available(iOS 16.0, *) {
+            TextField("Give us a feedback", text: $viewModel.feedBack, axis: .vertical)
+                .focused($focusedField, equals: .description)
+                .scrollContentBackground(.hidden)
+                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                .font(Font(UIFont.body.weight(.regular)))
+        } else {
+            TextView($viewModel.feedBack, onCommit: {})
+                .placeholder("Give us a feedback")
+                .font(.body)
+                .fontWeight(.regular)
+                .foregroundColor(PassColor.textNorm)
+                .focused($focusedField, equals: .description)
         }
     }
 }
