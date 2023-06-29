@@ -43,6 +43,6 @@ final class ExtractLogsToData: ExtractLogsToDataUseCase {
 
     func execute() async throws -> Data? {
         let entries = try await logManager.getLogEntries()
-        return await logFormatter.format(entries: entries).data(using: .utf8)
+        return await logFormatter.format(entries: entries).toBase8EncodedData
     }
 }

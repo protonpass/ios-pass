@@ -32,3 +32,32 @@ public extension Data {
         return data
     }
 }
+
+// MARK: Computed Extensions
+
+public extension Data {
+    var utf8DataToString: String? {
+        String(data: self, encoding: .utf8)
+    }
+
+    var mimeType: String {
+        var copy: UInt8 = 0
+        copyBytes(to: &copy, count: 1)
+        return Data.mimeTypeSignatures[copy] ?? "application/octet-stream"
+    }
+}
+
+// MARK: Utils
+
+private extension Data {
+    static let mimeTypeSignatures: [UInt8: String] = [
+        0xFF: "image/jpeg",
+        0x89: "image/png",
+        0x47: "image/gif",
+        0x49: "image/tiff",
+        0x4D: "image/tiff",
+        0x25: "application/pdf",
+        0xD0: "application/vnd",
+        0x46: "text/plain"
+    ]
+}

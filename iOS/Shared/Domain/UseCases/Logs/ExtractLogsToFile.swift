@@ -41,7 +41,7 @@ final class ExtractLogsToFile: ExtractLogsToFileUseCase {
 
     func execute(to fileName: String) async throws -> URL? {
         guard let logsData = try await extractLogsToDataUseCase(),
-              let logs = String(data: logsData, encoding: .utf8) else {
+              let logs = logsData.utf8DataToString else {
             return nil
         }
 
