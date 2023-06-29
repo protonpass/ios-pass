@@ -22,10 +22,10 @@ import Core
 import Foundation
 import SupportSDK
 import ZendeskCoreSDK
+import ZendeskMessagingSDKTargets
 
-public final class FeedBackService: FeedBackServiceProtocol {
+public final class FeedBackService: @unchecked Sendable, FeedBackServiceProtocol {
     private let service: Zendesk?
-    private let requestProvider = ZDKRequestProvider()
     private let logger: Logger
 
     public init(logger: Logger) {
@@ -41,27 +41,29 @@ public final class FeedBackService: FeedBackServiceProtocol {
         Support.initialize(withZendesk: Zendesk.instance)
     }
 
-    public func send(with title: String, and description: String, more information: Data?) {
-        Task { [weak self] in
-            do {
-                let uploadResponse = try await ZDKUploadProvider().upload(file: information,
-                                                                          with: "Log-\(Date()).log",
-                                                                          and: information?
-                                                                              .mimeType ??
-                                                                              "application/octet-stream")
-                let request = ZDKCreateRequest()
-                if let uploadResponse {
-                    request.attachments = [uploadResponse]
-                }
-                request.subject = title
-                request.requestDescription = description
-                request.tags = ["Feedback", "iOS"]
-                let result = try await ZDKRequestProvider().createRequest(request: request)
-                self?.logger.info("Zendesk result is: \(result ?? "Empty result")")
-            } catch {
-                self?.logger
-                    .error("Something went wrong will sending feedback to Zendesk: \(error.localizedDescription)")
+    public func send(with title: String,
+                     and description: String,
+                     more information: Data?,
+                     tag: String) async -> Bool {
+        do {
+            let uploadResponse = try await ZDKUploadProvider().upload(file: information,
+                                                                      with: "Log-\(Date()).txt",
+                                                                      and: information?.mimeType ??
+                                                                          "application/octet-stream")
+            let request = ZDKCreateRequest()
+            if let uploadResponse {
+                request.attachments.append(uploadResponse)
             }
+            request.subject = title
+            request.requestDescription = description
+            request.tags = ["Feedback", "iOS", tag]
+            let result = try await ZDKRequestProvider().createRequest(request: request)
+            logger.info("Zendesk result is: \(result ?? "Empty result")")
+            return true
+        } catch {
+            logger
+                .error("Something went wrong will sending feedback to Zendesk: \(error.localizedDescription)")
+            return true
         }
     }
 
@@ -71,7 +73,9 @@ public final class FeedBackService: FeedBackServiceProtocol {
     }
 }
 
-extension ZDKRequestProvider {
+// MARK: Utils extensions
+
+private extension ZDKRequestProvider {
     func createRequest(request: ZDKCreateRequest) async throws -> Any? {
         try await withCheckedThrowingContinuation { continuation in
             createRequest(request) { result, error in
@@ -85,12 +89,12 @@ extension ZDKRequestProvider {
     }
 }
 
-extension ZDKUploadProvider {
+private extension ZDKUploadProvider {
     func upload(file: Data?, with name: String, and type: String) async throws -> ZDKUploadResponse? {
         try await withCheckedThrowingContinuation { continuation in
             uploadAttachment(file,
-                             withFilename: "image_name_app.png",
-                             andContentType: "image/png") { result, error in
+                             withFilename: name,
+                             andContentType: type) { result, error in
                 if let error {
                     continuation.resume(throwing: error)
                     return
@@ -98,24 +102,5 @@ extension ZDKUploadProvider {
                 continuation.resume(returning: result)
             }
         }
-    }
-}
-
-extension Data {
-    private static let mimeTypeSignatures: [UInt8: String] = [
-        0xFF: "image/jpeg",
-        0x89: "image/png",
-        0x47: "image/gif",
-        0x49: "image/tiff",
-        0x4D: "image/tiff",
-        0x25: "application/pdf",
-        0xD0: "application/vnd",
-        0x46: "text/plain"
-    ]
-
-    var mimeType: String {
-        var copy: UInt8 = 0
-        copyBytes(to: &copy, count: 1)
-        return Data.mimeTypeSignatures[copy] ?? "application/octet-stream"
     }
 }

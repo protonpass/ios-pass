@@ -22,23 +22,27 @@
 import Foundation
 
 protocol SendUserFeedBackUseCase: Sendable {
-    func execute(with title: String, and description: String, more information: Data?)
+    func execute(with title: String, and description: String, tag: String) async -> Bool
 }
 
 extension SendUserFeedBackUseCase {
-    func callAsFunction(with title: String, and description: String, more information: Data?) {
-        execute(with: title, and: description, more: information)
+    func callAsFunction(with title: String, and description: String, tag: String) async -> Bool {
+        await execute(with: title, and: description, tag: tag)
     }
 }
 
 final class SendUserFeedBack: SendUserFeedBackUseCase {
     private let feedBackService: FeedBackServiceProtocol
+    private let extractLogsToData: ExtractLogsToDataUseCase
 
-    init(feedBackService: FeedBackServiceProtocol) {
+    init(feedBackService: FeedBackServiceProtocol,
+         extractLogsToData: ExtractLogsToDataUseCase) {
         self.feedBackService = feedBackService
+        self.extractLogsToData = extractLogsToData
     }
 
-    func execute(with title: String, and description: String, more information: Data?) {
-        feedBackService.send(with: title, and: description, more: information)
+    func execute(with title: String, and description: String, tag: String) async -> Bool {
+        let logData = try? await extractLogsToData()
+        return await feedBackService.send(with: title, and: description, tag: tag, more: logData)
     }
 }

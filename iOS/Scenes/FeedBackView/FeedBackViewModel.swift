@@ -18,19 +18,61 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Factory
 import Foundation
 
+enum FeedBackTag: String, CaseIterable {
+    case newFeature = "New Feature"
+    case bug = "Bug"
+    case other = "Other"
+}
+
+@MainActor
 final class FeedBackViewModel: ObservableObject {
-    @Published var title = "test"
-    @Published var feedBack = "test"
+    @Published var title = ""
+    @Published var feedBack = ""
+    @Published var selectedTag: FeedBackTag = .newFeature
+    @Published private(set) var cantSendFeedBack = true
+    @Published private(set) var hasSentFeedBack = false
+    @Published private(set) var isSending = false
 
-    @Injected(\IOSServiceContainer.feedBackService) private var feedBackService
+    private var cancellables = Set<AnyCancellable>()
+    private var lastTask: Task<Void, Never>?
 
-    init() {}
+    @Injected(\UseCasesContainer.sendUserFeedBack) private var sendUserFeedBack
+    @Injected(\UseCasesContainer.setUserFeedBackIdentity) private var setUserFeedBackIdentity
+
+    init() {
+        setUp()
+    }
 
     func send() {
-        feedBackService.setUserIdentity(with: "test identity")
-        feedBackService.send(with: title, and: feedBack)
+        setUserFeedBackIdentity(with: "testemail@test.com")
+
+        lastTask?.cancel()
+        lastTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            if Task.isCancelled {
+                return
+            }
+            isSending = true
+            _ = await self.sendUserFeedBack(with: self.title, and: self.feedBack, tag: selectedTag.rawValue)
+            isSending = false
+            hasSentFeedBack = true
+        }
+    }
+}
+
+private extension FeedBackViewModel {
+    func setUp() {
+        $title.combineLatest($feedBack)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] title, feedBack in
+                self?.cantSendFeedBack = title.isEmpty && feedBack.isEmpty
+            }
+            .store(in: &cancellables)
     }
 }

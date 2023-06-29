@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum LogFormat {
+public enum LogFormat: Sendable {
     case txt
     case html(LogFormatStyle)
 }
@@ -42,7 +42,7 @@ public struct LogFormatStyle {
     }
 }
 
-public struct LogFormatOptions: OptionSet {
+public struct LogFormatOptions: OptionSet, Sendable {
     public let rawValue: UInt
 
     public init(rawValue: UInt) {
@@ -78,7 +78,7 @@ public let kDefaultLogDateFormatter: DateFormatter = {
     return dateFormatter
 }()
 
-public protocol LogFormatterProtocol {
+public protocol LogFormatterProtocol: Sendable {
     func format(entries: [LogEntry]) async -> String
 }
 
