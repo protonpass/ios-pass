@@ -1,5 +1,5 @@
 //
-// iOSServices.swift
+// Services.swift
 // Proton Pass - Created on 28/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,18 +22,18 @@ import Core
 import Factory
 import Foundation
 
-final class IOSServiceContainer: SharedContainer {
-    static let shared = IOSServiceContainer()
+final class ServiceContainer: SharedContainer {
+    static let shared = ServiceContainer()
     let manager = ContainerManager()
 }
 
-extension IOSServiceContainer {
+extension ServiceContainer {
     var feedBackService: Factory<FeedBackServiceProtocol> {
-        self { FeedBackService(logger: ToolingContainer.shared.mainAppLoger()) }
+        self { FeedBackService(logger: ToolingContainer.shared.mainAppLogger()) }
     }
 }
 
-extension IOSServiceContainer: AutoRegistering {
+extension ServiceContainer: AutoRegistering {
     func autoRegister() {
         manager.defaultScope = .singleton
     }
