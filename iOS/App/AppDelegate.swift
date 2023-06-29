@@ -76,7 +76,7 @@ private extension AppDelegate {
 
     func saveAllPendingLogs() {
         Task {
-            await ToolingContainer.shared.hostAppLogManager().saveAllLogs()
+            await SharedToolingContainer.shared.hostAppLogManager().saveAllLogs()
         }
     }
 }

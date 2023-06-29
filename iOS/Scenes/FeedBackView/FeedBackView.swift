@@ -27,7 +27,6 @@ struct FeedBackView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: FeedBackField?
     @StateObject private var viewModel = FeedBackViewModel()
-//    var tags = ["New feature", "Bug", "Other"]
 
     private enum FeedBackField {
         case title, description
@@ -60,9 +59,7 @@ struct FeedBackView: View {
                 }
                 .overlay {
                     if viewModel.isSending {
-                        ProgressView()
-                        ProgressView("Sending your feedback")
-                            .scaleEffect(3)
+                        ProgressView("Sending ...")
                     } else {
                         EmptyView()
                     }

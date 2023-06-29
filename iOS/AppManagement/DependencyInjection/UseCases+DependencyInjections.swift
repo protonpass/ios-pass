@@ -32,7 +32,8 @@ final class UseCasesContainer: SharedContainer {
 extension UseCasesContainer {
     var sendUserFeedBack: Factory<SendUserFeedBackUseCase> {
         self { SendUserFeedBack(feedBackService: ServiceContainer.shared.feedBackService(),
-                                extractLogsToData: self.extractLogsToData()) }
+                                extractLogsToData: self.extractLogsToData(),
+                                getLogEntries: self.getLogEntries()) }
     }
 
     var setUserFeedBackIdentity: Factory<SetUserFeedBackIdentityUseCase> {
@@ -44,12 +45,17 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var extractLogsToFile: Factory<ExtractLogsToFileUseCase> {
-        self { ExtractLogsToFile(extractLogsToDataUseCase: self.extractLogsToData()) }
+        self { ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.defaultLogFormatter()) }
     }
 
     var extractLogsToData: Factory<ExtractLogsToDataUseCase> {
-        self { ExtractLogsToData(logManager: ToolingContainer.shared.hostAppLogManager(),
-                                 logFormatter: ToolingContainer.shared.defaultLogFormatter()) }
+        self { ExtractLogsToData(logFormatter: SharedToolingContainer.shared.defaultLogFormatter()) }
+    }
+
+    var getLogEntries: Factory<GetLogEntriesUseCase> {
+        self { GetLogEntries(mainAppLogManager: SharedToolingContainer.shared.hostAppLogManager(),
+                             autofillLogManager: SharedToolingContainer.shared.autoFillLogManager(),
+                             keyboardLogManager: SharedToolingContainer.shared.keyboardLogManager()) }
     }
 }
 

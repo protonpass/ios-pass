@@ -28,7 +28,7 @@ final class SharedServiceContainer: SharedContainer {
 
 extension SharedServiceContainer {
     var notificationService: Factory<LocalNotificationServiceProtocol> {
-        self { NotificationService(logger: ToolingContainer.shared.mainAppLogger()) }
+        self { NotificationService(logger: SharedToolingContainer.shared.mainAppLogger()) }
     }
 }
 

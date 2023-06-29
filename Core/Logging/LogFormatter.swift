@@ -80,6 +80,7 @@ public let kDefaultLogDateFormatter: DateFormatter = {
 
 public protocol LogFormatterProtocol: Sendable {
     func format(entries: [LogEntry]) async -> String
+    func format(entry: LogEntry) -> String
 }
 
 public struct LogFormatter: LogFormatterProtocol {
