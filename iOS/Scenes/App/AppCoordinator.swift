@@ -60,8 +60,8 @@ final class AppCoordinator {
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
-        logManager = ToolingContainer.shared.hostAppLogManager()
-        logger = ToolingContainer.shared.mainAppLogger()
+        logManager = SharedToolingContainer.shared.hostAppLogManager()
+        logger = SharedToolingContainer.shared.mainAppLogger()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
