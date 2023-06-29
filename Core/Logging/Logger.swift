@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum LoggerConsolePrintOption {
+public enum LoggerConsolePrintOption: Sendable {
     /// Never print to console
     case never
     /// Print when in DEBUG mode
@@ -29,10 +29,10 @@ public enum LoggerConsolePrintOption {
     case conditioned(Bool)
 }
 
-public struct Logger {
+public struct Logger: Sendable {
     let subsystem: String
     let category: String
-    let manager: LogManagerProtocol
+    public let manager: LogManagerProtocol
     let consolePrintOption: LoggerConsolePrintOption
 
     public init(manager: LogManagerProtocol,
