@@ -796,8 +796,14 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowFeedback() {
-        let view = FeedbackChannelsView { [unowned self] selectedChannel in
-            urlOpener.open(urlString: selectedChannel.urlString)
+        let view = FeedbackChannelsView { [weak self] selectedChannel in
+            guard selectedChannel != .email else {
+                self?.dismissTopMostViewController(animated: true) { [weak self] in
+                    self?.presentZendeskFeedBack()
+                }
+                return
+            }
+            self?.urlOpener.open(urlString: selectedChannel.urlString)
         }
         let viewController = UIHostingController(rootView: view)
 
@@ -807,6 +813,11 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
+    }
+
+    func presentZendeskFeedBack() {
+        let view = FeedBackView()
+        present(view)
     }
 
     func profileTabViewModelWantsToRateApp() {
