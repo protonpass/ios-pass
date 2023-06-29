@@ -23,26 +23,26 @@ import Core
 import Foundation
 
 protocol ExtractLogsToDataUseCase: Sendable {
-    func execute() async throws -> Data?
+    func execute(for logs: [LogEntry]?) async throws -> Data?
 }
 
 extension ExtractLogsToDataUseCase {
-    func callAsFunction() async throws -> Data? {
-        try await execute()
+    func callAsFunction(for logs: [LogEntry]?) async throws -> Data? {
+        try await execute(for: logs)
     }
 }
 
 final class ExtractLogsToData: ExtractLogsToDataUseCase {
-    private let logManager: LogManagerProtocol
     private let logFormatter: LogFormatterProtocol
 
-    init(logManager: LogManagerProtocol, logFormatter: LogFormatterProtocol) {
-        self.logManager = logManager
+    init(logFormatter: LogFormatterProtocol) {
         self.logFormatter = logFormatter
     }
 
-    func execute() async throws -> Data? {
-        let entries = try await logManager.getLogEntries()
-        return await logFormatter.format(entries: entries).toBase8EncodedData
+    func execute(for logs: [LogEntry]?) async throws -> Data? {
+        guard let logs else {
+            return nil
+        }
+        return await logFormatter.format(entries: logs).toBase8EncodedData
     }
 }

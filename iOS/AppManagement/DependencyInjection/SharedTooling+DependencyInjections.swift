@@ -1,5 +1,5 @@
 //
-// Tooling+DependencyInjection.swift
+// SharedTooling+DependencyInjection.swift
 // Proton Pass - Created on 07/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,20 +21,24 @@
 import Core
 import Factory
 
-final class ToolingContainer: SharedContainer {
-    static let shared = ToolingContainer()
+final class SharedToolingContainer: SharedContainer {
+    static let shared = SharedToolingContainer()
     let manager = ContainerManager()
 }
 
 // MARK: Logging tools
 
-extension ToolingContainer {
+extension SharedToolingContainer {
     var hostAppLogManager: Factory<LogManager> {
         self { LogManager(module: .hostApp) }
     }
 
     var autoFillLogManager: Factory<LogManager> {
         self { LogManager(module: .autoFillExtension) }
+    }
+
+    var keyboardLogManager: Factory<LogManager> {
+        self { LogManager(module: .keyboardExtension) }
     }
 
     var mainAppLogger: Factory<Logger> {
@@ -46,7 +50,7 @@ extension ToolingContainer {
     }
 }
 
-extension ToolingContainer: AutoRegistering {
+extension SharedToolingContainer: AutoRegistering {
     func autoRegister() {
         manager.defaultScope = .singleton
     }
