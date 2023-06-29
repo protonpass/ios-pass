@@ -61,7 +61,7 @@ final class AppCoordinator {
         self.window = window
         appStateObserver = .init()
         logManager = ToolingContainer.shared.hostAppLogManager()
-        logger = ToolingContainer.shared.mainAppLoger()
+        logger = ToolingContainer.shared.mainAppLogger()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)

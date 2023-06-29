@@ -33,8 +33,16 @@ extension ToolingContainer {
         self { LogManager(module: .hostApp) }
     }
 
-    var mainAppLoger: Factory<Logger> {
+    var autoFillLogManager: Factory<LogManager> {
+        self { LogManager(module: .autoFillExtension) }
+    }
+
+    var mainAppLogger: Factory<Logger> {
         self { Logger(manager: self.hostAppLogManager()) }
+    }
+
+    var defaultLogFormatter: Factory<LogFormatterProtocol> {
+        self { LogFormatter(format: .txt) }
     }
 }
 
