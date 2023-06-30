@@ -29,7 +29,7 @@ final class ServiceContainer: SharedContainer {
 
 extension ServiceContainer {
     var feedBackService: Factory<FeedBackServiceProtocol> {
-        self { FeedBackService(logger: SharedToolingContainer.shared.mainAppLogger()) }
+        self { FeedBackService(logger: ToolingContainer.shared.logger()) }
     }
 }
 
