@@ -87,7 +87,7 @@ public final class CredentialProviderCoordinator {
         let logManager = LogManager(module: .autoFillExtension)
         let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
-        let preferences = Preferences()
+        let preferences = SharedToolingContainer.shared.preferences()
         let apiManager = APIManager(logManager: logManager,
                                     appVer: appVersion,
                                     appData: appData,
@@ -105,7 +105,8 @@ public final class CredentialProviderCoordinator {
         self.logManager = logManager
         logger = .init(manager: logManager)
         self.preferences = preferences
-        notificationService = SharedServiceContainer.shared.notificationService()
+        notificationService = SharedServiceContainer
+            .shared.notificationService(SharedToolingContainer.shared.autoFillLogger())
         self.rootViewController = rootViewController
 
         // Post init
