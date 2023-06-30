@@ -1,6 +1,6 @@
 //
-// Services.swift
-// Proton Pass - Created on 28/06/2023.
+// LogingManagerMock.swift
+// Proton Pass - Created on 29/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,23 +18,4 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Factory
 import Foundation
-
-final class ServiceContainer: SharedContainer {
-    static let shared = ServiceContainer()
-    let manager = ContainerManager()
-}
-
-extension ServiceContainer {
-    var feedBackService: Factory<FeedBackServiceProtocol> {
-        self { FeedBackService(logger: ToolingContainer.shared.logger()) }
-    }
-}
-
-extension ServiceContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
