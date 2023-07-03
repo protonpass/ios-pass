@@ -22,6 +22,7 @@
 
 import Core
 
+// sourcery: AutoMockable
 protocol GetLogEntriesUseCase: Sendable {
     func execute(for logModule: PassLogModule) async throws -> [LogEntry]
 }
