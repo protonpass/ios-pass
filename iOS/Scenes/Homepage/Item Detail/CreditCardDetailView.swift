@@ -128,7 +128,7 @@ private extension CreditCardDetailView {
 
                 UpsellableDetailText(text: viewModel.cardholderName,
                                      placeholder: "Empty cardholder name",
-                                     shouldUpgrade: viewModel.isFreeUser,
+                                     shouldUpgrade: false,
                                      upgradeTextColor: tintColor,
                                      onUpgrade: viewModel.upgrade)
             }
@@ -218,7 +218,7 @@ private extension CreditCardDetailView {
                     viewModel.verificationNumber :
                     String(repeating: "•", count: viewModel.verificationNumber.count),
                     placeholder: "Empty verification number",
-                    shouldUpgrade: viewModel.isFreeUser,
+                    shouldUpgrade: false,
                     upgradeTextColor: tintColor,
                     onUpgrade: viewModel.upgrade)
             }
@@ -269,7 +269,7 @@ private extension CreditCardDetailView {
                 UpsellableDetailText(text: isShowingPIN ?
                     viewModel.pin : String(repeating: "•", count: viewModel.pin.count),
                     placeholder: nil,
-                    shouldUpgrade: viewModel.isFreeUser,
+                    shouldUpgrade: false,
                     upgradeTextColor: tintColor,
                     onUpgrade: viewModel.upgrade)
             }
@@ -312,7 +312,7 @@ private extension CreditCardDetailView {
 
                 UpsellableDetailText(text: viewModel.expirationDate,
                                      placeholder: nil,
-                                     shouldUpgrade: viewModel.isFreeUser,
+                                     shouldUpgrade: false,
                                      upgradeTextColor: tintColor,
                                      onUpgrade: viewModel.upgrade)
             }
