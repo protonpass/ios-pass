@@ -18,4 +18,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Foundation
+
+actor LogManagerMock: LogManagerProtocol {
+    var shouldLog: Bool = true
+    var logEntries: [LogEntry] = []
+
+    var logFunction: ((LogEntry) -> Void)?
+    var getLogEntriesFunction: (() async throws -> [LogEntry])?
+
+    func log(entry: LogEntry) {
+        logFunction?(entry)
+        if shouldLog {
+            logEntries.append(entry)
+        }
+    }
+
+    func getLogEntries() async throws -> [LogEntry] {
+        return logEntries
+    }
+
+    func removeAllLogs() {
+        logEntries.removeAll()
+    }
+
+    func saveAllLogs() {
+        // Do nothing in the mock implementation
+    }
+
+    func toggleLogging(shouldLog: Bool) {
+        self.shouldLog = shouldLog
+    }
+}

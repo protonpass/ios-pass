@@ -1,6 +1,6 @@
 //
-// Services.swift
-// Proton Pass - Created on 28/06/2023.
+// FeedbackRequest.swift
+// Proton Pass - Created on 03/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,23 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Factory
 import Foundation
 
-final class ServiceContainer: SharedContainer {
-    static let shared = ServiceContainer()
-    let manager = ContainerManager()
-}
+public struct FeedbackRequest {
+    public let feedbackType: String // iOS, MacOS
+    public let feedback: String
+    public let score: Int
 
-extension ServiceContainer {
-    var feedBackService: Factory<FeedBackServiceProtocol> {
-        self { FeedBackService(logger: ToolingContainer.shared.logger()) }
+    public init(with feedbackType: String, and feedback: String, score: Int = 0) {
+        self.feedbackType = feedbackType
+        self.feedback = feedback
+        self.score = score
     }
 }
 
-extension ServiceContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+extension FeedbackRequest: Encodable {
+    enum CodingKeys: String, CodingKey {
+        case feedbackType = "FeedbackType"
+        case feedback = "Feedback"
+        case score = "Score"
     }
 }

@@ -23,16 +23,15 @@ import Factory
 import Foundation
 
 enum FeedBackTag: String, CaseIterable {
-    case newFeature = "New Feature"
     case bug = "Bug"
-    case other = "Other"
+    case newFeature = "New Feature"
 }
 
 @MainActor
 final class FeedBackViewModel: ObservableObject {
     @Published var title = ""
     @Published var feedBack = ""
-    @Published var selectedTag: FeedBackTag = .newFeature
+    @Published var selectedTag: FeedBackTag = .bug
     @Published private(set) var cantSendFeedBack = true
     @Published private(set) var hasSentFeedBack = false
     @Published private(set) var isSending = false
@@ -41,27 +40,38 @@ final class FeedBackViewModel: ObservableObject {
     private var lastTask: Task<Void, Never>?
 
     @Injected(\UseCasesContainer.sendUserFeedBack) private var sendUserFeedBack
-    @Injected(\UseCasesContainer.setUserFeedBackIdentity) private var setUserFeedBackIdentity
+    @Injected(\UseCasesContainer.sendUserBugReport) private var sendUserBugReport
 
     init() {
         setUp()
     }
 
     func send() {
-        setUserFeedBackIdentity(with: "testemail@test.com")
-
         lastTask?.cancel()
         lastTask = Task { [weak self] in
             guard let self else {
                 return
             }
+            defer {
+                isSending = false
+            }
             if Task.isCancelled {
                 return
             }
             isSending = true
-            _ = await self.sendUserFeedBack(with: self.title, and: self.feedBack, tag: selectedTag.rawValue)
-            isSending = false
-            hasSentFeedBack = true
+            do {
+                let response = selectedTag == .bug ? try await self.sendUserBugReport(with: self.title,
+                                                                                      and: self.feedBack) :
+                    try await self
+                    .sendUserFeedBack(with: self
+                        .title,
+                        and: self
+                            .feedBack)
+                print("woot no error \(response)")
+                self.hasSentFeedBack = true
+            } catch {
+                print("woot error \(error.localizedDescription)")
+            }
         }
     }
 }
@@ -71,7 +81,11 @@ private extension FeedBackViewModel {
         $title.combineLatest($feedBack)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] title, feedBack in
-                self?.cantSendFeedBack = title.isEmpty || feedBack.isEmpty
+                guard !title.isEmpty, feedBack.count > 10 else {
+                    self?.cantSendFeedBack = true
+                    return
+                }
+                self?.cantSendFeedBack = false
             }
             .store(in: &cancellables)
     }

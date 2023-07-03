@@ -20,33 +20,64 @@
 
 import Core
 import Factory
+import ProtonCore_Keymaker
 
+/// Contain tools shared between main iOS app and extensions
 final class SharedToolingContainer: SharedContainer {
+    typealias FullKeychainService = SettingsProvider & Keychain
+
     static let shared = SharedToolingContainer()
     let manager = ContainerManager()
 }
 
-// MARK: Logging tools
+// MARK: Shared Logging tools
 
 extension SharedToolingContainer {
-    var hostAppLogManager: Factory<LogManager> {
+    var logManager: Factory<LogManager> {
         self { LogManager(module: .hostApp) }
+            .onArg("autoFill") { LogManager(module: .autoFillExtension) }
+            .onArg("keyboard") { LogManager(module: .keyboardExtension) }
+            .unique
     }
 
     var autoFillLogManager: Factory<LogManager> {
         self { LogManager(module: .autoFillExtension) }
     }
 
+    var autoFillLogger: Factory<Logger> {
+        self { Logger(manager: self.autoFillLogManager()) }
+    }
+
     var keyboardLogManager: Factory<LogManager> {
         self { LogManager(module: .keyboardExtension) }
     }
 
-    var mainAppLogger: Factory<Logger> {
-        self { Logger(manager: self.hostAppLogManager()) }
-    }
-
     var defaultLogFormatter: Factory<LogFormatterProtocol> {
         self { LogFormatter(format: .txt) }
+    }
+}
+
+// MARK: User centric tools
+
+extension SharedToolingContainer {
+    var preferences: Factory<Preferences> {
+        self { Preferences() }
+    }
+}
+
+// MARK: Keychain tools
+
+extension SharedToolingContainer {
+    var keychain: Factory<FullKeychainService> {
+        self { PPKeychain() }
+    }
+
+    var autolocker: Factory<Autolocker> {
+        self { Autolocker(lockTimeProvider: self.keychain()) }
+    }
+
+    var keymaker: Factory<Keymaker> {
+        self { Keymaker(autolocker: self.autolocker(), keychain: self.keychain()) }
     }
 }
 
