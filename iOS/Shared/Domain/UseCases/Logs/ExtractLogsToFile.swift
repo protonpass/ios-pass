@@ -23,6 +23,7 @@
 import Core
 import Foundation
 
+// sourcery: AutoMockable
 protocol ExtractLogsToFileUseCase: Sendable {
     func execute(for entries: [LogEntry]?, in fileName: String) async throws -> URL?
 }
