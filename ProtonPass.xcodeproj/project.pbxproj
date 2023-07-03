@@ -628,6 +628,7 @@
 		5B5040052A52C2FE00E6681C /* FeedbackRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040042A52C2FE00E6681C /* FeedbackRequest.swift */; };
 		5B5040082A52E94800E6681C /* SendUserFeedBackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040072A52E94800E6681C /* SendUserFeedBackTests.swift */; };
 		5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */; };
+		5B50400F2A53072E00E6681C /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B50400E2A53072E00E6681C /* Array+Extensions.swift */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
@@ -828,7 +829,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		00B167957087F76ED9866A81 /* GetLogEntriesUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = GetLogEntriesUseCaseMock.generated.swift; path = GetLogEntriesUseCaseMock.generated.swift; sourceTree = "<group>"; };
+		00B167957087F76ED9866A81 /* GetLogEntriesUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = GetLogEntriesUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		019BC7869C9FE723FFAD11D8 /* Pods-Client.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-qa.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-qa.xcconfig"; sourceTree = "<group>"; };
 		0732689995489E51EB3A34F5 /* Pods-UIComponents.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-prod.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-prod.xcconfig"; sourceTree = "<group>"; };
 		07E7A7EB42F8AB28ADFC55C9 /* Pods-Core-CoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1359,7 +1360,7 @@
 		3CB08929D9AE79A08B4DE9B4 /* Pods-Client-iOSTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		43F661E6FE41689C1D7DEAEA /* Pods-iOSUITests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-beta.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		448BC1603E67AC907A982299 /* Pods-macOS.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug-qa.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug-qa.xcconfig"; sourceTree = "<group>"; };
-		58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = ExtractLogsToFileUseCaseMock.generated.swift; path = ExtractLogsToFileUseCaseMock.generated.swift; sourceTree = "<group>"; };
+		58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = ExtractLogsToFileUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		5B0C74E52A2E1B8700272CE8 /* MF_Base32CodecPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base32CodecPass.h; sourceTree = "<group>"; };
 		5B0C74E62A2E1B8700272CE8 /* MF_Base32CodecPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base32CodecPass.m; sourceTree = "<group>"; };
 		5B0C74F12A2E2CDB00272CE8 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
@@ -1387,6 +1388,7 @@
 		5B5040042A52C2FE00E6681C /* FeedbackRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackRequest.swift; sourceTree = "<group>"; };
 		5B5040072A52E94800E6681C /* SendUserFeedBackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendUserFeedBackTests.swift; sourceTree = "<group>"; };
 		5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendUserBugReportTests.swift; sourceTree = "<group>"; };
+		5B50400E2A53072E00E6681C /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
@@ -2839,6 +2841,7 @@
 				3510A2FB287841AD0003BE79 /* String+Extensions.swift */,
 				355AA31B29E9736A00C20F5F /* Data+Extensions.swift */,
 				5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */,
+				5B50400E2A53072E00E6681C /* Array+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4660,6 +4663,7 @@
 				35429B27288AB730000BA22F /* StaticFuncs.swift in Sources */,
 				35426B6628EF195700F89BB7 /* ParsedHost.swift in Sources */,
 				3565622029BA2F5200C43F72 /* Calendar+NumberOfDaysBetween.swift in Sources */,
+				5B50400F2A53072E00E6681C /* Array+Extensions.swift in Sources */,
 				5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */,
 				35E50702286FB39600A3F6EA /* AppState.swift in Sources */,
 				3553C223296570710087518A /* Logger.swift in Sources */,
