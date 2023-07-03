@@ -32,7 +32,7 @@ public struct FeedbackEndpoint: Endpoint {
 
     public init(request: FeedbackRequest) {
         debugDescription = "User Feedback"
-        path = "/feedback"
+        path = "/core/v4/feedback"
         method = .post
         body = request
     }

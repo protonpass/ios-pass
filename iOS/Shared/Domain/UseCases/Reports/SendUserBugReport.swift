@@ -46,7 +46,9 @@ final class SendUserBugReport: SendUserBugReportUseCase {
     func execute(with title: String, and description: String) async throws -> Bool {
         let entries = try? await getLogEntries(for: .hostApp)
         var logs: [String: URL]?
-        if let logFileUrl = try? await extractLogsToFile(for: entries, in: "TemporaryLogs.log") {
+        if let entries,
+           let logFileUrl = try? await extractLogsToFile(for: entries.reversed().prefix(500).toArray,
+                                                         in: "temporaryLogs.log") {
             logs = ["File0": logFileUrl]
         }
         return try await reportRepository.sendBug(with: title, and: description, optional: logs)
