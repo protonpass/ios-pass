@@ -1,6 +1,6 @@
 //
-// FeedBackServiceProtocol.swift
-// Proton Pass - Created on 28/06/2023.
+// ReportsBugEndpoint.swift
+// Proton Pass - Created on 03/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,17 +19,21 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Networking
 
-public protocol FeedBackServiceProtocol: Sendable {
-    func send(with title: String, and description: String, tag: String, more information: Data?) async -> Bool
-    func setUserIdentity(with identifier: String)
-}
+public struct ReportsBugEndpoint: Endpoint {
+    public typealias Body = BugReportRequest
+    public typealias Response = CodeOnlyResponse
 
-public extension FeedBackServiceProtocol {
-    func send(with title: String,
-              and description: String,
-              tag: String,
-              more information: Data? = nil) async -> Bool {
-        await send(with: title, and: description, tag: tag, more: information)
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+    public var body: BugReportRequest?
+
+    public init(request: BugReportRequest) {
+        debugDescription = "Report Bug"
+        path = "/reports/bug"
+        method = .post
+        body = request
     }
 }

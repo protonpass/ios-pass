@@ -1,7 +1,6 @@
 //
-//
-// SetUserFeedBackIdentity.swift
-// Proton Pass - Created on 29/06/2023.
+// FeedbackEndpoint.swift
+// Proton Pass - Created on 03/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +17,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-protocol SetUserFeedBackIdentityUseCase: Sendable {
-    func execute(with id: String)
-}
+import Foundation
+import ProtonCore_Networking
 
-extension SetUserFeedBackIdentityUseCase {
-    func callAsFunction(with id: String) {
-        execute(with: id)
-    }
-}
+public struct FeedbackEndpoint: Endpoint {
+    public typealias Body = FeedbackRequest
+    public typealias Response = CodeOnlyResponse
 
-final class SetUserFeedBackIdentity: SetUserFeedBackIdentityUseCase {
-    private let feedBackService: FeedBackServiceProtocol
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+    public var body: FeedbackRequest?
 
-    init(feedBackService: FeedBackServiceProtocol) {
-        self.feedBackService = feedBackService
-    }
-
-    func execute(with id: String) {
-        feedBackService.setUserIdentity(with: id)
+    public init(request: FeedbackRequest) {
+        debugDescription = "User Feedback"
+        path = "/feedback"
+        method = .post
+        body = request
     }
 }
