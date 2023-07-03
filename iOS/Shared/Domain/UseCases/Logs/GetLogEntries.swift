@@ -22,12 +22,34 @@
 
 import Core
 
+/**
+ The GetLogEntriesUseCase protocol defines the contract for a use case that retrieves log entries.
+ It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
+ */
 // sourcery: AutoMockable
 protocol GetLogEntriesUseCase: Sendable {
+    /**
+     Executes the use case to retrieve log entries for the specified log module.
+
+     - Parameter logModule: An enum case of `PassLogModule`, The log module for which to retrieve log entries.
+
+     - Returns: An array of `LogEntry` objects representing the retrieved log entries.
+
+     - Throws: An error if an issue occurs while retrieving the log entries.
+     */
     func execute(for logModule: PassLogModule) async throws -> [LogEntry]
 }
 
 extension GetLogEntriesUseCase {
+    /**
+     Convenience method that allows the use case to be invoked as a function, simplifying its usage.
+
+     - Parameter logModule: An enum case of `PassLogModule`, The log module for which to retrieve log entries.
+
+     - Returns: An array of `LogEntry` objects representing the retrieved log entries.
+
+     - Throws: An error if an issue occurs while retrieving the log entries.
+     */
     func callAsFunction(for logModule: PassLogModule) async throws -> [LogEntry] {
         try await execute(for: logModule)
     }
@@ -38,6 +60,14 @@ final class GetLogEntries: GetLogEntriesUseCase {
     private let autofillLogManager: LogManagerProtocol
     private let keyboardLogManager: LogManagerProtocol
 
+    /**
+     Initializes a new instance of `GetLogEntries` with the specified log managers.
+
+     - Parameters:
+       - mainAppLogManager: The log manager responsible for retrieving log entries for the main app.
+       - autofillLogManager: The log manager responsible for retrieving log entries for the autofill extension.
+       - keyboardLogManager: The log manager responsible for retrieving log entries for the keyboard extension.
+     */
     init(mainAppLogManager: LogManagerProtocol,
          autofillLogManager: LogManagerProtocol,
          keyboardLogManager: LogManagerProtocol) {
@@ -46,6 +76,15 @@ final class GetLogEntries: GetLogEntriesUseCase {
         self.keyboardLogManager = keyboardLogManager
     }
 
+    /**
+     Executes the use case to retrieve log entries for the specified log module.
+
+     - Parameter logModule: The log module for which to retrieve log entries.
+
+     - Returns: An array of `LogEntry` objects representing the retrieved log entries.
+
+     - Throws: An error if an issue occurs while retrieving the log entries.
+     */
     func execute(for logModule: PassLogModule) async throws -> [LogEntry] {
         switch logModule {
         case .hostApp:
