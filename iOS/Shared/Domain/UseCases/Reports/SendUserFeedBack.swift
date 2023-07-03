@@ -21,16 +21,46 @@
 //
 import Foundation
 
+/**
+ The SendUserFeedBackUseCase protocol defines the contract for a use case that handles sending user feedback.
+ It inherits from the `Sendable protocol, which allows the use case to be executed asynchronously.
+ */
 protocol SendUserFeedBackUseCase: Sendable {
+    /**
+     Executes the use case to send user feedback with the specified title and description.
+
+     - Parameters:
+       - title: The title of the user feedback.
+       - description: The description of the user feedback.
+
+     - Returns: A `Bool` value indicating whether the feedback was sent successfully or not.
+
+     - Throws: An error if an issue occurs while sending the feedback.
+     */
     func execute(with title: String, and description: String) async throws -> Bool
 }
 
 extension SendUserFeedBackUseCase {
+    /**
+     Convenience method that allows the use case to be invoked as a function, simplifying its usage.
+
+     - Parameters:
+       - title: The title of the user feedback.
+       - description: The description of the user feedback.
+
+     - Returns: A `Bool` value indicating whether the feedback was sent successfully or not.
+
+     - Throws: An error if an issue occurs while sending the feedback.
+     */
     func callAsFunction(with title: String, and description: String) async throws -> Bool {
         try await execute(with: title, and: description)
     }
 }
 
+/**
+ The SendUserFeedBack class is an implementation of the SendUserFeedBackUseCase protocol.
+ It provides functionality for sending user feedback.
+ */
 final class SendUserFeedBack: SendUserFeedBackUseCase {
     private let reportRepository: ReportRepositoryProtocol
 
@@ -38,6 +68,17 @@ final class SendUserFeedBack: SendUserFeedBackUseCase {
         self.reportRepository = reportRepository
     }
 
+    /**
+     Executes the use case to send user feedback with the specified title and description.
+
+     - Parameters:
+       - title: The title of the user feedback.
+       - description: The description of the user feedback.
+
+     - Returns: A `Bool` value indicating whether the feedback was sent successfully or not.
+
+     - Throws: An error if an issue occurs while sending the feedback.
+     */
     func execute(with title: String, and description: String) async throws -> Bool {
         try await reportRepository.sendFeedback(with: title, and: description)
     }

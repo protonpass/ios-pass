@@ -60,7 +60,7 @@ enum LogEntryFactory {
 
 class GetLogEntriesTests: XCTestCase {
     @MainActor
-    func testExecute() async throws {
+    func testGettingLogsForDifferentPassLogModule() async throws {
         // Create mock dependencies
         let mainAppLogManager = LogManagerMock()
         let autofillLogManager = LogManagerMock()
