@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
 import CryptoKit
@@ -38,8 +39,13 @@ protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
 }
 
+public protocol APIManagerProtocol {
+    var userData: UserData? { get }
+    var apiService: APIService { get }
+}
+
 // swiftlint:disable line_length
-final class APIManager {
+final class APIManager: APIManagerProtocol {
     private let logManager: LogManager
     private let logger: Logger
     private let appVer: String
@@ -54,6 +60,10 @@ final class APIManager {
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: APIManagerDelegate?
+
+    var userData: UserData? {
+        appData.userData
+    }
 
     init(logManager: LogManager, appVer: String, appData: AppData, preferences: Preferences) {
         let logger = Logger(manager: logManager)
