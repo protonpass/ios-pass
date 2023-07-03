@@ -819,7 +819,10 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func presentZendeskFeedBack() {
-        let view = FeedBackView()
+        let view =
+            FeedBackView(displayAlert: { [weak self] in
+                self?.bannerManager.displayTopErrorMessage("An error occurred while sending your feedback")
+            })
         present(view)
     }
 

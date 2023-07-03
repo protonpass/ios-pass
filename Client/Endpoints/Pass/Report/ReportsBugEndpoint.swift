@@ -32,7 +32,7 @@ public struct ReportsBugEndpoint: Endpoint {
 
     public init(request: BugReportRequest) {
         debugDescription = "Report Bug"
-        path = "/reports/bug"
+        path = "/core/v4/reports/bug"
         method = .post
         body = request
     }

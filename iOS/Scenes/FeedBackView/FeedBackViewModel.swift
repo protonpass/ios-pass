@@ -24,7 +24,7 @@ import Foundation
 
 enum FeedBackTag: String, CaseIterable {
     case bug = "Bug"
-    case newFeature = "New Feature"
+    case feedback = "Feedback"
 }
 
 @MainActor
@@ -32,6 +32,7 @@ final class FeedBackViewModel: ObservableObject {
     @Published var title = ""
     @Published var feedBack = ""
     @Published var selectedTag: FeedBackTag = .bug
+    @Published var showToast = false
     @Published private(set) var cantSendFeedBack = true
     @Published private(set) var hasSentFeedBack = false
     @Published private(set) var isSending = false
@@ -52,13 +53,11 @@ final class FeedBackViewModel: ObservableObject {
             guard let self else {
                 return
             }
-            defer {
-                isSending = false
-            }
+
             if Task.isCancelled {
                 return
             }
-            isSending = true
+            self.isSending = true
             do {
                 let response = selectedTag == .bug ? try await self.sendUserBugReport(with: self.title,
                                                                                       and: self.feedBack) :
@@ -67,11 +66,11 @@ final class FeedBackViewModel: ObservableObject {
                         .title,
                         and: self
                             .feedBack)
-                print("woot no error \(response)")
                 self.hasSentFeedBack = true
             } catch {
-                print("woot error \(error.localizedDescription)")
+                self.showToast = true
             }
+            self.isSending = false
         }
     }
 }
