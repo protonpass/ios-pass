@@ -22,11 +22,11 @@
 
 import Core
 
+// sourcery: AutoMockable
 /**
  The GetLogEntriesUseCase protocol defines the contract for a use case that retrieves log entries.
  It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
  */
-// sourcery: AutoMockable
 protocol GetLogEntriesUseCase: Sendable {
     /**
      Executes the use case to retrieve log entries for the specified log module.
