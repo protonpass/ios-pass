@@ -9,7 +9,15 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false,
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:ProtonPass.xcodeproj",
+          "identifier" : "35E5063A286F819F00A3F6EA",
+          "name" : "iOS"
+        }
+      ]
+    },
     "environmentVariableEntries" : [
       {
         "enabled" : false,
