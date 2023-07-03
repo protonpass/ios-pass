@@ -20,11 +20,37 @@
 
 import Foundation
 
+/**
+ The SendUserBugReportUseCase protocol defines the contract for a use case that handles sending user bug reports.
+ It inherits from the `Sendable protocol, which allows the use case to be executed asynchronously.
+ */
 protocol SendUserBugReportUseCase: Sendable {
+    /**
+     Executes the use case to send a bug report with the specified title and description.
+
+     - Parameters:
+       - title: The title of the bug report.
+       - description: The description of the bug report.
+
+     - Returns: A `Bool` value indicating whether the bug report was sent successfully or not.
+
+     - Throws: An error if an issue occurs while sending the bug report.
+     */
     func execute(with title: String, and description: String) async throws -> Bool
 }
 
 extension SendUserBugReportUseCase {
+    /**
+     Convenience method that allows the use case to be invoked as a function, simplifying its usage.
+
+     - Parameters:
+       - title: The title of the bug report.
+       - description: The description of the bug report.
+
+     - Returns: A `Bool` value indicating whether the bug report was sent successfully or not.
+
+     - Throws: An error if an issue occurs while sending the bug report.
+     */
     func callAsFunction(with title: String, and description: String) async throws -> Bool {
         try await execute(with: title, and: description)
     }
@@ -35,6 +61,14 @@ final class SendUserBugReport: SendUserBugReportUseCase {
     private let extractLogsToFile: ExtractLogsToFileUseCase
     private let getLogEntries: GetLogEntriesUseCase
 
+    /**
+     Initializes a new instance of `SendUserBugReport` with the specified dependencies.
+
+     - Parameters:
+       - reportRepository: The repository responsible for sending the bug report.
+       - extractLogsToFile: The use case responsible for extracting logs to a file.
+       - getLogEntries: The use case responsible for retrieving log entries.
+     */
     init(reportRepository: ReportRepositoryProtocol,
          extractLogsToFile: ExtractLogsToFileUseCase,
          getLogEntries: GetLogEntriesUseCase) {
@@ -43,11 +77,24 @@ final class SendUserBugReport: SendUserBugReportUseCase {
         self.getLogEntries = getLogEntries
     }
 
+    /**
+     Executes the use case to send a bug report with the specified title and description.
+
+     - Parameters:
+       - title: The title of the bug report.
+       - description: The description of the bug report.
+
+     - Returns: A `Bool` value indicating whether the bug report was sent successfully or not.
+
+     - Throws: An error if an issue occurs while sending the bug report.
+     */
     func execute(with title: String, and description: String) async throws -> Bool {
         let entries = try? await getLogEntries(for: .hostApp)
         var logs: [String: URL]?
+        // Extract a subset of log entries and save them to a log file.
+        // This if due to a limitation in amount of data allowed being sent to the report endpoint
         if let entries,
-           let logFileUrl = try? await extractLogsToFile(for: entries.reversed().prefix(500).toArray,
+           let logFileUrl = try? await extractLogsToFile(for: entries.reversed().prefix(200).toArray,
                                                          in: "temporaryLogs.log") {
             logs = ["File0": logFileUrl]
         }

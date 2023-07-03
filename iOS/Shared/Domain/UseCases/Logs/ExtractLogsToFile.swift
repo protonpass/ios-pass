@@ -23,17 +23,46 @@
 import Core
 import Foundation
 
+/**
+ The ExtractLogsToFileUseCase protocol defines the contract for a use case that handles extracting log entries to a file.
+ It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
+ */
 // sourcery: AutoMockable
 protocol ExtractLogsToFileUseCase: Sendable {
+    /**
+     Executes the use case to extract the specified log entries to a file with the provided file name.
+
+     - Parameters:
+       - entries: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+       - fileName: The name of the file to which the log entries will be written.
+
+     - Returns: An optional `URL` pointing to the location of the extracted log file if the extraction was successful, otherwise `nil`.
+
+     - Throws: An error if an issue occurs during the log extraction or file writing process.
+     */
     func execute(for entries: [LogEntry]?, in fileName: String) async throws -> URL?
 }
 
 extension ExtractLogsToFileUseCase {
+    /**
+     Convenience method that allows the use case to be invoked as a function, simplifying its usage.
+
+     - Parameters:
+       - entries: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+       - fileName: The name of the file to which the log entries will be written.
+
+     - Returns: An optional `URL` pointing to the location of the extracted log file if the extraction was successful, otherwise `nil`.
+
+     - Throws: An error if an issue occurs during the log extraction or file writing process.
+     */
     func callAsFunction(for entries: [LogEntry]?, in fileName: String) async throws -> URL? {
         try await execute(for: entries, in: fileName)
     }
 }
 
+/**
+ The ExtractLogsToFile class is an implementation of the `ExtractLogsToFileUseCase protocol. It provides functionality for extracting log entries to a file.
+ */
 final class ExtractLogsToFile: ExtractLogsToFileUseCase {
     private let logFormatter: LogFormatterProtocol
 
@@ -41,6 +70,17 @@ final class ExtractLogsToFile: ExtractLogsToFileUseCase {
         self.logFormatter = logFormatter
     }
 
+    /**
+     Executes the use case to extract the specified log entries to a file with the provided file name.
+
+     - Parameters:
+       - entries: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+       - fileName: The name of the file to which the log entries will be written.
+
+     - Returns: An optional `URL` pointing to the location of the extracted log file if the extraction was successful, otherwise `nil`.
+
+     - Throws: An error if an issue occurs during the log extraction or file writing process.
+     */
     func execute(for entries: [LogEntry]?, in fileName: String) async throws -> URL? {
         guard let entries else {
             return nil

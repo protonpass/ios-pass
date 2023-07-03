@@ -629,6 +629,7 @@
 		5B5040082A52E94800E6681C /* SendUserFeedBackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040072A52E94800E6681C /* SendUserFeedBackTests.swift */; };
 		5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */; };
 		5B50400F2A53072E00E6681C /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B50400E2A53072E00E6681C /* Array+Extensions.swift */; };
+		5B5040132A53114600E6681C /* ExtractLogsToFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
@@ -1389,6 +1390,7 @@
 		5B5040072A52E94800E6681C /* SendUserFeedBackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendUserFeedBackTests.swift; sourceTree = "<group>"; };
 		5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendUserBugReportTests.swift; sourceTree = "<group>"; };
 		5B50400E2A53072E00E6681C /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractLogsToFileTests.swift; sourceTree = "<group>"; };
 		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
@@ -2912,6 +2914,7 @@
 			isa = PBXGroup;
 			children = (
 				5B503FF72A4E01D700E6681C /* GetLogsEntriesTests.swift */,
+				5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */,
 			);
 			path = Logs;
 			sourceTree = "<group>";
@@ -4220,6 +4223,7 @@
 				257643B547A3E22A61A627B3 /* ReportRepositoryProtocolMock.generated.swift in Sources */,
 				5B5040082A52E94800E6681C /* SendUserFeedBackTests.swift in Sources */,
 				EB5B5A7052FD60FFFEFC4E84 /* GetLogEntriesUseCaseMock.generated.swift in Sources */,
+				5B5040132A53114600E6681C /* ExtractLogsToFileTests.swift in Sources */,
 				5A505CC575D99C2B28D00648 /* ExtractLogsToFileUseCaseMock.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
