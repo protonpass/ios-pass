@@ -1,6 +1,6 @@
 //
-// LogingManagerMock.swift
-// Proton Pass - Created on 29/06/2023.
+// Repository.swift
+// Proton Pass - Created on 28/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,35 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import Foundation
 
-actor LogManagerMock: LogManagerProtocol {
-    var shouldLog: Bool = true
-    var logEntries: [LogEntry] = []
+final class RepositoryContainer: SharedContainer {
+    static let shared = RepositoryContainer()
+    let manager = ContainerManager()
+}
 
-    var logFunction: ((LogEntry) -> Void)?
-    var getLogEntriesFunction: (() async throws -> [LogEntry])?
-
-    func log(entry: LogEntry) {
-        logFunction?(entry)
-        if shouldLog {
-            logEntries.append(entry)
-        }
+extension RepositoryContainer {
+    var reportRepository: Factory<ReportRepositoryProtocol> {
+        self { ReportRepository(apiManager: ToolingContainer.shared.apiManager(),
+                                logger: ToolingContainer.shared.logger()) }
     }
+}
 
-    func getLogEntries() async throws -> [LogEntry] {
-        return logEntries
-    }
-
-    func removeAllLogs() {
-        logEntries.removeAll()
-    }
-
-    func saveAllLogs() {
-        // Do nothing in the mock implementation
-    }
-
-    func toggleLogging(shouldLog: Bool) {
-        self.shouldLog = shouldLog
+extension RepositoryContainer: AutoRegistering {
+    func autoRegister() {
+        manager.defaultScope = .singleton
     }
 }

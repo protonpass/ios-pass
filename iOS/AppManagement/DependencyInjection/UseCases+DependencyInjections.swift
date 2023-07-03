@@ -27,17 +27,17 @@ final class UseCasesContainer: SharedContainer {
     let manager = ContainerManager()
 }
 
-// MARK: Feedback
+// MARK: User report
 
 extension UseCasesContainer {
-    var sendUserFeedBack: Factory<SendUserFeedBackUseCase> {
-        self { SendUserFeedBack(feedBackService: ServiceContainer.shared.feedBackService(),
-                                extractLogsToData: self.extractLogsToData(),
-                                getLogEntries: self.getLogEntries()) }
+    var sendUserBugReport: Factory<SendUserBugReportUseCase> {
+        self { SendUserBugReport(reportRepository: RepositoryContainer.shared.reportRepository(),
+                                 extractLogsToFile: self.extractLogsToFile(),
+                                 getLogEntries: self.getLogEntries()) }
     }
 
-    var setUserFeedBackIdentity: Factory<SetUserFeedBackIdentityUseCase> {
-        self { SetUserFeedBackIdentity(feedBackService: ServiceContainer.shared.feedBackService()) }
+    var sendUserFeedBack: Factory<SendUserFeedBackUseCase> {
+        self { SendUserFeedBack(reportRepository: RepositoryContainer.shared.reportRepository()) }
     }
 }
 
