@@ -1,5 +1,5 @@
 //
-// FeedbackEndpoint.swift
+// Array+Extensions.swift
 // Proton Pass - Created on 03/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -19,21 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
 
-public struct FeedbackEndpoint: Endpoint {
-    public typealias Body = FeedbackRequest
-    public typealias Response = CodeOnlyResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: FeedbackRequest?
-
-    public init(request: FeedbackRequest) {
-        debugDescription = "User Feedback"
-        path = "/core/v4/feedback"
-        method = .post
-        body = request
+public extension ArraySlice {
+    var toArray: [Element] {
+        Array(self)
     }
 }
