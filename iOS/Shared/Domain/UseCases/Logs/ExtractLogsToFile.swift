@@ -47,6 +47,9 @@ final class ExtractLogsToFile: ExtractLogsToFileUseCase {
         }
 
         let file = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+        if FileManager.default.fileExists(atPath: file.path) {
+            try FileManager.default.removeItem(at: file)
+        }
         let log = await logFormatter.format(entries: entries)
         try log.write(to: file, atomically: true, encoding: .utf8)
         return file

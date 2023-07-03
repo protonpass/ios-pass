@@ -27,6 +27,7 @@ struct FeedBackView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: FeedBackField?
     @StateObject private var viewModel = FeedBackViewModel()
+    var displayAlert: () -> Void
 
     private enum FeedBackField {
         case title, description
@@ -67,6 +68,13 @@ struct FeedBackView: View {
                 .background(Color(uiColor: PassColor.backgroundNorm))
                 .navigationTitle("Feedback")
                 .navigationBarTitleDisplayMode(.inline)
+                .onChange(of: viewModel.showToast) { value in
+                    guard value else {
+                        return
+                    }
+                    displayAlert()
+                    viewModel.showToast.toggle()
+                }
         }
         .onFirstAppear {
             if #available(iOS 16, *) {
@@ -85,7 +93,7 @@ private extension FeedBackView {
     var mainContainer: some View {
         VStack {
             feedbackObjectField
-            feedbackTag
+//            feedbackTag
             feedBackDescription
             Spacer()
         }.padding()
@@ -162,11 +170,5 @@ private extension FeedBackView {
                 .foregroundColor(PassColor.textNorm)
                 .focused($focusedField, equals: .description)
         }
-    }
-}
-
-struct FeedBackView_Previews: PreviewProvider {
-    static var previews: some View {
-        FeedBackView()
     }
 }
