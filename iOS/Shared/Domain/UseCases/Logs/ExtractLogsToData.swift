@@ -22,16 +22,42 @@ import Client
 import Core
 import Foundation
 
+/**
+ The ExtractLogsToDataUseCase protocol defines the contract for a use case that handles extracting log entries to Data.
+ It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
+ */
 protocol ExtractLogsToDataUseCase: Sendable {
+    /**
+     Executes the use case to extract the specified log entries to `Data`.
+
+     - Parameter logs: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+
+     - Returns: An optional `Data` object containing the extracted log entries if the extraction was successful, otherwise `nil`.
+
+     - Throws: An error if an issue occurs during the log extraction process.
+     */
     func execute(for logs: [LogEntry]?) async throws -> Data?
 }
 
 extension ExtractLogsToDataUseCase {
+    /**
+     Convenience method that allows the use case to be invoked as a function, simplifying its usage.
+
+     - Parameter logs: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+
+     - Returns: An optional `Data` object containing the extracted log entries if the extraction was successful, otherwise `nil`.
+
+     - Throws: An error if an issue occurs during the log extraction process.
+     */
     func callAsFunction(for logs: [LogEntry]?) async throws -> Data? {
         try await execute(for: logs)
     }
 }
 
+/**
+ The ExtractLogsToData class is an implementation of the ExtractLogsToDataUseCase protocol.
+ It provides functionality for extracting log entries to Data.
+ */
 final class ExtractLogsToData: ExtractLogsToDataUseCase {
     private let logFormatter: LogFormatterProtocol
 
@@ -39,6 +65,15 @@ final class ExtractLogsToData: ExtractLogsToDataUseCase {
         self.logFormatter = logFormatter
     }
 
+    /**
+     Executes the use case to extract the specified log entries to `Data`.
+
+     - Parameter logs: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+
+     - Returns: An optional `Data` object containing the extracted log entries if the extraction was successful, otherwise `nil`.
+
+     - Throws: An error if an issue occurs during the log extraction process.
+     */
     func execute(for logs: [LogEntry]?) async throws -> Data? {
         guard let logs else {
             return nil
