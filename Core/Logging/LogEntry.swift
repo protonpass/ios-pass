@@ -30,4 +30,24 @@ public struct LogEntry: Codable {
     public let function: String
     public let line: UInt
     public let column: UInt
+
+    public init(timestamp: TimeInterval,
+                subsystem: String,
+                category: String,
+                level: LogLevel,
+                message: String,
+                file: String,
+                function: String,
+                line: UInt,
+                column: UInt) {
+        self.timestamp = timestamp
+        self.subsystem = subsystem
+        self.category = category
+        self.level = level
+        self.message = message
+        self.file = file
+        self.function = function
+        self.line = line
+        self.column = column
+    }
 }

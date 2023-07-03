@@ -1,5 +1,6 @@
 //
-// LogingManagerMock.swift
+//
+// SendUserFeedBack.swift
 // Proton Pass - Created on 29/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -17,37 +18,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-
-import Core
+//
 import Foundation
 
-actor LogManagerMock: LogManagerProtocol {
-    var shouldLog: Bool = true
-    var logEntries: [LogEntry] = []
+protocol SendUserFeedBackUseCase: Sendable {
+    func execute(with title: String, and description: String) async throws -> Bool
+}
 
-    var logFunction: ((LogEntry) -> Void)?
-    var getLogEntriesFunction: (() async throws -> [LogEntry])?
+extension SendUserFeedBackUseCase {
+    func callAsFunction(with title: String, and description: String) async throws -> Bool {
+        try await execute(with: title, and: description)
+    }
+}
 
-    func log(entry: LogEntry) {
-        logFunction?(entry)
-        if shouldLog {
-            logEntries.append(entry)
-        }
+final class SendUserFeedBack: SendUserFeedBackUseCase {
+    private let reportRepository: ReportRepositoryProtocol
+
+    init(reportRepository: ReportRepositoryProtocol) {
+        self.reportRepository = reportRepository
     }
 
-    func getLogEntries() async throws -> [LogEntry] {
-        return logEntries
-    }
-
-    func removeAllLogs() {
-        logEntries.removeAll()
-    }
-
-    func saveAllLogs() {
-        // Do nothing in the mock implementation
-    }
-
-    func toggleLogging(shouldLog: Bool) {
-        self.shouldLog = shouldLog
+    func execute(with title: String, and description: String) async throws -> Bool {
+        try await reportRepository.sendFeedback(with: title, and: description)
     }
 }
