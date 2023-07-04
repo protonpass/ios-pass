@@ -21,7 +21,7 @@
 import Foundation
 
 public struct FeedbackRequest {
-    public let feedbackType: String // iOS, MacOS
+    public let feedbackType: String
     public let feedback: String
     public let score: Int
 

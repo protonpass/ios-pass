@@ -121,6 +121,7 @@ final class AppCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 // Make sure preferences are up to date
+                SharedToolingContainer.shared.resetCache()
                 self.preferences = SharedToolingContainer.shared.preferences()
             }
             .store(in: &cancellables)

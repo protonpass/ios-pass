@@ -36,6 +36,7 @@ final class FeedbackViewModel: ObservableObject {
     @Published private(set) var cantSendFeedBack = true
     @Published private(set) var hasSentFeedBack = false
     @Published private(set) var isSending = false
+    @Published var shouldSendLogs = true
 
     private var cancellables = Set<AnyCancellable>()
     private var lastTask: Task<Void, Never>?
@@ -60,7 +61,9 @@ final class FeedbackViewModel: ObservableObject {
             self.isSending = true
             do {
                 let response = selectedTag == .bug ? try await self.sendUserBugReport(with: self.title,
-                                                                                      and: self.feedback) :
+                                                                                      and: self.feedback,
+                                                                                      shouldSendLogs: self
+                                                                                          .shouldSendLogs) :
                     try await self.sendUserFeedBack(with: self.title, and: self.feedback)
                 self.hasSentFeedBack = true
             } catch {
