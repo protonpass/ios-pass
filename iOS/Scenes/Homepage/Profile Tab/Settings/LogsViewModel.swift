@@ -55,7 +55,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     init(module: PassLogModule) {
         self.module = module
-        logFormatter = SharedToolingContainer.shared.defaultLogFormatter()
+        logFormatter = SharedToolingContainer.shared.logFormatter()
         loadLogs()
     }
 

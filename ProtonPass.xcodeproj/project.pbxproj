@@ -610,7 +610,7 @@
 		5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */; };
 		5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
-		5B503FD42A4C7ED900E6681C /* FeedBackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* FeedBackViewModel.swift */; };
+		5B503FD42A4C7ED900E6681C /* FeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* FeedbackViewModel.swift */; };
 		5B503FD82A4C82D700E6681C /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
 		5B503FE52A4D6FD000E6681C /* ExtractLogsToFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FE42A4D6FD000E6681C /* ExtractLogsToFile.swift */; };
@@ -639,7 +639,7 @@
 		5BB2B6EF2A447545005E831C /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */; };
 		5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
-		5BE5BDF12A4C7D41007CBE1B /* FeedBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5BDF02A4C7D41007CBE1B /* FeedBackView.swift */; };
+		5BE5BDF12A4C7D41007CBE1B /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5BDF02A4C7D41007CBE1B /* FeedbackView.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1372,7 +1372,7 @@
 		5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManagerTests.swift; sourceTree = "<group>"; };
 		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
-		5B503FD32A4C7ED900E6681C /* FeedBackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBackViewModel.swift; sourceTree = "<group>"; };
+		5B503FD32A4C7ED900E6681C /* FeedbackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B503FE42A4D6FD000E6681C /* ExtractLogsToFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractLogsToFile.swift; sourceTree = "<group>"; };
 		5B503FE62A4D7AAD00E6681C /* ExtractLogsToData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractLogsToData.swift; sourceTree = "<group>"; };
@@ -1399,7 +1399,7 @@
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
 		5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
-		5BE5BDF02A4C7D41007CBE1B /* FeedBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBackView.swift; sourceTree = "<group>"; };
+		5BE5BDF02A4C7D41007CBE1B /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		5ED83C579352551B8FC8475F /* Pods-macOS.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-tf.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-tf.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
@@ -1918,6 +1918,7 @@
 		355792DB29E85979001198DA /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5B503FFD2A52C1CA00E6681C /* Report */,
 				3555EC7C2A27D16300069996 /* GetFeatureFlagEndpoint.swift */,
 				355792DC29E859A5001198DA /* GetLogoEndpoint.swift */,
 				3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */,
@@ -2258,7 +2259,6 @@
 		357602B129F712AE003062A2 /* Pass */ = {
 			isa = PBXGroup;
 			children = (
-				5B503FFD2A52C1CA00E6681C /* Report */,
 				354146D228D1F218007E45A6 /* Aliases */,
 				3558180D290A8BE200DD94DB /* Events */,
 				355E803D28A3071700BE7C9B /* Items */,
@@ -3011,8 +3011,8 @@
 		5BE5BDEB2A4C753A007CBE1B /* FeedBackView */ = {
 			isa = PBXGroup;
 			children = (
-				5BE5BDF02A4C7D41007CBE1B /* FeedBackView.swift */,
-				5B503FD32A4C7ED900E6681C /* FeedBackViewModel.swift */,
+				5BE5BDF02A4C7D41007CBE1B /* FeedbackView.swift */,
+				5B503FD32A4C7ED900E6681C /* FeedbackViewModel.swift */,
 			);
 			path = FeedBackView;
 			sourceTree = "<group>";
@@ -4302,7 +4302,7 @@
 				5B503FF22A4DC6DA00E6681C /* GetLogEntries.swift in Sources */,
 				359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */,
 				35AC9A652A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
-				5B503FD42A4C7ED900E6681C /* FeedBackViewModel.swift in Sources */,
+				5B503FD42A4C7ED900E6681C /* FeedbackViewModel.swift in Sources */,
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
@@ -4433,7 +4433,7 @@
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
-				5BE5BDF12A4C7D41007CBE1B /* FeedBackView.swift in Sources */,
+				5BE5BDF12A4C7D41007CBE1B /* FeedbackView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,

@@ -30,10 +30,7 @@ public struct BugReportRequest {
     public var title: String
     public var description: String
     public let username: String
-    public var email: String
-    public var country: String
-    public var isp: String
-    public var plan: String
+    public let email: String
 
     public init(with title: String, and description: String, userData: UserData) {
         #if os(iOS)
@@ -44,17 +41,12 @@ public struct BugReportRequest {
         osVersion = ProcessInfo.processInfo.operatingSystemVersionString
         #endif
         client = "App"
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        let appBuild = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-        clientVersion = "\(appVersion) (\(appBuild))"
+        clientVersion = Bundle.main.fullAppVersionName
         clientType = 5
         self.title = title
         self.description = description
         username = userData.user.name ?? ""
         email = userData.user.email ?? ""
-        country = ""
-        isp = ""
-        plan = ""
     }
 }
 
@@ -69,8 +61,13 @@ extension BugReportRequest: Encodable {
         case description = "Description"
         case username = "Username"
         case email = "Email"
-        case country = "Country"
-        case isp = "ISP"
-        case plan = "Plan"
+    }
+}
+
+private extension Bundle {
+    var fullAppVersionName: String {
+        let appVersion = infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let appBuild = infoDictionary?["CFBundleVersion"] as? String ?? ""
+        return "\(appVersion) (\(appBuild))"
     }
 }

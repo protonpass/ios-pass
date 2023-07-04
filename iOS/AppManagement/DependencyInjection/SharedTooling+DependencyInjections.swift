@@ -52,7 +52,7 @@ extension SharedToolingContainer {
         self { LogManager(module: .keyboardExtension) }
     }
 
-    var defaultLogFormatter: Factory<LogFormatterProtocol> {
+    var logFormatter: Factory<LogFormatterProtocol> {
         self { LogFormatter(format: .txt) }
     }
 }
@@ -60,10 +60,14 @@ extension SharedToolingContainer {
 // MARK: User centric tools
 
 extension SharedToolingContainer {
+    //This is set in a cached scope to be able to reset when needed
+    // To reset you can call SharedToolingContainer.shared.manager.reset(scope: .cached)
     var preferences: Factory<Preferences> {
         self { Preferences() }
+            .cached
     }
 }
+
 
 // MARK: Keychain tools
 
