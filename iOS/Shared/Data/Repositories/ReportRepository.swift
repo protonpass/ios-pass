@@ -30,7 +30,7 @@ enum ReportRepositoryError: Error {
 protocol ReportRepositoryProtocol: Sendable {
     func sendBug(with title: String,
                  and description: String,
-                 optional logs: [String: URL]?) async throws -> Bool
+                 optional logs: [String: URL]) async throws -> Bool
     func sendFeedback(with title: String,
                       and description: String) async throws -> Bool
 }
@@ -53,14 +53,16 @@ public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtoc
     /// - Returns: `True` if the bug was sent correctly or and `Error` if not
     public func sendBug(with title: String,
                         and description: String,
-                        optional logs: [String: URL]?) async throws -> Bool {
+                        optional logs: [String: URL]) async throws -> Bool {
         guard let userData = apiManager.userData else {
             throw ReportRepositoryError.noUserData
         }
         let request = BugReportRequest(with: title, and: description, userData: userData)
         let endpoint = ReportsBugEndpoint(request: request)
-        if let logs {
-            return try await apiManager.apiService.exec(endpoint: endpoint, files: logs).isSuccessful
+        if !logs.isEmpty {
+            let result = try await apiManager.apiService.exec(endpoint: endpoint, files: logs).isSuccessful
+            cleanReportLogFiles(from: logs)
+            return result
         } else {
             return try await apiManager.apiService.exec(endpoint: endpoint).isSuccessful
         }
@@ -76,5 +78,16 @@ public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtoc
         let request = FeedbackRequest(with: title, and: description)
         let endpoint = FeedbackEndpoint(request: request)
         return try await apiManager.apiService.exec(endpoint: endpoint).isSuccessful
+    }
+}
+
+private extension ReportRepository {
+    func cleanReportLogFiles(from logs: [String: URL]) {
+        for key in ReportFileKey.allCases {
+            if let fileUrl = logs[key.rawValue],
+               FileManager.default.fileExists(atPath: fileUrl.path) {
+                try? FileManager.default.removeItem(at: fileUrl)
+            }
+        }
     }
 }

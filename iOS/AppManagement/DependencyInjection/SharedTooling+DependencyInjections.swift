@@ -28,6 +28,10 @@ final class SharedToolingContainer: SharedContainer {
 
     static let shared = SharedToolingContainer()
     let manager = ContainerManager()
+
+    func resetCache() {
+        manager.reset(scope: .cached)
+    }
 }
 
 // MARK: Shared Logging tools
@@ -60,14 +64,13 @@ extension SharedToolingContainer {
 // MARK: User centric tools
 
 extension SharedToolingContainer {
-    //This is set in a cached scope to be able to reset when needed
+    // This is set in a cached scope to be able to reset when needed
     // To reset you can call SharedToolingContainer.shared.manager.reset(scope: .cached)
     var preferences: Factory<Preferences> {
         self { Preferences() }
             .cached
     }
 }
-
 
 // MARK: Keychain tools
 

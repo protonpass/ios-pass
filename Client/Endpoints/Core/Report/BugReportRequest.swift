@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Foundation
 import ProtonCore_Login
 
@@ -26,7 +27,7 @@ public struct BugReportRequest {
     public let osVersion: String
     public let client: String
     public let clientVersion: String
-    public let clientType: Int // 1 = email, 2 = VPN, 5 = Pass
+    public let clientType: String // 1 = email, 2 = VPN, 5 = Pass
     public var title: String
     public var description: String
     public let username: String
@@ -42,7 +43,7 @@ public struct BugReportRequest {
         #endif
         client = "App"
         clientVersion = Bundle.main.fullAppVersionName
-        clientType = 5
+        clientType = "\(5)"
         self.title = title
         self.description = description
         username = userData.user.name ?? ""
@@ -61,13 +62,5 @@ extension BugReportRequest: Encodable {
         case description = "Description"
         case username = "Username"
         case email = "Email"
-    }
-}
-
-private extension Bundle {
-    var fullAppVersionName: String {
-        let appVersion = infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        let appBuild = infoDictionary?["CFBundleVersion"] as? String ?? ""
-        return "\(appVersion) (\(appBuild))"
     }
 }
