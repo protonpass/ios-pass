@@ -30,7 +30,7 @@ class ExtractLogsToFileTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.defaultLogFormatter())
+        sut = ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.logFormatter())
     }
     
     override func tearDown() {

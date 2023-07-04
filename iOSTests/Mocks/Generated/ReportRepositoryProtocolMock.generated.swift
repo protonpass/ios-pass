@@ -1,6 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-// Proton Pass - Created on 29/06/2023.
+// Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -30,11 +30,11 @@ final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryP
     var closureSendBug: () -> () = {}
     var invokedSendBug = false
     var invokedSendBugCount = 0
-    var invokedSendBugParameters: (title: String, description: String, logs: [String: URL]?)?
-    var invokedSendBugParametersList = [(title: String, description: String, logs: [String: URL]?)]()
+    var invokedSendBugParameters: (title: String, description: String, logs: [String: URL])?
+    var invokedSendBugParametersList = [(title: String, description: String, logs: [String: URL])]()
     var stubbedSendBugResult: Bool!
 
-    func sendBug(with title: String, and description: String, optional logs: [String: URL]?) async throws -> Bool {
+    func sendBug(with title: String, and description: String, optional logs: [String: URL]) async throws -> Bool {
         invokedSendBug = true
         invokedSendBugCount += 1
         invokedSendBugParameters = (title, description, logs)
