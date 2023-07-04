@@ -1,6 +1,6 @@
 //
-// Tooling+DependencyInjection.swift
-// Proton Pass - Created on 07/06/2023.
+// FileManager+Extensions.swift
+// Proton Pass - Created on 04/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,28 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Factory
+import Foundation
 
-final class ToolingContainer: SharedContainer {
-    static let shared = ToolingContainer()
-    let manager = ContainerManager()
-}
-
-// MARK: Logging tools
-
-extension ToolingContainer {
-    var hostAppLogManager: Factory<LogManager> {
-        self { LogManager(module: .hostApp) }
-    }
-
-    var mainAppLoger: Factory<Logger> {
-        self { Logger(manager: self.hostAppLogManager()) }
-    }
-}
-
-extension ToolingContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+public extension FileManager {
+    func removeIfExists(for url: URL) {
+        if fileExists(atPath: url.path) {
+            try? removeItem(at: url)
+        }
     }
 }
