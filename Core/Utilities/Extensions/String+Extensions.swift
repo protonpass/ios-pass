@@ -123,6 +123,14 @@ public extension String {
     }
 }
 
+// MARK: Computed Extensions
+
+public extension String {
+    var toBase8EncodedData: Data? {
+        data(using: .utf8)
+    }
+}
+
 public extension Substring {
     var toString: String { String(self) }
 }

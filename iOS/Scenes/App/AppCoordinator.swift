@@ -48,7 +48,6 @@ final class AppCoordinator {
     private let credentialManager: CredentialManagerProtocol
     private var preferences: Preferences
     private var isUITest: Bool
-    private let appVersion = "ios-pass@\(Bundle.main.fullAppVersionName)"
 
     private var homepageCoordinator: HomepageCoordinator?
     private var welcomeCoordinator: WelcomeCoordinator?
@@ -60,23 +59,16 @@ final class AppCoordinator {
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
-        logManager = ToolingContainer.shared.hostAppLogManager()
-        logger = ToolingContainer.shared.mainAppLoger()
-        let keychain = PPKeychain()
-        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-        let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
-        self.appData = appData
-        self.keymaker = keymaker
-        let preferences = Preferences()
-        let apiManager = APIManager(logManager: logManager,
-                                    appVer: appVersion,
-                                    appData: appData,
-                                    preferences: preferences)
-        self.apiManager = apiManager
+        logManager = ToolingContainer.shared.logManager()
+        logger = ToolingContainer.shared.logger()
+        keymaker = SharedToolingContainer.shared.keymaker()
+        appData = ToolingContainer.shared.appData()
+        preferences = SharedToolingContainer.shared.preferences()
+        apiManager = ToolingContainer.shared.apiManager()
+
         container = .Builder.build(name: kProtonPassContainerName,
                                    inMemory: false)
         credentialManager = CredentialManager(logManager: logManager)
-        self.preferences = preferences
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
@@ -86,7 +78,7 @@ final class AppCoordinator {
             isUITest = true
             wipeAllData(includingUnauthSession: true)
         }
-        self.apiManager.delegate = self
+        apiManager.delegate = self
     }
 
     private func clearUserDataInKeychainIfFirstRun() {
@@ -129,7 +121,8 @@ final class AppCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 // Make sure preferences are up to date
-                self.preferences = .init()
+                SharedToolingContainer.shared.resetCache()
+                self.preferences = SharedToolingContainer.shared.preferences()
             }
             .store(in: &cancellables)
     }
