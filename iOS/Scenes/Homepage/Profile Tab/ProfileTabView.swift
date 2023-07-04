@@ -282,8 +282,6 @@ struct ProfileTabView: View {
                 TextOptionRow(title: "How to import to Proton Pass", action: viewModel.showImportInstructions)
                 PassSectionDivider()
                 TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
-                PassSectionDivider()
-                TextOptionRow(title: "Rate app", action: viewModel.rateApp)
             }
             .roundedEditableSection()
         }

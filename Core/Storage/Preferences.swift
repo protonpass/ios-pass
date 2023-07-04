@@ -88,6 +88,9 @@ public final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage("didReencryptAllItems", store: kSharedUserDefaults)
     public var didReencryptAllItems = false
 
+    @AppStorage("createdItemsCount", store: kSharedUserDefaults)
+    public var createdItemsCount = 0
+
     public func reset(isUITests: Bool = false) {
         quickTypeBar = true
         automaticallyCopyTotpCode = false

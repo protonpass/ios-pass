@@ -235,4 +235,18 @@ final class PreferencesTests: XCTestCase {
         sut.reset()
         XCTAssertFalse(sut.isFirstRun)
     }
+
+    func testCreatedItemsCountZeroByDefault() {
+        XCTAssertEqual(sut.createdItemsCount, 0)
+    }
+
+    func testCreatedItemsCountNotChangedAfterResetting() {
+        sut.createdItemsCount += 1
+        XCTAssertEqual(sut.createdItemsCount, 1)
+        sut.createdItemsCount += 1
+        XCTAssertEqual(sut.createdItemsCount, 2)
+        sut.createdItemsCount += 1
+        sut.reset()
+        XCTAssertEqual(sut.createdItemsCount, 3)
+    }
 }
