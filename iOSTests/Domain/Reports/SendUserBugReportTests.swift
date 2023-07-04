@@ -41,7 +41,8 @@ final class SendUserBugReportTests: XCTestCase {
         repositoryMock.stubbedSendBugResult = true
         getLogsMock.stubbedExecuteResult = [LogEntryFactory.createMock()]
         extractToFileMock.stubbedExecuteResult = URL(string: "ThisIsFake")
-        let response = try await sut(with: "Test bug", and: "Bug description")
+        let response = try await sut(with: "Test bug", and: "Bug description",
+                                     shouldSendLogs: true)
         XCTAssertTrue(response)
         let params = try XCTUnwrap(repositoryMock.invokedSendBugParameters)
         XCTAssertEqual(params.0, "Test bug")
