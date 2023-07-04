@@ -22,17 +22,17 @@ import Combine
 import Factory
 import Foundation
 
-enum FeedBackTag: String, CaseIterable {
+enum FeedbackTag: String, CaseIterable {
     case bug = "Bug"
     case feedback = "Feedback"
 }
 
 @MainActor
-final class FeedBackViewModel: ObservableObject {
+final class FeedbackViewModel: ObservableObject {
     @Published var title = ""
-    @Published var feedBack = ""
-    @Published var selectedTag: FeedBackTag = .bug
-    @Published var showToast = false
+    @Published var feedback = ""
+    @Published var selectedTag: FeedbackTag = .bug
+    @Published var error: Error?
     @Published private(set) var cantSendFeedBack = true
     @Published private(set) var hasSentFeedBack = false
     @Published private(set) var isSending = false
@@ -60,31 +60,23 @@ final class FeedBackViewModel: ObservableObject {
             self.isSending = true
             do {
                 let response = selectedTag == .bug ? try await self.sendUserBugReport(with: self.title,
-                                                                                      and: self.feedBack) :
-                    try await self
-                    .sendUserFeedBack(with: self
-                        .title,
-                        and: self
-                            .feedBack)
+                                                                                      and: self.feedback) :
+                    try await self.sendUserFeedBack(with: self.title, and: self.feedback)
                 self.hasSentFeedBack = true
             } catch {
-                self.showToast = true
+                self.error = error
             }
             self.isSending = false
         }
     }
 }
 
-private extension FeedBackViewModel {
+private extension FeedbackViewModel {
     func setUp() {
-        $title.combineLatest($feedBack)
+        $title.combineLatest($feedback)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] title, feedBack in
-                guard !title.isEmpty, feedBack.count > 10 else {
-                    self?.cantSendFeedBack = true
-                    return
-                }
-                self?.cantSendFeedBack = false
+            .sink { [weak self] title, feedback in
+                self?.cantSendFeedBack = title.isEmpty || feedback.count < 10
             }
             .store(in: &cancellables)
     }
