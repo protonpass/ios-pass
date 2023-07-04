@@ -22,7 +22,7 @@ import Foundation
 
 enum ReportFileKey: String, CaseIterable {
     case hostApp = "File0"
-    case autofillKey = "File1"
+    case autofill = "File1"
 }
 
 /**
@@ -105,7 +105,7 @@ final class SendUserBugReport: SendUserBugReportUseCase {
                 logs[ReportFileKey.hostApp.rawValue] = hostAppEntries
             }
             if let autofillEntries = await createLogsFile(for: .autoFillExtension) {
-                logs[ReportFileKey.autofillKey.rawValue] = autofillEntries
+                logs[ReportFileKey.autofill.rawValue] = autofillEntries
             }
         }
         return try await reportRepository.sendBug(with: title, and: description, optional: logs)

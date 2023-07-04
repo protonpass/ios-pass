@@ -187,7 +187,7 @@
 {% for type in types.protocols where type.based.AutoMockable or type|annotated:"AutoMockable" %}
 {% if type.name != "AutoMockable" and (type.path|contains:argument.containedPathSubstringToApplyTemplate or type.annotations.DisableContainedPathSubstringToApplyTemplate) %}
 // sourcery:file:{{ type.name }}Mock
-// Proton Pass - Created on 29/06/2023.
+// Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -232,7 +232,7 @@ final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
 {# 📒 Composition protocol mocking #}
 {% for type in types.protocolCompositions where type|annotated:"AutoMockable" %}
 // sourcery:file:{{ type.name }}Mock
-// Proton Pass - Created on 29/06/2023.
+// Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
