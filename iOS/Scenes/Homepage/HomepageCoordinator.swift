@@ -31,6 +31,7 @@ import ProtonCore_Login
 import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import StoreKit
 import SwiftUI
 import UIComponents
 import UIKit
@@ -541,6 +542,16 @@ private extension HomepageCoordinator {
             }
         }
     }
+
+    func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
+        preferences.createdItemsCount += 1
+        // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
+        if !ProcessInfo.processInfo.isiOSAppOnMac,
+           preferences.createdItemsCount >= 10,
+           let windowScene = rootViewController.view.window?.windowScene {
+            SKStoreReviewController.requestReview(in: windowScene)
+        }
+    }
 }
 
 // MARK: - Public APIs
@@ -1041,6 +1052,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         }
         vaultsManager.refresh()
         homepageTabDelegete?.homepageTabShouldChange(tab: .items)
+        increaseCreatedItemsCountAndAskForReviewIfNecessary()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
