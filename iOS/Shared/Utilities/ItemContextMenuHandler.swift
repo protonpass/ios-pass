@@ -75,7 +75,9 @@ extension ItemContextMenuHandler {
                     banner.dismiss()
                     restore(item)
                 }
-                clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.trashMessage,
+
+                let itemContent = try encryptedItem.getItemContent(symmetricKey: itemRepository.symmetricKey)
+                clipboardManager.bannerManager?.displayBottomInfoMessage(itemContent.trashMessage,
                                                                          dismissButtonTitle: "Undo",
                                                                          onDismiss: undoBlock)
 

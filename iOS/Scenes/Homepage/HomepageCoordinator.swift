@@ -1297,14 +1297,14 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         startUpgradeFlow()
     }
 
-    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
+    func itemDetailViewModelDidMoveToTrash(item: AliasItemIdentifiable) {
         refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
                 banner.dismiss()
                 itemContextMenuHandler.restore(item)
             }
-            bannerManager.displayBottomInfoMessage(item.type.trashMessage,
+            bannerManager.displayBottomInfoMessage(item.trashMessage,
                                                    dismissButtonTitle: "Undo",
                                                    onDismiss: undoBlock)
         }

@@ -36,7 +36,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
     func itemDetailViewModelWantsToUpgrade()
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault)
-    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
+    func itemDetailViewModelDidMoveToTrash(item: AliasItemIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidEncounter(error: Error)
