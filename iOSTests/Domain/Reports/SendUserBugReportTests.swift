@@ -47,6 +47,6 @@ final class SendUserBugReportTests: XCTestCase {
         let params = try XCTUnwrap(repositoryMock.invokedSendBugParameters)
         XCTAssertEqual(params.0, "Test bug")
         XCTAssertEqual(params.1, "Bug description")
-        XCTAssertEqual(params.2, ["File0": extractToFileMock.stubbedExecuteResult!])
+        XCTAssertEqual(params.2, ["File0": extractToFileMock.stubbedExecuteResult!, "File1": extractToFileMock.stubbedExecuteResult!])
     }
 }
