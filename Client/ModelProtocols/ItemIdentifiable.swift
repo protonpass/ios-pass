@@ -37,6 +37,10 @@ public protocol ItemTypeIdentifiable: ItemIdentifiable {
     var type: ItemContentType { get }
 }
 
+public protocol AliasItemIdentifiable: ItemTypeIdentifiable {
+    var aliasEmail: String? { get }
+}
+
 public protocol ItemThumbnailable {
     var type: ItemContentType { get }
     var title: String { get }
