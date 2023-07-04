@@ -258,8 +258,11 @@ private extension HomepageCoordinator {
                                                       featureFlagsRepository: featureFlagsRepository,
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
-                                                      notificationService:
-                                                      ServiceContainer.shared.notificationService())
+                                                      notificationService: SharedServiceContainer
+                                                          .shared
+                                                          .notificationService(ToolingContainer
+                                                              .shared
+                                                              .logger()))
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
@@ -807,8 +810,14 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowFeedback() {
-        let view = FeedbackChannelsView { [unowned self] selectedChannel in
-            urlOpener.open(urlString: selectedChannel.urlString)
+        let view = FeedbackChannelsView { [weak self] selectedChannel in
+            guard selectedChannel != .email else {
+                self?.dismissTopMostViewController(animated: true) { [weak self] in
+                    self?.presentZendeskFeedback()
+                }
+                return
+            }
+            self?.urlOpener.open(urlString: selectedChannel.urlString)
         }
         let viewController = UIHostingController(rootView: view)
 
@@ -818,6 +827,15 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
+    }
+
+    func presentZendeskFeedback() {
+        let view =
+            FeedbackView(displayAlert: { [weak self] error in
+                self?.bannerManager
+                    .displayTopErrorMessage("An error occurred while sending your report with error: \(error.localizedDescription)")
+            })
+        present(view)
     }
 
     func profileTabViewModelWantsToQaFeatures() {

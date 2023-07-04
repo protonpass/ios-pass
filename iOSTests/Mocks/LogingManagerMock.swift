@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 06/06/2023.
+// LogingManagerMock.swift
+// Proton Pass - Created on 29/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,21 +19,35 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import Factory
+import Foundation
 
-final class ServiceContainer: SharedContainer {
-    static let shared = ServiceContainer()
-    let manager = ContainerManager()
-}
+actor LogManagerMock: LogManagerProtocol {
+    var shouldLog: Bool = true
+    var logEntries: [LogEntry] = []
 
-extension ServiceContainer {
-    var notificationService: Factory<LocalNotificationServiceProtocol> {
-        self { NotificationService(logger: ToolingContainer.shared.mainAppLoger()) }
+    var logFunction: ((LogEntry) -> Void)?
+    var getLogEntriesFunction: (() async throws -> [LogEntry])?
+
+    func log(entry: LogEntry) {
+        logFunction?(entry)
+        if shouldLog {
+            logEntries.append(entry)
+        }
     }
-}
 
-extension ServiceContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+    func getLogEntries() async throws -> [LogEntry] {
+        return logEntries
+    }
+
+    func removeAllLogs() {
+        logEntries.removeAll()
+    }
+
+    func saveAllLogs() {
+        // Do nothing in the mock implementation
+    }
+
+    func toggleLogging(shouldLog: Bool) {
+        self.shouldLog = shouldLog
     }
 }

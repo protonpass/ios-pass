@@ -1,6 +1,6 @@
 //
-// Data+Random.swift
-// Proton Pass - Created on 14/04/2023.
+// FeedbackEndpoint.swift
+// Proton Pass - Created on 03/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,16 +19,21 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Networking
 
-public extension Data {
-    static func random(byteCount: Int = 32) throws -> Data {
-        var data = Data(count: byteCount)
-        _ = try data.withUnsafeMutableBytes { byte in
-            guard let baseAddress = byte.baseAddress else {
-                throw PPCoreError.biometryTypeNotInitialized
-            }
-            return SecRandomCopyBytes(kSecRandomDefault, byteCount, baseAddress)
-        }
-        return data
+public struct FeedbackEndpoint: Endpoint {
+    public typealias Body = FeedbackRequest
+    public typealias Response = CodeOnlyResponse
+
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+    public var body: FeedbackRequest?
+
+    public init(request: FeedbackRequest) {
+        debugDescription = "User Feedback"
+        path = "/core/v4/feedback"
+        method = .post
+        body = request
     }
 }
