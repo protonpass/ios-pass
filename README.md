@@ -13,6 +13,7 @@ This repository contains the source code for the Proton Pass iOS application.
 	* [Dependency injection](#dependency-injection) 
 	* [SwiftLint](#swiftlint)
 	* [SwiftFormat](#swiftformat)
+    * [Sourcery](#sourcery)   
 
 # Installation
 
@@ -77,6 +78,36 @@ brew install swiftformat
 
 If you don't have this tool installed please refer to the following link to set it up: [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 The configuration for this tool can be found in the `.swiftformat` file
+
+## Sourcery
+
+This is a tool to easily generate mocks for unit testing. 
+To install it run the following [Homebrew](https://brew.sh/) command:
+
+```bash
+brew install sourcery
+```
+
+If you don't have this tool installed please refer to the following link to set it up: [Sourcery](https://github.com/krzysztofzablocki/Sourcery)
+The configuration for this tool can be found in the `.sourcery.yml` file.
+At the moment the configuration only take into account iOSTests but it could be extended to take into account dependencies in the near futur.
+
+**To Generate the mocks** please follow these instructions:
+- First you need to annotate your protocol like following:
+```swift
+// sourcery: AutoMockable
+protocol Test {
+ // implementation of protocol
+}
+``` 
+
+- Then run the following CLI command 
+
+```bash
+sourcery
+```
+
+You should now see the new mocks appear in the `Generated` subfolder of iOSTests target
 
 # License
 The code and data files in this distribution are licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See <https://www.gnu.org/licenses/> for a copy of this license.
