@@ -20,6 +20,11 @@
 
 import Foundation
 
+enum ReportFileKey: String, CaseIterable {
+    case hostApp = "File0"
+    case autofillKey = "File1"
+}
+
 /**
  The SendUserBugReportUseCase protocol defines the contract for a use case that handles sending user bug reports.
  It inherits from the `Sendable protocol, which allows the use case to be executed asynchronously.
@@ -36,7 +41,7 @@ protocol SendUserBugReportUseCase: Sendable {
 
      - Throws: An error if an issue occurs while sending the bug report.
      */
-    func execute(with title: String, and description: String) async throws -> Bool
+    func execute(with title: String, and description: String, shouldSendLogs: Bool) async throws -> Bool
 }
 
 extension SendUserBugReportUseCase {
@@ -51,8 +56,10 @@ extension SendUserBugReportUseCase {
 
      - Throws: An error if an issue occurs while sending the bug report.
      */
-    func callAsFunction(with title: String, and description: String) async throws -> Bool {
-        try await execute(with: title, and: description)
+    func callAsFunction(with title: String,
+                        and description: String,
+                        shouldSendLogs: Bool) async throws -> Bool {
+        try await execute(with: title, and: description, shouldSendLogs: shouldSendLogs)
     }
 }
 
@@ -88,16 +95,32 @@ final class SendUserBugReport: SendUserBugReportUseCase {
 
      - Throws: An error if an issue occurs while sending the bug report.
      */
-    func execute(with title: String, and description: String) async throws -> Bool {
-        let entries = try? await getLogEntries(for: .hostApp)
-        var logs: [String: URL]?
-        // Extract a subset of log entries and save them to a log file.
-        // This if due to a limitation in amount of data allowed being sent to the report endpoint
-        if let entries,
-           let logFileUrl = try? await extractLogsToFile(for: entries.reversed().prefix(200).toArray,
-                                                         in: "temporaryLogs.log") {
-            logs = ["File0": logFileUrl]
+    func execute(with title: String,
+                 and description: String,
+                 shouldSendLogs: Bool) async throws -> Bool {
+        var logs = [String: URL]()
+
+        if shouldSendLogs {
+            if let hostAppEntries = await createLogsFile(for: .hostApp) {
+                logs[ReportFileKey.hostApp.rawValue] = hostAppEntries
+            }
+            if let autofillEntries = await createLogsFile(for: .autoFillExtension) {
+                logs[ReportFileKey.autofillKey.rawValue] = autofillEntries
+            }
         }
         return try await reportRepository.sendBug(with: title, and: description, optional: logs)
+    }
+}
+
+private extension SendUserBugReport {
+    func createLogsFile(for module: PassLogModule) async -> URL? {
+        let commit = Bundle.main.gitCommitHash ?? "?"
+        let filename = "\(module == .hostApp ? "hostApp" : "autofill")feedbackLogs-\(commit).log"
+        guard let entries = try? await getLogEntries(for: module),
+              let logFileUrl = try? await extractLogsToFile(for: entries,
+                                                            in: filename) else {
+            return nil
+        }
+        return logFileUrl
     }
 }
