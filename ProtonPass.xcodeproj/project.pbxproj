@@ -218,7 +218,6 @@
 		3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555800628F01A46009C3B88 /* URLUtils+MatcherTests.swift */; };
 		3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801528F04F5C009C3B88 /* NoCredentialsView.swift */; };
 		3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801928F05899009C3B88 /* URLUtils+SanitizerTests.swift */; };
-		3555C17A2A2F810B00A257D7 /* iOS-Release-Beta.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */; };
 		3555EC7D2A27D16300069996 /* GetFeatureFlagEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555EC7C2A27D16300069996 /* GetFeatureFlagEndpoint.swift */; };
 		3555EC7F2A27D20F00069996 /* RemoteFeatureFlagsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555EC7E2A27D20F00069996 /* RemoteFeatureFlagsDatasource.swift */; };
 		3556949929D44DAE005DD2EB /* MoveItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949829D44DAE005DD2EB /* MoveItemEndpoint.swift */; };
@@ -3430,7 +3429,6 @@
 				5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
-				3555C17A2A2F810B00A257D7 /* iOS-Release-Beta.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5080,6 +5078,7 @@
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
@@ -6040,6 +6039,7 @@
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = "${SRCROOT}/iOS/AppManagement/Configurations/Pass-Constant-Black.plist";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan for QR codes";
