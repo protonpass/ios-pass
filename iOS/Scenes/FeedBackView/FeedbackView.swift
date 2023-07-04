@@ -88,6 +88,9 @@ private extension FeedbackView {
     var mainContainer: some View {
         VStack {
             feedbackObjectField
+            Toggle("Should include logs", isOn: $viewModel.shouldSendLogs)
+                .padding(kItemDetailSectionPadding)
+                .roundedEditableSection()
 //            feedbackTag
             feedBackDescription
             Spacer()

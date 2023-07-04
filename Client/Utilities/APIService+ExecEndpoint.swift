@@ -40,8 +40,10 @@ public extension APIService {
     ///   - files: Files to send in the format of `[String: URL]`
     /// - Returns: The endpoint response of type `Response` or `throws` an `Error`
     func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
-        let progress: ProgressCompletion = { (progress: Progress) in
-            print("Upload progress \(progress.fractionCompleted) for \(endpoint.path)")
+        let progress: ProgressCompletion = { progress in
+            if NetworkDebugger.shouldDebugNetworkTraffic() {
+                print("Upload progress \(progress.fractionCompleted) for \(endpoint.path)")
+            }
         }
         return try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
@@ -82,7 +84,7 @@ public extension APIService {
 }
 
 private enum NetworkDebugger {
-    private static func shouldDebugNetworkTraffic() -> Bool {
+    static func shouldDebugNetworkTraffic() -> Bool {
         ProcessInfo.processInfo.environment["me.proton.pass.NetworkDebug"] == "1"
     }
 

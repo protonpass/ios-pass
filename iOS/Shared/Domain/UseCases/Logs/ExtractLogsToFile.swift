@@ -33,14 +33,14 @@ protocol ExtractLogsToFileUseCase: Sendable {
      Executes the use case to extract the specified log entries to a file with the provided file name.
 
      - Parameters:
-       - entries: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+       - entries: An  array of `LogEntry` objects representing the log entries to be extracted.
        - fileName: The name of the file to which the log entries will be written.
 
      - Returns: An optional `URL` pointing to the location of the extracted log file if the extraction was successful, otherwise `nil`.
 
      - Throws: An error if an issue occurs during the log extraction or file writing process.
      */
-    func execute(for entries: [LogEntry]?, in fileName: String) async throws -> URL?
+    func execute(for entries: [LogEntry], in fileName: String) async throws -> URL?
 }
 
 extension ExtractLogsToFileUseCase {
@@ -48,14 +48,14 @@ extension ExtractLogsToFileUseCase {
      Convenience method that allows the use case to be invoked as a function, simplifying its usage.
 
      - Parameters:
-       - entries: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+       - entries: An  array of `LogEntry` objects representing the log entries to be extracted.
        - fileName: The name of the file to which the log entries will be written.
 
      - Returns: An optional `URL` pointing to the location of the extracted log file if the extraction was successful, otherwise `nil`.
 
      - Throws: An error if an issue occurs during the log extraction or file writing process.
      */
-    func callAsFunction(for entries: [LogEntry]?, in fileName: String) async throws -> URL? {
+    func callAsFunction(for entries: [LogEntry], in fileName: String) async throws -> URL? {
         try await execute(for: entries, in: fileName)
     }
 }
@@ -74,22 +74,19 @@ final class ExtractLogsToFile: ExtractLogsToFileUseCase {
      Executes the use case to extract the specified log entries to a file with the provided file name.
 
      - Parameters:
-       - entries: An optional array of `LogEntry` objects representing the log entries to be extracted. If `nil`, no extraction will occur.
+       - entries: An  array of `LogEntry` objects representing the log entries to be extracted.
        - fileName: The name of the file to which the log entries will be written.
 
      - Returns: An optional `URL` pointing to the location of the extracted log file if the extraction was successful, otherwise `nil`.
 
      - Throws: An error if an issue occurs during the log extraction or file writing process.
      */
-    func execute(for entries: [LogEntry]?, in fileName: String) async throws -> URL? {
-        guard let entries else {
+    func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
+        guard !entries.isEmpty else {
             return nil
         }
 
         let file = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-        if FileManager.default.fileExists(atPath: file.path) {
-            try FileManager.default.removeItem(at: file)
-        }
         let log = await logFormatter.format(entries: entries)
         try log.write(to: file, atomically: true, encoding: .utf8)
         return file

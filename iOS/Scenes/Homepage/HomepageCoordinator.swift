@@ -802,7 +802,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let view = FeedbackChannelsView { [weak self] selectedChannel in
             guard selectedChannel != .email else {
                 self?.dismissTopMostViewController(animated: true) { [weak self] in
-                    self?.presentZendeskFeedBack()
+                    self?.presentZendeskFeedback()
                 }
                 return
             }
@@ -818,7 +818,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(viewController)
     }
 
-    func presentZendeskFeedBack() {
+    func presentZendeskFeedback() {
         let view =
             FeedbackView(displayAlert: { [weak self] error in
                 self?.bannerManager

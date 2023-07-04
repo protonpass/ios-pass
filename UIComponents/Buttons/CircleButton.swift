@@ -73,13 +73,9 @@ public struct CircleButton: View {
 
     private var realBody: some View {
         ZStack {
-            if isEnabled {
-                Color(uiColor: backgroundColor)
-                    .clipShape(Circle())
-            } else {
-                PassColor.backgroundWeak.toColor
-                    .clipShape(Circle())
-            }
+            Color(uiColor: isEnabled ? backgroundColor : PassColor.backgroundWeak)
+                .clipShape(Circle())
+
             Image(uiImage: icon)
                 .resizable()
                 .renderingMode(.template)
