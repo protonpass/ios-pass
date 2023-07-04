@@ -84,9 +84,8 @@ public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtoc
 private extension ReportRepository {
     func cleanReportLogFiles(from logs: [String: URL]) {
         for key in ReportFileKey.allCases {
-            if let fileUrl = logs[key.rawValue],
-               FileManager.default.fileExists(atPath: fileUrl.path) {
-                try? FileManager.default.removeItem(at: fileUrl)
+            if let fileUrl = logs[key.rawValue] {
+                FileManager.default.removeIfExists(for: fileUrl)
             }
         }
     }
