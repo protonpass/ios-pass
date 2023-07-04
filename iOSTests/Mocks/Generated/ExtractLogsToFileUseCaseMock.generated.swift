@@ -1,6 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-// Proton Pass - Created on 29/06/2023.
+// Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -29,11 +29,11 @@ final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLogsToFile
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var invokedExecuteParameters: (entries: [LogEntry]?, fileName: String)?
-    var invokedExecuteParametersList = [(entries: [LogEntry]?, fileName: String)]()
+    var invokedExecuteParameters: (entries: [LogEntry], fileName: String)?
+    var invokedExecuteParametersList = [(entries: [LogEntry], fileName: String)]()
     var stubbedExecuteResult: URL?
 
-    func execute(for entries: [LogEntry]?, in fileName: String) async throws -> URL? {
+    func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
         invokedExecute = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (entries, fileName)

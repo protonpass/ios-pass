@@ -23,11 +23,11 @@
 import Core
 import Foundation
 
+//
+// The ExtractLogsToFileUseCase protocol defines the contract for a use case that handles extracting log entries to
+// a file.
+// It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
 // sourcery: AutoMockable
-/**
- The ExtractLogsToFileUseCase protocol defines the contract for a use case that handles extracting log entries to a file.
- It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
- */
 protocol ExtractLogsToFileUseCase: Sendable {
     /**
      Executes the use case to extract the specified log entries to a file with the provided file name.
