@@ -809,10 +809,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(viewController)
     }
 
-    func profileTabViewModelWantsToRateApp() {
-        urlOpener.open(urlString: Constants.appStoreUrl)
-    }
-
     func profileTabViewModelWantsToQaFeatures() {
         let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
                                             favIconRepository: favIconRepository,
