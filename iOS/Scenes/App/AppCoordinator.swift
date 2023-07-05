@@ -269,35 +269,7 @@ final class AppCoordinator {
 
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
-        guard userData.scopes.contains("pass") else {
-            // try refreshing the credentials
-            // this is a workaround for the fact that the user with access to pass won't get the pass scope
-            // if their account lacks keys — however, after the credentials refresh, the scope is properly set
-            apiManager.apiService.refreshCredential(userData.getCredential) { result in
-                switch result {
-                case let .success(refreshedCredentials) where refreshedCredentials.scopes.contains("pass"):
-                    self.apiManager.apiService.setSessionUID(uid: refreshedCredentials.UID)
-                    self.apiManager.authHelper.onSessionObtaining(credential: refreshedCredentials)
-                    self.appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
-                case .failure, .success:
-                    self.appData.userData = nil
-                    self.apiManager.clearCredentials()
-                    self.alertNoPassScope()
-                }
-            }
-            return
-        }
         appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
-    }
-
-    private func alertNoPassScope() {
-        // swiftlint:disable line_length
-        let alert = UIAlertController(title: "Error occured",
-                                      message: "You are not eligible for using this application. Please contact our customer service.",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
-        rootViewController?.present(alert, animated: true)
-        // swiftlint:enable line_length
     }
 
     private func alertSessionInvalidated() {
