@@ -184,7 +184,7 @@ extension ItemContentType {
     }
 }
 
-extension AliasItemIdentifiable {
+extension ItemTypeIdentifiable {
     var trashMessage: String {
         switch type {
         case .login: return "Login moved to trash"
