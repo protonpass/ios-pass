@@ -65,6 +65,7 @@ class BaseCreateEditItemViewModel {
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
+    @Published private(set) var recentlyAddedFieldId: String?
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
             didEditSomething = true
@@ -328,7 +329,9 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
 
 extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
     func customFieldAdded(_ customField: CustomField) {
-        customFieldUiModels.append(.init(customField: customField))
+        let uiModel = CustomFieldUiModel(customField: customField)
+        customFieldUiModels.append(uiModel)
+        recentlyAddedFieldId = uiModel.id
     }
 }
 

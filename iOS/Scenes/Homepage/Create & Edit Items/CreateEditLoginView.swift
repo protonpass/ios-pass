@@ -36,9 +36,10 @@ struct CreateEditLoginView: View {
     @Namespace private var totpID
     @Namespace private var websitesID
     @Namespace private var noteID
+    @Namespace private var bottomID
 
-    enum Field {
-        case title, username, password, totp, websites, note
+    enum Field: Hashable {
+        case title, username, password, totp, websites, note, customField(String?)
     }
 
     init(viewModel: CreateEditLoginViewModel) {
@@ -47,7 +48,7 @@ struct CreateEditLoginView: View {
 
     var body: some View {
         NavigationView {
-            ScrollViewReader { value in
+            ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: kItemDetailSectionPadding / 2) {
                         CreateEditItemTitleSection(title: $viewModel.title,
@@ -70,7 +71,9 @@ struct CreateEditLoginView: View {
                                         field: .note)
                             .id(noteID)
 
-                        EditCustomFieldSections(contentType: .login,
+                        EditCustomFieldSections(focusedField: $focusedField,
+                                                field: .customField(viewModel.recentlyAddedFieldId),
+                                                contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
                                                 onAddMore: viewModel.addCustomField,
@@ -78,6 +81,7 @@ struct CreateEditLoginView: View {
                                                 onUpgrade: viewModel.upgrade)
 
                         Spacer()
+                            .id(bottomID)
                     }
                     .padding()
                     .animation(.default, value: viewModel.customFieldUiModels.count)
@@ -90,15 +94,16 @@ struct CreateEditLoginView: View {
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
+                    case .customField: id = bottomID
                     default: id = nil
                     }
 
-                    if let id { withAnimation { value.scrollTo(id, anchor: .bottom) } }
-                }
-                .onChange(of: viewModel.note) { _ in
-                    withAnimation {
-                        value.scrollTo(noteID, anchor: .bottom)
+                    if let id {
+                        withAnimation { proxy.scrollTo(id, anchor: .bottom) }
                     }
+                }
+                .onChange(of: viewModel.recentlyAddedFieldId) { newValue in
+                    focusedField = .customField(newValue)
                 }
             }
             .background(Color(uiColor: PassColor.backgroundNorm))

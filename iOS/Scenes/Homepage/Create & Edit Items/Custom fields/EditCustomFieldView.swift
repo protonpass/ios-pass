@@ -23,16 +23,15 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct EditCustomFieldView: View {
-    @FocusState private var focusedField: Dummy?
+struct EditCustomFieldView<Field: Hashable>: View {
+    let focusedField: FocusState<Field?>.Binding
+    let field: Field
     @State private var isRemoved = false
     let contentType: ItemContentType
     @Binding var uiModel: CustomFieldUiModel
 
     var onEditTitle: () -> Void
     var onRemove: () -> Void
-
-    private enum Dummy { case dummy }
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -54,15 +53,15 @@ struct EditCustomFieldView: View {
                     switch uiModel.customField.type {
                     case .text:
                         TextEditorWithPlaceholder(text: $uiModel.customField.content,
-                                                  focusedField: $focusedField,
-                                                  field: .dummy,
+                                                  focusedField: focusedField,
+                                                  field: field,
                                                   placeholder: "Text")
 
                     case .totp:
                         SensitiveTextField(text: $uiModel.customField.content,
                                            placeholder: "2FA secret (TOTP)",
-                                           focusedField: $focusedField,
-                                           field: .dummy)
+                                           focusedField: focusedField,
+                                           field: field)
                             .foregroundColor(PassColor.textNorm.toColor)
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
@@ -71,8 +70,8 @@ struct EditCustomFieldView: View {
                     case .hidden:
                         SensitiveTextField(text: $uiModel.customField.content,
                                            placeholder: "Hidden",
-                                           focusedField: $focusedField,
-                                           field: .dummy)
+                                           focusedField: focusedField,
+                                           field: field)
                             .foregroundColor(PassColor.textNorm.toColor)
                     }
                 }
