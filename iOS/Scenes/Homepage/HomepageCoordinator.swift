@@ -1304,7 +1304,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                 banner.dismiss()
                 itemContextMenuHandler.restore(item)
             }
-            bannerManager.displayBottomInfoMessage(item.type.trashMessage,
+            bannerManager.displayBottomInfoMessage(item.trashMessage,
                                                    dismissButtonTitle: "Undo",
                                                    onDismiss: undoBlock)
         }
