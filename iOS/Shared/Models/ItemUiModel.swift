@@ -25,6 +25,7 @@ struct ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable, Hashable {
     let itemId: String
     let shareId: String
     let type: ItemContentType
+    let aliasEmail: String?
     let title: String
     let description: String
     let url: String?
@@ -78,6 +79,7 @@ extension SymmetricallyEncryptedItem {
         return .init(itemId: item.itemID,
                      shareId: shareId,
                      type: itemContent.contentData.type,
+                     aliasEmail: item.aliasEmail,
                      title: itemContent.name,
                      description: note,
                      url: url,
