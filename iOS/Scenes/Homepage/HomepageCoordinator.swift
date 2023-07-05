@@ -1297,7 +1297,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         startUpgradeFlow()
     }
 
-    func itemDetailViewModelDidMoveToTrash(item: AliasItemIdentifiable) {
+    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
         refresh()
         dismissTopMostViewController(animated: true) { [unowned self] in
             let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
