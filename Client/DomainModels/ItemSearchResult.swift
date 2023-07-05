@@ -70,8 +70,8 @@ public enum SearchResultEither: HighlightableText {
 }
 
 public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
-    public var id: Int {
-        "\(itemId + shareId)".hash
+    public var id: String {
+        "\(itemId + shareId)"
     }
 
     public let shareId: String
@@ -83,6 +83,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
     public let vault: Vault?
     public let lastUseTime: Int64
     public let modifyTime: Int64
+    private let precomputedHash: Int
 
     public init(shareId: String,
                 itemId: String,
@@ -102,6 +103,13 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
         self.vault = vault
         self.lastUseTime = lastUseTime
         self.modifyTime = modifyTime
+        var hasher = Hasher()
+        hasher.combine(itemId)
+        hasher.combine(shareId)
+        if let title = highlightableTitle.highlightText {
+            hasher.combine(title)
+        }
+        precomputedHash = hasher.finalize()
     }
 }
 
@@ -121,13 +129,10 @@ extension ItemSearchResult: AlphabeticalSortable {
 
 extension ItemSearchResult: Hashable {
     public static func == (lhs: ItemSearchResult, rhs: ItemSearchResult) -> Bool {
-        lhs.hashValue == rhs.hashValue
+        lhs.precomputedHash == rhs.precomputedHash
     }
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(itemId)
-        hasher.combine(shareId)
-        let texts = [highlightableTitle.highlightText] + highlightableDetail.map(\.highlightText)
-        hasher.combine(texts)
+        hasher.combine(precomputedHash)
     }
 }

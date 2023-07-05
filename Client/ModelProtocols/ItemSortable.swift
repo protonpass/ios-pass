@@ -480,6 +480,6 @@ public extension Array where Element: DateSortable {
     }
 }
 
-public protocol SearchResults: Hashable {
+public protocol SearchResults: Hashable, Equatable {
     var numberOfItems: Int { get }
 }
