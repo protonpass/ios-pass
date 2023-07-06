@@ -38,22 +38,7 @@ struct CredentialsView: View {
             Color(uiColor: PassColor.backgroundNorm)
                 .ignoresSafeArea()
 
-            switch viewModel.state {
-            case .loading:
-                CredentialsSkeletonView()
-
-            case let .loaded(result, state):
-                if result.isEmpty {
-                    NoCredentialsView(onCancel: viewModel.cancel,
-                                      onCreate: viewModel.createLoginItem)
-                } else {
-                    resultView(result: result, state: state)
-                }
-
-            case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: viewModel.fetchItems)
-            }
+            stateViews
         }
         .theme(viewModel.preferences.theme)
         .localAuthentication(preferences: viewModel.preferences,
@@ -84,7 +69,7 @@ struct CredentialsView: View {
                    }
                },
                message: {
-                   if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem,
+                   if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem as? TitledItemIdentifiable,
                       let schemeAndHost = viewModel.urls.first?.schemeAndHost {
                        // swiftlint:disable:next line_length
                        Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.itemTitle)\"?")
@@ -93,33 +78,46 @@ struct CredentialsView: View {
     }
 }
 
-// MARK: ResultView & elements
-
 private extension CredentialsView {
-    func resultView(result: CredentialsFetchResult,
-                    state: CredentialsViewLoadedState) -> some View {
+    @ViewBuilder
+    var stateViews: some View {
         VStack(spacing: 0) {
-            SearchBar(query: $viewModel.query,
-                      isFocused: $isFocusedOnSearchBar,
-                      placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
-                      onCancel: viewModel.cancel)
-
-            switch state {
+            if viewModel.state != .loading {
+                SearchBar(query: $viewModel.query,
+                          isFocused: $isFocusedOnSearchBar,
+                          placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
+                          onCancel: viewModel.cancel)
+            }
+            switch viewModel.state {
             case .idle:
                 if let planType = viewModel.planType, case .free = planType {
                     primaryVaultOnlyMessage
                 }
-                itemList(matchedItems: result.matchedItems,
-                         notMatchedItems: result.notMatchedItems)
-
+                if let results = viewModel.results {
+                    if results.isEmpty {
+                        NoCredentialsView(onCancel: viewModel.cancel,
+                                          onCreate: viewModel.createLoginItem)
+                    } else {
+                        itemList(results: results)
+                    }
+                }
             case .searching:
                 ProgressView()
-
-            case .noSearchResults:
-                NoSearchResultsInAllVaultView(query: viewModel.query)
-
             case let .searchResults(results):
-                searchResults(results)
+                if results.isEmpty {
+                    NoSearchResultsInAllVaultView(query: viewModel.query)
+                } else {
+                    CredentialSearchResultView(results: results,
+                                               selectedSortType: $viewModel.selectedSortType,
+                                               sortAction: viewModel.presentSortTypeList,
+                                               selectItem: viewModel.select,
+                                               favIconRepository: viewModel.favIconRepository)
+                }
+            case .loading:
+                CredentialsSkeletonView()
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: viewModel.fetchItems)
             }
 
             Spacer()
@@ -129,16 +127,19 @@ private extension CredentialsView {
                 .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: state)
+        .animation(.default, value: viewModel.state)
         .animation(.default, value: viewModel.planType)
     }
+}
 
-    func itemList(matchedItems: [ItemUiModel],
-                  notMatchedItems: [ItemUiModel]) -> some View {
+// MARK: ResultView & elements
+
+private extension CredentialsView {
+    func itemList(results: CredentialsFetchResult) -> some View {
         ScrollViewReader { proxy in
             List {
                 let matchedItemsHeaderTitle = "Suggestions for \(viewModel.urls.first?.host ?? "")"
-                if matchedItems.isEmpty {
+                if results.matchedItems.isEmpty {
                     Section(content: {
                         Text("No suggestions")
                             .font(.callout.italic())
@@ -152,19 +153,19 @@ private extension CredentialsView {
                             .foregroundColor(Color(uiColor: PassColor.textNorm))
                     })
                 } else {
-                    section(for: matchedItems.map { .normal($0) },
+                    section(for: results.matchedItems.map { .normal($0) },
                             headerTitle: matchedItemsHeaderTitle,
                             headerColor: PassColor.textNorm,
                             headerFontWeight: .bold)
                 }
 
-                if !notMatchedItems.isEmpty {
+                if !results.notMatchedItems.isEmpty {
                     HStack {
                         Text("Other items")
                             .font(.callout)
                             .fontWeight(.bold)
                             .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                            Text(" (\(notMatchedItems.count))")
+                            Text(" (\(results.notMatchedItems.count))")
                             .font(.callout)
                             .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -176,13 +177,13 @@ private extension CredentialsView {
                     .plainListRow()
                     .padding([.top, .horizontal])
 
-                    sortableSections(for: notMatchedItems.map { .normal($0) })
+                    sortableSections(for: results.notMatchedItems.map { .normal($0) })
                 }
             }
             .listStyle(.plain)
             .refreshable { await viewModel.forceSync() }
-            .animation(.default, value: matchedItems.hashValue)
-            .animation(.default, value: notMatchedItems.hashValue)
+            .animation(.default, value: results.matchedItems.hashValue)
+            .animation(.default, value: results.notMatchedItems.hashValue)
             .overlay {
                 if viewModel.selectedSortType.isAlphabetical {
                     HStack {
@@ -208,43 +209,6 @@ private extension CredentialsView {
         .background(Color(uiColor: PassColor.interactionNormMinor1))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.upgrade)
-    }
-
-    func searchResults(_ results: [ItemSearchResult]) -> some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("Results")
-                    .font(.callout)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                    Text(" (\(results.count))")
-                    .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
-
-                Spacer()
-
-                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                               action: viewModel.presentSortTypeList)
-            }
-            .padding([.bottom, .horizontal])
-
-            ScrollViewReader { proxy in
-                List {
-                    sortableSections(for: results.map { .searchResult($0) })
-                }
-                .listStyle(.plain)
-                .animation(.default, value: results.count)
-                .overlay {
-                    if viewModel.selectedSortType.isAlphabetical {
-                        HStack {
-                            Spacer()
-                            SectionIndexTitles(proxy: proxy,
-                                               direction: viewModel.selectedSortType.sortDirection ?? .ascending)
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -370,21 +334,7 @@ private extension CredentialsView {
     }
 
     func select(item: TitledItemIdentifiable) {
-        guard case let .loaded(credentialsFetchResult, _) = viewModel.state else { return }
-        let isMatched = credentialsFetchResult.matchedItems
-            .contains { $0.itemId == item.itemId && $0.shareId == item.shareId }
-        if isMatched {
-            viewModel.select(item: item)
-        } else {
-            // Check URL validity (e.g app has associated domains or not)
-            // before asking if user wants to "associate & autofill".
-            if let schemeAndHost = viewModel.urls.first?.schemeAndHost,
-               !schemeAndHost.isEmpty {
-                viewModel.selectedNotMatchedItem = item
-            } else {
-                viewModel.select(item: item)
-            }
-        }
+        viewModel.select(item: item)
     }
 }
 
@@ -435,5 +385,13 @@ private struct CredentialsSkeletonView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+}
+
+extension ShapeStyle where Self == Color {
+    static var random: Color {
+        Color(red: .random(in: 0...1),
+              green: .random(in: 0...1),
+              blue: .random(in: 0...1))
     }
 }

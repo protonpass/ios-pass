@@ -22,7 +22,7 @@ import Core
 import CryptoKit
 
 /// Items that live in memory for search purpose
-public struct SearchableItem: ItemTypeIdentifiable {
+public struct SearchableItem: ItemTypeIdentifiable, Equatable {
     public let shareId: String
     public let itemId: String
     public let vault: Vault? // Optional because we only show vault when there're more than 1 vault
