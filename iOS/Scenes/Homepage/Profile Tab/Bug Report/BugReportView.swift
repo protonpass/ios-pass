@@ -38,7 +38,7 @@ struct BugReportView: View {
         NavigationView {
             mainContainer
                 .toolbar { toolbarContent }
-                .navigationTitle("Bug Report")
+                .navigationTitle("Report a problem")
                 .navigationBarTitleDisplayMode(.inline)
         }
         .onFirstAppear {

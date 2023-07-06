@@ -811,16 +811,19 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowFeedback() {
         let view = FeedbackChannelsView { [weak self] selectedChannel in
-            guard selectedChannel != .email else {
+            switch selectedChannel {
+            case .bugReport:
                 self?.dismissTopMostViewController(animated: true) { [weak self] in
-                    self?.presentZendeskFeedback()
+                    self?.presentBugReportView()
                 }
-                return
+            default:
+                if let urlString = selectedChannel.urlString {
+                    self?.urlOpener.open(urlString: urlString)
+                }
             }
-            self?.urlOpener.open(urlString: selectedChannel.urlString)
         }
-        let viewController = UIHostingController(rootView: view)
 
+        let viewController = UIHostingController(rootView: view)
         let customHeight = 52 * FeedbackChannel.allCases.count + 80
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
@@ -829,7 +832,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(viewController)
     }
 
-    func presentZendeskFeedback() {
+    func presentBugReportView() {
         let errorHandler: (Error) -> Void = { [weak self] error in
             self?.bannerManager.displayTopErrorMessage(error)
         }
