@@ -25,7 +25,7 @@ import Core
 import CryptoKit
 import SwiftUI
 
-struct CredentialsFetchResult {
+struct CredentialsFetchResult: Equatable {
     let vaults: [Vault]
     let searchableItems: [SearchableItem]
     let matchedItems: [ItemUiModel]
@@ -50,23 +50,21 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelDidFail(_ error: Error)
 }
 
-enum CredentialsViewState {
-    case loading
-    case loaded(CredentialsFetchResult, CredentialsViewLoadedState)
-    case error(Error)
-}
-
-enum CredentialsViewLoadedState: Equatable {
+enum CredentialsViewState: Equatable {
     /// Empty search query
     case idle
     case searching
-    case noSearchResults
     case searchResults([ItemSearchResult])
+    case loading
+    case error(Error)
 
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    static func == (lhs: CredentialsViewState, rhs: CredentialsViewState) -> Bool {
         switch (lhs, rhs) {
+        case (.loading, .loading):
+            return true
+        case let (.error(lhsError), .error(rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
         case (.idle, .idle),
-             (.noSearchResults, .noSearchResults),
              (.searching, .searching),
              (.searchResults, .searchResults):
             return true
@@ -83,9 +81,10 @@ enum CredentialItem {
 
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
+    @Published private(set) var results: CredentialsFetchResult?
     @Published private(set) var planType: PassPlan.PlanType?
     @Published var query = ""
-    @Published var selectedNotMatchedItem: TitledItemIdentifiable?
+    @Published var selectedNotMatchedItem: ItemIdentifiable?
     @Published var isShowingConfirmationAlert = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -165,22 +164,24 @@ extension CredentialsViewModel {
     }
 
     func fetchItems() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
             do {
-                logger.trace("Loading log in items")
-                if case .error = state {
-                    state = .loading
+                self.logger.trace("Loading log in items")
+                if case .error = self.state {
+                    self.state = .loading
                 }
-
-                let plan = try await upgradeChecker.passPlanRepository.getPlan()
+                let plan = try await self.upgradeChecker.passPlanRepository.getPlan()
                 self.planType = plan.planType
 
-                let result = try await fetchCredentialsTask(plan: plan).value
-                state = .loaded(result, .idle)
-                logger.info("Loaded log in items")
+                self.results = try await self.fetchCredentialsTask(plan: plan).value
+                self.state = .idle
+                self.logger.info("Loaded log in items")
             } catch {
-                logger.error(error)
-                state = .error(error)
+                self.logger.error(error)
+                self.state = .error(error)
             }
         }
     }
@@ -226,17 +227,31 @@ extension CredentialsViewModel {
     }
 
     func select(item: ItemIdentifiable) {
-        Task { @MainActor in
+        guard let credentialsFetchResult = results else { return }
+        let isMatched = credentialsFetchResult.matchedItems
+            .contains { $0.itemId == item.itemId && $0.shareId == item.shareId }
+
+        if !isMatched,
+           let schemeAndHost = urls.first?.schemeAndHost,
+           !schemeAndHost.isEmpty {
+            selectedNotMatchedItem = item
+            return
+        }
+
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
             do {
-                logger.trace("Selecting \(item.debugInformation)")
-                let (credential, itemContent) = try await getCredentialTask(for: item).value
-                delegate?.credentialsViewModelDidSelect(credential: credential,
-                                                        itemContent: itemContent,
-                                                        serviceIdentifiers: serviceIdentifiers)
-                logger.info("Selected \(item.debugInformation)")
+                self.logger.trace("Selecting \(item.debugInformation)")
+                let (credential, itemContent) = try await self.getCredentialTask(for: item).value
+                self.delegate?.credentialsViewModelDidSelect(credential: credential,
+                                                             itemContent: itemContent,
+                                                             serviceIdentifiers: serviceIdentifiers)
+                self.logger.info("Selected \(item.debugInformation)")
             } catch {
-                logger.error(error)
-                state = .error(error)
+                self.logger.error(error)
+                self.state = .error(error)
             }
         }
     }
@@ -251,7 +266,7 @@ extension CredentialsViewModel {
     }
 
     func createLoginItem() {
-        guard case .loaded = state else { return }
+        guard case .idle = state else { return }
         Task { @MainActor in
             let vaults = try await shareRepository.getVaults()
             guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
@@ -267,9 +282,9 @@ extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func doSearch(term: String) {
-        guard case let .loaded(fetchResult, _) = state else { return }
+        guard state != .searching else { return }
         guard !term.isEmpty else {
-            state = .loaded(fetchResult, .idle)
+            state = .idle
             return
         }
 
@@ -280,16 +295,15 @@ private extension CredentialsViewModel {
             }
             let hashedTerm = term.sha256
             self.logger.trace("Searching for term \(hashedTerm)")
-            self.state = .loaded(fetchResult, .searching)
-            let searchResults = fetchResult.searchableItems.result(for: term)
+            self.state = .searching
+            let searchResults = results?.searchableItems.result(for: term) ?? []
             if Task.isCancelled {
                 return
             }
+            self.state = .searchResults(searchResults)
             if searchResults.isEmpty {
-                self.state = .loaded(fetchResult, .noSearchResults)
                 self.logger.trace("No results for term \(hashedTerm)")
             } else {
-                self.state = .loaded(fetchResult, .searchResults(searchResults))
                 self.logger.trace("Found results for term \(hashedTerm)")
             }
         }
@@ -305,7 +319,7 @@ private extension CredentialsViewModel {
         fetchItems()
 
         $query
-            .debounce(for: 0.2, scheduler: DispatchQueue.main)
+            .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .subscribe(on: DispatchQueue.global())
@@ -332,7 +346,10 @@ private extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
-        Task.detached(priority: .userInitiated) {
+        Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else {
+                throw PPError.failedToGetOrCreateSymmetricKey
+            }
             guard let encryptedItem =
                 try await self.itemRepository.getItem(shareId: item.shareId,
                                                       itemId: item.itemId) else {
@@ -343,7 +360,10 @@ private extension CredentialsViewModel {
     }
 
     func fetchCredentialsTask(plan: PassPlan) -> Task<CredentialsFetchResult, Error> {
-        Task.detached(priority: .userInitiated) {
+        Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else {
+                throw PPError.failedToGetOrCreateSymmetricKey
+            }
             if !self.preferences.didReencryptAllItems {
                 try await self.itemRepository.reencryptAllItemsTemp()
                 self.preferences.didReencryptAllItems = true
@@ -410,7 +430,10 @@ private extension CredentialsViewModel {
     }
 
     func getCredentialTask(for item: ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
-        Task.detached(priority: .userInitiated) {
+        Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else {
+                throw PPError.failedToGetOrCreateSymmetricKey
+            }
             guard let itemContent =
                 try await self.itemRepository.getItemContent(shareId: item.shareId,
                                                              itemId: item.itemId) else {
