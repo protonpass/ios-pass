@@ -811,16 +811,19 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowFeedback() {
         let view = FeedbackChannelsView { [weak self] selectedChannel in
-            guard selectedChannel != .email else {
+            switch selectedChannel {
+            case .bugReport:
                 self?.dismissTopMostViewController(animated: true) { [weak self] in
-                    self?.presentZendeskFeedback()
+                    self?.presentBugReportView()
                 }
-                return
+            default:
+                if let urlString = selectedChannel.urlString {
+                    self?.urlOpener.open(urlString: urlString)
+                }
             }
-            self?.urlOpener.open(urlString: selectedChannel.urlString)
         }
-        let viewController = UIHostingController(rootView: view)
 
+        let viewController = UIHostingController(rootView: view)
         let customHeight = 52 * FeedbackChannel.allCases.count + 80
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
@@ -829,12 +832,18 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(viewController)
     }
 
-    func presentZendeskFeedback() {
-        let view =
-            FeedbackView(displayAlert: { [weak self] error in
-                self?.bannerManager
-                    .displayTopErrorMessage("An error occurred while sending your report with error: \(error.localizedDescription)")
-            })
+    func presentBugReportView() {
+        let errorHandler: (Error) -> Void = { [weak self] error in
+            self?.bannerManager.displayTopErrorMessage(error)
+        }
+        let successHandler: () -> Void = { [weak self] in
+            self?.dismissTopMostViewController { [weak self] in
+                self?.bannerManager.displayBottomSuccessMessage("Report successfully sent")
+            }
+        }
+        let view = BugReportView(planRepository: passPlanRepository,
+                                 onError: errorHandler,
+                                 onSuccess: successHandler)
         present(view)
     }
 

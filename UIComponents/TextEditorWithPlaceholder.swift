@@ -27,12 +27,14 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
     let focusedField: FocusState<Field>.Binding
     let field: Field
     let placeholder: String
+    let minHeight: CGFloat?
     let onSubmit: (() -> Void)?
 
     public init(text: Binding<String>,
                 focusedField: FocusState<Field>.Binding,
                 field: Field,
                 placeholder: String,
+                minHeight: CGFloat? = nil,
                 font: UIFont = .body,
                 fontWeight: UIFont.Weight = .regular,
                 onSubmit: (() -> Void)? = nil) {
@@ -42,6 +44,7 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
         self.focusedField = focusedField
         self.field = field
         self.placeholder = placeholder
+        self.minHeight = minHeight
         self.onSubmit = onSubmit
     }
 
@@ -53,6 +56,7 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
                 .submitLabel(onSubmit != nil ? .next : .return)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .font(Font(font.weight(fontWeight)))
+                .frame(minHeight: minHeight, alignment: .topLeading)
                 .onChange(of: text) { text in
                     if let onSubmit, text.contains("\n") {
                         self.text = text.replacingOccurrences(of: "\n", with: "")
@@ -66,6 +70,7 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
                 .fontWeight(fontWeight)
                 .foregroundColor(PassColor.textNorm)
                 .returnKey(onSubmit != nil ? .next : .default)
+                .frame(minHeight: minHeight)
                 .focused(focusedField, equals: field)
         }
     }
