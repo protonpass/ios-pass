@@ -24,13 +24,13 @@ import Foundation
 @MainActor
 final class BugReportViewModel: ObservableObject {
     @Published var title = ""
-    @Published var feedback = ""
+    @Published var description = ""
     @Published private(set) var error: Error?
     @Published private(set) var hasSent = false
     @Published private(set) var isSending = false
     @Published var shouldSendLogs = true
 
-    var cantSend: Bool { title.isEmpty || feedback.count < 10 }
+    var cantSend: Bool { title.isEmpty || description.count < 10 }
 
     @Injected(\UseCasesContainer.sendUserBugReport) private var sendUserBugReport
 
@@ -44,7 +44,7 @@ final class BugReportViewModel: ObservableObject {
             self.isSending = true
             do {
                 if try await self.sendUserBugReport(with: self.title,
-                                                    and: self.feedback,
+                                                    and: self.description,
                                                     shouldSendLogs: self.shouldSendLogs) {
                     self.hasSent = true
                 } else {
