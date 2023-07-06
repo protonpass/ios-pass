@@ -98,6 +98,8 @@ private extension BugReportView {
             .padding()
             .frame(maxHeight: .infinity)
         }
+        .accentColor(PassColor.interactionNorm.toColor) // Remove when dropping iOS 15
+        .tint(PassColor.interactionNorm.toColor)
         .background(PassColor.backgroundNorm.toColor)
         .overlay {
             if viewModel.isSending {
@@ -113,6 +115,7 @@ private extension BugReportView {
             Text("Object of your report")
                 .sectionTitleText()
             TextField("Object", text: $viewModel.title)
+                .foregroundColor(PassColor.textNorm.toColor)
                 .onSubmit {
                     focusedField = .description
                 }
@@ -126,25 +129,37 @@ private extension BugReportView {
 }
 
 private extension BugReportView {
+    @ViewBuilder
     var descriptionSection: some View {
+        let title = "What went wrong?"
+        let placeholder =
+            // swiftlint:disable:next line_length
+            "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said."
         HStack(spacing: kItemDetailSectionPadding) {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Description")
+                Text(title)
                     .sectionTitleText()
 
-                TextEditorWithPlaceholder(text: $viewModel.feedback,
-                                          focusedField: $focusedField,
-                                          field: .description,
-                                          placeholder: "Give us a feedback")
+                // iOS 16 doesn't seem to support multiline placeholder
+                // workaround by using a ZStack
+                ZStack(alignment: .topLeading) {
+                    if viewModel.description.isEmpty {
+                        Text(placeholder)
+                            .foregroundColor(PassColor.textHint.toColor)
+                    }
+
+                    TextEditorWithPlaceholder(text: $viewModel.description,
+                                              focusedField: $focusedField,
+                                              field: .description,
+                                              placeholder: "",
+                                              minHeight: 150)
+                }
+                .animation(.default, value: viewModel.description.isEmpty)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
-            if !viewModel.feedback.isEmpty {
-                Button(action: {
-                    viewModel.feedback = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
+            .contentShape(Rectangle())
+            .onTapGesture {
+                focusedField = .description
             }
         }
         .padding(kItemDetailSectionPadding)
@@ -154,8 +169,14 @@ private extension BugReportView {
 
 private extension BugReportView {
     var includeLogsSection: some View {
-        Toggle("Should include logs", isOn: $viewModel.shouldSendLogs)
-            .padding(kItemDetailSectionPadding)
-            .roundedEditableSection()
+        VStack {
+            Toggle("Send error logs", isOn: $viewModel.shouldSendLogs)
+                .foregroundColor(PassColor.textNorm.toColor)
+                .padding(kItemDetailSectionPadding)
+                .roundedEditableSection()
+            // swiftlint:disable:next line_length
+            Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.")
+                .sectionTitleText()
+        }
     }
 }
