@@ -25,14 +25,10 @@ import UIComponents
 
 struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
-    @FocusState private var focusedField: Field?
+    @FocusState private var focused
     @StateObject private var viewModel = BugReportViewModel()
     var onError: (Error) -> Void
     var onSuccess: () -> Void
-
-    private enum Field {
-        case title, description
-    }
 
     var body: some View {
         NavigationView {
@@ -40,15 +36,15 @@ struct BugReportView: View {
                 .toolbar { toolbarContent }
                 .navigationTitle("Report a problem")
                 .navigationBarTitleDisplayMode(.inline)
-        }
-        .onFirstAppear {
-            if #available(iOS 16, *) {
-                focusedField = .title
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                    focusedField = .title
+                .onFirstAppear {
+                    if #available(iOS 16, *) {
+                        focused = true
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                            focused = true
+                        }
+                    }
                 }
-            }
         }
         .navigationViewStyle(.stack)
         .onChange(of: viewModel.hasSent) { value in
@@ -111,20 +107,33 @@ private extension BugReportView {
 
 private extension BugReportView {
     var objectSection: some View {
-        VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-            Text("Object of your report")
-                .sectionTitleText()
-            TextField("Object", text: $viewModel.title)
-                .foregroundColor(PassColor.textNorm.toColor)
-                .onSubmit {
-                    focusedField = .description
+        Menu(content: {
+            ForEach(BugReportObject.allCases, id: \.self) { object in
+                Button(action: {
+                    viewModel.object = object
+                }, label: {
+                    Text(object.description)
+                })
+            }
+        }, label: {
+            HStack {
+                if let object = viewModel.object {
+                    Text(object.description)
+                        .foregroundColor(PassColor.textNorm.toColor)
+                } else {
+                    Text("Object of your report")
+                        .foregroundColor(PassColor.textHint.toColor)
                 }
-                .focused($focusedField, equals: .title)
-                .contentShape(Rectangle())
-        }
+
+                Spacer()
+
+                ItemDetailSectionIcon(icon: IconProvider.chevronDown)
+            }
+            .contentShape(Rectangle())
+            .frame(maxWidth: .infinity, alignment: .leading)
+        })
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -149,8 +158,8 @@ private extension BugReportView {
                     }
 
                     TextEditorWithPlaceholder(text: $viewModel.description,
-                                              focusedField: $focusedField,
-                                              field: .description,
+                                              focusedField: $focused,
+                                              field: true,
                                               placeholder: "",
                                               minHeight: 150)
                 }
@@ -159,7 +168,7 @@ private extension BugReportView {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
             .onTapGesture {
-                focusedField = .description
+                focused = true
             }
         }
         .padding(kItemDetailSectionPadding)
