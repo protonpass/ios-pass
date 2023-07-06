@@ -26,9 +26,17 @@ import UIComponents
 struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
-    @StateObject private var viewModel = BugReportViewModel()
+    @StateObject private var viewModel: BugReportViewModel
     var onError: (Error) -> Void
     var onSuccess: () -> Void
+
+    init(planRepository: PassPlanRepositoryProtocol,
+         onError: @escaping (Error) -> Void,
+         onSuccess: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(planRepository: planRepository))
+        self.onError = onError
+        self.onSuccess = onSuccess
+    }
 
     var body: some View {
         NavigationView {
