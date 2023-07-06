@@ -39,7 +39,7 @@ struct CreateEditLoginView: View {
     @Namespace private var bottomID
 
     enum Field: Hashable {
-        case title, username, password, totp, websites, note, customField(String?)
+        case title, username, password, totp, websites, note
     }
 
     init(viewModel: CreateEditLoginViewModel) {
@@ -71,8 +71,7 @@ struct CreateEditLoginView: View {
                                         field: .note)
                             .id(noteID)
 
-                        EditCustomFieldSections(focusedField: $focusedField,
-                                                field: .customField(viewModel.recentlyAddedFieldId),
+                        EditCustomFieldSections(focusedFieldId: viewModel.recentlyAddedOrEditedFieldId,
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
@@ -94,7 +93,6 @@ struct CreateEditLoginView: View {
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
-                    case .customField: id = bottomID
                     default: id = nil
                     }
 
@@ -102,8 +100,10 @@ struct CreateEditLoginView: View {
                         withAnimation { proxy.scrollTo(id, anchor: .bottom) }
                     }
                 }
-                .onChange(of: viewModel.recentlyAddedFieldId) { newValue in
-                    focusedField = .customField(newValue)
+                .onChange(of: viewModel.recentlyAddedOrEditedFieldId) { _ in
+                    withAnimation {
+                        proxy.scrollTo(bottomID, anchor: .bottom)
+                    }
                 }
             }
             .background(Color(uiColor: PassColor.backgroundNorm))

@@ -24,13 +24,13 @@ public struct TextEditorWithPlaceholder<Field: Hashable>: View {
     @Binding var text: String
     let font: UIFont
     let fontWeight: UIFont.Weight
-    let focusedField: FocusState<Field?>.Binding
+    let focusedField: FocusState<Field>.Binding
     let field: Field
     let placeholder: String
     let onSubmit: (() -> Void)?
 
     public init(text: Binding<String>,
-                focusedField: FocusState<Field?>.Binding,
+                focusedField: FocusState<Field>.Binding,
                 field: Field,
                 placeholder: String,
                 font: UIFont = .body,
