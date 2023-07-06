@@ -126,7 +126,7 @@ private extension BugReportView {
                         .foregroundColor(PassColor.textNorm.toColor)
                 } else {
                     Text("I want to report a problem with...")
-                        .foregroundColor(PassColor.textHint.toColor)
+                        .foregroundColor(PassColor.textNorm.toColor)
                 }
 
                 Spacer()
@@ -151,7 +151,8 @@ private extension BugReportView {
         HStack(spacing: kItemDetailSectionPadding) {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text(title)
-                    .sectionTitleText()
+                    .font(.footnote)
+                    .foregroundColor(PassColor.textNorm.toColor)
 
                 // iOS 16 doesn't seem to support multiline placeholder
                 // workaround by using a ZStack
