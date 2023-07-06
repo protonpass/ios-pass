@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Factory
 import Foundation
 
@@ -47,10 +48,15 @@ final class BugReportViewModel: ObservableObject {
 
     var cantSend: Bool { object == nil || description.count < 10 }
 
+    private let planRepository: PassPlanRepositoryProtocol
     @Injected(\UseCasesContainer.sendUserBugReport) private var sendUserBugReport
 
     enum SendError: Error {
         case failedToSendReport
+    }
+
+    init(planRepository: PassPlanRepositoryProtocol) {
+        self.planRepository = planRepository
     }
 
     func send() {
@@ -59,7 +65,11 @@ final class BugReportViewModel: ObservableObject {
             guard let self else { return }
             self.isSending = true
             do {
-                if try await self.sendUserBugReport(with: self.object?.description ?? "",
+                let plan = try await planRepository.getPlan()
+                let planName = plan.type.capitalized
+                let objectDescription = self.object?.description ?? ""
+                let title = "[\(planName)] iOS Proton Pass: \(objectDescription)"
+                if try await self.sendUserBugReport(with: title,
                                                     and: self.description,
                                                     shouldSendLogs: self.shouldSendLogs) {
                     self.hasSent = true
