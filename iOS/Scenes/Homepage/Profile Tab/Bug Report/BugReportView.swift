@@ -44,6 +44,7 @@ struct BugReportView: View {
                 .toolbar { toolbarContent }
                 .navigationTitle("Report a problem")
                 .navigationBarTitleDisplayMode(.inline)
+                .showSpinner(viewModel.isSending)
                 .onFirstAppear {
                     if #available(iOS 16, *) {
                         focused = true
@@ -105,11 +106,6 @@ private extension BugReportView {
         .accentColor(PassColor.interactionNorm.toColor) // Remove when dropping iOS 15
         .tint(PassColor.interactionNorm.toColor)
         .background(PassColor.backgroundNorm.toColor)
-        .overlay {
-            if viewModel.isSending {
-                ProgressView()
-            }
-        }
     }
 }
 
