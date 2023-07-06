@@ -23,7 +23,7 @@ import SwiftUI
 import UIComponents
 
 enum FeedbackChannel: Int, CaseIterable, Identifiable {
-    case email = 0, reddit, uservoice
+    case bugReport = 0, reddit, uservoice
 
     var id: Int { rawValue }
 }
@@ -77,8 +77,8 @@ struct FeedbackChannelsView: View {
 extension FeedbackChannel {
     var icon: UIImage {
         switch self {
-        case .email:
-            return IconProvider.paperPlane
+        case .bugReport:
+            return IconProvider.bug
         case .reddit:
             return PassIcon.brandReddit
         case .uservoice:
@@ -88,8 +88,8 @@ extension FeedbackChannel {
 
     var description: String {
         switch self {
-        case .email:
-            return "Send us a message"
+        case .bugReport:
+            return "Report a problem"
         case .reddit:
             return "Write us on Reddit"
         case .uservoice:
@@ -97,10 +97,10 @@ extension FeedbackChannel {
         }
     }
 
-    var urlString: String {
+    var urlString: String? {
         switch self {
-        case .email:
-            return "mailto:pass@protonme.zendesk.com"
+        case .bugReport:
+            return nil
         case .reddit:
             return "https://www.reddit.com/r/ProtonPass"
         case .uservoice:
