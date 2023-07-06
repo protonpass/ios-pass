@@ -58,7 +58,7 @@ struct FeedbackView: View {
                 }
                 .overlay {
                     if viewModel.isSending {
-                        ProgressView("Sending ...")
+                        ProgressView()
                     }
                 }
                 .background(Color(uiColor: PassColor.backgroundNorm))
