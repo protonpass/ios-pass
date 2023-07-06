@@ -35,7 +35,6 @@ struct CredentialSearchResultView: View, Equatable {
             headerView
             searchListView
         }
-        .background(.random)
     }
 
     static func == (lhs: CredentialSearchResultView, rhs: CredentialSearchResultView) -> Bool {

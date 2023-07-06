@@ -176,7 +176,6 @@ private extension CredentialsView {
                     }
                     .plainListRow()
                     .padding([.top, .horizontal])
-
                     sortableSections(for: results.notMatchedItems.map { .normal($0) })
                 }
             }
@@ -385,13 +384,5 @@ private struct CredentialsSkeletonView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-    }
-}
-
-extension ShapeStyle where Self == Color {
-    static var random: Color {
-        Color(red: .random(in: 0...1),
-              green: .random(in: 0...1),
-              blue: .random(in: 0...1))
     }
 }
