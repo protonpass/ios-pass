@@ -1,5 +1,5 @@
 //
-// FeedbackView.swift
+// BugReportView.swift
 // Proton Pass - Created on 28/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,11 +23,12 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct FeedbackView: View {
+struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Field?
-    @StateObject private var viewModel = FeedbackViewModel()
-    var displayAlert: (Error) -> Void
+    @StateObject private var viewModel = BugReportViewModel()
+    var onError: (Error) -> Void
+    var onSuccess: () -> Void
 
     private enum Field {
         case title, description
@@ -36,40 +37,9 @@ struct FeedbackView: View {
     var body: some View {
         NavigationView {
             mainContainer
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        CircleButton(icon: IconProvider.chevronDown,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1,
-                                     action: dismiss.callAsFunction)
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        CircleButton(icon: IconProvider.paperPlane,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1) {
-                            viewModel.send()
-                        }.disabled(viewModel.cantSendFeedBack)
-                    }
-                }
-                .onChange(of: viewModel.hasSentFeedBack) { value in
-                    if value {
-                        dismiss()
-                    }
-                }
-                .overlay {
-                    if viewModel.isSending {
-                        ProgressView()
-                    }
-                }
-                .background(Color(uiColor: PassColor.backgroundNorm))
-                .navigationTitle("Feedback")
+                .toolbar { toolbarContent }
+                .navigationTitle("Bug Report")
                 .navigationBarTitleDisplayMode(.inline)
-                .onReceive(viewModel.$error) { error in
-                    guard let error else {
-                        return
-                    }
-                    displayAlert(error)
-                }
         }
         .onFirstAppear {
             if #available(iOS 16, *) {
@@ -81,26 +51,64 @@ struct FeedbackView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .onChange(of: viewModel.hasSent) { value in
+            if value {
+                // Do not automatically dismiss here but let the coordinator dismiss
+                // Because we need to show a banner after the view is fully dismissed
+                onSuccess()
+            }
+        }
+        .onReceive(viewModel.$error) { error in
+            if let error {
+                onError(error)
+            }
+        }
     }
 }
 
-private extension FeedbackView {
+private extension BugReportView {
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            CircleButton(icon: IconProvider.chevronDown,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         action: dismiss.callAsFunction)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            CircleButton(icon: IconProvider.paperPlane,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1) {
+                viewModel.send()
+            }.disabled(viewModel.cantSend)
+        }
+    }
+}
+
+private extension BugReportView {
     var mainContainer: some View {
-        VStack {
-            feedbackObjectField
-            Toggle("Should include logs", isOn: $viewModel.shouldSendLogs)
-                .padding(kItemDetailSectionPadding)
-                .roundedEditableSection()
-//            feedbackTag
-            feedBackDescription
-            Spacer()
-        }.padding()
+        ScrollView {
+            VStack {
+                objectSection
+                descriptionSection
+                includeLogsSection
+                Spacer()
+            }
+            .padding()
+            .frame(maxHeight: .infinity)
+        }
+        .background(PassColor.backgroundNorm.toColor)
+        .overlay {
+            if viewModel.isSending {
+                ProgressView()
+            }
+        }
     }
 }
 
-private extension FeedbackView {
-    @ViewBuilder
-    var feedbackObjectField: some View {
+private extension BugReportView {
+    var objectSection: some View {
         VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
             Text("Object of your report")
                 .sectionTitleText()
@@ -109,7 +117,6 @@ private extension FeedbackView {
                     focusedField = .description
                 }
                 .focused($focusedField, equals: .title)
-
                 .contentShape(Rectangle())
         }
         .padding(kItemDetailSectionPadding)
@@ -118,21 +125,8 @@ private extension FeedbackView {
     }
 }
 
-private extension FeedbackView {
-    @ViewBuilder
-    var feedbackTag: some View {
-        Picker("Please choose a tag", selection: $viewModel.selectedTag) {
-            ForEach(FeedbackTag.allCases, id: \.self) {
-                Text($0.rawValue)
-            }
-        }
-        .pickerStyle(.segmented)
-    }
-}
-
-private extension FeedbackView {
-    @ViewBuilder
-    var feedBackDescription: some View {
+private extension BugReportView {
+    var descriptionSection: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Description")
@@ -155,5 +149,13 @@ private extension FeedbackView {
         }
         .padding(kItemDetailSectionPadding)
         .roundedEditableSection()
+    }
+}
+
+private extension BugReportView {
+    var includeLogsSection: some View {
+        Toggle("Should include logs", isOn: $viewModel.shouldSendLogs)
+            .padding(kItemDetailSectionPadding)
+            .roundedEditableSection()
     }
 }
