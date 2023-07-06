@@ -353,6 +353,7 @@
 		3562BCF529BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */; };
 		3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF629BDE77900564508 /* AnimatingGradient.swift */; };
 		3562D3C229DF670200981D7D /* SquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D3C129DF670200981D7D /* SquircleThumbnail.swift */; };
+		3562D7272A56F88500232BBE /* View+ShowSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562D7262A56F88500232BBE /* View+ShowSpinner.swift */; };
 		3563401B2A2383BB00E22BFE /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401A2A2383BB00E22BFE /* UserSettings.swift */; };
 		3563401D2A23849200E22BFE /* GetUserSettingsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */; };
 		3563401F2A23860800E22BFE /* RemoteUserSettingsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */; };
@@ -1145,6 +1146,7 @@
 		3562BCF429BDC3E300564508 /* ScrollIndicatorsHiddenModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollIndicatorsHiddenModifier.swift; sourceTree = "<group>"; };
 		3562BCF629BDE77900564508 /* AnimatingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingGradient.swift; sourceTree = "<group>"; };
 		3562D3C129DF670200981D7D /* SquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquircleThumbnail.swift; sourceTree = "<group>"; };
+		3562D7262A56F88500232BBE /* View+ShowSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ShowSpinner.swift"; sourceTree = "<group>"; };
 		3563401A2A2383BB00E22BFE /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserSettingsEndpoint.swift; sourceTree = "<group>"; };
 		3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteUserSettingsDatasource.swift; sourceTree = "<group>"; };
@@ -2657,6 +2659,7 @@
 				354E9AAD2A44E0F500AD2B9A /* View+OnReceiveNotification.swift */,
 				35570A7F2926321B00125727 /* View+OpacityReduced.swift */,
 				3552273329DCBFEA00B9607E /* View+PlainListRow.swift */,
+				3562D7262A56F88500232BBE /* View+ShowSpinner.swift */,
 				3560844D29DDE2BE001F7487 /* Colors.xcassets */,
 				35526B5A28D115340017BB53 /* Icons.xcassets */,
 			);
@@ -4782,6 +4785,7 @@
 				355DC72A29E15EAF00946867 /* UIFont.swift in Sources */,
 				358C42A828D48DFB00ADE305 /* DiscardChangesAlertModifier.swift in Sources */,
 				5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */,
+				3562D7272A56F88500232BBE /* View+ShowSpinner.swift in Sources */,
 				355DC72729E15EAF00946867 /* Representable.swift in Sources */,
 				3562BC2F29950680003FCB13 /* View+OnFirstAppear.swift in Sources */,
 			);
