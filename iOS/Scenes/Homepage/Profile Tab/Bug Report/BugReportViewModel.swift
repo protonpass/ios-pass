@@ -21,16 +21,31 @@
 import Factory
 import Foundation
 
+enum BugReportObject: CaseIterable {
+    case autofill, autosave, aliases, syncing, featureRequest, other
+
+    var description: String {
+        switch self {
+        case .autofill: return "Autofill"
+        case .autosave: return "Autosave"
+        case .aliases: return "Aliases"
+        case .syncing: return "Syncing"
+        case .featureRequest: return "Feature request"
+        case .other: return "Other"
+        }
+    }
+}
+
 @MainActor
 final class BugReportViewModel: ObservableObject {
-    @Published var title = ""
+    @Published var object: BugReportObject?
     @Published var description = ""
     @Published private(set) var error: Error?
     @Published private(set) var hasSent = false
     @Published private(set) var isSending = false
     @Published var shouldSendLogs = true
 
-    var cantSend: Bool { title.isEmpty || description.count < 10 }
+    var cantSend: Bool { object == nil || description.count < 10 }
 
     @Injected(\UseCasesContainer.sendUserBugReport) private var sendUserBugReport
 
@@ -39,11 +54,12 @@ final class BugReportViewModel: ObservableObject {
     }
 
     func send() {
+        assert(object != nil, "An object must be selected")
         Task { [weak self] in
             guard let self else { return }
             self.isSending = true
             do {
-                if try await self.sendUserBugReport(with: self.title,
+                if try await self.sendUserBugReport(with: self.object?.description ?? "",
                                                     and: self.description,
                                                     shouldSendLogs: self.shouldSendLogs) {
                     self.hasSent = true
