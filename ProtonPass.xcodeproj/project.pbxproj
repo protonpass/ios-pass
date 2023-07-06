@@ -2172,6 +2172,7 @@
 				356BC35829D6F36200F03497 /* OptionRow.swift */,
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
+				5BE5BDEB2A4C753A007CBE1B /* Feedback */,
 				353739DF29EAE84000A3255E /* QA Features */,
 				356BC35329D6CDA300F03497 /* Settings */,
 			);
@@ -2742,7 +2743,6 @@
 		35E5070B286FB57800A3F6EA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				5BE5BDEB2A4C753A007CBE1B /* FeedBackView */,
 				35E5070C286FB58800A3F6EA /* App */,
 				35F8CCFE29B617510017DBC6 /* Homepage */,
 				354E9A9A2A443CA200AD2B9A /* LocalAuthentication */,
@@ -3010,13 +3010,13 @@
 			path = Configurations;
 			sourceTree = "<group>";
 		};
-		5BE5BDEB2A4C753A007CBE1B /* FeedBackView */ = {
+		5BE5BDEB2A4C753A007CBE1B /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
 				5BE5BDF02A4C7D41007CBE1B /* FeedbackView.swift */,
 				5B503FD32A4C7ED900E6681C /* FeedbackViewModel.swift */,
 			);
-			path = FeedBackView;
+			path = Feedback;
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
