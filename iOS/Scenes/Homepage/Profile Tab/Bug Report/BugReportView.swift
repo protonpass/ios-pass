@@ -125,7 +125,7 @@ private extension BugReportView {
                     Text(object.description)
                         .foregroundColor(PassColor.textNorm.toColor)
                 } else {
-                    Text("Object of your report")
+                    Text("I want to report a problem with...")
                         .foregroundColor(PassColor.textHint.toColor)
                 }
 
