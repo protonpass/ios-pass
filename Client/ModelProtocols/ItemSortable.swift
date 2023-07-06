@@ -20,7 +20,7 @@
 
 import Core
 
-public enum SortType: Int, CaseIterable {
+public enum SortType: Int, CaseIterable, Equatable {
     case mostRecent = 0, alphabeticalAsc, alphabeticalDesc, newestToOldest, oldestToNewest
 
     public var title: String {

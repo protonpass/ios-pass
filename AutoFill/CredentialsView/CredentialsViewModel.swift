@@ -74,9 +74,18 @@ enum CredentialsViewState: Equatable {
     }
 }
 
-enum CredentialItem {
+enum CredentialItem: Equatable, Hashable {
     case normal(ItemUiModel)
     case searchResult(ItemSearchResult)
+
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case let .normal(item):
+            hasher.combine(item.id)
+        case let .searchResult(item):
+            hasher.combine(item.id)
+        }
+    }
 }
 
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
