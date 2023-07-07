@@ -242,6 +242,6 @@ private struct ItemSearchResultView: View, Equatable {
     }
 
     static func == (lhs: ItemSearchResultView, rhs: ItemSearchResultView) -> Bool {
-        lhs.result.id == rhs.result.id // or whatever is equal
+        lhs.result == rhs.result // or whatever is equal
     }
 }
