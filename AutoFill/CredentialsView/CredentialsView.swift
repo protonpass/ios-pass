@@ -49,15 +49,15 @@ struct CredentialsView: View {
         .alert("Associate URL?",
                isPresented: $viewModel.isShowingConfirmationAlert,
                actions: {
-                   if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem {
+                   if let information = viewModel.notMatchedItemInformation {
                        Button(action: {
-                           viewModel.associateAndAutofill(item: selectedNotMatchedItem)
+                           viewModel.associateAndAutofill(item: information.item)
                        }, label: {
                            Text("Associate and autofill")
                        })
 
                        Button(action: {
-                           viewModel.select(item: selectedNotMatchedItem)
+                           viewModel.select(item: information.item)
                        }, label: {
                            Text("Just autofill")
                        })
@@ -68,10 +68,9 @@ struct CredentialsView: View {
                    }
                },
                message: {
-                   if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem as? TitledItemIdentifiable,
-                      let schemeAndHost = viewModel.urls.first?.schemeAndHost {
+                   if let information = viewModel.notMatchedItemInformation {
                        // swiftlint:disable:next line_length
-                       Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.itemTitle)\"?")
+                       Text("Would you want to associate \"\(information.url)\" with \"\(information.item.itemTitle)\"?")
                    }
                })
     }

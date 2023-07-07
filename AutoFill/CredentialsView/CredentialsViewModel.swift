@@ -25,17 +25,6 @@ import Core
 import CryptoKit
 import SwiftUI
 
-struct CredentialsFetchResult: Equatable {
-    let vaults: [Vault]
-    let searchableItems: [SearchableItem]
-    let matchedItems: [ItemUiModel]
-    let notMatchedItems: [ItemUiModel]
-
-    var isEmpty: Bool {
-        searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
-    }
-}
-
 protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToShowLoadingHud()
     func credentialsViewModelWantsToHideLoadingHud()
@@ -92,7 +81,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var results: CredentialsFetchResult?
     @Published private(set) var planType: PassPlan.PlanType?
     @Published var query = ""
-    @Published var selectedNotMatchedItem: ItemIdentifiable?
+    @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var isShowingConfirmationAlert = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -228,7 +217,7 @@ extension CredentialsViewModel {
                 try await self.itemRepository.updateItem(oldItem: encryptedItem.item,
                                                          newItemContent: newContent,
                                                          shareId: encryptedItem.shareId)
-                self.select(item: item)
+                self.autoFill(item: item)
                 self.logger.info("Associate and autofill successfully \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
@@ -238,17 +227,25 @@ extension CredentialsViewModel {
     }
 
     func select(item: ItemIdentifiable) {
-        guard let credentialsFetchResult = results else { return }
-        let isMatched = credentialsFetchResult.matchedItems
-            .contains { $0.itemId == item.itemId && $0.shareId == item.shareId }
+        assert(results != nil, "Credentials are not fetched")
+        guard let results else { return }
 
-        if !isMatched,
+        // Check if given URL is valid before proposing "associate & autofill"
+        if notMatchedItemInformation == nil,
            let schemeAndHost = urls.first?.schemeAndHost,
-           !schemeAndHost.isEmpty {
-            selectedNotMatchedItem = item
+           !schemeAndHost.isEmpty,
+           let notMatchedItem = results.notMatchedItems
+           .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
+            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
+                                                                      url: schemeAndHost)
             return
         }
 
+        // Given URL is not valid or item is matched, in either case just autofill normally
+        autoFill(item: item)
+    }
+
+    func autoFill(item: ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -340,13 +337,10 @@ private extension CredentialsViewModel {
             }
             .store(in: &cancellables)
 
-        $selectedNotMatchedItem
+        $notMatchedItemInformation
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard self?.urls.first != nil else {
-                    return
-                }
                 self?.isShowingConfirmationAlert = true
             }
             .store(in: &cancellables)
