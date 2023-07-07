@@ -25,7 +25,7 @@ import SwiftUI
 public struct SensitiveTextField<Field: Hashable>: View {
     @Binding var text: String
     let placeholder: String
-    let focusedField: FocusState<Field?>.Binding
+    let focusedField: FocusState<Field>.Binding
     let field: Field
     let onSubmit: (() -> Void)?
 
@@ -34,7 +34,7 @@ public struct SensitiveTextField<Field: Hashable>: View {
 
     public init(text: Binding<String>,
                 placeholder: String,
-                focusedField: FocusState<Field?>.Binding,
+                focusedField: FocusState<Field>.Binding,
                 field: Field,
                 onSubmit: (() -> Void)? = nil) {
         _text = text

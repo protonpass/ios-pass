@@ -127,12 +127,15 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         delegate = self
         let itemsTabViewController = UIHostingController(rootView: itemsTabView)
         itemsTabViewController.tabBarItem.image = IconProvider.listBullets
+        itemsTabViewController.tabBarItem.accessibilityHint = "Homepage tab"
 
         let dummyViewController = UIViewController()
         dummyViewController.tabBarItem.image = IconProvider.plus
+        dummyViewController.tabBarItem.accessibilityHint = "Create new item button"
 
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = IconProvider.user
+        profileTabViewController.tabBarItem.accessibilityHint = "Profile tab"
         self.profileTabViewController = profileTabViewController
 
         viewControllers = [itemsTabViewController, dummyViewController, profileTabViewController]
