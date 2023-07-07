@@ -37,7 +37,6 @@ struct CredentialsView: View {
         ZStack {
             Color(uiColor: PassColor.backgroundNorm)
                 .ignoresSafeArea()
-
             stateViews
         }
         .theme(viewModel.preferences.theme)
@@ -153,7 +152,7 @@ private extension CredentialsView {
                             .foregroundColor(Color(uiColor: PassColor.textNorm))
                     })
                 } else {
-                    section(for: results.matchedItems.map { .normal($0) },
+                    section(for: results.matchedItems,
                             headerTitle: matchedItemsHeaderTitle,
                             headerColor: PassColor.textNorm,
                             headerFontWeight: .bold)
@@ -176,7 +175,7 @@ private extension CredentialsView {
                     }
                     .plainListRow()
                     .padding([.top, .horizontal])
-                    sortableSections(for: results.notMatchedItems.map { .normal($0) })
+                    sortableSections(for: results.notMatchedItems)
                 }
             }
             .listStyle(.plain)
@@ -215,7 +214,7 @@ private extension CredentialsView {
 
 private extension CredentialsView {
     @ViewBuilder
-    func section(for items: [CredentialItem],
+    func section(for items: [some CredentialItem],
                  headerTitle: String,
                  headerColor: UIColor = PassColor.textWeak,
                  headerFontWeight: Font.Weight = .regular) -> some View {
@@ -224,17 +223,11 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    switch item {
-                    case let .normal(normalItem):
-                        itemRow(for: normalItem)
-                            .plainListRow()
-                            .padding(.horizontal)
-                    case let .searchResult(searchResultItem):
-                        itemRow(for: searchResultItem)
-                            .plainListRow()
-                            .padding(.horizontal)
-                            .padding(.bottom)
-                    }
+                    GenericCredentialItemRow(item: item,
+                                             favIconRepository: viewModel.favIconRepository,
+                                             selectItem: viewModel.select)
+                        .plainListRow()
+                        .padding(.horizontal)
                 }
             }, header: {
                 Text(headerTitle)
@@ -246,7 +239,7 @@ private extension CredentialsView {
     }
 
     @ViewBuilder
-    func sortableSections(for items: [CredentialItem]) -> some View {
+    func sortableSections(for items: [some CredentialItem]) -> some View {
         switch viewModel.selectedSortType {
         case .mostRecent:
             sections(for: items.mostRecentSortResult())
@@ -261,7 +254,7 @@ private extension CredentialsView {
         }
     }
 
-    func sections(for result: MostRecentSortResult<CredentialItem>) -> some View {
+    func sections(for result: MostRecentSortResult<some CredentialItem>) -> some View {
         Group {
             section(for: result.today, headerTitle: "Today")
             section(for: result.yesterday, headerTitle: "Yesterday")
@@ -274,66 +267,17 @@ private extension CredentialsView {
         }
     }
 
-    func sections(for result: AlphabeticalSortResult<CredentialItem>) -> some View {
+    func sections(for result: AlphabeticalSortResult<some CredentialItem>) -> some View {
         ForEach(result.buckets, id: \.letter) { bucket in
             section(for: bucket.items, headerTitle: bucket.letter.character)
                 .id(bucket.letter.character)
         }
     }
 
-    func sections(for result: MonthYearSortResult<CredentialItem>) -> some View {
+    func sections(for result: MonthYearSortResult<some CredentialItem>) -> some View {
         ForEach(result.buckets, id: \.monthYear) { bucket in
             section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
         }
-    }
-
-    func itemRow(for item: ItemUiModel) -> some View {
-        Button(action: {
-            select(item: item)
-        }, label: {
-            GeneralItemRow(thumbnailView: {
-                               ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                     repository: viewModel.favIconRepository)
-                           },
-                           title: item.title,
-                           description: item.description)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        })
-    }
-
-    func itemRow(for item: ItemSearchResult) -> some View {
-        Button(action: {
-            select(item: item)
-        }, label: {
-            HStack {
-                VStack {
-                    ItemSquircleThumbnail(data: item.thumbnailData(),
-                                          repository: viewModel.favIconRepository)
-                }
-                .frame(maxHeight: .infinity, alignment: .top)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    HighlightText(highlightableText: item.highlightableTitle)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        ForEach(0..<item.highlightableDetail.count, id: \.self) { index in
-                            let eachDetail = item.highlightableDetail[index]
-                            if !eachDetail.fullText.isEmpty {
-                                HighlightText(highlightableText: eachDetail)
-                                    .font(.callout)
-                                    .foregroundColor(Color(.secondaryLabel))
-                                    .lineLimit(1)
-                            }
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        })
-    }
-
-    func select(item: TitledItemIdentifiable) {
-        viewModel.select(item: item)
     }
 }
 

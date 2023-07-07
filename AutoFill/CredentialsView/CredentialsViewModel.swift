@@ -60,11 +60,10 @@ enum CredentialsViewState: Equatable {
 
     static func == (lhs: CredentialsViewState, rhs: CredentialsViewState) -> Bool {
         switch (lhs, rhs) {
-        case (.loading, .loading):
-            return true
         case let (.error(lhsError), .error(rhsError)):
             return lhsError.localizedDescription == rhsError.localizedDescription
         case (.idle, .idle),
+             (.loading, .loading),
              (.searching, .searching),
              (.searchResults, .searchResults):
             return true
@@ -74,18 +73,18 @@ enum CredentialsViewState: Equatable {
     }
 }
 
-enum CredentialItem: Equatable, Hashable {
-    case normal(ItemUiModel)
-    case searchResult(ItemSearchResult)
+protocol TitledItemIdentifiable: ItemIdentifiable {
+    var itemTitle: String { get }
+}
 
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case let .normal(item):
-            hasher.combine(item.id)
-        case let .searchResult(item):
-            hasher.combine(item.id)
-        }
-    }
+protocol CredentialItem: DateSortable, AlphabeticalSortable, TitledItemIdentifiable, Identifiable {}
+
+extension ItemUiModel: CredentialItem {
+    var itemTitle: String { title }
+}
+
+extension ItemSearchResult: CredentialItem {
+    var itemTitle: String { highlightableTitle.fullText }
 }
 
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
@@ -201,17 +200,20 @@ extension CredentialsViewModel {
     }
 
     func associateAndAutofill(item: ItemIdentifiable) {
-        Task { @MainActor in
-            defer { delegate?.credentialsViewModelWantsToHideLoadingHud() }
-            delegate?.credentialsViewModelWantsToShowLoadingHud()
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            defer { self.delegate?.credentialsViewModelWantsToHideLoadingHud() }
+            self.delegate?.credentialsViewModelWantsToShowLoadingHud()
             do {
-                logger.trace("Associate and autofilling \(item.debugInformation)")
-                let encryptedItem = try await getItemTask(item: item).value
+                self.logger.trace("Associate and autofilling \(item.debugInformation)")
+                let encryptedItem = try await self.getItemTask(item: item).value
                 let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 guard case let .login(oldData) = oldContent.contentData else {
                     throw PPError.credentialProvider(.notLogInItem)
                 }
-                guard let newUrl = urls.first?.schemeAndHost, !newUrl.isEmpty else {
+                guard let newUrl = self.urls.first?.schemeAndHost, !newUrl.isEmpty else {
                     throw PPError.credentialProvider(.invalidURL(urls.first))
                 }
                 let newLoginData = ItemContentData.login(.init(username: oldData.username,
@@ -223,14 +225,14 @@ extension CredentialsViewModel {
                                                      itemUuid: oldContent.itemUuid,
                                                      data: newLoginData,
                                                      customFields: oldContent.customFields)
-                try await itemRepository.updateItem(oldItem: encryptedItem.item,
-                                                    newItemContent: newContent,
-                                                    shareId: encryptedItem.shareId)
-                select(item: item)
-                logger.info("Associate and autofill successfully \(item.debugInformation)")
+                try await self.itemRepository.updateItem(oldItem: encryptedItem.item,
+                                                         newItemContent: newContent,
+                                                         shareId: encryptedItem.shareId)
+                self.select(item: item)
+                self.logger.info("Associate and autofill successfully \(item.debugInformation)")
             } catch {
-                logger.error(error)
-                state = .error(error)
+                self.logger.error(error)
+                self.state = .error(error)
             }
         }
     }
@@ -357,7 +359,7 @@ private extension CredentialsViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.failedToGetOrCreateSymmetricKey
+                throw PPError.CredentialProviderFailureReason.generic
             }
             guard let encryptedItem =
                 try await self.itemRepository.getItem(shareId: item.shareId,
@@ -371,7 +373,7 @@ private extension CredentialsViewModel {
     func fetchCredentialsTask(plan: PassPlan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.failedToGetOrCreateSymmetricKey
+                throw PPError.CredentialProviderFailureReason.generic
             }
             if !self.preferences.didReencryptAllItems {
                 try await self.itemRepository.reencryptAllItemsTemp()
@@ -441,7 +443,7 @@ private extension CredentialsViewModel {
     func getCredentialTask(for item: ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.failedToGetOrCreateSymmetricKey
+                throw PPError.CredentialProviderFailureReason.generic
             }
             guard let itemContent =
                 try await self.itemRepository.getItemContent(shareId: item.shareId,
@@ -520,47 +522,6 @@ extension CredentialsViewModel: SyncEventLoopDelegate {
     func syncEventLoopDidFailLoop(error: Error) {
         // Silently fail & not show error to users
         logger.error(error)
-    }
-}
-
-protocol TitledItemIdentifiable: ItemIdentifiable {
-    var itemTitle: String { get }
-}
-
-extension ItemUiModel: TitledItemIdentifiable {
-    var itemTitle: String { title }
-}
-
-extension ItemSearchResult: TitledItemIdentifiable {
-    var itemTitle: String { highlightableTitle.fullText }
-}
-
-extension CredentialItem: DateSortable, AlphabeticalSortable, Identifiable {
-    var id: String {
-        switch self {
-        case let .normal(itemUiModel):
-            return itemUiModel.itemId + itemUiModel.shareId
-        case let .searchResult(itemSearchResult):
-            return itemSearchResult.itemId + itemSearchResult.shareId
-        }
-    }
-
-    var dateForSorting: Date {
-        switch self {
-        case let .normal(itemUiModel):
-            return itemUiModel.dateForSorting
-        case let .searchResult(itemSearchResult):
-            return itemSearchResult.dateForSorting
-        }
-    }
-
-    var alphabeticalSortableString: String {
-        switch self {
-        case let .normal(itemUiModel):
-            return itemUiModel.alphabeticalSortableString
-        case let .searchResult(itemSearchResult):
-            return itemSearchResult.alphabeticalSortableString
-        }
     }
 }
 
