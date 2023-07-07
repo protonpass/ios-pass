@@ -344,6 +344,16 @@ private extension CredentialsViewModel {
                 self?.isShowingConfirmationAlert = true
             }
             .store(in: &cancellables)
+
+        $isShowingConfirmationAlert
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] showing in
+                guard !showing else {
+                    return
+                }
+                self?.notMatchedItemInformation = nil
+            }
+            .store(in: &cancellables)
     }
 }
 
