@@ -251,38 +251,38 @@ extension SearchViewModel {
     }
 
     func viewDetail(of item: ItemIdentifiable) {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
             do {
-                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
-                                                                             itemId: item.itemId) {
-                    try await searchEntryDatasource.upsert(item: item, date: .now)
-                    try await refreshSearchHistory()
-                    delegate?.searchViewModelWantsToViewDetail(of: itemContent)
+                if let itemContent = try await self?.itemRepository.getItemContent(shareId: item.shareId,
+                                                                                   itemId: item.itemId) {
+                    try await self?.searchEntryDatasource.upsert(item: item, date: .now)
+                    try await self?.refreshSearchHistory()
+                    self?.delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
             } catch {
-                delegate?.searchViewModelWantsDidEncounter(error: error)
+                self?.delegate?.searchViewModelWantsDidEncounter(error: error)
             }
         }
     }
 
     func removeFromHistory(_ item: ItemIdentifiable) {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
             do {
-                try await searchEntryDatasource.remove(item: item)
-                try await refreshSearchHistory()
+                try await self?.searchEntryDatasource.remove(item: item)
+                try await self?.refreshSearchHistory()
             } catch {
-                delegate?.searchViewModelWantsDidEncounter(error: error)
+                self?.delegate?.searchViewModelWantsDidEncounter(error: error)
             }
         }
     }
 
     func removeAllSearchHistory() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
             do {
-                try await searchEntryDatasource.removeAllEntries()
-                try await refreshSearchHistory()
+                try await self?.searchEntryDatasource.removeAllEntries()
+                try await self?.refreshSearchHistory()
             } catch {
-                delegate?.searchViewModelWantsDidEncounter(error: error)
+                self?.delegate?.searchViewModelWantsDidEncounter(error: error)
             }
         }
     }
