@@ -64,7 +64,7 @@ private extension CredentialSearchResultView {
     var searchListView: some View {
         ScrollViewReader { proxy in
             List {
-                sortableSections(for: results.map { .searchResult($0) })
+                sortableSections(for: results)
             }
             .listStyle(.plain)
             .animation(.default, value: results.count)
@@ -81,7 +81,7 @@ private extension CredentialSearchResultView {
     }
 
     @ViewBuilder
-    func sortableSections(for items: [CredentialItem]) -> some View {
+    func sortableSections(for items: [some CredentialItem]) -> some View {
         switch selectedSortType {
         case .mostRecent:
             sections(for: items.mostRecentSortResult())
@@ -96,7 +96,7 @@ private extension CredentialSearchResultView {
         }
     }
 
-    func sections(for result: MostRecentSortResult<CredentialItem>) -> some View {
+    func sections(for result: MostRecentSortResult<some CredentialItem>) -> some View {
         Group {
             section(for: result.today, headerTitle: "Today")
             section(for: result.yesterday, headerTitle: "Yesterday")
@@ -109,21 +109,21 @@ private extension CredentialSearchResultView {
         }
     }
 
-    func sections(for result: AlphabeticalSortResult<CredentialItem>) -> some View {
+    func sections(for result: AlphabeticalSortResult<some CredentialItem>) -> some View {
         ForEach(result.buckets, id: \.letter) { bucket in
             section(for: bucket.items, headerTitle: bucket.letter.character)
                 .id(bucket.letter.character)
         }
     }
 
-    func sections(for result: MonthYearSortResult<CredentialItem>) -> some View {
+    func sections(for result: MonthYearSortResult<some CredentialItem>) -> some View {
         ForEach(result.buckets, id: \.monthYear) { bucket in
             section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
         }
     }
 
     @ViewBuilder
-    func section(for items: [CredentialItem],
+    func section(for items: [some CredentialItem],
                  headerTitle: String,
                  headerColor: UIColor = PassColor.textWeak,
                  headerFontWeight: Font.Weight = .regular) -> some View {
@@ -132,17 +132,11 @@ private extension CredentialSearchResultView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    switch item {
-                    case let .normal(normalItem):
-                        itemRow(for: normalItem)
-                            .plainListRow()
-                            .padding(.horizontal)
-                    case let .searchResult(searchResultItem):
-                        itemRow(for: searchResultItem)
-                            .plainListRow()
-                            .padding(.horizontal)
-                            .padding(.bottom)
-                    }
+                    GenericCredentialItemRow(item: item,
+                                             favIconRepository: favIconRepository,
+                                             selectItem: selectItem)
+                        .plainListRow()
+                        .padding(.horizontal)
                 }
             }, header: {
                 Text(headerTitle)
@@ -151,50 +145,5 @@ private extension CredentialSearchResultView {
                     .foregroundColor(Color(uiColor: headerColor))
             })
         }
-    }
-
-    func itemRow(for item: ItemUiModel) -> some View {
-        Button(action: {
-            selectItem(item)
-        }, label: {
-            GeneralItemRow(thumbnailView: {
-                               ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                     repository: favIconRepository)
-                           },
-                           title: item.title,
-                           description: item.description)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        })
-    }
-
-    func itemRow(for item: ItemSearchResult) -> some View {
-        Button(action: {
-            selectItem(item)
-        }, label: {
-            HStack {
-                VStack {
-                    ItemSquircleThumbnail(data: item.thumbnailData(),
-                                          repository: favIconRepository)
-                }
-                .frame(maxHeight: .infinity, alignment: .top)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    HighlightText(highlightableText: item.highlightableTitle)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        ForEach(0..<item.highlightableDetail.count, id: \.self) { index in
-                            let eachDetail = item.highlightableDetail[index]
-                            if !eachDetail.fullText.isEmpty {
-                                HighlightText(highlightableText: eachDetail)
-                                    .font(.callout)
-                                    .foregroundColor(Color(.secondaryLabel))
-                                    .lineLimit(1)
-                            }
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        })
     }
 }

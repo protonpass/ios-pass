@@ -641,6 +641,7 @@
 		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BE5BDF12A4C7D41007CBE1B /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5BDF02A4C7D41007CBE1B /* FeedbackView.swift */; };
 		5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */; };
+		5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1403,6 +1404,7 @@
 		5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		5BE5BDF02A4C7D41007CBE1B /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialSearchResultView.swift; sourceTree = "<group>"; };
+		5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCredentialItemRow.swift; sourceTree = "<group>"; };
 		5ED83C579352551B8FC8475F /* Pods-macOS.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-tf.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-tf.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
@@ -3023,11 +3025,20 @@
 		5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */ = {
 			isa = PBXGroup;
 			children = (
+				5BFFB4FE2A57FE4F00C2D1F9 /* SubUIElements */,
 				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
 				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
 				5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */,
 			);
 			path = CredentialsView;
+			sourceTree = "<group>";
+		};
+		5BFFB4FE2A57FE4F00C2D1F9 /* SubUIElements */ = {
+			isa = PBXGroup;
+			children = (
+				5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */,
+			);
+			path = SubUIElements;
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
@@ -4162,6 +4173,7 @@
 				35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				3560844929DDA344001F7487 /* OptionRow.swift in Sources */,
+				5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */,
 				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
 				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				3561C9FB29E6E79B00D6E518 /* VaultColor.swift in Sources */,
