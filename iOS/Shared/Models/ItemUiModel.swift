@@ -21,7 +21,7 @@
 import Client
 import CryptoKit
 
-struct ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable, Hashable {
+struct ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable, Hashable, Equatable {
     let itemId: String
     let shareId: String
     let type: ItemContentType

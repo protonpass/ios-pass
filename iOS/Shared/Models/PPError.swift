@@ -69,12 +69,13 @@ extension PPError {
 // MARK: - CredentialProviderFailureReason
 
 extension PPError {
-    enum CredentialProviderFailureReason: CustomDebugStringConvertible {
+    enum CredentialProviderFailureReason: Error, CustomDebugStringConvertible {
         case failedToAuthenticate
         case invalidURL(URL?)
         case missingRecordIdentifier
         case notLogInItem
         case userCancelled
+        case generic
 
         var debugDescription: String {
             switch self {
@@ -88,6 +89,8 @@ extension PPError {
                 return "Not log in item"
             case .userCancelled:
                 return "User cancelled"
+            case .generic:
+                return "Something went wrong"
             }
         }
     }

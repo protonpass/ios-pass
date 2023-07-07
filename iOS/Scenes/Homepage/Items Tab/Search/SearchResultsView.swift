@@ -23,7 +23,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-struct SearchResultsView: View {
+struct SearchResultsView: View, Equatable {
     @State private var itemToBePermanentlyDeleted: ItemTypeIdentifiable?
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
@@ -100,6 +100,10 @@ struct SearchResultsView: View {
                                                             .deletePermanently(itemToBePermanentlyDeleted)
                                                     }
                                                 }))
+    }
+
+    static func == (lhs: SearchResultsView, rhs: SearchResultsView) -> Bool {
+        lhs.results.hashValue == rhs.results.hashValue
     }
 }
 
@@ -192,7 +196,7 @@ private extension SearchResultsView {
     }
 }
 
-private struct ItemSearchResultView: View {
+private struct ItemSearchResultView: View, Equatable {
     let result: ItemSearchResult
     let favIconRepository: FavIconRepositoryProtocol
 
@@ -235,5 +239,9 @@ private struct ItemSearchResultView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .contentShape(Rectangle())
+    }
+
+    static func == (lhs: ItemSearchResultView, rhs: ItemSearchResultView) -> Bool {
+        lhs.result.id == rhs.result.id // or whatever is equal
     }
 }
