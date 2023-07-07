@@ -124,11 +124,13 @@ extension ItemSearchResult: AlphabeticalSortable {
 
 extension ItemSearchResult: Hashable {
     public static func == (lhs: ItemSearchResult, rhs: ItemSearchResult) -> Bool {
-        lhs.id == rhs.id
+        lhs.hashValue == rhs.hashValue
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(itemId)
         hasher.combine(shareId)
+        let texts = [highlightableTitle.highlightText] + highlightableDetail.map(\.highlightText)
+        hasher.combine(texts)
     }
 }
