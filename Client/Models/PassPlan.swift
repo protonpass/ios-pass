@@ -22,6 +22,7 @@ import Foundation
 
 public struct PassPlan: Decodable, Equatable {
     /// ⚠️ Use `planType` instead
+    /// Possible values: `free`, `plus`
     public let type: String
 
     /// Plan name for telemetry

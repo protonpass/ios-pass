@@ -77,6 +77,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
     public let shareId: String
     public let itemId: String
     public let type: ItemContentType
+    public let aliasEmail: String?
     public let highlightableTitle: HighlightableText
     public let highlightableDetail: [HighlightableText]
     public let url: String?
@@ -87,6 +88,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
     public init(shareId: String,
                 itemId: String,
                 type: ItemContentType,
+                aliasEmail: String?,
                 title: SearchResultEither,
                 detail: [SearchResultEither],
                 url: String?,
@@ -96,6 +98,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
         self.shareId = shareId
         self.itemId = itemId
         self.type = type
+        self.aliasEmail = aliasEmail
         highlightableTitle = title
         highlightableDetail = detail
         self.url = url
