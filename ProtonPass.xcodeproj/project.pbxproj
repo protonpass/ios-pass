@@ -432,7 +432,7 @@
 		356BDA3228DFAA9600B02E5A /* ShareKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */; };
 		356BDA3428DFAC9600B02E5A /* RemoteShareKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */; };
 		356C2AB028730EF00020F577 /* MainKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AAF28730EF00020F577 /* MainKeyProvider.swift */; };
-		356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB1287310D60020F577 /* KeychainStorage.swift */; };
+		356C2AB2287310D60020F577 /* LockedKeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C2AB1287310D60020F577 /* LockedKeychainStorage.swift */; };
 		356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356CE7722A2289C80043DC62 /* BannersSection.swift */; };
 		356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */; };
 		356E88CC293899B100B27104 /* PullToRefreshable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E88CB293899B100B27104 /* PullToRefreshable.swift */; };
@@ -1220,7 +1220,7 @@
 		356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKeyRepository.swift; sourceTree = "<group>"; };
 		356BDA3328DFAC9600B02E5A /* RemoteShareKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareKeyDatasource.swift; sourceTree = "<group>"; };
 		356C2AAF28730EF00020F577 /* MainKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainKeyProvider.swift; sourceTree = "<group>"; };
-		356C2AB1287310D60020F577 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
+		356C2AB1287310D60020F577 /* LockedKeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedKeychainStorage.swift; sourceTree = "<group>"; };
 		356CE7722A2289C80043DC62 /* BannersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannersSection.swift; sourceTree = "<group>"; };
 		356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultAlertHandler.swift; sourceTree = "<group>"; };
 		356E88CB293899B100B27104 /* PullToRefreshable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshable.swift; sourceTree = "<group>"; };
@@ -2004,7 +2004,7 @@
 			children = (
 				356C2AAF28730EF00020F577 /* MainKeyProvider.swift */,
 				356B21D92870F97F001220CB /* PPKeychain.swift */,
-				356C2AB1287310D60020F577 /* KeychainStorage.swift */,
+				356C2AB1287310D60020F577 /* LockedKeychainStorage.swift */,
 			);
 			path = Keychain;
 			sourceTree = "<group>";
@@ -4746,7 +4746,7 @@
 				356A34B92977B46300969BA2 /* OTP.swift in Sources */,
 				3510A2FC287841AD0003BE79 /* String+Extensions.swift in Sources */,
 				355342472992A685003E3A47 /* PPCoreError.swift in Sources */,
-				356C2AB2287310D60020F577 /* KeychainStorage.swift in Sources */,
+				356C2AB2287310D60020F577 /* LockedKeychainStorage.swift in Sources */,
 				35426B6828EF196C00F89BB7 /* RulesParser.swift in Sources */,
 				5B0C74E82A2E1B8700272CE8 /* MF_Base32CodecPass.m in Sources */,
 				35855ABF2A0AA45A0091992F /* PassphraseGenerator.swift in Sources */,
