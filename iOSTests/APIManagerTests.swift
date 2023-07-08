@@ -33,8 +33,8 @@ final class APIManagerTests: XCTestCase {
 
     let appVer: String = .empty
 
-    let unauthSessionKey = KeychainStorage<String>.Key.unauthSessionCredentials.rawValue
-    let userDataKey = KeychainStorage<String>.Key.userData.rawValue
+    let unauthSessionKey = LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue
+    let userDataKey = LockedKeychainStorage<String>.Key.userData.rawValue
 
     let unauthSessionCredentials = AuthCredential(sessionID: "test_session_id",
                                                   accessToken: "test_access_token",
@@ -163,7 +163,7 @@ final class APIManagerTests: XCTestCase {
                        Credential(unauthSessionCredentials))
         XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce)
         XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
-                       KeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
+                       LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
     }
 
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForAuthSession() throws {
@@ -188,10 +188,10 @@ final class APIManagerTests: XCTestCase {
                        Credential(userData.credential, scopes: userData.scopes))
         XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce) // setting auth session
         XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
-                       KeychainStorage<String>.Key.userData.rawValue)
+                       LockedKeychainStorage<String>.Key.userData.rawValue)
         XCTAssertTrue(keychain.removeStub.wasCalledExactlyOnce) // removing unauth session
         XCTAssertEqual(keychain.removeStub.lastArguments?.value,
-                       KeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
+                       LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
     }
 
     func testAPIServiceClearCredentialsClearsAPIServiceAndUnauthSessionStorage() throws {
@@ -214,7 +214,7 @@ final class APIManagerTests: XCTestCase {
         XCTAssertNil(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID))
         XCTAssertTrue(keychain.removeStub.wasCalledExactlyOnce) // removing unauth session
         XCTAssertEqual(keychain.removeStub.lastArguments?.value,
-                       KeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
+                       LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
     }
 
     func testAPIServiceUnauthSessionInvalidationClearsCredentials() throws {

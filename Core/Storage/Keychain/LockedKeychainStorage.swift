@@ -1,5 +1,5 @@
 //
-// KeychainStorage.swift
+// LockedKeychainStorage.swift
 // Proton Pass - Created on 04/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -21,8 +21,9 @@
 import Foundation
 import ProtonCore_Keymaker
 
+/// Read/write from keychain with lock mechanism provided by `MainKeyProvider`
 @propertyWrapper
-public final class KeychainStorage<T: Codable> {
+public final class LockedKeychainStorage<T: Codable> {
     private weak var mainKeyProvider: MainKeyProvider?
     private weak var keychain: KeychainProtocol?
     private var logger: Logger?
@@ -124,7 +125,7 @@ public final class KeychainStorage<T: Codable> {
     }
 }
 
-public extension KeychainStorage {
+public extension LockedKeychainStorage {
     enum Key: String {
         case userData
         case unauthSessionCredentials
