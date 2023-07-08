@@ -26,13 +26,13 @@ import ProtonCore_Login
 import ProtonCore_Networking
 
 final class AppData {
-    @KeychainStorage(key: .userData)
+    @LockedKeychainStorage(key: .userData)
     var userData: UserData?
 
-    @KeychainStorage(key: .unauthSessionCredentials)
+    @LockedKeychainStorage(key: .unauthSessionCredentials)
     var unauthSessionCredentials: AuthCredential?
 
-    @KeychainStorage(key: .symmetricKey)
+    @LockedKeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
     init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
