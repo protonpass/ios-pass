@@ -1999,6 +1999,16 @@
 			path = Items;
 			sourceTree = "<group>";
 		};
+		355E92762A59C76000C22703 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				356C2AAF28730EF00020F577 /* MainKeyProvider.swift */,
+				356B21D92870F97F001220CB /* PPKeychain.swift */,
+				356C2AB1287310D60020F577 /* KeychainStorage.swift */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
 		35603A0029B6587C00021BFB /* Create & Edit Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -2195,10 +2205,8 @@
 				3575EB5229FAB017000FFD53 /* AppLockTime.swift */,
 				35A5EEDF2958B60200A09623 /* Browser.swift */,
 				355744182959F68500EA4AF0 /* ClipboardExpiration.swift */,
-				356C2AAF28730EF00020F577 /* MainKeyProvider.swift */,
-				356B21D92870F97F001220CB /* PPKeychain.swift */,
+				355E92762A59C76000C22703 /* Keychain */,
 				356043F828ED6B54003BDDDC /* Preferences.swift */,
-				356C2AB1287310D60020F577 /* KeychainStorage.swift */,
 				355A27B42953751200F32EA1 /* Theme.swift */,
 			);
 			path = Storage;
