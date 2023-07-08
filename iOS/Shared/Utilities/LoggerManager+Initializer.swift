@@ -20,7 +20,7 @@
 
 import Core
 
-enum PassLogModule: CaseIterable {
+enum PassLogModule: String, CaseIterable {
     case hostApp, autoFillExtension, keyboardExtension
 
     var title: String {
