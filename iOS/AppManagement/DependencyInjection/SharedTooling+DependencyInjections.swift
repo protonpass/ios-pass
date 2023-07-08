@@ -39,8 +39,8 @@ final class SharedToolingContainer: SharedContainer {
 extension SharedToolingContainer {
     var logManager: Factory<LogManager> {
         self { LogManager(module: .hostApp) }
-            .onArg("autoFill") { LogManager(module: .autoFillExtension) }
-            .onArg("keyboard") { LogManager(module: .keyboardExtension) }
+            .onArg(PassLogModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
+            .onArg(PassLogModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
             .unique
     }
 
