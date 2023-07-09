@@ -29,6 +29,19 @@ final class SharedToolingContainer: SharedContainer {
     static let shared = SharedToolingContainer()
     let manager = ContainerManager()
 
+    private init() {
+        let key = "ProtonPass"
+        switch Bundle.main.infoDictionary?["MODULE"] as? String {
+        case "AUTOFILL_EXTENSION":
+            FactoryContext.setArg(PassLogModule.autoFillExtension, forKey: key)
+        case "KEYBOARD_EXTENSION":
+            FactoryContext.setArg(PassLogModule.keyboardExtension, forKey: key)
+        default:
+            // Default to host app
+            break
+        }
+    }
+
     func resetCache() {
         manager.reset(scope: .cached)
     }
