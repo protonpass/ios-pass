@@ -20,10 +20,8 @@
 
 import Core
 
-enum PassLogModule: String, CaseIterable {
-    case hostApp, autoFillExtension, keyboardExtension
-
-    var title: String {
+extension PassModule {
+    var logTitle: String {
         switch self {
         case .hostApp:
             return "Application logs"
@@ -41,11 +39,20 @@ enum PassLogModule: String, CaseIterable {
         case .keyboardExtension: return "pass_keyboard_extension.log"
         }
     }
+
+    var exportLogFileName: String {
+        let hash = Bundle.main.gitCommitHash ?? "?"
+        switch self {
+        case .hostApp: return "pass_host_application_\(hash).log"
+        case .autoFillExtension: return "pass_autofill_extension\(hash).log"
+        case .keyboardExtension: return "pass_keyboard_extension\(hash).log"
+        }
+    }
 }
 
 extension LogManager {
     /// Convenience initialize for iOS & extensions which creates a log file in shared container.
-    init(module: PassLogModule) {
+    init(module: PassModule) {
         guard let fileContainer =
             FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
             fatalError("Shared file container could not be created.")
