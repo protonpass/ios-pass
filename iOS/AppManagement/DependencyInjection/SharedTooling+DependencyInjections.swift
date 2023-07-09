@@ -33,9 +33,9 @@ final class SharedToolingContainer: SharedContainer {
         let key = "ProtonPass"
         switch Bundle.main.infoDictionary?["MODULE"] as? String {
         case "AUTOFILL_EXTENSION":
-            FactoryContext.setArg(PassLogModule.autoFillExtension, forKey: key)
+            FactoryContext.setArg(PassModule.autoFillExtension, forKey: key)
         case "KEYBOARD_EXTENSION":
-            FactoryContext.setArg(PassLogModule.keyboardExtension, forKey: key)
+            FactoryContext.setArg(PassModule.keyboardExtension, forKey: key)
         default:
             // Default to host app
             break
@@ -52,8 +52,8 @@ final class SharedToolingContainer: SharedContainer {
 extension SharedToolingContainer {
     var logManager: Factory<LogManager> {
         self { LogManager(module: .hostApp) }
-            .onArg(PassLogModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
-            .onArg(PassLogModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
+            .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
+            .onArg(PassModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
     }
 
     var logFormatter: Factory<LogFormatterProtocol> {
@@ -73,7 +73,7 @@ extension SharedToolingContainer {
                           appVer: "ios-pass@\(Bundle.main.fullAppVersionName)",
                           appData: self.appData(),
                           preferences: self.preferences()) }
-            .onArg(PassLogModule.autoFillExtension) {
+            .onArg(PassModule.autoFillExtension) {
                 APIManager(logManager: self.logManager(),
                            appVer: "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)",
                            appData: self.appData(),
