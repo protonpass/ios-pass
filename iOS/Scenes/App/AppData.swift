@@ -35,13 +35,7 @@ final class AppData {
     @LockedKeychainStorage(key: .symmetricKey)
     private var symmetricKey: String?
 
-    init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
-        _userData.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
-        _unauthSessionCredentials.inject(keychain: keychain,
-                                         mainKeyProvider: mainKeyProvider,
-                                         logManager: logManager)
-        _symmetricKey.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
-    }
+    init() {}
 
     func getSymmetricKey() throws -> SymmetricKey {
         if let symmetricKey {

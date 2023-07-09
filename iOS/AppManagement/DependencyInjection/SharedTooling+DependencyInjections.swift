@@ -65,9 +65,7 @@ extension SharedToolingContainer {
 
 extension SharedToolingContainer {
     var appData: Factory<AppData> {
-        self { AppData(keychain: self.keychain(),
-                       mainKeyProvider: self.keymaker(),
-                       logManager: self.logManager()) }
+        self { AppData() }
     }
 
     var apiManager: Factory<APIManager> {
@@ -75,6 +73,12 @@ extension SharedToolingContainer {
                           appVer: "ios-pass@\(Bundle.main.fullAppVersionName)",
                           appData: self.appData(),
                           preferences: self.preferences()) }
+            .onArg(PassLogModule.autoFillExtension) {
+                APIManager(logManager: self.logManager(),
+                           appVer: "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)",
+                           appData: self.appData(),
+                           preferences: self.preferences())
+            }
     }
 }
 
@@ -100,7 +104,7 @@ extension SharedToolingContainer {
         self { Autolocker(lockTimeProvider: self.keychain()) }
     }
 
-    var keymaker: Factory<Keymaker> {
+    var mainKeyProvider: Factory<MainKeyProvider> {
         self { Keymaker(autolocker: self.autolocker(), keychain: self.keychain()) }
     }
 }

@@ -53,7 +53,7 @@ final class AppCoordinator {
     private var cancellables = Set<AnyCancellable>()
 
     @Injected(\SharedToolingContainer.preferences) private var preferences
-    @Injected(\SharedToolingContainer.keymaker) private var keymaker
+    @Injected(\SharedToolingContainer.mainKeyProvider) private var mainKeyProvider
     @Injected(\SharedToolingContainer.appData) private var appData
     @Injected(\SharedToolingContainer.apiManager) private var apiManager
     @Injected(\SharedToolingContainer.logManager) private var logManager
@@ -176,7 +176,7 @@ final class AppCoordinator {
                                                               symmetricKey: symmetricKey,
                                                               userData: userData,
                                                               appData: appData,
-                                                              mainKeyProvider: keymaker)
+                                                              mainKeyProvider: mainKeyProvider)
                 homepageCoordinator.delegate = self
                 self.homepageCoordinator = homepageCoordinator
                 self.welcomeCoordinator = nil
@@ -205,7 +205,7 @@ final class AppCoordinator {
         appData.userData = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
-            keymaker.wipeMainKey()
+            mainKeyProvider.wipeMainKey()
         }
         preferences.reset(isUITests: isUITest)
         Task {
