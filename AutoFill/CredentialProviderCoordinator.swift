@@ -82,9 +82,10 @@ public final class CredentialProviderCoordinator {
 
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
+        DependencyInjectionUtils.resolveDependencies()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-        let logManager = LogManager(module: .autoFillExtension)
+        let logManager = SharedToolingContainer.shared.logManager()
         let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
         let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
         let preferences = SharedToolingContainer.shared.preferences()
@@ -105,8 +106,7 @@ public final class CredentialProviderCoordinator {
         self.logManager = logManager
         logger = .init(manager: logManager)
         self.preferences = preferences
-        notificationService = SharedServiceContainer
-            .shared.notificationService(SharedToolingContainer.shared.autoFillLogger())
+        notificationService = SharedServiceContainer.shared.notificationService(logManager)
         self.rootViewController = rootViewController
 
         // Post init
@@ -423,6 +423,8 @@ private extension CredentialProviderCoordinator {
                 } else {
                     addNewEvent(type: .autofillTriggeredFromApp)
                 }
+
+                await logManager.saveAllLogs()
             } catch {
                 logger.error(error)
                 if quickTypeBar {

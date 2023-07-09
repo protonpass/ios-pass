@@ -41,23 +41,27 @@ extension SharedToolingContainer {
         self { LogManager(module: .hostApp) }
             .onArg(PassLogModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
             .onArg(PassLogModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
-            .unique
-    }
-
-    var autoFillLogManager: Factory<LogManager> {
-        self { LogManager(module: .autoFillExtension) }
-    }
-
-    var autoFillLogger: Factory<Logger> {
-        self { Logger(manager: self.autoFillLogManager()) }
-    }
-
-    var keyboardLogManager: Factory<LogManager> {
-        self { LogManager(module: .keyboardExtension) }
     }
 
     var logFormatter: Factory<LogFormatterProtocol> {
         self { LogFormatter(format: .txt) }
+    }
+}
+
+// MARK: Data tools
+
+extension SharedToolingContainer {
+    var appData: Factory<AppData> {
+        self { AppData(keychain: self.keychain(),
+                       mainKeyProvider: self.keymaker(),
+                       logManager: self.logManager()) }
+    }
+
+    var apiManager: Factory<APIManager> {
+        self { APIManager(logManager: self.logManager(),
+                          appVer: "ios-pass@\(Bundle.main.fullAppVersionName)",
+                          appData: self.appData(),
+                          preferences: self.preferences()) }
     }
 }
 

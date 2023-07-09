@@ -27,8 +27,8 @@ final class SharedServiceContainer: SharedContainer {
 }
 
 extension SharedServiceContainer {
-    var notificationService: ParameterFactory<Logger, LocalNotificationServiceProtocol> {
-        self { NotificationService(logger: $0) }
+    var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
+        self { NotificationService(logManager: $0) }
     }
 }
 

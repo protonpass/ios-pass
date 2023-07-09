@@ -41,27 +41,18 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        let appCoverView = makeAppCoverView(windowSize: window?.frame.size ?? .zero)
-        appCoverView.frame = window?.frame ?? .zero
-        appCoverView.alpha = 0
-        window?.addSubview(appCoverView)
-        UIView.animate(withDuration: 0.35) {
-            appCoverView.alpha = 1
+        coverApp()
+        Task {
+            await SharedToolingContainer.shared.logManager().saveAllLogs()
         }
-        self.appCoverView = appCoverView
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        UIView.animate(withDuration: 0.35,
-                       animations: {
-                           self.appCoverView?.alpha = 0
-                       },
-                       completion: { [unowned self] _ in
-                           appCoverView?.removeFromSuperview()
-                           appCoverView = nil
-                       })
+        uncoverApp()
     }
 }
+
+// MARK: - App cover
 
 private extension SceneDelegate {
     struct AppCoverView: View {
@@ -85,5 +76,27 @@ private extension SceneDelegate {
 
     func makeAppCoverView(windowSize: CGSize) -> UIView {
         UIHostingController(rootView: AppCoverView(windowSize: windowSize)).view
+    }
+
+    func coverApp() {
+        let appCoverView = makeAppCoverView(windowSize: window?.frame.size ?? .zero)
+        appCoverView.frame = window?.frame ?? .zero
+        appCoverView.alpha = 0
+        window?.addSubview(appCoverView)
+        UIView.animate(withDuration: 0.35) {
+            appCoverView.alpha = 1
+        }
+        self.appCoverView = appCoverView
+    }
+
+    func uncoverApp() {
+        UIView.animate(withDuration: 0.35,
+                       animations: {
+                           self.appCoverView?.alpha = 0
+                       },
+                       completion: { [unowned self] _ in
+                           appCoverView?.removeFromSuperview()
+                           appCoverView = nil
+                       })
     }
 }

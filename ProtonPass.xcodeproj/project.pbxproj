@@ -626,7 +626,6 @@
 		5B503FF22A4DC6DA00E6681C /* GetLogEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FF12A4DC6DA00E6681C /* GetLogEntries.swift */; };
 		5B503FF52A4E018500E6681C /* LogingManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FF42A4E018500E6681C /* LogingManagerMock.swift */; };
 		5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FF72A4E01D700E6681C /* GetLogsEntriesTests.swift */; };
-		5B503FFA2A4EEC9400E6681C /* Tooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FF92A4EEC9400E6681C /* Tooling+DependencyInjections.swift */; };
 		5B503FFC2A52C04D00E6681C /* SendUserBugReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FFB2A52C04D00E6681C /* SendUserBugReport.swift */; };
 		5B503FFF2A52C1F600E6681C /* BugReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FFE2A52C1F600E6681C /* BugReportRequest.swift */; };
 		5B5040012A52C24C00E6681C /* ReportsBugEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040002A52C24C00E6681C /* ReportsBugEndpoint.swift */; };
@@ -1395,7 +1394,6 @@
 		5B503FF12A4DC6DA00E6681C /* GetLogEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLogEntries.swift; sourceTree = "<group>"; };
 		5B503FF42A4E018500E6681C /* LogingManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogingManagerMock.swift; sourceTree = "<group>"; };
 		5B503FF72A4E01D700E6681C /* GetLogsEntriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLogsEntriesTests.swift; sourceTree = "<group>"; };
-		5B503FF92A4EEC9400E6681C /* Tooling+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tooling+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B503FFB2A52C04D00E6681C /* SendUserBugReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendUserBugReport.swift; sourceTree = "<group>"; };
 		5B503FFE2A52C1F600E6681C /* BugReportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportRequest.swift; sourceTree = "<group>"; };
 		5B5040002A52C24C00E6681C /* ReportsBugEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsBugEndpoint.swift; sourceTree = "<group>"; };
@@ -2849,7 +2847,6 @@
 				5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */,
 				5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */,
 				5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */,
-				5B503FF92A4EEC9400E6681C /* Tooling+DependencyInjections.swift */,
 				5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */,
 			);
 			path = DependencyInjection;
@@ -4358,7 +4355,6 @@
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemUiModel.swift in Sources */,
-				5B503FFA2A4EEC9400E6681C /* Tooling+DependencyInjections.swift in Sources */,
 				3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */,
 				35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */,
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,

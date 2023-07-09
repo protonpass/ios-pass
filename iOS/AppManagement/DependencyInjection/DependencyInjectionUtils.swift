@@ -21,15 +21,16 @@
 import Factory
 import Foundation
 
+private let kPassDIKey = "ProtonPass"
+
 enum DependencyInjectionUtils {
     /// Resolve dependencies based on context (host app or extensions). Must be called as soon as possible
     static func resolveDependencies() {
         switch Bundle.main.infoDictionary?["MODULE"] as? String {
         case "AUTOFILL_EXTENSION":
-            break
+            FactoryContext.setArg(PassLogModule.autoFillExtension, forKey: kPassDIKey)
         case "KEYBOARD_EXTENSION":
-            // Not yet implemented
-            break
+            FactoryContext.setArg(PassLogModule.keyboardExtension, forKey: kPassDIKey)
         default:
             // Default to host app
             break
