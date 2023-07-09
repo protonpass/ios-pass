@@ -183,8 +183,3 @@ public protocol TelemetryThresholdProviderProtocol {
     func getThreshold() -> TimeInterval?
     func setThreshold(_ threshold: TimeInterval?)
 }
-
-extension Preferences: TelemetryThresholdProviderProtocol {
-    public func getThreshold() -> TimeInterval? { telemetryThreshold }
-    public func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
-}

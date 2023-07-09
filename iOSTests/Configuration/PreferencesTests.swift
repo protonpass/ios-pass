@@ -18,14 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Core
+@testable import Proton_Pass
 import XCTest
-
-extension UserDefaults {
-    func reset() {
-        dictionaryRepresentation().keys.forEach(removeObject(forKey:))
-    }
-}
 
 final class PreferencesTests: XCTestCase {
     private var sut: Preferences!
@@ -36,7 +30,7 @@ final class PreferencesTests: XCTestCase {
     }
 
     override func tearDown() {
-        kSharedUserDefaults.reset()
+        sut = nil
         super.tearDown()
     }
 
