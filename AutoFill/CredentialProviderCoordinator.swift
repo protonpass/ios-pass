@@ -82,7 +82,6 @@ public final class CredentialProviderCoordinator {
 
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
-        DependencyInjectionUtils.resolveDependencies()
         let keychain = PPKeychain()
         let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
         let logManager = SharedToolingContainer.shared.logManager()
@@ -375,6 +374,9 @@ private extension CredentialProviderCoordinator {
     func cancel(errorCode: ASExtensionError.Code) {
         let error = NSError(domain: ASExtensionErrorDomain, code: errorCode.rawValue)
         context.cancelRequest(withError: error)
+        Task {
+            await logManager.saveAllLogs()
+        }
     }
 
     // swiftlint:disable:next function_parameter_count
