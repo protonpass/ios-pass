@@ -81,6 +81,9 @@ final class APIManagerTests: XCTestCase {
         keychain = KeychainMock()
         mainKeyProvider = MainKeyProviderMock()
         logManager = LogManager(module: .hostApp)
+        SharedToolingContainer.shared.keychain.register { self.keychain }
+        SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
+        SharedToolingContainer.shared.logManager.register { self.logManager }
     }
 
     override func tearDown() {
@@ -90,22 +93,21 @@ final class APIManagerTests: XCTestCase {
         super.tearDown()
     }
 
-    func givenAppData() -> AppData {
-        .init(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
+    func givenApiManager() -> APIManager {
+        SharedToolingContainer.shared.apiManager()
     }
 
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() {
         // GIVEN
         keychain.dataStub.bodyIs { _, _ in nil } // no session in keychain
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
 
         // WHEN
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, .empty)
-        XCTAssertNil(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID))
+        XCTAssertEqual(apiManager.apiService.sessionUID, .empty)
+        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
     }
 
     func testAPIServiceIsCreatedWithSessionIfUnauthSessionIsPersisted() throws {
@@ -117,14 +119,13 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // unauth session in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
 
         // WHEN
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID),
+        XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
                        Credential(unauthSessionCredentials))
     }
 
@@ -137,29 +138,27 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // UserData in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
 
         // WHEN
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID),
+        XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
                        Credential(userData.credential))
     }
 
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForUnauthSession() throws {
         // GIVEN
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         // WHEN
-        apiService.sessionIsAvailable(authCredential: unauthSessionCredentials, scopes: .empty)
+        apiManager.sessionIsAvailable(authCredential: unauthSessionCredentials, scopes: .empty)
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID),
+        XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
                        Credential(unauthSessionCredentials))
         XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce)
         XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
@@ -175,16 +174,15 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // auth session in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         // WHEN
-        apiService.sessionIsAvailable(authCredential: userData.credential,
+        apiManager.sessionIsAvailable(authCredential: userData.credential,
                                       scopes: userData.scopes)
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID),
+        XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
                        Credential(userData.credential, scopes: userData.scopes))
         XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce) // setting auth session
         XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
@@ -203,15 +201,14 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // auth session in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         // WHEN
-        apiService.clearCredentials()
+        apiManager.clearCredentials()
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, "")
-        XCTAssertNil(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID))
+        XCTAssertEqual(apiManager.apiService.sessionUID, "")
+        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
         XCTAssertTrue(keychain.removeStub.wasCalledExactlyOnce) // removing unauth session
         XCTAssertEqual(keychain.removeStub.lastArguments?.value,
                        LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
@@ -226,8 +223,7 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // auth session in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         final class TestAPIManagerDelegate: APIManagerDelegate {
             @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
@@ -235,14 +231,14 @@ final class APIManagerTests: XCTestCase {
             func appLoggedOutBecauseSessionWasInvalidated() { appLoggedOutStub() }
         }
         let delegate = TestAPIManagerDelegate()
-        apiService.delegate = delegate
+        apiManager.delegate = delegate
 
         // WHEN
-        apiService.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: false)
+        apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: false)
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, "")
-        XCTAssertNil(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID))
+        XCTAssertEqual(apiManager.apiService.sessionUID, "")
+        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
         XCTAssertTrue(delegate.appLoggedOutStub.wasNotCalled)
     }
 
@@ -255,8 +251,7 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // auth session in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         final class TestAPIManagerDelegate: APIManagerDelegate {
             @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
@@ -264,14 +259,14 @@ final class APIManagerTests: XCTestCase {
             func appLoggedOutBecauseSessionWasInvalidated() { appLoggedOutStub() }
         }
         let delegate = TestAPIManagerDelegate()
-        apiService.delegate = delegate
+        apiManager.delegate = delegate
 
         // WHEN
-        apiService.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
+        apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
 
         // THEN
-        XCTAssertEqual(apiService.apiService.sessionUID, "")
-        XCTAssertNil(apiService.authHelper.credential(sessionUID: apiService.apiService.sessionUID))
+        XCTAssertEqual(apiManager.apiService.sessionUID, "")
+        XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
         XCTAssertTrue(delegate.appLoggedOutStub.wasCalledExactlyOnce)
     }
 
@@ -284,8 +279,7 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // auth session in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         let newUnauthCredentials = AuthCredential(sessionID: "new_test_session_id",
                                                   accessToken: "new_test_access_token",
@@ -297,7 +291,7 @@ final class APIManagerTests: XCTestCase {
         let newUnauthSessionData = try JSONEncoder().encode(newUnauthCredentials)
 
         // WHEN
-        apiService.credentialsWereUpdated(authCredential: newUnauthCredentials,
+        apiManager.credentialsWereUpdated(authCredential: newUnauthCredentials,
                                           credential: Credential(newUnauthCredentials),
                                           for: unauthSessionCredentials.sessionID
         )
@@ -320,8 +314,7 @@ final class APIManagerTests: XCTestCase {
             return lockedSession.encryptedValue // auth session in keychain
         }
         mainKeyProvider.mainKeyStub.fixture = mainKey
-        let appData = givenAppData()
-        let apiService = APIManager(logManager: logManager, appVer: appVer, appData: appData, preferences: Preferences())
+        let apiManager = givenApiManager()
 
         let newUnauthCredentials = AuthCredential(sessionID: "new_test_session_id",
                                                   accessToken: "new_test_access_token",
@@ -332,7 +325,7 @@ final class APIManagerTests: XCTestCase {
                                                   passwordKeySalt: nil)
 
         // WHEN
-        apiService.credentialsWereUpdated(authCredential: newUnauthCredentials,
+        apiManager.credentialsWereUpdated(authCredential: newUnauthCredentials,
                                           credential: Credential(newUnauthCredentials),
                                           for: unauthSessionCredentials.sessionID
         )

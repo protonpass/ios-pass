@@ -24,8 +24,6 @@ import ProtonCore_Keymaker
 
 /// Contain tools shared between main iOS app and extensions
 final class SharedToolingContainer: SharedContainer {
-    typealias FullKeychainService = SettingsProvider & Keychain
-
     static let shared = SharedToolingContainer()
     let manager = ContainerManager()
 
@@ -96,21 +94,20 @@ extension SharedToolingContainer {
 // MARK: Keychain tools
 
 extension SharedToolingContainer {
-    var keychain: Factory<FullKeychainService> {
+    var keychain: Factory<KeychainProtocol> {
         self { PPKeychain() }
     }
 
+    var settingsProvider: Factory<SettingsProvider> {
+        self { (self.keychain() as? PPKeychain) ?? PPKeychain() }
+    }
+
     var autolocker: Factory<Autolocker> {
-        self { Autolocker(lockTimeProvider: self.keychain()) }
+        self { Autolocker(lockTimeProvider: self.settingsProvider()) }
     }
 
     var mainKeyProvider: Factory<MainKeyProvider> {
-        self { Keymaker(autolocker: self.autolocker(), keychain: self.keychain()) }
-    }
-}
-
-extension SharedToolingContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+        self { Keymaker(autolocker: self.autolocker(),
+                        keychain: (self.keychain() as? Keychain) ?? PPKeychain()) }
     }
 }
