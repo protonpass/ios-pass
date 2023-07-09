@@ -262,6 +262,9 @@
 		355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C22A33583D0053B7F6 /* BackOffManager.swift */; };
 		355938C52A335DA50053B7F6 /* BackOffManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */; };
 		355938C82A3360030053B7F6 /* CurrentDateProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */; };
+		3559BA912A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */; };
+		3559BA922A5AE1F30020E172 /* LockedKeychainStorage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */; };
+		3559BA932A5AE1FA0020E172 /* LockedKeychainStorage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
@@ -1076,6 +1079,7 @@
 		355938C22A33583D0053B7F6 /* BackOffManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManager.swift; sourceTree = "<group>"; };
 		355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManagerTests.swift; sourceTree = "<group>"; };
 		355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProviderMock.swift; sourceTree = "<group>"; };
+		3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LockedKeychainStorage+Extensions.swift"; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1764,6 +1768,7 @@
 				3554D42C2967854000DF0CBE /* DeveloperModeStateManager.swift */,
 				3572E5222993D68800775FAC /* ItemContent+UIRelatedProperties.swift */,
 				355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */,
+				3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */,
 				3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */,
 				3543615B2941E1A8000CAE12 /* UIApplication+OpenSettings.swift */,
 				3552A28C29EC8B5200ABDB6E /* URLExtensions.swift */,
@@ -4248,6 +4253,7 @@
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
 				35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
+				3559BA922A5AE1F30020E172 /* LockedKeychainStorage+Extensions.swift in Sources */,
 				3520F36828E327420053A606 /* ItemUiModel.swift in Sources */,
 				3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */,
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
@@ -4309,6 +4315,7 @@
 				3561251B298271B600EDA991 /* KeyboardContentViewModel.swift in Sources */,
 				35733B7929CC525A00052229 /* APIManager.swift in Sources */,
 				3549AC9F298306E800BA5CD6 /* TOTPLogInItemDetailView.swift in Sources */,
+				3559BA932A5AE1FA0020E172 /* LockedKeychainStorage+Extensions.swift in Sources */,
 				3549ACA1298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift in Sources */,
 				3562BC31299542D7003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3565FD5A298D427500E2A0EE /* TOTPCircularTimer.swift in Sources */,
@@ -4489,6 +4496,7 @@
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
+				3559BA912A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,

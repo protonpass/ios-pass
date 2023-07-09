@@ -24,20 +24,19 @@ import ProtonCore_Keymaker
 /// Read/write from keychain with lock mechanism provided by `MainKeyProvider`
 @propertyWrapper
 public final class LockedKeychainStorage<T: Codable> {
-    private weak var mainKeyProvider: MainKeyProvider?
-    private weak var keychain: KeychainProtocol?
-    private var logger: Logger?
+    private let mainKeyProvider: MainKeyProvider
+    private let keychain: KeychainProtocol
+    private var logger: Logger
     private let key: Key
     private let defaultValue: T?
 
-    public init(key: Key, defaultValue: T? = nil) {
+    public init(key: Key,
+                defaultValue: T?,
+                keychain: KeychainProtocol,
+                mainKeyProvider: MainKeyProvider,
+                logManager: LogManager) {
         self.key = key
         self.defaultValue = defaultValue
-    }
-
-    // We can not set those dependencies at the moment of initializing the property wrapper
-    // so we need to inject once the initialization process is done
-    public func inject(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
         self.keychain = keychain
         self.mainKeyProvider = mainKeyProvider
         logger = .init(manager: logManager)
@@ -45,28 +44,15 @@ public final class LockedKeychainStorage<T: Codable> {
 
     public var wrappedValue: T? {
         get {
-            assert(logger != nil)
             let keyRawValue = key.rawValue
 
-            assert(keychain != nil)
-            guard let keychain else {
-                logger?.warning("Keychain is not set for key \(keyRawValue). Fall back to defaultValue.")
-                return defaultValue
-            }
-
-            assert(mainKeyProvider != nil)
-            guard let mainKeyProvider else {
-                logger?.warning("MainKeyProvider is not set for key \(keyRawValue). Fall back to defaultValue.")
-                return defaultValue
-            }
-
             guard let cypherdata = keychain.data(forKey: keyRawValue) else {
-                logger?.warning("cypherdata does not exist for key \(keyRawValue). Fall back to defaultValue.")
+                logger.warning("cypherdata does not exist for key \(keyRawValue). Fall back to defaultValue.")
                 return defaultValue
             }
 
             guard let mainKey = mainKeyProvider.mainKey else {
-                logger?.warning("mainKey is null for key \(keyRawValue). Fall back to defaultValue.")
+                logger.warning("mainKey is null for key \(keyRawValue). Fall back to defaultValue.")
                 return defaultValue
             }
 
@@ -76,31 +62,17 @@ public final class LockedKeychainStorage<T: Codable> {
                 return try JSONDecoder().decode(T.self, from: unlockedData)
             } catch {
                 // Consider that the cypherdata is lost => remove it
-                logger?.error(error)
+                logger.error(error)
                 wipeValue()
                 return defaultValue
             }
         }
 
         set {
-            assert(logger != nil)
-
             let keyRawValue = key.rawValue
 
-            assert(keychain != nil)
-            guard let keychain else {
-                logger?.warning("Keychain is not set for key \(keyRawValue). Early exit.")
-                return
-            }
-
-            assert(mainKeyProvider != nil)
-            guard let mainKeyProvider else {
-                logger?.warning("MainKeyProvider is not set for key \(keyRawValue). Early exit")
-                return
-            }
-
             guard let mainKey = mainKeyProvider.mainKey else {
-                logger?.warning("mainKey is null for key \(keyRawValue). Early exit")
+                logger.warning("mainKey is null for key \(keyRawValue). Early exit")
                 return
             }
 
@@ -111,7 +83,7 @@ public final class LockedKeychainStorage<T: Codable> {
                     let cypherdata = lockedData.encryptedValue
                     keychain.set(cypherdata, forKey: keyRawValue)
                 } catch {
-                    logger?.error(error)
+                    logger.error(error)
                 }
             } else {
                 keychain.remove(forKey: keyRawValue)
@@ -120,8 +92,7 @@ public final class LockedKeychainStorage<T: Codable> {
     }
 
     public func wipeValue() {
-        assert(keychain != nil)
-        keychain?.remove(forKey: key.rawValue)
+        keychain.remove(forKey: key.rawValue)
     }
 }
 
