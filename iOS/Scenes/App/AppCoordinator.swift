@@ -39,14 +39,10 @@ import UIKit
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
-    private let keymaker: Keymaker
-    private let appData: AppData
-    private let apiManager: APIManager
-    private let logManager: LogManager
-    private let logger: Logger
+    private lazy var logger: Logger = .init(manager: logManager)
     private var container: NSPersistentContainer
-    private let credentialManager: CredentialManagerProtocol
-    private var preferences: Preferences
+    private lazy var credentialManager: CredentialManagerProtocol = CredentialManager(logManager: logManager)
+
     private var isUITest: Bool
 
     private var homepageCoordinator: HomepageCoordinator?
@@ -56,19 +52,18 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
+    @Injected(\SharedToolingContainer.preferences) private var preferences
+    @Injected(\SharedToolingContainer.keymaker) private var keymaker
+    @Injected(\SharedToolingContainer.appData) private var appData
+    @Injected(\SharedToolingContainer.apiManager) private var apiManager
+    @Injected(\SharedToolingContainer.logManager) private var logManager
+
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
-        logManager = ToolingContainer.shared.logManager()
-        logger = ToolingContainer.shared.logger()
-        keymaker = SharedToolingContainer.shared.keymaker()
-        appData = ToolingContainer.shared.appData()
-        preferences = SharedToolingContainer.shared.preferences()
-        apiManager = ToolingContainer.shared.apiManager()
 
         container = .Builder.build(name: kProtonPassContainerName,
                                    inMemory: false)
-        credentialManager = CredentialManager(logManager: logManager)
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()

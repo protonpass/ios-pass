@@ -260,9 +260,7 @@ private extension HomepageCoordinator {
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
                                                           .shared
-                                                          .notificationService(ToolingContainer
-                                                              .shared
-                                                              .logger()))
+                                                          .notificationService(logManager))
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
