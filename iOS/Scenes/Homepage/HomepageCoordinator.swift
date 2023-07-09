@@ -144,7 +144,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                           logManager: logManager)
         favIconRepository = FavIconRepository(apiService: apiService,
                                               containerUrl: URL.favIconsContainerURL(),
-                                              preferences: preferences,
+                                              settings: preferences,
                                               symmetricKey: symmetricKey)
         itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                        itemRepository: itemRepository,

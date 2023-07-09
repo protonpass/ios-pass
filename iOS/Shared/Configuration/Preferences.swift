@@ -18,10 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Core
 import SwiftUI
-
-// swiftlint:disable:next force_unwrapping
-public let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)!
 
 public final class Preferences: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -109,4 +108,17 @@ public final class Preferences: ObservableObject, DeinitPrintable {
             onboarded = false
         }
     }
+}
+
+// MARK: - TelemetryThresholdProviderProtocol
+
+extension Preferences: TelemetryThresholdProviderProtocol {
+    public func getThreshold() -> TimeInterval? { telemetryThreshold }
+    public func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
+}
+
+// MARK: - FavIconSettings
+
+extension Preferences: FavIconSettings {
+    public var shouldDisplayFavIcons: Bool { displayFavIcons }
 }
