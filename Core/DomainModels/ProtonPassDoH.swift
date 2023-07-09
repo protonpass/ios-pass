@@ -20,6 +20,9 @@
 
 import ProtonCore_Doh
 
+// swiftlint:disable:next force_unwrapping
+public let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)!
+
 public final class ProtonPassDoH: DoH, ServerConfig {
     public let signupDomain: String
     public let captchaHost: String
