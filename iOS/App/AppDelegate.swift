@@ -30,6 +30,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         injectDefaultCryptoImplementation()
+        DependencyInjectionUtils.resolveDependencies()
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
         return true
@@ -43,14 +44,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        saveAllPendingLogs()
-    }
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        saveAllPendingLogs()
     }
 }
 
@@ -72,11 +65,5 @@ private extension AppDelegate {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
         kSharedUserDefaults.set(Bundle.main.displayedAppVersion, forKey: appVersionKey)
-    }
-
-    func saveAllPendingLogs() {
-        Task {
-            await ToolingContainer.shared.logManager().saveAllLogs()
-        }
     }
 }
