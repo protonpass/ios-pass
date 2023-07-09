@@ -25,6 +25,17 @@ import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 
+extension LockedKeychainStorage {
+    /// Conveniently initialize with injected `keychain`, `mainKeyProvider` & `logManager`
+    convenience init(key: Key, defaultValue: T? = nil) {
+        self.init(key: key,
+                  defaultValue: defaultValue,
+                  keychain: SharedToolingContainer.shared.keychain(),
+                  mainKeyProvider: SharedToolingContainer.shared.mainKeyProvider(),
+                  logManager: SharedToolingContainer.shared.logManager())
+    }
+}
+
 final class AppData {
     @LockedKeychainStorage(key: .userData)
     var userData: UserData?
