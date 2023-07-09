@@ -265,6 +265,9 @@
 		3559BA912A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */; };
 		3559BA922A5AE1F30020E172 /* LockedKeychainStorage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */; };
 		3559BA932A5AE1FA0020E172 /* LockedKeychainStorage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */; };
+		3559BA952A5AE3DE0020E172 /* PassModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA942A5AE3DE0020E172 /* PassModule.swift */; };
+		3559BA962A5AE4DB0020E172 /* PassModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA942A5AE3DE0020E172 /* PassModule.swift */; };
+		3559BA972A5AE4DB0020E172 /* PassModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3559BA942A5AE3DE0020E172 /* PassModule.swift */; };
 		355A198D294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */; };
 		355A198F294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */; };
 		355A27B52953751200F32EA1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A27B42953751200F32EA1 /* Theme.swift */; };
@@ -1080,6 +1083,7 @@
 		355938C42A335DA50053B7F6 /* BackOffManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackOffManagerTests.swift; sourceTree = "<group>"; };
 		355938C72A3360030053B7F6 /* CurrentDateProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateProviderMock.swift; sourceTree = "<group>"; };
 		3559BA902A5AE1AC0020E172 /* LockedKeychainStorage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LockedKeychainStorage+Extensions.swift"; sourceTree = "<group>"; };
+		3559BA942A5AE3DE0020E172 /* PassModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassModule.swift; sourceTree = "<group>"; };
 		355A198C294D1B1D000E9E82 /* UpdateLastUseTimeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeEndpoint.swift; sourceTree = "<group>"; };
 		355A198E294D1B4F000E9E82 /* UpdateLastUseTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLastUseTimeRequest.swift; sourceTree = "<group>"; };
 		355A27B42953751200F32EA1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1746,12 +1750,13 @@
 			isa = PBXGroup;
 			children = (
 				3542E2CF28DA4E7400194F24 /* ItemUiModel.swift */,
+				3559BA942A5AE3DE0020E172 /* PassModule.swift */,
 				3572E51A299399AD00775FAC /* PPError.swift */,
 				355E33AB29C499E400402CAE /* SearchEntryUiModel.swift */,
-				3569B29E29B77A760070830B /* VaultContentUiModel.swift */,
-				355694A329D4673A005DD2EB /* VaultListUiModel.swift */,
 				35733B7E29CC60D200052229 /* VaultColor.swift */,
+				3569B29E29B77A760070830B /* VaultContentUiModel.swift */,
 				35733B7C29CC5DB700052229 /* VaultIcon.swift */,
+				355694A329D4673A005DD2EB /* VaultListUiModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4228,6 +4233,7 @@
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
+				3559BA962A5AE4DB0020E172 /* PassModule.swift in Sources */,
 				5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */,
 				35AC9A5D2A0BDB7D00FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
@@ -4313,6 +4319,7 @@
 				356125122982548A00EDA991 /* KeyboardContentView.swift in Sources */,
 				3571B59C29BF19B7008D4350 /* BannerManager.swift in Sources */,
 				3561251B298271B600EDA991 /* KeyboardContentViewModel.swift in Sources */,
+				3559BA972A5AE4DB0020E172 /* PassModule.swift in Sources */,
 				35733B7929CC525A00052229 /* APIManager.swift in Sources */,
 				3549AC9F298306E800BA5CD6 /* TOTPLogInItemDetailView.swift in Sources */,
 				3559BA932A5AE1FA0020E172 /* LockedKeychainStorage+Extensions.swift in Sources */,
@@ -4423,6 +4430,7 @@
 				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
+				3559BA952A5AE3DE0020E172 /* PassModule.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
 				35661CB429B8BFCD003BBAD6 /* EditableVaultListViewModel.swift in Sources */,

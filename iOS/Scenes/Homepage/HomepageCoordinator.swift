@@ -486,7 +486,7 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentLogsView(for module: PassLogModule) {
+    func presentLogsView(for module: PassModule) {
         let viewModel = LogsViewModel(module: module)
         viewModel.delegate = self
         let view = LogsView(viewModel: viewModel)
@@ -985,7 +985,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToClearLogs() {
         Task {
-            let modules = PassLogModule.allCases.map(LogManager.init)
+            let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage("All logs cleared")

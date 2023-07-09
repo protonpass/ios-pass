@@ -86,7 +86,7 @@ struct LogsView: View {
                 }
 
                 ToolbarItem(placement: .principal) {
-                    Text(viewModel.module.title)
+                    Text(viewModel.module.logTitle)
                         .font(.callout.bold())
                         .onTapGesture {
                             withAnimation {

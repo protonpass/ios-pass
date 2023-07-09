@@ -46,14 +46,14 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     private var fileToDelete: URL?
 
     private let logFormatter: LogFormatterProtocol
-    let module: PassLogModule
+    let module: PassModule
 
     weak var delegate: LogsViewModelDelegate?
 
     @Injected(\UseCasesContainer.getLogEntries) private var getLogEntries
     @Injected(\UseCasesContainer.extractLogsToFile) private var extractLogsToFile
 
-    init(module: PassLogModule) {
+    init(module: PassModule) {
         self.module = module
         logFormatter = SharedToolingContainer.shared.logFormatter()
         loadLogs()
@@ -76,8 +76,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
         Task { @MainActor in
             do {
                 delegate?.logsViewModelWantsToShowSpinner()
-                let fileName = module.logFileName(suffix: Bundle.main.gitCommitHash ?? "?")
-                fileToDelete = try await extractLogsToFile(for: entries, in: fileName)
+                fileToDelete = try await extractLogsToFile(for: entries, in: module.exportLogFileName)
                 delegate?.logsViewModelWantsToHideSpinner()
                 if let fileToDelete {
                     delegate?.logsViewModelWantsToShareLogs(fileToDelete)
@@ -86,16 +85,6 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
                 delegate?.logsViewModelWantsToHideSpinner()
                 delegate?.logsViewModelDidEncounter(error: error)
             }
-        }
-    }
-}
-
-private extension PassLogModule {
-    func logFileName(suffix: String) -> String {
-        switch self {
-        case .hostApp: return "pass_host_application_\(suffix).log"
-        case .autoFillExtension: return "pass_autofill_extension_\(suffix).log"
-        case .keyboardExtension: return "pass_keyboard_extension_\(suffix).log"
         }
     }
 }
