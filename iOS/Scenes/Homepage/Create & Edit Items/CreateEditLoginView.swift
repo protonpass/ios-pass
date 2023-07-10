@@ -25,6 +25,11 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+enum Field: Hashable {
+    case title, username, password, totp, websites, note
+    case custom(CustomFieldUiModel?)
+}
+
 struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
@@ -37,10 +42,6 @@ struct CreateEditLoginView: View {
     @Namespace private var websitesID
     @Namespace private var noteID
     @Namespace private var bottomID
-
-    enum Field: Hashable {
-        case title, username, password, totp, websites, note
-    }
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -71,7 +72,8 @@ struct CreateEditLoginView: View {
                                         field: .note)
                             .id(noteID)
 
-                        EditCustomFieldSections(focusedFieldId: viewModel.recentlyAddedOrEditedFieldId,
+                        EditCustomFieldSections(focusedField: $focusedField,
+                                                focusedFieldId: viewModel.recentlyAddedOrEditedFieldId,
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
@@ -93,6 +95,8 @@ struct CreateEditLoginView: View {
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
+                    case .custom:
+                        id = bottomID
                     default: id = nil
                     }
 
@@ -162,6 +166,8 @@ struct CreateEditLoginView: View {
                     usernameTextFieldToolbar
                 case .totp:
                     totpTextFieldToolbar
+                case let .custom(model) where model?.customField.type == .totp:
+                    totpTextFieldToolbar
                 case .password:
                     passwordTextFieldToolbar
                 default:
@@ -175,6 +181,8 @@ struct CreateEditLoginView: View {
                     case .username:
                         usernameTextFieldToolbar
                     case .totp:
+                        totpTextFieldToolbar
+                    case let .custom(model) where model?.customField.type == .totp:
                         totpTextFieldToolbar
                     case .password:
                         passwordTextFieldToolbar
