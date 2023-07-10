@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import SwiftUI
 
 protocol LogsViewModelDelegate: AnyObject {
@@ -44,16 +45,17 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     private var fileToDelete: URL?
 
-    private let logManager: LogManager
-    private let logFormatter: LogFormatter
+    private let logFormatter: LogFormatterProtocol
     let module: PassLogModule
 
     weak var delegate: LogsViewModelDelegate?
 
+    @Injected(\UseCasesContainer.getLogEntries) private var getLogEntries
+    @Injected(\UseCasesContainer.extractLogsToFile) private var extractLogsToFile
+
     init(module: PassLogModule) {
         self.module = module
-        logManager = .init(module: module)
-        logFormatter = .default
+        logFormatter = SharedToolingContainer.shared.logFormatter()
         loadLogs()
     }
 
@@ -62,7 +64,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
             defer { isLoading = false }
             do {
                 isLoading = true
-                entries = try await logManager.getLogEntries()
+                entries = try await getLogEntries(for: module)
                 isLoading = false
             } catch {
                 self.error = error
@@ -75,12 +77,11 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
             do {
                 delegate?.logsViewModelWantsToShowSpinner()
                 let fileName = module.logFileName(suffix: Bundle.main.gitCommitHash ?? "?")
-                let file = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-                let log = await logFormatter.format(entries: entries)
-                try log.write(to: file, atomically: true, encoding: .utf8)
-                fileToDelete = file
+                fileToDelete = try await extractLogsToFile(for: entries, in: fileName)
                 delegate?.logsViewModelWantsToHideSpinner()
-                delegate?.logsViewModelWantsToShareLogs(file)
+                if let fileToDelete {
+                    delegate?.logsViewModelWantsToShareLogs(fileToDelete)
+                }
             } catch {
                 delegate?.logsViewModelWantsToHideSpinner()
                 delegate?.logsViewModelDidEncounter(error: error)
