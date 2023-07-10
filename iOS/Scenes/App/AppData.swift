@@ -26,7 +26,7 @@ import ProtonCore_Networking
 private extension LockedKeychainStorage {
     /// Conveniently initialize with injected `keychain`, `mainKeyProvider` & `logManager`
     init(key: any RawRepresentable<String>, defaultValue: Value) {
-        self.init(key: key,
+        self.init(key: key.rawValue,
                   defaultValue: defaultValue,
                   keychain: SharedToolingContainer.shared.keychain(),
                   mainKeyProvider: SharedToolingContainer.shared.mainKeyProvider(),
