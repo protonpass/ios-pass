@@ -34,6 +34,26 @@ public extension APIService {
         }
     }
 
+    /// Execute an async request with attached files
+    /// - Parameters:
+    ///   - endpoint: The `Endpoint` to reach
+    ///   - files: Files to send in the format of `[String: URL]`
+    /// - Returns: The endpoint response of type `Response` or `throws` an `Error`
+    func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
+        let progress: ProgressCompletion = { progress in
+            if NetworkDebugger.shouldDebugNetworkTraffic() {
+                print("Upload progress \(progress.fractionCompleted) for \(endpoint.path)")
+            }
+        }
+        return try await withCheckedThrowingContinuation { continuation in
+            NetworkDebugger.printDebugInfo(endpoint: endpoint)
+            performUpload(request: endpoint, files: files, uploadProgress: progress) { task, result in
+                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                continuation.resume(with: result)
+            }
+        }
+    }
+
     /// As of the moment of writting this, `APIService` doesn't support `perform` function
     /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
     /// from the error object.
@@ -64,7 +84,7 @@ public extension APIService {
 }
 
 private enum NetworkDebugger {
-    private static func shouldDebugNetworkTraffic() -> Bool {
+    static func shouldDebugNetworkTraffic() -> Bool {
         ProcessInfo.processInfo.environment["me.proton.pass.NetworkDebug"] == "1"
     }
 

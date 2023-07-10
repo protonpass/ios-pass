@@ -156,15 +156,6 @@ extension ItemContentType {
         }
     }
 
-    var trashMessage: String {
-        switch self {
-        case .login: return "Login moved to trash"
-        case .alias: return "Alias moved to trash"
-        case .creditCard: return "Credit card moved to trash"
-        case .note: return "Note moved to trash"
-        }
-    }
-
     var restoreMessage: String {
         switch self {
         case .login: return "Login restored"
@@ -189,6 +180,17 @@ extension ItemContentType {
         case .alias: return "Alias updated"
         case .creditCard: return "Credit card updated"
         case .note: return "Note updated"
+        }
+    }
+}
+
+extension ItemTypeIdentifiable {
+    var trashMessage: String {
+        switch type {
+        case .login: return "Login moved to trash"
+        case .alias: return "Alias \"\(aliasEmail ?? "")\" will stop forwarding emails to your inbox(es)"
+        case .creditCard: return "Credit card moved to trash"
+        case .note: return "Note moved to trash"
         }
     }
 }

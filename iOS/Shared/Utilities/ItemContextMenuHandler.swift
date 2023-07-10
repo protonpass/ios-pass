@@ -75,7 +75,8 @@ extension ItemContextMenuHandler {
                     banner.dismiss()
                     restore(item)
                 }
-                clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.trashMessage,
+
+                clipboardManager.bannerManager?.displayBottomInfoMessage(item.trashMessage,
                                                                          dismissButtonTitle: "Undo",
                                                                          onDismiss: undoBlock)
 

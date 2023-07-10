@@ -22,11 +22,12 @@ import Core
 import CryptoKit
 
 /// Items that live in memory for search purpose
-public struct SearchableItem: ItemTypeIdentifiable {
+public struct SearchableItem: ItemTypeIdentifiable, Equatable {
     public let shareId: String
     public let itemId: String
     public let vault: Vault? // Optional because we only show vault when there're more than 1 vault
     public let type: ItemContentType
+    public let aliasEmail: String?
     public let name: String
     public let note: String
     public let url: String?
@@ -49,6 +50,7 @@ public struct SearchableItem: ItemTypeIdentifiable {
 
         let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
         type = itemContent.contentData.type
+        aliasEmail = item.item.aliasEmail
         name = itemContent.name
         note = itemContent.note
 
@@ -113,6 +115,7 @@ extension SearchableItem {
         return .init(shareId: shareId,
                      itemId: itemId,
                      type: type,
+                     aliasEmail: aliasEmail,
                      title: title,
                      detail: detail,
                      url: url,
