@@ -31,6 +31,7 @@ import ProtonCore_Login
 import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import StoreKit
 import SwiftUI
 import UIComponents
 import UIKit
@@ -257,8 +258,11 @@ private extension HomepageCoordinator {
                                                       featureFlagsRepository: featureFlagsRepository,
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
-                                                      notificationService:
-                                                      ServiceContainer.shared.notificationService())
+                                                      notificationService: SharedServiceContainer
+                                                          .shared
+                                                          .notificationService(ToolingContainer
+                                                              .shared
+                                                              .logger()))
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
@@ -541,6 +545,16 @@ private extension HomepageCoordinator {
             }
         }
     }
+
+    func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
+        preferences.createdItemsCount += 1
+        // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
+        if !ProcessInfo.processInfo.isiOSAppOnMac,
+           preferences.createdItemsCount >= 10,
+           let windowScene = rootViewController.view.window?.windowScene {
+            SKStoreReviewController.requestReview(in: windowScene)
+        }
+    }
 }
 
 // MARK: - Public APIs
@@ -796,11 +810,20 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToShowFeedback() {
-        let view = FeedbackChannelsView { [unowned self] selectedChannel in
-            urlOpener.open(urlString: selectedChannel.urlString)
+        let view = FeedbackChannelsView { [weak self] selectedChannel in
+            switch selectedChannel {
+            case .bugReport:
+                self?.dismissTopMostViewController(animated: true) { [weak self] in
+                    self?.presentBugReportView()
+                }
+            default:
+                if let urlString = selectedChannel.urlString {
+                    self?.urlOpener.open(urlString: urlString)
+                }
+            }
         }
-        let viewController = UIHostingController(rootView: view)
 
+        let viewController = UIHostingController(rootView: view)
         let customHeight = 52 * FeedbackChannel.allCases.count + 80
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
@@ -809,8 +832,19 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(viewController)
     }
 
-    func profileTabViewModelWantsToRateApp() {
-        urlOpener.open(urlString: Constants.appStoreUrl)
+    func presentBugReportView() {
+        let errorHandler: (Error) -> Void = { [weak self] error in
+            self?.bannerManager.displayTopErrorMessage(error)
+        }
+        let successHandler: () -> Void = { [weak self] in
+            self?.dismissTopMostViewController { [weak self] in
+                self?.bannerManager.displayBottomSuccessMessage("Report successfully sent")
+            }
+        }
+        let view = BugReportView(planRepository: passPlanRepository,
+                                 onError: errorHandler,
+                                 onSuccess: successHandler)
+        present(view)
     }
 
     func profileTabViewModelWantsToQaFeatures() {
@@ -1045,6 +1079,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         }
         vaultsManager.refresh()
         homepageTabDelegete?.homepageTabShouldChange(tab: .items)
+        increaseCreatedItemsCountAndAskForReviewIfNecessary()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {
@@ -1278,7 +1313,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                 banner.dismiss()
                 itemContextMenuHandler.restore(item)
             }
-            bannerManager.displayBottomInfoMessage(item.type.trashMessage,
+            bannerManager.displayBottomInfoMessage(item.trashMessage,
                                                    dismissButtonTitle: "Undo",
                                                    onDismiss: undoBlock)
         }

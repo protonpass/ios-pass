@@ -283,6 +283,7 @@ extension ItemContent: ItemIdentifiable {
 
 extension ItemContent: ItemTypeIdentifiable {
     public var type: ItemContentType { contentData.type }
+    public var aliasEmail: String? { item.aliasEmail }
 }
 
 extension ItemContent: ItemThumbnailable {

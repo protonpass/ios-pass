@@ -35,6 +35,7 @@ public extension ItemIdentifiable {
 
 public protocol ItemTypeIdentifiable: ItemIdentifiable {
     var type: ItemContentType { get }
+    var aliasEmail: String? { get }
 }
 
 public protocol ItemThumbnailable {
