@@ -102,11 +102,11 @@ public struct CreditCardData {
     }
 }
 
-public enum CustomFieldType: CaseIterable {
+public enum CustomFieldType: CaseIterable, Equatable {
     case text, totp, hidden
 }
 
-public struct CustomField {
+public struct CustomField: Equatable, Hashable {
     public let title: String
     public let type: CustomFieldType
     public var content: String
