@@ -18,53 +18,86 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import ProtonCore_Keymaker
+import SwiftUI
 
 /// Read/write from keychain with no lock mechanism
 @propertyWrapper
-public final class KeychainStorage<T: Codable> {
-    private let keychain: KeychainProtocol
+public struct KeychainStorage<Value: Codable>: DynamicProperty {
+    private var value: Value
     private let key: String
-    private let defaultValue: T?
+    private let keychain: KeychainProtocol
     private let logger: Logger
 
-    public init(key: String,
-                defaultValue: T?,
+    public init(wrappedValue: Value,
+                key: String,
                 keychain: KeychainProtocol,
                 logManager: LogManager) {
+        value = wrappedValue
         self.key = key
-        self.defaultValue = defaultValue
         self.keychain = keychain
         logger = .init(manager: logManager)
     }
 
-    public var wrappedValue: T? {
+    public var wrappedValue: Value {
         get {
             if let data = keychain.data(forKey: key) {
                 do {
-                    return try JSONDecoder().decode(T.self, from: data)
+                    return try JSONDecoder().decode(Value.self, from: data)
                 } catch {
                     logger.warning("Corrupted data for key \(key), fall back to default value")
                     logger.error(error)
-                    return defaultValue
+                    return value
                 }
             } else {
                 logger.debug("No value for key \(key), fall back to default value")
-                return defaultValue
+                return value
             }
         }
 
         set {
-            if let newValue {
+            if let optional = newValue as? AnyOptional, optional.isNil {
+                keychain.remove(forKey: key)
+                value = newValue
+            } else {
                 do {
                     let data = try JSONEncoder().encode(newValue)
                     keychain.set(data, forKey: key)
+                    value = newValue
                 } catch {
                     logger.error(error)
                 }
-            } else {
-                keychain.remove(forKey: key)
             }
         }
     }
+
+    /// Trigger `objectWillChange` of enclosing instance
+    /// https://www.swiftbysundell.com/articles/accessing-a-swift-property-wrappers-enclosing-instance/
+    public static subscript<T: ObservableObject>(_enclosingInstance instance: T,
+                                                 wrapped wrappedKeyPath: ReferenceWritableKeyPath<T, Value>,
+                                                 storage storageKeyPath: ReferenceWritableKeyPath<T, Self>)
+        -> Value {
+        get {
+            instance[keyPath: storageKeyPath].value
+        }
+        set {
+            instance[keyPath: storageKeyPath].value = newValue
+            let publisher = instance.objectWillChange
+            (publisher as? ObservableObjectPublisher)?.send()
+        }
+    }
+}
+
+// Since our property wrapper's Value type isn't optional, but
+// can still contain nil values, we'll have to introduce this
+// protocol to enable us to cast any assigned value into a type
+// that we can compare against nil
+// https://www.swiftbysundell.com/articles/property-wrappers-in-swift/
+private protocol AnyOptional {
+    var isNil: Bool { get }
+}
+
+extension Optional: AnyOptional {
+    var isNil: Bool { self == nil }
 }

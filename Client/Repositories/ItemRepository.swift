@@ -112,9 +112,6 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     /// Update the last use time of an item. Only log in items are concerned.
     func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws
-
-    /// Temporary function to re-encrypt all items locally. Can be removed after going public.
-    func reencryptAllItemsTemp() async throws
 }
 
 private extension ItemRepositoryProtocol {
@@ -415,15 +412,6 @@ public extension ItemRepositoryProtocol {
                                                                   shareId: item.shareId)
         try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
         logger.trace("Updated lastUsedTime \(item.debugInformation)")
-    }
-
-    func reencryptAllItemsTemp() async throws {
-        let allItems = try await getAllItems()
-        for item in allItems {
-            let encryptedItem = try await symmetricallyEncrypt(itemRevision: item.item,
-                                                               shareId: item.shareId)
-            try await localItemDatasoure.upsertItems([encryptedItem])
-        }
     }
 }
 

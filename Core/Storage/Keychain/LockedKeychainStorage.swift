@@ -86,7 +86,7 @@ public final class LockedKeychainStorage<T: Codable> {
                     logger.error(error)
                 }
             } else {
-                keychain.remove(forKey: keyRawValue)
+                wipeValue()
             }
         }
     }
