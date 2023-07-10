@@ -94,12 +94,16 @@ extension SharedToolingContainer {
 // MARK: Keychain tools
 
 extension SharedToolingContainer {
-    var keychain: Factory<KeychainProtocol> {
+    private var baseKeychain: Factory<PPKeychain> {
         self { PPKeychain() }
     }
 
+    var keychain: Factory<KeychainProtocol> {
+        self { self.baseKeychain() }
+    }
+
     var settingsProvider: Factory<SettingsProvider> {
-        self { (self.keychain() as? PPKeychain) ?? PPKeychain() }
+        self { self.baseKeychain() }
     }
 
     var autolocker: Factory<Autolocker> {
@@ -108,6 +112,12 @@ extension SharedToolingContainer {
 
     var mainKeyProvider: Factory<MainKeyProvider> {
         self { Keymaker(autolocker: self.autolocker(),
-                        keychain: (self.keychain() as? Keychain) ?? PPKeychain()) }
+                        keychain: self.baseKeychain()) }
+    }
+}
+
+extension SharedToolingContainer: AutoRegistering {
+    func autoRegister() {
+        manager.defaultScope = .singleton
     }
 }

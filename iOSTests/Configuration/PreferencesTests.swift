@@ -22,10 +22,11 @@
 import XCTest
 
 final class PreferencesTests: XCTestCase {
-    private var sut: Preferences!
+    var sut: Preferences!
 
     override func setUp() {
         super.setUp()
+        SharedToolingContainer.shared.keychain.register { KeychainMainkeyProviderMock() }
         sut = .init()
     }
 
