@@ -20,11 +20,10 @@
 
 import Combine
 import ProtonCore_Keymaker
-import SwiftUI
 
 /// Read/write from keychain with no lock mechanism
 @propertyWrapper
-public struct KeychainStorage<Value: Codable>: DynamicProperty {
+public struct KeychainStorage<Value: Codable> {
     private var value: Value
     private let key: String
     private let keychain: KeychainProtocol
@@ -71,33 +70,4 @@ public struct KeychainStorage<Value: Codable>: DynamicProperty {
             }
         }
     }
-
-    /// Trigger `objectWillChange` of enclosing instance
-    /// https://www.swiftbysundell.com/articles/accessing-a-swift-property-wrappers-enclosing-instance/
-    public static subscript<T: ObservableObject>(_enclosingInstance instance: T,
-                                                 wrapped wrappedKeyPath: ReferenceWritableKeyPath<T, Value>,
-                                                 storage storageKeyPath: ReferenceWritableKeyPath<T, Self>)
-        -> Value {
-        get {
-            instance[keyPath: storageKeyPath].value
-        }
-        set {
-            instance[keyPath: storageKeyPath].value = newValue
-            let publisher = instance.objectWillChange
-            (publisher as? ObservableObjectPublisher)?.send()
-        }
-    }
-}
-
-// Since our property wrapper's Value type isn't optional, but
-// can still contain nil values, we'll have to introduce this
-// protocol to enable us to cast any assigned value into a type
-// that we can compare against nil
-// https://www.swiftbysundell.com/articles/property-wrappers-in-swift/
-private protocol AnyOptional {
-    var isNil: Bool { get }
-}
-
-extension Optional: AnyOptional {
-    var isNil: Bool { self == nil }
 }

@@ -21,16 +21,41 @@
 import ProtonCore_Keymaker
 
 public protocol KeychainProtocol: AnyObject {
-    // getters
+    // Getters
     func data(forKey key: String) -> Data?
     func string(forKey key: String) -> String?
 
-    // setters
+    // Setters
     func set(_ data: Data, forKey key: String)
     func set(_ string: String, forKey key: String)
 
-    // cleaners
+    // Cleaner
     func remove(forKey key: String)
+}
+
+extension KeychainProtocol {
+    // Overloaded getters
+    func data(forKey key: any RawRepresentable<String>) -> Data? {
+        data(forKey: key.rawValue)
+    }
+
+    func string(forKey key: any RawRepresentable<String>) -> String? {
+        string(forKey: key.rawValue)
+    }
+
+    // Overloaded setters
+    func set(_ data: Data, forKey key: any RawRepresentable<String>) {
+        set(data, forKey: key.rawValue)
+    }
+
+    func set(_ string: String, forKey key: any RawRepresentable<String>) {
+        set(string, forKey: key.rawValue)
+    }
+
+    // Overloaded cleaner
+    func remove(forKey key: any RawRepresentable<String>) {
+        remove(forKey: key.rawValue)
+    }
 }
 
 extension Keychain: KeychainProtocol {}
