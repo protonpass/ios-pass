@@ -23,15 +23,15 @@ import ProtonCore_Keymaker
 
 /// Read/write from keychain with lock mechanism provided by `MainKeyProvider`
 @propertyWrapper
-public final class LockedKeychainStorage<T: Codable> {
+public struct LockedKeychainStorage<Value: Codable> {
+    private let key: any RawRepresentable<String>
+    private let defaultValue: Value
     private let mainKeyProvider: MainKeyProvider
     private let keychain: KeychainProtocol
-    private var logger: Logger
-    private let key: Key
-    private let defaultValue: T?
+    private let logger: Logger
 
-    public init(key: Key,
-                defaultValue: T?,
+    public init(key: any RawRepresentable<String>,
+                defaultValue: Value,
                 keychain: KeychainProtocol,
                 mainKeyProvider: MainKeyProvider,
                 logManager: LogManager) {
@@ -42,64 +42,49 @@ public final class LockedKeychainStorage<T: Codable> {
         logger = .init(manager: logManager)
     }
 
-    public var wrappedValue: T? {
+    public var wrappedValue: Value {
         get {
-            let keyRawValue = key.rawValue
-
-            guard let cypherdata = keychain.data(forKey: keyRawValue) else {
-                logger.warning("cypherdata does not exist for key \(keyRawValue). Fall back to defaultValue.")
+            guard let cypherdata = keychain.data(forKey: key) else {
+                logger.warning("cypherdata does not exist for key \(key.rawValue). Fall back to defaultValue.")
                 return defaultValue
             }
 
             guard let mainKey = mainKeyProvider.mainKey else {
-                logger.warning("mainKey is null for key \(keyRawValue). Fall back to defaultValue.")
+                logger.warning("mainKey is null for key \(key.rawValue). Fall back to defaultValue.")
                 return defaultValue
             }
 
             do {
                 let lockedData = Locked<Data>(encryptedValue: cypherdata)
                 let unlockedData = try lockedData.unlock(with: mainKey)
-                return try JSONDecoder().decode(T.self, from: unlockedData)
+                return try JSONDecoder().decode(Value.self, from: unlockedData)
             } catch {
                 // Consider that the cypherdata is lost => remove it
                 logger.error(error)
-                wipeValue()
+                keychain.remove(forKey: key)
                 return defaultValue
             }
         }
 
         set {
-            let keyRawValue = key.rawValue
-
             guard let mainKey = mainKeyProvider.mainKey else {
-                logger.warning("mainKey is null for key \(keyRawValue). Early exit")
+                logger.warning("mainKey is null for key \(key.rawValue). Early exit")
                 return
             }
 
-            if let newValue {
+            if let optional = newValue as? AnyOptional, optional.isNil {
+                // Set to nil
+                keychain.remove(forKey: key)
+            } else {
                 do {
                     let data = try JSONEncoder().encode(newValue)
                     let lockedData = try Locked<Data>(clearValue: data, with: mainKey)
                     let cypherdata = lockedData.encryptedValue
-                    keychain.set(cypherdata, forKey: keyRawValue)
+                    keychain.set(cypherdata, forKey: key)
                 } catch {
                     logger.error(error)
                 }
-            } else {
-                wipeValue()
             }
         }
-    }
-
-    public func wipeValue() {
-        keychain.remove(forKey: key.rawValue)
-    }
-}
-
-public extension LockedKeychainStorage {
-    enum Key: String {
-        case userData
-        case unauthSessionCredentials
-        case symmetricKey
     }
 }

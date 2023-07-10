@@ -18,16 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Core
 import CryptoKit
-import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 
-extension LockedKeychainStorage {
+private extension LockedKeychainStorage {
     /// Conveniently initialize with injected `keychain`, `mainKeyProvider` & `logManager`
-    convenience init(key: Key, defaultValue: T? = nil) {
+    init(key: any RawRepresentable<String>, defaultValue: Value) {
         self.init(key: key,
                   defaultValue: defaultValue,
                   keychain: SharedToolingContainer.shared.keychain(),
@@ -36,14 +34,20 @@ extension LockedKeychainStorage {
     }
 }
 
+private enum AppDataKey: String {
+    case userData
+    case unauthSessionCredentials
+    case symmetricKey
+}
+
 final class AppData {
-    @LockedKeychainStorage(key: .userData)
+    @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     var userData: UserData?
 
-    @LockedKeychainStorage(key: .unauthSessionCredentials)
+    @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
     var unauthSessionCredentials: AuthCredential?
 
-    @LockedKeychainStorage(key: .symmetricKey)
+    @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
 
     init() {}
