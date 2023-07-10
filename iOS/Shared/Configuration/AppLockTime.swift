@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum AppLockTime: Int, CustomStringConvertible, CaseIterable {
+public enum AppLockTime: Int, Codable, CustomStringConvertible, CaseIterable {
     case immediately = 0
     case oneMinute = 1
     case twoMinutes = 2

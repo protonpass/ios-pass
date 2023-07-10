@@ -18,76 +18,70 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable redundant_optional_initialization
 import Client
 import Core
-import SwiftUI
 
-public final class Preferences: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
-    public init() {}
-
-    @AppStorage("quickTypeBar", store: kSharedUserDefaults)
-    public var quickTypeBar = true
-
-    @AppStorage("automaticallyCopyTotpCode", store: kSharedUserDefaults)
-    public var automaticallyCopyTotpCode = false
-
-    @AppStorage("failedAttemptCount", store: kSharedUserDefaults)
-    public var failedAttemptCount = 0
-
-    @AppStorage("biometricAuthenticationEnabled", store: kSharedUserDefaults)
-    public var biometricAuthenticationEnabled = false
-
-    @AppStorage("appLockTime", store: kSharedUserDefaults)
-    public var appLockTime: AppLockTime = .twoMinutes
-
-    @AppStorage("onboarded", store: kSharedUserDefaults)
-    public var onboarded = false
-
-    @AppStorage("autoFillBannerDisplayed", store: kSharedUserDefaults)
-    public var autoFillBannerDisplayed = false
-
-    @AppStorage("theme", store: kSharedUserDefaults)
-    public var theme = Theme.dark
-
-    @AppStorage("browser", store: kSharedUserDefaults)
-    public var browser = Browser.safari
-
-    @AppStorage("clipboardExpiration", store: kSharedUserDefaults)
-    public var clipboardExpiration = ClipboardExpiration.oneMinute
-
-    @AppStorage("shareClipboard", store: kSharedUserDefaults)
-    public var shareClipboard = false
-
-    @AppStorage("telemetryThreshold", store: kSharedUserDefaults)
-    public var telemetryThreshold: TimeInterval?
-
-    @AppStorage("displayFavIcons", store: kSharedUserDefaults)
-    public var displayFavIcons = true
-
-    /// A list of IDs of banners that are dismissed by users.
-    /// `AppStorage` does not support array out of the box so these IDs are concatenated and separated by `,`
-    /// E.g: when trial & autofill banners are dismissed, this is how the string looks like `"trial,autofill"`
-    @AppStorage("dismissedBannerIds", store: kSharedUserDefaults)
-    private var _dismissedBannerIds = ""
-
-    public var dismissedBannerIds: [String] {
-        get {
-            _dismissedBannerIds.components(separatedBy: ",").filter { !$0.isEmpty }
-        }
-        set {
-            _dismissedBannerIds = newValue.joined(separator: ",")
-        }
+private extension KeychainStorage {
+    /// Conveniently initialize with injected `keychain`  & `logManager`
+    init(wrappedValue: Value, _ key: String) {
+        self.init(wrappedValue: wrappedValue,
+                  key: key,
+                  keychain: SharedToolingContainer.shared.keychain(),
+                  logManager: SharedToolingContainer.shared.logManager())
     }
+}
 
-    @AppStorage("isFirstRun", store: kSharedUserDefaults)
+final class Preferences: ObservableObject, DeinitPrintable {
+    deinit { print(deinitMessage) }
+    init() {}
+
+    @KeychainStorage("quickTypeBar")
+    var quickTypeBar = true
+
+    @KeychainStorage("automaticallyCopyTotpCode")
+    var automaticallyCopyTotpCode = false
+
+    @KeychainStorage("failedAttemptCount")
+    var failedAttemptCount = 0
+
+    @KeychainStorage("biometricAuthenticationEnabled")
+    var biometricAuthenticationEnabled = false
+
+    @KeychainStorage("appLockTime")
+    var appLockTime: AppLockTime = .twoMinutes
+
+    @KeychainStorage("onboarded")
+    var onboarded = false
+
+    @KeychainStorage("autoFillBannerDisplayed")
+    var autoFillBannerDisplayed = false
+
+    @KeychainStorage("theme")
+    var theme = Theme.dark
+
+    @KeychainStorage("browser")
+    var browser = Browser.safari
+
+    @KeychainStorage("clipboardExpiration")
+    var clipboardExpiration = ClipboardExpiration.oneMinute
+
+    @KeychainStorage("shareClipboard")
+    var shareClipboard = false
+
+    @KeychainStorage("telemetryThreshold")
+    var telemetryThreshold: TimeInterval? = nil
+
+    @KeychainStorage("displayFavIcons")
+    var displayFavIcons = true
+
+    @KeychainStorage("dismissedBannerIds")
+    var dismissedBannerIds = [String]()
+
+    @KeychainStorage("isFirstRun")
     public var isFirstRun = true
 
-    /// Temporary boolean. Can be removed after going public.
-    @AppStorage("didReencryptAllItems", store: kSharedUserDefaults)
-    public var didReencryptAllItems = false
-
-    @AppStorage("createdItemsCount", store: kSharedUserDefaults)
+    @KeychainStorage("createdItemsCount")
     public var createdItemsCount = 0
 
     public func reset(isUITests: Bool = false) {
@@ -103,7 +97,7 @@ public final class Preferences: ObservableObject, DeinitPrintable {
         shareClipboard = false
         telemetryThreshold = nil
         displayFavIcons = true
-        _dismissedBannerIds = ""
+        dismissedBannerIds = []
         if isUITests {
             onboarded = false
         }
@@ -122,3 +116,5 @@ extension Preferences: TelemetryThresholdProviderProtocol {
 extension Preferences: FavIconSettings {
     public var shouldDisplayFavIcons: Bool { displayFavIcons }
 }
+
+// swiftlint:enable redundant_optional_initialization

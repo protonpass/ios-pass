@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum ClipboardExpiration: Int, CustomStringConvertible, CaseIterable {
+public enum ClipboardExpiration: Int, Codable, CustomStringConvertible, CaseIterable {
     case fifteenSeconds = 0
     case oneMinute = 1
     case twoMinutes = 2
