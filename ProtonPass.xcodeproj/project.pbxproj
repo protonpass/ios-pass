@@ -641,6 +641,7 @@
 		5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BE5BDF12A4C7D41007CBE1B /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5BDF02A4C7D41007CBE1B /* BugReportView.swift */; };
+		5BFFB50A2A5BFF2000C2D1F9 /* CheckCameraPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5092A5BFF2000C2D1F9 /* CheckCameraPermission.swift */; };
 		6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002A29A76D86001033B6 /* APIManagerTests.swift */; };
 		6699002E29A77197001033B6 /* KeychainMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002D29A77197001033B6 /* KeychainMock.swift */; };
 		6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */; };
@@ -1403,6 +1404,7 @@
 		5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		5BE5BDF02A4C7D41007CBE1B /* BugReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
+		5BFFB5092A5BFF2000C2D1F9 /* CheckCameraPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCameraPermission.swift; sourceTree = "<group>"; };
 		5ED83C579352551B8FC8475F /* Pods-macOS.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release-tf.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release-tf.xcconfig"; sourceTree = "<group>"; };
 		6699002A29A76D86001033B6 /* APIManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerTests.swift; sourceTree = "<group>"; };
 		6699002D29A77197001033B6 /* KeychainMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMock.swift; sourceTree = "<group>"; };
@@ -2881,6 +2883,7 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
 				5B503FE82A4D7ADA00E6681C /* Reports */,
 				5B503FE32A4D6D7000E6681C /* Logs */,
 			);
@@ -3020,6 +3023,14 @@
 				5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */,
 			);
 			path = "Bug Report";
+			sourceTree = "<group>";
+		};
+		5BFFB5082A5BF58B00C2D1F9 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				5BFFB5092A5BFF2000C2D1F9 /* CheckCameraPermission.swift */,
+			);
+			path = Camera;
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
@@ -4321,6 +4332,7 @@
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
+				5BFFB50A2A5BFF2000C2D1F9 /* CheckCameraPermission.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
