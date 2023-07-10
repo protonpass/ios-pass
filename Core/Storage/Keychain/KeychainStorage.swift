@@ -24,17 +24,17 @@ import ProtonCore_Keymaker
 /// Read/write from keychain with no lock mechanism
 @propertyWrapper
 public struct KeychainStorage<Value: Codable> {
-    private var value: Value
     private let key: String
+    private var defaultValue: Value
     private let keychain: KeychainProtocol
     private let logger: Logger
 
-    public init(wrappedValue: Value,
-                key: String,
+    public init(key: String,
+                defaultValue: Value,
                 keychain: KeychainProtocol,
                 logManager: LogManager) {
-        value = wrappedValue
         self.key = key
+        self.defaultValue = defaultValue
         self.keychain = keychain
         logger = .init(manager: logManager)
     }
@@ -45,27 +45,26 @@ public struct KeychainStorage<Value: Codable> {
                 do {
                     return try JSONDecoder().decode(Value.self, from: data)
                 } catch {
-                    logger.warning("Corrupted data for key \(key), fall back to default value")
+                    logger.error("Corrupted data for key \(key). Fall back to defaultValue")
                     logger.error(error)
-                    return value
+                    return defaultValue
                 }
             } else {
-                logger.debug("No value for key \(key), fall back to default value")
-                return value
+                logger.debug("No value for key \(key). Fall back to defaultValue")
+                return defaultValue
             }
         }
 
         set {
             if let optional = newValue as? AnyOptional, optional.isNil {
+                // Set to nil => remove from keychain
                 keychain.remove(forKey: key)
-                value = newValue
             } else {
                 do {
                     let data = try JSONEncoder().encode(newValue)
                     keychain.set(data, forKey: key)
-                    value = newValue
                 } catch {
-                    logger.error(error)
+                    logger.error("Failed to serialize data for key \(key) \(error.localizedDescription)")
                 }
             }
         }

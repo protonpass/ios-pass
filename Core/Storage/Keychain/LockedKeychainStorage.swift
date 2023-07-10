@@ -24,13 +24,13 @@ import ProtonCore_Keymaker
 /// Read/write from keychain with lock mechanism provided by `MainKeyProvider`
 @propertyWrapper
 public struct LockedKeychainStorage<Value: Codable> {
-    private let key: any RawRepresentable<String>
+    private let key: String
     private let defaultValue: Value
     private let mainKeyProvider: MainKeyProvider
     private let keychain: KeychainProtocol
     private let logger: Logger
 
-    public init(key: any RawRepresentable<String>,
+    public init(key: String,
                 defaultValue: Value,
                 keychain: KeychainProtocol,
                 mainKeyProvider: MainKeyProvider,
@@ -45,12 +45,12 @@ public struct LockedKeychainStorage<Value: Codable> {
     public var wrappedValue: Value {
         get {
             guard let cypherdata = keychain.data(forKey: key) else {
-                logger.warning("cypherdata does not exist for key \(key.rawValue). Fall back to defaultValue.")
+                logger.warning("cypherdata does not exist for key \(key). Fall back to defaultValue.")
                 return defaultValue
             }
 
             guard let mainKey = mainKeyProvider.mainKey else {
-                logger.warning("mainKey is null for key \(key.rawValue). Fall back to defaultValue.")
+                logger.warning("mainKey is null for key \(key). Fall back to defaultValue.")
                 return defaultValue
             }
 
@@ -60,6 +60,7 @@ public struct LockedKeychainStorage<Value: Codable> {
                 return try JSONDecoder().decode(Value.self, from: unlockedData)
             } catch {
                 // Consider that the cypherdata is lost => remove it
+                logger.error("Corrupted data for key \(key). Fall back to defaultValue")
                 logger.error(error)
                 keychain.remove(forKey: key)
                 return defaultValue
@@ -68,12 +69,12 @@ public struct LockedKeychainStorage<Value: Codable> {
 
         set {
             guard let mainKey = mainKeyProvider.mainKey else {
-                logger.warning("mainKey is null for key \(key.rawValue). Early exit")
+                logger.warning("mainKey is null for key \(key). Early exit")
                 return
             }
 
             if let optional = newValue as? AnyOptional, optional.isNil {
-                // Set to nil
+                // Set to nil => remove from keychain
                 keychain.remove(forKey: key)
             } else {
                 do {
@@ -82,7 +83,7 @@ public struct LockedKeychainStorage<Value: Codable> {
                     let cypherdata = lockedData.encryptedValue
                     keychain.set(cypherdata, forKey: key)
                 } catch {
-                    logger.error(error)
+                    logger.error("Failed to serialize data for key \(key) \(error.localizedDescription)")
                 }
             }
         }

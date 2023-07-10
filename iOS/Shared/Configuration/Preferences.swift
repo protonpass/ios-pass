@@ -18,15 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable redundant_optional_initialization
 import Client
 import Core
 
 private extension KeychainStorage {
     /// Conveniently initialize with injected `keychain`  & `logManager`
-    init(wrappedValue: Value, _ key: String) {
-        self.init(wrappedValue: wrappedValue,
-                  key: key,
+    init(key: String, defaultValue: Value) {
+        self.init(key: key,
+                  defaultValue: defaultValue,
                   keychain: SharedToolingContainer.shared.keychain(),
                   logManager: SharedToolingContainer.shared.logManager())
     }
@@ -34,57 +33,58 @@ private extension KeychainStorage {
 
 final class Preferences: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
+
     init() {}
 
-    @KeychainStorage("quickTypeBar")
-    var quickTypeBar = true
+    @KeychainStorage(key: "quickTypeBar", defaultValue: true)
+    var quickTypeBar: Bool
 
-    @KeychainStorage("automaticallyCopyTotpCode")
-    var automaticallyCopyTotpCode = false
+    @KeychainStorage(key: "automaticallyCopyTotpCode", defaultValue: false)
+    var automaticallyCopyTotpCode: Bool
 
-    @KeychainStorage("failedAttemptCount")
-    var failedAttemptCount = 0
+    @KeychainStorage(key: "failedAttemptCount", defaultValue: 0)
+    var failedAttemptCount: Int
 
-    @KeychainStorage("biometricAuthenticationEnabled")
-    var biometricAuthenticationEnabled = false
+    @KeychainStorage(key: "biometricAuthenticationEnabled", defaultValue: false)
+    var biometricAuthenticationEnabled: Bool
 
-    @KeychainStorage("appLockTime")
-    var appLockTime: AppLockTime = .twoMinutes
+    @KeychainStorage(key: "appLockTime", defaultValue: .twoMinutes)
+    var appLockTime: AppLockTime
 
-    @KeychainStorage("onboarded")
-    var onboarded = false
+    @KeychainStorage(key: "onboarded", defaultValue: false)
+    var onboarded: Bool
 
-    @KeychainStorage("autoFillBannerDisplayed")
-    var autoFillBannerDisplayed = false
+    @KeychainStorage(key: "autoFillBannerDisplayed", defaultValue: false)
+    var autoFillBannerDisplayed: Bool
 
-    @KeychainStorage("theme")
-    var theme = Theme.dark
+    @KeychainStorage(key: "theme", defaultValue: .dark)
+    var theme: Theme
 
-    @KeychainStorage("browser")
-    var browser = Browser.safari
+    @KeychainStorage(key: "browser", defaultValue: .safari)
+    var browser: Browser
 
-    @KeychainStorage("clipboardExpiration")
-    var clipboardExpiration = ClipboardExpiration.oneMinute
+    @KeychainStorage(key: "clipboardExpiration", defaultValue: .oneMinute)
+    var clipboardExpiration: ClipboardExpiration
 
-    @KeychainStorage("shareClipboard")
-    var shareClipboard = false
+    @KeychainStorage(key: "shareClipboard", defaultValue: false)
+    var shareClipboard: Bool
 
-    @KeychainStorage("telemetryThreshold")
-    var telemetryThreshold: TimeInterval? = nil
+    @KeychainStorage(key: "telemetryThreshold", defaultValue: nil)
+    var telemetryThreshold: TimeInterval?
 
-    @KeychainStorage("displayFavIcons")
-    var displayFavIcons = true
+    @KeychainStorage(key: "displayFavIcons", defaultValue: true)
+    var displayFavIcons: Bool
 
-    @KeychainStorage("dismissedBannerIds")
-    var dismissedBannerIds = [String]()
+    @KeychainStorage(key: "dismissedBannerIds", defaultValue: [])
+    var dismissedBannerIds: [String]
 
-    @KeychainStorage("isFirstRun")
-    public var isFirstRun = true
+    @KeychainStorage(key: "isFirstRun", defaultValue: true)
+    var isFirstRun: Bool
 
-    @KeychainStorage("createdItemsCount")
-    public var createdItemsCount = 0
+    @KeychainStorage(key: "createdItemsCount", defaultValue: 0)
+    var createdItemsCount: Int
 
-    public func reset(isUITests: Bool = false) {
+    func reset(isUITests: Bool = false) {
         quickTypeBar = true
         automaticallyCopyTotpCode = false
         failedAttemptCount = 0
@@ -107,14 +107,12 @@ final class Preferences: ObservableObject, DeinitPrintable {
 // MARK: - TelemetryThresholdProviderProtocol
 
 extension Preferences: TelemetryThresholdProviderProtocol {
-    public func getThreshold() -> TimeInterval? { telemetryThreshold }
-    public func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
+    func getThreshold() -> TimeInterval? { telemetryThreshold }
+    func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
 }
 
 // MARK: - FavIconSettings
 
 extension Preferences: FavIconSettings {
-    public var shouldDisplayFavIcons: Bool { displayFavIcons }
+    var shouldDisplayFavIcons: Bool { displayFavIcons }
 }
-
-// swiftlint:enable redundant_optional_initialization
