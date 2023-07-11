@@ -55,6 +55,7 @@ final class OnboardingViewModel: ObservableObject {
             .store(in: &cancellables)
 
         preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
                 if self.preferences.biometricAuthenticationEnabled {

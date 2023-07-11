@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 @testable import Proton_Pass
 import ProtonCore_Keymaker
 import ProtonCore_Login
@@ -26,15 +27,20 @@ import ProtonCore_Networking
 import ProtonCore_TestingToolkit
 import XCTest
 
+
+private extension SharedToolingContainer {
+    func setUpAPiMocks() {
+        Scope.singleton.reset()
+        self.keychain.register { KeychainMock() }
+        self.mainKeyProvider.register { MainKeyProviderMock() }
+    }
+}
+
 final class APIManagerTests: XCTestCase {
     var keychain: KeychainMock!
     var mainKeyProvider: MainKeyProviderMock!
-    var logManager: LogManager!
-
-    let appVer: String = .empty
-
-    let unauthSessionKey = LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue
-    let userDataKey = LockedKeychainStorage<String>.Key.userData.rawValue
+    let unauthSessionKey = AppDataKey.unauthSessionCredentials.rawValue
+    let userDataKey = AppDataKey.userData.rawValue
 
     let unauthSessionCredentials = AuthCredential(sessionID: "test_session_id",
                                                   accessToken: "test_access_token",
@@ -78,23 +84,22 @@ final class APIManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        keychain = KeychainMock()
-        mainKeyProvider = MainKeyProviderMock()
-        logManager = LogManager(module: .hostApp)
-        SharedToolingContainer.shared.keychain.register { self.keychain }
-        SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
-        SharedToolingContainer.shared.logManager.register { self.logManager }
+        SharedToolingContainer.shared.setUpAPiMocks()
+        keychain = SharedToolingContainer.shared.keychain() as? KeychainMock
+        mainKeyProvider = SharedToolingContainer.shared.mainKeyProvider() as? MainKeyProviderMock
     }
 
     override func tearDown() {
-        logManager = nil
         mainKeyProvider = nil
         keychain = nil
         super.tearDown()
     }
 
     func givenApiManager() -> APIManager {
-        SharedToolingContainer.shared.apiManager()
+        .init(logManager: .init(module: .hostApp),
+              appVer: .empty,
+              appData: .init(),
+              preferences: .init())
     }
 
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() {
@@ -162,7 +167,7 @@ final class APIManagerTests: XCTestCase {
                        Credential(unauthSessionCredentials))
         XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce)
         XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
-                       LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
+                       AppDataKey.unauthSessionCredentials.rawValue)
     }
 
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForAuthSession() throws {
@@ -186,10 +191,10 @@ final class APIManagerTests: XCTestCase {
                        Credential(userData.credential, scopes: userData.scopes))
         XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce) // setting auth session
         XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
-                       LockedKeychainStorage<String>.Key.userData.rawValue)
+                       AppDataKey.userData.rawValue)
         XCTAssertTrue(keychain.removeStub.wasCalledExactlyOnce) // removing unauth session
         XCTAssertEqual(keychain.removeStub.lastArguments?.value,
-                       LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
+                       AppDataKey.unauthSessionCredentials.rawValue)
     }
 
     func testAPIServiceClearCredentialsClearsAPIServiceAndUnauthSessionStorage() throws {
@@ -211,7 +216,7 @@ final class APIManagerTests: XCTestCase {
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
         XCTAssertTrue(keychain.removeStub.wasCalledExactlyOnce) // removing unauth session
         XCTAssertEqual(keychain.removeStub.lastArguments?.value,
-                       LockedKeychainStorage<String>.Key.unauthSessionCredentials.rawValue)
+                       AppDataKey.unauthSessionCredentials.rawValue)
     }
 
     func testAPIServiceUnauthSessionInvalidationClearsCredentials() throws {

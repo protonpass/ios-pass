@@ -21,6 +21,20 @@
 import Combine
 import ProtonCore_Keymaker
 
+/**
+ Property wrapper has 2 mechanism:
+ - Wrap via `wrappedValue` property. We do additional logic inside the getter and setter of this property.
+ - Wrap via a subscript (be aware that the subscript must respect the function signature, otherwise the compliler wouldn't take it into account)
+
+ We need a property wrapper that does the following:
+ - Read/write from keychain instead of a short-live value on memory => inject `KeychainProtocol`
+ - Support optional value => `AnyOptional` protocol
+ - Support default value => `defaultValue` property
+ - Announce changes to enclosing instance like SwiftUI's `@AppStorage` => subscript mechanism instead of `wrappedValue`
+
+ More technical detail: https://www.swiftbysundell.com/articles/accessing-a-swift-property-wrappers-enclosing-instance/
+ */
+
 /// Read/write from keychain with no lock mechanism
 @propertyWrapper
 public struct KeychainStorage<Value: Codable> {
@@ -39,8 +53,24 @@ public struct KeychainStorage<Value: Codable> {
         logger = .init(manager: logManager)
     }
 
+    /// Two reasons for this:
+    /// 1. We have to have a property named `wrappedValue` otherwise we'll run into
+    /// "Property wrapper type '<name>' does not contain a non-static property named 'wrappedValue'"
+    ///
+    /// 2. Trick the compiler otherwise we'll run into
+    /// "Cannot assign to property: '<name>' is a get-only property"
+    @available(*, unavailable, message: "@KeychainStorage can only be applied to classes")
     public var wrappedValue: Value {
+        get { fatalError("Not applicable") }
+        set { fatalError("Not applicable") } // swiftlint:disable:this unused_setter_value
+    }
+
+    /// The wrapped value used by the subscript. The name doesn't have to be `stored`.
+    /// We cannot use the name `wrappedValue` because that would imply the `wrappedValue` mechanism instead of
+    /// subcript one
+    private var stored: Value {
         get {
+            // Get serialized data from keychain and then deserialize
             if let data = keychain.data(forKey: key) {
                 do {
                     return try JSONDecoder().decode(Value.self, from: data)
@@ -56,6 +86,9 @@ public struct KeychainStorage<Value: Codable> {
         }
 
         set {
+            // Check if the newValue is nil or not
+            // If nil, remove the data from keychain
+            // If not nil, serialize and save to keychain
             if let optional = newValue as? AnyOptional, optional.isNil {
                 // Set to nil => remove from keychain
                 keychain.remove(forKey: key)
@@ -67,6 +100,23 @@ public struct KeychainStorage<Value: Codable> {
                     logger.error("Failed to serialize data for key \(key) \(error.localizedDescription)")
                 }
             }
+        }
+    }
+
+    /// The enclosing instance that wants to use this property wrapper must conform to `ObservableObject`
+    public static subscript<T: ObservableObject>(_enclosingInstance instance: T,
+                                                 wrapped wrappedKeyPath: ReferenceWritableKeyPath<T,
+                                                     Value>,
+                                                 storage storageKeyPath: ReferenceWritableKeyPath<T,
+                                                     Self>)
+        -> Value {
+        get {
+            instance[keyPath: storageKeyPath].stored
+        }
+        set {
+            instance[keyPath: storageKeyPath].stored = newValue
+            let publisher = instance.objectWillChange
+            (publisher as? ObservableObjectPublisher)?.send()
         }
     }
 }
