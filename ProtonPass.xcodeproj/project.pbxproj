@@ -381,6 +381,9 @@
 		3563401D2A23849200E22BFE /* GetUserSettingsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */; };
 		3563401F2A23860800E22BFE /* RemoteUserSettingsDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */; };
 		35635176299C10040059A97A /* IdentifiableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35635175299C10040059A97A /* IdentifiableObject.swift */; };
+		35635EDD2A5D5EC60059B1D3 /* KeychainStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35635EDC2A5D5EC60059B1D3 /* KeychainStorageTests.swift */; };
+		35635EDE2A5D67440059B1D3 /* KeychainMainkeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355F05502A5C4807007DF053 /* KeychainMainkeyProviderMock.swift */; };
+		35635EE02A5D67750059B1D3 /* LogingManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FF42A4E018500E6681C /* LogingManagerMock.swift */; };
 		356423432925333B00D2B7E3 /* View+OnReceiveBoolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */; };
 		3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
 		3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
@@ -1179,6 +1182,7 @@
 		3563401C2A23849200E22BFE /* GetUserSettingsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserSettingsEndpoint.swift; sourceTree = "<group>"; };
 		3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteUserSettingsDatasource.swift; sourceTree = "<group>"; };
 		35635175299C10040059A97A /* IdentifiableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableObject.swift; sourceTree = "<group>"; };
+		35635EDC2A5D5EC60059B1D3 /* KeychainStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorageTests.swift; sourceTree = "<group>"; };
 		356423422925333B00D2B7E3 /* View+OnReceiveBoolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceiveBoolean.swift"; sourceTree = "<group>"; };
 		3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemTitleSection.swift; sourceTree = "<group>"; };
 		3565362029ED7545007A43D3 /* PassIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIconTests.swift; sourceTree = "<group>"; };
@@ -2671,6 +2675,7 @@
 				354513E828E4D2650020A93A /* CodableBase64Tests.swift */,
 				35608C2F29F0559A00CA3864 /* Data+RandomTests.swift */,
 				3552A28729EBFE2800ABDB6E /* FileUtilsTests.swift */,
+				35635EDC2A5D5EC60059B1D3 /* KeychainStorageTests.swift */,
 				3553C224296570B80087518A /* Logging */,
 				355938C62A335FDD0053B7F6 /* Mocks */,
 				3529432A28DAF6CA00E1F11B /* SearchUtilsTests.swift */,
@@ -4845,14 +4850,17 @@
 				3552A28829EBFE2800ABDB6E /* FileUtilsTests.swift in Sources */,
 				35855AC72A0AB9350091992F /* WordProviderTests.swift in Sources */,
 				3573CD25292C165700A9EF82 /* AliasPrefixValidatorTests.swift in Sources */,
+				35635EDD2A5D5EC60059B1D3 /* KeychainStorageTests.swift in Sources */,
 				354513E928E4D2650020A93A /* CodableBase64Tests.swift in Sources */,
 				3555801A28F05899009C3B88 /* URLUtils+SanitizerTests.swift in Sources */,
 				35608C3029F0559A00CA3864 /* Data+RandomTests.swift in Sources */,
 				355AA32729E9D3FD00C20F5F /* StringExtensionTests.swift in Sources */,
 				3555800728F01A46009C3B88 /* URLUtils+MatcherTests.swift in Sources */,
 				3529432B28DAF6CA00E1F11B /* SearchUtilsTests.swift in Sources */,
+				35635EDE2A5D67440059B1D3 /* KeychainMainkeyProviderMock.swift in Sources */,
 				355938C52A335DA50053B7F6 /* BackOffManagerTests.swift in Sources */,
 				3553C228296571440087518A /* LoggerTests.swift in Sources */,
+				35635EE02A5D67750059B1D3 /* LogingManagerMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
