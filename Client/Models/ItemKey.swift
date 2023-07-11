@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ItemKey: Decodable {
+public struct ItemKey: Codable {
     public let key: String
     public let keyRotation: Int64
 }
