@@ -23,3 +23,33 @@ import Foundation
 enum PassModule: String, CaseIterable {
     case hostApp, autoFillExtension, keyboardExtension
 }
+
+extension PassModule {
+    var logTitle: String {
+        switch self {
+        case .hostApp:
+            return "Application logs"
+        case .autoFillExtension:
+            return "AutoFill extension logs"
+        case .keyboardExtension:
+            return "Keyboard extension logs"
+        }
+    }
+
+    var logFileName: String {
+        switch self {
+        case .hostApp: return "pass_host_application.log"
+        case .autoFillExtension: return "pass_autofill_extension.log"
+        case .keyboardExtension: return "pass_keyboard_extension.log"
+        }
+    }
+
+    var exportLogFileName: String {
+        let hash = Bundle.main.gitCommitHash ?? "?"
+        switch self {
+        case .hostApp: return "pass_host_application_\(hash).log"
+        case .autoFillExtension: return "pass_autofill_extension\(hash).log"
+        case .keyboardExtension: return "pass_keyboard_extension\(hash).log"
+        }
+    }
+}
