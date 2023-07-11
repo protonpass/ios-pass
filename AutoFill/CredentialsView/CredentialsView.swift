@@ -37,23 +37,7 @@ struct CredentialsView: View {
         ZStack {
             Color(uiColor: PassColor.backgroundNorm)
                 .ignoresSafeArea()
-
-            switch viewModel.state {
-            case .loading:
-                CredentialsSkeletonView()
-
-            case let .loaded(result, state):
-                if result.isEmpty {
-                    NoCredentialsView(onCancel: viewModel.cancel,
-                                      onCreate: viewModel.createLoginItem)
-                } else {
-                    resultView(result: result, state: state)
-                }
-
-            case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: viewModel.fetchItems)
-            }
+            stateViews
         }
         .theme(viewModel.preferences.theme)
         .localAuthentication(preferences: viewModel.preferences,
@@ -65,15 +49,15 @@ struct CredentialsView: View {
         .alert("Associate URL?",
                isPresented: $viewModel.isShowingConfirmationAlert,
                actions: {
-                   if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem {
+                   if let information = viewModel.notMatchedItemInformation {
                        Button(action: {
-                           viewModel.associateAndAutofill(item: selectedNotMatchedItem)
+                           viewModel.associateAndAutofill(item: information.item)
                        }, label: {
                            Text("Associate and autofill")
                        })
 
                        Button(action: {
-                           viewModel.select(item: selectedNotMatchedItem)
+                           viewModel.select(item: information.item)
                        }, label: {
                            Text("Just autofill")
                        })
@@ -84,42 +68,54 @@ struct CredentialsView: View {
                    }
                },
                message: {
-                   if let selectedNotMatchedItem = viewModel.selectedNotMatchedItem,
-                      let schemeAndHost = viewModel.urls.first?.schemeAndHost {
+                   if let information = viewModel.notMatchedItemInformation {
                        // swiftlint:disable:next line_length
-                       Text("Would you want to associate \"\(schemeAndHost)\" with \"\(selectedNotMatchedItem.itemTitle)\"?")
+                       Text("Would you want to associate \"\(information.url)\" with \"\(information.item.itemTitle)\"?")
                    }
                })
     }
 }
 
-// MARK: ResultView & elements
-
 private extension CredentialsView {
-    func resultView(result: CredentialsFetchResult,
-                    state: CredentialsViewLoadedState) -> some View {
+    @ViewBuilder
+    var stateViews: some View {
         VStack(spacing: 0) {
-            SearchBar(query: $viewModel.query,
-                      isFocused: $isFocusedOnSearchBar,
-                      placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
-                      onCancel: viewModel.cancel)
-
-            switch state {
+            if viewModel.state != .loading {
+                SearchBar(query: $viewModel.query,
+                          isFocused: $isFocusedOnSearchBar,
+                          placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
+                          onCancel: viewModel.cancel)
+            }
+            switch viewModel.state {
             case .idle:
                 if let planType = viewModel.planType, case .free = planType {
                     primaryVaultOnlyMessage
                 }
-                itemList(matchedItems: result.matchedItems,
-                         notMatchedItems: result.notMatchedItems)
-
+                if let results = viewModel.results {
+                    if results.isEmpty {
+                        NoCredentialsView(onCancel: viewModel.cancel,
+                                          onCreate: viewModel.createLoginItem)
+                    } else {
+                        itemList(results: results)
+                    }
+                }
             case .searching:
                 ProgressView()
-
-            case .noSearchResults:
-                NoSearchResultsInAllVaultView(query: viewModel.query)
-
             case let .searchResults(results):
-                searchResults(results)
+                if results.isEmpty {
+                    NoSearchResultsInAllVaultView(query: viewModel.query)
+                } else {
+                    CredentialSearchResultView(results: results,
+                                               selectedSortType: $viewModel.selectedSortType,
+                                               sortAction: viewModel.presentSortTypeList,
+                                               selectItem: viewModel.select,
+                                               favIconRepository: viewModel.favIconRepository)
+                }
+            case .loading:
+                CredentialsSkeletonView()
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: viewModel.fetchItems)
             }
 
             Spacer()
@@ -129,16 +125,19 @@ private extension CredentialsView {
                 .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: state)
+        .animation(.default, value: viewModel.state)
         .animation(.default, value: viewModel.planType)
     }
+}
 
-    func itemList(matchedItems: [ItemUiModel],
-                  notMatchedItems: [ItemUiModel]) -> some View {
+// MARK: ResultView & elements
+
+private extension CredentialsView {
+    func itemList(results: CredentialsFetchResult) -> some View {
         ScrollViewReader { proxy in
             List {
                 let matchedItemsHeaderTitle = "Suggestions for \(viewModel.urls.first?.host ?? "")"
-                if matchedItems.isEmpty {
+                if results.matchedItems.isEmpty {
                     Section(content: {
                         Text("No suggestions")
                             .font(.callout.italic())
@@ -152,19 +151,19 @@ private extension CredentialsView {
                             .foregroundColor(Color(uiColor: PassColor.textNorm))
                     })
                 } else {
-                    section(for: matchedItems.map { .normal($0) },
+                    section(for: results.matchedItems,
                             headerTitle: matchedItemsHeaderTitle,
                             headerColor: PassColor.textNorm,
                             headerFontWeight: .bold)
                 }
 
-                if !notMatchedItems.isEmpty {
+                if !results.notMatchedItems.isEmpty {
                     HStack {
                         Text("Other items")
                             .font(.callout)
                             .fontWeight(.bold)
                             .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                            Text(" (\(notMatchedItems.count))")
+                            Text(" (\(results.notMatchedItems.count))")
                             .font(.callout)
                             .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -175,14 +174,13 @@ private extension CredentialsView {
                     }
                     .plainListRow()
                     .padding([.top, .horizontal])
-
-                    sortableSections(for: notMatchedItems.map { .normal($0) })
+                    sortableSections(for: results.notMatchedItems)
                 }
             }
             .listStyle(.plain)
             .refreshable { await viewModel.forceSync() }
-            .animation(.default, value: matchedItems.hashValue)
-            .animation(.default, value: notMatchedItems.hashValue)
+            .animation(.default, value: results.matchedItems.hashValue)
+            .animation(.default, value: results.notMatchedItems.hashValue)
             .overlay {
                 if viewModel.selectedSortType.isAlphabetical {
                     HStack {
@@ -209,50 +207,13 @@ private extension CredentialsView {
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.upgrade)
     }
-
-    func searchResults(_ results: [ItemSearchResult]) -> some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("Results")
-                    .font(.callout)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                    Text(" (\(results.count))")
-                    .font(.callout)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
-
-                Spacer()
-
-                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                               action: viewModel.presentSortTypeList)
-            }
-            .padding([.bottom, .horizontal])
-
-            ScrollViewReader { proxy in
-                List {
-                    sortableSections(for: results.map { .searchResult($0) })
-                }
-                .listStyle(.plain)
-                .animation(.default, value: results.count)
-                .overlay {
-                    if viewModel.selectedSortType.isAlphabetical {
-                        HStack {
-                            Spacer()
-                            SectionIndexTitles(proxy: proxy,
-                                               direction: viewModel.selectedSortType.sortDirection ?? .ascending)
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 // MARK: Sections & elements
 
 private extension CredentialsView {
     @ViewBuilder
-    func section(for items: [CredentialItem],
+    func section(for items: [some CredentialItem],
                  headerTitle: String,
                  headerColor: UIColor = PassColor.textWeak,
                  headerFontWeight: Font.Weight = .regular) -> some View {
@@ -261,17 +222,11 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    switch item {
-                    case let .normal(normalItem):
-                        itemRow(for: normalItem)
-                            .plainListRow()
-                            .padding(.horizontal)
-                    case let .searchResult(searchResultItem):
-                        itemRow(for: searchResultItem)
-                            .plainListRow()
-                            .padding(.horizontal)
-                            .padding(.bottom)
-                    }
+                    GenericCredentialItemRow(item: item,
+                                             favIconRepository: viewModel.favIconRepository,
+                                             selectItem: viewModel.select)
+                        .plainListRow()
+                        .padding(.horizontal)
                 }
             }, header: {
                 Text(headerTitle)
@@ -283,7 +238,7 @@ private extension CredentialsView {
     }
 
     @ViewBuilder
-    func sortableSections(for items: [CredentialItem]) -> some View {
+    func sortableSections(for items: [some CredentialItem]) -> some View {
         switch viewModel.selectedSortType {
         case .mostRecent:
             sections(for: items.mostRecentSortResult())
@@ -298,7 +253,7 @@ private extension CredentialsView {
         }
     }
 
-    func sections(for result: MostRecentSortResult<CredentialItem>) -> some View {
+    func sections(for result: MostRecentSortResult<some CredentialItem>) -> some View {
         Group {
             section(for: result.today, headerTitle: "Today")
             section(for: result.yesterday, headerTitle: "Yesterday")
@@ -311,79 +266,16 @@ private extension CredentialsView {
         }
     }
 
-    func sections(for result: AlphabeticalSortResult<CredentialItem>) -> some View {
+    func sections(for result: AlphabeticalSortResult<some CredentialItem>) -> some View {
         ForEach(result.buckets, id: \.letter) { bucket in
             section(for: bucket.items, headerTitle: bucket.letter.character)
                 .id(bucket.letter.character)
         }
     }
 
-    func sections(for result: MonthYearSortResult<CredentialItem>) -> some View {
+    func sections(for result: MonthYearSortResult<some CredentialItem>) -> some View {
         ForEach(result.buckets, id: \.monthYear) { bucket in
             section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
-        }
-    }
-
-    func itemRow(for item: ItemUiModel) -> some View {
-        Button(action: {
-            select(item: item)
-        }, label: {
-            GeneralItemRow(thumbnailView: {
-                               ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                     repository: viewModel.favIconRepository)
-                           },
-                           title: item.title,
-                           description: item.description)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        })
-    }
-
-    func itemRow(for item: ItemSearchResult) -> some View {
-        Button(action: {
-            select(item: item)
-        }, label: {
-            HStack {
-                VStack {
-                    ItemSquircleThumbnail(data: item.thumbnailData(),
-                                          repository: viewModel.favIconRepository)
-                }
-                .frame(maxHeight: .infinity, alignment: .top)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    HighlightText(highlightableText: item.highlightableTitle)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        ForEach(0..<item.highlightableDetail.count, id: \.self) { index in
-                            let eachDetail = item.highlightableDetail[index]
-                            if !eachDetail.fullText.isEmpty {
-                                HighlightText(highlightableText: eachDetail)
-                                    .font(.callout)
-                                    .foregroundColor(Color(.secondaryLabel))
-                                    .lineLimit(1)
-                            }
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        })
-    }
-
-    func select(item: TitledItemIdentifiable) {
-        guard case let .loaded(credentialsFetchResult, _) = viewModel.state else { return }
-        let isMatched = credentialsFetchResult.matchedItems
-            .contains { $0.itemId == item.itemId && $0.shareId == item.shareId }
-        if isMatched {
-            viewModel.select(item: item)
-        } else {
-            // Check URL validity (e.g app has associated domains or not)
-            // before asking if user wants to "associate & autofill".
-            if let schemeAndHost = viewModel.urls.first?.schemeAndHost,
-               !schemeAndHost.isEmpty {
-                viewModel.selectedNotMatchedItem = item
-            } else {
-                viewModel.select(item: item)
-            }
         }
     }
 }

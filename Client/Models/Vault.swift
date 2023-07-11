@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct Vault: Identifiable, Hashable {
+public struct Vault: Identifiable, Hashable, Equatable {
     public let id: String
     public let shareId: String
     public let name: String

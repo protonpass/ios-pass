@@ -70,8 +70,8 @@ public enum SearchResultEither: HighlightableText {
 }
 
 public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable {
-    public var id: Int {
-        "\(itemId + shareId)".hash
+    public var id: String {
+        "\(itemId + shareId)"
     }
 
     public let shareId: String
