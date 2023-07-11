@@ -50,8 +50,8 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     weak var delegate: LogsViewModelDelegate?
 
-    @Injected(\UseCasesContainer.getLogEntries) private var getLogEntries
-    @Injected(\UseCasesContainer.extractLogsToFile) private var extractLogsToFile
+    private var getLogEntries = resolve(\UseCasesContainer.getLogEntries)
+    private var extractLogsToFile = resolve(\UseCasesContainer.extractLogsToFile)
 
     init(module: PassModule) {
         self.module = module
