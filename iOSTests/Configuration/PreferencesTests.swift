@@ -18,15 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Factory
 @testable import Proton_Pass
 import XCTest
+
+private extension SharedToolingContainer {
+    func setUpMocks() {
+        Scope.singleton.reset()
+        self.keychain.register { KeychainMainkeyProviderMock() }
+    }
+}
 
 final class PreferencesTests: XCTestCase {
     var sut: Preferences!
 
     override func setUp() {
         super.setUp()
-        SharedToolingContainer.shared.keychain.register { KeychainMainkeyProviderMock() }
+        SharedToolingContainer.shared.setUpMocks()
         sut = .init()
     }
 
