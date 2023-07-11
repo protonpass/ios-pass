@@ -52,11 +52,11 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    @Injected(\SharedToolingContainer.preferences) private var preferences
-    @Injected(\SharedToolingContainer.mainKeyProvider) private var mainKeyProvider
-    @Injected(\SharedToolingContainer.appData) private var appData
-    @Injected(\SharedToolingContainer.apiManager) private var apiManager
-    @Injected(\SharedToolingContainer.logManager) private var logManager
+    private var preferences = resolve(\SharedToolingContainer.preferences)
+    private var mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
+    private var appData = resolve(\SharedToolingContainer.appData)
+    private var apiManager = resolve(\SharedToolingContainer.apiManager)
+    private var logManager = resolve(\SharedToolingContainer.logManager)
 
     init(window: UIWindow) {
         self.window = window
