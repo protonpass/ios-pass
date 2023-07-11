@@ -34,7 +34,7 @@ private extension LockedKeychainStorage {
     }
 }
 
-private enum AppDataKey: String {
+enum AppDataKey: String {
     case userData
     case unauthSessionCredentials
     case symmetricKey

@@ -214,6 +214,7 @@ private extension HomepageCoordinator {
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
                 DispatchQueue.main.async {
