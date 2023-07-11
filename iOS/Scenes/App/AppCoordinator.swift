@@ -207,7 +207,7 @@ final class AppCoordinator {
             apiManager.clearCredentials()
             mainKeyProvider.wipeMainKey()
         }
-        preferences.reset(isUITests: isUITest)
+        preferences.reset(isTests: isUITest)
         Task {
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running

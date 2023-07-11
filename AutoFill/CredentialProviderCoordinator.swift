@@ -38,19 +38,19 @@ import UserNotifications
 
 public final class CredentialProviderCoordinator {
     /// Self-initialized properties
-    private let apiManager: APIManager
+    private let apiManager = resolve(\SharedToolingContainer.apiManager)
+    private let appData = resolve(\SharedToolingContainer.appData)
+    private let logManager = resolve(\SharedToolingContainer.logManager)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+
     private let bannerManager: BannerManager
     private let clipboardManager: ClipboardManager
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
     private let credentialManager: CredentialManagerProtocol
-    private let logManager: LogManager
     private let logger: Logger
-    private let preferences: Preferences
     private weak var rootViewController: UIViewController?
     private var notificationService: LocalNotificationServiceProtocol
-
-    @Injected(\SharedToolingContainer.appData) private var appData
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -81,19 +81,12 @@ public final class CredentialProviderCoordinator {
 
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
-        let logManager = SharedToolingContainer.shared.logManager()
-        let preferences = SharedToolingContainer.shared.preferences()
-        let bannerManager = BannerManager(container: rootViewController)
-
-        apiManager = SharedToolingContainer.shared.apiManager()
-        self.bannerManager = bannerManager
+        bannerManager = .init(container: rootViewController)
         clipboardManager = .init(preferences: preferences)
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.context = context
         credentialManager = CredentialManager(logManager: logManager)
-        self.logManager = logManager
         logger = .init(manager: logManager)
-        self.preferences = preferences
         notificationService = SharedServiceContainer.shared.notificationService(logManager)
         self.rootViewController = rootViewController
 
