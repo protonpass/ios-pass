@@ -32,10 +32,24 @@ private extension KeychainStorage {
     }
 }
 
+/// User's personal preferences as well as settings related to app's functionalities
+/// Not all preference are saved the same way, some of them are sensitive while others aren't
+///
+/// Use `@KeychainStorage` for sensitive data that need to resists app's filesystem inspection & modification
+/// Be aware that data stored by `@KeychainStorage` survive reinstallations
+/// Consider using this property wrapper when dealing with data that relates to access to the app
+/// (custom PIN code, the number of failed authentication attempts, whether biometric authentication is enabled or
+/// not...)
+///
+/// Use `@AppStorage` for trivial data that do not need to survive reinstallations
+/// Consider using this property wrapper for data that can be lost without any security impacts
+/// (theme settings, selected browser...)
 final class Preferences: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    init() {}
+    init() {
+        migrateToKeychain()
+    }
 
     // MARK: Non sensitive prefs
 
@@ -65,6 +79,9 @@ final class Preferences: ObservableObject, DeinitPrintable {
 
     @AppStorage(Key.createdItemsCount.rawValue, store: kSharedUserDefaults)
     var createdItemsCount = 0
+
+    @AppStorage(Key.didMigrateToKeychain.rawValue, store: kSharedUserDefaults)
+    var didMigrateToKeychain = false
 
     // MARK: Sensitive prefs
 
@@ -109,6 +126,32 @@ final class Preferences: ObservableObject, DeinitPrintable {
 }
 
 private extension Preferences {
+    func migrateToKeychain() {
+        guard !didMigrateToKeychain else { return }
+
+        failedAttemptCount = kSharedUserDefaults.integer(forKey: Key.failedAttemptCount.rawValue)
+
+        biometricAuthenticationEnabled =
+            kSharedUserDefaults.bool(forKey: Key.biometricAuthenticationEnabled.rawValue)
+
+        let appLockTimeRawValue = kSharedUserDefaults.integer(forKey: Key.appLockTime.rawValue)
+        appLockTime = .init(rawValue: appLockTimeRawValue) ?? .twoMinutes
+
+        let clipboardExpirationRawValue =
+            kSharedUserDefaults.integer(forKey: Key.clipboardExpiration.rawValue)
+        clipboardExpiration = .init(rawValue: clipboardExpirationRawValue) ?? .oneMinute
+
+        shareClipboard = kSharedUserDefaults.bool(forKey: Key.shareClipboard.rawValue)
+
+        let dismissedBannerIdsString =
+            kSharedUserDefaults.string(forKey: Key.dismissedBannerIds.rawValue)
+        dismissedBannerIds = dismissedBannerIdsString?.components(separatedBy: ",") ?? []
+
+        didMigrateToKeychain = true
+    }
+}
+
+private extension Preferences {
     enum Key: String {
         case quickTypeBar
         case automaticallyCopyTotpCode
@@ -125,6 +168,9 @@ private extension Preferences {
         case dismissedBannerIds
         case isFirstRun
         case createdItemsCount
+
+        // Temporary key, can be removed several versions after 1.0.3
+        case didMigrateToKeychain
     }
 }
 
