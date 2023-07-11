@@ -119,17 +119,6 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.onboarded)
     }
 
-    func testAutoFillBannerNotDisplayedByDefault() {
-        XCTAssertFalse(sut.autoFillBannerDisplayed)
-    }
-
-    func testAutoFillBannerDisplayedAgainAfterResetting() {
-        sut.autoFillBannerDisplayed = true
-        XCTAssertTrue(sut.autoFillBannerDisplayed)
-        sut.reset()
-        XCTAssertFalse(sut.autoFillBannerDisplayed)
-    }
-
     func testThemeIsDarkByDefault() {
         XCTAssertEqual(sut.theme, .dark)
     }

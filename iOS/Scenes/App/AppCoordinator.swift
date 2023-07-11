@@ -52,7 +52,7 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private var preferences = resolve(\SharedToolingContainer.preferences)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let appData = resolve(\SharedToolingContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
