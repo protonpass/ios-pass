@@ -20,7 +20,7 @@
 
 import Core
 
-public enum SortType: Int, CaseIterable {
+public enum SortType: Int, CaseIterable, Equatable {
     case mostRecent = 0, alphabeticalAsc, alphabeticalDesc, newestToOldest, oldestToNewest
 
     public var title: String {
@@ -480,6 +480,6 @@ public extension Array where Element: DateSortable {
     }
 }
 
-public protocol SearchResults: Hashable {
+public protocol SearchResults: Hashable, Equatable {
     var numberOfItems: Int { get }
 }
