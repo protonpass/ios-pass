@@ -39,6 +39,7 @@ final class PreferencesTests: XCTestCase {
     }
 
     override func tearDown() {
+        sut.reset(isTests: true)
         sut = nil
         super.tearDown()
     }
@@ -114,7 +115,7 @@ final class PreferencesTests: XCTestCase {
     func testOnboardOnEveryUITestCase() {
         sut.onboarded = true
         XCTAssertTrue(sut.onboarded)
-        sut.reset(isUITests: true)
+        sut.reset(isTests: true)
         XCTAssertFalse(sut.onboarded)
     }
 
