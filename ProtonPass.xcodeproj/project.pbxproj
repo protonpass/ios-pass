@@ -640,6 +640,10 @@
 		5BB2B6EF2A447545005E831C /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */; };
 		5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
+		5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */; };
+		5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */; };
+		5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */; };
+		5BFFB5052A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */; };
 		5BE5BDF12A4C7D41007CBE1B /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5BDF02A4C7D41007CBE1B /* BugReportView.swift */; };
 		5BFFB50A2A5BFF2000C2D1F9 /* CheckCameraPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5092A5BFF2000C2D1F9 /* CheckCameraPermission.swift */; };
 		5BFFB50E2A5D417700C2D1F9 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5BFFB50D2A5D417700C2D1F9 /* CodeScanner */; };
@@ -1419,6 +1423,10 @@
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
 		5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
+		5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialSearchResultView.swift; sourceTree = "<group>"; };
+		5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCredentialItemRow.swift; sourceTree = "<group>"; };
+		5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
+		5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnmatchedItemAlertOptions.swift; sourceTree = "<group>"; };
 		5BE5BDF02A4C7D41007CBE1B /* BugReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5BFFB5092A5BFF2000C2D1F9 /* CheckCameraPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCameraPermission.swift; sourceTree = "<group>"; };
 		5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCodeScannerView.swift; sourceTree = "<group>"; };
@@ -1794,11 +1802,11 @@
 		3544F5E228E2341900834CA4 /* AutoFill */ = {
 			isa = PBXGroup;
 			children = (
+				5BFFB5012A58035A00C2D1F9 /* Models */,
+				5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */,
 				352866BF28E30662000630E2 /* AutoFillDebug-Black.entitlements */,
 				352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */,
 				3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */,
-				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
-				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
 				3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */,
 				3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */,
 				355751F42907FB3200268116 /* LockedCredentialView.swift */,
@@ -3047,7 +3055,7 @@
 		5BE5BDEB2A4C753A007CBE1B /* Bug Report */ = {
 			isa = PBXGroup;
 			children = (
-				5BE5BDF02A4C7D41007CBE1B /* BugReportView.swift */,
+				5BFFB5062A580A4E00C2D1F9 /* BugReportView.swift */,
 				5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */,
 			);
 			path = "Bug Report";
@@ -3067,6 +3075,34 @@
 				5BFFB51F2A5D473200C2D1F9 /* Theme+ViewModifiers.swift */,
 			);
 			path = ViewModifiers;
+		sourceTree = "<group>";
+		};
+		5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */ = {
+			isa = PBXGroup;
+			children = (
+				5BFFB4FE2A57FE4F00C2D1F9 /* SubUIElements */,
+				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
+				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
+				5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */,
+			);
+			path = CredentialsView;
+			sourceTree = "<group>";
+		};
+		5BFFB4FE2A57FE4F00C2D1F9 /* SubUIElements */ = {
+			isa = PBXGroup;
+			children = (
+				5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */,
+			);
+			path = SubUIElements;
+			sourceTree = "<group>";
+		};
+		5BFFB5012A58035A00C2D1F9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */,
+				5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
@@ -4205,6 +4241,8 @@
 				35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				3560844929DDA344001F7487 /* OptionRow.swift in Sources */,
+				5BFFB5052A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift in Sources */,
+				5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */,
 				35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */,
 				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				3561C9FB29E6E79B00D6E518 /* VaultColor.swift in Sources */,
@@ -4213,6 +4251,7 @@
 				3552272C29DC660300B9607E /* View+Theme.swift in Sources */,
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
 				355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */,
+				5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */,
 				354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				354E9AAC2A44699E00AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
 				35AC9A662A0BE4C700FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
@@ -4226,6 +4265,7 @@
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
+				5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */,
 				35AC9A5D2A0BDB7D00FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */,
@@ -4370,6 +4410,7 @@
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
+				5BFFB5072A580A4E00C2D1F9 /* BugReportView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
@@ -4491,7 +4532,6 @@
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
-				5BE5BDF12A4C7D41007CBE1B /* BugReportView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
