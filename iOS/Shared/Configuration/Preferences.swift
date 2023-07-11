@@ -20,11 +20,12 @@
 
 import Client
 import Core
+import SwiftUI
 
 private extension KeychainStorage {
     /// Conveniently initialize with injected `keychain`  & `logManager`
-    init(key: String, defaultValue: Value) {
-        self.init(key: key,
+    init(key: any RawRepresentable<String>, defaultValue: Value) {
+        self.init(key: key.rawValue,
                   defaultValue: defaultValue,
                   keychain: SharedToolingContainer.shared.keychain(),
                   logManager: SharedToolingContainer.shared.logManager())
@@ -36,53 +37,55 @@ final class Preferences: ObservableObject, DeinitPrintable {
 
     init() {}
 
-    @KeychainStorage(key: "quickTypeBar", defaultValue: true)
-    var quickTypeBar: Bool
+    // MARK: Non sensitive prefs
 
-    @KeychainStorage(key: "automaticallyCopyTotpCode", defaultValue: false)
-    var automaticallyCopyTotpCode: Bool
+    @AppStorage(Key.quickTypeBar.rawValue, store: kSharedUserDefaults)
+    var quickTypeBar = true
 
-    @KeychainStorage(key: "failedAttemptCount", defaultValue: 0)
-    var failedAttemptCount: Int
+    @AppStorage(Key.automaticallyCopyTotpCode.rawValue, store: kSharedUserDefaults)
+    var automaticallyCopyTotpCode = false
 
-    @KeychainStorage(key: "biometricAuthenticationEnabled", defaultValue: false)
-    var biometricAuthenticationEnabled: Bool
+    @AppStorage(Key.onboarded.rawValue, store: kSharedUserDefaults)
+    var onboarded = false
 
-    @KeychainStorage(key: "appLockTime", defaultValue: .twoMinutes)
-    var appLockTime: AppLockTime
+    @AppStorage(Key.theme.rawValue, store: kSharedUserDefaults)
+    var theme: Theme = .dark
 
-    @KeychainStorage(key: "onboarded", defaultValue: false)
-    var onboarded: Bool
+    @AppStorage(Key.browser.rawValue, store: kSharedUserDefaults)
+    var browser: Browser = .safari
 
-    @KeychainStorage(key: "autoFillBannerDisplayed", defaultValue: false)
-    var autoFillBannerDisplayed: Bool
-
-    @KeychainStorage(key: "theme", defaultValue: .dark)
-    var theme: Theme
-
-    @KeychainStorage(key: "browser", defaultValue: .safari)
-    var browser: Browser
-
-    @KeychainStorage(key: "clipboardExpiration", defaultValue: .oneMinute)
-    var clipboardExpiration: ClipboardExpiration
-
-    @KeychainStorage(key: "shareClipboard", defaultValue: false)
-    var shareClipboard: Bool
-
-    @KeychainStorage(key: "telemetryThreshold", defaultValue: nil)
+    @AppStorage(Key.telemetryThreshold.rawValue, store: kSharedUserDefaults)
     var telemetryThreshold: TimeInterval?
 
-    @KeychainStorage(key: "displayFavIcons", defaultValue: true)
-    var displayFavIcons: Bool
+    @AppStorage(Key.displayFavIcons.rawValue, store: kSharedUserDefaults)
+    var displayFavIcons = true
 
-    @KeychainStorage(key: "dismissedBannerIds", defaultValue: [])
+    @AppStorage(Key.isFirstRun.rawValue, store: kSharedUserDefaults)
+    var isFirstRun = true
+
+    @AppStorage(Key.createdItemsCount.rawValue, store: kSharedUserDefaults)
+    var createdItemsCount = 0
+
+    // MARK: Sensitive prefs
+
+    @KeychainStorage(key: Key.failedAttemptCount, defaultValue: 0)
+    var failedAttemptCount: Int
+
+    @KeychainStorage(key: Key.biometricAuthenticationEnabled, defaultValue: false)
+    var biometricAuthenticationEnabled: Bool
+
+    @KeychainStorage(key: Key.appLockTime, defaultValue: .twoMinutes)
+    var appLockTime: AppLockTime
+
+    @KeychainStorage(key: Key.clipboardExpiration, defaultValue: .oneMinute)
+    var clipboardExpiration: ClipboardExpiration
+
+    @KeychainStorage(key: Key.shareClipboard, defaultValue: false)
+    var shareClipboard: Bool
+
+    /// Not really sensitive but `@AppStorage` does not support array so we rely on `@KeychainStorage`
+    @KeychainStorage(key: Key.dismissedBannerIds, defaultValue: [])
     var dismissedBannerIds: [String]
-
-    @KeychainStorage(key: "isFirstRun", defaultValue: true)
-    var isFirstRun: Bool
-
-    @KeychainStorage(key: "createdItemsCount", defaultValue: 0)
-    var createdItemsCount: Int
 
     func reset(isTests: Bool = false) {
         quickTypeBar = true
@@ -90,7 +93,6 @@ final class Preferences: ObservableObject, DeinitPrintable {
         failedAttemptCount = 0
         biometricAuthenticationEnabled = false
         appLockTime = .twoMinutes
-        autoFillBannerDisplayed = false
         theme = .dark
         browser = .safari
         clipboardExpiration = .oneMinute
@@ -103,6 +105,26 @@ final class Preferences: ObservableObject, DeinitPrintable {
             onboarded = false
             createdItemsCount = 0
         }
+    }
+}
+
+private extension Preferences {
+    enum Key: String {
+        case quickTypeBar
+        case automaticallyCopyTotpCode
+        case failedAttemptCount
+        case biometricAuthenticationEnabled
+        case appLockTime
+        case onboarded
+        case theme
+        case browser
+        case clipboardExpiration
+        case shareClipboard
+        case telemetryThreshold
+        case displayFavIcons
+        case dismissedBannerIds
+        case isFirstRun
+        case createdItemsCount
     }
 }
 
