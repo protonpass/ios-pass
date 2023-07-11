@@ -46,7 +46,7 @@ public struct KeychainStorage<Value: Codable> {
     public init(key: String,
                 defaultValue: Value,
                 keychain: KeychainProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.key = key
         self.defaultValue = defaultValue
         self.keychain = keychain
@@ -57,7 +57,7 @@ public struct KeychainStorage<Value: Codable> {
     /// 1. We have to have a property named `wrappedValue` otherwise we'll run into
     /// "Property wrapper type '<name>' does not contain a non-static property named 'wrappedValue'"
     ///
-    /// 2. Trick the compiler otherwise we'll run into
+    /// 2. Trick the compiler that we have `get` and `set` otherwise we'll run into
     /// "Cannot assign to property: '<name>' is a get-only property"
     @available(*, unavailable, message: "@KeychainStorage can only be applied to classes")
     public var wrappedValue: Value {
@@ -103,20 +103,21 @@ public struct KeychainStorage<Value: Codable> {
         }
     }
 
-    /// The enclosing instance that wants to use this property wrapper must conform to `ObservableObject`
-    public static subscript<T: ObservableObject>(_enclosingInstance instance: T,
-                                                 wrapped wrappedKeyPath: ReferenceWritableKeyPath<T,
-                                                     Value>,
-                                                 storage storageKeyPath: ReferenceWritableKeyPath<T,
-                                                     Self>)
+    public static subscript<T>(_enclosingInstance instance: T,
+                               wrapped wrappedKeyPath: ReferenceWritableKeyPath<T,
+                                   Value>,
+                               storage storageKeyPath: ReferenceWritableKeyPath<T,
+                                   Self>)
         -> Value {
         get {
             instance[keyPath: storageKeyPath].stored
         }
         set {
             instance[keyPath: storageKeyPath].stored = newValue
-            let publisher = instance.objectWillChange
-            (publisher as? ObservableObjectPublisher)?.send()
+            if let observableObject = instance as? any ObservableObject {
+                let publisher = observableObject.objectWillChange as any Publisher
+                (publisher as? ObservableObjectPublisher)?.send()
+            }
         }
     }
 }
