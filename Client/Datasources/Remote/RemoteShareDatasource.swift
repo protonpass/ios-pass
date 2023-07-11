@@ -42,6 +42,37 @@ public extension RemoteShareDatasourceProtocol {
         return response.share
     }
 
+    /*
+      Get users that have access to the whole vault, or item
+      Response:
+      ```json
+     {
+       "Shares": [
+         {
+           "ShareID": "AF39EF234BB==",
+           "UserName": "Leonard Nimoy",
+           "UserEmail": "leo@nimoy.com",
+           "TargetType": "1",
+           "TargetID": "DEFC342CA23==",
+           "Permission": "3",
+           "ExpireTime": "18332832",
+           "CreateTime": "18332832"
+         }
+       ],
+       "Total": "32",
+       "Code": 1000
+     }
+     ```*/
+    func getAllLinkedUser(for shareId: String) async throws -> [User] {
+        let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.shares
+    }
+}
+
+// MARK: Vaults Utils
+
+public extension RemoteShareDatasourceProtocol {
     func createVault(request: CreateVaultRequest) async throws -> Share {
         let endpoint = CreateVaultEndpoint(request: request)
         let response = try await apiService.exec(endpoint: endpoint)
