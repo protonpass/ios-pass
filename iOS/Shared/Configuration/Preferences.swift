@@ -84,7 +84,7 @@ final class Preferences: ObservableObject, DeinitPrintable {
     @KeychainStorage(key: "createdItemsCount", defaultValue: 0)
     var createdItemsCount: Int
 
-    func reset(isUITests: Bool = false) {
+    func reset(isTests: Bool = false) {
         quickTypeBar = true
         automaticallyCopyTotpCode = false
         failedAttemptCount = 0
@@ -98,8 +98,10 @@ final class Preferences: ObservableObject, DeinitPrintable {
         telemetryThreshold = nil
         displayFavIcons = true
         dismissedBannerIds = []
-        if isUITests {
+        if isTests {
+            isFirstRun = true
             onboarded = false
+            createdItemsCount = 0
         }
     }
 }
