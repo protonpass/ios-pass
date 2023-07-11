@@ -23,6 +23,7 @@ import Client
 import CodeScanner
 import Combine
 import Core
+import Factory
 import SwiftUI
 
 protocol CreateEditLoginViewModelDelegate: AnyObject {
@@ -74,6 +75,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
         return false
     }
+
+    @Injected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
 
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
@@ -245,23 +248,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func openCodeScanner() {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .denied, .restricted:
-            isShowingNoCameraPermissionView.toggle()
-        case .authorized:
-            isShowingCodeScanner.toggle()
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { [unowned self] success in
-                DispatchQueue.main.async {
-                    if success {
-                        self.isShowingCodeScanner.toggle()
-                    } else {
-                        self.isShowingNoCameraPermissionView.toggle()
-                    }
-                }
+        Task { [weak self] in
+            guard let authorized = await self?.checkCameraPermission(),
+                  authorized else {
+                self?.isShowingNoCameraPermissionView = true
+                return
             }
-        @unknown default:
-            logger.trace("Unknown case")
+            self?.isShowingCodeScanner = true
         }
     }
 
@@ -271,10 +264,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         isAlias = false
     }
 
-    func handleScanResult(_ result: Result<ScanResult, ScanError>) {
+    func handleScanResult(_ result: Result<String, Error>, customField: CustomFieldUiModel? = nil) {
         switch result {
         case let .success(successResult):
-            totpUri = successResult.string
+            if let customField {
+                customFieldEdited(customField, newTitle: successResult)
+            } else {
+                totpUri = successResult
+            }
         case let .failure(error):
             delegate?.createEditItemViewModelDidEncounter(error: error)
         }

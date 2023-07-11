@@ -59,13 +59,6 @@ extension UseCasesContainer {
     }
 }
 
-// MARK: Permission {
-extension UseCasesContainer {
-    var checkCameraPermission: Factory<CheckCameraPermissionUseCase> {
-        self { CheckCameraPermission() }
-    }
-}
-
 extension UseCasesContainer: AutoRegistering {
     func autoRegister() {
         manager.defaultScope = .shared

@@ -1,5 +1,5 @@
 //
-//  
+//
 // CheckCameraPermission.swift
 // Proton Pass - Created on 10/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
@@ -34,21 +34,20 @@ extension CheckCameraPermissionUseCase {
 }
 
 final class CheckCameraPermission: CheckCameraPermissionUseCase {
-    
     init() {}
 
     func execute() async -> Bool {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
-        
+
         // Determine if the user previously authorized camera access.
         var isAuthorized = status == .authorized
-        
+
         // If the system hasn't determined the user's authorization status,
         // explicitly prompt them for approval.
         if status == .notDetermined {
             isAuthorized = await AVCaptureDevice.requestAccess(for: .video)
         }
-        
+
         return isAuthorized
     }
 }

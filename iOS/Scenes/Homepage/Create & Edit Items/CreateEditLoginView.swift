@@ -473,7 +473,14 @@ struct CreateEditLoginView: View {
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView(theme: viewModel.preferences.theme) { result in
-                viewModel.handleScanResult(result)
+                switch focusedField {
+                case .totp:
+                    viewModel.handleScanResult(result)
+                case let .custom(model) where model?.customField.type == .totp:
+                    viewModel.handleScanResult(result, customField: model)
+                default:
+                    return
+                }
             }
         }
     }
@@ -481,41 +488,49 @@ struct CreateEditLoginView: View {
 
 // MARK: - WrappedCodeScannerView
 
-private struct WrappedCodeScannerView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var isGaleryPresented = false
-    let theme: Theme
-    let completion: (Result<ScanResult, ScanError>) -> Void
-
-    var body: some View {
-        NavigationView {
-            CodeScannerView(codeTypes: [.qr],
-                            simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
-                            isGalleryPresented: $isGaleryPresented,
-                            completion: { result in dismiss(); completion(result) })
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        CircleButton(icon: IconProvider.cross,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1,
-                                     action: dismiss.callAsFunction)
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            isGaleryPresented.toggle()
-                        }, label: {
-                            Image(systemName: "photo.on.rectangle.angled")
-                                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
-                        })
-                    }
-                }
-        }
-        .navigationViewStyle(.stack)
-        .theme(theme)
-    }
-}
+//
+// private struct WrappedCodeScannerView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    @State private var isGaleryPresented = false
+//    let theme: Theme
+//    let completion: (Result<String, Error>) -> Void
+//
+//    var body: some View {
+//        NavigationView {
+//            CodeScannerView(codeTypes: [.qr],
+//                            simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
+//                            isGalleryPresented: $isGaleryPresented) { result in
+//                dismiss()
+//                switch result {
+//                case let .success(scanResult):
+//                    completion(.success(scanResult.string))
+//                case let .failure(error):
+//                    completion(.failure(error))
+//                }
+//            }
+//            .navigationBarTitleDisplayMode(.inline)
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarLeading) {
+//                    CircleButton(icon: IconProvider.cross,
+//                                 iconColor: PassColor.interactionNormMajor2,
+//                                 backgroundColor: PassColor.interactionNormMinor1,
+//                                 action: dismiss.callAsFunction)
+//                }
+//
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button(action: {
+//                        isGaleryPresented.toggle()
+//                    }, label: {
+//                        Image(systemName: "photo.on.rectangle.angled")
+//                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
+//                    })
+//                }
+//            }
+//        }
+//        .navigationViewStyle(.stack)
+//        .theme(theme)
+//    }
+// }
 
 // MARK: - WebsiteSection
 
