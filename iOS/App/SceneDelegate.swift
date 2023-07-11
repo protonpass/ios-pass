@@ -91,12 +91,12 @@ private extension SceneDelegate {
 
     func uncoverApp() {
         UIView.animate(withDuration: 0.35,
-                       animations: {
-                           self.appCoverView?.alpha = 0
+                       animations: { [weak self] in
+                           self?.appCoverView?.alpha = 0
                        },
-                       completion: { [unowned self] _ in
-                           appCoverView?.removeFromSuperview()
-                           appCoverView = nil
+                       completion: { [weak self] _ in
+                           self?.appCoverView?.removeFromSuperview()
+                           self?.appCoverView = nil
                        })
     }
 }
