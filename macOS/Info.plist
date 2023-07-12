@@ -6,5 +6,7 @@
 	<string>$(APP_VERSION_IDENTIFIER =
 	<key>IS_QA_BUILD =
 	<string>$(IS_QA_BUILD =
+	<key>MODULE</key>
+	<string>HOST_APP</string>
 </dict>
 </plist>
