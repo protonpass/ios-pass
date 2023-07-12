@@ -42,9 +42,18 @@ struct CreateEditLoginView: View {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
-    enum Field: Hashable, CustomFieldTypes {
+    enum Field: CustomFieldTypes {
         case title, username, password, totp, websites, note
         case custom(CustomFieldUiModel?)
+
+        static func == (lhs: Field, rhs: Field) -> Bool {
+            if case let .custom(lhsfield) = lhs,
+               case let .custom(rhsfield) = rhs {
+                return lhsfield?.id == rhsfield?.id
+            } else {
+                return lhs.hashValue == rhs.hashValue
+            }
+        }
     }
 
     var body: some View {
@@ -73,7 +82,7 @@ struct CreateEditLoginView: View {
                             .id(noteID)
 
                         EditCustomFieldSections(focusedField: $focusedField,
-                                                focusedFieldId: viewModel.recentlyAddedOrEditedField,
+                                                focusedCustomFiel: viewModel.recentlyAddedOrEditedField,
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,

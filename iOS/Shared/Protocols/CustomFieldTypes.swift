@@ -20,6 +20,6 @@
 
 import Foundation
 
-protocol CustomFieldTypes: Hashable {
+protocol CustomFieldTypes: Hashable, Equatable {
     static func custom(_ arg: CustomFieldUiModel?) -> Self
 }
