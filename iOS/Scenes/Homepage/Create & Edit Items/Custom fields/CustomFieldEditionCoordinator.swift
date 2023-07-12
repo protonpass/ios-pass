@@ -28,7 +28,7 @@ struct CustomFieldUiModel: Identifiable, Equatable, Hashable {
 }
 
 extension CustomFieldUiModel {
-    func update(with title: String? = nil, and content: String? = nil) -> CustomFieldUiModel {
+    func update(title: String? = nil, content: String? = nil) -> CustomFieldUiModel {
         CustomFieldUiModel(id: id,
                            customField: CustomField(title: title ?? customField.title,
                                                     type: customField.type,
