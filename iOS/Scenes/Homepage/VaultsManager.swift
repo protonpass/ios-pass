@@ -137,9 +137,13 @@ extension VaultsManager {
 
             do {
                 // No need to show loading indicator once items are loaded beforehand.
+                var cryptoErrorOccured = false
                 switch state {
                 case .loaded:
                     break
+                case let .error(error):
+                    cryptoErrorOccured = error is CryptoKitError
+                    state = .loading
                 default:
                     state = .loading
                 }
@@ -149,6 +153,10 @@ extension VaultsManager {
                     try await fullSync()
                     manualLogIn = false
                     logger.info("Manual login, done full sync")
+                } else if cryptoErrorOccured {
+                    logger.info("Crypto error occured. Doing full sync")
+                    try await fullSync()
+                    logger.info("Crypto error occured. Done full sync")
                 } else {
                     logger.info("Not manual login, getting local shares & items")
                     let vaults = try await shareRepository.getVaults()
