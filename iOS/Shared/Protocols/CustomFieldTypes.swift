@@ -1,6 +1,6 @@
 //
-// SharedUseCase+DependencyInjections.swift
-// Proton Pass - Created on 11/07/2023.
+// CustomFieldTypes.swift
+// Proton Pass - Created on 12/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,21 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Factory
+import Foundation
 
-final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedUseCasesContainer()
-    let manager = ContainerManager()
-
-    func autoRegister() {
-        manager.defaultScope = .shared
-    }
-}
-
-// MARK: Permission
-
-extension SharedUseCasesContainer {
-    var checkCameraPermission: Factory<CheckCameraPermissionUseCase> {
-        self { CheckCameraPermission() }
-    }
+protocol CustomFieldTypes: Hashable {
+    static func custom(_ arg: CustomFieldUiModel?) -> Self
 }
