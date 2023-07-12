@@ -18,25 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Core
+import Factory
+@testable import Proton_Pass
 import XCTest
 
-extension UserDefaults {
-    func reset() {
-        dictionaryRepresentation().keys.forEach(removeObject(forKey:))
+private extension SharedToolingContainer {
+    func setUpMocks() {
+        Scope.singleton.reset()
+        self.keychain.register { KeychainMainkeyProviderMock() }
     }
 }
 
 final class PreferencesTests: XCTestCase {
-    private var sut: Preferences!
+    var sut: Preferences!
 
     override func setUp() {
         super.setUp()
+        SharedToolingContainer.shared.setUpMocks()
         sut = .init()
     }
 
     override func tearDown() {
-        kSharedUserDefaults.reset()
+        sut.reset(isTests: true)
+        sut = nil
         super.tearDown()
     }
 
@@ -111,19 +115,8 @@ final class PreferencesTests: XCTestCase {
     func testOnboardOnEveryUITestCase() {
         sut.onboarded = true
         XCTAssertTrue(sut.onboarded)
-        sut.reset(isUITests: true)
+        sut.reset(isTests: true)
         XCTAssertFalse(sut.onboarded)
-    }
-
-    func testAutoFillBannerNotDisplayedByDefault() {
-        XCTAssertFalse(sut.autoFillBannerDisplayed)
-    }
-
-    func testAutoFillBannerDisplayedAgainAfterResetting() {
-        sut.autoFillBannerDisplayed = true
-        XCTAssertTrue(sut.autoFillBannerDisplayed)
-        sut.reset()
-        XCTAssertFalse(sut.autoFillBannerDisplayed)
     }
 
     func testThemeIsDarkByDefault() {

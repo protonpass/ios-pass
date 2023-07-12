@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 06/06/2023.
+// KeychainMainkeyProviderMock.swift
+// Proton Pass - Created on 10/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,21 +19,34 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import Factory
+import ProtonCore_Keymaker
 
-final class SharedServiceContainer: SharedContainer {
-    static let shared = SharedServiceContainer()
-    let manager = ContainerManager()
-}
+final class KeychainMainkeyProviderMock: KeychainProtocol, MainKeyProvider {
+    var dict: [String: Data] = [:]
 
-extension SharedServiceContainer {
-    var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
-        self { NotificationService(logManager: $0) }
+    func data(forKey key: String) -> Data? {
+        dict[key]
     }
-}
 
-extension SharedServiceContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+    func string(forKey key: String) -> String? {
+        fatalError("Not applicable")
+    }
+
+    func set(_ data: Data, forKey key: String) {
+        dict[key] = data
+    }
+
+    func set(_ string: String, forKey key: String) {
+        fatalError("Not applicable")
+    }
+
+    func remove(forKey key: String) {
+        dict[key] = nil
+    }
+
+    var mainKey: MainKey? = Array(repeating: .zero, count: 32)
+
+    func wipeMainKey() {
+        mainKey = nil
     }
 }
