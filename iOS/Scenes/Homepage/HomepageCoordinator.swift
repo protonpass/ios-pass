@@ -1458,6 +1458,9 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 
     func logsViewModelWantsToShareLogs(_ url: URL) {
         let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        if UIDevice.current.isIpad {
+            activityVC.popoverPresentationController?.sourceView = topMostViewController.view
+        }
         present(activityVC)
     }
 
