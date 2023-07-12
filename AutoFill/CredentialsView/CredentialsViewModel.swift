@@ -379,10 +379,6 @@ private extension CredentialsViewModel {
             guard let self else {
                 throw PPError.CredentialProviderFailureReason.generic
             }
-            if !self.preferences.didReencryptAllItems {
-                try await self.itemRepository.reencryptAllItemsTemp()
-                self.preferences.didReencryptAllItems = true
-            }
 
             let vaults = try await self.shareRepository.getVaults()
             let encryptedItems = try await self.itemRepository.getActiveLogInItems()

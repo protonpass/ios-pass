@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 06/06/2023.
+// Theme.swift
+// Proton Pass - Created on 12/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,4 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Factory
-
-final class SharedServiceContainer: SharedContainer {
-    static let shared = SharedServiceContainer()
-    let manager = ContainerManager()
-}
-
-extension SharedServiceContainer {
-    var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
-        self { NotificationService(logManager: $0) }
-    }
-}
-
-extension SharedServiceContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
+import Foundation

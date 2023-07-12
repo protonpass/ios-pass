@@ -53,9 +53,11 @@ extension UseCasesContainer {
     }
 
     var getLogEntries: Factory<GetLogEntriesUseCase> {
-        self { GetLogEntries(mainAppLogManager: ToolingContainer.shared.logManager(),
-                             autofillLogManager: SharedToolingContainer.shared.autoFillLogManager(),
-                             keyboardLogManager: SharedToolingContainer.shared.keyboardLogManager()) }
+        self { GetLogEntries(mainAppLogManager: SharedToolingContainer.shared.specificLogManager(.hostApp),
+                             autofillLogManager: SharedToolingContainer.shared
+                                 .specificLogManager(.autoFillExtension),
+                             keyboardLogManager: SharedToolingContainer.shared
+                                 .specificLogManager(.keyboardExtension)) }
     }
 }
 
