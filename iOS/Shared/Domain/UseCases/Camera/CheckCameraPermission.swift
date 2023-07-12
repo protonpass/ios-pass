@@ -24,20 +24,20 @@ import AVFoundation
 import Combine
 
 protocol CheckCameraPermissionUseCase: Sendable {
-    func execute() async -> Bool
+    func execute(for mediaType: AVMediaType) async -> Bool
 }
 
 extension CheckCameraPermissionUseCase {
-    func callAsFunction() async -> Bool {
-        await execute()
+    func callAsFunction(for mediaType: AVMediaType = .video) async -> Bool {
+        await execute(for: mediaType)
     }
 }
 
 final class CheckCameraPermission: CheckCameraPermissionUseCase {
     init() {}
 
-    func execute() async -> Bool {
-        let status = AVCaptureDevice.authorizationStatus(for: .video)
+    func execute(for mediaType: AVMediaType = .video) async -> Bool {
+        let status = AVCaptureDevice.authorizationStatus(for: mediaType)
 
         // Determine if the user previously authorized camera access.
         var isAuthorized = status == .authorized
@@ -45,7 +45,7 @@ final class CheckCameraPermission: CheckCameraPermissionUseCase {
         // If the system hasn't determined the user's authorization status,
         // explicitly prompt them for approval.
         if status == .notDetermined {
-            isAuthorized = await AVCaptureDevice.requestAccess(for: .video)
+            isAuthorized = await AVCaptureDevice.requestAccess(for: mediaType)
         }
 
         return isAuthorized

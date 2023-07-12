@@ -25,11 +25,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-enum Field: Hashable {
-    case title, username, password, totp, websites, note
-    case custom(CustomFieldUiModel?)
-}
-
 struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditLoginViewModel
@@ -45,6 +40,11 @@ struct CreateEditLoginView: View {
 
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    enum Field: Hashable, CustomFieldTypes {
+        case title, username, password, totp, websites, note
+        case custom(CustomFieldUiModel?)
     }
 
     var body: some View {
@@ -73,7 +73,7 @@ struct CreateEditLoginView: View {
                             .id(noteID)
 
                         EditCustomFieldSections(focusedField: $focusedField,
-                                                focusedFieldId: viewModel.recentlyAddedOrEditedFieldId,
+                                                focusedFieldId: viewModel.recentlyAddedOrEditedField,
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
@@ -104,7 +104,7 @@ struct CreateEditLoginView: View {
                         withAnimation { proxy.scrollTo(id, anchor: .bottom) }
                     }
                 }
-                .onChange(of: viewModel.recentlyAddedOrEditedFieldId) { _ in
+                .onChange(of: viewModel.recentlyAddedOrEditedField) { _ in
                     withAnimation {
                         proxy.scrollTo(bottomID, anchor: .bottom)
                     }
