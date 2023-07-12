@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 06/06/2023.
+// SharedUseCase+DependencyInjections.swift
+// Proton Pass - Created on 11/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,20 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import Factory
 
-final class SharedServiceContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedServiceContainer()
+final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
+    static let shared = SharedUseCasesContainer()
     let manager = ContainerManager()
 
     func autoRegister() {
-        manager.defaultScope = .singleton
+        manager.defaultScope = .shared
     }
 }
 
-extension SharedServiceContainer {
-    var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
-        self { NotificationService(logManager: $0) }
+// MARK: Permission
+
+extension SharedUseCasesContainer {
+    var checkCameraPermission: Factory<CheckCameraPermissionUseCase> {
+        self { CheckCameraPermission() }
     }
 }

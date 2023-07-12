@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 06/06/2023.
+// CustomFieldTypes.swift
+// Proton Pass - Created on 12/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,20 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Factory
+import Foundation
 
-final class SharedServiceContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedServiceContainer()
-    let manager = ContainerManager()
-
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
-
-extension SharedServiceContainer {
-    var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
-        self { NotificationService(logManager: $0) }
-    }
+protocol CustomFieldTypes: Hashable, Equatable {
+    static func custom(_ arg: CustomFieldUiModel?) -> Self
 }
