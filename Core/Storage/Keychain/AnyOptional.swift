@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 06/06/2023.
+// AnyOptional.swift
+// Proton Pass - Created on 10/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Factory
+import Foundation
 
-final class SharedServiceContainer: SharedContainer {
-    static let shared = SharedServiceContainer()
-    let manager = ContainerManager()
+// Used in property wrapper context
+// Since our property wrapper's Value type isn't optional, but
+// can still contain nil values, we'll have to introduce this
+// protocol to enable us to cast any assigned value into a type
+// that we can compare against nil
+// https://www.swiftbysundell.com/articles/property-wrappers-in-swift/
+protocol AnyOptional {
+    var isNil: Bool { get }
 }
 
-extension SharedServiceContainer {
-    var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
-        self { NotificationService(logManager: $0) }
-    }
-}
-
-extension SharedServiceContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
+extension Optional: AnyOptional {
+    var isNil: Bool { self == nil }
 }

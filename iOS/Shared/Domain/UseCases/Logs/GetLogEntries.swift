@@ -31,27 +31,27 @@ protocol GetLogEntriesUseCase: Sendable {
     /**
      Executes the use case to retrieve log entries for the specified log module.
 
-     - Parameter logModule: An enum case of `PassLogModule`, The log module for which to retrieve log entries.
+     - Parameter module: An enum case of `PassModule`, The log module for which to retrieve log entries.
 
      - Returns: An array of `LogEntry` objects representing the retrieved log entries.
 
      - Throws: An error if an issue occurs while retrieving the log entries.
      */
-    func execute(for logModule: PassLogModule) async throws -> [LogEntry]
+    func execute(for module: PassModule) async throws -> [LogEntry]
 }
 
 extension GetLogEntriesUseCase {
     /**
      Convenience method that allows the use case to be invoked as a function, simplifying its usage.
 
-     - Parameter logModule: An enum case of `PassLogModule`, The log module for which to retrieve log entries.
+     - Parameter module: An enum case of `PassModule`, The log module for which to retrieve log entries.
 
      - Returns: An array of `LogEntry` objects representing the retrieved log entries.
 
      - Throws: An error if an issue occurs while retrieving the log entries.
      */
-    func callAsFunction(for logModule: PassLogModule) async throws -> [LogEntry] {
-        try await execute(for: logModule)
+    func callAsFunction(for module: PassModule) async throws -> [LogEntry] {
+        try await execute(for: module)
     }
 }
 
@@ -79,14 +79,14 @@ final class GetLogEntries: GetLogEntriesUseCase {
     /**
      Executes the use case to retrieve log entries for the specified log module.
 
-     - Parameter logModule: The log module for which to retrieve log entries.
+     - Parameter module: The log module for which to retrieve log entries.
 
      - Returns: An array of `LogEntry` objects representing the retrieved log entries.
 
      - Throws: An error if an issue occurs while retrieving the log entries.
      */
-    func execute(for logModule: PassLogModule) async throws -> [LogEntry] {
-        switch logModule {
+    func execute(for module: PassModule) async throws -> [LogEntry] {
+        switch module {
         case .hostApp:
             return try await mainAppLogManager.getLogEntries()
         case .autoFillExtension:
