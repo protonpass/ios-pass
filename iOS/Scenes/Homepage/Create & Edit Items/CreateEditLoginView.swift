@@ -82,7 +82,7 @@ struct CreateEditLoginView: View {
                             .id(noteID)
 
                         EditCustomFieldSections(focusedField: $focusedField,
-                                                focusedCustomFiel: viewModel.recentlyAddedOrEditedField,
+                                                focusedCustomField: viewModel.recentlyAddedOrEditedField,
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
