@@ -110,16 +110,6 @@ final class AppCoordinator {
                 }
             }
             .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                // Make sure preferences are up to date
-                SharedToolingContainer.shared.resetCache()
-                self.preferences = SharedToolingContainer.shared.preferences()
-            }
-            .store(in: &cancellables)
     }
 
     func start() {
@@ -163,31 +153,29 @@ final class AppCoordinator {
     }
 
     private func showHomeScene(userData: UserData, manualLogIn: Bool) {
-        Task { @MainActor in
-            do {
-                let apiService = self.apiManager.apiService
-                let symmetricKey = try self.appData.getSymmetricKey()
-                let homepageCoordinator = HomepageCoordinator(apiService: apiService,
-                                                              container: container,
-                                                              credentialManager: credentialManager,
-                                                              logManager: logManager,
-                                                              manualLogIn: manualLogIn,
-                                                              preferences: preferences,
-                                                              symmetricKey: symmetricKey,
-                                                              userData: userData,
-                                                              appData: appData,
-                                                              mainKeyProvider: mainKeyProvider)
-                homepageCoordinator.delegate = self
-                self.homepageCoordinator = homepageCoordinator
-                self.welcomeCoordinator = nil
-                animateUpdateRootViewController(homepageCoordinator.rootViewController) {
-                    homepageCoordinator.onboardIfNecessary()
-                }
-            } catch {
-                logger.error(error)
-                wipeAllData(includingUnauthSession: true)
-                appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
+        do {
+            let apiService = apiManager.apiService
+            let symmetricKey = try appData.getSymmetricKey()
+            let homepageCoordinator = HomepageCoordinator(apiService: apiService,
+                                                          container: container,
+                                                          credentialManager: credentialManager,
+                                                          logManager: logManager,
+                                                          manualLogIn: manualLogIn,
+                                                          preferences: preferences,
+                                                          symmetricKey: symmetricKey,
+                                                          userData: userData,
+                                                          appData: appData,
+                                                          mainKeyProvider: mainKeyProvider)
+            homepageCoordinator.delegate = self
+            self.homepageCoordinator = homepageCoordinator
+            welcomeCoordinator = nil
+            animateUpdateRootViewController(homepageCoordinator.rootViewController) {
+                homepageCoordinator.onboardIfNecessary()
             }
+        } catch {
+            logger.error(error)
+            wipeAllData(includingUnauthSession: true)
+            appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
         }
     }
 
