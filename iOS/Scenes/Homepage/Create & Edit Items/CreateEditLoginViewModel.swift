@@ -266,11 +266,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func handleScanResult(_ result: Result<String, Error>, customField: CustomFieldUiModel? = nil) {
         switch result {
-        case let .success(successResult):
+        case let .success(scanResult):
             if let customField {
-                customFieldEdited(customField, newTitle: successResult)
+                customFieldEdited(customField, content: scanResult)
             } else {
-                totpUri = successResult
+                totpUri = scanResult
             }
         case let .failure(error):
             delegate?.createEditItemViewModelDidEncounter(error: error)

@@ -28,16 +28,17 @@ struct CustomFieldUiModel: Identifiable, Equatable, Hashable {
 }
 
 extension CustomFieldUiModel {
-    func update(with title: String) -> CustomFieldUiModel {
+    func update(with title: String? = nil, and content: String? = nil) -> CustomFieldUiModel {
         CustomFieldUiModel(id: id,
-                           customField: CustomField(title: title,
+                           customField: CustomField(title: title ?? customField.title,
                                                     type: customField.type,
-                                                    content: customField.content))
+                                                    content: content ?? customField.content))
     }
 }
 
 protocol CustomFieldEditionDelegate: AnyObject {
     func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String)
 }
 
 final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {
