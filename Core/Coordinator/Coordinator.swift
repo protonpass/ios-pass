@@ -325,17 +325,9 @@ public extension UIViewController {
     /// Override `userInterfaceStyle` of the current view controller as well as its presented view controllers
     func setUserInterfaceStyle(_ userInterfaceStyle: UIUserInterfaceStyle) {
         overrideUserInterfaceStyle = userInterfaceStyle
-        var topMostViewController = self
-        while true {
-            if let presentationController = topMostViewController.presentedViewController {
-                if presentationController.isBeingDismissed {
-                    break
-                }
-                topMostViewController = presentationController
-                topMostViewController.overrideUserInterfaceStyle = userInterfaceStyle
-            } else {
-                break
-            }
+        guard let presentationController = presentedViewController else {
+            return
         }
+        presentationController.overrideUserInterfaceStyle = userInterfaceStyle
     }
 }
