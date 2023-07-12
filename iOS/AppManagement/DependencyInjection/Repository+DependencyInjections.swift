@@ -29,8 +29,8 @@ final class RepositoryContainer: SharedContainer {
 
 extension RepositoryContainer {
     var reportRepository: Factory<ReportRepositoryProtocol> {
-        self { ReportRepository(apiManager: ToolingContainer.shared.apiManager(),
-                                logger: ToolingContainer.shared.logger()) }
+        self { ReportRepository(apiManager: SharedToolingContainer.shared.apiManager(),
+                                logManager: SharedToolingContainer.shared.logManager()) }
     }
 }
 

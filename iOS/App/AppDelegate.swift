@@ -44,14 +44,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to select a configuration to create the new scene with.
         UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        saveAllPendingLogs()
-    }
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        saveAllPendingLogs()
-    }
 }
 
 private extension AppDelegate {
@@ -72,11 +64,5 @@ private extension AppDelegate {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
         kSharedUserDefaults.set(Bundle.main.displayedAppVersion, forKey: appVersionKey)
-    }
-
-    func saveAllPendingLogs() {
-        Task {
-            await ToolingContainer.shared.logManager().saveAllLogs()
-        }
     }
 }

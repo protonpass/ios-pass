@@ -18,10 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import LocalAuthentication
 import SwiftUI
 
-public extension BiometricAuthenticator {
+extension BiometricAuthenticator {
     enum BiometryTypeState {
         case idle
         case initializing
@@ -37,7 +38,7 @@ public extension BiometricAuthenticator {
     }
 }
 
-public final class BiometricAuthenticator: ObservableObject {
+final class BiometricAuthenticator: ObservableObject {
     @Published public private(set) var biometryTypeState: BiometryTypeState = .idle
     @Published public private(set) var authenticationState: AuthenticationState = .idle
     @Published public var enabled = false {
@@ -51,13 +52,13 @@ public final class BiometricAuthenticator: ObservableObject {
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
     private let logger: Logger
 
-    public init(preferences: Preferences, logManager: LogManager) {
+    init(preferences: Preferences, logManager: LogManager) {
         self.preferences = preferences
         enabled = preferences.biometricAuthenticationEnabled
         logger = .init(manager: logManager)
     }
 
-    public func initializeBiometryType() {
+    func initializeBiometryType() {
         biometryTypeState = .initializing
         var error: NSError?
         context.canEvaluatePolicy(policy, error: &error)
@@ -68,7 +69,7 @@ public final class BiometricAuthenticator: ObservableObject {
         }
     }
 
-    public func authenticate(reason: String) async throws -> Bool {
+    func authenticate(reason: String) async throws -> Bool {
         guard case .initialized = biometryTypeState else {
             throw PPCoreError.biometryTypeNotInitialized
         }
@@ -77,7 +78,7 @@ public final class BiometricAuthenticator: ObservableObject {
         return try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 
-    public func toggleEnabled(force: Bool) {
+    func toggleEnabled(force: Bool) {
         if !force, enabled == preferences.biometricAuthenticationEnabled { return }
         Task { @MainActor in
             defer {
@@ -102,7 +103,7 @@ public final class BiometricAuthenticator: ObservableObject {
     }
 }
 
-public extension LABiometryType {
+extension LABiometryType {
     struct UiModel {
         public let title: String
         public let icon: String?

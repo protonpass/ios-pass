@@ -18,30 +18,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Core
 import CryptoKit
-import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 
+private extension LockedKeychainStorage {
+    /// Conveniently initialize with injected `keychain`, `mainKeyProvider` & `logManager`
+    init(key: any RawRepresentable<String>, defaultValue: Value) {
+        self.init(key: key.rawValue,
+                  defaultValue: defaultValue,
+                  keychain: SharedToolingContainer.shared.keychain(),
+                  mainKeyProvider: SharedToolingContainer.shared.mainKeyProvider(),
+                  logManager: SharedToolingContainer.shared.logManager())
+    }
+}
+
+enum AppDataKey: String {
+    case userData
+    case unauthSessionCredentials
+    case symmetricKey
+}
+
 final class AppData {
-    @KeychainStorage(key: .userData)
+    @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     var userData: UserData?
 
-    @KeychainStorage(key: .unauthSessionCredentials)
+    @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
     var unauthSessionCredentials: AuthCredential?
 
-    @KeychainStorage(key: .symmetricKey)
+    @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
 
-    init(keychain: KeychainProtocol, mainKeyProvider: MainKeyProvider, logManager: LogManager) {
-        _userData.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
-        _unauthSessionCredentials.inject(keychain: keychain,
-                                         mainKeyProvider: mainKeyProvider,
-                                         logManager: logManager)
-        _symmetricKey.inject(keychain: keychain, mainKeyProvider: mainKeyProvider, logManager: logManager)
-    }
+    init() {}
 
     func getSymmetricKey() throws -> SymmetricKey {
         if let symmetricKey {
