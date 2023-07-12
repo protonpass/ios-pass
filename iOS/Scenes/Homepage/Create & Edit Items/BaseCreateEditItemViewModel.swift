@@ -346,7 +346,7 @@ extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
             return
         }
         recentlyAddedOrEditedField = uiModel
-        customFieldUiModels[index] = uiModel.update(with: newTitle)
+        customFieldUiModels[index] = uiModel.update(title: newTitle)
     }
 
     func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
@@ -357,6 +357,6 @@ extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
             return
         }
         recentlyAddedOrEditedField = uiModel
-        customFieldUiModels[index] = uiModel.update(and: content)
+        customFieldUiModels[index] = uiModel.update(content: content)
     }
 }

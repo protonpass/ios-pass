@@ -76,7 +76,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return false
     }
 
-    @Injected(\SharedUseCasesContainer.checkCameraPermission) private var checkCameraPermission
+    private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
 
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
