@@ -348,4 +348,15 @@ extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
         recentlyAddedOrEditedFieldId = uiModel
         customFieldUiModels[index] = uiModel.update(with: newTitle)
     }
+
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
+        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
+            let message = "Custom field with id \(uiModel.id) not found"
+            logger.error(message)
+            assertionFailure(message)
+            return
+        }
+        recentlyAddedOrEditedFieldId = uiModel
+        customFieldUiModels[index] = uiModel.update(and: content)
+    }
 }
