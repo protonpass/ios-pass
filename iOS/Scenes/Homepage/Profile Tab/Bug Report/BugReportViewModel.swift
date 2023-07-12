@@ -49,7 +49,7 @@ final class BugReportViewModel: ObservableObject {
     var cantSend: Bool { object == nil || description.count < 10 }
 
     private let planRepository: PassPlanRepositoryProtocol
-    @Injected(\UseCasesContainer.sendUserBugReport) private var sendUserBugReport
+    private let sendUserBugReport = resolve(\UseCasesContainer.sendUserBugReport)
 
     enum SendError: Error {
         case failedToSendReport

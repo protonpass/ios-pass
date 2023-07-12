@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum Browser: Int, CustomStringConvertible {
+public enum Browser: Int, Codable, CustomStringConvertible {
     case safari = 0
     case inAppSafari = 1
     case chrome = 2

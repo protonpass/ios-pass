@@ -29,7 +29,6 @@ import MBProgressHUD
 import ProtonCore_Authentication
 import ProtonCore_CryptoGoImplementation
 import ProtonCore_CryptoGoInterface
-import ProtonCore_Keymaker
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -39,17 +38,17 @@ import UserNotifications
 
 public final class CredentialProviderCoordinator {
     /// Self-initialized properties
-    private let apiManager: APIManager
-    private let appData: AppData
+    private let apiManager = resolve(\SharedToolingContainer.apiManager)
+    private let appData = resolve(\SharedToolingContainer.appData)
+    private let logManager = resolve(\SharedToolingContainer.logManager)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+
     private let bannerManager: BannerManager
     private let clipboardManager: ClipboardManager
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
     private let credentialManager: CredentialManagerProtocol
-    private let keymaker: Keymaker
-    private let logManager: LogManager
     private let logger: Logger
-    private let preferences: Preferences
     private weak var rootViewController: UIViewController?
     private var notificationService: LocalNotificationServiceProtocol
 
@@ -82,31 +81,13 @@ public final class CredentialProviderCoordinator {
 
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
-        let keychain = PPKeychain()
-        let keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: keychain), keychain: keychain)
-        let logManager = LogManager(module: .autoFillExtension)
-        let appVersion = "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
-        let appData = AppData(keychain: keychain, mainKeyProvider: keymaker, logManager: logManager)
-        let preferences = SharedToolingContainer.shared.preferences()
-        let apiManager = APIManager(logManager: logManager,
-                                    appVer: appVersion,
-                                    appData: appData,
-                                    preferences: preferences)
-        let bannerManager = BannerManager(container: rootViewController)
-
-        self.apiManager = apiManager
-        self.appData = appData
-        self.bannerManager = bannerManager
+        bannerManager = .init(container: rootViewController)
         clipboardManager = .init(preferences: preferences)
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.context = context
         credentialManager = CredentialManager(logManager: logManager)
-        self.keymaker = keymaker
-        self.logManager = logManager
         logger = .init(manager: logManager)
-        self.preferences = preferences
-        notificationService = SharedServiceContainer
-            .shared.notificationService(SharedToolingContainer.shared.autoFillLogger())
+        notificationService = SharedServiceContainer.shared.notificationService(logManager)
         self.rootViewController = rootViewController
 
         // Post init
@@ -298,7 +279,7 @@ public final class CredentialProviderCoordinator {
         self.itemRepository = itemRepository
         favIconRepository = FavIconRepository(apiService: apiService,
                                               containerUrl: URL.favIconsContainerURL(),
-                                              preferences: preferences,
+                                              settings: preferences,
                                               symmetricKey: symmetricKey)
         shareKeyRepository = repositoryManager.shareKeyRepository
         aliasRepository = repositoryManager.aliasRepository
@@ -375,6 +356,9 @@ private extension CredentialProviderCoordinator {
     func cancel(errorCode: ASExtensionError.Code) {
         let error = NSError(domain: ASExtensionErrorDomain, code: errorCode.rawValue)
         context.cancelRequest(withError: error)
+        Task {
+            await logManager.saveAllLogs()
+        }
     }
 
     // swiftlint:disable:next function_parameter_count
@@ -423,6 +407,8 @@ private extension CredentialProviderCoordinator {
                 } else {
                     addNewEvent(type: .autofillTriggeredFromApp)
                 }
+
+                await logManager.saveAllLogs()
             } catch {
                 logger.error(error)
                 if quickTypeBar {
