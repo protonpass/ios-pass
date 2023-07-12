@@ -20,21 +20,19 @@
 
 import Factory
 
-final class SharedUseCasesContainer: SharedContainer {
+final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = SharedUseCasesContainer()
     let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .shared
+    }
 }
 
-// MARK: Permission {
+// MARK: Permission
 
 extension SharedUseCasesContainer {
     var checkCameraPermission: Factory<CheckCameraPermissionUseCase> {
         self { CheckCameraPermission() }
-    }
-}
-
-extension SharedUseCasesContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .shared
     }
 }

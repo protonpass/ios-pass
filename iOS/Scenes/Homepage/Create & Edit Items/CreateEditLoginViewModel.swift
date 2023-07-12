@@ -248,7 +248,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func openCodeScanner() {
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             guard let authorized = await self?.checkCameraPermission(),
                   authorized else {
                 self?.isShowingNoCameraPermissionView = true

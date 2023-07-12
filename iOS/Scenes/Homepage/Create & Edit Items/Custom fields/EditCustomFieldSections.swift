@@ -22,7 +22,7 @@ import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 
-struct EditCustomFieldSections: View {
+struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
     let focusedField: FocusState<Field?>.Binding
     let focusedFieldId: CustomFieldUiModel?
     let contentType: ItemContentType

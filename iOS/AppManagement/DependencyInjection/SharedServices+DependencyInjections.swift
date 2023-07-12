@@ -21,19 +21,17 @@
 import Core
 import Factory
 
-final class SharedServiceContainer: SharedContainer {
+final class SharedServiceContainer: SharedContainer, AutoRegistering {
     static let shared = SharedServiceContainer()
     let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
+    }
 }
 
 extension SharedServiceContainer {
     var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
         self { NotificationService(logManager: $0) }
-    }
-}
-
-extension SharedServiceContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
     }
 }
