@@ -21,34 +21,34 @@
 import Core
 import SwiftUI
 
-// private struct ThemeModifier: ViewModifier {
-//    let theme: Theme
-//
-//    func body(content: Content) -> some View {
-//        if let colorScheme = theme.colorScheme {
-//            content.environment(\.colorScheme, colorScheme)
-//        } else {
-//            content
-//        }
-//    }
-// }
+private struct ThemeModifier: ViewModifier {
+    let theme: Theme
 
-// extension View {
-//    func theme(_ theme: Theme) -> some View {
-//        modifier(ThemeModifier(theme: theme))
-//            .animation(.default, value: theme)
-//    }
-// }
+    func body(content: Content) -> some View {
+        if let colorScheme = theme.colorScheme {
+            content.environment(\.colorScheme, colorScheme)
+        } else {
+            content
+        }
+    }
+}
 
-// extension Theme {
-//    var colorScheme: ColorScheme? {
-//        switch self {
-//        case .dark:
-//            return .dark
-//        case .light:
-//            return .light
-//        case .matchSystem:
-//            return nil
-//        }
-//    }
-// }
+extension View {
+    func theme(_ theme: Theme) -> some View {
+        modifier(ThemeModifier(theme: theme))
+            .animation(.default, value: theme)
+    }
+}
+
+extension Theme {
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .dark:
+            return .dark
+        case .light:
+            return .light
+        case .matchSystem:
+            return nil
+        }
+    }
+}

@@ -35,7 +35,7 @@ struct EditCustomFieldSections: View {
     var body: some View {
         ForEach($uiModels) { $uiModel in
             EditCustomFieldView(focusedField: focusedField,
-                                field: .custom(focusedFieldId),
+                                field: .custom(uiModel),
                                 contentType: contentType,
                                 uiModel: $uiModel,
                                 onEditTitle: { onEditTitle(uiModel) },
