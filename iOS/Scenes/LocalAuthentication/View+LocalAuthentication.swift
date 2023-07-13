@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import Factory
 import ProtonCore_Keymaker
 import SwiftUI
 import UIComponents
@@ -46,22 +47,19 @@ struct LocalAuthenticationModifier: ViewModifier {
     // NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
-    private let logManager: LogManagerProtocol
     private let onAuth: () -> Void
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
-    init(preferences: Preferences,
-         delayed: Bool,
-         logManager: LogManagerProtocol,
+    init(delayed: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
+        let preferences = resolve(\SharedToolingContainer.preferences)
         authenticated = !preferences.biometricAuthenticationEnabled
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         _preferences = .init(initialValue: preferences)
         self.delayed = delayed
-        self.logManager = logManager
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
@@ -82,8 +80,6 @@ struct LocalAuthenticationModifier: ViewModifier {
 
                     LocalAuthenticationView(type: .biometric,
                                             delayed: delayed,
-                                            preferences: preferences,
-                                            logManager: logManager,
                                             onAuth: onAuth,
                                             onSuccess: handleSuccess,
                                             onFailure: onFailure)
@@ -130,16 +126,11 @@ struct LocalAuthenticationModifier: ViewModifier {
 }
 
 extension View {
-    // swiftlint:disable:next function_parameter_count
-    func localAuthentication(preferences: Preferences,
-                             delayed: Bool,
-                             logManager: LogManagerProtocol,
+    func localAuthentication(delayed: Bool,
                              onAuth: @escaping () -> Void,
                              onSuccess: @escaping () -> Void,
                              onFailure: @escaping () -> Void) -> some View {
-        modifier(LocalAuthenticationModifier(preferences: preferences,
-                                             delayed: delayed,
-                                             logManager: logManager,
+        modifier(LocalAuthenticationModifier(delayed: delayed,
                                              onAuth: onAuth,
                                              onSuccess: onSuccess,
                                              onFailure: onFailure))
