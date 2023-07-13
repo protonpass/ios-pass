@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -28,6 +29,7 @@ import UIComponents
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -39,10 +41,8 @@ struct CredentialsView: View {
                 .ignoresSafeArea()
             stateViews
         }
-        .theme(viewModel.preferences.theme)
-        .localAuthentication(preferences: viewModel.preferences,
-                             delayed: false,
-                             logManager: viewModel.logManager,
+        .theme(preferences.theme)
+        .localAuthentication(delayed: false,
                              onAuth: {},
                              onSuccess: viewModel.handleAuthenticationSuccess,
                              onFailure: viewModel.handleAuthenticationFailure)

@@ -44,7 +44,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let apiService: APIService
-    var biometricAuthenticator: BiometricAuthenticator
+    var biometricAuthenticator = BiometricAuthenticator()
     let credentialManager: CredentialManagerProtocol
     let itemRepository: ItemRepositoryProtocol
     let shareRepository: ShareRepositoryProtocol
@@ -83,7 +83,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          vaultsManager: VaultsManager,
          notificationService: LocalNotificationServiceProtocol) {
         self.apiService = apiService
-        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository

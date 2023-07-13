@@ -18,11 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Factory
 import SwiftUI
 import UIComponents
 
 struct PinAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     init(viewModel: LocalAuthenticationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -35,7 +37,7 @@ struct PinAuthenticationView: View {
             Text("PIN authentication")
                 .foregroundColor(PassColor.signalDanger.toColor)
         }
-        .theme(viewModel.preferences.theme)
+        .theme(preferences.theme)
         .onAppear {
             assertionFailure("PIN authentication not yet supported")
         }
