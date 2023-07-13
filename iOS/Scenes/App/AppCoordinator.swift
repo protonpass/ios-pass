@@ -39,14 +39,10 @@ import UIKit
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
-    private let keymaker: Keymaker
-    private let appData: AppData
-    private let apiManager: APIManager
-    private let logManager: LogManager
-    private let logger: Logger
+    private lazy var logger: Logger = .init(manager: logManager)
     private var container: NSPersistentContainer
-    private let credentialManager: CredentialManagerProtocol
-    private var preferences: Preferences
+    private lazy var credentialManager: CredentialManagerProtocol = CredentialManager(logManager: logManager)
+
     private var isUITest: Bool
 
     private var homepageCoordinator: HomepageCoordinator?
@@ -56,19 +52,18 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
+    private var preferences = resolve(\SharedToolingContainer.preferences)
+    private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
+    private let appData = resolve(\SharedToolingContainer.appData)
+    private let apiManager = resolve(\SharedToolingContainer.apiManager)
+    private let logManager = resolve(\SharedToolingContainer.logManager)
+
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
-        logManager = ToolingContainer.shared.logManager()
-        logger = ToolingContainer.shared.logger()
-        keymaker = SharedToolingContainer.shared.keymaker()
-        appData = ToolingContainer.shared.appData()
-        preferences = SharedToolingContainer.shared.preferences()
-        apiManager = ToolingContainer.shared.apiManager()
 
         container = .Builder.build(name: kProtonPassContainerName,
                                    inMemory: false)
-        credentialManager = CredentialManager(logManager: logManager)
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
@@ -115,16 +110,6 @@ final class AppCoordinator {
                 }
             }
             .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                // Make sure preferences are up to date
-                SharedToolingContainer.shared.resetCache()
-                self.preferences = SharedToolingContainer.shared.preferences()
-            }
-            .store(in: &cancellables)
     }
 
     func start() {
@@ -168,31 +153,29 @@ final class AppCoordinator {
     }
 
     private func showHomeScene(userData: UserData, manualLogIn: Bool) {
-        Task { @MainActor in
-            do {
-                let apiService = self.apiManager.apiService
-                let symmetricKey = try self.appData.getSymmetricKey()
-                let homepageCoordinator = HomepageCoordinator(apiService: apiService,
-                                                              container: container,
-                                                              credentialManager: credentialManager,
-                                                              logManager: logManager,
-                                                              manualLogIn: manualLogIn,
-                                                              preferences: preferences,
-                                                              symmetricKey: symmetricKey,
-                                                              userData: userData,
-                                                              appData: appData,
-                                                              mainKeyProvider: keymaker)
-                homepageCoordinator.delegate = self
-                self.homepageCoordinator = homepageCoordinator
-                self.welcomeCoordinator = nil
-                animateUpdateRootViewController(homepageCoordinator.rootViewController) {
-                    homepageCoordinator.onboardIfNecessary()
-                }
-            } catch {
-                logger.error(error)
-                wipeAllData(includingUnauthSession: true)
-                appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
+        do {
+            let apiService = apiManager.apiService
+            let symmetricKey = try appData.getSymmetricKey()
+            let homepageCoordinator = HomepageCoordinator(apiService: apiService,
+                                                          container: container,
+                                                          credentialManager: credentialManager,
+                                                          logManager: logManager,
+                                                          manualLogIn: manualLogIn,
+                                                          preferences: preferences,
+                                                          symmetricKey: symmetricKey,
+                                                          userData: userData,
+                                                          appData: appData,
+                                                          mainKeyProvider: mainKeyProvider)
+            homepageCoordinator.delegate = self
+            self.homepageCoordinator = homepageCoordinator
+            welcomeCoordinator = nil
+            animateUpdateRootViewController(homepageCoordinator.rootViewController) {
+                homepageCoordinator.onboardIfNecessary()
             }
+        } catch {
+            logger.error(error)
+            wipeAllData(includingUnauthSession: true)
+            appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
         }
     }
 
@@ -210,9 +193,9 @@ final class AppCoordinator {
         appData.userData = nil
         if includingUnauthSession {
             apiManager.clearCredentials()
-            keymaker.wipeMainKey()
+            mainKeyProvider.wipeMainKey()
         }
-        preferences.reset(isUITests: isUITest)
+        preferences.reset(isTests: isUITest)
         Task {
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running

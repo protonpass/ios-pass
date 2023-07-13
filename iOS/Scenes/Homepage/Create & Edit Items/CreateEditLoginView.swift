@@ -38,12 +38,22 @@ struct CreateEditLoginView: View {
     @Namespace private var noteID
     @Namespace private var bottomID
 
-    enum Field: Hashable {
-        case title, username, password, totp, websites, note
-    }
-
     init(viewModel: CreateEditLoginViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    enum Field: CustomFieldTypes {
+        case title, username, password, totp, websites, note
+        case custom(CustomFieldUiModel?)
+
+        static func == (lhs: Field, rhs: Field) -> Bool {
+            if case let .custom(lhsfield) = lhs,
+               case let .custom(rhsfield) = rhs {
+                return lhsfield?.id == rhsfield?.id
+            } else {
+                return lhs.hashValue == rhs.hashValue
+            }
+        }
     }
 
     var body: some View {
@@ -71,7 +81,8 @@ struct CreateEditLoginView: View {
                                         field: .note)
                             .id(noteID)
 
-                        EditCustomFieldSections(focusedFieldId: viewModel.recentlyAddedOrEditedFieldId,
+                        EditCustomFieldSections(focusedField: $focusedField,
+                                                focusedCustomField: viewModel.recentlyAddedOrEditedField,
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
@@ -93,6 +104,8 @@ struct CreateEditLoginView: View {
                     case .username: id = passwordID
                     case .totp: id = websitesID
                     case .note: id = noteID
+                    case .custom:
+                        id = bottomID
                     default: id = nil
                     }
 
@@ -100,7 +113,7 @@ struct CreateEditLoginView: View {
                         withAnimation { proxy.scrollTo(id, anchor: .bottom) }
                     }
                 }
-                .onChange(of: viewModel.recentlyAddedOrEditedFieldId) { _ in
+                .onChange(of: viewModel.recentlyAddedOrEditedField) { _ in
                     withAnimation {
                         proxy.scrollTo(bottomID, anchor: .bottom)
                     }
@@ -162,6 +175,8 @@ struct CreateEditLoginView: View {
                     usernameTextFieldToolbar
                 case .totp:
                     totpTextFieldToolbar
+                case let .custom(model) where model?.customField.type == .totp:
+                    totpTextFieldToolbar
                 case .password:
                     passwordTextFieldToolbar
                 default:
@@ -175,6 +190,8 @@ struct CreateEditLoginView: View {
                     case .username:
                         usernameTextFieldToolbar
                     case .totp:
+                        totpTextFieldToolbar
+                    case let .custom(model) where model?.customField.type == .totp:
                         totpTextFieldToolbar
                     case .password:
                         passwordTextFieldToolbar
@@ -465,47 +482,16 @@ struct CreateEditLoginView: View {
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
             WrappedCodeScannerView(theme: viewModel.preferences.theme) { result in
-                viewModel.handleScanResult(result)
+                switch focusedField {
+                case .totp:
+                    viewModel.handleScanResult(result)
+                case let .custom(model) where model?.customField.type == .totp:
+                    viewModel.handleScanResult(result, customField: model)
+                default:
+                    return
+                }
             }
         }
-    }
-}
-
-// MARK: - WrappedCodeScannerView
-
-private struct WrappedCodeScannerView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var isGaleryPresented = false
-    let theme: Theme
-    let completion: (Result<ScanResult, ScanError>) -> Void
-
-    var body: some View {
-        NavigationView {
-            CodeScannerView(codeTypes: [.qr],
-                            simulatedData: "otpauth://totp/SimpleLogin:john.doe%40example.com?secret=CKTQQJVWT5IXTGDB&amp;issuer=SimpleLogin",
-                            isGalleryPresented: $isGaleryPresented,
-                            completion: { result in dismiss(); completion(result) })
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        CircleButton(icon: IconProvider.cross,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1,
-                                     action: dismiss.callAsFunction)
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            isGaleryPresented.toggle()
-                        }, label: {
-                            Image(systemName: "photo.on.rectangle.angled")
-                                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
-                        })
-                    }
-                }
-        }
-        .navigationViewStyle(.stack)
-        .theme(theme)
     }
 }
 

@@ -1,6 +1,6 @@
 //
-// LoggerManager+Initializer.swift
-// Proton Pass - Created on 04/01/2023.
+// KeychainMainkeyProviderMock.swift
+// Proton Pass - Created on 10/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,14 +19,34 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import ProtonCore_Keymaker
 
-extension LogManager {
-    /// Convenience initialize for iOS & extensions which creates a log file in shared container.
-    init(module: PassModule) {
-        guard let fileContainer =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Shared file container could not be created.")
-        }
-        self.init(url: fileContainer, fileName: module.logFileName)
+final class KeychainMainkeyProviderMock: KeychainProtocol, MainKeyProvider {
+    var dict: [String: Data] = [:]
+
+    func data(forKey key: String) -> Data? {
+        dict[key]
+    }
+
+    func string(forKey key: String) -> String? {
+        fatalError("Not applicable")
+    }
+
+    func set(_ data: Data, forKey key: String) {
+        dict[key] = data
+    }
+
+    func set(_ string: String, forKey key: String) {
+        fatalError("Not applicable")
+    }
+
+    func remove(forKey key: String) {
+        dict[key] = nil
+    }
+
+    var mainKey: MainKey? = Array(repeating: .zero, count: 32)
+
+    func wipeMainKey() {
+        mainKey = nil
     }
 }

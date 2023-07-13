@@ -21,15 +21,15 @@
 import ProtonCore_Keymaker
 
 public protocol KeychainProtocol: AnyObject {
-    // getters
+    // Getters
     func data(forKey key: String) -> Data?
     func string(forKey key: String) -> String?
 
-    // setters
+    // Setters
     func set(_ data: Data, forKey key: String)
     func set(_ string: String, forKey key: String)
 
-    // cleaners
+    // Cleaner
     func remove(forKey key: String)
 }
 

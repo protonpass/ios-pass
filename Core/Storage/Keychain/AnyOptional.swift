@@ -1,6 +1,6 @@
 //
-// LoggerManager+Initializer.swift
-// Proton Pass - Created on 04/01/2023.
+// AnyOptional.swift
+// Proton Pass - Created on 10/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,15 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
+import Foundation
 
-extension LogManager {
-    /// Convenience initialize for iOS & extensions which creates a log file in shared container.
-    init(module: PassModule) {
-        guard let fileContainer =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Shared file container could not be created.")
-        }
-        self.init(url: fileContainer, fileName: module.logFileName)
-    }
+// Used in property wrapper context
+// Since our property wrapper's Value type isn't optional, but
+// can still contain nil values, we'll have to introduce this
+// protocol to enable us to cast any assigned value into a type
+// that we can compare against nil
+// https://www.swiftbysundell.com/articles/property-wrappers-in-swift/
+protocol AnyOptional {
+    var isNil: Bool { get }
+}
+
+extension Optional: AnyOptional {
+    var isNil: Bool { self == nil }
 }

@@ -23,37 +23,44 @@ import Factory
 import ProtonCore_Keymaker
 
 /// Contain tools shared between main iOS app and extensions
-final class SharedToolingContainer: SharedContainer {
-    typealias FullKeychainService = SettingsProvider & Keychain
-
+final class SharedToolingContainer: SharedContainer, AutoRegistering {
     static let shared = SharedToolingContainer()
     let manager = ContainerManager()
 
+    private init() {
+        let key = "ProtonPass"
+        switch Bundle.main.infoDictionary?["MODULE"] as? String {
+        case "AUTOFILL_EXTENSION":
+            FactoryContext.setArg(PassModule.autoFillExtension, forKey: key)
+        case "KEYBOARD_EXTENSION":
+            FactoryContext.setArg(PassModule.keyboardExtension, forKey: key)
+        default:
+            // Default to host app
+            break
+        }
+    }
+
     func resetCache() {
         manager.reset(scope: .cached)
+    }
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
     }
 }
 
 // MARK: Shared Logging tools
 
 extension SharedToolingContainer {
-    var logManager: Factory<LogManager> {
-        self { LogManager(module: .hostApp) }
-            .onArg("autoFill") { LogManager(module: .autoFillExtension) }
-            .onArg("keyboard") { LogManager(module: .keyboardExtension) }
+    var specificLogManager: ParameterFactory<PassModule, LogManager> {
+        self { LogManager(module: $0) }
             .unique
     }
 
-    var autoFillLogManager: Factory<LogManager> {
-        self { LogManager(module: .autoFillExtension) }
-    }
-
-    var autoFillLogger: Factory<Logger> {
-        self { Logger(manager: self.autoFillLogManager()) }
-    }
-
-    var keyboardLogManager: Factory<LogManager> {
-        self { LogManager(module: .keyboardExtension) }
+    var logManager: Factory<LogManager> {
+        self { LogManager(module: .hostApp) }
+            .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
+            .onArg(PassModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
     }
 
     var logFormatter: Factory<LogFormatterProtocol> {
@@ -61,35 +68,56 @@ extension SharedToolingContainer {
     }
 }
 
+// MARK: Data tools
+
+extension SharedToolingContainer {
+    var appData: Factory<AppData> {
+        self { AppData() }
+    }
+
+    var apiManager: Factory<APIManager> {
+        self { APIManager(logManager: self.logManager(),
+                          appVer: "ios-pass@\(Bundle.main.fullAppVersionName)",
+                          appData: self.appData(),
+                          preferences: self.preferences()) }
+            .onArg(PassModule.autoFillExtension) {
+                APIManager(logManager: self.logManager(),
+                           appVer: "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)",
+                           appData: self.appData(),
+                           preferences: self.preferences())
+            }
+    }
+}
+
 // MARK: User centric tools
 
 extension SharedToolingContainer {
-    // This is set in a cached scope to be able to reset when needed
-    // To reset you can call SharedToolingContainer.shared.manager.reset(scope: .cached)
     var preferences: Factory<Preferences> {
         self { Preferences() }
-            .cached
     }
 }
 
 // MARK: Keychain tools
 
 extension SharedToolingContainer {
-    var keychain: Factory<FullKeychainService> {
+    private var baseKeychain: Factory<PPKeychain> {
         self { PPKeychain() }
     }
 
+    var keychain: Factory<KeychainProtocol> {
+        self { self.baseKeychain() }
+    }
+
+    var settingsProvider: Factory<SettingsProvider> {
+        self { self.baseKeychain() }
+    }
+
     var autolocker: Factory<Autolocker> {
-        self { Autolocker(lockTimeProvider: self.keychain()) }
+        self { Autolocker(lockTimeProvider: self.settingsProvider()) }
     }
 
-    var keymaker: Factory<Keymaker> {
-        self { Keymaker(autolocker: self.autolocker(), keychain: self.keychain()) }
-    }
-}
-
-extension SharedToolingContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+    var mainKeyProvider: Factory<MainKeyProvider> {
+        self { Keymaker(autolocker: self.autolocker(),
+                        keychain: self.baseKeychain()) }
     }
 }
