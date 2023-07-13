@@ -1,0 +1,75 @@
+//
+// LocalAuthenticationMethod.swift
+// Proton Pass - Created on 13/07/2023.
+// Copyright (c) 2023 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import LocalAuthentication
+
+enum LocalAuthenticationMethod: Codable {
+    case none, biometric, pin
+}
+
+enum LocalAuthenticationMethodUiModel {
+    case none, biometric(LABiometryType), pin
+
+    var iconSystemName: String? {
+        if case let .biometric(type) = self {
+            switch type {
+            case .faceID:
+                return "faceid"
+            case .touchID:
+                return "touchid"
+            default:
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .none:
+            return "None"
+        case let .biometric(type):
+            switch type {
+            case .faceID:
+                return "Face ID"
+            case .touchID:
+                return "Touch ID"
+            case .none:
+                return "Device Passcode"
+            default:
+                return ""
+            }
+        case .pin:
+            return "PIN Code"
+        }
+    }
+
+    var method: LocalAuthenticationMethod {
+        switch self {
+        case .none:
+            return .none
+        case .biometric:
+            return .biometric
+        case .pin:
+            return .pin
+        }
+    }
+}

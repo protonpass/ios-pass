@@ -44,23 +44,3 @@ final class CheckBiometryType: CheckBiometryTypeUseCase {
         }
     }
 }
-
-extension LABiometryType {
-    struct UiModel {
-        public let title: String
-        public let icon: String?
-    }
-
-    var title: UiModel? {
-        switch self {
-        case .faceID:
-            return .init(title: "Face ID", icon: "faceid")
-        case .touchID:
-            return .init(title: "Touch ID", icon: "touchid")
-        case .none:
-            return .init(title: "Device passcode", icon: nil)
-        default:
-            return nil
-        }
-    }
-}
