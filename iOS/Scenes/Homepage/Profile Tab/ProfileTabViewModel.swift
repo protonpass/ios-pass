@@ -37,14 +37,13 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowImportInstructions()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
-    func profileTabViewModelWantsDidEncounter(error: Error)
+    func profileTabViewModelDidEncounter(error: Error)
 }
 
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let apiService: APIService
-    var biometricAuthenticator = BiometricAuthenticator()
     let credentialManager: CredentialManagerProtocol
     let itemRepository: ItemRepositoryProtocol
     let shareRepository: ShareRepositoryProtocol
@@ -97,22 +96,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
 
-        biometricAuthenticator.attach(to: self, storeIn: &cancellables)
         refresh()
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
                 self?.refresh()
-            }
-            .store(in: &cancellables)
-
-        biometricAuthenticator.$authenticationState
-            .sink { [weak self] state in
-                guard let self else { return }
-                if case let .error(error) = state {
-                    self.delegate?.profileTabViewModelWantsDidEncounter(error: error)
-                }
             }
             .store(in: &cancellables)
 
@@ -183,8 +172,6 @@ extension ProfileTabViewModel {
 private extension ProfileTabViewModel {
     func refresh() {
         updateAutoFillAvalability()
-        biometricAuthenticator.initializeBiometryType()
-        biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
         refreshPlan()
         refreshFeatureFlags()
     }
@@ -230,7 +217,7 @@ private extension ProfileTabViewModel {
             } catch {
                 logger.error(error)
                 quickTypeBar.toggle() // rollback to previous value
-                delegate?.profileTabViewModelWantsDidEncounter(error: error)
+                delegate?.profileTabViewModelDidEncounter(error: error)
             }
         }
     }
