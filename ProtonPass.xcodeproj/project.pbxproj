@@ -421,6 +421,7 @@
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356A4EF42A3A01090069804F /* MonthYearTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A4EF32A3A01090069804F /* MonthYearTextField.swift */; };
+		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
 		356B21D72870F8F1001220CB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D62870F8F1001220CB /* Constants.swift */; };
 		356B21DA2870F97F001220CB /* PPKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B21D92870F97F001220CB /* PPKeychain.swift */; };
 		356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
@@ -1243,6 +1244,7 @@
 		356A34BA2977B7FF00969BA2 /* URLUtils+OTPParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLUtils+OTPParserTests.swift"; sourceTree = "<group>"; };
 		356A34BC2977C6ED00969BA2 /* URLExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensionTests.swift; sourceTree = "<group>"; };
 		356A4EF32A3A01090069804F /* MonthYearTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthYearTextField.swift; sourceTree = "<group>"; };
+		356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B21D62870F8F1001220CB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		356B21D92870F97F001220CB /* PPKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPKeychain.swift; sourceTree = "<group>"; };
@@ -1930,6 +1932,7 @@
 				354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */,
 				354E9AAA2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift */,
 				354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */,
+				356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */,
 				354E9A9D2A44430D00AD2B9A /* View+LocalAuthentication.swift */,
 			);
 			path = LocalAuthentication;
@@ -2735,7 +2738,6 @@
 		35E506AB286F920300A3F6EA /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
-				5BFFB51E2A5D471100C2D1F9 /* ViewModifiers */,
 				5BB2B6E02A4332D4005E831C /* UIElements */,
 				5B0C750B2A321DAE00272CE8 /* Extensions */,
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
@@ -3204,13 +3206,6 @@
 				5BFFB5092A5BFF2000C2D1F9 /* CheckCameraPermission.swift */,
 			);
 			path = Camera;
-			sourceTree = "<group>";
-		};
-		5BFFB51E2A5D471100C2D1F9 /* ViewModifiers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		6699002C29A77182001033B6 /* Mocks */ = {
@@ -4507,6 +4502,7 @@
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				35AC9A682A0C16FE00FBCEEC /* EditCustomFieldView.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
+				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
