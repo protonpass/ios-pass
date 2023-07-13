@@ -21,41 +21,44 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
+public struct GetPendingInviteForUserResponse: Decodable {
+    let code: Int
+    let invites: [UserInvite]
+}
+
 public struct GetPendingInviteForUserEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+    public typealias Response = GetPendingInviteForUserResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
 
-    public init(for shareId: String, with userId: String) {
-        debugDescription = "Get pending invites for user."
+    public init() {
+        debugDescription = "Get pending invites for user"
         path = "/pass/v1/invite"
         method = .get
     }
 }
 
+// MARK: - User Invite
 
-{
-  "Code": 1000,
-  "": {
-    "Invites": [
-      {
-        "InviteID": "a1b2c3==",
-        "RemindersSent": 23,
-        "TargetType": null,
-        "TargetID": "a2b2c3==",
-        "InviterEmail": "inviter@someemail.tld",
-        "InvitedEmail": "invited@someemail.tld",
-        "Keys": [
-          {
-            "KeyRotation": null,
-            "Key": "string"
-          }
-        ],
-        "CreateTime": 1674813070
-      }
-    ]
-  }
+struct UserInvite: Codable {
+    let inviteID: String
+    let remindersSent: Int
+    let targetType: Int
+    let targetID, inviterEmail, invitedEmail: String
+    let keys: [ItemKey]
+    let createTime: Int
+
+    enum CodingKeys: String, CodingKey {
+        case inviteID = "InviteID"
+        case remindersSent = "RemindersSent"
+        case targetType = "TargetType"
+        case targetID = "TargetID"
+        case inviterEmail = "InviterEmail"
+        case invitedEmail = "InvitedEmail"
+        case keys = "Keys"
+        case createTime = "CreateTime"
+    }
 }
