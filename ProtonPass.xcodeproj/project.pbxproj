@@ -620,7 +620,6 @@
 		5B1453692A6036540048B022 /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453562A6032D20048B022 /* Vault.swift */; };
 		5B14536A2A6036560048B022 /* SymmetricallyEncryptedShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453592A6032D20048B022 /* SymmetricallyEncryptedShare.swift */; };
 		5B14536B2A6036590048B022 /* SymmetricallyEncryptedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453572A6032D20048B022 /* SymmetricallyEncryptedItem.swift */; };
-		5B14536C2A60365B0048B022 /* ItemKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14535B2A6032D20048B022 /* ItemKey.swift */; };
 		5B14536D2A60365E0048B022 /* ItemRevision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14535C2A6032D20048B022 /* ItemRevision.swift */; };
 		5B14536E2A6036600048B022 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14535D2A6032D20048B022 /* UserSettings.swift */; };
 		5B14536F2A6036620048B022 /* ShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14535E2A6032D20048B022 /* ShareKey.swift */; };
@@ -633,6 +632,8 @@
 		5B1453762A6036740048B022 /* AliasOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453642A6032D20048B022 /* AliasOptions.swift */; };
 		5B1453772A60369A0048B022 /* SymmetricallyEncryptedShareKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14535A2A6032D20048B022 /* SymmetricallyEncryptedShareKey.swift */; };
 		5B1453792A6038FE0048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453782A6038FE0048B022 /* Entities */; };
+		5B14537B2A6041360048B022 /* RemoteShareInviteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14537A2A6041360048B022 /* RemoteShareInviteDatasource.swift */; };
+		5B14537D2A60431F0048B022 /* RemoteInviteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14537C2A60431F0048B022 /* RemoteInviteDatasource.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1423,7 +1424,6 @@
 		5B1453572A6032D20048B022 /* SymmetricallyEncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedItem.swift; sourceTree = "<group>"; };
 		5B1453592A6032D20048B022 /* SymmetricallyEncryptedShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShare.swift; sourceTree = "<group>"; };
 		5B14535A2A6032D20048B022 /* SymmetricallyEncryptedShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShareKey.swift; sourceTree = "<group>"; };
-		5B14535B2A6032D20048B022 /* ItemKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemKey.swift; sourceTree = "<group>"; };
 		5B14535C2A6032D20048B022 /* ItemRevision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRevision.swift; sourceTree = "<group>"; };
 		5B14535D2A6032D20048B022 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		5B14535E2A6032D20048B022 /* ShareKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareKey.swift; sourceTree = "<group>"; };
@@ -1434,6 +1434,8 @@
 		5B1453632A6032D20048B022 /* SearchEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntry.swift; sourceTree = "<group>"; };
 		5B1453642A6032D20048B022 /* AliasOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasOptions.swift; sourceTree = "<group>"; };
 		5B1453652A6032D20048B022 /* SyncEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEvents.swift; sourceTree = "<group>"; };
+		5B14537A2A6041360048B022 /* RemoteShareInviteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareInviteDatasource.swift; sourceTree = "<group>"; };
+		5B14537C2A60431F0048B022 /* RemoteInviteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteInviteDatasource.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -2525,6 +2527,8 @@
 				35581816290AB75F00DD94DB /* RemoteSyncEventsDatasource.swift */,
 				357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */,
 				3563401E2A23860800E22BFE /* RemoteUserSettingsDatasource.swift */,
+				5B14537A2A6041360048B022 /* RemoteShareInviteDatasource.swift */,
+				5B14537C2A60431F0048B022 /* RemoteInviteDatasource.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -2956,7 +2960,6 @@
 				5B1453572A6032D20048B022 /* SymmetricallyEncryptedItem.swift */,
 				5B1453592A6032D20048B022 /* SymmetricallyEncryptedShare.swift */,
 				5B14535A2A6032D20048B022 /* SymmetricallyEncryptedShareKey.swift */,
-				5B14535B2A6032D20048B022 /* ItemKey.swift */,
 				5B14535C2A6032D20048B022 /* ItemRevision.swift */,
 				5B14535D2A6032D20048B022 /* UserSettings.swift */,
 				5B14535E2A6032D20048B022 /* ShareKey.swift */,
@@ -4790,6 +4793,7 @@
 				3593DD0B28A837DD00C235D3 /* ShareEntity.swift in Sources */,
 				3552F48C28D3451800547146 /* GetAliasDetailsEndpoint.swift in Sources */,
 				355A5B162A0425810089E0AC /* UpgradeChecker.swift in Sources */,
+				5B14537B2A6041360048B022 /* RemoteShareInviteDatasource.swift in Sources */,
 				3552F48828D322C100547146 /* CreateCustomAliasEndpoint.swift in Sources */,
 				3552F48628D3215600547146 /* CreateCustomAliasRequest.swift in Sources */,
 				35492E3A293DFB8700BDE231 /* ItemIdentifiable.swift in Sources */,
@@ -4814,7 +4818,6 @@
 				3561A1802922D1700097078B /* ItemCount.swift in Sources */,
 				3554747E29A8E71F0060B555 /* RemoteItemKeyDatasource.swift in Sources */,
 				5B1453762A6036740048B022 /* AliasOptions.swift in Sources */,
-				5B14536C2A60365B0048B022 /* ItemKey.swift in Sources */,
 				3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */,
 				35581811290A8C8B00DD94DB /* RemoteShareEventIDDatasource.swift in Sources */,
 				354513EB28E4D5310020A93A /* AutoFillCredential.swift in Sources */,
@@ -4833,6 +4836,7 @@
 				3593DCEB28A79CD300C235D3 /* CreateVaultRequest.swift in Sources */,
 				354146CF28D1C6D5007E45A6 /* UntrashItemsEndpoint.swift in Sources */,
 				355CA56629F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift in Sources */,
+				5B14537D2A60431F0048B022 /* RemoteInviteDatasource.swift in Sources */,
 				3593DD0A28A837DD00C235D3 /* ShareKeyEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
