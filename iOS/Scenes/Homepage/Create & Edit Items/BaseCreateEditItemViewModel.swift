@@ -65,7 +65,7 @@ class BaseCreateEditItemViewModel {
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
-    @Published private(set) var recentlyAddedOrEditedFieldId: String?
+    @Published private(set) var recentlyAddedOrEditedField: CustomFieldUiModel?
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
             didEditSomething = true
@@ -331,7 +331,7 @@ extension BaseCreateEditItemViewModel: CustomFieldAdditionDelegate {
     func customFieldAdded(_ customField: CustomField) {
         let uiModel = CustomFieldUiModel(customField: customField)
         customFieldUiModels.append(uiModel)
-        recentlyAddedOrEditedFieldId = uiModel.id
+        recentlyAddedOrEditedField = uiModel
     }
 }
 
@@ -345,10 +345,18 @@ extension BaseCreateEditItemViewModel: CustomFieldEditionDelegate {
             assertionFailure(message)
             return
         }
-        recentlyAddedOrEditedFieldId = uiModel.id
-        customFieldUiModels[index] = .init(id: uiModel.id,
-                                           customField: .init(title: newTitle,
-                                                              type: uiModel.customField.type,
-                                                              content: uiModel.customField.content))
+        recentlyAddedOrEditedField = uiModel
+        customFieldUiModels[index] = uiModel.update(title: newTitle)
+    }
+
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
+        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
+            let message = "Custom field with id \(uiModel.id) not found"
+            logger.error(message)
+            assertionFailure(message)
+            return
+        }
+        recentlyAddedOrEditedField = uiModel
+        customFieldUiModels[index] = uiModel.update(content: content)
     }
 }

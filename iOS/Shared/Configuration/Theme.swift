@@ -20,7 +20,7 @@
 
 import ProtonCore_UIFoundations
 
-public enum Theme: Int, CustomStringConvertible, CaseIterable {
+public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable {
     case light = 0
     case dark = 1
     case matchSystem = 2

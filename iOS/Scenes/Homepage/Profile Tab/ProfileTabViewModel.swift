@@ -119,6 +119,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
             .store(in: &cancellables)
 
         preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.refresh()
             }

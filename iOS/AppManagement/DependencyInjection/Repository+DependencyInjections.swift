@@ -22,20 +22,18 @@ import Core
 import Factory
 import Foundation
 
-final class RepositoryContainer: SharedContainer {
+final class RepositoryContainer: SharedContainer, AutoRegistering {
     static let shared = RepositoryContainer()
     let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
+    }
 }
 
 extension RepositoryContainer {
     var reportRepository: Factory<ReportRepositoryProtocol> {
-        self { ReportRepository(apiManager: ToolingContainer.shared.apiManager(),
-                                logger: ToolingContainer.shared.logger()) }
-    }
-}
-
-extension RepositoryContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+        self { ReportRepository(apiManager: SharedToolingContainer.shared.apiManager(),
+                                logManager: SharedToolingContainer.shared.logManager()) }
     }
 }

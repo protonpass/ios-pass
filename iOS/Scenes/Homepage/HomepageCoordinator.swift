@@ -144,7 +144,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                           logManager: logManager)
         favIconRepository = FavIconRepository(apiService: apiService,
                                               containerUrl: URL.favIconsContainerURL(),
-                                              preferences: preferences,
+                                              settings: preferences,
                                               symmetricKey: symmetricKey)
         itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                        itemRepository: itemRepository,
@@ -214,11 +214,11 @@ private extension HomepageCoordinator {
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                DispatchQueue.main.async {
-                    self.rootViewController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
-                }
+                self.rootViewController.setUserInterfaceStyle(self.preferences
+                    .theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
 
@@ -260,9 +260,7 @@ private extension HomepageCoordinator {
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
                                                           .shared
-                                                          .notificationService(ToolingContainer
-                                                              .shared
-                                                              .logger()))
+                                                          .notificationService(logManager))
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
@@ -488,7 +486,7 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentLogsView(for module: PassLogModule) {
+    func presentLogsView(for module: PassModule) {
         let viewModel = LogsViewModel(module: module)
         viewModel.delegate = self
         let view = LogsView(viewModel: viewModel)
@@ -987,7 +985,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToClearLogs() {
         Task {
-            let modules = PassLogModule.allCases.map(LogManager.init)
+            let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage("All logs cleared")
@@ -1460,6 +1458,9 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 
     func logsViewModelWantsToShareLogs(_ url: URL) {
         let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        if UIDevice.current.isIpad {
+            activityVC.popoverPresentationController?.sourceView = topMostViewController.view
+        }
         present(activityVC)
     }
 

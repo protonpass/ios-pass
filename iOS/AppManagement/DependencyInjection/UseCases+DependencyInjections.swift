@@ -22,9 +22,13 @@ import Core
 import Factory
 import Foundation
 
-final class UseCasesContainer: SharedContainer {
+final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
     let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .shared
+    }
 }
 
 // MARK: User report
@@ -53,14 +57,10 @@ extension UseCasesContainer {
     }
 
     var getLogEntries: Factory<GetLogEntriesUseCase> {
-        self { GetLogEntries(mainAppLogManager: ToolingContainer.shared.logManager(),
-                             autofillLogManager: SharedToolingContainer.shared.autoFillLogManager(),
-                             keyboardLogManager: SharedToolingContainer.shared.keyboardLogManager()) }
-    }
-}
-
-extension UseCasesContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .shared
+        self { GetLogEntries(mainAppLogManager: SharedToolingContainer.shared.specificLogManager(.hostApp),
+                             autofillLogManager: SharedToolingContainer.shared
+                                 .specificLogManager(.autoFillExtension),
+                             keyboardLogManager: SharedToolingContainer.shared
+                                 .specificLogManager(.keyboardExtension)) }
     }
 }
