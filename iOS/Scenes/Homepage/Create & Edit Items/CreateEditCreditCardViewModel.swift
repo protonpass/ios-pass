@@ -52,7 +52,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                   upgradeChecker: UpgradeCheckerProtocol,
                   vaults: [Vault],
                   preferences: Preferences,
-                  logManager: LogManager) throws {
+                  logManager: LogManagerProtocol) throws {
         try super.init(mode: mode,
                        itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,

@@ -29,7 +29,7 @@ struct EmptyVaultView: View {
     private let onCreate: (ItemContentType) -> Void
 
     init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          onCreate: @escaping (ItemContentType) -> Void) {
         _viewModel = .init(wrappedValue: .init(featureFlagsRepository: featureFlagsRepository,
                                                logManager: logManager))

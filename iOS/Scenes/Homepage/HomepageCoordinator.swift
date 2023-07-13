@@ -55,7 +55,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
-    private let logManager: LogManager
+    private let logManager: LogManagerProtocol
     private let manualLogIn: Bool
     private let paymentsManager: PaymentsManager
     private let preferences: Preferences
@@ -89,7 +89,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     init(apiService: APIService,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          manualLogIn: Bool,
          preferences: Preferences,
          symmetricKey: SymmetricKey,

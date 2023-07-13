@@ -84,7 +84,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     init(favIconRepository: FavIconRepositoryProtocol,
          itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
          shareRepository: ShareRepositoryProtocol,
          featureFlagsRepository: FeatureFlagsRepositoryProtocol,

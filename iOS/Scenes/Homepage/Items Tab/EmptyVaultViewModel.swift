@@ -35,7 +35,7 @@ final class EmptyVaultViewModel: ObservableObject, DeinitPrintable {
     }
 
     init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         Task { @MainActor in
             do {
                 let flags = try await featureFlagsRepository.getFlags()

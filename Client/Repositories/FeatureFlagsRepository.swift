@@ -66,7 +66,7 @@ public final class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
     public init(localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol,
                 remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol,
                 userId: String,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.localFeatureFlagsDatasource = localFeatureFlagsDatasource
         self.remoteFeatureFlagsDatasource = remoteFeatureFlagsDatasource
         self.userId = userId
