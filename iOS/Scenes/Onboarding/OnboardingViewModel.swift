@@ -30,7 +30,6 @@ final class OnboardingViewModel: ObservableObject {
     @Published private(set) var state = OnboardingViewState.autoFill
 
     private let credentialManager: CredentialManagerProtocol
-    private let biometricAuthenticator = BiometricAuthenticator()
     private let bannerManager: BannerManager
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
@@ -41,7 +40,6 @@ final class OnboardingViewModel: ObservableObject {
         self.credentialManager = credentialManager
         self.bannerManager = bannerManager
 
-        biometricAuthenticator.initializeBiometryType()
         checkAutoFillStatus()
 
         NotificationCenter.default
@@ -51,32 +49,34 @@ final class OnboardingViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        preferences.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                if self.preferences.biometricAuthenticationEnabled {
-                    switch self.state {
-                    case .biometricAuthenticationFaceID:
-                        self.state = .faceIDEnabled
-                    case .biometricAuthenticationTouchID:
-                        self.state = .touchIDEnabled
-                    default:
-                        break
-                    }
-                }
-            }
-            .store(in: &cancellables)
+        /*
+         preferences.objectWillChange
+             .receive(on: DispatchQueue.main)
+             .sink { [weak self] _ in
+                 guard let self else { return }
+                 if self.preferences.biometricAuthenticationEnabled {
+                     switch self.state {
+                     case .biometricAuthenticationFaceID:
+                         self.state = .faceIDEnabled
+                     case .biometricAuthenticationTouchID:
+                         self.state = .touchIDEnabled
+                     default:
+                         break
+                     }
+                 }
+             }
+             .store(in: &cancellables)
 
-        biometricAuthenticator.$authenticationState
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
-                guard let self else { return }
-                if case let .error(error) = state {
-                    self.bannerManager.displayTopErrorMessage(error)
-                }
-            }
-            .store(in: &cancellables)
+         biometricAuthenticator.$authenticationState
+             .receive(on: DispatchQueue.main)
+             .sink { [weak self] state in
+                 guard let self else { return }
+                 if case let .error(error) = state {
+                     self.bannerManager.displayTopErrorMessage(error)
+                 }
+             }
+             .store(in: &cancellables)
+          */
     }
 
     private func checkAutoFillStatus() {
@@ -94,27 +94,29 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     private func showAppropriateBiometricAuthenticationStep() {
-        if case let .initialized(type) = biometricAuthenticator.biometryTypeState {
-            switch type {
-            case .faceID:
-                if preferences.biometricAuthenticationEnabled {
-                    state = .faceIDEnabled
-                } else {
-                    state = .biometricAuthenticationFaceID
-                }
-            case .touchID:
-                if preferences.biometricAuthenticationEnabled {
-                    state = .touchIDEnabled
-                } else {
-                    state = .biometricAuthenticationTouchID
-                }
-            default:
-                state = .aliases
-            }
-        } else {
-            // Should not happen
-            state = .aliases
-        }
+        /*
+         if case let .initialized(type) = biometricAuthenticator.biometryTypeState {
+             switch type {
+             case .faceID:
+                 if preferences.biometricAuthenticationEnabled {
+                     state = .faceIDEnabled
+                 } else {
+                     state = .biometricAuthenticationFaceID
+                 }
+             case .touchID:
+                 if preferences.biometricAuthenticationEnabled {
+                     state = .touchIDEnabled
+                 } else {
+                     state = .biometricAuthenticationTouchID
+                 }
+             default:
+                 state = .aliases
+             }
+         } else {
+             // Should not happen
+             state = .aliases
+         }
+          */
     }
 }
 
@@ -130,7 +132,8 @@ extension OnboardingViewModel {
             showAppropriateBiometricAuthenticationStep()
 
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            biometricAuthenticator.toggleEnabled(force: true)
+//            biometricAuthenticator.toggleEnabled(force: true)
+            break
 
         case .faceIDEnabled, .touchIDEnabled:
             state = .aliases

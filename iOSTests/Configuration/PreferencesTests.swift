@@ -79,15 +79,27 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.failedAttemptCount, 0)
     }
 
-    func testBiometricAuthenticationDisabledByDefault() {
-        XCTAssertFalse(sut.biometricAuthenticationEnabled)
+    func testLocalAuthenticationMethodNoneByDefault() {
+        XCTAssertEqual(sut.localAuthenticationMethod, .none)
     }
 
-    func testBiometricAuthenticationDisabledAfterResetting() {
-        sut.biometricAuthenticationEnabled = true
-        XCTAssertTrue(sut.biometricAuthenticationEnabled)
+    func testLocalAuthenticationMethodIsNoneAfterResetting() {
+        sut.localAuthenticationMethod = .pin
+        XCTAssertEqual(sut.localAuthenticationMethod, .pin)
         sut.reset()
-        XCTAssertFalse(sut.biometricAuthenticationEnabled)
+        XCTAssertEqual(sut.localAuthenticationMethod, .none)
+    }
+
+    func testPinCodeIsNilByDefault() {
+        XCTAssertNil(sut.pinCode)
+    }
+
+    func testPinCodeIsNilAfterResetting() {
+        let pinCode = String.random()
+        sut.pinCode = pinCode
+        XCTAssertEqual(sut.pinCode, pinCode)
+        sut.reset()
+        XCTAssertNil(sut.pinCode)
     }
 
     func testAppLockTimeIsTwoMinutesByDefault() {

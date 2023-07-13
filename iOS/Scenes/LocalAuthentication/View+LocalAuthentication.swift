@@ -56,7 +56,7 @@ struct LocalAuthenticationModifier: ViewModifier {
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         let preferences = resolve(\SharedToolingContainer.preferences)
-        authenticated = !preferences.biometricAuthenticationEnabled
+        authenticated = preferences.localAuthenticationMethod == .none
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         _preferences = .init(initialValue: preferences)
         self.delayed = delayed
@@ -68,7 +68,7 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        if preferences.biometricAuthenticationEnabled {
+        if preferences.localAuthenticationMethod != .none {
             ZStack {
                 content
                 if !authenticated {
