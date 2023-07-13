@@ -18,12 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct GetShareInformationForUserResponse: Decodable {
     let code: Int
-    let shares: User
+    let shares: UserShareInfos
 }
 
 // https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/get_pass-v1-share-%7Benc_shareID%7D-user-%7Benc_userShareID%7D

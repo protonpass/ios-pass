@@ -24,6 +24,10 @@ import Foundation
 public struct PublicKey: Decodable {
     public let value: String
 
+    public init(value: String) {
+        self.value = value
+    }
+
     enum CodingKeys: String, CodingKey {
         /// Lowercase the first letter because this object is parsed by Core
         /// and Core expects keys with lowercased first letter.

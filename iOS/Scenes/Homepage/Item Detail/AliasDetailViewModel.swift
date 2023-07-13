@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }

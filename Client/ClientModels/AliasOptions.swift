@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public struct AliasOptions: Decodable {
@@ -47,10 +48,4 @@ extension Suffix: Equatable {
             lhs.signedSuffix == rhs.signedSuffix &&
             lhs.isCustom == rhs.isCustom
     }
-}
-
-public struct Mailbox: Decodable, Hashable, Equatable {
-    // Should not rename to "id" otherwise decode process breaks
-    public let ID: Int
-    public let email: String
 }

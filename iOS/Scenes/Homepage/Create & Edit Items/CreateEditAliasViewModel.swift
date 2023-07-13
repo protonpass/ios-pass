@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Entities
 import ProtonCore_Login
 import SwiftUI
 
