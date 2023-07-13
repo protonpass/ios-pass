@@ -23,7 +23,7 @@ import ProtonCore_Services
 
 public struct GetPendingInvitesforShareResponse: Decodable {
     let code: Int
-    let invites: [Invite]
+    let invites: [ShareInvite]
 }
 
 public struct GetPendingInvitesforShareEndpoint: Endpoint {
@@ -43,7 +43,7 @@ public struct GetPendingInvitesforShareEndpoint: Endpoint {
 
 // MARK: - Invite
 
-struct Invite: Codable {
+struct ShareInvite: Codable {
     let inviteID, invitedEmail, inviterEmail: String
     let targetType: Int
     let targetID: String

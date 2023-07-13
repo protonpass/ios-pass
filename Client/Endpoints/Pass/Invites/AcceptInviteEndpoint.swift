@@ -1,6 +1,6 @@
 //
-// GetPendingInviteForUserEndpoint.swift
-// Proton Pass - Created on 11/07/2023.
+// AcceptInviteEndpoint.swift
+// Proton Pass - Created on 13/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,44 +21,33 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct GetPendingInviteForUserResponse: Decodable {
-    let code: Int
-    let invites: [UserInvite]
-}
-
-public struct GetPendingInviteForUserEndpoint: Endpoint {
+public struct AcceptInviteEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetPendingInviteForUserResponse
+    public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
+    public var body: AcceptInviteRequest?
 
-    public init() {
-        debugDescription = "Get pending invites for user"
-        path = "/pass/v1/invite"
-        method = .get
+    public init(with inviteToken: String, and request: AcceptInviteRequest) {
+        debugDescription = "Accept an invite"
+        path = "pass/v1/invite/\(inviteToken)"
+        method = .post
+        body = request
     }
 }
 
-// MARK: - User Invite
+public struct AcceptInviteRequest {
+    public let keys: [ItemKey]
 
-struct UserInvite: Codable {
-    let inviteID: String
-    let remindersSent: Int
-    let targetType: Int
-    let targetID, inviterEmail, invitedEmail: String
-    let keys: [ItemKey]
-    let createTime: Int
+    public init(keys: [ItemKey]) {
+        self.keys = keys
+    }
+}
 
+extension AcceptInviteRequest: Encodable {
     enum CodingKeys: String, CodingKey {
-        case inviteID = "InviteID"
-        case remindersSent = "RemindersSent"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case inviterEmail = "InviterEmail"
-        case invitedEmail = "InvitedEmail"
         case keys = "Keys"
-        case createTime = "CreateTime"
     }
 }
