@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import SwiftUI
 import UIComponents
 
@@ -56,6 +57,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     struct AppCoverView: View {
+        private let preferences = resolve(\SharedToolingContainer.preferences)
         let windowSize: CGSize
 
         var body: some View {
@@ -70,7 +72,7 @@ private extension SceneDelegate {
                     .frame(width: min(windowSize.width, windowSize.height) * 2 / 3)
                     .frame(maxWidth: 245)
             }
-            .theme(Preferences().theme)
+            .theme(preferences.theme)
         }
     }
 
