@@ -41,7 +41,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     init(allVaults: [VaultListUiModel],
          currentVault: VaultListUiModel,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         self.allVaults = allVaults
         self.currentVault = currentVault
         selectedVault = currentVault

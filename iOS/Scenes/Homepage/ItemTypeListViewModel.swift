@@ -59,7 +59,7 @@ final class ItemTypeListViewModel: ObservableObject {
 
     init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         let logger = Logger(manager: logManager)
 
         Task { @MainActor in

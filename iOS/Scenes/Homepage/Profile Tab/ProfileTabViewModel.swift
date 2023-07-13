@@ -78,7 +78,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          itemRepository: ItemRepositoryProtocol,
          shareRepository: ShareRepositoryProtocol,
          preferences: Preferences,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager,

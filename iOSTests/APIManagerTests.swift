@@ -96,7 +96,7 @@ final class APIManagerTests: XCTestCase {
     }
 
     func givenApiManager() -> APIManager {
-        .init(logManager: .init(module: .hostApp),
+        .init(logManager: LogManager(module: .hostApp),
               appVer: .empty,
               appData: .init(),
               preferences: .init())

@@ -31,7 +31,7 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
 }
 
 extension SharedServiceContainer {
-    var notificationService: ParameterFactory<LogManager, LocalNotificationServiceProtocol> {
+    var notificationService: ParameterFactory<LogManagerProtocol, LocalNotificationServiceProtocol> {
         self { NotificationService(logManager: $0) }
     }
 }

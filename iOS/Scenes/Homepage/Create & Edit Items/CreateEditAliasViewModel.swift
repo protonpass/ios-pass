@@ -133,7 +133,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
          preferences: Preferences,
-         logManager: LogManager) throws {
+         logManager: LogManagerProtocol) throws {
         self.aliasRepository = aliasRepository
         try super.init(mode: mode,
                        itemRepository: itemRepository,

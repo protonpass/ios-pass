@@ -34,7 +34,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
     private let itemRepository: ItemRepositoryProtocol
     private let favIconRepository: FavIconRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let logManager: LogManager
+    private let logManager: LogManagerProtocol
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
     private weak var itemDetailViewModelDelegate: ItemDetailViewModelDelegate?
@@ -46,7 +46,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
          itemRepository: ItemRepositoryProtocol,
          favIconRepository: FavIconRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          preferences: Preferences,
          vaultsManager: VaultsManager,
          itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {

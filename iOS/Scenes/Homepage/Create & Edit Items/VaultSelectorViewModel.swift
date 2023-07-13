@@ -40,7 +40,7 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     init(allVaults: [VaultListUiModel],
          selectedVault: Vault,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         self.allVaults = allVaults
         self.selectedVault = selectedVault
 

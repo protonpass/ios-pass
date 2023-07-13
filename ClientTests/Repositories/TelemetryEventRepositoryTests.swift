@@ -108,7 +108,7 @@ extension TelemetryEventRepositoryTests {
             remoteTelemetryEventDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
-            logManager: .dummyLogManager(),
+            logManager: LogManager.dummyLogManager(),
             scheduler: telemetryScheduler,
             userId: givenUserId)
 
@@ -137,7 +137,7 @@ extension TelemetryEventRepositoryTests {
             remoteTelemetryEventDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
-            logManager: .dummyLogManager(),
+            logManager: LogManager.dummyLogManager(),
             scheduler: telemetryScheduler,
             userId: givenUserId)
         XCTAssertNil(sut.scheduler.threshhold)
@@ -166,7 +166,7 @@ extension TelemetryEventRepositoryTests {
             remoteTelemetryEventDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
-            logManager: .dummyLogManager(),
+            logManager: LogManager.dummyLogManager(),
             scheduler: telemetryScheduler,
             userId: givenUserId)
 
@@ -195,7 +195,7 @@ extension TelemetryEventRepositoryTests {
             remoteTelemetryEventDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
-            logManager: .dummyLogManager(),
+            logManager: LogManager.dummyLogManager(),
             scheduler: telemetryScheduler,
             userId: givenUserId,
             eventCount: 1)
@@ -237,7 +237,7 @@ extension TelemetryEventRepositoryTests {
             remoteTelemetryEventDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOffUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
-            logManager: .dummyLogManager(),
+            logManager: LogManager.dummyLogManager(),
             scheduler: telemetryScheduler,
             userId: givenUserId)
 
