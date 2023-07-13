@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import Factory
 
 private let kMaxAttemptCount = 3
 
@@ -39,11 +40,11 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let type: LocalAuthenticationType
-    let preferences: Preferences
 
     private let delayed: Bool
-    private let biometricAuthenticator: BiometricAuthenticator
-    private let logger: Logger
+    private let biometricAuthenticator = BiometricAuthenticator()
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
     private let onAuth: () -> Void
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
@@ -57,16 +58,11 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
     init(type: LocalAuthenticationType,
          delayed: Bool,
-         preferences: Preferences,
-         logManager: LogManagerProtocol,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         self.type = type
         self.delayed = delayed
-        self.preferences = preferences
-        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
-        logger = .init(manager: logManager)
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure

@@ -22,27 +22,24 @@ import AuthenticationServices
 import Client
 import Core
 import CryptoKit
+import Factory
 import SwiftUI
 
 final class LockedCredentialViewModel: ObservableObject {
     private let itemRepository: ItemRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let credentialIdentity: ASPasswordCredentialIdentity
-    private let logger: Logger
-    let logManager: LogManagerProtocol
+    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
 
     var onFailure: ((Error) -> Void)?
     var onSuccess: ((ASPasswordCredential, ItemContent) -> Void)?
 
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
-         credentialIdentity: ASPasswordCredentialIdentity,
-         logManager: LogManagerProtocol) {
+         credentialIdentity: ASPasswordCredentialIdentity) {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.credentialIdentity = credentialIdentity
-        self.logManager = logManager
-        logger = .init(manager: logManager)
     }
 
     func getAndReturnCredential() {

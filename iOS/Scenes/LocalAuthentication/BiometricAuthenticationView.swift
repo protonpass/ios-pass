@@ -19,11 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import SwiftUI
 import UIComponents
 
 struct BiometricAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     init(viewModel: LocalAuthenticationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -51,7 +53,7 @@ struct BiometricAuthenticationView: View {
                 }
             }
         }
-        .theme(viewModel.preferences.theme)
+        .theme(preferences.theme)
     }
 }
 

@@ -27,15 +27,11 @@ struct LocalAuthenticationView: View {
 
     init(type: LocalAuthenticationType,
          delayed: Bool,
-         preferences: Preferences,
-         logManager: LogManagerProtocol,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(type: type,
                                                delayed: delayed,
-                                               preferences: preferences,
-                                               logManager: logManager,
                                                onAuth: onAuth,
                                                onSuccess: onSuccess,
                                                onFailure: onFailure))
