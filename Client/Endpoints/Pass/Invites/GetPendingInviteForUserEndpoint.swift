@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import ProtonCore_Networking
 import ProtonCore_Services
 
@@ -38,27 +39,5 @@ public struct GetPendingInviteForUserEndpoint: Endpoint {
         debugDescription = "Get pending invites for user"
         path = "/pass/v1/invite"
         method = .get
-    }
-}
-
-// MARK: - User Invite
-
-struct UserInvite: Codable {
-    let inviteID: String
-    let remindersSent: Int
-    let targetType: Int
-    let targetID, inviterEmail, invitedEmail: String
-    let keys: [ItemKey]
-    let createTime: Int
-
-    enum CodingKeys: String, CodingKey {
-        case inviteID = "InviteID"
-        case remindersSent = "RemindersSent"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case inviterEmail = "InviterEmail"
-        case invitedEmail = "InvitedEmail"
-        case keys = "Keys"
-        case createTime = "CreateTime"
     }
 }
