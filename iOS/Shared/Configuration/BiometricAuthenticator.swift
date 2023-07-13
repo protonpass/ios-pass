@@ -52,7 +52,7 @@ final class BiometricAuthenticator: ObservableObject {
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
     private let logger: Logger
 
-    init(preferences: Preferences, logManager: LogManager) {
+    init(preferences: Preferences, logManager: LogManagerProtocol) {
         self.preferences = preferences
         enabled = preferences.biometricAuthenticationEnabled
         logger = .init(manager: logManager)

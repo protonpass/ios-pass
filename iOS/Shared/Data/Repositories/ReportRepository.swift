@@ -40,7 +40,7 @@ public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtoc
     private let logger: Logger
 
     public init(apiManager: APIManagerProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         logger = .init(manager: logManager)
         self.apiManager = apiManager
     }

@@ -95,7 +95,7 @@ class BaseCreateEditItemViewModel {
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
          preferences: Preferences,
-         logManager: LogManager) throws {
+         logManager: LogManagerProtocol) throws {
         let vaultShareId: String
         switch mode {
         case let .create(shareId, _):

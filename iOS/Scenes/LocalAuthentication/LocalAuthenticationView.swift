@@ -28,7 +28,7 @@ struct LocalAuthenticationView: View {
     init(type: LocalAuthenticationType,
          delayed: Bool,
          preferences: Preferences,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {

@@ -67,7 +67,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     init(isShownAsSheet: Bool,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          preferences: Preferences,
          vaultsManager: VaultsManager,
          syncEventLoop: SyncEventLoopActionProtocol) {

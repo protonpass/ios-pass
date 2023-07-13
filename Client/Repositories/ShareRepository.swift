@@ -236,7 +236,7 @@ public struct ShareRepository: ShareRepositoryProtocol {
                 localShareDatasource: LocalShareDatasourceProtocol,
                 remoteShareDatasouce: RemoteShareDatasourceProtocol,
                 passKeyManager: PassKeyManagerProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.symmetricKey = symmetricKey
         self.userData = userData
         self.localShareDatasource = localShareDatasource
@@ -249,7 +249,7 @@ public struct ShareRepository: ShareRepositoryProtocol {
                 userData: UserData,
                 container: NSPersistentContainer,
                 apiService: APIService,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.symmetricKey = symmetricKey
         self.userData = userData
         localShareDatasource = LocalShareDatasource(container: container)
