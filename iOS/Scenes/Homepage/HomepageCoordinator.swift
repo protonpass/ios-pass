@@ -275,9 +275,7 @@ private extension HomepageCoordinator {
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
-            .localAuthentication(preferences: preferences,
-                                 delayed: false,
-                                 logManager: logManager,
+            .localAuthentication(delayed: false,
                                  onAuth: { [weak self] in
                                      self?.dismissAllViewControllers(animated: false)
                                      self?.hideSecondaryView()
@@ -561,9 +559,7 @@ extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
-                                                      preferences: preferences,
-                                                      bannerManager: bannerManager,
-                                                      logManager: logManager)
+                                                      bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen

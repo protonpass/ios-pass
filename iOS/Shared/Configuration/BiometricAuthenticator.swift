@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import LocalAuthentication
 import SwiftUI
 
@@ -47,15 +48,15 @@ final class BiometricAuthenticator: ObservableObject {
         }
     }
 
-    private let preferences: Preferences
     private let context = LAContext()
     private let policy = LAPolicy.deviceOwnerAuthentication // Both biometry & passcode
-    private let logger: Logger
+    private let preferences: Preferences
+    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
 
-    init(preferences: Preferences, logManager: LogManagerProtocol) {
+    init() {
+        let preferences = resolve(\SharedToolingContainer.preferences)
         self.preferences = preferences
         enabled = preferences.biometricAuthenticationEnabled
-        logger = .init(manager: logManager)
     }
 
     func initializeBiometryType() {

@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 import UIComponents
 
@@ -29,19 +30,15 @@ final class OnboardingViewModel: ObservableObject {
     @Published private(set) var state = OnboardingViewState.autoFill
 
     private let credentialManager: CredentialManagerProtocol
-    private let biometricAuthenticator: BiometricAuthenticator
+    private let biometricAuthenticator = BiometricAuthenticator()
     private let bannerManager: BannerManager
-    let preferences: Preferences
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     private var cancellables = Set<AnyCancellable>()
 
     init(credentialManager: CredentialManagerProtocol,
-         preferences: Preferences,
-         bannerManager: BannerManager,
-         logManager: LogManagerProtocol) {
+         bannerManager: BannerManager) {
         self.credentialManager = credentialManager
-        self.preferences = preferences
-        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
         self.bannerManager = bannerManager
 
         biometricAuthenticator.initializeBiometryType()
