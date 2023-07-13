@@ -42,7 +42,6 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     let type: LocalAuthenticationType
 
     private let delayed: Bool
-    private let biometricAuthenticator = BiometricAuthenticator()
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
     private let onAuth: () -> Void
@@ -75,46 +74,9 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
                 self?.updateStateBasedOnFailedAttemptCount()
             }
             .store(in: &cancellables)
-
-        biometricAuthenticator.$biometryTypeState
-            .sink { [weak self] biometryTypeState in
-                guard let self else { return }
-                switch biometryTypeState {
-                case .idle, .initializing:
-                    self.state = .initializing
-                case .initialized:
-                    self.updateStateBasedOnFailedAttemptCount()
-                case let .error(error):
-                    self.state = .error(error)
-                }
-            }
-            .store(in: &cancellables)
-
-        // When supporting pin authentication, check for authentication type
-        biometricAuthenticator.initializeBiometryType()
     }
 
-    func biometricallyAuthenticate() {
-        switch biometricAuthenticator.biometryTypeState {
-        case .initialized:
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                do {
-                    self.onAuth()
-                    if try await biometricAuthenticator.authenticate(reason: "Please authenticate") {
-                        self.recordSuccess()
-                    } else {
-                        self.recordFailure(nil)
-                    }
-                } catch {
-                    self.recordFailure(error)
-                }
-            }
-        default:
-            assertionFailure("biometricAuthenticator not initialized")
-            onFailure()
-        }
-    }
+    func biometricallyAuthenticate() {}
 }
 
 private extension LocalAuthenticationViewModel {

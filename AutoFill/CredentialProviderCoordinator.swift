@@ -148,7 +148,7 @@ public final class CredentialProviderCoordinator {
             return
         }
 
-        if preferences.biometricAuthenticationEnabled {
+        if preferences.localAuthenticationMethod != .none {
             cancel(errorCode: .userInteractionRequired)
         } else {
             Task {
