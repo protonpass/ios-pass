@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
@@ -63,7 +64,7 @@ public extension RemoteShareDatasourceProtocol {
        "Code": 1000
      }
      ```*/
-    func getAllLinkedUser(for shareId: String) async throws -> [User] {
+    func getAllLinkedUser(for shareId: String) async throws -> [UserShareInfos] {
         let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.shares
