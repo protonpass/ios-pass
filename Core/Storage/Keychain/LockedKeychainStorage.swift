@@ -34,7 +34,7 @@ public struct LockedKeychainStorage<Value: Codable> {
                 defaultValue: Value,
                 keychain: KeychainProtocol,
                 mainKeyProvider: MainKeyProvider,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.key = key
         self.defaultValue = defaultValue
         self.keychain = keychain

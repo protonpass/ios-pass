@@ -39,7 +39,7 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
     let passPlanRepository: PassPlanRepositoryProtocol
-    let logManager: LogManager
+    let logManager: LogManagerProtocol
     weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
@@ -98,7 +98,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     init(itemsTabView: ItemsTabView,
          profileTabView: ProfileTabView,
          passPlanRepository: PassPlanRepositoryProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
         self.passPlanRepository = passPlanRepository

@@ -29,7 +29,7 @@ final class LockedCredentialViewModel: ObservableObject {
     private let symmetricKey: SymmetricKey
     private let credentialIdentity: ASPasswordCredentialIdentity
     private let logger: Logger
-    let logManager: LogManager
+    let logManager: LogManagerProtocol
 
     var onFailure: ((Error) -> Void)?
     var onSuccess: ((ASPasswordCredential, ItemContent) -> Void)?
@@ -37,7 +37,7 @@ final class LockedCredentialViewModel: ObservableObject {
     init(itemRepository: ItemRepositoryProtocol,
          symmetricKey: SymmetricKey,
          credentialIdentity: ASPasswordCredentialIdentity,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.symmetricKey = symmetricKey
         self.credentialIdentity = credentialIdentity
