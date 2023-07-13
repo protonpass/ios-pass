@@ -631,11 +631,8 @@
 		5B0C75122A39CB3D00272CE8 /* LogManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */; };
 		5B0C75142A39DC7600272CE8 /* LogEntryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */; };
 		5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */; };
+		5B14534C2A60245C0048B022 /* AcceptInviteEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14534B2A60245C0048B022 /* AcceptInviteEndpoint.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
-		5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
-		5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
-		5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
-		5B1F5CED2A5ED7A600A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
 		5B1F5CD12A5D912D00A6C3ED /* UpdateUserSharePermissionsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CD02A5D912D00A6C3ED /* UpdateUserSharePermissionsEndpoint.swift */; };
@@ -645,6 +642,10 @@
 		5B1F5CD92A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CD82A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift */; };
 		5B1F5CDB2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CDA2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift */; };
 		5B1F5CDD2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CDC2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift */; };
+		5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
+		5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
+		5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
+		5B1F5CED2A5ED7A600A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
 		5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5B3FE93B2A546AB400123E62 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */; };
@@ -1432,8 +1433,8 @@
 		5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManagerTests.swift; sourceTree = "<group>"; };
 		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
+		5B14534B2A60245C0048B022 /* AcceptInviteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptInviteEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
-		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CD02A5D912D00A6C3ED /* UpdateUserSharePermissionsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserSharePermissionsEndpoint.swift; sourceTree = "<group>"; };
@@ -1443,6 +1444,7 @@
 		5B1F5CD82A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendInviteReminderToUserEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CDA2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteInviteEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CDC2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingInviteForUserEndpoint.swift; sourceTree = "<group>"; };
+		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -2967,20 +2969,21 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
+			isa = PBXGroup;
+			children = (
+				5B1F5CDC2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift */,
+				5B14534B2A60245C0048B022 /* AcceptInviteEndpoint.swift */,
+			);
+			path = Invites;
+			sourceTree = "<group>";
+		};
 		5B1F5CE72A5EAC7100A6C3ED /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
 				5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */,
 			);
 			path = UIElements;
-			sourceTree = "<group>";
-		};
-		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
-			isa = PBXGroup;
-			children = (
-				5B1F5CDC2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift */,
-			);
-			path = Invites;
 			sourceTree = "<group>";
 		};
 		5B503FD72A4C82BF00E6681C /* Repositories */ = {
@@ -4769,6 +4772,7 @@
 				354EA82929EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift in Sources */,
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,
 				354146D628D1F466007E45A6 /* RemoteAliasDatasource.swift in Sources */,
+				5B14534C2A60245C0048B022 /* AcceptInviteEndpoint.swift in Sources */,
 				3529432E28DB455100E1F11B /* ItemSearchResult.swift in Sources */,
 				355938C12A333B010053B7F6 /* FeatureFlagsRepository.swift in Sources */,
 				356E88CC293899B100B27104 /* PullToRefreshable.swift in Sources */,
