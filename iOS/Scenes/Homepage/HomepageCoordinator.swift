@@ -855,7 +855,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(view)
     }
 
-    func profileTabViewModelWantsDidEncounter(error: Error) {
+    func profileTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

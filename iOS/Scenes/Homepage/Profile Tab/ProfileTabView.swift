@@ -32,7 +32,7 @@ struct ProfileTabView: View {
                 VStack {
                     itemCountSection
 
-                    biometricAuthenticationSection
+                    securitySection
                         .padding(.vertical)
 
                     if viewModel.autoFillEnabled {
@@ -95,77 +95,11 @@ struct ProfileTabView: View {
         }
     }
 
-    private var biometricAuthenticationSection: some View {
+    private var securitySection: some View {
         VStack(spacing: 0) {
-            Text("Manage my profile")
+            Text("Security")
                 .profileSectionTitle()
                 .padding(.bottom, kItemDetailSectionPadding)
-
-            switch viewModel.biometricAuthenticator.biometryTypeState {
-            case .idle, .initializing:
-                OptionRow(height: .medium) {
-                    ProgressView()
-                }
-                .roundedEditableSection()
-
-            case let .initialized(biometryType):
-                if let uiModel = biometryType.uiModel {
-                    VStack(spacing: 0) {
-                        OptionRow(height: .medium) {
-                            Toggle(isOn: $viewModel.biometricAuthenticator.enabled) {
-                                Label(title: {
-                                    Text(uiModel.title)
-                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                                }, icon: {
-                                    if let icon = uiModel.icon {
-                                        Image(systemName: icon)
-                                            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
-                                    } else {
-                                        EmptyView()
-                                    }
-                                })
-                            }
-                            .tint(Color(uiColor: PassColor.interactionNorm))
-                        }
-
-                        if viewModel.biometricAuthenticator.enabled {
-                            PassSectionDivider()
-
-                            OptionRow(action: viewModel.editAppLockTime,
-                                      title: "App lock time",
-                                      height: .tall,
-                                      content: {
-                                          Text(viewModel.preferences.appLockTime.description)
-                                              .foregroundColor(Color(uiColor: PassColor.textNorm))
-                                      },
-                                      trailing: { ChevronRight() })
-                        }
-                    }
-                    .animation(.default, value: viewModel.biometricAuthenticator.enabled)
-                    .roundedEditableSection()
-                } else {
-                    OptionRow(height: .medium) {
-                        Text("Biometric authentication not supported")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    }
-                    .roundedEditableSection()
-                }
-            case let .error(error):
-                OptionRow(height: .medium) {
-                    Text(error.localizedDescription)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
-                }
-                .roundedEditableSection()
-            }
-
-            if case let .initialized(biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
-               biometryType != .none {
-                Text("Unlock Proton Pass with a glance")
-                    .sectionTitleText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, kItemDetailSectionPadding / 2)
-            }
         }
         .padding(.horizontal)
     }
