@@ -42,7 +42,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     private let aliasRepository: AliasRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let logManager: LogManager
+    private let logManager: LogManagerProtocol
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
     private let userData: UserData
@@ -56,7 +56,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     init(aliasRepository: AliasRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          preferences: Preferences,
          vaultsManager: VaultsManager,
          userData: UserData,
