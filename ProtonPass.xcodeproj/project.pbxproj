@@ -513,7 +513,6 @@
 		358A509228AD856D00F5285C /* PublicKeyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509128AD856D00F5285C /* PublicKeyEntity.swift */; };
 		358A509428AD860200F5285C /* LocalPublicKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */; };
 		358A509628AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */; };
-		358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509728AD87E200F5285C /* PublicKey+Test.swift */; };
 		358A509A28AD8A8000F5285C /* RemotePublicKeyDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */; };
 		358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */; };
 		358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */; };
@@ -634,6 +633,8 @@
 		5B1453792A6038FE0048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453782A6038FE0048B022 /* Entities */; };
 		5B14537B2A6041360048B022 /* RemoteShareInviteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14537A2A6041360048B022 /* RemoteShareInviteDatasource.swift */; };
 		5B14537D2A60431F0048B022 /* RemoteInviteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14537C2A60431F0048B022 /* RemoteInviteDatasource.swift */; };
+		5B1453812A606FB10048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453802A606FB10048B022 /* Entities */; };
+		5B1453832A6070260048B022 /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453822A6070260048B022 /* PublicKey+Test.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1320,7 +1321,6 @@
 		358A509128AD856D00F5285C /* PublicKeyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyEntity.swift; sourceTree = "<group>"; };
 		358A509328AD860200F5285C /* LocalPublicKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPublicKeyDatasource.swift; sourceTree = "<group>"; };
 		358A509528AD87CC00F5285C /* LocalPublicKeyDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPublicKeyDatasourceTests.swift; sourceTree = "<group>"; };
-		358A509728AD87E200F5285C /* PublicKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Test.swift"; sourceTree = "<group>"; };
 		358A509928AD8A8000F5285C /* RemotePublicKeyDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePublicKeyDatasource.swift; sourceTree = "<group>"; };
 		358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyRepository.swift; sourceTree = "<group>"; };
 		358AB4A02887047C00818B44 /* GetShareKeysEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareKeysEndpoint.swift; sourceTree = "<group>"; };
@@ -1436,6 +1436,7 @@
 		5B1453652A6032D20048B022 /* SyncEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEvents.swift; sourceTree = "<group>"; };
 		5B14537A2A6041360048B022 /* RemoteShareInviteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareInviteDatasource.swift; sourceTree = "<group>"; };
 		5B14537C2A60431F0048B022 /* RemoteInviteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteInviteDatasource.swift; sourceTree = "<group>"; };
+		5B1453822A6070260048B022 /* PublicKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Test.swift"; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -1626,6 +1627,7 @@
 			files = (
 				35E50669286F870500A3F6EA /* Client.framework in Frameworks */,
 				6EA5015186914BB62E54DBE6 /* Pods_Client_ClientTests.framework in Frameworks */,
+				5B1453812A606FB10048B022 /* Entities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1717,9 +1719,9 @@
 				3542E2C028D9CB3500194F24 /* ItemContentData+Test.swift */,
 				35366AA128A446CB0085C24D /* ItemRevision+Test.swift */,
 				355AA32229E97E3400C20F5F /* PMAPIService+Test.swift */,
-				358A509728AD87E200F5285C /* PublicKey+Test.swift */,
 				353C95E0289A9E8500E3CDCA /* Share+Test.swift */,
 				35464B61289B0380008E65C4 /* ShareKey+Test.swift */,
+				5B1453822A6070260048B022 /* PublicKey+Test.swift */,
 				3542E2BE28D9CAB200194F24 /* SymmetricKey+Test.swift */,
 				3542E2C828D9EBC000194F24 /* SymmetricallyEncryptedItem+Test.swift */,
 				355454C529E54934005289E7 /* SymmetricallyEncryptedShare+Test.swift */,
@@ -3565,6 +3567,9 @@
 				35E5066D286F870500A3F6EA /* PBXTargetDependency */,
 			);
 			name = ClientTests;
+			packageProductDependencies = (
+				5B1453802A606FB10048B022 /* Entities */,
+			);
 			productName = ClientTests;
 			productReference = 35E50668286F870500A3F6EA /* ClientTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -4854,7 +4859,6 @@
 				3586477E29F7D5F5003487B1 /* TelemetrySchedulerTests.swift in Sources */,
 				351E9E3B289C54D700BB47EB /* Collection+RandomWithCount.swift in Sources */,
 				3542E2C128D9CB3500194F24 /* ItemContentData+Test.swift in Sources */,
-				358A509828AD87E200F5285C /* PublicKey+Test.swift in Sources */,
 				35366AA228A446CB0085C24D /* ItemRevision+Test.swift in Sources */,
 				3542E2BF28D9CAB200194F24 /* SymmetricKey+Test.swift in Sources */,
 				355E33AA29C4612800402CAE /* LocalSearchEntryDatasourceTests.swift in Sources */,
@@ -4871,6 +4875,7 @@
 				35610B7728ABB9AD00955ACB /* LocalShareKeyDatasourceTests.swift in Sources */,
 				355AA32329E97E3400C20F5F /* PMAPIService+Test.swift in Sources */,
 				356001672A423FD7004B7CD7 /* XCTest+Extensions.swift in Sources */,
+				5B1453832A6070260048B022 /* PublicKey+Test.swift in Sources */,
 				3586478029F7DF5B003487B1 /* Logger+DummyLogger.swift in Sources */,
 				3565621C29B9EC9900C43F72 /* ItemSortableTests.swift in Sources */,
 				35464B62289B0380008E65C4 /* ShareKey+Test.swift in Sources */,
@@ -8046,6 +8051,10 @@
 			productName = Entities;
 		};
 		5B1453782A6038FE0048B022 /* Entities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Entities;
+		};
+		5B1453802A606FB10048B022 /* Entities */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Entities;
 		};

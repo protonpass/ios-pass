@@ -18,7 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+import Entities
+import Client
 import XCTest
 
 final class LocalPublicKeyDatasourceTests: XCTestCase {
