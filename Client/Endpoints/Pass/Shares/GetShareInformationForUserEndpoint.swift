@@ -22,15 +22,15 @@ import Entities
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct GetShareInformationForUserResponse: Decodable {
+public struct GetUserInformationForShareResponse: Decodable {
     let code: Int
-    let shares: UserShareInfos
+    let share: UserShareInfos
 }
 
 // https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/get_pass-v1-share-%7Benc_shareID%7D-user-%7Benc_userShareID%7D
-public struct GetShareInformationForUserEndpoint: Endpoint {
+public struct GetUserInformationForShareEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetShareInformationForUserResponse
+    public typealias Response = GetUserInformationForShareResponse
 
     public var debugDescription: String
     public var path: String

@@ -24,6 +24,14 @@ import Foundation
 public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
+    func getShareLinkedUsers(for shareId: String) async throws -> [UserShareInfos]
+    func getUserInformationForShare(with shareId: String, and userId: String) async throws -> UserShareInfos
+    func updateUserSharePermission(for shareId: String,
+                                   and userId: String,
+                                   with request: UserSharePermissionRequest) async throws -> Int
+    func deleteUserInShare(for shareId: String,
+                           and userId: String) async throws -> Bool
+
     func createVault(request: CreateVaultRequest) async throws -> Share
     func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share
     func deleteVault(shareId: String) async throws
@@ -64,10 +72,31 @@ public extension RemoteShareDatasourceProtocol {
        "Code": 1000
      }
      ```*/
-    func getAllLinkedUser(for shareId: String) async throws -> [UserShareInfos] {
+    func getShareLinkedUsers(for shareId: String) async throws -> [UserShareInfos] {
         let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.shares
+    }
+
+    func getUserInformationForShare(with shareId: String, and userId: String) async throws -> UserShareInfos {
+        let endpoint = GetUserInformationForShareEndpoint(for: shareId, and: userId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.share
+    }
+
+    func updateUserSharePermission(for shareId: String,
+                                   and userId: String,
+                                   with request: UserSharePermissionRequest) async throws -> Int {
+        let endpoint = UpdateUserSharePermissionsEndpoint(for: shareId, and: userId, with: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.permission
+    }
+
+    func deleteUserInShare(for shareId: String,
+                           and userId: String) async throws -> Bool {
+        let endpoint = DeleteUserShareEndpoint(for: shareId, and: userId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.isSuccessful
     }
 }
 
