@@ -46,7 +46,7 @@ public final class RepositoryManager: DeinitPrintable {
                 container: NSPersistentContainer,
                 currentDateProvider: CurrentDateProviderProtocol,
                 limitationCounter: LimitationCounterProtocol,
-                logManager: LogManager,
+                logManager: LogManagerProtocol,
                 symmetricKey: SymmetricKey,
                 userData: UserData,
                 telemetryThresholdProvider: TelemetryThresholdProviderProtocol) {

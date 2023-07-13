@@ -57,7 +57,7 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
 
     init(mailboxSelection: MailboxSelection,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          mode: MailboxSelectionViewModel.Mode,
          titleMode: MailboxSection.Mode) {
         self.mailboxSelection = mailboxSelection
