@@ -18,23 +18,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import LocalAuthentication
+import Factory
+
+@preconcurrency import LocalAuthentication
 
 /// Determine the supported `LABiometryType` of the device
 protocol CheckBiometryTypeUseCase: Sendable {
-    func execute(for policy: LAPolicy, context: LAContext) throws -> LABiometryType
+    func execute() throws -> LABiometryType
 }
 
 extension CheckBiometryTypeUseCase {
-    func callAsFunction(for policy: LAPolicy, context: LAContext) throws -> LABiometryType {
-        try execute(for: policy, context: context)
+    func callAsFunction() throws -> LABiometryType {
+        try execute()
     }
 }
 
 final class CheckBiometryType: CheckBiometryTypeUseCase {
+    private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
+    private let policy = resolve(\SharedToolingContainer.localAuthenticationPolicy)
+
     init() {}
 
-    func execute(for policy: LAPolicy, context: LAContext) throws -> LABiometryType {
+    func execute() throws -> LABiometryType {
         var error: NSError?
         context.canEvaluatePolicy(policy, error: &error)
         if let error {

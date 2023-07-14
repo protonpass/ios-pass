@@ -100,6 +100,20 @@ struct ProfileTabView: View {
             Text("Security")
                 .profileSectionTitle()
                 .padding(.bottom, kItemDetailSectionPadding)
+
+            OptionRow(action: viewModel.editLocalAuthenticationMethod,
+                      height: .tall,
+                      content: {
+                          VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
+                              Text("Lock with")
+                                  .sectionTitleText()
+
+                              Text("Edit local authentication method")
+                                  .foregroundColor(PassColor.textNorm.toColor)
+                          }
+                      },
+                      trailing: { ChevronRight() })
+                .roundedEditableSection()
         }
         .padding(.horizontal)
     }

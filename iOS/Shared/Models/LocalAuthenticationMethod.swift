@@ -35,6 +35,7 @@ enum LocalAuthenticationMethodUiModel {
             case .touchID:
                 return "touchid"
             default:
+                assertionFailure("Not usable biometric type")
                 return nil
             }
         } else {
@@ -52,9 +53,8 @@ enum LocalAuthenticationMethodUiModel {
                 return "Face ID"
             case .touchID:
                 return "Touch ID"
-            case .none:
-                return "Device Passcode"
             default:
+                assertionFailure("Not usable biometric type")
                 return ""
             }
         case .pin:
@@ -70,6 +70,18 @@ enum LocalAuthenticationMethodUiModel {
             return .biometric
         case .pin:
             return .pin
+        }
+    }
+}
+
+extension LABiometryType {
+    // We only use Face ID or Touch ID
+    var usable: Bool {
+        switch self {
+        case .faceID, .touchID:
+            return true
+        default:
+            return false
         }
     }
 }
