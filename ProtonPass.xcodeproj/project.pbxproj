@@ -580,6 +580,7 @@
 		35CEA8E42A60769E00343A4E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 35CEA8E32A60769E00343A4E /* Factory */; };
 		35CEA8E62A607D2F00343A4E /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
 		35CEA8E72A607D3200343A4E /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
+		35CEA8EB2A61D54E00343A4E /* ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8EA2A61D54E00343A4E /* ChildCoordinatorDelegate.swift */; };
 		35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
 		35D56D572942354A00C2D0E2 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */; };
@@ -1388,6 +1389,7 @@
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
 		35CEA8D62A60675900343A4E /* LocalAuthenticationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethod.swift; sourceTree = "<group>"; };
 		35CEA8DC2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLocalAuthenticationMethodsUseCase.swift; sourceTree = "<group>"; };
+		35CEA8EA2A61D54E00343A4E /* ChildCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardView.swift; sourceTree = "<group>"; };
 		35E152C32A38866900E47E57 /* CreateEditCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardViewModel.swift; sourceTree = "<group>"; };
 		35E50636286F819F00A3F6EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -2827,6 +2829,7 @@
 		35E506F8286FB36000A3F6EA /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				35CEA8EA2A61D54E00343A4E /* ChildCoordinatorDelegate.swift */,
 				35E506F9286FB37300A3F6EA /* Coordinator.swift */,
 			);
 			path = Coordinator;
@@ -5003,6 +5006,7 @@
 				5B3FE93B2A546AB400123E62 /* FileManager+Extensions.swift in Sources */,
 				353547C32880CF470021C716 /* UserData+Codable.swift in Sources */,
 				354036E128F452F200F9E729 /* URLUtils+Sanitizer.swift in Sources */,
+				35CEA8EB2A61D54E00343A4E /* ChildCoordinatorDelegate.swift in Sources */,
 				3559BA992A5B2C0C0020E172 /* KeychainStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -599,6 +599,56 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     }
 }
 
+// MARK: - ChildCoordinatorDelegate
+
+extension HomepageCoordinator: ChildCoordinatorDelegate {
+    func childCoordinatorWantsToPresent(view: some View,
+                                        viewOption: ChildCoordinatorViewOption,
+                                        presentationOption: ChildCoordinatorPresentationOption) {
+        let viewController = UIHostingController(rootView: view)
+
+        switch viewOption {
+        case .sheet:
+            // Nothing special to set up
+            break
+
+        case .sheetWithGrabber:
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+
+        case let .customSheet(height):
+            viewController.setDetentType(.custom(CGFloat(height)),
+                                         parentViewController: rootViewController)
+
+        case let .customSheetWithGrabber(height):
+            viewController.setDetentType(.custom(CGFloat(height)),
+                                         parentViewController: rootViewController)
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+
+        case .fullScreen:
+            viewController.modalPresentationStyle = .fullScreen
+        }
+
+        switch presentationOption {
+        case .none:
+            present(viewController)
+
+        case .dismissTopViewController:
+            dismissTopMostViewController { [weak self] in
+                self?.present(viewController)
+            }
+
+        case .dismissAllViewControllers:
+            dismissAllViewControllers { [weak self] in
+                self?.present(viewController)
+            }
+        }
+    }
+
+    func childCoordinatorDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
+    }
+}
+
 // MARK: - ItemTypeListViewModelDelegate
 
 extension HomepageCoordinator: ItemTypeListViewModelDelegate {
