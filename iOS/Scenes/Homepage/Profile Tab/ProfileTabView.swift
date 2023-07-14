@@ -53,7 +53,7 @@ struct ProfileTabView: View {
                         qaFeaturesSection
                     }
 
-                    Text(viewModel.appVersion)
+                    Text("Version \(Bundle.main.displayedAppVersion)")
                         .sectionTitleText()
 
                         .frame(maxWidth: .infinity, alignment: .center)

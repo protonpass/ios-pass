@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import ProtonCore_Services
 import SwiftUI
 
@@ -44,17 +45,15 @@ protocol ProfileTabViewModelDelegate: AnyObject {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let apiService: APIService
-    let credentialManager: CredentialManagerProtocol
-    let itemRepository: ItemRepositoryProtocol
-    let shareRepository: ShareRepositoryProtocol
-    let logger: Logger
-    let preferences: Preferences
-    let appVersion: String
-    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    let passPlanRepository: PassPlanRepositoryProtocol
+    private let credentialManager: CredentialManagerProtocol
+    private let itemRepository: ItemRepositoryProtocol
+    private let shareRepository: ShareRepositoryProtocol
+    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    private let passPlanRepository: PassPlanRepositoryProtocol
+    private let notificationService: LocalNotificationServiceProtocol
     let vaultsManager: VaultsManager
-    let notificationService: LocalNotificationServiceProtocol
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
@@ -72,23 +71,16 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
 
-    init(apiService: APIService,
-         credentialManager: CredentialManagerProtocol,
+    init(credentialManager: CredentialManagerProtocol,
          itemRepository: ItemRepositoryProtocol,
          shareRepository: ShareRepositoryProtocol,
-         preferences: Preferences,
-         logManager: LogManagerProtocol,
          featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager,
          notificationService: LocalNotificationServiceProtocol) {
-        self.apiService = apiService
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        logger = .init(manager: logManager)
-        self.preferences = preferences
-        appVersion = "Version \(Bundle.main.displayedAppVersion)"
         self.featureFlagsRepository = featureFlagsRepository
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
