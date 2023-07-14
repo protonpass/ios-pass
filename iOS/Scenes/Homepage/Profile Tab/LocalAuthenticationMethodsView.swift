@@ -63,7 +63,6 @@ private extension LocalAuthenticationMethodsView {
     func title(for uiModel: LocalAuthenticationMethodUiModel) -> some View {
         OptionRow(action: {
                       onSelect(uiModel)
-                      dismiss()
                   },
                   height: .compact,
                   horizontalPadding: 0,

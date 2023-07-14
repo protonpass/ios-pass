@@ -29,7 +29,6 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSpinner()
     func profileTabViewModelWantsToHideSpinner()
     func profileTabViewModelWantsToUpgrade()
-    func profileTabViewModelWantsToEditLocalAuthenticationMethod()
     func profileTabViewModelWantsToEditAppLockTime()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
@@ -53,6 +52,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private let passPlanRepository: PassPlanRepositoryProtocol
     private let notificationService: LocalNotificationServiceProtocol
+    private let securitySettingsCoordinator: SecuritySettingsCoordinator
     let vaultsManager: VaultsManager
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
@@ -77,7 +77,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
          featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager,
-         notificationService: LocalNotificationServiceProtocol) {
+         notificationService: LocalNotificationServiceProtocol,
+         childCoordinatorDelegate: ChildCoordinatorDelegate) {
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
@@ -85,6 +86,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
         self.notificationService = notificationService
+
+        let securitySettingsCoordinator = SecuritySettingsCoordinator()
+        securitySettingsCoordinator.delegate = childCoordinatorDelegate
+        self.securitySettingsCoordinator = securitySettingsCoordinator
+
         autoFillEnabled = false
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
@@ -124,7 +130,7 @@ extension ProfileTabViewModel {
     }
 
     func editLocalAuthenticationMethod() {
-        delegate?.profileTabViewModelWantsToEditLocalAuthenticationMethod()
+        securitySettingsCoordinator.edit()
     }
 
     func editAppLockTime() {
