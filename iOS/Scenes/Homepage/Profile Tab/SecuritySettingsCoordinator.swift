@@ -27,7 +27,9 @@ final class SecuritySettingsCoordinator {
 
     weak var delegate: ChildCoordinatorDelegate?
 
-    init() {}
+    init() {
+        preferences.localAuthenticationMethod = .none
+    }
 }
 
 // MARK: - Public APIs
@@ -47,7 +49,7 @@ private extension SecuritySettingsCoordinator {
             let methods = try getLocalAuthenticationMethods()
 
             let view = LocalAuthenticationMethodsView(supportedMethods: methods) { [weak self] selectedMethod in
-                print(selectedMethod)
+                self?.updateMethod(newMethod: selectedMethod.method)
             }
 
             let height = Int(OptionRowHeight.compact.value) * methods.count + 60
@@ -59,5 +61,10 @@ private extension SecuritySettingsCoordinator {
             logger.error(error)
             delegate?.childCoordinatorDidEncounter(error: error)
         }
+    }
+
+    func updateMethod(newMethod: LocalAuthenticationMethod) {
+        preferences.localAuthenticationMethod = newMethod
+        delegate?.childCoordinatorWantsToDismissTopViewController()
     }
 }

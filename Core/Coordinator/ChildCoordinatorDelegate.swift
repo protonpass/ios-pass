@@ -25,6 +25,7 @@ public protocol ChildCoordinatorDelegate: AnyObject {
     func childCoordinatorWantsToPresent(view: some View,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption)
+    func childCoordinatorWantsToDismissTopViewController()
     func childCoordinatorDidEncounter(error: Error)
 }
 
