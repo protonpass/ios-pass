@@ -749,6 +749,29 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         startUpgradeFlow()
     }
 
+    func profileTabViewModelWantsToEditLocalAuthenticationMethod() {
+        do {
+            let getLocalAuthenticationMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
+            let methods = try getLocalAuthenticationMethods()
+
+            let view = LocalAuthenticationMethodsView(supportedMethods: methods) { [weak self] selectedMethod in
+                print(selectedMethod)
+            }
+
+            let viewController = UIHostingController(rootView: view)
+
+            let customHeight = Int(OptionRowHeight.compact.value) * methods.count + 60
+            viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                         parentViewController: rootViewController)
+
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+            present(viewController)
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
+        }
+    }
+
     func profileTabViewModelWantsToEditAppLockTime() {
         let view = EditAppLockTimeView(preferences: preferences)
         let viewController = UIHostingController(rootView: view)

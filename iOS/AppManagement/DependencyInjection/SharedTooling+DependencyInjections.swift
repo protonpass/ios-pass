@@ -20,6 +20,7 @@
 
 import Core
 import Factory
+import LocalAuthentication
 import ProtonCore_Keymaker
 
 /// Contain tools shared between main iOS app and extensions
@@ -119,5 +120,18 @@ extension SharedToolingContainer {
     var mainKeyProvider: Factory<MainKeyProvider> {
         self { Keymaker(autolocker: self.autolocker(),
                         keychain: self.baseKeychain()) }
+    }
+}
+
+// MARK: Local authentication
+
+extension SharedToolingContainer {
+    var localAuthenticationContext: Factory<LAContext> {
+        self { .init() }
+    }
+
+    var localAuthenticationPolicy: Factory<LAPolicy> {
+        self { .deviceOwnerAuthenticationWithBiometrics }
+            .onSimulator { .deviceOwnerAuthentication } // Use passcode on simulator
     }
 }
