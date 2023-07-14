@@ -40,12 +40,16 @@ extension SharedUseCasesContainer {
 
 // MARK: Local authentication
 
-extension SharedToolingContainer {
+extension SharedUseCasesContainer {
     var checkBiometryType: Factory<CheckBiometryTypeUseCase> {
         self { CheckBiometryType() }
     }
 
     var authenticateBiometrically: Factory<AuthenticateBiometricallyUseCase> {
         self { AuthenticateBiometrically() }
+    }
+
+    var getLocalAuthenticationMethods: Factory<GetLocalAuthenticationMethodsUseCase> {
+        self { GetLocalAuthenticationMethods() }
     }
 }
