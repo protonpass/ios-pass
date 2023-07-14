@@ -645,6 +645,10 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
         }
     }
 
+    func childCoordinatorWantsToDismissTopViewController() {
+        dismissTopMostViewController()
+    }
+
     func childCoordinatorDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
