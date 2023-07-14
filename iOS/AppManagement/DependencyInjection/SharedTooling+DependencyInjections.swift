@@ -76,17 +76,15 @@ extension SharedToolingContainer {
         self { AppData() }
     }
 
-    var apiManager: Factory<APIManager> {
-        self { APIManager(logManager: self.logManager(),
-                          appVer: "ios-pass@\(Bundle.main.fullAppVersionName)",
-                          appData: self.appData(),
-                          preferences: self.preferences()) }
+    var appVersion: Factory<String> {
+        self { "ios-pass@\(Bundle.main.fullAppVersionName)" }
             .onArg(PassModule.autoFillExtension) {
-                APIManager(logManager: self.logManager(),
-                           appVer: "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)",
-                           appData: self.appData(),
-                           preferences: self.preferences())
+                "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
             }
+    }
+
+    var apiManager: Factory<APIManager> {
+        self { APIManager() }
     }
 }
 
