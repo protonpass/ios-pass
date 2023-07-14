@@ -28,6 +28,7 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSpinner()
     func profileTabViewModelWantsToHideSpinner()
     func profileTabViewModelWantsToUpgrade()
+    func profileTabViewModelWantsToEditLocalAuthenticationMethod()
     func profileTabViewModelWantsToEditAppLockTime()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
@@ -128,6 +129,10 @@ extension ProfileTabViewModel {
             plan = try await passPlanRepository.getPlan()
             plan = try await passPlanRepository.refreshPlan()
         }
+    }
+
+    func editLocalAuthenticationMethod() {
+        delegate?.profileTabViewModelWantsToEditLocalAuthenticationMethod()
     }
 
     func editAppLockTime() {
