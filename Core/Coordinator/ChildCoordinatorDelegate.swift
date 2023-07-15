@@ -19,16 +19,30 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import UIKit
 
 /// Control how and what to do before presenting a view
 public protocol ChildCoordinatorDelegate: AnyObject {
-    func childCoordinatorWantsToPresent(view: some View,
+    func childCoordinatorWantsToPresent(viewController: UIViewController,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption)
     func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
                                               presentationOption: ChildCoordinatorPresentationOption)
     func childCoordinatorWantsToDismissTopViewController()
     func childCoordinatorDidEncounter(error: Error)
+}
+
+public extension ChildCoordinatorDelegate {
+    /// Overloaded method of `childCoordinatorWantsToPresent(viewController:viewOption:presentationOption)`
+    /// Conviently pass `some View` instead of `UIViewController`
+    func childCoordinatorWantsToPresent(view: some View,
+                                        viewOption: ChildCoordinatorViewOption,
+                                        presentationOption: ChildCoordinatorPresentationOption) {
+        let viewController = UIHostingController(rootView: view)
+        childCoordinatorWantsToPresent(viewController: viewController,
+                                       viewOption: viewOption,
+                                       presentationOption: presentationOption)
+    }
 }
 
 public enum ChildCoordinatorViewOption {

@@ -603,11 +603,9 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
 // MARK: - ChildCoordinatorDelegate
 
 extension HomepageCoordinator: ChildCoordinatorDelegate {
-    func childCoordinatorWantsToPresent(view: some View,
+    func childCoordinatorWantsToPresent(viewController: UIViewController,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption) {
-        let viewController = UIHostingController(rootView: view)
-
         switch viewOption {
         case .sheet:
             // Nothing special to set up
