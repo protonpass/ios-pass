@@ -43,7 +43,7 @@ extension SecuritySettingsCoordinator {
     }
 
     func editPINCode() {
-        print(#function)
+        definePINCodeAndChangeToPINMethod()
     }
 }
 
@@ -81,14 +81,16 @@ private extension SecuritySettingsCoordinator {
 
         case (.none, .biometric):
             // Enable biometric authentication
-            preferences.localAuthenticationMethod = .biometric
-            delegate?.childCoordinatorWantsToDismissTopViewController()
+            // Authenticate using `localAuthenticationEnablingPolicy`
+            let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+            biometricallyAuthenticateAndUpdateMethod(newMethod, policy: policy)
 
         case (.biometric, .none),
              (.biometric, .pin):
             // Disable biometric authentication or change from biometric to PIN
-            // Authenticate before
-            biometricallyAuthenticateAndUpdateMethod(newMethod)
+            // Authenticate using `localAuthenticationAuthenticatingPolicy`
+            let policy = resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
+            biometricallyAuthenticateAndUpdateMethod(newMethod, policy: policy)
 
         case (.none, .pin):
             // Enable PIN authentication
@@ -101,7 +103,8 @@ private extension SecuritySettingsCoordinator {
         }
     }
 
-    func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {
+    func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod,
+                                                  policy: LAPolicy) {
         delegate?.childCoordinatorWantsToDismissTopViewController()
         let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
         Task { @MainActor [weak self] in
