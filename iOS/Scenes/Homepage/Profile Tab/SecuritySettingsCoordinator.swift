@@ -51,8 +51,9 @@ extension SecuritySettingsCoordinator {
 private extension SecuritySettingsCoordinator {
     func showListOfAvailableMethods() {
         do {
-            let getLocalAuthenticationMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
-            let methods = try getLocalAuthenticationMethods()
+            let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+            let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
+            let methods = try getMethods(for: policy)
 
             let view = LocalAuthenticationMethodsView(supportedMethods: methods,
                                                       onSelect: { [weak self] newMethod in
@@ -70,8 +71,37 @@ private extension SecuritySettingsCoordinator {
     }
 
     func updateMethod(_ newMethod: LocalAuthenticationMethod) {
-        preferences.localAuthenticationMethod = newMethod
-        delegate?.childCoordinatorWantsToDismissTopViewController()
+        let currentMethod = preferences.localAuthenticationMethod
+        switch (currentMethod, newMethod) {
+        case (.biometric, .biometric),
+             (.none, .none),
+             (.pin, .pin):
+            // No changes, just dismiss the method list & do nothing
+            delegate?.childCoordinatorWantsToDismissTopViewController()
+
+        case (.biometric, .none),
+             (.none, .biometric):
+            // Enable or disable biometric authentication
+            // Authenticate before enabling/disabling
+            delegate?.childCoordinatorWantsToDismissTopViewController()
+            let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+            let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                do {
+                    let authenticate = try await authenticate(for: policy,
+                                                              reason: "Please authenticate")
+                    if authenticate {
+                        self.preferences.localAuthenticationMethod = newMethod
+                    }
+                } catch {
+                    self.delegate?.childCoordinatorDidEncounter(error: error)
+                }
+            }
+
+        default:
+            delegate?.childCoordinatorWantsToDismissTopViewController()
+        }
     }
 
     func showListOfAppLockTimes() {

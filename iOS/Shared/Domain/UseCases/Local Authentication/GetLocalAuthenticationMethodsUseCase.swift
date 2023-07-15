@@ -24,12 +24,12 @@ import Factory
 
 /// Get supported local authentication  methods
 protocol GetLocalAuthenticationMethodsUseCase: Sendable {
-    func execute() throws -> [LocalAuthenticationMethodUiModel]
+    func execute(for policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel]
 }
 
 extension GetLocalAuthenticationMethodsUseCase {
-    func callAsFunction() throws -> [LocalAuthenticationMethodUiModel] {
-        try execute()
+    func callAsFunction(for policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel] {
+        try execute(for: policy)
     }
 }
 
@@ -38,9 +38,9 @@ final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsUseCase 
 
     init() {}
 
-    func execute() throws -> [LocalAuthenticationMethodUiModel] {
+    func execute(for policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel] {
         do {
-            let biometryType = try checkBiometryType()
+            let biometryType = try checkBiometryType(for: policy)
             if biometryType.usable {
                 return [.none, .biometric(biometryType), .pin]
             }
