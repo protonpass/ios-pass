@@ -209,7 +209,7 @@ private extension ProfileTabViewModel {
             localAuthenticationMethod = .none
         case .biometric:
             do {
-                let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+                let policy = resolve(\SharedToolingContainer.localAuthenticationCheckingPolicy)
                 let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
                 let biometryType = try checkBiometryType(for: policy)
                 localAuthenticationMethod = .biometric(biometryType)
@@ -224,7 +224,12 @@ private extension ProfileTabViewModel {
         }
 
         appLockTime = preferences.appLockTime
-        fallbackToPasscode = preferences.fallbackToPasscode
+
+        if preferences.fallbackToPasscode != fallbackToPasscode {
+            // Check before assigning because `fallbackToPasscode` has a `didSet` block
+            // that updates preferences hence trigger an infinitely loop
+            fallbackToPasscode = preferences.fallbackToPasscode
+        }
     }
 
     func updateAutoFillAvalability() {

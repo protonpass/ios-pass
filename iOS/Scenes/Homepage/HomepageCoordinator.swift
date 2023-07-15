@@ -645,6 +645,29 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
         }
     }
 
+    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
+                                              presentationOption: ChildCoordinatorPresentationOption) {
+        let display: () -> Void = { [weak self] in
+            guard let self else { return }
+            switch bannerOption {
+            case let .info(message):
+                self.bannerManager.displayBottomInfoMessage(message)
+            case let .success(message):
+                self.bannerManager.displayBottomSuccessMessage(message)
+            case let .error(message):
+                self.bannerManager.displayTopErrorMessage(message)
+            }
+        }
+        switch presentationOption {
+        case .none:
+            display()
+        case .dismissTopViewController:
+            dismissTopMostViewController(animated: true, completion: display)
+        case .dismissAllViewControllers:
+            dismissAllViewControllers(animated: true, completion: display)
+        }
+    }
+
     func childCoordinatorWantsToDismissTopViewController() {
         dismissTopMostViewController()
     }
