@@ -40,7 +40,15 @@ struct LocalAuthenticationMethodsView: View {
         NavigationView {
             VStack {
                 ForEach(uiModels, id: \.method) { uiModel in
-                    title(for: uiModel)
+                    let isSelected = uiModel.method == selectedMethod
+                    SelectableOptionRow(action: { onSelect(uiModel) },
+                                        height: .compact,
+                                        content: {
+                                            Text(uiModel.title)
+                                                .foregroundColor(Color(uiColor: isSelected ?
+                                                        PassColor.interactionNormMajor2 : PassColor.textNorm))
+                                        },
+                                        isSelected: isSelected)
                     PassSectionDivider()
                 }
             }
@@ -56,28 +64,5 @@ struct LocalAuthenticationMethodsView: View {
             }
         }
         .navigationViewStyle(.stack)
-    }
-}
-
-private extension LocalAuthenticationMethodsView {
-    func title(for uiModel: LocalAuthenticationMethodUiModel) -> some View {
-        OptionRow(action: {
-                      onSelect(uiModel)
-                  },
-                  height: .compact,
-                  horizontalPadding: 0,
-                  content: {
-                      Label(title: {
-                          Text(uiModel.title)
-                              .frame(maxWidth: .infinity, alignment: .leading)
-                      }, icon: {
-                          if uiModel.method == selectedMethod {
-                              Image(systemName: "checkmark")
-                          }
-                      })
-                      .labelStyle(.rightIcon)
-                      .foregroundColor(uiModel.method == selectedMethod ?
-                          PassColor.interactionNorm.toColor : PassColor.textNorm.toColor)
-                  })
     }
 }
