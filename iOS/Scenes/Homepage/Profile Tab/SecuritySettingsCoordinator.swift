@@ -27,16 +27,18 @@ final class SecuritySettingsCoordinator {
 
     weak var delegate: ChildCoordinatorDelegate?
 
-    init() {
-        preferences.localAuthenticationMethod = .none
-    }
+    init() {}
 }
 
 // MARK: - Public APIs
 
 extension SecuritySettingsCoordinator {
-    func edit() {
+    func editMethod() {
         showListOfAvailableMethods()
+    }
+
+    func editAppLockTime() {
+        showListOfAppLockTimes()
     }
 }
 
@@ -48,11 +50,11 @@ private extension SecuritySettingsCoordinator {
             let getLocalAuthenticationMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
             let methods = try getLocalAuthenticationMethods()
 
-            let view = LocalAuthenticationMethodsView(supportedMethods: methods) { [weak self] selectedMethod in
-                self?.updateMethod(newMethod: selectedMethod.method)
-            }
-
-            let height = Int(OptionRowHeight.compact.value) * methods.count + 60
+            let view = LocalAuthenticationMethodsView(supportedMethods: methods,
+                                                      onSelect: { [weak self] newMethod in
+                                                          self?.updateMethod(newMethod.method)
+                                                      })
+            let height = OptionRowHeight.compact.value * CGFloat(methods.count) + 60
 
             delegate?.childCoordinatorWantsToPresent(view: view,
                                                      viewOption: .customSheetWithGrabber(CGFloat(height)),
@@ -63,8 +65,24 @@ private extension SecuritySettingsCoordinator {
         }
     }
 
-    func updateMethod(newMethod: LocalAuthenticationMethod) {
+    func updateMethod(_ newMethod: LocalAuthenticationMethod) {
         preferences.localAuthenticationMethod = newMethod
+        delegate?.childCoordinatorWantsToDismissTopViewController()
+    }
+
+    func showListOfAppLockTimes() {
+        let view = EditAppLockTimeView(selectedAppLockTime: preferences.appLockTime,
+                                       onSelect: { [weak self] newTime in
+                                           self?.updateAppLockTime(newTime)
+                                       })
+        let height = OptionRowHeight.compact.value * CGFloat(AppLockTime.allCases.count) + 60
+        delegate?.childCoordinatorWantsToPresent(view: view,
+                                                 viewOption: .customSheetWithGrabber(height),
+                                                 presentationOption: .none)
+    }
+
+    func updateAppLockTime(_ newAppLockTime: AppLockTime) {
+        preferences.appLockTime = newAppLockTime
         delegate?.childCoordinatorWantsToDismissTopViewController()
     }
 }

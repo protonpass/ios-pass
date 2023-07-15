@@ -801,18 +801,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         startUpgradeFlow()
     }
 
-    func profileTabViewModelWantsToEditAppLockTime() {
-        let view = EditAppLockTimeView(preferences: preferences)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * AppLockTime.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet,
