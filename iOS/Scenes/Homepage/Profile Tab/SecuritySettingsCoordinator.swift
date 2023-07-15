@@ -20,6 +20,7 @@
 
 import Core
 import Factory
+import LocalAuthentication
 
 final class SecuritySettingsCoordinator {
     private let preferences = resolve(\SharedToolingContainer.preferences)
@@ -79,28 +80,45 @@ private extension SecuritySettingsCoordinator {
             // No changes, just dismiss the method list & do nothing
             delegate?.childCoordinatorWantsToDismissTopViewController()
 
-        case (.biometric, .none),
-             (.none, .biometric):
-            // Enable or disable biometric authentication
-            // Authenticate before enabling/disabling
-            delegate?.childCoordinatorWantsToDismissTopViewController()
+        case (.none, .biometric):
+            // Enable biometric authentication
+            // Authenticate before enabling using `localAuthenticationEnablingPolicy`
             let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-            let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                do {
-                    let authenticate = try await authenticate(for: policy,
-                                                              reason: "Please authenticate")
-                    if authenticate {
-                        self.preferences.localAuthenticationMethod = newMethod
-                    }
-                } catch {
-                    self.delegate?.childCoordinatorDidEncounter(error: error)
-                }
-            }
+            biometricallyAuthenticateAndUpdateMethod(newMethod, policy: policy)
 
-        default:
+        case (.biometric, .none),
+             (.biometric, .pin):
+            // Disable biometric authentication or change from biometric to PIN
+            // Authenticate using `localAuthenticationAuthenticatingPolicy`
+            let policy = resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
+            biometricallyAuthenticateAndUpdateMethod(newMethod, policy: policy)
+
+        case (.none, .pin):
+            // Enable PIN authentication
             delegate?.childCoordinatorWantsToDismissTopViewController()
+
+        case (.pin, .biometric),
+             (.pin, .none):
+            // Disable PIN authentication or change from PIN to biometric
+            delegate?.childCoordinatorWantsToDismissTopViewController()
+        }
+    }
+
+    func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod,
+                                                  policy: LAPolicy) {
+        delegate?.childCoordinatorWantsToDismissTopViewController()
+        let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let authenticate = try await authenticate(for: policy,
+                                                          reason: "Please authenticate")
+                if authenticate {
+                    self.preferences.localAuthenticationMethod = newMethod
+                }
+            } catch {
+                self.delegate?.childCoordinatorDidEncounter(error: error)
+            }
         }
     }
 
