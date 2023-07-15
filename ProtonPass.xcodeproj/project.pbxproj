@@ -1952,6 +1952,7 @@
 			isa = PBXGroup;
 			children = (
 				354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */,
+				35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */,
 				354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */,
 				354E9AAA2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift */,
 				354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */,
@@ -2304,7 +2305,6 @@
 				3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */,
 				355895B229D79565001E2207 /* FeedbackChannelsView.swift */,
 				35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */,
-				35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */,
 				356BC35829D6F36200F03497 /* OptionRow.swift */,
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
