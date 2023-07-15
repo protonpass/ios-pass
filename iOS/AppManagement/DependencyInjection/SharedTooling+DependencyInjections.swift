@@ -128,8 +128,22 @@ extension SharedToolingContainer {
         self { .init() }
     }
 
-    var localAuthenticationPolicy: Factory<LAPolicy> {
-        self { .deviceOwnerAuthenticationWithBiometrics }
-            .onSimulator { .deviceOwnerAuthentication } // Use passcode on simulator
+    /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
+    var localAuthenticationEnablingPolicy: Factory<LAPolicy> {
+        self { .deviceOwnerAuthentication }
+    }
+
+    /// Used when users disable biometric authentication or need to biometrically authenticate
+    /// Fallback to device passcode or not base on user's settings
+    var localAuthenticationAuthenticatingPolicy: Factory<LAPolicy> {
+        self {
+            if self.preferences().fallbackToPasscode {
+                return .deviceOwnerAuthentication
+            } else {
+                return .deviceOwnerAuthenticationWithBiometrics
+            }
+        }
+        // Always fallback to passcode on simulator
+        .onSimulator { .deviceOwnerAuthentication }
     }
 }
