@@ -24,22 +24,21 @@ import Factory
 
 /// Biometrically authenticate with a given reason
 protocol AuthenticateBiometricallyUseCase: Sendable {
-    func execute(for reason: String) async throws -> Bool
+    func execute(for policy: LAPolicy, reason: String) async throws -> Bool
 }
 
 extension AuthenticateBiometricallyUseCase {
-    func callAsFunction(for reason: String) async throws -> Bool {
-        try await execute(for: reason)
+    func callAsFunction(for policy: LAPolicy, reason: String) async throws -> Bool {
+        try await execute(for: policy, reason: reason)
     }
 }
 
 final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationPolicy)
 
     init() {}
 
-    func execute(for reason: String) async throws -> Bool {
+    func execute(for policy: LAPolicy, reason: String) async throws -> Bool {
         try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 }

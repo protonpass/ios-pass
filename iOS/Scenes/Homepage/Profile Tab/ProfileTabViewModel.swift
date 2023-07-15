@@ -209,11 +209,12 @@ private extension ProfileTabViewModel {
             localAuthenticationMethod = .none
         case .biometric:
             do {
+                let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
                 let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
-                let biometryType = try checkBiometryType()
+                let biometryType = try checkBiometryType(for: policy)
                 localAuthenticationMethod = .biometric(biometryType)
             } catch {
-                // Fall back to `none`, not much we can do except displaying the error
+                // Fallback to `none`, not much we can do except displaying the error
                 logger.error(error)
                 delegate?.profileTabViewModelDidEncounter(error: error)
                 localAuthenticationMethod = .none
