@@ -35,7 +35,7 @@ extension GetLocalAuthenticationMethodsUseCase {
 
 final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsUseCase {
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationCheckingPolicy)
+    private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
 
     init() {}
 

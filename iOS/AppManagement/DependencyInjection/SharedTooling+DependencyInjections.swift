@@ -128,12 +128,12 @@ extension SharedToolingContainer {
         self { .init() }
     }
 
-    /// Used when checking the available `LAPolicy`
-    var localAuthenticationCheckingPolicy: Factory<LAPolicy> {
+    /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
+    var localAuthenticationEnablingPolicy: Factory<LAPolicy> {
         self { .deviceOwnerAuthentication }
     }
 
-    /// Used when users need to biometrically authenticate
+    /// Used when users disable biometric authentication or need to biometrically authenticate
     /// Fallback to device passcode or not base on user's settings
     var localAuthenticationAuthenticatingPolicy: Factory<LAPolicy> {
         self {

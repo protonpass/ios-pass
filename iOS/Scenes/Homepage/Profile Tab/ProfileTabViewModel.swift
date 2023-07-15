@@ -209,7 +209,7 @@ private extension ProfileTabViewModel {
             localAuthenticationMethod = .none
         case .biometric:
             do {
-                let policy = resolve(\SharedToolingContainer.localAuthenticationCheckingPolicy)
+                let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
                 let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
                 let biometryType = try checkBiometryType(for: policy)
                 localAuthenticationMethod = .biometric(biometryType)
