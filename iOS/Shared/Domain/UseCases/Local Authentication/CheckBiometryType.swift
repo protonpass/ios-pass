@@ -24,22 +24,21 @@ import Factory
 
 /// Determine the supported `LABiometryType` of the device
 protocol CheckBiometryTypeUseCase: Sendable {
-    func execute() throws -> LABiometryType
+    func execute(for policy: LAPolicy) throws -> LABiometryType
 }
 
 extension CheckBiometryTypeUseCase {
-    func callAsFunction() throws -> LABiometryType {
-        try execute()
+    func callAsFunction(for policy: LAPolicy) throws -> LABiometryType {
+        try execute(for: policy)
     }
 }
 
 final class CheckBiometryType: CheckBiometryTypeUseCase {
     private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationPolicy)
 
     init() {}
 
-    func execute() throws -> LABiometryType {
+    func execute(for policy: LAPolicy) throws -> LABiometryType {
         var error: NSError?
         context.canEvaluatePolicy(policy, error: &error)
         if let error {
