@@ -74,6 +74,12 @@ enum LocalAuthenticationMethodUiModel {
     }
 }
 
+extension LocalAuthenticationMethodUiModel: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.method == rhs.method
+    }
+}
+
 extension LABiometryType {
     // We only use Face ID or Touch ID
     var usable: Bool {

@@ -61,6 +61,7 @@ struct ProfileTabView: View {
                 }
                 .padding(.top)
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
+                .animation(.default, value: viewModel.localAuthenticationMethod)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
@@ -101,19 +102,38 @@ struct ProfileTabView: View {
                 .profileSectionTitle()
                 .padding(.bottom, kItemDetailSectionPadding)
 
-            OptionRow(action: viewModel.editLocalAuthenticationMethod,
-                      height: .tall,
-                      content: {
-                          VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
-                              Text("Lock with")
-                                  .sectionTitleText()
+            VStack(spacing: 0) {
+                OptionRow(action: viewModel.editLocalAuthenticationMethod,
+                          height: .tall,
+                          content: {
+                              VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
+                                  Text("Lock with")
+                                      .sectionTitleText()
 
-                              Text("Edit local authentication method")
-                                  .foregroundColor(PassColor.textNorm.toColor)
-                          }
-                      },
-                      trailing: { ChevronRight() })
-                .roundedEditableSection()
+                                  Text(viewModel.localAuthenticationMethod.title)
+                                      .foregroundColor(PassColor.textNorm.toColor)
+                              }
+                          },
+                          trailing: { ChevronRight() })
+
+                if viewModel.localAuthenticationMethod != .none {
+                    PassDivider()
+
+                    OptionRow(action: viewModel.editAppLockTime,
+                              height: .tall,
+                              content: {
+                                  VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
+                                      Text("App lock time")
+                                          .sectionTitleText()
+
+                                      Text(viewModel.appLockTime.description)
+                                          .foregroundColor(PassColor.textNorm.toColor)
+                                  }
+                              },
+                              trailing: { ChevronRight() })
+                }
+            }
+            .roundedEditableSection()
         }
         .padding(.horizontal)
     }
