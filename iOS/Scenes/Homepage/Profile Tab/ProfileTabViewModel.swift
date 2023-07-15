@@ -146,6 +146,10 @@ extension ProfileTabViewModel {
         securitySettingsCoordinator.editAppLockTime()
     }
 
+    func editPINCode() {
+        securitySettingsCoordinator.editPINCode()
+    }
+
     func showAccountMenu() {
         delegate?.profileTabViewModelWantsToShowAccountMenu()
     }

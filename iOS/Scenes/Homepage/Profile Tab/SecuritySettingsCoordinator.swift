@@ -40,6 +40,10 @@ extension SecuritySettingsCoordinator {
     func editAppLockTime() {
         showListOfAppLockTimes()
     }
+
+    func editPINCode() {
+        print(#function)
+    }
 }
 
 // MARK: - Private APIs

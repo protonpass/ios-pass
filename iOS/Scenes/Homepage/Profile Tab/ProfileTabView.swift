@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -149,7 +150,19 @@ struct ProfileTabView: View {
                     }
 
                 case .pin:
-                    EmptyView()
+                    PassDivider()
+
+                    OptionRow(action: viewModel.editPINCode, height: .medium) {
+                        HStack {
+                            Text("Change PIN code")
+                            Spacer()
+                            CircleButton(icon: IconProvider.grid3,
+                                         iconColor: PassColor.interactionNormMajor2,
+                                         backgroundColor: PassColor.interactionNormMinor1,
+                                         action: nil)
+                        }
+                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                    }
                 }
             }
             .roundedEditableSection()
