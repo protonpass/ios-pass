@@ -131,6 +131,11 @@ private extension SecuritySettingsCoordinator {
                                                  presentationOption: .none)
     }
 
+    func updateAppLockTime(_ newAppLockTime: AppLockTime) {
+        preferences.appLockTime = newAppLockTime
+        delegate?.childCoordinatorWantsToDismissTopViewController()
+    }
+
     func definePINCodeAndChangeToPINMethod() {
         let view = SetPINCodeView { [weak self] pinCode in
             guard let self else { return }
@@ -142,10 +147,5 @@ private extension SecuritySettingsCoordinator {
         delegate?.childCoordinatorWantsToPresent(view: view,
                                                  viewOption: .sheet,
                                                  presentationOption: .dismissTopViewController)
-    }
-
-    func updateAppLockTime(_ newAppLockTime: AppLockTime) {
-        preferences.appLockTime = newAppLockTime
-        delegate?.childCoordinatorWantsToDismissTopViewController()
     }
 }
