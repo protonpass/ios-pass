@@ -29,7 +29,6 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSpinner()
     func profileTabViewModelWantsToHideSpinner()
     func profileTabViewModelWantsToUpgrade()
-    func profileTabViewModelWantsToEditAppLockTime()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
@@ -54,8 +53,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let notificationService: LocalNotificationServiceProtocol
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
     let vaultsManager: VaultsManager
+
+    @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
+    @Published private(set) var appLockTime: AppLockTime = .twoMinutes
+
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
-    @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
+    @Published private(set) var autoFillEnabled: Bool
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {
         didSet {
@@ -107,7 +110,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.refresh()
+                self?.updateAutoFillAvalability()
+                self?.updateSecuritySettings()
             }
             .store(in: &cancellables)
     }
@@ -130,11 +134,11 @@ extension ProfileTabViewModel {
     }
 
     func editLocalAuthenticationMethod() {
-        securitySettingsCoordinator.edit()
+        securitySettingsCoordinator.editMethod()
     }
 
     func editAppLockTime() {
-        delegate?.profileTabViewModelWantsToEditAppLockTime()
+        securitySettingsCoordinator.editAppLockTime()
     }
 
     func showAccountMenu() {
@@ -175,6 +179,7 @@ extension ProfileTabViewModel {
 private extension ProfileTabViewModel {
     func refresh() {
         updateAutoFillAvalability()
+        updateSecuritySettings()
         refreshPlan()
         refreshFeatureFlags()
     }
@@ -187,6 +192,27 @@ private extension ProfileTabViewModel {
                 logger.error(error)
             }
         }
+    }
+
+    func updateSecuritySettings() {
+        switch preferences.localAuthenticationMethod {
+        case .none:
+            localAuthenticationMethod = .none
+        case .biometric:
+            do {
+                let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
+                let biometryType = try checkBiometryType()
+                localAuthenticationMethod = .biometric(biometryType)
+            } catch {
+                // Fall back to `none`, not much we can do except displaying the error
+                logger.error(error)
+                delegate?.profileTabViewModelDidEncounter(error: error)
+                localAuthenticationMethod = .none
+            }
+        case .pin:
+            localAuthenticationMethod = .pin
+        }
+        appLockTime = preferences.appLockTime
     }
 
     func updateAutoFillAvalability() {
