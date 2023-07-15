@@ -98,6 +98,9 @@ final class Preferences: ObservableObject, DeinitPrintable {
     @KeychainStorage(key: Key.localAuthenticationMethod, defaultValue: nil)
     var pinCode: String?
 
+    @KeychainStorage(key: Key.fallbackToPasscode, defaultValue: true)
+    var fallbackToPasscode: Bool
+
     @KeychainStorage(key: Key.appLockTime, defaultValue: .twoMinutes)
     var appLockTime: AppLockTime
 
@@ -116,6 +119,7 @@ final class Preferences: ObservableObject, DeinitPrintable {
         automaticallyCopyTotpCode = false
         failedAttemptCount = 0
         localAuthenticationMethod = .none
+        fallbackToPasscode = true
         pinCode = nil
         appLockTime = .twoMinutes
         theme = .dark
@@ -175,6 +179,7 @@ private extension Preferences {
         case automaticallyCopyTotpCode
         case failedAttemptCount
         case localAuthenticationMethod
+        case fallbackToPasscode
         case appLockTime
         case onboarded
         case theme

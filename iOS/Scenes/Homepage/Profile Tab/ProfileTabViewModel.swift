@@ -56,6 +56,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
+    @Published var fallbackToPasscode = true {
+        didSet {
+            preferences.fallbackToPasscode = fallbackToPasscode
+        }
+    }
 
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled: Bool
@@ -212,7 +217,9 @@ private extension ProfileTabViewModel {
         case .pin:
             localAuthenticationMethod = .pin
         }
+
         appLockTime = preferences.appLockTime
+        fallbackToPasscode = preferences.fallbackToPasscode
     }
 
     func updateAutoFillAvalability() {

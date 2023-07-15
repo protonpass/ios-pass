@@ -132,6 +132,25 @@ struct ProfileTabView: View {
                               },
                               trailing: { ChevronRight() })
                 }
+
+                switch viewModel.localAuthenticationMethod {
+                case .none:
+                    EmptyView()
+
+                case .biometric:
+                    PassDivider()
+
+                    OptionRow(height: .tall) {
+                        Toggle(isOn: $viewModel.fallbackToPasscode) {
+                            Text("Use system Passcode when FaceID fails.")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
+                        }
+                        .tint(Color(uiColor: PassColor.interactionNorm))
+                    }
+
+                case .pin:
+                    EmptyView()
+                }
             }
             .roundedEditableSection()
         }

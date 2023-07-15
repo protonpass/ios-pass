@@ -90,6 +90,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.localAuthenticationMethod, .none)
     }
 
+    func testFallbackToPasscodeByDefault() {
+        XCTAssertTrue(sut.fallbackToPasscode)
+    }
+
+    func testFallbackToPasscodeAfterResetting() {
+        sut.fallbackToPasscode = false
+        XCTAssertFalse(sut.fallbackToPasscode)
+        sut.reset()
+        XCTAssertTrue(sut.fallbackToPasscode)
+    }
+
     func testPinCodeIsNilByDefault() {
         XCTAssertNil(sut.pinCode)
     }
