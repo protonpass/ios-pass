@@ -25,10 +25,6 @@ import ProtonCore_Keymaker
 import SwiftUI
 import UIComponents
 
-enum LocalAuthenticationType {
-    case biometric, pin
-}
-
 struct LocalAuthenticationModifier: ViewModifier {
     @State private var authenticated: Bool
 
@@ -77,7 +73,7 @@ struct LocalAuthenticationModifier: ViewModifier {
                     onSuccess()
                 }
 
-                LocalAuthenticationView(type: .biometric,
+                LocalAuthenticationView(mode: preferences.localAuthenticationMethod == .pin ? .pin : .biometric,
                                         delayed: delayed,
                                         onAuth: onAuth,
                                         onSuccess: handleSuccess,
