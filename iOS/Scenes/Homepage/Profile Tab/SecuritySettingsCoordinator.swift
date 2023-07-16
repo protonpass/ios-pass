@@ -43,7 +43,7 @@ extension SecuritySettingsCoordinator {
     }
 
     func editPINCode() {
-        definePINCodeAndChangeToPINMethod()
+        verifyAndThenUpdatePIN()
     }
 }
 
@@ -200,6 +200,25 @@ private extension SecuritySettingsCoordinator {
             } else {
                 self.preferences.localAuthenticationMethod = newMethod
             }
+        }
+
+        let failureHandler: () -> Void = { [weak self] in
+            self?.delegate?.childCoordinatorDidFailLocalAuthentication()
+        }
+
+        let view = LocalAuthenticationView(mode: .pin,
+                                           delayed: false,
+                                           onAuth: {},
+                                           onSuccess: successHandler,
+                                           onFailure: failureHandler)
+        delegate?.childCoordinatorWantsToPresent(view: view,
+                                                 viewOption: .fullScreen,
+                                                 presentationOption: .dismissTopViewController)
+    }
+
+    func verifyAndThenUpdatePIN() {
+        let successHandler: () -> Void = { [weak self] in
+            self?.definePINCodeAndChangeToPINMethod()
         }
 
         let failureHandler: () -> Void = { [weak self] in
