@@ -24,7 +24,7 @@ import Factory
 
 private let kMaxAttemptCount = 3
 
-enum LocalAuthenticationState {
+enum LocalAuthenticationState: Equatable {
     case noAttempts
     case remainingAttempts(Int)
     case lastAttempt
@@ -43,6 +43,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     let mode: Mode
 
     @Published private(set) var state: LocalAuthenticationState = .noAttempts
+    /// Only applicable for biometric authentication
     @Published private(set) var error: Error?
 
     var delayedTime: DispatchTimeInterval {
@@ -90,7 +91,19 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func checkPinCode(_ enteredPinCode: String) {
-        print(enteredPinCode)
+        guard let currentPIN = preferences.pinCode else {
+            // No PIN code is set before, can't do anything but logging out
+            let message = "Can not check PIN code. No PIN code set."
+            assertionFailure(message)
+            logger.error(message)
+            onFailure()
+            return
+        }
+        if currentPIN == enteredPinCode {
+            recordSuccess()
+        } else {
+            recordFailure(nil)
+        }
     }
 
     func logOut() {

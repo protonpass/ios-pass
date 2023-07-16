@@ -56,6 +56,20 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
+            switch viewModel.state {
+            case .noAttempts:
+                EmptyView()
+            case let .remainingAttempts(count):
+                Text("Incorrect PIN. \(count) remaining attempts")
+                    .foregroundColor(PassColor.signalDanger.toColor)
+            case .lastAttempt:
+                Text("This is your last attempt. You will be logged out after failing to authenticate again.")
+                    .foregroundColor(PassColor.signalDanger.toColor)
+                    .multilineTextAlignment(.center)
+            }
+
+            Spacer()
+
             DisablableCapsuleTextButton(title: "Unlock",
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textInvert,
@@ -70,6 +84,10 @@ struct PinAuthenticationView: View {
         .padding()
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
+        .animation(.default, value: viewModel.state)
+        .onChange(of: viewModel.state) { _ in
+            pinCode = ""
+        }
         .onAppear {
             isFocused = true
         }
