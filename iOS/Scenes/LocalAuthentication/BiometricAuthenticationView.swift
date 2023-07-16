@@ -25,35 +25,52 @@ import UIComponents
 
 struct BiometricAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
-    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     init(viewModel: LocalAuthenticationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        ZStack {
-            PassColor.backgroundNorm.toColor
-                .ignoresSafeArea()
+        GeometryReader { proxy in
+            VStack {
+                Spacer()
 
-            switch viewModel.state {
-            case .initializing:
                 passLogo
-                ProgressView()
 
-            case let .initialized(state):
-                initializedView(for: state)
+                switch viewModel.state {
+                case .noAttempts:
+                    EmptyView()
 
-            case let .error(error):
-                VStack {
-                    passLogo
-                    Text(error.localizedDescription)
+                case .lastAttempt:
+                    Text("This is your last attempt. You will be logged out after failing to authenticate again.")
                         .multilineTextAlignment(.center)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
+                        .foregroundColor(PassColor.textNorm.toColor)
+                    retryButton
+                        .padding(.top)
+
+                case let .remainingAttempts(count):
+                    Text("\(count) remaining attempt(s)")
+                        .foregroundColor(PassColor.textNorm.toColor)
+                    retryButton
+                        .padding(.top)
+                }
+
+                Spacer()
+                    .frame(height: proxy.size.height / 2)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onFirstAppear {
+                if case .noAttempts = viewModel.state {
+                    // Only automatically prompt for biometric authentication when no attempts were made
+                    // Otherwise let the users know how many attempts are remaining
+                    // and let them retry explicitly
+                    DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
+                        viewModel.biometricallyAuthenticate()
+                    }
                 }
             }
         }
-        .theme(preferences.theme)
     }
 }
 
@@ -69,51 +86,6 @@ private extension BiometricAuthenticationView {
         Button(action: viewModel.biometricallyAuthenticate) {
             Text("Try again")
                 .foregroundColor(PassColor.interactionNormMajor2.toColor)
-        }
-    }
-
-    func initializedView(for state: LocalAuthenticationInitializedState) -> some View {
-        GeometryReader { proxy in
-            VStack {
-                VStack {
-                    Spacer()
-
-                    passLogo
-
-                    switch state {
-                    case .noAttempts:
-                        EmptyView()
-
-                    case .lastAttempt:
-                        Text("This is your last attempt. You will be logged out after failing to authenticate again.")
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(PassColor.textNorm.toColor)
-                        retryButton
-                            .padding(.top)
-
-                    case let .remainingAttempts(count):
-                        Text("\(count) remaining attempt(s)")
-                            .foregroundColor(PassColor.textNorm.toColor)
-                        retryButton
-                            .padding(.top)
-                    }
-
-                    Spacer()
-                        .frame(height: proxy.size.height / 2)
-                }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .onFirstAppear {
-                if case .noAttempts = state {
-                    // Only automatically prompt for biometric authentication when no attempts were made
-                    // Otherwise let the users know how many attempts are remaining
-                    // and let them retry explicitly
-                    DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
-                        self.viewModel.biometricallyAuthenticate()
-                    }
-                }
-            }
         }
     }
 }

@@ -19,18 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
+import ProtonCore_UIFoundations
 import SwiftUI
+import UIComponents
 
 /// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
-    init(type: LocalAuthenticationType,
+    init(mode: LocalAuthenticationViewModel.Mode,
          delayed: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(type: type,
+        _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
                                                onAuth: onAuth,
                                                onSuccess: onSuccess,
@@ -38,11 +42,24 @@ struct LocalAuthenticationView: View {
     }
 
     var body: some View {
-        switch viewModel.type {
-        case .biometric:
-            BiometricAuthenticationView(viewModel: viewModel)
-        case .pin:
-            PinAuthenticationView(viewModel: viewModel)
+        ZStack(alignment: .topTrailing) {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+
+            switch viewModel.mode {
+            case .biometric:
+                BiometricAuthenticationView(viewModel: viewModel)
+            case .pin:
+                PinAuthenticationView(viewModel: viewModel)
+            }
+
+            Button(action: viewModel.logOut) {
+                Image(uiImage: IconProvider.arrowOutFromRectangle)
+                    .foregroundColor(PassColor.textNorm.toColor)
+                    .padding()
+            }
+            .padding()
         }
+        .theme(preferences.theme)
     }
 }
