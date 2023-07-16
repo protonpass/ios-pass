@@ -106,7 +106,7 @@ private extension SecuritySettingsCoordinator {
         case (.pin, .biometric),
              (.pin, .none):
             // Disable PIN authentication or change from PIN to biometric
-            delegate?.childCoordinatorWantsToDismissTopViewController()
+            verifyPINCodeAndUpdateMethod(newMethod)
         }
     }
 
@@ -187,5 +187,32 @@ private extension SecuritySettingsCoordinator {
                                                  presentationOption: .dismissTopViewController)
     }
 
-    func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {}
+    func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {
+        let successHandler: () -> Void = { [weak self] in
+            guard let self else { return }
+            self.delegate?.childCoordinatorWantsToDismissTopViewController()
+
+            let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+            if newMethod == .biometric {
+                self.biometricallyAuthenticateAndUpdateMethod(.biometric,
+                                                              policy: policy,
+                                                              allowFailure: true)
+            } else {
+                self.preferences.localAuthenticationMethod = newMethod
+            }
+        }
+
+        let failureHandler: () -> Void = { [weak self] in
+            self?.delegate?.childCoordinatorDidFailLocalAuthentication()
+        }
+
+        let view = LocalAuthenticationView(mode: .pin,
+                                           delayed: false,
+                                           onAuth: {},
+                                           onSuccess: successHandler,
+                                           onFailure: failureHandler)
+        delegate?.childCoordinatorWantsToPresent(view: view,
+                                                 viewOption: .fullScreen,
+                                                 presentationOption: .dismissTopViewController)
+    }
 }
