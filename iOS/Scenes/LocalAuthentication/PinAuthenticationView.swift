@@ -31,15 +31,7 @@ struct PinAuthenticationView: View {
     }
 
     var body: some View {
-        ZStack {
-            PassColor.backgroundNorm.toColor
-                .edgesIgnoringSafeArea(.all)
-            Text("PIN authentication")
-                .foregroundColor(PassColor.signalDanger.toColor)
-        }
-        .theme(preferences.theme)
-        .onAppear {
-            assertionFailure("PIN authentication not yet supported")
-        }
+        Text("PIN authentication")
+            .foregroundColor(PassColor.signalDanger.toColor)
     }
 }

@@ -25,12 +25,6 @@ import Factory
 private let kMaxAttemptCount = 3
 
 enum LocalAuthenticationState {
-    case initializing
-    case initialized(LocalAuthenticationInitializedState)
-    case error(Error)
-}
-
-enum LocalAuthenticationInitializedState {
     case noAttempts
     case remainingAttempts(Int)
     case lastAttempt
@@ -39,8 +33,6 @@ enum LocalAuthenticationInitializedState {
 final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let type: LocalAuthenticationType
-
     private let delayed: Bool
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
@@ -48,25 +40,30 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
+    let mode: Mode
 
-    @Published private(set) var state: LocalAuthenticationState = .initializing
+    @Published private(set) var state: LocalAuthenticationState = .noAttempts
+    @Published private(set) var error: Error?
 
     var delayedTime: DispatchTimeInterval {
         delayed ? .milliseconds(200) : .milliseconds(0)
     }
 
-    init(type: LocalAuthenticationType,
+    enum Mode: String {
+        case biometric, pin
+    }
+
+    init(mode: Mode,
          delayed: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        self.type = type
+        self.mode = mode
         self.delayed = delayed
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
-
-        preferences.attach(to: self, storeIn: &cancellables)
+        updateStateBasedOnFailedAttemptCount()
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
@@ -76,20 +73,39 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
             .store(in: &cancellables)
     }
 
-    func biometricallyAuthenticate() {}
+    func biometricallyAuthenticate() {
+        let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+        Task { @MainActor in
+            do {
+                let authenticated = try await authenticate(reason: "Please authenticate")
+                if authenticated {
+                    recordSuccess()
+                } else {
+                    recordFailure(nil)
+                }
+            } catch {
+                recordFailure(error)
+            }
+        }
+    }
+
+    func logOut() {
+        logger.debug("Manual log out")
+        onFailure()
+    }
 }
 
 private extension LocalAuthenticationViewModel {
     func updateStateBasedOnFailedAttemptCount() {
         switch preferences.failedAttemptCount {
         case 0:
-            state = .initialized(.noAttempts)
+            state = .noAttempts
         case kMaxAttemptCount - 1:
-            state = .initialized(.lastAttempt)
+            state = .lastAttempt
         default:
             let remainingAttempts = kMaxAttemptCount - preferences.failedAttemptCount
             if remainingAttempts >= 1 {
-                state = .initialized(.remainingAttempts(remainingAttempts))
+                state = .remainingAttempts(remainingAttempts)
             } else {
                 onFailure()
             }
@@ -99,7 +115,7 @@ private extension LocalAuthenticationViewModel {
     func recordFailure(_ error: Error?) {
         preferences.failedAttemptCount += 1
 
-        let logMessage = "Biometric authentication failed. Increased failed attempt count."
+        let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
         if let error {
             logger.error(logMessage + " Reason \(error)")
         } else {
