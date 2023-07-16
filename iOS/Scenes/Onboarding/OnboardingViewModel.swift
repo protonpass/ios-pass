@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Factory
+import LocalAuthentication
 import SwiftUI
 import UIComponents
 
@@ -32,6 +33,8 @@ final class OnboardingViewModel: ObservableObject {
     private let credentialManager: CredentialManagerProtocol
     private let bannerManager: BannerManager
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -49,74 +52,25 @@ final class OnboardingViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        /*
-         preferences.objectWillChange
-             .receive(on: DispatchQueue.main)
-             .sink { [weak self] _ in
-                 guard let self else { return }
-                 if self.preferences.biometricAuthenticationEnabled {
-                     switch self.state {
-                     case .biometricAuthenticationFaceID:
-                         self.state = .faceIDEnabled
-                     case .biometricAuthenticationTouchID:
-                         self.state = .touchIDEnabled
-                     default:
-                         break
-                     }
-                 }
-             }
-             .store(in: &cancellables)
-
-         biometricAuthenticator.$authenticationState
-             .receive(on: DispatchQueue.main)
-             .sink { [weak self] state in
-                 guard let self else { return }
-                 if case let .error(error) = state {
-                     self.bannerManager.displayTopErrorMessage(error)
-                 }
-             }
-             .store(in: &cancellables)
-          */
-    }
-
-    private func checkAutoFillStatus() {
-        Task { @MainActor in
-            let autoFillEnabled = await credentialManager.isAutoFillEnabled()
-            if case .autoFill = state, autoFillEnabled {
-                state = .autoFillEnabled
+        preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                if self.preferences.localAuthenticationMethod == .biometric {
+                    do {
+                        let biometryType = try self.checkBiometryType(for: self.policy)
+                        switch biometryType {
+                        case .touchID:
+                            self.state = .touchIDEnabled
+                        default:
+                            self.state = .faceIDEnabled
+                        }
+                    } catch {
+                        self.state = .faceIDEnabled
+                    }
+                }
             }
-        }
-    }
-
-    private func finishOnboarding() {
-        preferences.onboarded = true
-        finished = true
-    }
-
-    private func showAppropriateBiometricAuthenticationStep() {
-        /*
-         if case let .initialized(type) = biometricAuthenticator.biometryTypeState {
-             switch type {
-             case .faceID:
-                 if preferences.biometricAuthenticationEnabled {
-                     state = .faceIDEnabled
-                 } else {
-                     state = .biometricAuthenticationFaceID
-                 }
-             case .touchID:
-                 if preferences.biometricAuthenticationEnabled {
-                     state = .touchIDEnabled
-                 } else {
-                     state = .biometricAuthenticationTouchID
-                 }
-             default:
-                 state = .aliases
-             }
-         } else {
-             // Should not happen
-             state = .aliases
-         }
-          */
+            .store(in: &cancellables)
     }
 }
 
@@ -132,8 +86,18 @@ extension OnboardingViewModel {
             showAppropriateBiometricAuthenticationStep()
 
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-//            biometricAuthenticator.toggleEnabled(force: true)
-            break
+            Task { @MainActor in
+                do {
+                    let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+                    let authenticated = try await authenticate(reason: "Please authenticate")
+                    if authenticated {
+                        preferences.localAuthenticationMethod = .biometric
+                        showAppropriateBiometricAuthenticationStep()
+                    }
+                } catch {
+                    bannerManager.displayTopErrorMessage(error)
+                }
+            }
 
         case .faceIDEnabled, .touchIDEnabled:
             state = .aliases
@@ -156,6 +120,48 @@ extension OnboardingViewModel {
 
         case .aliases:
             finishOnboarding()
+        }
+    }
+}
+
+// MARK: - Private actions
+
+private extension OnboardingViewModel {
+    func checkAutoFillStatus() {
+        Task { @MainActor in
+            let autoFillEnabled = await credentialManager.isAutoFillEnabled()
+            if case .autoFill = state, autoFillEnabled {
+                state = .autoFillEnabled
+            }
+        }
+    }
+
+    func finishOnboarding() {
+        preferences.onboarded = true
+        finished = true
+    }
+
+    func showAppropriateBiometricAuthenticationStep() {
+        do {
+            let biometryType = try checkBiometryType(for: policy)
+            switch biometryType {
+            case .faceID:
+                if preferences.localAuthenticationMethod == .biometric {
+                    state = .faceIDEnabled
+                } else {
+                    state = .biometricAuthenticationFaceID
+                }
+            case .touchID:
+                if preferences.localAuthenticationMethod == .biometric {
+                    state = .touchIDEnabled
+                } else {
+                    state = .biometricAuthenticationTouchID
+                }
+            default:
+                state = .aliases
+            }
+        } catch {
+            state = .aliases
         }
     }
 }
