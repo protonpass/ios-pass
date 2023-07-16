@@ -82,15 +82,22 @@ private extension SecuritySettingsCoordinator {
         case (.none, .biometric):
             // Enable biometric authentication
             // Authenticate using `localAuthenticationEnablingPolicy`
+            // Failure is allowed because biometric authentication is not yet turned on
             let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-            biometricallyAuthenticateAndUpdateMethod(newMethod, policy: policy)
+            biometricallyAuthenticateAndUpdateMethod(newMethod,
+                                                     policy: policy,
+                                                     allowFailure: true)
 
         case (.biometric, .none),
              (.biometric, .pin):
             // Disable biometric authentication or change from biometric to PIN
             // Authenticate using `localAuthenticationAuthenticatingPolicy`
+            // Failure is not allowed because biometric authentication is already turned on
+            // Log out if too many failures
             let policy = resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
-            biometricallyAuthenticateAndUpdateMethod(newMethod, policy: policy)
+            biometricallyAuthenticateAndUpdateMethod(newMethod,
+                                                     policy: policy,
+                                                     allowFailure: false)
 
         case (.none, .pin):
             // Enable PIN authentication
@@ -104,19 +111,50 @@ private extension SecuritySettingsCoordinator {
     }
 
     func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod,
-                                                  policy: LAPolicy) {
-        delegate?.childCoordinatorWantsToDismissTopViewController()
-        let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-        Task { @MainActor [weak self] in
+                                                  policy: LAPolicy,
+                                                  allowFailure: Bool) {
+        let succesHandler: () -> Void = { [weak self] in
             guard let self else { return }
-            do {
-                let authenticate = try await authenticate(reason: "Please authenticate")
-                if authenticate {
-                    self.preferences.localAuthenticationMethod = newMethod
-                }
-            } catch {
-                self.delegate?.childCoordinatorDidEncounter(error: error)
+            self.delegate?.childCoordinatorWantsToDismissTopViewController()
+
+            if newMethod != .biometric {
+                self.preferences.fallbackToPasscode = true
             }
+
+            if newMethod == .pin {
+                self.definePINCodeAndChangeToPINMethod()
+            } else {
+                self.preferences.localAuthenticationMethod = newMethod
+            }
+        }
+
+        let failureHandler: () -> Void = { [weak self] in
+            self?.delegate?.childCoordinatorDidFailLocalAuthentication()
+        }
+
+        if allowFailure {
+            delegate?.childCoordinatorWantsToDismissTopViewController()
+            let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                do {
+                    let authenticate = try await authenticate(reason: "Please authenticate")
+                    if authenticate {
+                        succesHandler()
+                    }
+                } catch {
+                    self.delegate?.childCoordinatorDidEncounter(error: error)
+                }
+            }
+        } else {
+            let view = LocalAuthenticationView(mode: .biometric,
+                                               delayed: false,
+                                               onAuth: {},
+                                               onSuccess: succesHandler,
+                                               onFailure: failureHandler)
+            delegate?.childCoordinatorWantsToPresent(view: view,
+                                                     viewOption: .fullScreen,
+                                                     presentationOption: .dismissTopViewController)
         }
     }
 
@@ -148,4 +186,6 @@ private extension SecuritySettingsCoordinator {
                                                  viewOption: .sheet,
                                                  presentationOption: .dismissTopViewController)
     }
+
+    func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {}
 }

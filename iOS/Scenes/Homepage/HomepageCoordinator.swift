@@ -670,6 +670,10 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
         dismissTopMostViewController()
     }
 
+    func childCoordinatorDidFailLocalAuthentication() {
+        delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+    }
+
     func childCoordinatorDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
