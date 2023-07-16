@@ -18,12 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Factory
 import SwiftUI
 import UIComponents
 
 struct PinAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
+    @FocusState private var isFocused
+    @State private var pinCode = ""
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
     init(viewModel: LocalAuthenticationViewModel) {
@@ -31,7 +34,44 @@ struct PinAuthenticationView: View {
     }
 
     var body: some View {
-        Text("PIN authentication")
-            .foregroundColor(PassColor.signalDanger.toColor)
+        VStack(alignment: .center) {
+            Image(uiImage: PassIcon.passIcon)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 160)
+
+            Text("Enter your PIN code")
+                .foregroundColor(PassColor.textNorm.toColor)
+                .font(.title.bold())
+
+            Spacer()
+
+            SecureField("", text: $pinCode)
+                .labelsHidden()
+                .foregroundColor(PassColor.textNorm.toColor)
+                .font(.title.bold())
+                .focused($isFocused)
+                .multilineTextAlignment(.center)
+                .keyboardType(.numberPad)
+
+            Spacer()
+
+            DisablableCapsuleTextButton(title: "Unlock",
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textInvert,
+                                        backgroundColor: PassColor.interactionNormMajor1,
+                                        disableBackgroundColor: PassColor.interactionNormMajor1
+                                            .withAlphaComponent(0.3),
+                                        disabled: pinCode.count < Constants.PINCode.minLength,
+                                        height: 60,
+                                        action: { viewModel.checkPinCode(pinCode) })
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+        .accentColor(PassColor.interactionNorm.toColor)
+        .tint(PassColor.interactionNorm.toColor)
+        .onAppear {
+            isFocused = true
+        }
     }
 }
