@@ -89,6 +89,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
+    func checkPinCode(_ enteredPinCode: String) {
+        print(enteredPinCode)
+    }
+
     func logOut() {
         logger.debug("Manual log out")
         onFailure()

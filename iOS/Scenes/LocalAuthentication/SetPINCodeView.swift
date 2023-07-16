@@ -24,9 +24,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-private let kMinPINLength = 4
-private let kMaxPINLength = 100
-
 struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
@@ -106,11 +103,13 @@ private extension SetPINCodeView {
     var actionButtonDisabled: Bool {
         // Always disabled when error occurs
         guard error == nil else { return true }
+        let minLength = Constants.PINCode.minLength
+        let maxLength = Constants.PINCode.maxLength
         switch state {
         case .definition:
-            return definedPIN.isEmpty || !(kMinPINLength...kMaxPINLength).contains(definedPIN.count)
+            return definedPIN.isEmpty || !(minLength...maxLength).contains(definedPIN.count)
         case .confirmation:
-            return confirmedPIN.isEmpty || !(kMinPINLength...kMaxPINLength).contains(confirmedPIN.count)
+            return confirmedPIN.isEmpty || !(minLength...maxLength).contains(confirmedPIN.count)
         }
     }
 
