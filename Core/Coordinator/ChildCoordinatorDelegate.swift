@@ -29,6 +29,7 @@ public protocol ChildCoordinatorDelegate: AnyObject {
     func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
                                               presentationOption: ChildCoordinatorPresentationOption)
     func childCoordinatorWantsToDismissTopViewController()
+    func childCoordinatorDidFailLocalAuthentication()
     func childCoordinatorDidEncounter(error: Error)
 }
 
