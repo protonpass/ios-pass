@@ -36,7 +36,6 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let delayed: Bool
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
-    private let onAuth: () -> Void
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
@@ -56,15 +55,15 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
     init(mode: Mode,
          delayed: Bool,
-         onAuth: @escaping () -> Void,
+         onAuth: () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         self.mode = mode
         self.delayed = delayed
-        self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
         updateStateBasedOnFailedAttemptCount()
+        onAuth()
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
