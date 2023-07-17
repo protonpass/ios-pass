@@ -47,10 +47,10 @@ public struct UpdateUserSharePermissionsEndpoint: Endpoint {
 }
 
 public struct UserSharePermissionRequest {
-    public let permission: String
-    public let expireTime: String
+    public let permission: String?
+    public let expireTime: String?
 
-    public init(with permission: String, and expireTime: String) {
+    public init(with permission: String?, and expireTime: String?) {
         self.permission = permission
         self.expireTime = expireTime
     }

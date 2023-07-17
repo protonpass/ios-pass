@@ -635,6 +635,8 @@
 		5B14537D2A60431F0048B022 /* RemoteInviteDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14537C2A60431F0048B022 /* RemoteInviteDatasource.swift */; };
 		5B1453812A606FB10048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453802A606FB10048B022 /* Entities */; };
 		5B1453832A6070260048B022 /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453822A6070260048B022 /* PublicKey+Test.swift */; };
+		5B1453872A6587730048B022 /* ShareInviteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453862A6587730048B022 /* ShareInviteRepository.swift */; };
+		5B1453892A6591B20048B022 /* InviteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453882A6591B20048B022 /* InviteRepository.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1437,6 +1439,8 @@
 		5B14537A2A6041360048B022 /* RemoteShareInviteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteShareInviteDatasource.swift; sourceTree = "<group>"; };
 		5B14537C2A60431F0048B022 /* RemoteInviteDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteInviteDatasource.swift; sourceTree = "<group>"; };
 		5B1453822A6070260048B022 /* PublicKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Test.swift"; sourceTree = "<group>"; };
+		5B1453862A6587730048B022 /* ShareInviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInviteRepository.swift; sourceTree = "<group>"; };
+		5B1453882A6591B20048B022 /* InviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteRepository.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -2142,6 +2146,8 @@
 				356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
 				357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */,
+				5B1453862A6587730048B022 /* ShareInviteRepository.swift */,
+				5B1453882A6591B20048B022 /* InviteRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -4753,6 +4759,7 @@
 				35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */,
 				358AB4A12887047C00818B44 /* GetShareKeysEndpoint.swift in Sources */,
 				3542B88B288361D4009C9A68 /* AuthCredential+Preview.swift in Sources */,
+				5B1453872A6587730048B022 /* ShareInviteRepository.swift in Sources */,
 				3556949B29D44DEF005DD2EB /* MoveItemRequest.swift in Sources */,
 				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
 				5B1F5CDB2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift in Sources */,
@@ -4780,6 +4787,7 @@
 				5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */,
 				5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */,
 				5B5040052A52C2FE00E6681C /* FeedbackRequest.swift in Sources */,
+				5B1453892A6591B20048B022 /* InviteRepository.swift in Sources */,
 				356180F728EC4C0C00B1835A /* CredentialManager.swift in Sources */,
 				354EA82929EF4F5600F1FB95 /* LocalTelemetryEventDatasource.swift in Sources */,
 				3542E2C328D9E16600194F24 /* LocalItemDatasource.swift in Sources */,

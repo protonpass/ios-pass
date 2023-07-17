@@ -29,8 +29,8 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func updateUserSharePermission(for shareId: String,
                                    and userId: String,
                                    with request: UserSharePermissionRequest) async throws -> Int
-    func deleteUserInShare(for shareId: String,
-                           and userId: String) async throws -> Bool
+    func deleteUserShare(for shareId: String,
+                         and userId: String) async throws -> Bool
 
     func createVault(request: CreateVaultRequest) async throws -> Share
     func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share
@@ -92,8 +92,8 @@ public extension RemoteShareDatasourceProtocol {
         return response.permission
     }
 
-    func deleteUserInShare(for shareId: String,
-                           and userId: String) async throws -> Bool {
+    func deleteUserShare(for shareId: String,
+                         and userId: String) async throws -> Bool {
         let endpoint = DeleteUserShareEndpoint(for: shareId, and: userId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful

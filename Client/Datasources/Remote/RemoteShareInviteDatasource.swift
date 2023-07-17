@@ -23,7 +23,7 @@ import Foundation
 
 public protocol RemoteShareInviteDatasourceProtocol: RemoteDatasourceProtocol {
     func getPendingInvitesForShare(for sharedId: String) async throws -> [ShareInvite]
-    func inviteUserToShare(for shareId: String, with request: InviteUserToShareRequest) async throws -> Bool
+    func inviteUser(to shareId: String, with request: InviteUserToShareRequest) async throws -> Bool
     func sendInviteReminderToUser(for shareId: String, with userId: String) async throws -> Bool
     func deleteShareUserInvite(for shareId: String, with userId: String) async throws -> Bool
 }
@@ -35,7 +35,7 @@ public extension RemoteShareInviteDatasourceProtocol {
         return getSharesResponse.invites
     }
 
-    func inviteUserToShare(for shareId: String, with request: InviteUserToShareRequest) async throws -> Bool {
+    func inviteUser(to shareId: String, with request: InviteUserToShareRequest) async throws -> Bool {
         let endpoint = InviteUserToShareEndpoint(for: shareId, with: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
