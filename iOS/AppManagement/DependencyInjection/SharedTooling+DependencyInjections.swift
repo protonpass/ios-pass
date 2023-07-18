@@ -57,7 +57,7 @@ extension SharedToolingContainer {
             .unique
     }
 
-    var logManager: Factory<LogManager> {
+    var logManager: Factory<LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
             .onArg(PassModule.keyboardExtension) { LogManager(module: .keyboardExtension) }

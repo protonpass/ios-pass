@@ -99,7 +99,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let logger: Logger
 
     let favIconRepository: FavIconRepositoryProtocol
-    let logManager: LogManager
+    let logManager: LogManagerProtocol
     let urls: [URL]
 
     weak var delegate: CredentialsViewModelDelegate?
@@ -120,7 +120,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          favIconRepository: FavIconRepositoryProtocol,
          symmetricKey: SymmetricKey,
          serviceIdentifiers: [ASCredentialServiceIdentifier],
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          preferences: Preferences) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository

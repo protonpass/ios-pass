@@ -39,7 +39,7 @@ public final class NotificationService: LocalNotificationServiceProtocol {
     private var currentTimers: [String: Timer] = [:]
     private let logger: Logger
 
-    public init(logManager: LogManager,
+    public init(logManager: LogManagerProtocol,
                 unUserNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         self.unUserNotificationCenter = unUserNotificationCenter
         logger = .init(manager: logManager)

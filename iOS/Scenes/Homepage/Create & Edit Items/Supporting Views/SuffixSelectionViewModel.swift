@@ -40,7 +40,7 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
 
     init(suffixSelection: SuffixSelection,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         logger = .init(manager: logManager)
         self.suffixSelection = suffixSelection
 

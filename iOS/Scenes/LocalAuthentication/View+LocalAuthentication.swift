@@ -46,14 +46,14 @@ struct LocalAuthenticationModifier: ViewModifier {
     // NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
-    private let logManager: LogManager
+    private let logManager: LogManagerProtocol
     private let onAuth: () -> Void
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
     init(preferences: Preferences,
          delayed: Bool,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
@@ -133,7 +133,7 @@ extension View {
     // swiftlint:disable:next function_parameter_count
     func localAuthentication(preferences: Preferences,
                              delayed: Bool,
-                             logManager: LogManager,
+                             logManager: LogManagerProtocol,
                              onAuth: @escaping () -> Void,
                              onSuccess: @escaping () -> Void,
                              onFailure: @escaping () -> Void) -> some View {

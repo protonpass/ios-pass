@@ -510,7 +510,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = localItemDatasoure
@@ -524,7 +524,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 symmetricKey: SymmetricKey,
                 container: NSPersistentContainer,
                 apiService: APIService,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
         localItemDatasoure = LocalItemDatasource(container: container)

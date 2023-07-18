@@ -158,7 +158,7 @@ public final class CredentialManager: CredentialManagerProtocol {
     public var store: ASCredentialIdentityStore
     public var logger: Logger
 
-    public init(logManager: LogManager,
+    public init(logManager: LogManagerProtocol,
                 store: ASCredentialIdentityStore = .shared) {
         self.store = store
         logger = .init(manager: logManager)
