@@ -40,7 +40,7 @@ extension LocalFeatureFlagsDatasourceTests {
     func testUpsertAndGetFlags() async throws {
         // Given
         let givenUserId = String.random()
-        let givenFlags = FeatureFlags(creditCardV1: .random())
+        let givenFlags = FeatureFlags(creditCardV1: .random(), passSharingV1: .random())
 
         // When
         try await sut.upsertFlags(givenFlags, userId: givenUserId)
