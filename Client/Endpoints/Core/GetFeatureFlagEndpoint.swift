@@ -22,7 +22,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct GetFeatureFlagEndpointResponse: Decodable {
-   public let code: Int
+    public let code: Int
     public let toggles: [FeatureFlagResponse]
 }
 

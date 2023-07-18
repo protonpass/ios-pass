@@ -45,7 +45,7 @@ public extension LocalFeatureFlagsDatasourceProtocol {
         guard let flagsData = try? encoder.encode(flags) else {
             throw FeatureFlagError.couldNotEncodeFlags
         }
-        
+
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
