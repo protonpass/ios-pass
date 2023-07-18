@@ -1423,6 +1423,7 @@
 		5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManagerTests.swift; sourceTree = "<group>"; };
 		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
+		5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ProtonPass 2.xcdatamodel"; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
@@ -7991,9 +7992,10 @@
 		3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */,
 				3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */,
 			);
-			currentVersion = 3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */;
+			currentVersion = 5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */;
 			path = ProtonPass.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
