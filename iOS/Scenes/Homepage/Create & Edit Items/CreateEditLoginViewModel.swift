@@ -86,7 +86,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
          preferences: Preferences,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          emailAddress: String) throws {
         self.emailAddress = emailAddress
         self.aliasRepository = aliasRepository

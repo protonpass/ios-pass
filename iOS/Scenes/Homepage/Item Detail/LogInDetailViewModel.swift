@@ -60,7 +60,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
                   vault: Vault?,
-                  logManager: LogManager,
+                  logManager: LogManagerProtocol,
                   theme: Theme) {
         totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
