@@ -45,7 +45,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     init(isShownAsSheet: Bool,
          apiService: APIService,
          paymentsManager: PaymentsManager,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          theme: Theme,
          username: String,
          passPlanRepository: PassPlanRepositoryProtocol) {

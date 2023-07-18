@@ -46,7 +46,7 @@ public protocol APIManagerProtocol {
 
 // swiftlint:disable line_length
 final class APIManager: APIManagerProtocol {
-    private let logManager: LogManager
+    private let logManager: LogManagerProtocol
     private let logger: Logger
     private let appVer: String
     private let appData: AppData
@@ -65,7 +65,7 @@ final class APIManager: APIManagerProtocol {
         appData.userData
     }
 
-    init(logManager: LogManager, appVer: String, appData: AppData, preferences: Preferences) {
+    init(logManager: LogManagerProtocol, appVer: String, appData: AppData, preferences: Preferences) {
         let logger = Logger(manager: logManager)
         let trustKitDelegate = LoggingTrustKitDelegate(logger: logger)
         APIManager.setUpCertificatePinning(trustKitDelegate: trustKitDelegate)

@@ -65,7 +65,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 
     init(itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          preferences: Preferences) {

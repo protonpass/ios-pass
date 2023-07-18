@@ -106,7 +106,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
                 remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
                 passPlanRepository: PassPlanRepositoryProtocol,
-                logManager: LogManager,
+                logManager: LogManagerProtocol,
                 scheduler: TelemetrySchedulerProtocol,
                 userId: String,
                 eventCount: Int = 500) {
