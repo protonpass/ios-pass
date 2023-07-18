@@ -22,23 +22,32 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct GetFeatureFlagEndpointResponse: Decodable {
-    let code: Int
-    let feature: FeatureFlagResponse
+   public let code: Int
+    public let toggles: [FeatureFlagResponse]
 }
 
-public struct FeatureFlagResponse: Decodable {
-    public let value: Bool
+public struct FeatureFlagResponse: Codable {
+    public let name: String
+    public let enabled: Bool
+    public let variant: Variant?
 }
 
-public enum FeatureFlagType {
-    case creditCardV1
+// MARK: - Variant
 
-    var path: String {
-        switch self {
-        case .creditCardV1:
-            return "PassCreditCardsV1"
-        }
-    }
+public struct Variant: Codable {
+    public let name: String
+    public let enabled: Bool
+    public let payload: Payload?
+}
+
+// MARK: - Payload
+
+public struct Payload: Codable {
+    public let type, value: String
+}
+
+public enum FeatureFlagType: String, CaseIterable {
+    case passSharingV1 = "PassSharingV1"
 }
 
 public struct GetFeatureFlagEndpoint: Endpoint {
@@ -47,9 +56,11 @@ public struct GetFeatureFlagEndpoint: Endpoint {
 
     public var debugDescription: String
     public var path: String
+    public var method: HTTPMethod
 
-    public init(flagType: FeatureFlagType) {
-        debugDescription = "Get feature flag \(flagType.path)"
-        path = "/core/v4/features/\(flagType.path)"
+    public init() {
+        debugDescription = "Get all feature flags from unleash"
+        path = "/feature/v2/frontend"
+        method = .get
     }
 }

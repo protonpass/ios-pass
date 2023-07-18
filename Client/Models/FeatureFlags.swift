@@ -20,6 +20,11 @@
 
 import Foundation
 
-public struct FeatureFlags: Hashable {
-    public let creditCardV1: Bool
+public struct FeatureFlags: Hashable, Codable {
+    public var creditCardV1 = true
+    public let passSharingV1: Bool
+    
+    static var `default`: FeatureFlags {
+        FeatureFlags(passSharingV1: false)
+    }
 }
