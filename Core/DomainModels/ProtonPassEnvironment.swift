@@ -30,11 +30,9 @@ public enum ProtonPassEnvironment {
                          captchaHost: Bundle.main.plistString(for: .captchaHost, in: .black),
                          humanVerificationV3Host: Bundle.main.plistString(for: .humanVerificationHost, in: .black),
                          accountHost: Bundle.main.plistString(for: .accountHost, in: .black),
-                         defaultHost: "https://api.proton.black",
-                         //  Bundle.main.plistString(for: .defaultHost, in: .black),
+                         defaultHost: Bundle.main.plistString(for: .defaultHost, in: .black),
                          apiHost: Bundle.main.plistString(for: .apiHost, in: .black),
-                         defaultPath: "") // https://api.proton.black) // Bundle.main.plistString(for:
-        // .defaultPath, in: .black))
+                         defaultPath: Bundle.main.plistString(for: .defaultPath, in: .black))
         case .prod:
             return .init(signupDomain: Bundle.main.plistString(for: .signupDomain, in: .prod),
                          captchaHost: Bundle.main.plistString(for: .captchaHost, in: .prod),
