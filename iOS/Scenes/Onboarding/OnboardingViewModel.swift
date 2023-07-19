@@ -32,7 +32,7 @@ final class OnboardingViewModel: ObservableObject {
 
     private let credentialManager: CredentialManagerProtocol
     private let bannerManager: BannerManager
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationPolicy)
+    private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
