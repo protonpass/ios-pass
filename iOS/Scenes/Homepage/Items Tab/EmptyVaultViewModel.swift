@@ -24,26 +24,9 @@ import Core
 final class EmptyVaultViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published private var creditCardV1 = false
-
     var supportedItemContentTypes: [ItemContentType] {
-        if creditCardV1 {
-            return ItemContentType.allCases
-        } else {
-            return ItemContentType.allCases.filter { $0 != .creditCard }
-        }
+        ItemContentType.allCases
     }
 
-    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManagerProtocol) {
-        Task { @MainActor in
-            do {
-                let flags = try await featureFlagsRepository.getFlags()
-                creditCardV1 = flags.creditCardV1
-            } catch {
-                let logger = Logger(manager: logManager)
-                logger.error(error)
-            }
-        }
-    }
+    init() {}
 }

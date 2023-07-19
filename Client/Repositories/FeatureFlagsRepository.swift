@@ -79,7 +79,6 @@ private extension FeatureFlagsRepository {
         let currentPassFlags = flags.filter { element in
             FeatureFlagType(rawValue: element.name) != nil
         }
-        return FeatureFlags(passSharingV1: currentPassFlags
-            .contains { $0.name == FeatureFlagType.passSharingV1.rawValue })
+        return FeatureFlags(flags: currentPassFlags)
     }
 }
