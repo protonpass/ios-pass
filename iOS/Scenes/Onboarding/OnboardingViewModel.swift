@@ -33,7 +33,6 @@ final class OnboardingViewModel: ObservableObject {
     private let credentialManager: CredentialManagerProtocol
     private let bannerManager: BannerManager
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
@@ -60,7 +59,7 @@ final class OnboardingViewModel: ObservableObject {
                 guard let self else { return }
                 if self.preferences.localAuthenticationMethod == .biometric {
                     do {
-                        let biometryType = try self.checkBiometryType(for: self.policy)
+                        let biometryType = try self.checkBiometryType(policy: self.policy)
                         switch biometryType {
                         case .touchID:
                             self.state = .touchIDEnabled
@@ -91,8 +90,7 @@ extension OnboardingViewModel {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 do {
-                    let authenticated = try await self.authenticate(context: self.context,
-                                                                    policy: self.policy)
+                    let authenticated = try await self.authenticate(policy: self.policy)
                     if authenticated {
                         preferences.localAuthenticationMethod = .biometric
                         showAppropriateBiometricAuthenticationStep()
@@ -146,7 +144,7 @@ private extension OnboardingViewModel {
 
     func showAppropriateBiometricAuthenticationStep() {
         do {
-            let biometryType = try checkBiometryType(for: policy)
+            let biometryType = try checkBiometryType(policy: policy)
             switch biometryType {
             case .faceID:
                 if preferences.localAuthenticationMethod == .biometric {

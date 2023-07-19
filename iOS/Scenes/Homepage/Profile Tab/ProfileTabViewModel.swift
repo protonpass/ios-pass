@@ -54,6 +54,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
     let vaultsManager: VaultsManager
 
+    private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
+
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
     @Published var fallbackToPasscode = true {
@@ -209,9 +212,7 @@ private extension ProfileTabViewModel {
             localAuthenticationMethod = .none
         case .biometric:
             do {
-                let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-                let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
-                let biometryType = try checkBiometryType(for: policy)
+                let biometryType = try checkBiometryType(policy: policy)
                 localAuthenticationMethod = .biometric(biometryType)
             } catch {
                 // Fallback to `none`, not much we can do except displaying the error

@@ -22,21 +22,23 @@
 
 /// Biometrically authenticate with a given reason
 protocol AuthenticateBiometricallyUseCase: Sendable {
-    func execute(context: LAContext, policy: LAPolicy, reason: String) async throws -> Bool
+    func execute(policy: LAPolicy, reason: String) async throws -> Bool
 }
 
 extension AuthenticateBiometricallyUseCase {
-    func callAsFunction(context: LAContext,
-                        policy: LAPolicy,
-                        reason: String = "Please authenticate") async throws -> Bool {
-        try await execute(context: context, policy: policy, reason: reason)
+    func callAsFunction(policy: LAPolicy, reason: String = "Please authenticate") async throws -> Bool {
+        try await execute(policy: policy, reason: reason)
     }
 }
 
 final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
-    init() {}
+    private let context: LAContext
 
-    func execute(context: LAContext, policy: LAPolicy, reason: String) async throws -> Bool {
+    init(context: LAContext) {
+        self.context = context
+    }
+
+    func execute(policy: LAPolicy, reason: String) async throws -> Bool {
         try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 }
