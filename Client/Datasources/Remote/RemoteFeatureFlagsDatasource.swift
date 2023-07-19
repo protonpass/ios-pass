@@ -19,11 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public protocol RemoteFeatureFlagsDatasourceProtocol: RemoteDatasourceProtocol {
-    func getFlags() async throws -> [FeatureFlagResponse]
+    func getFlags() async throws -> [FeatureFlag]
 }
 
 public extension RemoteFeatureFlagsDatasourceProtocol {
-    func getFlags() async throws -> [FeatureFlagResponse] {
+    func getFlags() async throws -> [FeatureFlag] {
         let endpoint = GetFeatureFlagEndpoint()
         let response = try await apiService.exec(endpoint: endpoint)
         return response.toggles

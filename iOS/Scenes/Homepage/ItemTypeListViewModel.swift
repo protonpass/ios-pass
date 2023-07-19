@@ -46,10 +46,6 @@ protocol ItemTypeListViewModelDelegate: AnyObject {
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
 
-    var supportedItemTypes: [ItemType] {
-        ItemType.allCases
-    }
-
     weak var delegate: ItemTypeListViewModelDelegate?
 
     init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,

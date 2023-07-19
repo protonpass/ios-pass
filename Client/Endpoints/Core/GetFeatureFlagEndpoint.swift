@@ -23,34 +23,34 @@ import ProtonCore_Services
 
 public struct GetFeatureFlagEndpointResponse: Decodable {
     public let code: Int
-    public let toggles: [FeatureFlagResponse]
+    public let toggles: [FeatureFlag]
 }
 
-public struct FeatureFlagResponse: Codable, Equatable, Hashable {
+public struct FeatureFlag: Codable, Equatable, Hashable {
     public let name: String
     public let enabled: Bool
-    public let variant: Variant?
+    public let variant: FeatureFlagVariant?
 }
 
 // MARK: - Variant
 
-public struct Variant: Codable, Equatable, Hashable {
+public struct FeatureFlagVariant: Codable, Equatable, Hashable {
     public let name: String
     public let enabled: Bool
-    public let payload: Payload?
+    public let payload: FeatureFlagVariantPayload?
 }
 
 // MARK: - Payload
 
-public struct Payload: Codable, Equatable, Hashable {
+public struct FeatureFlagVariantPayload: Codable, Equatable, Hashable {
     public let type: String
-    public let value: PayloadValue
+    public let value: FeatureFlagVariantPayloadValue
 }
 
 // As we don't know the exact type of the payload from unleash we should update the following as explained in
 // https://stackoverflow.com/questions/52681385/swift-codable-multiple-types
 // If new cases are implemented on the unleash backend we need to update the parsing cases
-public enum PayloadValue: Codable, Equatable, Hashable {
+public enum FeatureFlagVariantPayloadValue: Codable, Equatable, Hashable {
     case string(String)
     case nonDecodable
 
@@ -62,7 +62,7 @@ public enum PayloadValue: Codable, Equatable, Hashable {
         } else {
             self = .nonDecodable
         }
-        throw DecodingError.typeMismatch(PayloadValue.self,
+        throw DecodingError.typeMismatch(FeatureFlagVariantPayloadValue.self,
                                          DecodingError.Context(codingPath: decoder.codingPath,
                                                                debugDescription: "Wrong type for MyValue"))
     }

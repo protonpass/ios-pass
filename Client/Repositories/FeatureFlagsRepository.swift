@@ -75,7 +75,7 @@ private extension FeatureFlagsRepository {
     /// flags we want to
     /// filter only the ones that are linked to pass
     /// The flag only appears if it is activated otherwise it it absent from the response
-    func filterPassFlags(from flags: [FeatureFlagResponse]) -> FeatureFlags {
+    func filterPassFlags(from flags: [FeatureFlag]) -> FeatureFlags {
         let currentPassFlags = flags.filter { element in
             FeatureFlagType(rawValue: element.name) != nil
         }
