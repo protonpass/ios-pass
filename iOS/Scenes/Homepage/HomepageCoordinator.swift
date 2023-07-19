@@ -1469,6 +1469,22 @@ extension HomepageCoordinator: LogsViewModelDelegate {
     }
 }
 
+// MARK: - Navigation
+extension HomepageCoordinator {
+    func presentSharingFlow() {
+//        let viewModel = CreateEditVaultViewModel(mode: mode,
+//                                                 shareRepository: shareRepository,
+//                                                 upgradeChecker: upgradeChecker,
+//                                                 logManager: logManager,
+//                                                 theme: preferences.theme)
+//        viewModel.delegate = self
+//        let view = CreateEditVaultView(viewModel: viewModel)
+        
+        let test = Text("this is a test")
+        present(test)
+    }
+}
+
 // MARK: - SyncEventLoopDelegate
 
 extension HomepageCoordinator: SyncEventLoopDelegate {
