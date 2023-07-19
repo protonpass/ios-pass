@@ -25,6 +25,8 @@ import LocalAuthentication
 final class SecuritySettingsCoordinator {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
+    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
 
     weak var delegate: ChildCoordinatorDelegate?
 
@@ -134,11 +136,11 @@ private extension SecuritySettingsCoordinator {
 
         if allowFailure {
             delegate?.childCoordinatorWantsToDismissTopViewController()
-            let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 do {
-                    let authenticate = try await authenticate(reason: "Please authenticate")
+                    let authenticate = try await self.authenticate(context: self.context, policy: policy)
                     if authenticate {
                         succesHandler()
                     }

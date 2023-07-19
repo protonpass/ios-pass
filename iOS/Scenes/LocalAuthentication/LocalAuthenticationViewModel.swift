@@ -39,6 +39,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
+
+    private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
+    private let policy = resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
+    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     let mode: Mode
 
     @Published private(set) var state: LocalAuthenticationState = .noAttempts
@@ -74,10 +78,10 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     }
 
     func biometricallyAuthenticate() {
-        let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                let authenticated = try await authenticate(reason: "Please authenticate")
+                let authenticated = try await self.authenticate(context: self.context, policy: self.policy)
                 if authenticated {
                     recordSuccess()
                 } else {

@@ -33,8 +33,10 @@ final class OnboardingViewModel: ObservableObject {
     private let credentialManager: CredentialManagerProtocol
     private let bannerManager: BannerManager
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
+    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -86,10 +88,11 @@ extension OnboardingViewModel {
             showAppropriateBiometricAuthenticationStep()
 
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
                 do {
-                    let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-                    let authenticated = try await authenticate(reason: "Please authenticate")
+                    let authenticated = try await self.authenticate(context: self.context,
+                                                                    policy: self.policy)
                     if authenticated {
                         preferences.localAuthenticationMethod = .biometric
                         showAppropriateBiometricAuthenticationStep()
