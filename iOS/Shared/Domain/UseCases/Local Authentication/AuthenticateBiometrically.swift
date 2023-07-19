@@ -18,28 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Factory
-
 @preconcurrency import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
 protocol AuthenticateBiometricallyUseCase: Sendable {
-    func execute(reason: String) async throws -> Bool
+    func execute(context: LAContext, policy: LAPolicy, reason: String) async throws -> Bool
 }
 
 extension AuthenticateBiometricallyUseCase {
-    func callAsFunction(reason: String) async throws -> Bool {
-        try await execute(reason: reason)
+    func callAsFunction(context: LAContext,
+                        policy: LAPolicy,
+                        reason: String = "Please authenticate") async throws -> Bool {
+        try await execute(context: context, policy: policy, reason: reason)
     }
 }
 
 final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
-    private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
-
     init() {}
 
-    func execute(reason: String) async throws -> Bool {
+    func execute(context: LAContext, policy: LAPolicy, reason: String) async throws -> Bool {
         try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 }
