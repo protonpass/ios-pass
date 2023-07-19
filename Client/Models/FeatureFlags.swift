@@ -21,10 +21,13 @@
 import Foundation
 
 public struct FeatureFlags: Hashable, Codable {
-    public var creditCardV1 = true
-    public let passSharingV1: Bool
+    let flags: [FeatureFlagResponse]
 
     static var `default`: FeatureFlags {
-        FeatureFlags(passSharingV1: false)
+        FeatureFlags(flags: [])
+    }
+
+    func isFlagEnable(for key: String) -> Bool {
+        flags.first { $0.name == key }?.enabled ?? false
     }
 }

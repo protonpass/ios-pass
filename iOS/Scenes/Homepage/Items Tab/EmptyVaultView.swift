@@ -28,11 +28,8 @@ struct EmptyVaultView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     private let onCreate: (ItemContentType) -> Void
 
-    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManagerProtocol,
-         onCreate: @escaping (ItemContentType) -> Void) {
-        _viewModel = .init(wrappedValue: .init(featureFlagsRepository: featureFlagsRepository,
-                                               logManager: logManager))
+    init(onCreate: @escaping (ItemContentType) -> Void) {
+        _viewModel = .init(wrappedValue: .init())
         self.onCreate = onCreate
     }
 

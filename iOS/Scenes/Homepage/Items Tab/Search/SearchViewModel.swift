@@ -50,7 +50,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var state = SearchViewState.initializing
-    @Published private(set) var creditCardV1 = false
     @Published var selectedType: ItemContentType?
     @Published var query = ""
 
@@ -328,7 +327,6 @@ private extension SearchViewModel {
             }
             do {
                 let flags = try await featureFlagsRepository.getFlags()
-                self.creditCardV1 = flags.creditCardV1
             } catch {
                 self.logger.error(error)
             }
