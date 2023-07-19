@@ -120,7 +120,11 @@ private extension SecuritySettingsCoordinator {
             }
 
             if newMethod == .pin {
-                self.definePINCodeAndChangeToPINMethod()
+                // Delay a bit to wait for cover/uncover app animation to finish before presenting new sheet
+                // (see "sceneWillResignActive" & "sceneDidBecomeActive" in SceneDelegate)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                    self?.definePINCodeAndChangeToPINMethod()
+                }
             } else {
                 self.preferences.localAuthenticationMethod = newMethod
             }
