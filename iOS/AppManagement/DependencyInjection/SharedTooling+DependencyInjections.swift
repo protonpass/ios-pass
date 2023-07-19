@@ -72,7 +72,8 @@ extension SharedToolingContainer {
     }
 
     /// A `Logger` that has `shared` scope because while all logger instances share a unique `logManager`
-    /// each of them should have a different `subsystem` &`category`, so the scope cannot be `unique` or `singleton`
+    /// each of them should have a different `subsystem` &`category`, so the scope cannot be `unique` or
+    /// `singleton`
     var logger: Factory<Logger> {
         self { Logger(manager: self.logManager()) }
             .shared
