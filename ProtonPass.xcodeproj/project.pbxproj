@@ -563,7 +563,6 @@
 		359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88B2A20CF74009588A9 /* InfoBannerView.swift */; };
 		359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */; };
 		359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB8912A213A44009588A9 /* TrialDetailView.swift */; };
-		35A0892B2A4762A800BEA1AD /* EmptyVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A0892A2A4762A800BEA1AD /* EmptyVaultViewModel.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
 		35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
 		35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */; };
@@ -1353,7 +1352,6 @@
 		359EB88B2A20CF74009588A9 /* InfoBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerView.swift; sourceTree = "<group>"; };
 		359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerViewStack.swift; sourceTree = "<group>"; };
 		359EB8912A213A44009588A9 /* TrialDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialDetailView.swift; sourceTree = "<group>"; };
-		35A0892A2A4762A800BEA1AD /* EmptyVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVaultViewModel.swift; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
 		35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCreateEditItemViewModel.swift; sourceTree = "<group>"; };
@@ -1423,6 +1421,7 @@
 		5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManagerTests.swift; sourceTree = "<group>"; };
 		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
+		5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ProtonPass 2.xcdatamodel"; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
@@ -2242,7 +2241,6 @@
 			children = (
 				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
-				35A0892A2A4762A800BEA1AD /* EmptyVaultViewModel.swift */,
 				355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
@@ -4515,7 +4513,6 @@
 				356B830E29C339110084488A /* SortTypeButton.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
 				66CA928129F971CF00F2FC59 /* PaymentsConstants.swift in Sources */,
-				35A0892B2A4762A800BEA1AD /* EmptyVaultViewModel.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				35AC9A542A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift in Sources */,
@@ -7991,9 +7988,10 @@
 		3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */,
 				3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */,
 			);
-			currentVersion = 3593DD0F28A83F7A00C235D3 /* ProtonPass.xcdatamodel */;
+			currentVersion = 5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */;
 			path = ProtonPass.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

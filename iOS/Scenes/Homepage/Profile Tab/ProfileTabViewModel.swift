@@ -68,7 +68,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published private(set) var plan: PassPlan?
-    @Published private(set) var creditCardV1 = false
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
@@ -195,7 +194,6 @@ private extension ProfileTabViewModel {
         Task { @MainActor in
             do {
                 let flags = try await featureFlagsRepository.getFlags()
-                creditCardV1 = flags.creditCardV1
             } catch {
                 logger.error(error)
             }
