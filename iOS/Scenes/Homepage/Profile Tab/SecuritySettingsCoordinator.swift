@@ -26,7 +26,13 @@ final class SecuritySettingsCoordinator {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
+    private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private var authenticatingPolicy: LAPolicy {
+        resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
+    }
+
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    private let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
 
     weak var delegate: ChildCoordinatorDelegate?
 
@@ -54,9 +60,7 @@ extension SecuritySettingsCoordinator {
 private extension SecuritySettingsCoordinator {
     func showListOfAvailableMethods() {
         do {
-            let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
             let methods = try getMethods()
-
             let view = LocalAuthenticationMethodsView(supportedMethods: methods,
                                                       onSelect: { [weak self] newMethod in
                                                           self?.updateMethod(newMethod.method)
@@ -83,22 +87,18 @@ private extension SecuritySettingsCoordinator {
 
         case (.none, .biometric):
             // Enable biometric authentication
-            // Authenticate using `localAuthenticationEnablingPolicy`
             // Failure is allowed because biometric authentication is not yet turned on
-            let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
             biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                     policy: policy,
+                                                     policy: enablingPolicy,
                                                      allowFailure: true)
 
         case (.biometric, .none),
              (.biometric, .pin):
             // Disable biometric authentication or change from biometric to PIN
-            // Authenticate using `localAuthenticationAuthenticatingPolicy`
             // Failure is not allowed because biometric authentication is already turned on
             // Log out if too many failures
-            let policy = resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
             biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                     policy: policy,
+                                                     policy: authenticatingPolicy,
                                                      allowFailure: false)
 
         case (.none, .pin):
@@ -194,10 +194,9 @@ private extension SecuritySettingsCoordinator {
             guard let self else { return }
             self.delegate?.childCoordinatorWantsToDismissTopViewController()
 
-            let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
             if newMethod == .biometric {
                 self.biometricallyAuthenticateAndUpdateMethod(.biometric,
-                                                              policy: policy,
+                                                              policy: self.enablingPolicy,
                                                               allowFailure: true)
             } else {
                 self.preferences.localAuthenticationMethod = newMethod
