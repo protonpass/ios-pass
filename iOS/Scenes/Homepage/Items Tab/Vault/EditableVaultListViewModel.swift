@@ -40,9 +40,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @Published var showingAlert = false
 
-    //TODO: move this to a use case
+    // TODO: move this to a use case
     private var sharedVault: Vault?
-    
+
     var numberOfAliasforSharedVault: Int {
         guard let sharedVault else {
             return 0

@@ -71,8 +71,7 @@ struct EditableVaultListView: View {
         .alert("Aliases won’t be shared",
                isPresented: $viewModel.showingAlert,
                actions: {
-                   Button(action: {
-                          },
+                   Button(action: {},
                           label: {
                               Text("Ok")
                           })
