@@ -27,32 +27,33 @@ import UIComponents
 struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @State private var state: PINState = .definition
-    @State private var definedPIN = ""
-    @State private var confirmedPIN = ""
-    @State private var error: ValidationError?
-    private let preferences = resolve(\SharedToolingContainer.preferences)
-    var onSet: (String) -> Void
+    @StateObject private var viewModel: SetPINCodeViewModel
+
+    init(onSet: @escaping (String) -> Void) {
+        _viewModel = .init(wrappedValue: .init(onSet: onSet))
+    }
 
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 12) {
-                Text(state.title)
+                Text(viewModel.state.title)
                     .font(.largeTitle.bold())
                     .foregroundColor(PassColor.textNorm.toColor)
 
-                Text(state.description)
+                Text(viewModel.state.description)
                     .font(.callout)
                     .foregroundColor(PassColor.textWeak.toColor)
 
-                SecureField(state.placeholder, text: state == .definition ? $definedPIN : $confirmedPIN)
+                SecureField(viewModel.state.placeholder,
+                            text: viewModel.state == .definition ?
+                                $viewModel.definedPIN : $viewModel.confirmedPIN)
                     .keyboardType(.numberPad)
                     .font(.title)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .padding(.top, 50)
                     .focused($isFocused)
 
-                if let error {
+                if let error = viewModel.error {
                     Text(error.description)
                         .foregroundColor(PassColor.signalDanger.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -62,20 +63,14 @@ struct SetPINCodeView: View {
             }
             .padding()
             .background(PassColor.backgroundNorm.toColor)
-            .animation(.default, value: error)
+            .animation(.default, value: viewModel.error)
             .toolbar { toolbarContent }
             .onAppear { isFocused = true }
-            .onChange(of: definedPIN) { _ in
-                error = nil
-            }
-            .onChange(of: confirmedPIN) { _ in
-                error = nil
-            }
         }
         .navigationViewStyle(.stack)
         .accentColor(PassColor.interactionNormMajor1.toColor)
         .tint(PassColor.interactionNormMajor1.toColor)
-        .theme(preferences.theme)
+        .theme(viewModel.theme)
     }
 }
 
@@ -90,103 +85,13 @@ private extension SetPINCodeView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: state.actionTitle,
+            DisablableCapsuleTextButton(title: viewModel.state.actionTitle,
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: actionButtonDisabled,
-                                        action: action)
-        }
-    }
-
-    var actionButtonDisabled: Bool {
-        // Always disabled when error occurs
-        guard error == nil else { return true }
-        let minLength = Constants.PINCode.minLength
-        let maxLength = Constants.PINCode.maxLength
-        switch state {
-        case .definition:
-            return definedPIN.isEmpty || !(minLength...maxLength).contains(definedPIN.count)
-        case .confirmation:
-            return confirmedPIN.isEmpty || !(minLength...maxLength).contains(confirmedPIN.count)
-        }
-    }
-
-    func action() {
-        switch state {
-        case .definition:
-            if definedPIN.isValid(allowedCharacters: .decimalDigits) {
-                state = .confirmation
-            } else {
-                error = .invalidCharacters
-            }
-        case .confirmation:
-            if confirmedPIN.isValid(allowedCharacters: .decimalDigits) {
-                if confirmedPIN == definedPIN {
-                    onSet(definedPIN)
-                } else {
-                    error = .notMatched
-                }
-            } else {
-                error = .invalidCharacters
-            }
-        }
-    }
-}
-
-private extension SetPINCodeView {
-    // Can not use the name `State` because it clashes with `@State`
-    enum PINState {
-        case definition, confirmation
-
-        var title: String {
-            switch self {
-            case .definition:
-                return "Set PIN code"
-            case .confirmation:
-                return "Repeat PIN code"
-            }
-        }
-
-        var description: String {
-            switch self {
-            case .definition:
-                return "Unlock the app with this code"
-            case .confirmation:
-                return "Type your PIN again to confirm"
-            }
-        }
-
-        var placeholder: String {
-            switch self {
-            case .definition:
-                return "Choose a PIN code"
-            case .confirmation:
-                return "Repeat PIN code"
-            }
-        }
-
-        var actionTitle: String {
-            switch self {
-            case .definition:
-                return "Continue"
-            case .confirmation:
-                return "Set PIN code"
-            }
-        }
-    }
-
-    enum ValidationError: Error {
-        case invalidCharacters, notMatched
-
-        var description: String {
-            switch self {
-            case .invalidCharacters:
-                return "PIN must contain only numeric characters (0-9)"
-            case .notMatched:
-                return "PINs not matched"
-            }
+                                        disabled: viewModel.actionNotAllowed,
+                                        action: viewModel.action)
         }
     }
 }
