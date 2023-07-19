@@ -633,6 +633,8 @@
 		5B0C75152A39EA3A00272CE8 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */; };
 		5B14538D2A681B400048B022 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
 		5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */; };
+		5B1453942A6832780048B022 /* UserEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453922A6832780048B022 /* UserEmailView.swift */; };
+		5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453932A6832780048B022 /* UserEmailViewModel.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
@@ -1427,6 +1429,8 @@
 		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
 		5B14538C2A681B400048B022 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Router+DependencyInjections.swift"; sourceTree = "<group>"; };
+		5B1453922A6832780048B022 /* UserEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailView.swift; sourceTree = "<group>"; };
+		5B1453932A6832780048B022 /* UserEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailViewModel.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
@@ -2836,6 +2840,7 @@
 		35E5070B286FB57800A3F6EA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5B1453902A6831C60048B022 /* Sharing */,
 				35E5070C286FB58800A3F6EA /* App */,
 				35F8CCFE29B617510017DBC6 /* Homepage */,
 				354E9A9A2A443CA200AD2B9A /* LocalAuthentication */,
@@ -2952,6 +2957,23 @@
 				5B14538C2A681B400048B022 /* MainRouter.swift */,
 			);
 			path = Routers;
+			sourceTree = "<group>";
+		};
+		5B1453902A6831C60048B022 /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453912A68321B0048B022 /* UserEmailView */,
+			);
+			path = Sharing;
+			sourceTree = "<group>";
+		};
+		5B1453912A68321B0048B022 /* UserEmailView */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453922A6832780048B022 /* UserEmailView.swift */,
+				5B1453932A6832780048B022 /* UserEmailViewModel.swift */,
+			);
+			path = UserEmailView;
 			sourceTree = "<group>";
 		};
 		5B1F5CE72A5EAC7100A6C3ED /* UIElements */ = {
@@ -4514,6 +4536,7 @@
 				5BFFB50A2A5BFF2000C2D1F9 /* CheckCameraPermission.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				355E92782A59D2D500C22703 /* Factory+Extensions.swift in Sources */,
+				5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
@@ -4648,6 +4671,7 @@
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
 				35703F282A279B950088C287 /* CustomFieldSections.swift in Sources */,
+				5B1453942A6832780048B022 /* UserEmailView.swift in Sources */,
 				5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 				354F1F1A29D8C2A200A6B1E8 /* AppData.swift in Sources */,
