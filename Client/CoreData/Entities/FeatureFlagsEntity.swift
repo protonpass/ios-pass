@@ -38,8 +38,11 @@ extension FeatureFlagsEntity {
 extension FeatureFlagsEntity {
     func toFeatureFlags() -> FeatureFlags {
         let decoder = JSONDecoder()
-        guard let flags = try? decoder.decode([FeatureFlagResponse].self, from: flagsData) else {
-            assert(true, "Should decode Featureflags")
+        guard !flagsData.isEmpty else {
+            return .default
+        }
+        guard let flags = try? decoder.decode([FeatureFlag].self, from: flagsData) else {
+            assertionFailure("Should decode Featureflags.")
             return FeatureFlags.default
         }
         return FeatureFlags(flags: flags)

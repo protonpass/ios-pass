@@ -21,7 +21,7 @@
 import Foundation
 
 public struct FeatureFlags: Hashable, Codable {
-    let flags: [FeatureFlagResponse]
+    let flags: [FeatureFlag]
 
     static var `default`: FeatureFlags {
         FeatureFlags(flags: [])

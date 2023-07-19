@@ -24,12 +24,10 @@ import SwiftUI
 import UIComponents
 
 struct EmptyVaultView: View {
-    @StateObject private var viewModel: EmptyVaultViewModel
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     private let onCreate: (ItemContentType) -> Void
 
     init(onCreate: @escaping (ItemContentType) -> Void) {
-        _viewModel = .init(wrappedValue: .init())
         self.onCreate = onCreate
     }
 
@@ -48,7 +46,7 @@ struct EmptyVaultView: View {
                     .padding(.bottom, 32)
 
                 LazyVGrid(columns: columns) {
-                    ForEach(viewModel.supportedItemContentTypes, id: \.self) { type in
+                    ForEach(ItemContentType.allCases, id: \.self) { type in
                         CreateItemButton(type: type) {
                             onCreate(type)
                         }
