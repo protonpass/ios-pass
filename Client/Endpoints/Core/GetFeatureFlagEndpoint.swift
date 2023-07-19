@@ -49,14 +49,18 @@ public struct Payload: Codable, Equatable, Hashable {
 
 // As we don't know the exact type of the payload from unleash we should update the following as explained in
 // https://stackoverflow.com/questions/52681385/swift-codable-multiple-types
+// If new cases are implemented on the unleash backend we need to update the parsing cases 
 public enum PayloadValue: Codable, Equatable, Hashable {
     case string(String)
-
+    case nonDecodable
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let value = try? container.decode(String.self) {
             self = .string(value)
             return
+        } else {
+            self = .nonDecodable
         }
         throw DecodingError.typeMismatch(PayloadValue.self,
                                          DecodingError.Context(codingPath: decoder.codingPath,
@@ -68,6 +72,8 @@ public enum PayloadValue: Codable, Equatable, Hashable {
         switch self {
         case let .string(value):
             try container.encode(value)
+        default:
+            return
         }
     }
 
@@ -75,6 +81,8 @@ public enum PayloadValue: Codable, Equatable, Hashable {
         switch self {
         case let .string(value):
             return value
+        default:
+            return nil
         }
     }
 }
