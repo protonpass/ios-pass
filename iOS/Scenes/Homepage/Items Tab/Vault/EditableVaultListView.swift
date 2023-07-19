@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -27,6 +28,7 @@ struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: EditableVaultListViewModel
     @State private var isShowingEmptyTrashAlert = false
+    private let router = resolve(\RouterContainer.mainRouter)
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -71,7 +73,9 @@ struct EditableVaultListView: View {
         .alert("Aliases won’t be shared",
                isPresented: $viewModel.showingAlert,
                actions: {
-                   Button(action: {},
+                   Button(action: {
+                              router.presentSheet(for: .sharingFlow)
+                          },
                           label: {
                               Text("Ok")
                           })
