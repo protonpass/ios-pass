@@ -34,11 +34,9 @@ extension CheckBiometryTypeUseCase {
 }
 
 final class CheckBiometryType: CheckBiometryTypeUseCase {
-    private let context: LAContext
+    private let context = LAContext()
 
-    init(context: LAContext) {
-        self.context = context
-    }
+    init() {}
 
     func execute(policy: LAPolicy) throws -> LABiometryType {
         var error: NSError?

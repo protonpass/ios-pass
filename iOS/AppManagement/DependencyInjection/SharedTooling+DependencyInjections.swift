@@ -135,10 +135,6 @@ extension SharedToolingContainer {
 // MARK: Local authentication
 
 extension SharedToolingContainer {
-    var localAuthenticationContext: Factory<LAContext> {
-        self { .init() }
-    }
-
     /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
     var localAuthenticationEnablingPolicy: Factory<LAPolicy> {
         self { .deviceOwnerAuthentication }
