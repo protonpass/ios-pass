@@ -42,7 +42,7 @@ public extension LocalFeatureFlagsDatasourceProtocol {
 
     func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
         let encoder = JSONEncoder()
-        guard let flagsData = try? encoder.encode(flags) else {
+        guard let flagsData = try? encoder.encode(flags.flags) else {
             throw FeatureFlagError.couldNotEncodeFlags
         }
 

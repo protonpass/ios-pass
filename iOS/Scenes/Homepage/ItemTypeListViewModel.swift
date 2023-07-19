@@ -45,14 +45,9 @@ protocol ItemTypeListViewModelDelegate: AnyObject {
 
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
-    @Published private(set) var creditCardV1 = false
 
     var supportedItemTypes: [ItemType] {
-        if creditCardV1 {
-            return ItemType.allCases
-        } else {
-            return ItemType.allCases.filter { $0 != .creditCard }
-        }
+        ItemType.allCases
     }
 
     weak var delegate: ItemTypeListViewModelDelegate?
@@ -74,7 +69,6 @@ final class ItemTypeListViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 let flags = try await featureFlagsRepository.getFlags()
-                creditCardV1 = flags.creditCardV1
             } catch {
                 logger.error(error)
                 delegate?.itemTypeListViewModelDidEncounter(error: error)
