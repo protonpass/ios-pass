@@ -38,6 +38,18 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    @Published var showingAlert = false
+
+    //TODO: move this to a use case
+    private var sharedVault: Vault?
+    
+    var numberOfAliasforSharedVault: Int {
+        guard let sharedVault else {
+            return 0
+        }
+        return vaultsManager.getItem(for: sharedVault).filter { $0.type == .alias }.count
+    }
+
     let logger: Logger
     let vaultsManager: VaultsManager
 
@@ -82,6 +94,11 @@ extension EditableVaultListViewModel {
 
     func edit(vault: Vault) {
         delegate?.editableVaultListViewModelWantsToEdit(vault: vault)
+    }
+
+    func share(vault: Vault) {
+        sharedVault = vault
+        showingAlert = true
     }
 
     func delete(vault: Vault) {

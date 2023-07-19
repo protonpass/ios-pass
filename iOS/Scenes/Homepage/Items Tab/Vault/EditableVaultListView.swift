@@ -68,6 +68,18 @@ struct EditableVaultListView: View {
         }
         .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
+        .alert("Aliases won’t be shared",
+               isPresented: $viewModel.showingAlert,
+               actions: {
+                   Button(action: {
+                          },
+                          label: {
+                              Text("Ok")
+                          })
+               },
+               message: {
+                   Text("This vault contains \(viewModel.numberOfAliasforSharedVault) Aliases. Alias sharing is currently not supported and they won’t be shared.")
+               })
     }
 
     @ViewBuilder
@@ -123,8 +135,23 @@ struct EditableVaultListView: View {
                     Text("Edit")
                 }, icon: {
                     Image(uiImage: IconProvider.pencil)
+                        .renderingMode(.template)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+
                 })
             })
+
+            if !vault.isPrimary {
+                Button(action: {
+                    viewModel.share(vault: vault)
+                }, label: {
+                    Label(title: {
+                        Text("Share")
+                    }, icon: {
+                        IconProvider.userPlus
+                    })
+                })
+            }
 
             Divider()
 
