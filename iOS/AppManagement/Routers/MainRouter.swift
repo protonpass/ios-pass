@@ -20,22 +20,20 @@
 
 import Combine
 
-enum RouterDestination {
-    
-}
+enum RouterDestination {}
 
 enum SheetDestination {
-    
+    case sharingFlow
 }
 
-final class MainPathRouter {
+final class MainRouter {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
 
     func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
     }
-    
+
     func presentSheet(for destination: SheetDestination) {
         newSheetDestination.send(destination)
     }

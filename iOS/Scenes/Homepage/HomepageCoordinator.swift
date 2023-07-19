@@ -83,6 +83,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
+    private let router = resolve(\RouterContainer.mainRouter)
+
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
 
@@ -186,6 +188,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                    logManager: logManager)
         self.vaultsManager = vaultsManager
         super.init()
+        setUpRouting()
         finalizeInitialization()
         self.vaultsManager.refresh()
         start()
@@ -197,6 +200,27 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     override func coordinatorDidDismiss() {
         NotificationCenter.default.post(name: .forceRefreshItemsTab, object: nil)
+    }
+
+    private func setUpRouting() {
+        router
+            .newPresentationDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("plop")
+            }
+            .store(in: &cancellables)
+
+        router
+            .newSheetDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                switch destination {
+                case .sharingFlow:
+                    self?.presentSharingFlow()
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -1470,6 +1494,7 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 }
 
 // MARK: - Navigation
+
 extension HomepageCoordinator {
     func presentSharingFlow() {
 //        let viewModel = CreateEditVaultViewModel(mode: mode,
@@ -1479,7 +1504,7 @@ extension HomepageCoordinator {
 //                                                 theme: preferences.theme)
 //        viewModel.delegate = self
 //        let view = CreateEditVaultView(viewModel: viewModel)
-        
+
         let test = Text("this is a test")
         present(test)
     }
