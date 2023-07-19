@@ -25,7 +25,6 @@ import LocalAuthentication
 final class SecuritySettingsCoordinator {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let context = resolve(\SharedToolingContainer.localAuthenticationContext)
     private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private var authenticatingPolicy: LAPolicy {
         resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
@@ -60,7 +59,7 @@ extension SecuritySettingsCoordinator {
 private extension SecuritySettingsCoordinator {
     func showListOfAvailableMethods() {
         do {
-            let methods = try getMethods()
+            let methods = try getMethods(policy: enablingPolicy)
             let view = LocalAuthenticationMethodsView(supportedMethods: methods,
                                                       onSelect: { [weak self] newMethod in
                                                           self?.updateMethod(newMethod.method)
@@ -140,7 +139,7 @@ private extension SecuritySettingsCoordinator {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 do {
-                    let authenticate = try await self.authenticate(context: self.context, policy: policy)
+                    let authenticate = try await self.authenticate(policy: policy)
                     if authenticate {
                         succesHandler()
                     }

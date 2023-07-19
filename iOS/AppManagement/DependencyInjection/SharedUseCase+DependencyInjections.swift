@@ -42,14 +42,14 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var checkBiometryType: Factory<CheckBiometryTypeUseCase> {
-        self { CheckBiometryType() }
+        self { CheckBiometryType(context: SharedToolingContainer.shared.localAuthenticationContext()) }
     }
 
     var authenticateBiometrically: Factory<AuthenticateBiometricallyUseCase> {
-        self { AuthenticateBiometrically() }
+        self { AuthenticateBiometrically(context: SharedToolingContainer.shared.localAuthenticationContext()) }
     }
 
     var getLocalAuthenticationMethods: Factory<GetLocalAuthenticationMethodsUseCase> {
-        self { GetLocalAuthenticationMethods() }
+        self { GetLocalAuthenticationMethods(checkBiometryType: self.checkBiometryType()) }
     }
 }
