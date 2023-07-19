@@ -1505,7 +1505,7 @@ extension HomepageCoordinator {
 //        viewModel.delegate = self
 //        let view = CreateEditVaultView(viewModel: viewModel)
 
-        let test = Text("this is a test")
+        let test = UserEmailView()
         present(test)
     }
 }
