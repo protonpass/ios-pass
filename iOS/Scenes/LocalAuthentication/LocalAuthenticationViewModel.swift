@@ -35,7 +35,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
     private let delayed: Bool
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()

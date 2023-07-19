@@ -58,6 +58,9 @@ extension SharedToolingContainer {
             .unique
     }
 
+    /// Should be made private once transitionned to `Factory`
+    /// All objects that want to log should create and hold a new instance of `Logger` with
+    /// `resolve(\SharedToolingContainer.logger)`
     var logManager: Factory<LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
@@ -66,6 +69,13 @@ extension SharedToolingContainer {
 
     var logFormatter: Factory<LogFormatterProtocol> {
         self { LogFormatter(format: .txt) }
+    }
+
+    /// A `Logger` that has `shared` scope because while all logger instances share a unique `logManager`
+    /// each of them should have a different `subsystem` &`category`, so the scope cannot be `unique` or `singleton`
+    var logger: Factory<Logger> {
+        self { Logger(manager: self.logManager()) }
+            .shared
     }
 }
 

@@ -24,7 +24,7 @@ import LocalAuthentication
 
 final class SecuritySettingsCoordinator {
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
+    private let logger = resolve(\SharedToolingContainer.logger)
 
     weak var delegate: ChildCoordinatorDelegate?
 

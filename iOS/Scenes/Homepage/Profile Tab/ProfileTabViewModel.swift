@@ -46,7 +46,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let credentialManager: CredentialManagerProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let shareRepository: ShareRepositoryProtocol
-    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private let passPlanRepository: PassPlanRepositoryProtocol
