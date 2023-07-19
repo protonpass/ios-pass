@@ -1,5 +1,5 @@
 //
-// MainRouter.swift
+// Router+DependencyInjections.swift
 // Proton Pass - Created on 19/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,23 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import Foundation
 
-enum RouterDestination {}
+import Factory
+import Foundation
 
-enum SheetDestination {
-    case sharingFlow
+final class RouterContainer: SharedContainer, AutoRegistering {
+    static let shared = RouterContainer()
+    let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .shared
+    }
 }
 
-final class MainRouter {
-    let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
-    let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
+// MARK: Main Router
 
-    func navigate(to destination: RouterDestination) {
-        newPresentationDestination.send(destination)
-    }
-
-    func presentSheet(for destination: SheetDestination) {
-        newSheetDestination.send(destination)
+extension RouterContainer {
+    var mainRouter: Factory<MainRouter> {
+        self { MainRouter() }
     }
 }
