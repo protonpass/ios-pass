@@ -31,17 +31,25 @@ extension FeatureFlagsEntity {
         NSFetchRequest<FeatureFlagsEntity>(entityName: "FeatureFlagsEntity")
     }
 
-    @NSManaged var creditCardV1: Bool
+    @NSManaged var flagsData: Data
     @NSManaged var userID: String?
 }
 
 extension FeatureFlagsEntity {
     func toFeatureFlags() -> FeatureFlags {
-        .init(creditCardV1: creditCardV1)
+        let decoder = JSONDecoder()
+        guard !flagsData.isEmpty else {
+            return .default
+        }
+        guard let flags = try? decoder.decode([FeatureFlag].self, from: flagsData) else {
+            assertionFailure("Should decode Featureflags.")
+            return FeatureFlags.default
+        }
+        return FeatureFlags(flags: flags)
     }
 
-    func hydrate(from flags: FeatureFlags, userId: String) {
-        creditCardV1 = flags.creditCardV1
+    func hydrate(from flagsData: Data, userId: String) {
+        self.flagsData = flagsData
         userID = userId
     }
 }
