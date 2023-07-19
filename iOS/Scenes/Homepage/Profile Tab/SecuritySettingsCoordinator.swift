@@ -27,7 +27,7 @@ final class SecuritySettingsCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
-    private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationPolicy)
+    private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private var authenticatingPolicy: LAPolicy { preferences.localAuthenticationPolicy }
 
     weak var delegate: ChildCoordinatorDelegate?
