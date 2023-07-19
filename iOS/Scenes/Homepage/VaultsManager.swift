@@ -226,6 +226,12 @@ extension VaultsManager {
         }
     }
 
+    func getItem(for vault: Vault) -> [ItemUiModel] {
+        guard case let .loaded(vaults, _) = state else { return [] }
+
+        return vaults.first { $0.vault.id == vault.id }?.items ?? []
+    }
+
     func getItemCount(for selection: VaultSelection) -> Int {
         guard case let .loaded(vaults, trashedItems) = state else { return 0 }
         switch selection {
