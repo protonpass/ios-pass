@@ -31,14 +31,17 @@ extension AuthenticateBiometricallyUseCase {
     }
 }
 
+/**
+ Do not create a class level `LAContext` or inject from the outside
+ but create a new instance everytime we need to biometrically authenticate.
+ Because once an instance of `LAContext` finishes evaluating, calling `evaluatePolicy`
+ multiple times on a same `LAContext` always succeed without repeating authentication
+ (maybe the result is cached but found no info in the docs)
+ */
 final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
-    private let context: LAContext
-
-    init(context: LAContext) {
-        self.context = context
-    }
+    init() {}
 
     func execute(policy: LAPolicy, reason: String) async throws -> Bool {
-        try await context.evaluatePolicy(policy, localizedReason: reason)
+        try await LAContext().evaluatePolicy(policy, localizedReason: reason)
     }
 }
