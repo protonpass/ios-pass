@@ -39,8 +39,6 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
-
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationAuthenticatingPolicy)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     let mode: Mode
 
@@ -80,7 +78,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let authenticated = try await self.authenticate(policy: self.policy)
+                let authenticated = try await self.authenticate(policy: self.preferences.localAuthenticationPolicy)
                 if authenticated {
                     recordSuccess()
                 } else {
