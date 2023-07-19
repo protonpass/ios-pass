@@ -47,7 +47,7 @@ public protocol APIManagerProtocol {
 }
 
 final class APIManager: APIManagerProtocol {
-    private let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
     private let appData = resolve(\SharedToolingContainer.appData)
     private let preferences = resolve(\SharedToolingContainer.preferences)
@@ -278,7 +278,7 @@ extension APIManager: APIServiceLoggingDelegate {
 // MARK: - TrustKitDelegate
 
 private class PassTrustKitDelegate: TrustKitDelegate {
-    let logger = Logger(manager: resolve(\SharedToolingContainer.logManager))
+    let logger = resolve(\SharedToolingContainer.logger)
 
     init() {}
 
