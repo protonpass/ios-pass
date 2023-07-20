@@ -20,6 +20,7 @@
 
 import Core
 import Factory
+import LocalAuthentication
 import ProtonCore_Keymaker
 
 /// Contain tools shared between main iOS app and extensions
@@ -57,6 +58,9 @@ extension SharedToolingContainer {
             .unique
     }
 
+    /// Should be made private once transitionned to `Factory`
+    /// All objects that want to log should create and hold a new instance of `Logger` with
+    /// `resolve(\SharedToolingContainer.logger)`
     var logManager: Factory<LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
@@ -65,6 +69,14 @@ extension SharedToolingContainer {
 
     var logFormatter: Factory<LogFormatterProtocol> {
         self { LogFormatter(format: .txt) }
+    }
+
+    /// A `Logger` that has `shared` scope because while all logger instances share a unique `logManager`
+    /// each of them should have a different `subsystem` &`category`, so the scope cannot be `unique` or
+    /// `singleton`
+    var logger: Factory<Logger> {
+        self { Logger(manager: self.logManager()) }
+            .shared
     }
 }
 
@@ -75,17 +87,15 @@ extension SharedToolingContainer {
         self { AppData() }
     }
 
-    var apiManager: Factory<APIManager> {
-        self { APIManager(logManager: self.logManager(),
-                          appVer: "ios-pass@\(Bundle.main.fullAppVersionName)",
-                          appData: self.appData(),
-                          preferences: self.preferences()) }
+    var appVersion: Factory<String> {
+        self { "ios-pass@\(Bundle.main.fullAppVersionName)" }
             .onArg(PassModule.autoFillExtension) {
-                APIManager(logManager: self.logManager(),
-                           appVer: "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)",
-                           appData: self.appData(),
-                           preferences: self.preferences())
+                "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
             }
+    }
+
+    var apiManager: Factory<APIManager> {
+        self { APIManager() }
     }
 }
 
@@ -119,5 +129,14 @@ extension SharedToolingContainer {
     var mainKeyProvider: Factory<MainKeyProvider> {
         self { Keymaker(autolocker: self.autolocker(),
                         keychain: self.baseKeychain()) }
+    }
+}
+
+// MARK: Local authentication
+
+extension SharedToolingContainer {
+    /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
+    var localAuthenticationEnablingPolicy: Factory<LAPolicy> {
+        self { .deviceOwnerAuthentication }
     }
 }

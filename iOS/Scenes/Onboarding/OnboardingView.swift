@@ -18,12 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Factory
 import SwiftUI
 import UIComponents
 
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: OnboardingViewModel
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     var body: some View {
         VStack {
@@ -95,7 +97,7 @@ struct OnboardingView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .edgesIgnoringSafeArea(.all)
-        .theme(viewModel.preferences.theme)
+        .theme(preferences.theme)
         .onReceiveBoolean(viewModel.$finished, perform: dismiss.callAsFunction)
     }
 }

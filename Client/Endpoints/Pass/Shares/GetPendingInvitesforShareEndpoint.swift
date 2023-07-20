@@ -1,6 +1,6 @@
 //
-// ItemKey.swift
-// Proton Pass - Created on 11/04/2023.
+// GetPendingInvitesforShareEndpoint.swift
+// Proton Pass - Created on 11/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,9 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
+import ProtonCore_Networking
+import ProtonCore_Services
 
-public struct ItemKey: Decodable {
-    public let key: String
-    public let keyRotation: Int64
+public struct GetPendingInvitesforShareResponse: Decodable {
+    let code: Int
+    let invites: [ShareInvite]
+}
+
+public struct GetPendingInvitesforShareEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = GetPendingInvitesforShareResponse
+
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init(for shareId: String) {
+        debugDescription = "Get pending invites for share"
+        path = "/pass/v1/share/\(shareId)/invite"
+        method = .get
+    }
 }

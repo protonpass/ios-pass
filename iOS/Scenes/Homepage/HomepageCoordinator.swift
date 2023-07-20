@@ -273,18 +273,16 @@ private extension HomepageCoordinator {
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
-                                                      credentialManager: credentialManager,
+        let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
                                                       shareRepository: shareRepository,
-                                                      preferences: preferences,
-                                                      logManager: logManager,
                                                       featureFlagsRepository: featureFlagsRepository,
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
                                                           .shared
-                                                          .notificationService(logManager))
+                                                          .notificationService(logManager),
+                                                      childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
@@ -299,9 +297,7 @@ private extension HomepageCoordinator {
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
-            .localAuthentication(preferences: preferences,
-                                 delayed: false,
-                                 logManager: logManager,
+            .localAuthentication(delayed: false,
                                  onAuth: { [weak self] in
                                      self?.dismissAllViewControllers(animated: false)
                                      self?.hideSecondaryView()
@@ -585,9 +581,7 @@ extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
-                                                      preferences: preferences,
-                                                      bannerManager: bannerManager,
-                                                      logManager: logManager)
+                                                      bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -627,6 +621,85 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
         if !isCollapsed() {
             profileTabViewModelWantsToShowAccountMenu()
         }
+    }
+}
+
+// MARK: - ChildCoordinatorDelegate
+
+extension HomepageCoordinator: ChildCoordinatorDelegate {
+    func childCoordinatorWantsToPresent(viewController: UIViewController,
+                                        viewOption: ChildCoordinatorViewOption,
+                                        presentationOption: ChildCoordinatorPresentationOption) {
+        switch viewOption {
+        case .sheet:
+            // Nothing special to set up
+            break
+
+        case .sheetWithGrabber:
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+
+        case let .customSheet(height):
+            viewController.setDetentType(.custom(CGFloat(height)),
+                                         parentViewController: rootViewController)
+
+        case let .customSheetWithGrabber(height):
+            viewController.setDetentType(.custom(CGFloat(height)),
+                                         parentViewController: rootViewController)
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+
+        case .fullScreen:
+            viewController.modalPresentationStyle = .fullScreen
+        }
+
+        switch presentationOption {
+        case .none:
+            present(viewController)
+
+        case .dismissTopViewController:
+            dismissTopMostViewController { [weak self] in
+                self?.present(viewController)
+            }
+
+        case .dismissAllViewControllers:
+            dismissAllViewControllers { [weak self] in
+                self?.present(viewController)
+            }
+        }
+    }
+
+    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
+                                              presentationOption: ChildCoordinatorPresentationOption) {
+        let display: () -> Void = { [weak self] in
+            guard let self else { return }
+            switch bannerOption {
+            case let .info(message):
+                self.bannerManager.displayBottomInfoMessage(message)
+            case let .success(message):
+                self.bannerManager.displayBottomSuccessMessage(message)
+            case let .error(message):
+                self.bannerManager.displayTopErrorMessage(message)
+            }
+        }
+        switch presentationOption {
+        case .none:
+            display()
+        case .dismissTopViewController:
+            dismissTopMostViewController(animated: true, completion: display)
+        case .dismissAllViewControllers:
+            dismissAllViewControllers(animated: true, completion: display)
+        }
+    }
+
+    func childCoordinatorWantsToDismissTopViewController() {
+        dismissTopMostViewController()
+    }
+
+    func childCoordinatorDidFailLocalAuthentication() {
+        delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+    }
+
+    func childCoordinatorDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -777,18 +850,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         startUpgradeFlow()
     }
 
-    func profileTabViewModelWantsToEditAppLockTime() {
-        let view = EditAppLockTimeView(preferences: preferences)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * AppLockTime.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet,
@@ -883,7 +944,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(view)
     }
 
-    func profileTabViewModelWantsDidEncounter(error: Error) {
+    func profileTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }

@@ -32,6 +32,11 @@ public enum Constants {
         public static let digit: Int = 6
         public static let algo: OTPComponents.Algorithm = .sha1
     }
+
+    public enum PINCode {
+        public static let minLength = 4
+        public static let maxLength = 100
+    }
 }
 
 /// Links to KB articles or useful pages

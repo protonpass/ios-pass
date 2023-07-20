@@ -21,26 +21,19 @@
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
 public protocol ShareRepositoryProtocol {
-    var symmetricKey: SymmetricKey { get }
-    var userData: UserData { get }
-    var localShareDatasource: LocalShareDatasourceProtocol { get }
-    var remoteShareDatasouce: RemoteShareDatasourceProtocol { get }
-    var passKeyManager: PassKeyManagerProtocol { get }
-    var logger: Logger { get }
+    // MARK: - Shares
 
     /// Get all local shares
     func getShares() async throws -> [SymmetricallyEncryptedShare]
 
     /// Get all remote shares
     func getRemoteShares() async throws -> [Share]
-
-    /// Get all local vaults
-    func getVaults() async throws -> [Vault]
 
     /// Delete all local shares
     func deleteAllSharesLocally() async throws
@@ -49,6 +42,22 @@ public protocol ShareRepositoryProtocol {
     func deleteShareLocally(shareId: String) async throws
 
     func upsertShares(_ shares: [Share]) async throws
+
+    func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
+
+    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
+
+    func updateUserPermission(userId: String,
+                              shareId: String,
+                              permission: String?,
+                              expiredTime: String?) async throws -> String
+
+    func deleteUserShare(userId: String, shareId: String) async throws -> Bool
+
+    // MARK: - Vault Functions
+
+    /// Get all local vaults
+    func getVaults() async throws -> [Vault]
 
     @discardableResult
     func createVault(_ vault: VaultProtobuf) async throws -> Share
@@ -61,11 +70,54 @@ public protocol ShareRepositoryProtocol {
     func setPrimaryVault(shareId: String) async throws -> Bool
 }
 
-private extension ShareRepositoryProtocol {
+public struct ShareRepository: ShareRepositoryProtocol {
+    public let symmetricKey: SymmetricKey
+    public let userData: UserData
+    public let localShareDatasource: LocalShareDatasourceProtocol
+    public let remoteShareDatasouce: RemoteShareDatasourceProtocol
+    public let passKeyManager: PassKeyManagerProtocol
+    public let logger: Logger
+
     var userId: String { userData.user.ID }
+
+    public init(symmetricKey: SymmetricKey,
+                userData: UserData,
+                localShareDatasource: LocalShareDatasourceProtocol,
+                remoteShareDatasouce: RemoteShareDatasourceProtocol,
+                passKeyManager: PassKeyManagerProtocol,
+                logManager: LogManagerProtocol) {
+        self.symmetricKey = symmetricKey
+        self.userData = userData
+        self.localShareDatasource = localShareDatasource
+        self.remoteShareDatasouce = remoteShareDatasouce
+        self.passKeyManager = passKeyManager
+        logger = .init(manager: logManager)
+    }
+
+    public init(symmetricKey: SymmetricKey,
+                userData: UserData,
+                container: NSPersistentContainer,
+                apiService: APIService,
+                logManager: LogManagerProtocol) {
+        self.symmetricKey = symmetricKey
+        self.userData = userData
+        localShareDatasource = LocalShareDatasource(container: container)
+        remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
+        let shareKeyRepository = ShareKeyRepository(container: container,
+                                                    apiService: apiService,
+                                                    logManager: logManager,
+                                                    symmetricKey: symmetricKey,
+                                                    userData: userData)
+        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
+        passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
+                                        itemKeyDatasource: itemKeyDatasource,
+                                        logManager: logManager,
+                                        symmetricKey: symmetricKey)
+        logger = .init(manager: logManager)
+    }
 }
 
-public extension ShareRepositoryProtocol {
+public extension ShareRepository {
     func getShares() async throws -> [SymmetricallyEncryptedShare] {
         logger.trace("Getting all local shares for user \(userId)")
         do {
@@ -90,6 +142,85 @@ public extension ShareRepositoryProtocol {
         }
     }
 
+    func deleteAllSharesLocally() async throws {
+        logger.trace("Deleting all local shares for user \(userId)")
+        try await localShareDatasource.removeAllShares(userId: userId)
+        logger.trace("Deleted all local shares for user \(userId)")
+    }
+
+    func deleteShareLocally(shareId: String) async throws {
+        logger.trace("Deleting local share \(shareId) for user \(userId)")
+        try await localShareDatasource.removeShare(shareId: shareId, userId: userId)
+        logger.trace("Deleted local share \(shareId) for user \(userId)")
+    }
+
+    func upsertShares(_ shares: [Share]) async throws {
+        logger.trace("Upserting \(shares.count) shares for user \(userId)")
+        let encryptedShares = try await shares.parallelMap { try await symmetricallyEncrypt($0) }
+        try await localShareDatasource.upsertShares(encryptedShares, userId: userId)
+        logger.trace("Upserted \(shares.count) shares for user \(userId)")
+    }
+
+    func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
+        logger.trace("Getting all users linked to shareId \(shareId)")
+        do {
+            let users = try await remoteShareDatasouce.getShareLinkedUsers(shareId: shareId)
+            logger.trace("Got \(users.count) remote user for \(shareId)")
+            return users
+        } catch {
+            logger.debug("Failed to get remote user for shareId \(shareId). \(String(describing: error))")
+            throw error
+        }
+    }
+
+    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
+        logger.trace("Getting user information linked to shareId \(shareId)")
+        do {
+            let user = try await remoteShareDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
+            logger.trace("Got \(user) remote information for \(shareId)")
+            return user
+        } catch {
+            logger
+                .debug("Failed to get user \(userId) information for shareId \(shareId). \(String(describing: error))")
+            throw error
+        }
+    }
+
+    func updateUserPermission(userId: String,
+                              shareId: String,
+                              permission: String?,
+                              expiredTime: String?) async throws -> String {
+        logger.trace("Changing user permission linked to shareId \(shareId)")
+        do {
+            let request = UserSharePermissionRequest(with: permission, and: expiredTime)
+            let newPermission = try await remoteShareDatasouce.updateUserSharePermission(shareId: shareId,
+                                                                                         userId: userId,
+                                                                                         request: request)
+            logger.trace("Got new permission \(String(describing: permission))")
+            return String(newPermission)
+        } catch {
+            logger
+                .debug("Failed to change user \(userId) permission for share \(shareId). \(String(describing: error))")
+            throw error
+        }
+    }
+
+    func deleteUserShare(userId: String, shareId: String) async throws -> Bool {
+        logger.trace("Deleting user \(userId) share \(shareId)")
+        do {
+            let deleted = try await remoteShareDatasouce.deleteUserShare(shareId: shareId, userId: userId)
+            logger.trace("Deleted status for user share \(deleted)")
+            return deleted
+        } catch {
+            logger.debug("Failed to delete user \(userId) share \(shareId). \(String(describing: error))")
+            throw error
+        }
+    }
+}
+
+// MARK: - Vaults
+
+public extension ShareRepository {
     func getVaults() async throws -> [Vault] {
         logger.trace("Getting local vaults for user \(userId)")
 
@@ -111,25 +242,6 @@ public extension ShareRepositoryProtocol {
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
-    }
-
-    func deleteAllSharesLocally() async throws {
-        logger.trace("Deleting all local shares for user \(userId)")
-        try await localShareDatasource.removeAllShares(userId: userId)
-        logger.trace("Deleted all local shares for user \(userId)")
-    }
-
-    func deleteShareLocally(shareId: String) async throws {
-        logger.trace("Deleting local share \(shareId) for user \(userId)")
-        try await localShareDatasource.removeShare(shareId: shareId, userId: userId)
-        logger.trace("Deleted local share \(shareId) for user \(userId)")
-    }
-
-    func upsertShares(_ shares: [Share]) async throws {
-        logger.trace("Upserting \(shares.count) shares for user \(userId)")
-        let encryptedShares = try await shares.parallelMap { try await symmetricallyEncrypt($0) }
-        try await localShareDatasource.upsertShares(encryptedShares, userId: userId)
-        logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
     func createVault(_ vault: VaultProtobuf) async throws -> Share {
@@ -198,7 +310,7 @@ public extension ShareRepositoryProtocol {
     }
 }
 
-private extension ShareRepositoryProtocol {
+private extension ShareRepository {
     func symmetricallyEncrypt(_ share: Share) async throws -> SymmetricallyEncryptedShare {
         guard let content = share.content,
               let keyRotation = share.contentKeyRotation else {
@@ -220,50 +332,5 @@ private extension ShareRepositoryProtocol {
                                                 associatedData: .vaultContent)
         let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)
-    }
-}
-
-public struct ShareRepository: ShareRepositoryProtocol {
-    public let symmetricKey: SymmetricKey
-    public let userData: UserData
-    public let localShareDatasource: LocalShareDatasourceProtocol
-    public let remoteShareDatasouce: RemoteShareDatasourceProtocol
-    public let passKeyManager: PassKeyManagerProtocol
-    public let logger: Logger
-
-    public init(symmetricKey: SymmetricKey,
-                userData: UserData,
-                localShareDatasource: LocalShareDatasourceProtocol,
-                remoteShareDatasouce: RemoteShareDatasourceProtocol,
-                passKeyManager: PassKeyManagerProtocol,
-                logManager: LogManagerProtocol) {
-        self.symmetricKey = symmetricKey
-        self.userData = userData
-        self.localShareDatasource = localShareDatasource
-        self.remoteShareDatasouce = remoteShareDatasouce
-        self.passKeyManager = passKeyManager
-        logger = .init(manager: logManager)
-    }
-
-    public init(symmetricKey: SymmetricKey,
-                userData: UserData,
-                container: NSPersistentContainer,
-                apiService: APIService,
-                logManager: LogManagerProtocol) {
-        self.symmetricKey = symmetricKey
-        self.userData = userData
-        localShareDatasource = LocalShareDatasource(container: container)
-        remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    symmetricKey: symmetricKey,
-                                                    userData: userData)
-        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
-                                        itemKeyDatasource: itemKeyDatasource,
-                                        logManager: logManager,
-                                        symmetricKey: symmetricKey)
-        logger = .init(manager: logManager)
     }
 }

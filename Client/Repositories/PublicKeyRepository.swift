@@ -20,6 +20,7 @@
 
 import Core
 import CoreData
+import Entities
 import ProtonCore_Services
 
 public protocol PublicKeyRepositoryProtocol {

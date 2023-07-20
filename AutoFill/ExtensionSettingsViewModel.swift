@@ -71,7 +71,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
 
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
-        isLocked = preferences.biometricAuthenticationEnabled
+        isLocked = preferences.localAuthenticationMethod != .none
     }
 }
 

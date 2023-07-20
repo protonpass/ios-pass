@@ -20,16 +20,11 @@
 
 import Combine
 import Core
+import Factory
 
 private let kMaxAttemptCount = 3
 
-enum LocalAuthenticationState {
-    case initializing
-    case initialized(LocalAuthenticationInitializedState)
-    case error(Error)
-}
-
-enum LocalAuthenticationInitializedState {
+enum LocalAuthenticationState: Equatable {
     case noAttempts
     case remainingAttempts(Int)
     case lastAttempt
@@ -38,40 +33,38 @@ enum LocalAuthenticationInitializedState {
 final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let type: LocalAuthenticationType
-    let preferences: Preferences
-
     private let delayed: Bool
-    private let biometricAuthenticator: BiometricAuthenticator
-    private let logger: Logger
-    private let onAuth: () -> Void
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
     private var cancellables = Set<AnyCancellable>()
+    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
+    let mode: Mode
 
-    @Published private(set) var state: LocalAuthenticationState = .initializing
+    @Published private(set) var state: LocalAuthenticationState = .noAttempts
+    /// Only applicable for biometric authentication
+    @Published private(set) var error: Error?
 
     var delayedTime: DispatchTimeInterval {
         delayed ? .milliseconds(200) : .milliseconds(0)
     }
 
-    init(type: LocalAuthenticationType,
+    enum Mode: String {
+        case biometric, pin
+    }
+
+    init(mode: Mode,
          delayed: Bool,
-         preferences: Preferences,
-         logManager: LogManagerProtocol,
-         onAuth: @escaping () -> Void,
+         onAuth: () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        self.type = type
+        self.mode = mode
         self.delayed = delayed
-        self.preferences = preferences
-        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
-        logger = .init(manager: logManager)
-        self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
-
-        preferences.attach(to: self, storeIn: &cancellables)
+        updateStateBasedOnFailedAttemptCount()
+        onAuth()
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
@@ -79,45 +72,43 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
                 self?.updateStateBasedOnFailedAttemptCount()
             }
             .store(in: &cancellables)
-
-        biometricAuthenticator.$biometryTypeState
-            .sink { [weak self] biometryTypeState in
-                guard let self else { return }
-                switch biometryTypeState {
-                case .idle, .initializing:
-                    self.state = .initializing
-                case .initialized:
-                    self.updateStateBasedOnFailedAttemptCount()
-                case let .error(error):
-                    self.state = .error(error)
-                }
-            }
-            .store(in: &cancellables)
-
-        // When supporting pin authentication, check for authentication type
-        biometricAuthenticator.initializeBiometryType()
     }
 
     func biometricallyAuthenticate() {
-        switch biometricAuthenticator.biometryTypeState {
-        case .initialized:
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                do {
-                    self.onAuth()
-                    if try await biometricAuthenticator.authenticate(reason: "Please authenticate") {
-                        self.recordSuccess()
-                    } else {
-                        self.recordFailure(nil)
-                    }
-                } catch {
-                    self.recordFailure(error)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let authenticated = try await self.authenticate(policy: self.preferences.localAuthenticationPolicy)
+                if authenticated {
+                    recordSuccess()
+                } else {
+                    recordFailure(nil)
                 }
+            } catch {
+                recordFailure(error)
             }
-        default:
-            assertionFailure("biometricAuthenticator not initialized")
-            onFailure()
         }
+    }
+
+    func checkPinCode(_ enteredPinCode: String) {
+        guard let currentPIN = preferences.pinCode else {
+            // No PIN code is set before, can't do anything but logging out
+            let message = "Can not check PIN code. No PIN code set."
+            assertionFailure(message)
+            logger.error(message)
+            onFailure()
+            return
+        }
+        if currentPIN == enteredPinCode {
+            recordSuccess()
+        } else {
+            recordFailure(nil)
+        }
+    }
+
+    func logOut() {
+        logger.debug("Manual log out")
+        onFailure()
     }
 }
 
@@ -125,13 +116,13 @@ private extension LocalAuthenticationViewModel {
     func updateStateBasedOnFailedAttemptCount() {
         switch preferences.failedAttemptCount {
         case 0:
-            state = .initialized(.noAttempts)
+            state = .noAttempts
         case kMaxAttemptCount - 1:
-            state = .initialized(.lastAttempt)
+            state = .lastAttempt
         default:
             let remainingAttempts = kMaxAttemptCount - preferences.failedAttemptCount
             if remainingAttempts >= 1 {
-                state = .initialized(.remainingAttempts(remainingAttempts))
+                state = .remainingAttempts(remainingAttempts)
             } else {
                 onFailure()
             }
@@ -141,7 +132,7 @@ private extension LocalAuthenticationViewModel {
     func recordFailure(_ error: Error?) {
         preferences.failedAttemptCount += 1
 
-        let logMessage = "Biometric authentication failed. Increased failed attempt count."
+        let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
         if let error {
             logger.error(logMessage + " Reason \(error)")
         } else {

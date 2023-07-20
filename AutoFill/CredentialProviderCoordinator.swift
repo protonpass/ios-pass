@@ -148,7 +148,7 @@ public final class CredentialProviderCoordinator {
             return
         }
 
-        if preferences.biometricAuthenticationEnabled {
+        if preferences.localAuthenticationMethod != .none {
             cancel(errorCode: .userInteractionRequired)
         } else {
             Task {
@@ -188,8 +188,7 @@ public final class CredentialProviderCoordinator {
 
         let viewModel = LockedCredentialViewModel(itemRepository: itemRepository,
                                                   symmetricKey: symmetricKey,
-                                                  credentialIdentity: credentialIdentity,
-                                                  logManager: logManager)
+                                                  credentialIdentity: credentialIdentity)
         viewModel.onFailure = { [weak self] error in
             self?.handle(error: error)
         }
@@ -486,9 +485,7 @@ private extension CredentialProviderCoordinator {
                                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                              favIconRepository: favIconRepository,
                                              symmetricKey: symmetricKey,
-                                             serviceIdentifiers: serviceIdentifiers,
-                                             logManager: logManager,
-                                             preferences: preferences)
+                                             serviceIdentifiers: serviceIdentifiers)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel))
