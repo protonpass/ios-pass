@@ -60,7 +60,8 @@ public extension InviteRepository {
         logger.trace("Accepting invite \(inviteToken)")
         do {
             let request = AcceptInviteRequest(keys: keys)
-            let acceptStatus = try await remoteInviteDatasource.acceptInvite(inviteToken: inviteToken, request: request)
+            let acceptStatus = try await remoteInviteDatasource.acceptInvite(inviteToken: inviteToken,
+                                                                             request: request)
             logger.trace("Invite acceptance status \(acceptStatus)")
             return acceptStatus
         } catch {
