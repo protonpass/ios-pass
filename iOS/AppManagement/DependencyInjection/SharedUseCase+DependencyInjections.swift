@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import LocalAuthentication
 
 final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = SharedUseCasesContainer()
@@ -34,5 +35,21 @@ final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
 extension SharedUseCasesContainer {
     var checkCameraPermission: Factory<CheckCameraPermissionUseCase> {
         self { CheckCameraPermission() }
+    }
+}
+
+// MARK: Local authentication
+
+extension SharedUseCasesContainer {
+    var checkBiometryType: Factory<CheckBiometryTypeUseCase> {
+        self { CheckBiometryType() }
+    }
+
+    var authenticateBiometrically: Factory<AuthenticateBiometricallyUseCase> {
+        self { AuthenticateBiometrically() }
+    }
+
+    var getLocalAuthenticationMethods: Factory<GetLocalAuthenticationMethodsUseCase> {
+        self { GetLocalAuthenticationMethods(checkBiometryType: self.checkBiometryType()) }
     }
 }
