@@ -28,14 +28,14 @@ public protocol ShareInviteRepositoryProtocol {
 
     func getAllPendingInvites(for shareId: String) async throws -> [ShareInvite]
 
-    func sendInvite(for shareId: String,
+    func sendInvite(shareId: String,
                     keys: [ItemKey],
                     email: String,
                     targetType: String) async throws -> Bool
 
-    func sendInviteReminder(for shareId: String, to userId: String) async throws -> Bool
+    func sendInviteReminder(shareId: String, userId: String) async throws -> Bool
 
-    func deleteInvite(to shareId: String, for userId: String) async throws -> Bool
+    func deleteInvite(shareId: String, userId: String) async throws -> Bool
 }
 
 public final class ShareInviteRepository: ShareInviteRepositoryProtocol {
@@ -55,7 +55,7 @@ public extension ShareInviteRepository {
     func getAllPendingInvites(for shareId: String) async throws -> [ShareInvite] {
         logger.trace("Getting all pending invites for share \(shareId)")
         do {
-            let invites = try await remoteShareInviteDataSource.getPendingInvitesForShare(for: shareId)
+            let invites = try await remoteShareInviteDataSource.getPendingInvitesForShare(sharedId: shareId)
             logger.trace("Got \(invites.count) pending invites for \(shareId)")
             return invites
         } catch {
@@ -64,14 +64,14 @@ public extension ShareInviteRepository {
         }
     }
 
-    func sendInvite(for shareId: String,
+    func sendInvite(shareId: String,
                     keys: [ItemKey],
                     email: String,
                     targetType: String) async throws -> Bool {
         logger.trace("Inviting user to share \(shareId)")
         do {
             let request = InviteUserToShareRequest(keys: keys, email: email, targetType: targetType)
-            let inviteStatus = try await remoteShareInviteDataSource.inviteUser(to: shareId, with: request)
+            let inviteStatus = try await remoteShareInviteDataSource.inviteUser(shareId: shareId, request: request)
             logger.trace("Invited \(email) for \(shareId)")
             return inviteStatus
         } catch {
@@ -80,11 +80,11 @@ public extension ShareInviteRepository {
         }
     }
 
-    func sendInviteReminder(for shareId: String, to userId: String) async throws -> Bool {
+    func sendInviteReminder(shareId: String, userId: String) async throws -> Bool {
         logger.trace("Send reminder to user \(userId) for share \(shareId)")
         do {
-            let reminderStatus = try await remoteShareInviteDataSource.sendInviteReminderToUser(for: shareId,
-                                                                                                with: userId)
+            let reminderStatus = try await remoteShareInviteDataSource.sendInviteReminderToUser(shareId: shareId,
+                                                                                                userId: userId)
             logger.trace("Reminder status \(reminderStatus) for \(shareId)")
             return reminderStatus
         } catch {
@@ -94,11 +94,11 @@ public extension ShareInviteRepository {
         }
     }
 
-    func deleteInvite(to shareId: String, for userId: String) async throws -> Bool {
+    func deleteInvite(shareId: String, userId: String) async throws -> Bool {
         logger.trace("Delete invite to user \(userId) for share \(shareId)")
         do {
-            let deleteStatus = try await remoteShareInviteDataSource.deleteShareUserInvite(for: shareId,
-                                                                                           with: userId)
+            let deleteStatus = try await remoteShareInviteDataSource.deleteShareUserInvite(shareId: shareId,
+                                                                                           userId: userId)
             logger.trace("Deletion status \(deleteStatus) for \(shareId)")
             return deleteStatus
         } catch {

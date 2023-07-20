@@ -45,14 +45,14 @@ public protocol ShareRepositoryProtocol {
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
 
-    func getUserInformations(for userId: String, in shareId: String) async throws -> UserShareInfos
+    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
 
-    func updateUserPermission(for userId: String,
-                              in shareId: String,
-                              with permission: String?,
-                              and expiredTime: String?) async throws -> String
+    func updateUserPermission(userId: String,
+                              shareId: String,
+                              permission: String?,
+                              expiredTime: String?) async throws -> String
 
-    func deleteUserShare(for userId: String, and shareId: String) async throws -> Bool
+    func deleteUserShare(userId: String, shareId: String) async throws -> Bool
 
     // MARK: - Vault Functions
 
@@ -164,7 +164,7 @@ public extension ShareRepository {
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
         logger.trace("Getting all users linked to shareId \(shareId)")
         do {
-            let users = try await remoteShareDatasouce.getShareLinkedUsers(for: shareId)
+            let users = try await remoteShareDatasouce.getShareLinkedUsers(shareId: shareId)
             logger.trace("Got \(users.count) remote user for \(shareId)")
             return users
         } catch {
@@ -173,10 +173,10 @@ public extension ShareRepository {
         }
     }
 
-    func getUserInformations(for userId: String, in shareId: String) async throws -> UserShareInfos {
+    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
         logger.trace("Getting user information linked to shareId \(shareId)")
         do {
-            let user = try await remoteShareDatasouce.getUserInformationForShare(with: shareId, and: userId)
+            let user = try await remoteShareDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
             logger.trace("Got \(user) remote information for \(shareId)")
             return user
         } catch {
@@ -186,16 +186,16 @@ public extension ShareRepository {
         }
     }
 
-    func updateUserPermission(for userId: String,
-                              in shareId: String,
-                              with permission: String?,
-                              and expiredTime: String?) async throws -> String {
+    func updateUserPermission(userId: String,
+                              shareId: String,
+                              permission: String?,
+                              expiredTime: String?) async throws -> String {
         logger.trace("Changing user permission linked to shareId \(shareId)")
         do {
             let request = UserSharePermissionRequest(with: permission, and: expiredTime)
-            let newPermission = try await remoteShareDatasouce.updateUserSharePermission(for: shareId,
-                                                                                         and: userId,
-                                                                                         with: request)
+            let newPermission = try await remoteShareDatasouce.updateUserSharePermission(shareId: shareId,
+                                                                                         userId: userId,
+                                                                                         request: request)
             logger.trace("Got new permission \(String(describing: permission))")
             return String(newPermission)
         } catch {
@@ -205,10 +205,10 @@ public extension ShareRepository {
         }
     }
 
-    func deleteUserShare(for userId: String, and shareId: String) async throws -> Bool {
+    func deleteUserShare(userId: String, shareId: String) async throws -> Bool {
         logger.trace("Deleting user \(userId) share \(shareId)")
         do {
-            let deleted = try await remoteShareDatasouce.deleteUserShare(for: shareId, and: userId)
+            let deleted = try await remoteShareDatasouce.deleteUserShare(shareId: shareId, userId: userId)
             logger.trace("Deleted status for user share \(deleted)")
             return deleted
         } catch {
