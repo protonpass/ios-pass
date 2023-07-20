@@ -49,6 +49,7 @@ final class Preferences: ObservableObject, DeinitPrintable {
 
     init() {
         migrateToKeychain()
+        migrateToPINSupport()
     }
 
     // MARK: Non sensitive prefs
@@ -83,13 +84,22 @@ final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage(Key.didMigrateToKeychain.rawValue, store: kSharedUserDefaults)
     var didMigrateToKeychain = false
 
+    @AppStorage(Key.didMigrateToPINSupport.rawValue, store: kSharedUserDefaults)
+    var didMigrateToPINSupport = false
+
     // MARK: Sensitive prefs
 
     @KeychainStorage(key: Key.failedAttemptCount, defaultValue: 0)
     var failedAttemptCount: Int
 
-    @KeychainStorage(key: Key.biometricAuthenticationEnabled, defaultValue: false)
-    var biometricAuthenticationEnabled: Bool
+    @KeychainStorage(key: Key.localAuthenticationMethod, defaultValue: .none)
+    var localAuthenticationMethod: LocalAuthenticationMethod
+
+    @KeychainStorage(key: Key.pinCode, defaultValue: nil)
+    var pinCode: String?
+
+    @KeychainStorage(key: Key.fallbackToPasscode, defaultValue: true)
+    var fallbackToPasscode: Bool
 
     @KeychainStorage(key: Key.appLockTime, defaultValue: .twoMinutes)
     var appLockTime: AppLockTime
@@ -108,7 +118,9 @@ final class Preferences: ObservableObject, DeinitPrintable {
         quickTypeBar = true
         automaticallyCopyTotpCode = false
         failedAttemptCount = 0
-        biometricAuthenticationEnabled = false
+        localAuthenticationMethod = .none
+        fallbackToPasscode = true
+        pinCode = nil
         appLockTime = .twoMinutes
         theme = .dark
         browser = .safari
@@ -131,9 +143,6 @@ private extension Preferences {
 
         failedAttemptCount = kSharedUserDefaults.integer(forKey: Key.failedAttemptCount.rawValue)
 
-        biometricAuthenticationEnabled =
-            kSharedUserDefaults.bool(forKey: Key.biometricAuthenticationEnabled.rawValue)
-
         let appLockTimeRawValue = kSharedUserDefaults.integer(forKey: Key.appLockTime.rawValue)
         appLockTime = .init(rawValue: appLockTimeRawValue) ?? .twoMinutes
 
@@ -149,6 +158,19 @@ private extension Preferences {
 
         didMigrateToKeychain = true
     }
+
+    func migrateToPINSupport() {
+        guard !didMigrateToPINSupport else { return }
+
+        let biometricAuthenticationEnabled =
+            kSharedUserDefaults.bool(forKey: Key.biometricAuthenticationEnabled.rawValue)
+
+        if biometricAuthenticationEnabled {
+            localAuthenticationMethod = .biometric
+        }
+
+        didMigrateToPINSupport = true
+    }
 }
 
 private extension Preferences {
@@ -156,7 +178,9 @@ private extension Preferences {
         case quickTypeBar
         case automaticallyCopyTotpCode
         case failedAttemptCount
-        case biometricAuthenticationEnabled
+        case localAuthenticationMethod
+        case pinCode
+        case fallbackToPasscode
         case appLockTime
         case onboarded
         case theme
@@ -169,8 +193,10 @@ private extension Preferences {
         case isFirstRun
         case createdItemsCount
 
-        // Temporary key, can be removed several versions after 1.0.3
+        // Temporary keys, can be removed several versions after 1.0.3
         case didMigrateToKeychain
+        case didMigrateToPINSupport
+        case biometricAuthenticationEnabled
     }
 }
 

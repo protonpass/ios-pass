@@ -1,6 +1,6 @@
 //
-// AliasOptions.swift
-// Proton Pass - Created on 14/09/2022.
+// Alias.swift
+// Proton Pass - Created on 15/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,37 +17,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-
-import Foundation
-
-public struct AliasOptions: Decodable {
-    public let suffixes: [Suffix]
-    public let mailboxes: [Mailbox]
-    public let canCreateAlias: Bool
-}
-
-public struct Suffix: Decodable {
-    public let suffix: String
-    public let domain: String
-    public let signedSuffix: String
-    public let isCustom: Bool
-
-    public init(suffix: String, domain: String, signedSuffix: String, isCustom: Bool) {
-        self.suffix = suffix
-        self.domain = domain
-        self.signedSuffix = signedSuffix
-        self.isCustom = isCustom
-    }
-}
-
-extension Suffix: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.suffix == rhs.suffix &&
-            lhs.domain == rhs.domain &&
-            lhs.signedSuffix == rhs.signedSuffix &&
-            lhs.isCustom == rhs.isCustom
-    }
-}
 
 public struct Mailbox: Decodable, Hashable, Equatable {
     // Should not rename to "id" otherwise decode process breaks
