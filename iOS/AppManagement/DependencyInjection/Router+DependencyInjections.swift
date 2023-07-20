@@ -18,8 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
 import Factory
 import Foundation
 
@@ -35,7 +33,11 @@ final class RouterContainer: SharedContainer, AutoRegistering {
 // MARK: Main Router
 
 extension RouterContainer {
-    var mainRouter: Factory<MainRouter> {
-        self { MainRouter() }
+    var mainUIKitSwiftUIRouter: Factory<MainUIKitSwiftUIRouter> {
+        self { MainUIKitSwiftUIRouter() }
+    }
+
+    var mainNavViewRouter: Factory<MainNavViewRouter> {
+        self { MainNavViewRouter() }
     }
 }

@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -39,13 +40,63 @@ extension View {
     }
 }
 
+//    .routingProvided
+//    .withSheetDestinations(sheetDestinations: $router.presentedSheet)
+//    .navigationStackEmbeded(with: $router.path)
+//
+//
+// @MainActor
+// extension View {
+//    var routingProvided: some View {
+//        navigationDestination(for: RouterDestination.self) { destination in
+//            EmptyView()
+////            switch destination {
+////            case let .photoDetail(photo):
+////                DetailView(viewModel: DetailViewModel(photo: photo))
+////            default:
+////                Text("Not implemented yet")
+////            }
+//        }
+//    }
+//
+//    func withSheetDestinations(sheetDestinations: Binding<SheetDestination?>) -> some View {
+//        sheet(item: sheetDestinations) { destination in
+//            EmptyView()
+////            switch destination {
+////            case .searchSettings:
+////                SearchSettingsView()
+////                    .presentationDetents([.medium, .large])
+////                    .presentationBackground(.ultraThinMaterial)
+////            }
+//        }
+//    }
+//
+// }
+//
+//
+// public extension View {
+//    @ViewBuilder
+//    func navigationStackEmbeded(with path: Binding<NavigationPath>) -> some View {
+//        NavigationStack(path: path) {
+//            self
+//        }
+//    }
+// }
+
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()
+    private var router = resolve(\RouterContainer.mainNavViewRouter)
     @FocusState private var defaultFocus: Bool
+    @State private var isShowingDetailView = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 31) {
+            NavigationLink(destination: router.navigate(to: .userSharePermission),
+                           isActive: $isShowingDetailView) {
+                EmptyView()
+            }
+
             VStack(alignment: .leading, spacing: 11) {
                 Text("Share with")
                     .font(Font.custom("SF Pro Display", size: 28)
@@ -94,8 +145,8 @@ private extension UserEmailView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: !viewModel.canContinue,
-                                        action: {})
+                                        disabled: false, //! viewModel.canContinue,
+                                        action: { isShowingDetailView = true })
         }
     }
 }

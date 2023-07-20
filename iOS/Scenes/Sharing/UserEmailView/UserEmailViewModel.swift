@@ -40,10 +40,6 @@ private extension UserEmailViewModel {
         $email
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
-//                guard !newValue.isEmpty else {
-//                    self?.canContinue = false
-//                    return
-//                }
                 self?.canContinue = newValue.isValidEmail()
             }
             .store(in: &cancellables)
