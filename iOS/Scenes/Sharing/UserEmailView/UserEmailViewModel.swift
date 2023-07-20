@@ -21,22 +21,53 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import ProtonCore_HumanVerification
 
-@MainActor
+// @MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published private(set) var canContinue = false
+    @Published var goToNextStep = false
+    @Published private(set) var vaultName = ""
+
     private var cancellables = Set<AnyCancellable>()
+
+    private let setShareInviteUserEmail = resolve(\UseCasesContainer.setShareInviteUserEmail)
+    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
+    private let resetSharingInviteInfos = resolve(\UseCasesContainer.resetSharingInviteInfos)
 
     init() {
         setUp()
+    }
+
+    func saveEmail() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await self.setShareInviteUserEmail(with: self.email)
+            await MainActor.run {
+                self.goToNextStep = true
+            }
+        }
+    }
+
+    func resetSharingInfos() {
+        Task { [weak self] in
+            await self?.resetSharingInviteInfos()
+        }
     }
 }
 
 private extension UserEmailViewModel {
     func setUp() {
+        Task { @MainActor [weak self] in
+            let infos = await self?.getShareInviteInfos()
+            vaultName = infos?.vault?.name ?? ""
+        }
+
         $email
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
