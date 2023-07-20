@@ -21,7 +21,7 @@
 import Foundation
 
 public enum ProtonPassEnvironment {
-    case black, prod, custom(DoHParameters)
+    case black, prod, scientist(String), custom(DoHParameters)
 
     public var parameters: DoHParameters {
         switch self {
@@ -33,6 +33,7 @@ public enum ProtonPassEnvironment {
                          defaultHost: Bundle.main.plistString(for: .defaultHost, in: .black),
                          apiHost: Bundle.main.plistString(for: .apiHost, in: .black),
                          defaultPath: Bundle.main.plistString(for: .defaultPath, in: .black))
+
         case .prod:
             return .init(signupDomain: Bundle.main.plistString(for: .signupDomain, in: .prod),
                          captchaHost: Bundle.main.plistString(for: .captchaHost, in: .prod),
@@ -41,6 +42,25 @@ public enum ProtonPassEnvironment {
                          defaultHost: Bundle.main.plistString(for: .defaultHost, in: .prod),
                          apiHost: Bundle.main.plistString(for: .apiHost, in: .prod),
                          defaultPath: Bundle.main.plistString(for: .defaultPath, in: .prod))
+
+        case let .scientist(name):
+            let placeholder = "<ENV_NAME>"
+            let signUpDomain = Bundle.main.plistString(for: .signupDomain, in: .scientist)
+            let captchaHost = Bundle.main.plistString(for: .captchaHost, in: .scientist)
+            let hvHost = Bundle.main.plistString(for: .humanVerificationHost, in: .scientist)
+            let accountHost = Bundle.main.plistString(for: .accountHost, in: .scientist)
+            let defaultHost = Bundle.main.plistString(for: .defaultHost, in: .scientist)
+            let apiHost = Bundle.main.plistString(for: .apiHost, in: .scientist)
+            let defaultPath = Bundle.main.plistString(for: .defaultPath, in: .scientist)
+            return .init(signupDomain: signUpDomain.replacingOccurrences(of: placeholder, with: name),
+                         captchaHost: captchaHost.replacingOccurrences(of: placeholder, with: name),
+                         humanVerificationV3Host: hvHost.replacingOccurrences(of: placeholder,
+                                                                              with: name),
+                         accountHost: accountHost.replacingOccurrences(of: placeholder, with: name),
+                         defaultHost: defaultHost.replacingOccurrences(of: placeholder, with: name),
+                         apiHost: apiHost.replacingOccurrences(of: placeholder, with: name),
+                         defaultPath: defaultPath)
+
         case let .custom(customParams):
             return customParams
         }
