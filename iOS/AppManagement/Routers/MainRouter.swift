@@ -20,13 +20,15 @@
 
 import Combine
 
-enum RouterDestination {}
+enum RouterDestination: Hashable {
+    case userSharePermission
+}
 
-enum SheetDestination {
+enum SheetDestination: Hashable {
     case sharingFlow
 }
 
-final class MainRouter {
+final class MainUIKitSwiftUIRouter {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
 
@@ -36,5 +38,37 @@ final class MainRouter {
 
     func presentSheet(for destination: SheetDestination) {
         newSheetDestination.send(destination)
+    }
+}
+
+import SwiftUI
+
+@available(iOS 16.0, *)
+final class MainNavStackRouter {
+    @Published public var path = NavigationPath()
+    @Published public var presentedSheet: SheetDestination?
+
+    func navigate(to destination: RouterDestination) {
+        path.append(destination)
+    }
+
+    func popToRoot() {
+        path.removeLast(path.count)
+    }
+
+    func back(to numberOfScreen: Int = 1) {
+        path.removeLast(numberOfScreen)
+    }
+}
+
+final class MainNavViewRouter {
+    @ViewBuilder
+    func navigate(to destination: RouterDestination) -> some View {
+        switch destination {
+        case .userSharePermission:
+            UserPermissionView()
+        default:
+            EmptyView()
+        }
     }
 }
