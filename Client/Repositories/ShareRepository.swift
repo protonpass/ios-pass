@@ -73,8 +73,8 @@ public protocol ShareRepositoryProtocol {
 public struct ShareRepository: ShareRepositoryProtocol {
     public let symmetricKey: SymmetricKey
     public let userData: UserData
-    public let localShareDatasource: LocalShareDatasourceProtocol
-    public let remoteShareDatasouce: RemoteShareDatasourceProtocol
+    public let localDatasource: LocalShareDatasourceProtocol
+    public let remoteDatasouce: RemoteShareDatasourceProtocol
     public let passKeyManager: PassKeyManagerProtocol
     public let logger: Logger
 
@@ -82,14 +82,14 @@ public struct ShareRepository: ShareRepositoryProtocol {
 
     public init(symmetricKey: SymmetricKey,
                 userData: UserData,
-                localShareDatasource: LocalShareDatasourceProtocol,
-                remoteShareDatasouce: RemoteShareDatasourceProtocol,
+                localDatasource: LocalShareDatasourceProtocol,
+                remoteDatasouce: RemoteShareDatasourceProtocol,
                 passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManagerProtocol) {
         self.symmetricKey = symmetricKey
         self.userData = userData
-        self.localShareDatasource = localShareDatasource
-        self.remoteShareDatasouce = remoteShareDatasouce
+        self.localDatasource = localDatasource
+        self.remoteDatasouce = remoteDatasouce
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
     }
@@ -101,8 +101,8 @@ public struct ShareRepository: ShareRepositoryProtocol {
                 logManager: LogManagerProtocol) {
         self.symmetricKey = symmetricKey
         self.userData = userData
-        localShareDatasource = LocalShareDatasource(container: container)
-        remoteShareDatasouce = RemoteShareDatasource(apiService: apiService)
+        localDatasource = LocalShareDatasource(container: container)
+        remoteDatasouce = RemoteShareDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
                                                     logManager: logManager,
@@ -121,7 +121,7 @@ public extension ShareRepository {
     func getShares() async throws -> [SymmetricallyEncryptedShare] {
         logger.trace("Getting all local shares for user \(userId)")
         do {
-            let shares = try await localShareDatasource.getAllShares(userId: userId)
+            let shares = try await localDatasource.getAllShares(userId: userId)
             logger.trace("Got \(shares.count) local shares for user \(userId)")
             return shares
         } catch {
@@ -133,7 +133,7 @@ public extension ShareRepository {
     func getRemoteShares() async throws -> [Share] {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
-            let shares = try await remoteShareDatasouce.getShares()
+            let shares = try await remoteDatasouce.getShares()
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
         } catch {
@@ -144,27 +144,27 @@ public extension ShareRepository {
 
     func deleteAllSharesLocally() async throws {
         logger.trace("Deleting all local shares for user \(userId)")
-        try await localShareDatasource.removeAllShares(userId: userId)
+        try await localDatasource.removeAllShares(userId: userId)
         logger.trace("Deleted all local shares for user \(userId)")
     }
 
     func deleteShareLocally(shareId: String) async throws {
         logger.trace("Deleting local share \(shareId) for user \(userId)")
-        try await localShareDatasource.removeShare(shareId: shareId, userId: userId)
+        try await localDatasource.removeShare(shareId: shareId, userId: userId)
         logger.trace("Deleted local share \(shareId) for user \(userId)")
     }
 
     func upsertShares(_ shares: [Share]) async throws {
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
         let encryptedShares = try await shares.parallelMap { try await symmetricallyEncrypt($0) }
-        try await localShareDatasource.upsertShares(encryptedShares, userId: userId)
+        try await localDatasource.upsertShares(encryptedShares, userId: userId)
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
         logger.trace("Getting all users linked to shareId \(shareId)")
         do {
-            let users = try await remoteShareDatasouce.getShareLinkedUsers(shareId: shareId)
+            let users = try await remoteDatasouce.getShareLinkedUsers(shareId: shareId)
             logger.trace("Got \(users.count) remote user for \(shareId)")
             return users
         } catch {
@@ -176,7 +176,7 @@ public extension ShareRepository {
     func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
         logger.trace("Getting user information linked to shareId \(shareId)")
         do {
-            let user = try await remoteShareDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
+            let user = try await remoteDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
             logger.trace("Got \(user) remote information for \(shareId)")
             return user
         } catch {
@@ -193,9 +193,9 @@ public extension ShareRepository {
         logger.trace("Changing user permission linked to shareId \(shareId)")
         do {
             let request = UserSharePermissionRequest(with: permission, and: expiredTime)
-            let newPermission = try await remoteShareDatasouce.updateUserSharePermission(shareId: shareId,
-                                                                                         userId: userId,
-                                                                                         request: request)
+            let newPermission = try await remoteDatasouce.updateUserSharePermission(shareId: shareId,
+                                                                                    userId: userId,
+                                                                                    request: request)
             logger.trace("Got new permission \(String(describing: permission))")
             return String(newPermission)
         } catch {
@@ -208,7 +208,7 @@ public extension ShareRepository {
     func deleteUserShare(userId: String, shareId: String) async throws -> Bool {
         logger.trace("Deleting user \(userId) share \(shareId)")
         do {
-            let deleted = try await remoteShareDatasouce.deleteUserShare(shareId: shareId, userId: userId)
+            let deleted = try await remoteDatasouce.deleteUserShare(shareId: shareId, userId: userId)
             logger.trace("Deleted status for user share \(deleted)")
             return deleted
         } catch {
@@ -247,10 +247,10 @@ public extension ShareRepository {
     func createVault(_ vault: VaultProtobuf) async throws -> Share {
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
-        let createdVault = try await remoteShareDatasouce.createVault(request: request)
+        let createdVault = try await remoteDatasouce.createVault(request: request)
         let encryptedShare = try await symmetricallyEncrypt(createdVault)
         logger.trace("Saving newly created vault to local for user \(userId)")
-        try await localShareDatasource.upsertShares([encryptedShare], userId: userId)
+        try await localDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Created vault for user \(userId)")
         return createdVault
     }
@@ -262,22 +262,22 @@ public extension ShareRepository {
         let request = try UpdateVaultRequest(vault: newVault,
                                              shareKey: shareKey,
                                              userData: userData)
-        let updatedVault = try await remoteShareDatasouce.updateVault(request: request, shareId: shareId)
+        let updatedVault = try await remoteDatasouce.updateVault(request: request, shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
         let encryptedShare = try await symmetricallyEncrypt(updatedVault)
-        try await localShareDatasource.upsertShares([encryptedShare], userId: userId)
+        try await localDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Updated vault \(oldVault.id) for user \(userId)")
     }
 
     func deleteVault(shareId: String) async throws {
         // Remote deletion
         logger.trace("Deleting remote vault \(shareId) for user \(userId)")
-        try await remoteShareDatasouce.deleteVault(shareId: shareId)
+        try await remoteDatasouce.deleteVault(shareId: shareId)
         logger.trace("Deleted remote vault \(shareId) for user \(userId)")
 
         // Local deletion
         logger.trace("Deleting local vault \(shareId) for user \(userId)")
-        try await localShareDatasource.removeShare(shareId: shareId, userId: userId)
+        try await localDatasource.removeShare(shareId: shareId, userId: userId)
         logger.trace("Deleted local vault \(shareId) for user \(userId)")
 
         logger.trace("Finished deleting vault \(shareId) for user \(userId)")
@@ -286,7 +286,7 @@ public extension ShareRepository {
     func setPrimaryVault(shareId: String) async throws -> Bool {
         logger.trace("Setting primary vault \(shareId) \(shareId) for user \(userId)")
         let shares = try await getShares()
-        guard try await remoteShareDatasouce.setPrimaryVault(shareId: shareId) else {
+        guard try await remoteDatasouce.setPrimaryVault(shareId: shareId) else {
             logger.trace("Failed to set primary vault \(shareId) \(shareId) for user \(userId)")
             return false
         }
@@ -303,8 +303,8 @@ public extension ShareRepository {
 
         // Remove all shares before upserting because of CoreData bug
         // that doesn't update boolean values ("primary" boolean of ShareEntity in this case)
-        try await localShareDatasource.removeAllShares(userId: userId)
-        try await localShareDatasource.upsertShares(updatedShares, userId: userId)
+        try await localDatasource.removeAllShares(userId: userId)
+        try await localDatasource.upsertShares(updatedShares, userId: userId)
         logger.trace("Finished setting primary vault \(shareId) \(shareId) for user \(userId)")
         return true
     }
