@@ -33,7 +33,7 @@ struct UserPermissionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             //            NavigationLink(destination: router.navigate(to: .userSharePermission), isActive: $isShowingDetailView) { EmptyView() }
-            
+
             VStack(alignment: .leading, spacing: 11) {
                 Text("Set permissions")
                     .font(Font.custom("SF Pro Display", size: 28)
@@ -43,7 +43,7 @@ struct UserPermissionView: View {
                     .font(Font.custom("SF Pro Text", size: 14))
                     .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
             }
-            
+
             HStack(spacing: kItemDetailSectionPadding) {
                 SquircleThumbnail(data: .initials("US"),
                                   tintColor: ItemType.login.tintColor,
@@ -55,42 +55,43 @@ struct UserPermissionView: View {
             }
 //            .frame(maxWidth: .infinity, alignment: .leading)
             .frame(height: 60)
-            
+
             VStack(spacing: 12) {
-            ForEach(UserPermission.allCases, id: \.self) { permission in
-                Button {
-                    viewModel.select(permission: permission)
-                } label: {
-                    HStack(spacing: 16) {
-                        VStack(alignment: .leading) {
-                            Text(permission.title)
-                                .font(Font.custom("SF Pro Text", size: 15))
-                                .foregroundColor(Color(red: 0.82, green: 0.82, blue: 0.83))
-                            Text(permission.description)
-                                .font(Font.custom("SF Pro Text", size: 15))
-                                .foregroundColor(.white.opacity(0.6))
+                ForEach(UserPermission.allCases, id: \.self) { permission in
+                    Button {
+                        viewModel.select(permission: permission)
+                    } label: {
+                        HStack(spacing: 16) {
+                            VStack(alignment: .leading) {
+                                Text(permission.title)
+                                    .font(Font.custom("SF Pro Text", size: 15))
+                                    .foregroundColor(Color(red: 0.82, green: 0.82, blue: 0.83))
+                                Text(permission.description)
+                                    .font(Font.custom("SF Pro Text", size: 15))
+                                    .foregroundColor(.white.opacity(0.6))
+                            }
+                            Spacer()
+
+                            Circle()
+                                .strokeBorder(viewModel.selectedUserPermission == permission ? PassColor
+                                    .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
+                                    lineWidth: 2)
+                                .overlay(butonDisplay(with: permission))
+                                .frame(width: 24, height: 24)
+                            //
                         }
-                        Spacer()
-                        
-                        Circle()
-                            .strokeBorder(viewModel.selectedUserPermission == permission ? PassColor
-                                .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
-                                          lineWidth: 2)
-                            .overlay(butonDisplay(with: permission))
-                            .frame(width: 24, height: 24)
-                        //
-                    }
-                    .padding(16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadius(16)
-                    .overlay(RoundedRectangle(cornerRadius: 16)
-                        .stroke(viewModel.selectedUserPermission == permission ? PassColor.interactionNormMajor1
-                            .toColor : PassColor.textWeak.toColor,
+                        .padding(16)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .cornerRadius(16)
+                        .overlay(RoundedRectangle(cornerRadius: 16)
+                            .stroke(viewModel.selectedUserPermission == permission ? PassColor
+                                .interactionNormMajor1
+                                .toColor : PassColor.textWeak.toColor,
                                 lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
-        }
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
