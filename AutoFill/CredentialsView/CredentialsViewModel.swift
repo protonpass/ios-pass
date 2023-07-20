@@ -23,6 +23,7 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import Factory
 import SwiftUI
 
 protocol CredentialsViewModelDelegate: AnyObject {
@@ -99,12 +100,9 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let logger: Logger
 
     let favIconRepository: FavIconRepositoryProtocol
-    let logManager: LogManagerProtocol
     let urls: [URL]
 
     weak var delegate: CredentialsViewModelDelegate?
-
-    let preferences: Preferences
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
@@ -119,9 +117,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
          favIconRepository: FavIconRepositoryProtocol,
          symmetricKey: SymmetricKey,
-         serviceIdentifiers: [ASCredentialServiceIdentifier],
-         logManager: LogManagerProtocol,
-         preferences: Preferences) {
+         serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
@@ -136,6 +132,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
             return URL(string: id)
         }
 
+        let logManager = resolve(\SharedToolingContainer.logManager)
         syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
                               userId: userId,
                               shareRepository: shareRepository,
@@ -144,10 +141,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                               itemRepository: itemRepository,
                               shareKeyRepository: shareKeyRepository,
                               logManager: logManager)
-
-        self.logManager = logManager
         logger = .init(manager: logManager)
-        self.preferences = preferences
 
         setup()
     }

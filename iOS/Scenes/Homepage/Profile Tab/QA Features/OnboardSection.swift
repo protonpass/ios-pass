@@ -45,8 +45,6 @@ struct OnboardSection: View {
 
     private var onboardingView: some View {
         OnboardingView(viewModel: .init(credentialManager: viewModel.credentialManager,
-                                        preferences: viewModel.preferences,
-                                        bannerManager: viewModel.bannerManager,
-                                        logManager: viewModel.logManager))
+                                        bannerManager: viewModel.bannerManager))
     }
 }
