@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import ProtonCore_Services
 import SwiftUI
 
@@ -28,7 +29,6 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSpinner()
     func profileTabViewModelWantsToHideSpinner()
     func profileTabViewModelWantsToUpgrade()
-    func profileTabViewModelWantsToEditAppLockTime()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
@@ -37,26 +37,36 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowImportInstructions()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
-    func profileTabViewModelWantsDidEncounter(error: Error)
+    func profileTabViewModelDidEncounter(error: Error)
 }
 
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let apiService: APIService
-    var biometricAuthenticator: BiometricAuthenticator
-    let credentialManager: CredentialManagerProtocol
-    let itemRepository: ItemRepositoryProtocol
-    let shareRepository: ShareRepositoryProtocol
-    let logger: Logger
-    let preferences: Preferences
-    let appVersion: String
-    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    let passPlanRepository: PassPlanRepositoryProtocol
+    private let credentialManager: CredentialManagerProtocol
+    private let itemRepository: ItemRepositoryProtocol
+    private let shareRepository: ShareRepositoryProtocol
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    private let passPlanRepository: PassPlanRepositoryProtocol
+    private let notificationService: LocalNotificationServiceProtocol
+    private let securitySettingsCoordinator: SecuritySettingsCoordinator
     let vaultsManager: VaultsManager
-    let notificationService: LocalNotificationServiceProtocol
+
+    private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
+
+    @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
+    @Published private(set) var appLockTime: AppLockTime = .twoMinutes
+    @Published var fallbackToPasscode = true {
+        didSet {
+            preferences.fallbackToPasscode = fallbackToPasscode
+        }
+    }
+
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
-    @Published private(set) var autoFillEnabled: Bool { didSet { populateOrRemoveCredentials() } }
+    @Published private(set) var autoFillEnabled: Bool
     @Published var quickTypeBar: Bool { didSet { populateOrRemoveCredentials() } }
     @Published var automaticallyCopyTotpCode: Bool {
         didSet {
@@ -72,33 +82,30 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
 
-    init(apiService: APIService,
-         credentialManager: CredentialManagerProtocol,
+    init(credentialManager: CredentialManagerProtocol,
          itemRepository: ItemRepositoryProtocol,
          shareRepository: ShareRepositoryProtocol,
-         preferences: Preferences,
-         logManager: LogManagerProtocol,
          featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager,
-         notificationService: LocalNotificationServiceProtocol) {
-        self.apiService = apiService
-        biometricAuthenticator = .init(preferences: preferences, logManager: logManager)
+         notificationService: LocalNotificationServiceProtocol,
+         childCoordinatorDelegate: ChildCoordinatorDelegate) {
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        logger = .init(manager: logManager)
-        self.preferences = preferences
-        appVersion = "Version \(Bundle.main.displayedAppVersion)"
         self.featureFlagsRepository = featureFlagsRepository
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
         self.notificationService = notificationService
+
+        let securitySettingsCoordinator = SecuritySettingsCoordinator()
+        securitySettingsCoordinator.delegate = childCoordinatorDelegate
+        self.securitySettingsCoordinator = securitySettingsCoordinator
+
         autoFillEnabled = false
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
 
-        biometricAuthenticator.attach(to: self, storeIn: &cancellables)
         refresh()
 
         NotificationCenter.default
@@ -108,19 +115,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
             }
             .store(in: &cancellables)
 
-        biometricAuthenticator.$authenticationState
-            .sink { [weak self] state in
-                guard let self else { return }
-                if case let .error(error) = state {
-                    self.delegate?.profileTabViewModelWantsDidEncounter(error: error)
-                }
-            }
-            .store(in: &cancellables)
-
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.refresh()
+                self?.updateAutoFillAvalability()
+                self?.updateSecuritySettings()
             }
             .store(in: &cancellables)
     }
@@ -142,8 +141,16 @@ extension ProfileTabViewModel {
         }
     }
 
+    func editLocalAuthenticationMethod() {
+        securitySettingsCoordinator.editMethod()
+    }
+
     func editAppLockTime() {
-        delegate?.profileTabViewModelWantsToEditAppLockTime()
+        securitySettingsCoordinator.editAppLockTime()
+    }
+
+    func editPINCode() {
+        securitySettingsCoordinator.editPINCode()
     }
 
     func showAccountMenu() {
@@ -184,8 +191,7 @@ extension ProfileTabViewModel {
 private extension ProfileTabViewModel {
     func refresh() {
         updateAutoFillAvalability()
-        biometricAuthenticator.initializeBiometryType()
-        biometricAuthenticator.enabled = preferences.biometricAuthenticationEnabled
+        updateSecuritySettings()
         refreshPlan()
         refreshFeatureFlags()
     }
@@ -197,6 +203,33 @@ private extension ProfileTabViewModel {
             } catch {
                 logger.error(error)
             }
+        }
+    }
+
+    func updateSecuritySettings() {
+        switch preferences.localAuthenticationMethod {
+        case .none:
+            localAuthenticationMethod = .none
+        case .biometric:
+            do {
+                let biometryType = try checkBiometryType(policy: policy)
+                localAuthenticationMethod = .biometric(biometryType)
+            } catch {
+                // Fallback to `none`, not much we can do except displaying the error
+                logger.error(error)
+                delegate?.profileTabViewModelDidEncounter(error: error)
+                localAuthenticationMethod = .none
+            }
+        case .pin:
+            localAuthenticationMethod = .pin
+        }
+
+        appLockTime = preferences.appLockTime
+
+        if preferences.fallbackToPasscode != fallbackToPasscode {
+            // Check before assigning because `fallbackToPasscode` has a `didSet` block
+            // that updates preferences hence trigger an infinitely loop
+            fallbackToPasscode = preferences.fallbackToPasscode
         }
     }
 
@@ -231,7 +264,7 @@ private extension ProfileTabViewModel {
             } catch {
                 logger.error(error)
                 quickTypeBar.toggle() // rollback to previous value
-                delegate?.profileTabViewModelWantsDidEncounter(error: error)
+                delegate?.profileTabViewModelDidEncounter(error: error)
             }
         }
     }
