@@ -77,6 +77,7 @@ public struct KeychainStorage<Value: Codable> {
                 } catch {
                     logger.error("Corrupted data for key \(key). Fall back to defaultValue")
                     logger.error(error)
+                    keychain.remove(forKey: key)
                     return defaultValue
                 }
             } else {

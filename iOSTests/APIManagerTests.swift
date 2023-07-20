@@ -95,12 +95,7 @@ final class APIManagerTests: XCTestCase {
         super.tearDown()
     }
 
-    func givenApiManager() -> APIManager {
-        .init(logManager: LogManager(module: .hostApp),
-              appVer: .empty,
-              appData: .init(),
-              preferences: .init())
-    }
+    func givenApiManager() -> APIManager { .init() }
 
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() {
         // GIVEN

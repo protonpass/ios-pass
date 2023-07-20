@@ -20,13 +20,10 @@
 
 import Combine
 import Core
+import Factory
 import ProtonCore_Keymaker
 import SwiftUI
 import UIComponents
-
-enum LocalAuthenticationType {
-    case biometric, pin
-}
 
 struct LocalAuthenticationModifier: ViewModifier {
     @State private var authenticated: Bool
@@ -46,22 +43,19 @@ struct LocalAuthenticationModifier: ViewModifier {
     // NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
-    private let logManager: LogManagerProtocol
     private let onAuth: () -> Void
     private let onSuccess: () -> Void
     private let onFailure: () -> Void
 
-    init(preferences: Preferences,
-         delayed: Bool,
-         logManager: LogManagerProtocol,
+    init(delayed: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        authenticated = !preferences.biometricAuthenticationEnabled
+        let preferences = resolve(\SharedToolingContainer.preferences)
+        authenticated = preferences.localAuthenticationMethod == .none
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         _preferences = .init(initialValue: preferences)
         self.delayed = delayed
-        self.logManager = logManager
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
@@ -70,76 +64,65 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        if preferences.biometricAuthenticationEnabled {
-            ZStack {
-                content
-                if !authenticated {
-                    let handleSuccess: () -> Void = {
-                        authenticated = true
-                        autolocker.releaseCountdown()
-                        onSuccess()
-                    }
-
-                    LocalAuthenticationView(type: .biometric,
-                                            delayed: delayed,
-                                            preferences: preferences,
-                                            logManager: logManager,
-                                            onAuth: onAuth,
-                                            onSuccess: handleSuccess,
-                                            onFailure: onFailure)
-                        // Set zIndex otherwise animation won't occur
-                        // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
-                        .zIndex(1)
-                }
-            }
-            .animation(.default, value: authenticated)
-            .onChange(of: preferences.appLockTime) { newAppLockTime in
-                // Take into account right away appLockTime when user updates it
-                autolocker = .init(appLockTime: newAppLockTime)
-                autolocker.startCountdown()
-            }
-            .onReceive(UIApplication.willResignActiveNotification,
-                       perform: autolocker.startCountdown)
-            // Check if we should lock the app base on 2 notifications
-            // willEnterForegroundNotification & didBecomeActiveNotification
-            //
-            // "Fully backgrounded" means the user quickly swipes up and is back to iOS's home screen
-            // "Not fully backgrounded" means the user is slowly wipe up & see the stack of running apps
-            //
-            // If we only check on willEnterForegroundNotification
-            // the app would not be locked when it's not fully backgrounded
-            //
-            // If we only check on didBecomeActiveNotification
-            // the app would be locked a bit late when it's fully backgrounded
-            // which makes the content of the app visible for a fraction of second
-            // that's not what we want
-            .onReceive(UIApplication.willEnterForegroundNotification) {
-                if autolocker.shouldAutolockNow() {
-                    authenticated = false
-                }
-            }
-            .onReceive(UIApplication.didBecomeActiveNotification) {
-                if autolocker.shouldAutolockNow() {
-                    authenticated = false
-                }
-            }
-        } else {
+        ZStack {
             content
+            if preferences.localAuthenticationMethod != .none, !authenticated {
+                let handleSuccess: () -> Void = {
+                    authenticated = true
+                    autolocker.releaseCountdown()
+                    onSuccess()
+                }
+
+                LocalAuthenticationView(mode: preferences.localAuthenticationMethod == .pin ? .pin : .biometric,
+                                        delayed: delayed,
+                                        onAuth: onAuth,
+                                        onSuccess: handleSuccess,
+                                        onFailure: onFailure)
+                    // Set zIndex otherwise animation won't occur
+                    // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
+                    .zIndex(1)
+            }
+        }
+        .animation(.default, value: authenticated)
+        .onChange(of: preferences.appLockTime) { newAppLockTime in
+            // Take into account right away appLockTime when user updates it
+            autolocker = .init(appLockTime: newAppLockTime)
+            autolocker.startCountdown()
+        }
+        .onReceive(UIApplication.willResignActiveNotification,
+                   perform: autolocker.startCountdown)
+        // Check if we should lock the app base on 2 notifications
+        // willEnterForegroundNotification & didBecomeActiveNotification
+        //
+        // "Fully backgrounded" means the user quickly swipes up and is back to iOS's home screen
+        // "Not fully backgrounded" means the user is slowly wipe up & see the stack of running apps
+        //
+        // If we only check on willEnterForegroundNotification
+        // the app would not be locked when it's not fully backgrounded
+        //
+        // If we only check on didBecomeActiveNotification
+        // the app would be locked a bit late when it's fully backgrounded
+        // which makes the content of the app visible for a fraction of second
+        // that's not what we want
+        .onReceive(UIApplication.willEnterForegroundNotification) {
+            if autolocker.shouldAutolockNow() {
+                authenticated = false
+            }
+        }
+        .onReceive(UIApplication.didBecomeActiveNotification) {
+            if autolocker.shouldAutolockNow() {
+                authenticated = false
+            }
         }
     }
 }
 
 extension View {
-    // swiftlint:disable:next function_parameter_count
-    func localAuthentication(preferences: Preferences,
-                             delayed: Bool,
-                             logManager: LogManagerProtocol,
+    func localAuthentication(delayed: Bool,
                              onAuth: @escaping () -> Void,
                              onSuccess: @escaping () -> Void,
                              onFailure: @escaping () -> Void) -> some View {
-        modifier(LocalAuthenticationModifier(preferences: preferences,
-                                             delayed: delayed,
-                                             logManager: logManager,
+        modifier(LocalAuthenticationModifier(delayed: delayed,
                                              onAuth: onAuth,
                                              onSuccess: onSuccess,
                                              onFailure: onFailure))
