@@ -1,5 +1,5 @@
 //
-// Alias.swift
+// Mailbox.swift
 // Proton Pass - Created on 15/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
