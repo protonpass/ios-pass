@@ -108,7 +108,7 @@ struct ProfileTabView: View {
                           height: .tall,
                           content: {
                               VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
-                                  Text("Lock with")
+                                  Text("Unlock with")
                                       .sectionTitleText()
 
                                   Text(viewModel.localAuthenticationMethod.title)
@@ -124,7 +124,7 @@ struct ProfileTabView: View {
                               height: .tall,
                               content: {
                                   VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
-                                      Text("App lock time")
+                                      Text("Automatic lock")
                                           .sectionTitleText()
 
                                       Text(viewModel.appLockTime.description)
@@ -143,7 +143,7 @@ struct ProfileTabView: View {
 
                     OptionRow(height: .tall) {
                         Toggle(isOn: $viewModel.fallbackToPasscode) {
-                            Text("Use system Passcode when \(viewModel.localAuthenticationMethod.title) fails")
+                            Text("Use system passcode when \(viewModel.localAuthenticationMethod.title) fails")
                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
                         .tint(Color(uiColor: PassColor.interactionNorm))
