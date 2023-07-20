@@ -403,6 +403,9 @@
 		3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */; };
 		35699B93298103F1006CB225 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35699B92298103F1006CB225 /* String+HTML.swift */; };
 		35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557441A295A064F00EA4AF0 /* ClipboardManager.swift */; };
+		3569AE3D2A6927000026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */; };
+		3569AE3E2A6936CF0026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */; };
+		3569AE3F2A6936D00026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */; };
 		3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */; };
 		3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29A29B76BF60070830B /* VaultsManager.swift */; };
 		3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29E29B77A760070830B /* VaultContentUiModel.swift */; };
@@ -1249,6 +1252,7 @@
 		3567E46329B0C93C00511D62 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
 		3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCameraPermissionView.swift; sourceTree = "<group>"; };
 		35699B92298103F1006CB225 /* String+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
+		3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Scientist.plist"; sourceTree = "<group>"; };
 		3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowHideSpinner.swift"; sourceTree = "<group>"; };
 		3569B29A29B76BF60070830B /* VaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultsManager.swift; sourceTree = "<group>"; };
 		3569B29E29B77A760070830B /* VaultContentUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentUiModel.swift; sourceTree = "<group>"; };
@@ -3203,6 +3207,7 @@
 			children = (
 				5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */,
 				5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */,
+				3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -3809,6 +3814,7 @@
 			files = (
 				3554DAB7293A910700595FC7 /* Icons.xcassets in Resources */,
 				5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */,
+				3569AE3E2A6936CF0026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */,
 				3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */,
 				5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */,
@@ -3833,6 +3839,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3569AE3F2A6936D00026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				3560845229DDE2CC001F7487 /* Colors.xcassets in Resources */,
 				5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */,
 				5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */,
@@ -3848,6 +3855,7 @@
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 				5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
+				3569AE3D2A6927000026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
