@@ -1,7 +1,7 @@
 //
-// PublicKey.swift
-// Proton Pass - Created on 17/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// SendInviteReminderToUserEndpoint.swift
+// Proton Pass - Created on 11/07/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,16 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Networking
+import ProtonCore_Services
 
-/// Public key of an address
-public struct PublicKey: Decodable {
-    public let value: String
+public struct SendInviteReminderToUserEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = CodeOnlyResponse
 
-    enum CodingKeys: String, CodingKey {
-        /// Lowercase the first letter because this object is parsed by Core
-        /// and Core expects keys with lowercased first letter.
-        /// See more in Core's APIService
-        case value = "publicKey"
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init(for shareId: String, with userId: String) {
+        debugDescription = "Send invite reminder"
+        path = "/pass/v1/share/\(shareId)/invite/\(userId)/reminder"
+        method = .post
     }
 }

@@ -20,6 +20,7 @@
 
 import Core
 import CoreData
+import Entities
 import ProtonCore_Networking
 import ProtonCore_Services
 

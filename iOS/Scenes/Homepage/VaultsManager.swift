@@ -83,8 +83,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 private extension VaultsManager {
     @MainActor
     func createDefaultVault(isPrimary: Bool) async throws {
-        let userId = shareRepository.userData.user.ID
-        logger.trace("Creating default vault for user \(userId)")
+        logger.trace("Creating default vault for user")
         let vault = VaultProtobuf(name: "Personal",
                                   description: "Personal vault",
                                   color: .color1,
@@ -93,9 +92,9 @@ private extension VaultsManager {
         if isPrimary {
             logger.trace("Created default vault. Setting as primary \(createdShare.shareID)")
             _ = try await shareRepository.setPrimaryVault(shareId: createdShare.shareID)
-            logger.info("Created default primary vault for user \(userId)")
+            logger.info("Created default primary vault for user")
         } else {
-            logger.info("Created default vault for user \(userId)")
+            logger.info("Created default vault for user")
         }
     }
 

@@ -1,7 +1,7 @@
 //
-// RemoteItemKeyDatasource.swift
-// Proton Pass - Created on 24/02/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PublicKey.swift
+// Proton Pass - Created on 17/08/2022.
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,19 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
 import Foundation
 
-public protocol RemoteItemKeyDatasourceProtocol: RemoteDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey
-}
+/// Public key of an address
+public struct PublicKey: Decodable {
+    public let value: String
 
-public extension RemoteItemKeyDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey {
-        let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.key
+    public init(value: String) {
+        self.value = value
+    }
+
+    enum CodingKeys: String, CodingKey {
+        /// Lowercase the first letter because this object is parsed by Core
+        /// and Core expects keys with lowercased first letter.
+        /// See more in Core's APIService
+        case value = "publicKey"
     }
 }
-
-public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol {}
