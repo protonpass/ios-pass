@@ -89,7 +89,13 @@ struct PinAuthenticationView: View {
             pinCode = ""
         }
         .onAppear {
-            isFocused = true
+            if #available(iOS 16, *) {
+                isFocused = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                    isFocused = true
+                }
+            }
         }
     }
 }
