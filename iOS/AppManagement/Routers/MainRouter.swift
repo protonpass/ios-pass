@@ -22,6 +22,7 @@ import Combine
 
 enum RouterDestination: Hashable {
     case userSharePermission
+    case shareSummary
 }
 
 enum SheetDestination: Hashable {
@@ -67,6 +68,8 @@ final class MainNavViewRouter {
         switch destination {
         case .userSharePermission:
             UserPermissionView()
+        case .shareSummary:
+            SummaryView()
         default:
             EmptyView()
         }

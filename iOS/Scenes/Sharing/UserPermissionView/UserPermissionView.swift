@@ -27,71 +27,18 @@ import UIComponents
 
 struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
-
+    private var router = resolve(\RouterContainer.mainNavViewRouter)
     @StateObject private var viewModel = UserPermissionViewModel()
-
+    @State var goToNextStep = false
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            //            NavigationLink(destination: router.navigate(to: .userSharePermission), isActive: $isShowingDetailView) { EmptyView() }
+            NavigationLink(destination: router.navigate(to: .shareSummary),
+                           isActive: $goToNextStep) { EmptyView() }
 
-            VStack(alignment: .leading, spacing: 11) {
-                Text("Set permissions")
-                    .font(Font.custom("SF Pro Display", size: 28)
-                        .weight(.bold))
-                    .foregroundColor(Color(red: 0.82, green: 0.82, blue: 0.83))
-                Text("Select the level of access this user will gain when they join your ‘Family’ vault.")
-                    .font(Font.custom("SF Pro Text", size: 14))
-                    .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-            }
-
-            HStack(spacing: kItemDetailSectionPadding) {
-                SquircleThumbnail(data: .initials("US"),
-                                  tintColor: ItemType.login.tintColor,
-                                  backgroundColor: ItemType.login.backgroundColor)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("user@username.com")
-                        .foregroundColor(PassColor.textNorm.toColor)
-                }
-            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 60)
-
-            VStack(spacing: 12) {
-                ForEach(UserPermission.allCases, id: \.self) { permission in
-                    Button {
-                        viewModel.select(permission: permission)
-                    } label: {
-                        HStack(spacing: 16) {
-                            VStack(alignment: .leading) {
-                                Text(permission.title)
-                                    .font(Font.custom("SF Pro Text", size: 15))
-                                    .foregroundColor(Color(red: 0.82, green: 0.82, blue: 0.83))
-                                Text(permission.description)
-                                    .font(Font.custom("SF Pro Text", size: 15))
-                                    .foregroundColor(.white.opacity(0.6))
-                            }
-                            Spacer()
-
-                            Circle()
-                                .strokeBorder(viewModel.selectedUserPermission == permission ? PassColor
-                                    .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
-                                    lineWidth: 2)
-                                .overlay(butonDisplay(with: permission))
-                                .frame(width: 24, height: 24)
-                            //
-                        }
-                        .padding(16)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .cornerRadius(16)
-                        .overlay(RoundedRectangle(cornerRadius: 16)
-                            .stroke(viewModel.selectedUserPermission == permission ? PassColor
-                                .interactionNormMajor1
-                                .toColor : PassColor.textWeak.toColor,
-                                lineWidth: 1))
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
+            headerView
+            emailDisplayView
+            roleList
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
@@ -115,6 +62,77 @@ struct UserPermissionView: View {
 }
 
 private extension UserPermissionView {
+    var headerView: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            Text("Set permissions")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(PassColor.textNorm.toColor)
+            Text("Select the level of access this user will gain when they join your ‘\(viewModel.vaultName)’ vault.")
+                .font(.body)
+                .foregroundColor(PassColor.textWeak.toColor)
+        }
+    }
+}
+
+private extension UserPermissionView {
+    var emailDisplayView: some View {
+        HStack(spacing: kItemDetailSectionPadding) {
+            SquircleThumbnail(data: .initials(viewModel.email.initialsRemovingEmojis()),
+                              tintColor: ItemType.login.tintColor,
+                              backgroundColor: ItemType.login.backgroundColor)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(viewModel.email)
+                    .foregroundColor(PassColor.textNorm.toColor)
+            }
+        }
+        .frame(height: 60)
+    }
+}
+
+private extension UserPermissionView {
+    var roleList: some View {
+        VStack(spacing: 12) {
+            ForEach(UserPermission.allCases, id: \.self) { permission in
+                Button {
+                    viewModel.select(permission: permission)
+                } label: {
+                    HStack(spacing: 16) {
+                        VStack(alignment: .leading) {
+                            Text(permission.title)
+                                .font(.body)
+                                .foregroundColor(PassColor.textNorm.toColor)
+                                .padding(.bottom, 5)
+
+                            Text(permission.description)
+                                .font(.body)
+                                .foregroundColor(PassColor.textWeak.toColor)
+                        }
+                        Spacer()
+
+                        Circle()
+                            .strokeBorder(viewModel.selectedUserPermission == permission ? PassColor
+                                .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
+                                lineWidth: 2)
+                            .overlay(butonDisplay(with: permission))
+                            .frame(width: 24, height: 24)
+                    }
+                    .padding(16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .cornerRadius(16)
+                    .overlay(RoundedRectangle(cornerRadius: 16)
+                        .stroke(viewModel.selectedUserPermission == permission ? PassColor
+                            .interactionNormMajor1
+                            .toColor : PassColor.textWeak.toColor,
+                            lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+}
+
+private extension UserPermissionView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -130,8 +148,8 @@ private extension UserPermissionView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: false, //  !viewModel.canContinue,
-                                        action: {})
+                                        disabled: !viewModel.canContinue,
+                                        action: { goToNextStep = true })
         }
     }
 }

@@ -64,3 +64,36 @@ extension UseCasesContainer {
                                  .specificLogManager(.keyboardExtension)) }
     }
 }
+
+// MARK: - Sharing
+
+extension UseCasesContainer {
+    var getCurrentShareInviteInformations: Factory<GetCurrentShareInviteInformationsUseCase> {
+        self { GetCurrentShareInviteInformations(shareInviteService: ServiceContainer.shared.shareInviteService())
+        }
+    }
+
+    var setShareInviteVault: Factory<SetShareInviteVaultUseCase> {
+        self { SetShareInviteVault(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var setShareInviteUserEmail: Factory<SetShareInviteUserEmailUseCase> {
+        self { SetShareInviteUserEmail(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var setShareInviteRole: Factory<SetShareInviteRoleUseCase> {
+        self { SetShareInviteRole(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var resetSharingInviteInfos: Factory<ResetSharingInviteInfosUseCase> {
+        self { ResetSharingInviteInfos(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+}
+
+// MARK: - Vault
+
+// extension UseCasesContainer {
+//    var GetVaultItemCount: Factory<GetVaultItemCountUseCase> {
+//        self { GetVaultItemCount }
+//    }
+// }

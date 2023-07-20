@@ -20,12 +20,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Factory
 import Foundation
 
-enum UserPermission: CaseIterable, Equatable {
-    case read
-    case edit
-    case admin
+enum UserPermission: String, CaseIterable, Equatable {
+    case read = "3"
+    case edit = "2"
+    case admin = "1"
 
     var title: String {
         switch self {
@@ -53,16 +54,39 @@ enum UserPermission: CaseIterable, Equatable {
 @MainActor
 final class UserPermissionViewModel: ObservableObject, Sendable {
     @Published private(set) var selectedUserPermission: UserPermission = .read
+    @Published private(set) var vaultName = ""
+    @Published private(set) var email = ""
+    @Published private(set) var canContinue = false
+
+    private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
+    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
 
     init() {
         setUp()
     }
 
     func select(permission: UserPermission) {
-        selectedUserPermission = permission
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            await self.setShareInviteRole(with: permission.rawValue)
+            self.selectedUserPermission = permission
+        }
     }
 }
 
 private extension UserPermissionViewModel {
-    func setUp() {}
+    func setUp() {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            let infos = await self.getShareInviteInfos()
+            await self.setShareInviteRole(with: self.selectedUserPermission.rawValue)
+            self.canContinue = true
+            self.vaultName = infos.vault?.name ?? ""
+            self.email = infos.email ?? ""
+        }
+    }
 }
