@@ -33,7 +33,6 @@ struct SearchResultsView: View, Equatable {
     let itemCount: ItemCount
     let results: any SearchResults
     let isTrash: Bool
-    let creditCardV1: Bool
     let safeAreaInsets: EdgeInsets
     let onScroll: () -> Void
     let onSelectItem: (ItemSearchResult) -> Void
@@ -42,8 +41,7 @@ struct SearchResultsView: View, Equatable {
     var body: some View {
         VStack(spacing: 0) {
             SearchResultChips(selectedType: $selectedType,
-                              itemCount: itemCount,
-                              creditCardV1: creditCardV1)
+                              itemCount: itemCount)
 
             topBarSearchInformations
             searchListItems

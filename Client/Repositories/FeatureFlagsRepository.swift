@@ -21,11 +21,6 @@
 import Core
 
 public protocol FeatureFlagsRepositoryProtocol: AnyObject {
-    var localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol { get }
-    var remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol { get }
-    var userId: String { get }
-    var logger: Logger { get }
-
     /// Get from local, refresh if not exist
     func getFlags() async throws -> FeatureFlags
 
@@ -33,7 +28,24 @@ public protocol FeatureFlagsRepositoryProtocol: AnyObject {
     func refreshFlags() async throws -> FeatureFlags
 }
 
-public extension FeatureFlagsRepositoryProtocol {
+public final class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
+    private let localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol
+    private let remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol
+    private let userId: String
+    private let logger: Logger
+
+    public init(localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol,
+                remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol,
+                userId: String,
+                logManager: LogManagerProtocol) {
+        self.localFeatureFlagsDatasource = localFeatureFlagsDatasource
+        self.remoteFeatureFlagsDatasource = remoteFeatureFlagsDatasource
+        self.userId = userId
+        logger = Logger(manager: logManager)
+    }
+}
+
+public extension FeatureFlagsRepository {
     func getFlags() async throws -> FeatureFlags {
         logger.trace("Getting feature flags for user \(userId)")
         if let localFlags = try await localFeatureFlagsDatasource.getFeatureFlags(userId: userId) {
@@ -47,29 +59,26 @@ public extension FeatureFlagsRepositoryProtocol {
 
     func refreshFlags() async throws -> FeatureFlags {
         logger.trace("Getting remote credit card v1 flag for user \(userId)")
-        let creditCardV1 = try await remoteFeatureFlagsDatasource.getFlag(type: .creditCardV1)
+        let allflags = try await remoteFeatureFlagsDatasource.getFlags()
 
         logger.trace("Got remote flags for user \(userId). Upserting to local database.")
-        let flags = FeatureFlags(creditCardV1: creditCardV1)
+
+        let flags = filterPassFlags(from: allflags) // FeatureFlags(creditCardV1: creditCardV1)
         try await localFeatureFlagsDatasource.upsertFlags(flags, userId: userId)
 
         return flags
     }
 }
 
-public final class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
-    public let localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol
-    public let remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol
-    public let userId: String
-    public let logger: Logger
-
-    public init(localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol,
-                remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol,
-                userId: String,
-                logManager: LogManagerProtocol) {
-        self.localFeatureFlagsDatasource = localFeatureFlagsDatasource
-        self.remoteFeatureFlagsDatasource = remoteFeatureFlagsDatasource
-        self.userId = userId
-        logger = .init(manager: logManager)
+private extension FeatureFlagsRepository {
+    /// The new unleash feature flag endpoint doesn't filter flags on project base meaning we receive all proton
+    /// flags we want to
+    /// filter only the ones that are linked to pass
+    /// The flag only appears if it is activated otherwise it it absent from the response
+    func filterPassFlags(from flags: [FeatureFlag]) -> FeatureFlags {
+        let currentPassFlags = flags.filter { element in
+            FeatureFlagType(rawValue: element.name) != nil
+        }
+        return FeatureFlags(flags: currentPassFlags)
     }
 }
