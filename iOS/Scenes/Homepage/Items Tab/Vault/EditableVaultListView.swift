@@ -28,7 +28,7 @@ struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: EditableVaultListViewModel
     @State private var isShowingEmptyTrashAlert = false
-    private let router = resolve(\RouterContainer.mainRouter)
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
