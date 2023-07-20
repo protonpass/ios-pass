@@ -51,6 +51,8 @@ struct LocalAuthenticationMethodsView: View {
                                         isSelected: isSelected)
                     PassSectionDivider()
                 }
+
+                Spacer()
             }
             .padding(.horizontal)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -58,7 +60,7 @@ struct LocalAuthenticationMethodsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Lock with")
+                    Text("Unlock with")
                         .navigationTitleText()
                 }
             }
