@@ -143,7 +143,7 @@ struct ProfileTabView: View {
 
                     OptionRow(height: .tall) {
                         Toggle(isOn: $viewModel.fallbackToPasscode) {
-                            Text("Use system Passcode when FaceID fails.")
+                            Text("Use system Passcode when \(viewModel.localAuthenticationMethod.title) fails")
                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
                         .tint(Color(uiColor: PassColor.interactionNorm))
