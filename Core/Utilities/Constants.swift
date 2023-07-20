@@ -53,6 +53,7 @@ public enum ConstantPlistKey {
     public enum PlistFiles: String {
         case black = "Pass-Constant-Black"
         case prod = "Pass-Constant-Prod"
+        case scientist = "Pass-Constant-Scientist"
     }
 
     public enum Keys: String {

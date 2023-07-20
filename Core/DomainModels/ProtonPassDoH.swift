@@ -40,6 +40,9 @@ public final class ProtonPassDoH: DoH, ServerConfig {
                 environment = .black
             case "prod":
                 environment = .prod
+            case "scientist":
+                let name = userDefaults.string(forKey: "pref_scientist_env_name")
+                environment = .scientist(name ?? "")
             case "custom":
                 let signupDomain = userDefaults.string(forKey: "pref_custom_env_sign_up_domain")
                 let captchaHost = userDefaults.string(forKey: "pref_custom_env_captcha_host")
