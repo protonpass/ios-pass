@@ -21,7 +21,6 @@
 import Combine
 import Core
 import Factory
-import SwiftUI
 
 final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -48,13 +47,11 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     var actionNotAllowed: Bool {
         // Always disallow when error occurs
         guard error == nil else { return true }
-        let minLength = Constants.PINCode.minLength
-        let maxLength = Constants.PINCode.maxLength
         switch state {
         case .definition:
-            return definedPIN.isEmpty || !(minLength...maxLength).contains(definedPIN.count)
+            return isInvalid(pin: definedPIN)
         case .confirmation:
-            return confirmedPIN.isEmpty || !(minLength...maxLength).contains(confirmedPIN.count)
+            return isInvalid(pin: confirmedPIN)
         }
     }
 
@@ -93,6 +90,14 @@ extension SetPINCodeViewModel {
                 error = .invalidCharacters
             }
         }
+    }
+}
+
+private extension SetPINCodeViewModel {
+    func isInvalid(pin: String) -> Bool {
+        let minLength = Constants.PINCode.minLength
+        let maxLength = Constants.PINCode.maxLength
+        return pin.isEmpty || !(minLength...maxLength).contains(pin.count)
     }
 }
 

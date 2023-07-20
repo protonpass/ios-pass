@@ -92,11 +92,11 @@ extension OnboardingViewModel {
                 do {
                     let authenticated = try await self.authenticate(policy: self.policy)
                     if authenticated {
-                        preferences.localAuthenticationMethod = .biometric
-                        showAppropriateBiometricAuthenticationStep()
+                        self.preferences.localAuthenticationMethod = .biometric
+                        self.showAppropriateBiometricAuthenticationStep()
                     }
                 } catch {
-                    bannerManager.displayTopErrorMessage(error)
+                    self.bannerManager.displayTopErrorMessage(error)
                 }
             }
 
@@ -129,10 +129,11 @@ extension OnboardingViewModel {
 
 private extension OnboardingViewModel {
     func checkAutoFillStatus() {
-        Task { @MainActor in
-            let autoFillEnabled = await credentialManager.isAutoFillEnabled()
-            if case .autoFill = state, autoFillEnabled {
-                state = .autoFillEnabled
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            let autoFillEnabled = await self.credentialManager.isAutoFillEnabled()
+            if case .autoFill = self.state, autoFillEnabled {
+                self.state = .autoFillEnabled
             }
         }
     }
