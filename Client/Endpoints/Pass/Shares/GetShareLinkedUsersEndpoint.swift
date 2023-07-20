@@ -1,6 +1,6 @@
 //
-// GetLatestItemKeyEndpoint.swift
-// Proton Pass - Created on 24/02/2023.
+// GetShareLinkedUsersEndpoint.swift
+// Proton Pass - Created on 11/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,23 +20,26 @@
 
 import Entities
 import ProtonCore_Networking
+import ProtonCore_Services
 
-public struct GetLatestItemKeyResponse: Decodable {
-    public let code: Int
-    public let key: ItemKey
+public struct GetShareLinkedUsersResponse: Decodable {
+    let code: Int
+    let total: Int
+    let shares: [UserShareInfos]
 }
 
-public struct GetLatestItemKeyEndpoint: Endpoint {
+// Matching: https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/get_pass-v1-share-%7Benc_shareID%7D-user
+public struct GetShareLinkedUsersEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetLatestItemKeyResponse
+    public typealias Response = GetShareLinkedUsersResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
 
-    public init(shareId: String, itemId: String) {
-        debugDescription = "Get latest key for item"
-        path = "/pass/v1/share/\(shareId)/item/\(itemId)/key/latest"
+    public init(for shareId: String) {
+        debugDescription = "Get users that have access to the whole vault, or item"
+        path = "/pass/v1/share/\(shareId)/user"
         method = .get
     }
 }

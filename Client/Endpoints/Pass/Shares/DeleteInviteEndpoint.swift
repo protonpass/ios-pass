@@ -1,6 +1,6 @@
 //
-// RemoteItemKeyDatasource.swift
-// Proton Pass - Created on 24/02/2023.
+// DeleteInviteEndpoint.swift
+// Proton Pass - Created on 11/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,19 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Foundation
+import ProtonCore_Networking
+import ProtonCore_Services
 
-public protocol RemoteItemKeyDatasourceProtocol: RemoteDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey
-}
+public struct DeleteInviteEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = CodeOnlyResponse
 
-public extension RemoteItemKeyDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey {
-        let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.key
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init(for shareId: String, with userId: String) {
+        debugDescription = "Delete an invite"
+        path = "/pass/v1/share/\(shareId)/invite/\(userId)"
+        method = .delete
     }
 }
-
-public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol {}

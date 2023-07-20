@@ -1,6 +1,6 @@
 //
-// PublicKey+Test.swift
-// Proton Pass - Created on 17/08/2022.
+// Alias.swift
+// Proton Pass - Created on 15/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,10 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
+import Foundation
 
- extension PublicKey {
-    static func random() -> PublicKey {
-        PublicKey(value: .random())
+// MARK: - User Invite
+
+public struct UserInvite: Codable {
+    public let inviteID: String
+    public let remindersSent: Int
+    public let targetType: Int
+    public let targetID, inviterEmail, invitedEmail: String
+    public let keys: [ItemKey]
+    public let createTime: Int
+
+    enum CodingKeys: String, CodingKey {
+        case inviteID = "InviteID"
+        case remindersSent = "RemindersSent"
+        case targetType = "TargetType"
+        case targetID = "TargetID"
+        case inviterEmail = "InviterEmail"
+        case invitedEmail = "InvitedEmail"
+        case keys = "Keys"
+        case createTime = "CreateTime"
     }
- }
+}

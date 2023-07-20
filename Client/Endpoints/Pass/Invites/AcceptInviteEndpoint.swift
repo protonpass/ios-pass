@@ -1,6 +1,6 @@
 //
-// GetLatestItemKeyEndpoint.swift
-// Proton Pass - Created on 24/02/2023.
+// AcceptInviteEndpoint.swift
+// Proton Pass - Created on 13/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,23 +20,35 @@
 
 import Entities
 import ProtonCore_Networking
+import ProtonCore_Services
 
-public struct GetLatestItemKeyResponse: Decodable {
-    public let code: Int
-    public let key: ItemKey
-}
-
-public struct GetLatestItemKeyEndpoint: Endpoint {
+public struct AcceptInviteEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = GetLatestItemKeyResponse
+    public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
+    public var body: AcceptInviteRequest?
 
-    public init(shareId: String, itemId: String) {
-        debugDescription = "Get latest key for item"
-        path = "/pass/v1/share/\(shareId)/item/\(itemId)/key/latest"
-        method = .get
+    public init(with inviteToken: String, and request: AcceptInviteRequest) {
+        debugDescription = "Accept an invite"
+        path = "pass/v1/invite/\(inviteToken)"
+        method = .post
+        body = request
+    }
+}
+
+public struct AcceptInviteRequest {
+    public let keys: [ItemKey]
+
+    public init(keys: [ItemKey]) {
+        self.keys = keys
+    }
+}
+
+extension AcceptInviteRequest: Encodable {
+    enum CodingKeys: String, CodingKey {
+        case keys = "Keys"
     }
 }

@@ -1,6 +1,6 @@
 //
-// RemoteItemKeyDatasource.swift
-// Proton Pass - Created on 24/02/2023.
+// DeleteUserShareEndpoint.swift
+// Proton Pass - Created on 11/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,19 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Foundation
+import ProtonCore_Networking
+import ProtonCore_Services
 
-public protocol RemoteItemKeyDatasourceProtocol: RemoteDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey
-}
+// https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/delete_pass-v1-share-%7Benc_shareID%7D-user-%7Benc_userShareID%7D
+public struct DeleteUserShareEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = CodeOnlyResponse
 
-public extension RemoteItemKeyDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey {
-        let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.key
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init(for shareId: String,
+                and userId: String) {
+        debugDescription = "Delete a user share"
+        path = "/pass/v1/share/\(shareId)/user/\(userId)"
+        method = .delete
     }
 }
-
-public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol {}

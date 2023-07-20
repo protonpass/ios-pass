@@ -1,6 +1,6 @@
 //
-// RemoteItemKeyDatasource.swift
-// Proton Pass - Created on 24/02/2023.
+// GetPendingInviteForUserEndpoint.swift
+// Proton Pass - Created on 11/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,18 +19,25 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import Foundation
+import ProtonCore_Networking
+import ProtonCore_Services
 
-public protocol RemoteItemKeyDatasourceProtocol: RemoteDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey
+public struct GetPendingInviteForUserResponse: Decodable {
+    let code: Int
+    let invites: [UserInvite]
 }
 
-public extension RemoteItemKeyDatasourceProtocol {
-    func getLatestKey(shareId: String, itemId: String) async throws -> ItemKey {
-        let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.key
+public struct GetPendingInviteForUserEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = GetPendingInviteForUserResponse
+
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init() {
+        debugDescription = "Get pending invites for user"
+        path = "/pass/v1/invite"
+        method = .get
     }
 }
-
-public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol {}
