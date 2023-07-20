@@ -1,7 +1,7 @@
 //
-// Alias.swift
-// Proton Pass - Created on 15/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// VaultData.swift
+// Proton Pass - Created on 20/07/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,30 +20,24 @@
 
 import Foundation
 
-// MARK: - User Invite
-
-public struct UserInvite: Decodable {
-    public let inviteToken: String
-    public let remindersSent: Int16
-    public let targetType: Int16
-    public let targetID, inviterEmail, invitedEmail: String
-    public let keys: [ItemKey]
-    public let vaultData: VaultData?
+public struct VaultData: Decodable {
+    public let itemID: String
+    public let revision: Int16
+    public let contentFormatVersion: Int16
+    public let keyRotation: Int64
+    public let content: String
     public let createTime: Int64
+    public let modifyTime: Int64
+    public let revisionTime: Int64
 
     enum CodingKeys: String, CodingKey {
-        case inviteToken = "InviteToken"
-        case remindersSent = "RemindersSent"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case inviterEmail = "InviterEmail"
-        case invitedEmail = "InvitedEmail"
-        case keys = "Keys"
-        case vaultData = "VaultData"
+        case itemID = "ItemID"
+        case revision = "Revision"
+        case contentFormatVersion = "ContentFormatVersion"
+        case keyRotation = "KeyRotation"
+        case content = "Content"
         case createTime = "CreateTime"
-    }
-
-    public var inviteType: TargetType {
-        .init(rawValue: targetType) ?? .unknown
+        case modifyTime = "ModifyTime"
+        case revisionTime = "RevisionTime"
     }
 }
