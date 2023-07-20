@@ -22,22 +22,28 @@ import Foundation
 
 // MARK: - User Invite
 
-public struct UserInvite: Codable {
-    public let inviteID: String
-    public let remindersSent: Int
-    public let targetType: Int
+public struct UserInvite: Decodable {
+    public let inviteToken: String
+    public let remindersSent: Int16
+    public let targetType: Int16
     public let targetID, inviterEmail, invitedEmail: String
     public let keys: [ItemKey]
-    public let createTime: Int
+    public let vaultData: VaultData?
+    public let createTime: Int64
 
     enum CodingKeys: String, CodingKey {
-        case inviteID = "InviteID"
+        case inviteToken = "InviteToken"
         case remindersSent = "RemindersSent"
         case targetType = "TargetType"
         case targetID = "TargetID"
         case inviterEmail = "InviterEmail"
         case invitedEmail = "InvitedEmail"
         case keys = "Keys"
+        case vaultData = "VaultData"
         case createTime = "CreateTime"
+    }
+
+    public var inviteType: TargetType {
+        .init(rawValue: targetType) ?? .unknown
     }
 }
