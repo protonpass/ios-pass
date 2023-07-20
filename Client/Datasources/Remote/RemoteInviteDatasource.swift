@@ -23,7 +23,7 @@ import Foundation
 
 public protocol RemoteInviteDatasourceProtocol: RemoteDatasourceProtocol {
     func getPendingInvitesForUser() async throws -> [UserInvite]
-    func acceptInvite(with inviteToken: String, and request: AcceptInviteRequest) async throws -> Bool
+    func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool
 }
 
 public extension RemoteInviteDatasourceProtocol {
@@ -33,7 +33,7 @@ public extension RemoteInviteDatasourceProtocol {
         return getSharesResponse.invites
     }
 
-    func acceptInvite(with inviteToken: String, and request: AcceptInviteRequest) async throws -> Bool {
+    func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool {
         let endpoint = AcceptInviteEndpoint(with: inviteToken, and: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
