@@ -20,22 +20,9 @@
 
 import Core
 import CryptoKit
+import Entities
 import ProtonCore_DataModel
 import ProtonCore_Login
-
-public enum ItemState: Int16, CaseIterable {
-    case active = 1
-    case trashed = 2
-
-    public var description: String {
-        switch self {
-        case .active:
-            return "active"
-        case .trashed:
-            return "trashed"
-        }
-    }
-}
 
 public struct ItemRevisionsPaginated: Decodable {
     public let total: Int

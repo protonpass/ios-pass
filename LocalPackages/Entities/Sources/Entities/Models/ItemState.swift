@@ -1,12 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>FILEHEADER</key>
-	<string>
-// ___FILENAME___
-// Proton Pass - Created on ___DATE___.
-// Copyright (c) ___YEAR___ Proton Technologies AG
+//
+// ItemState.swift
+// Proton Pass - Created on 20/07/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,6 +16,20 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Proton Pass. If not, see https://www.gnu.org/licenses/.</string>
-</dict>
-</plist>
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Foundation
+
+public enum ItemState: Int16, CaseIterable {
+    case active = 1
+    case trashed = 2
+
+    public var description: String {
+        switch self {
+        case .active:
+            return "active"
+        case .trashed:
+            return "trashed"
+        }
+    }
+}

@@ -20,14 +20,9 @@
 
 import Core
 import CryptoKit
+import Entities
 import ProtonCore_Crypto
 import ProtonCore_Login
-
-public enum ShareType: Int16 {
-    case unknown = 0
-    case vault = 1
-    case item = 2
-}
 
 public enum ShareContent {
     case vault(Vault)
@@ -44,7 +39,7 @@ public struct Share: Decodable, Swift.Hashable {
     /// User address ID that has access to this share
     public let addressID: String
 
-    /// Type of share. 1 for vault, 2 for label and 3 for item
+    /// Type of share
     public let targetType: Int16
 
     /// ID of the top shared object
@@ -70,7 +65,8 @@ public struct Share: Decodable, Swift.Hashable {
     /// Time of creation of this share
     public let createTime: Int64
 
-    public var shareType: ShareType {
+    /// Enum representation of `targetType`
+    public var shareType: TargetType {
         .init(rawValue: targetType) ?? .unknown
     }
 }
