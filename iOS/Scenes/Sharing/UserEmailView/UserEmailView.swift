@@ -88,27 +88,18 @@ struct UserEmailView: View {
     @StateObject private var viewModel = UserEmailViewModel()
     private var router = resolve(\RouterContainer.mainNavViewRouter)
     @FocusState private var defaultFocus: Bool
-    @State private var isShowingDetailView = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 31) {
             NavigationLink(destination: router.navigate(to: .userSharePermission),
-                           isActive: $isShowingDetailView) {
+                           isActive: $viewModel.goToNextStep) {
                 EmptyView()
             }
 
-            VStack(alignment: .leading, spacing: 11) {
-                Text("Share with")
-                    .font(Font.custom("SF Pro Display", size: 28)
-                        .weight(.bold))
-                    .foregroundColor(Color(red: 0.82, green: 0.82, blue: 0.83))
-                Text("This user will receive an invitation to join your ‘Family’ vault.")
-                    .font(Font.custom("SF Pro Text", size: 14))
-                    .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-            }
+            headerView
 
             TextField("Proton email address", text: $viewModel.email)
-                .font(Font.custom("SF Pro Display", size: 22))
+                .font(.callout)
                 .autocorrectionDisabled()
                 .keyboardType(.emailAddress)
                 .foregroundColor(PassColor.textNorm.toColor)
@@ -130,13 +121,31 @@ struct UserEmailView: View {
 }
 
 private extension UserEmailView {
+    var headerView: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            Text("Share with")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(PassColor.textNorm.toColor)
+
+            Text("This user will receive an invitation to join your ‘\(viewModel.vaultName)’ vault.")
+                .font(.body)
+                .foregroundColor(PassColor.textWeak.toColor)
+        }
+    }
+}
+
+private extension UserEmailView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         action: dismiss.callAsFunction)
+                         action: {
+                             viewModel.resetSharingInfos()
+                             dismiss()
+                         })
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -145,8 +154,8 @@ private extension UserEmailView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: false, //! viewModel.canContinue,
-                                        action: { isShowingDetailView = true })
+                                        disabled: !viewModel.canContinue,
+                                        action: viewModel.saveEmail)
         }
     }
 }

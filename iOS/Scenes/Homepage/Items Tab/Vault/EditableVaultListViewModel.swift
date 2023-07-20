@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToShowSpinner()
@@ -41,6 +42,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published var showingAlert = false
 
     // TODO: move this to a use case
+    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private var sharedVault: Vault?
 
     var numberOfAliasforSharedVault: Int {
@@ -97,8 +99,14 @@ extension EditableVaultListViewModel {
     }
 
     func share(vault: Vault) {
-        sharedVault = vault
-        showingAlert = true
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            await self.setShareInviteVault(with: vault, and: self.numberOfAliasforSharedVault)
+            self.sharedVault = vault
+            self.showingAlert = true
+        }
     }
 
     func delete(vault: Vault) {
