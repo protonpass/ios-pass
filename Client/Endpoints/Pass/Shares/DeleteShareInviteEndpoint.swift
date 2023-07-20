@@ -1,5 +1,5 @@
 //
-// SendInviteReminderToUserEndpoint.swift
+// DeleteShareInviteEndpoint.swift
 // Proton Pass - Created on 11/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public struct SendInviteReminderToUserEndpoint: Endpoint {
+public struct DeleteShareInviteEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = CodeOnlyResponse
 
@@ -30,8 +30,8 @@ public struct SendInviteReminderToUserEndpoint: Endpoint {
     public var method: HTTPMethod
 
     public init(shareId: String, inviteId: String) {
-        debugDescription = "Send invite reminder"
-        path = "/pass/v1/share/\(shareId)/invite/\(inviteId)/reminder"
-        method = .post
+        debugDescription = "Delete an invite"
+        path = "/pass/v1/share/\(shareId)/invite/\(inviteId)"
+        method = .delete
     }
 }
