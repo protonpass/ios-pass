@@ -20,6 +20,7 @@
 
 @testable import Client
 import Core
+import Entities
 import XCTest
 
 final class CreateVaultRequestTests: XCTestCase {
