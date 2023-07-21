@@ -111,8 +111,8 @@ extension SharedRepositoryContainer {
 
     var passPlanRepository: Factory<PassPlanRepositoryProtocol> {
         self {
-            PassPlanRepository(localPassPlanDatasource: LocalPassPlanDatasource(container: self.container()),
-                               remotePassPlanDatasource: RemotePassPlanDatasource(apiService: self.apiService),
+            PassPlanRepository(localDatasource: LocalPassPlanDatasource(container: self.container()),
+                               remoteDatasource: RemotePassPlanDatasource(apiService: self.apiService),
                                userId: self.userData().user.ID,
                                logManager: self.logManager)
         }

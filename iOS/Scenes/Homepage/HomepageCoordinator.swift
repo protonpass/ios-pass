@@ -118,8 +118,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                               logManager: logManager)
 
         let passPlanRepository =
-            PassPlanRepository(localPassPlanDatasource: LocalPassPlanDatasource(container: container),
-                               remotePassPlanDatasource: RemotePassPlanDatasource(apiService: apiService),
+            PassPlanRepository(localDatasource: LocalPassPlanDatasource(container: container),
+                               remoteDatasource: RemotePassPlanDatasource(apiService: apiService),
                                userId: userData.user.ID,
                                logManager: logManager)
 
