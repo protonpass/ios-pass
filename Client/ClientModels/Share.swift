@@ -51,6 +51,9 @@ public struct Share: Decodable, Swift.Hashable {
     /// Whether this vault is primary for this user
     public let primary: Bool
 
+    /// Whether the user is owner of this vault
+    public let owner: Bool
+
     /// Base64 encoded encrypted content of the share. Can be null for item shares
     public let content: String?
 
@@ -110,6 +113,7 @@ public extension Share {
               targetID: targetID,
               permission: permission,
               primary: isPrimary,
+              owner: owner,
               content: content,
               contentKeyRotation: contentKeyRotation,
               contentFormatVersion: contentFormatVersion,
