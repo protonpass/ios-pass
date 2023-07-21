@@ -1,5 +1,5 @@
 //
-// Alias.swift
+// UserShareInfos.swift
 // Proton Pass - Created on 15/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,26 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+// MARK: - User share informations & permissions
 
-// MARK: - User Invite
-
-public struct UserInvite: Codable {
-    public let inviteID: String
-    public let remindersSent: Int
+public struct UserShareInfos: Codable {
+    public let shareID, userName, userEmail: String
     public let targetType: Int
-    public let targetID, inviterEmail, invitedEmail: String
-    public let keys: [ItemKey]
-    public let createTime: Int
+    public let targetID: String
+    public let permission: Int
+    public let shareRoleID: String
+    public let expireTime, createTime: String
 
     enum CodingKeys: String, CodingKey {
-        case inviteID = "InviteID"
-        case remindersSent = "RemindersSent"
+        case shareID = "ShareID"
+        case userName = "UserName"
+        case userEmail = "UserEmail"
         case targetType = "TargetType"
         case targetID = "TargetID"
-        case inviterEmail = "InviterEmail"
-        case invitedEmail = "InvitedEmail"
-        case keys = "Keys"
+        case permission = "Permission"
+        case shareRoleID = "ShareRoleID"
+        case expireTime = "ExpireTime"
         case createTime = "CreateTime"
+    }
+
+    public var shareRole: ShareRole {
+        .init(rawValue: shareRoleID) ?? .read
     }
 }
