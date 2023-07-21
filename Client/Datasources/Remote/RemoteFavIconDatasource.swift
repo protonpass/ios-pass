@@ -47,7 +47,7 @@ public protocol RemoteFavIconDatasourceProtocol: RemoteDatasourceProtocol {
 }
 
 extension RemoteFavIconDatasourceProtocol {
-    func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult {
+    public func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult {
         let endpoint = GetLogoEndpoint(domain: domain)
         let response = try await apiService.execExpectingData(endpoint: endpoint)
         return try handle(dataResponse: response)
@@ -72,4 +72,4 @@ extension RemoteFavIconDatasourceProtocol {
     }
 }
 
-final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatasourceProtocol {}
+public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatasourceProtocol {}
