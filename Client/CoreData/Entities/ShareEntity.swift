@@ -38,6 +38,7 @@ extension ShareEntity {
     @NSManaged var contentKeyRotation: Int64
     @NSManaged var createTime: Int64
     @NSManaged var expireTime: Int64
+    @NSManaged var owner: Bool
     @NSManaged var permission: Int64
     @NSManaged var primary: Bool
     @NSManaged var shareID: String
@@ -58,6 +59,7 @@ extension ShareEntity {
                            targetID: targetID,
                            permission: permission,
                            primary: primary,
+                           owner: owner,
                            content: content,
                            contentKeyRotation: contentKeyRotation,
                            contentFormatVersion: contentFormatVersion,
@@ -72,6 +74,7 @@ extension ShareEntity {
         contentKeyRotation = share.contentKeyRotation ?? -1
         createTime = share.createTime
         expireTime = share.expireTime ?? -1
+        owner = share.owner
         permission = share.permission
         primary = share.primary
         shareID = share.shareID

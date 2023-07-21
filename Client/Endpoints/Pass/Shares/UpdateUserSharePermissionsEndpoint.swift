@@ -18,28 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import ProtonCore_Networking
 import ProtonCore_Services
-
-public struct UpdateUserSharePermissionsResponse: Decodable {
-    let permission: Int
-    let expireTime: Int
-}
 
 // https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/put_pass-v1-share-%7Benc_shareID%7D-user-%7Benc_userShareID%7D
 public struct UpdateUserSharePermissionsEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = UpdateUserSharePermissionsResponse
+    public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
     public var body: UserSharePermissionRequest?
 
-    public init(for shareId: String,
-                and userId: String,
-                with request: UserSharePermissionRequest) {
-        debugDescription = "Update a user share"
+    public init(shareId: String,
+                userId: String,
+                request: UserSharePermissionRequest) {
+        debugDescription = "Update a user's share persmission"
         path = "/pass/v1/share/\(shareId)/user/\(userId)"
         method = .put
         body = request
@@ -47,18 +43,16 @@ public struct UpdateUserSharePermissionsEndpoint: Endpoint {
 }
 
 public struct UserSharePermissionRequest {
-    public let permission: String?
-    public let expireTime: String?
+    public let shareRoleID: String?
+    public let expireTime: Int?
 
-    public init(with permission: String?, and expireTime: String?) {
-        self.permission = permission
-        self.expireTime = expireTime
-    }
-}
-
-extension UserSharePermissionRequest: Encodable {
     enum CodingKeys: String, CodingKey {
-        case permission = "FeedbackType"
-        case expireTime = "Feedback"
+        case shareRoleID = "ShareRoleID"
+        case expireTime = "ExpireTime"
+    }
+
+    public init(shareRole: ShareRole?, expireTime: Int?) {
+        shareRoleID = shareRole?.rawValue
+        self.expireTime = expireTime
     }
 }
