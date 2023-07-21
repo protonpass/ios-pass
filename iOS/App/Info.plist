@@ -8,6 +8,8 @@
 	<string>$(IS_QA_BUILD)</string>
 	<key>IS_BETA_BUILD</key>
 	<string>$(IS_BETA_BUILD)</string>
+	<key>MODULE</key>
+	<string>HOST_APP</string>
 	<key>GIT_COMMIT_HASH</key>
 	<string></string>
 	<key>ITSAppUsesNonExemptEncryption</key>

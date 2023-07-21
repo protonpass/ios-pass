@@ -58,7 +58,7 @@ class BaseItemDetailViewModel {
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger: Logger
-    let logManager: LogManager
+    let logManager: LogManagerProtocol
     let theme: Theme
 
     weak var delegate: ItemDetailViewModelDelegate?
@@ -71,7 +71,7 @@ class BaseItemDetailViewModel {
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vault: Vault?,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          theme: Theme) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent

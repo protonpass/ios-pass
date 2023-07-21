@@ -101,6 +101,25 @@ public extension Logger {
     }
 
     @discardableResult
+    func error(message: String,
+               error: Error,
+               timestamp: TimeInterval = Date().timeIntervalSince1970,
+               file: String = #file,
+               function: String = #function,
+               line: UInt = #line,
+               column: UInt = #column) -> LogEntry {
+        let entry = generateEntry(message: "\(message) \(String(describing: error))",
+                                  timestamp: timestamp,
+                                  level: .error,
+                                  file: file,
+                                  function: function,
+                                  line: line,
+                                  column: column)
+        log(entry: entry)
+        return entry
+    }
+
+    @discardableResult
     func warning(_ message: String,
                  timestamp: TimeInterval = Date().timeIntervalSince1970,
                  file: String = #file,

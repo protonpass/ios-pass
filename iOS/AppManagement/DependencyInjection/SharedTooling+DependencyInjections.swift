@@ -20,76 +20,123 @@
 
 import Core
 import Factory
+import LocalAuthentication
 import ProtonCore_Keymaker
 
 /// Contain tools shared between main iOS app and extensions
-final class SharedToolingContainer: SharedContainer {
-    typealias FullKeychainService = SettingsProvider & Keychain
-
+final class SharedToolingContainer: SharedContainer, AutoRegistering {
     static let shared = SharedToolingContainer()
     let manager = ContainerManager()
 
+    private init() {
+        let key = "ProtonPass"
+        switch Bundle.main.infoDictionary?["MODULE"] as? String {
+        case "AUTOFILL_EXTENSION":
+            FactoryContext.setArg(PassModule.autoFillExtension, forKey: key)
+        case "KEYBOARD_EXTENSION":
+            FactoryContext.setArg(PassModule.keyboardExtension, forKey: key)
+        default:
+            // Default to host app
+            break
+        }
+    }
+
     func resetCache() {
         manager.reset(scope: .cached)
+    }
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
     }
 }
 
 // MARK: Shared Logging tools
 
 extension SharedToolingContainer {
-    var logManager: Factory<LogManager> {
-        self { LogManager(module: .hostApp) }
-            .onArg("autoFill") { LogManager(module: .autoFillExtension) }
-            .onArg("keyboard") { LogManager(module: .keyboardExtension) }
+    var specificLogManager: ParameterFactory<PassModule, LogManager> {
+        self { LogManager(module: $0) }
             .unique
     }
 
-    var autoFillLogManager: Factory<LogManager> {
-        self { LogManager(module: .autoFillExtension) }
-    }
-
-    var autoFillLogger: Factory<Logger> {
-        self { Logger(manager: self.autoFillLogManager()) }
-    }
-
-    var keyboardLogManager: Factory<LogManager> {
-        self { LogManager(module: .keyboardExtension) }
+    /// Should be made private once transitionned to `Factory`
+    /// All objects that want to log should create and hold a new instance of `Logger` with
+    /// `resolve(\SharedToolingContainer.logger)`
+    var logManager: Factory<LogManagerProtocol> {
+        self { LogManager(module: .hostApp) }
+            .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
+            .onArg(PassModule.keyboardExtension) { LogManager(module: .keyboardExtension) }
     }
 
     var logFormatter: Factory<LogFormatterProtocol> {
         self { LogFormatter(format: .txt) }
+    }
+
+    /// A `Logger` that has `shared` scope because while all logger instances share a unique `logManager`
+    /// each of them should have a different `subsystem` &`category`, so the scope cannot be `unique` or
+    /// `singleton`
+    var logger: Factory<Logger> {
+        self { Logger(manager: self.logManager()) }
+            .shared
+    }
+}
+
+// MARK: Data tools
+
+extension SharedToolingContainer {
+    var appData: Factory<AppData> {
+        self { AppData() }
+    }
+
+    var appVersion: Factory<String> {
+        self { "ios-pass@\(Bundle.main.fullAppVersionName)" }
+            .onArg(PassModule.autoFillExtension) {
+                "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
+            }
+    }
+
+    var apiManager: Factory<APIManager> {
+        self { APIManager() }
     }
 }
 
 // MARK: User centric tools
 
 extension SharedToolingContainer {
-    // This is set in a cached scope to be able to reset when needed
-    // To reset you can call SharedToolingContainer.shared.manager.reset(scope: .cached)
     var preferences: Factory<Preferences> {
         self { Preferences() }
-            .cached
     }
 }
 
 // MARK: Keychain tools
 
 extension SharedToolingContainer {
-    var keychain: Factory<FullKeychainService> {
+    private var baseKeychain: Factory<PPKeychain> {
         self { PPKeychain() }
     }
 
-    var autolocker: Factory<Autolocker> {
-        self { Autolocker(lockTimeProvider: self.keychain()) }
+    var keychain: Factory<KeychainProtocol> {
+        self { self.baseKeychain() }
     }
 
-    var keymaker: Factory<Keymaker> {
-        self { Keymaker(autolocker: self.autolocker(), keychain: self.keychain()) }
+    var settingsProvider: Factory<SettingsProvider> {
+        self { self.baseKeychain() }
+    }
+
+    var autolocker: Factory<Autolocker> {
+        self { Autolocker(lockTimeProvider: self.settingsProvider()) }
+    }
+
+    var mainKeyProvider: Factory<MainKeyProvider> {
+        self { Keymaker(autolocker: self.autolocker(),
+                        keychain: self.baseKeychain()) }
     }
 }
 
-extension SharedToolingContainer: AutoRegistering {
-    func autoRegister() {
-        manager.defaultScope = .singleton
+// MARK: Local authentication
+
+extension SharedToolingContainer {
+    /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
+    var localAuthenticationEnablingPolicy: Factory<LAPolicy> {
+        self { .deviceOwnerAuthentication }
     }
 }

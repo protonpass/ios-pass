@@ -60,7 +60,7 @@ public actor PassKeyManager {
 
     public init(shareKeyRepository: ShareKeyRepositoryProtocol,
                 itemKeyDatasource: RemoteItemKeyDatasourceProtocol,
-                logManager: LogManager,
+                logManager: LogManagerProtocol,
                 symmetricKey: SymmetricKey) {
         self.shareKeyRepository = shareKeyRepository
         self.itemKeyDatasource = itemKeyDatasource

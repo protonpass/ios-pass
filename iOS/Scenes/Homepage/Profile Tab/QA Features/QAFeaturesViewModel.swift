@@ -30,7 +30,7 @@ final class QAFeaturesViewModel: ObservableObject {
     let telemetryEventRepository: TelemetryEventRepositoryProtocol
     let preferences: Preferences
     let bannerManager: BannerManager
-    let logManager: LogManager
+    let logManager: LogManagerProtocol
     let userData: UserData
 
     init(credentialManager: CredentialManagerProtocol,
@@ -40,7 +40,7 @@ final class QAFeaturesViewModel: ObservableObject {
          telemetryEventRepository: TelemetryEventRepositoryProtocol,
          preferences: Preferences,
          bannerManager: BannerManager,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          userData: UserData) {
         self.credentialManager = credentialManager
         self.favIconRepository = favIconRepository

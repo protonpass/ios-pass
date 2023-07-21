@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Entities
 
 public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     // Get all items (both active & trashed)
