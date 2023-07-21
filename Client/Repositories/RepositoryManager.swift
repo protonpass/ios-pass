@@ -127,8 +127,8 @@ public final class RepositoryManager: DeinitPrintable {
                                      scheduler: telemetryScheduler,
                                      userId: userId)
         featureFlagsRepository =
-            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
-                                   remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: container),
+                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
                                    userId: userId,
                                    logManager: logManager)
 

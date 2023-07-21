@@ -129,7 +129,7 @@ extension SharedRepositoryContainer {
 
     var telemetryEventRepository: Factory<TelemetryEventRepositoryProtocol> {
         self {
-            // swiftformat:next:disable all
+            // swiftformat:disable:next all
             TelemetryEventRepository(
                 localDatasource: LocalTelemetryEventDatasource(container: self.container()),
                 remoteDatasource: RemoteTelemetryEventDatasource(apiService: self.apiService),
@@ -145,12 +145,10 @@ extension SharedRepositoryContainer {
 
     var featureFlagsRepository: Factory<FeatureFlagsRepositoryProtocol> {
         self {
-            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: self
-                                       .container()),
-            remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: self
-                .apiService),
-            userId: self.userData().user.ID,
-            logManager: self.logManager)
+            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: self.container()),
+                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: self.apiService),
+                                   userId: self.userData().user.ID,
+                                   logManager: self.logManager)
         }
     }
 
