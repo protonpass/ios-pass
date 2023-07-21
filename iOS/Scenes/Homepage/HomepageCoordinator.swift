@@ -130,7 +130,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                           symmetricKey: symmetricKey,
                                           preferences: preferences)
 
-        aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+        aliasRepository = AliasRepository(remoteDatasouce: remoteAliasDatasource)
         self.apiService = apiService
         clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
