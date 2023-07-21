@@ -1,6 +1,6 @@
 //
-// ItemKey.swift
-// Proton Pass - Created on 11/04/2023.
+// VaultData.swift
+// Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,7 +20,18 @@
 
 import Foundation
 
-public struct ItemKey: Codable {
-    public let key: String
-    public let keyRotation: Int64
+public struct VaultData: Decodable {
+    public let content: String
+    public let contentKeyRotation: Int
+    public let contentFormatVersion: Int
+    public let memberCount: Int
+    public let itemCount: Int
+
+    enum CodingKeys: String, CodingKey {
+        case content = "Content"
+        case contentKeyRotation = "ContentKeyRotation"
+        case contentFormatVersion = "ContentFormatVersion"
+        case memberCount = "MemberCount"
+        case itemCount = "ItemCount"
+    }
 }

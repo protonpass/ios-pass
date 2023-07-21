@@ -28,7 +28,7 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos
     func updateUserSharePermission(shareId: String,
                                    userId: String,
-                                   request: UserSharePermissionRequest) async throws -> Int
+                                   request: UserSharePermissionRequest) async throws -> Bool
     func deleteUserShare(shareId: String,
                          userId: String) async throws -> Bool
 
@@ -86,10 +86,12 @@ public extension RemoteShareDatasourceProtocol {
 
     func updateUserSharePermission(shareId: String,
                                    userId: String,
-                                   request: UserSharePermissionRequest) async throws -> Int {
-        let endpoint = UpdateUserSharePermissionsEndpoint(for: shareId, and: userId, with: request)
+                                   request: UserSharePermissionRequest) async throws -> Bool {
+        let endpoint = UpdateUserSharePermissionsEndpoint(shareId: shareId,
+                                                          userId: userId,
+                                                          request: request)
         let response = try await apiService.exec(endpoint: endpoint)
-        return response.permission
+        return response.isSuccessful
     }
 
     func deleteUserShare(shareId: String,
