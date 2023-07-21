@@ -24,27 +24,26 @@ import Foundation
 import ProtonCore_Login
 
 public protocol ShareInviteRepositoryProtocol {
-    // MARK: - Share Invites
-
-    func getAllPendingInvites(for shareId: String) async throws -> [ShareInvite]
+    func getAllPendingInvites(shareId: String) async throws -> [ShareInvite]
 
     func sendInvite(shareId: String,
                     keys: [ItemKey],
                     email: String,
-                    targetType: String) async throws -> Bool
+                    targetType: TargetType,
+                    shareRole: ShareRole) async throws -> Bool
 
-    func sendInviteReminder(shareId: String, userId: String) async throws -> Bool
+    func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
 
-    func deleteInvite(shareId: String, userId: String) async throws -> Bool
+    func deleteInvite(shareId: String, inviteId: String) async throws -> Bool
 }
 
 public final class ShareInviteRepository: ShareInviteRepositoryProtocol {
-    public let remoteShareInviteDataSource: RemoteShareInviteDatasourceProtocol
+    public let remoteDataSource: RemoteShareInviteDatasourceProtocol
     public let logger: Logger
 
-    public init(remoteShareInviteDataSource: RemoteShareInviteDatasourceProtocol,
-                logManager: LogManager) {
-        self.remoteShareInviteDataSource = remoteShareInviteDataSource
+    public init(remoteDataSource: RemoteShareInviteDatasourceProtocol,
+                logManager: LogManagerProtocol) {
+        self.remoteDataSource = remoteDataSource
         logger = .init(manager: logManager)
     }
 }
@@ -52,14 +51,14 @@ public final class ShareInviteRepository: ShareInviteRepositoryProtocol {
 // MARK: - Share Invites
 
 public extension ShareInviteRepository {
-    func getAllPendingInvites(for shareId: String) async throws -> [ShareInvite] {
+    func getAllPendingInvites(shareId: String) async throws -> [ShareInvite] {
         logger.trace("Getting all pending invites for share \(shareId)")
         do {
-            let invites = try await remoteShareInviteDataSource.getPendingInvitesForShare(sharedId: shareId)
+            let invites = try await remoteDataSource.getPendingInvites(sharedId: shareId)
             logger.trace("Got \(invites.count) pending invites for \(shareId)")
             return invites
         } catch {
-            logger.debug("Failed to get pending invites for share \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to get pending invites for share \(shareId)", error: error)
             throw error
         }
     }
@@ -67,43 +66,47 @@ public extension ShareInviteRepository {
     func sendInvite(shareId: String,
                     keys: [ItemKey],
                     email: String,
-                    targetType: String) async throws -> Bool {
-        logger.trace("Inviting user to share \(shareId)")
+                    targetType: TargetType,
+                    shareRole: ShareRole) async throws -> Bool {
+        logger.trace("Inviting \(email) to share \(shareId)")
         do {
-            let request = InviteUserToShareRequest(keys: keys, email: email, targetType: targetType)
-            let inviteStatus = try await remoteShareInviteDataSource.inviteUser(shareId: shareId, request: request)
-            logger.trace("Invited \(email) for \(shareId)")
+            let request = InviteUserToShareRequest(keys: keys,
+                                                   email: email,
+                                                   targetType: targetType,
+                                                   shareRole: shareRole)
+            let inviteStatus = try await remoteDataSource.inviteUser(shareId: shareId, request: request)
+            logger.info("Invited \(email) to \(shareId)")
             return inviteStatus
         } catch {
-            logger.debug("Failed to invite user \(email) for share \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to invite \(email) to share \(shareId)", error: error)
             throw error
         }
     }
 
-    func sendInviteReminder(shareId: String, userId: String) async throws -> Bool {
-        logger.trace("Send reminder to user \(userId) for share \(shareId)")
+    func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool {
+        logger.trace("Sending reminder for share \(shareId) invite \(inviteId)")
         do {
-            let reminderStatus = try await remoteShareInviteDataSource.sendInviteReminderToUser(shareId: shareId,
-                                                                                                userId: userId)
-            logger.trace("Reminder status \(reminderStatus) for \(shareId)")
-            return reminderStatus
+            let sent = try await remoteDataSource.sendInviteReminder(shareId: shareId,
+                                                                     inviteId: inviteId)
+            logger.info("Reminded \(sent) for \(shareId) invite \(inviteId)")
+            return sent
         } catch {
-            logger
-                .debug("Failed to send reminder to user \(userId) for share \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to send reminder for share \(shareId) invite \(inviteId)",
+                         error: error)
             throw error
         }
     }
 
-    func deleteInvite(shareId: String, userId: String) async throws -> Bool {
-        logger.trace("Delete invite to user \(userId) for share \(shareId)")
+    func deleteInvite(shareId: String, inviteId: String) async throws -> Bool {
+        logger.trace("Deleting invite \(inviteId) for share \(shareId)")
         do {
-            let deleteStatus = try await remoteShareInviteDataSource.deleteShareUserInvite(shareId: shareId,
-                                                                                           userId: userId)
-            logger.trace("Deletion status \(deleteStatus) for \(shareId)")
-            return deleteStatus
+            let deleted = try await remoteDataSource.deleteShareInvite(shareId: shareId,
+                                                                       inviteId: inviteId)
+            logger.info("Deleted \(deleted) for share \(shareId) invite \(inviteId)")
+            return deleted
         } catch {
-            logger
-                .debug("Failed to delete invite to user \(userId) for share \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to delete invite \(inviteId) for share \(shareId)",
+                         error: error)
             throw error
         }
     }

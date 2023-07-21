@@ -33,7 +33,7 @@ extension ItemEntity {
 
     @NSManaged var aliasEmail: String?
     @NSManaged var content: String?
-    @NSManaged var contentFormatVersion: Int16
+    @NSManaged var contentFormatVersion: Int64
     @NSManaged var createTime: Int64
     @NSManaged var isLogInItem: Bool // Custom field
     @NSManaged var itemID: String?
@@ -44,7 +44,7 @@ extension ItemEntity {
     @NSManaged var revision: Int64
     @NSManaged var revisionTime: Int64
     @NSManaged var shareID: String? // Custom field
-    @NSManaged var state: Int16
+    @NSManaged var state: Int64
     @NSManaged var symmetricallyEncryptedContent: String? // Custom field
 }
 

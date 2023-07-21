@@ -403,9 +403,9 @@
 		3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */; };
 		35699B93298103F1006CB225 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35699B92298103F1006CB225 /* String+HTML.swift */; };
 		35699B97298125FA006CB225 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557441A295A064F00EA4AF0 /* ClipboardManager.swift */; };
-		3569AE3D2A6927000026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */; };
-		3569AE3E2A6936CF0026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */; };
-		3569AE3F2A6936D00026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */; };
+		3569AE422A6983440026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */; };
+		3569AE432A69842F0026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */; };
+		3569AE442A6984300026B780 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */; };
 		3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */; };
 		3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29A29B76BF60070830B /* VaultsManager.swift */; };
 		3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29E29B77A760070830B /* VaultContentUiModel.swift */; };
@@ -667,7 +667,7 @@
 		5B1F5CD52A5D927200A6C3ED /* GetPendingInvitesforShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CD42A5D927200A6C3ED /* GetPendingInvitesforShareEndpoint.swift */; };
 		5B1F5CD72A5D936700A6C3ED /* InviteUserToShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CD62A5D936700A6C3ED /* InviteUserToShareEndpoint.swift */; };
 		5B1F5CD92A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CD82A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift */; };
-		5B1F5CDB2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CDA2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift */; };
+		5B1F5CDB2A5D966B00A6C3ED /* DeleteShareInviteEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CDA2A5D966B00A6C3ED /* DeleteShareInviteEndpoint.swift */; };
 		5B1F5CDD2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CDC2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift */; };
 		5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
@@ -1252,7 +1252,8 @@
 		3567E46329B0C93C00511D62 /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
 		3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCameraPermissionView.swift; sourceTree = "<group>"; };
 		35699B92298103F1006CB225 /* String+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
-		3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Scientist.plist"; sourceTree = "<group>"; };
+		3569AE402A695E070026B780 /* Entities */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Entities; path = LocalPackages/Entities; sourceTree = "<group>"; };
+		3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Scientist.plist"; sourceTree = "<group>"; };
 		3569B29829B764D60070830B /* Coordinator+ShowHideSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowHideSpinner.swift"; sourceTree = "<group>"; };
 		3569B29A29B76BF60070830B /* VaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultsManager.swift; sourceTree = "<group>"; };
 		3569B29E29B77A760070830B /* VaultContentUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultContentUiModel.swift; sourceTree = "<group>"; };
@@ -1451,9 +1452,7 @@
 		5B0C750F2A38C51000272CE8 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		5B0C75112A39CB3D00272CE8 /* LogManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManagerTests.swift; sourceTree = "<group>"; };
 		5B0C75132A39DC7600272CE8 /* LogEntryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryFactory.swift; sourceTree = "<group>"; };
-		5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ProtonPass 2.xcdatamodel"; sourceTree = "<group>"; };
 		5B14534B2A60245C0048B022 /* AcceptInviteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptInviteEndpoint.swift; sourceTree = "<group>"; };
-		5B14534F2A6028720048B022 /* PassEntities */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PassEntities; path = LocalPackages/PassEntities; sourceTree = "<group>"; };
 		5B1453562A6032D20048B022 /* Vault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault.swift; sourceTree = "<group>"; };
 		5B1453572A6032D20048B022 /* SymmetricallyEncryptedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedItem.swift; sourceTree = "<group>"; };
 		5B1453592A6032D20048B022 /* SymmetricallyEncryptedShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetricallyEncryptedShare.swift; sourceTree = "<group>"; };
@@ -1473,6 +1472,7 @@
 		5B1453822A6070260048B022 /* PublicKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicKey+Test.swift"; sourceTree = "<group>"; };
 		5B1453862A6587730048B022 /* ShareInviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInviteRepository.swift; sourceTree = "<group>"; };
 		5B1453882A6591B20048B022 /* InviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteRepository.swift; sourceTree = "<group>"; };
+		5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ProtonPass 2.xcdatamodel"; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -1481,7 +1481,7 @@
 		5B1F5CD42A5D927200A6C3ED /* GetPendingInvitesforShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingInvitesforShareEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CD62A5D936700A6C3ED /* InviteUserToShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteUserToShareEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CD82A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendInviteReminderToUserEndpoint.swift; sourceTree = "<group>"; };
-		5B1F5CDA2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteInviteEndpoint.swift; sourceTree = "<group>"; };
+		5B1F5CDA2A5D966B00A6C3ED /* DeleteShareInviteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteShareInviteEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CDC2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingInviteForUserEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
@@ -1789,7 +1789,7 @@
 				5B1F5CD42A5D927200A6C3ED /* GetPendingInvitesforShareEndpoint.swift */,
 				5B1F5CD62A5D936700A6C3ED /* InviteUserToShareEndpoint.swift */,
 				5B1F5CD82A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift */,
-				5B1F5CDA2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift */,
+				5B1F5CDA2A5D966B00A6C3ED /* DeleteShareInviteEndpoint.swift */,
 			);
 			path = Shares;
 			sourceTree = "<group>";
@@ -2653,7 +2653,7 @@
 				35E5063C286F819F00A3F6EA /* Products */,
 				A960751BC7741704CCF907C2 /* Pods */,
 				2E7AE4F339A9234C7A1F51F3 /* Frameworks */,
-				5B14534F2A6028720048B022 /* PassEntities */,
+				3569AE402A695E070026B780 /* Entities */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3207,7 +3207,7 @@
 			children = (
 				5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */,
 				5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */,
-				3569AE3C2A6927000026B780 /* Pass-Constant-Scientist.plist */,
+				3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -3814,7 +3814,7 @@
 			files = (
 				3554DAB7293A910700595FC7 /* Icons.xcassets in Resources */,
 				5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */,
-				3569AE3E2A6936CF0026B780 /* Pass-Constant-Scientist.plist in Resources */,
+				3569AE432A69842F0026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */,
 				3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */,
 				5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */,
@@ -3839,7 +3839,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3569AE3F2A6936D00026B780 /* Pass-Constant-Scientist.plist in Resources */,
+				3569AE442A6984300026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				3560845229DDE2CC001F7487 /* Colors.xcassets in Resources */,
 				5B2EB29B2A45C1BD00F576BB /* Pass-Constant-Prod.plist in Resources */,
 				5B2EB29A2A45C1BA00F576BB /* Pass-Constant-Black.plist in Resources */,
@@ -3855,7 +3855,7 @@
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 				5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
-				3569AE3D2A6927000026B780 /* Pass-Constant-Scientist.plist in Resources */,
+				3569AE422A6983440026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4827,7 +4827,7 @@
 				5B1453872A6587730048B022 /* ShareInviteRepository.swift in Sources */,
 				3556949B29D44DEF005DD2EB /* MoveItemRequest.swift in Sources */,
 				354146D428D1F235007E45A6 /* GetAliasOptionsEndpoint.swift in Sources */,
-				5B1F5CDB2A5D966B00A6C3ED /* DeleteInviteEndpoint.swift in Sources */,
+				5B1F5CDB2A5D966B00A6C3ED /* DeleteShareInviteEndpoint.swift in Sources */,
 				355A5B142A041FCC0089E0AC /* PassPlanRepository.swift in Sources */,
 				35526B6628D11E0C0017BB53 /* ModifyItemRequest.swift in Sources */,
 				356B831429C365320084488A /* SearchEntryEntity.swift in Sources */,
