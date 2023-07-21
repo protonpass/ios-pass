@@ -22,33 +22,33 @@ import Entities
 import Foundation
 
 public protocol RemoteShareInviteDatasourceProtocol: RemoteDatasourceProtocol {
-    func getPendingInvitesForShare(sharedId: String) async throws -> [ShareInvite]
+    func getPendingInvites(sharedId: String) async throws -> [ShareInvite]
     func inviteUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool
-    func sendInviteReminderToUser(shareId: String, userId: String) async throws -> Bool
-    func deleteShareUserInvite(shareId: String, userId: String) async throws -> Bool
+    func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
+    func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool
 }
 
 public extension RemoteShareInviteDatasourceProtocol {
-    func getPendingInvitesForShare(sharedId: String) async throws -> [ShareInvite] {
+    func getPendingInvites(sharedId: String) async throws -> [ShareInvite] {
         let getSharesEndpoint = GetPendingInvitesforShareEndpoint(for: sharedId)
         let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
         return getSharesResponse.invites
     }
 
     func inviteUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool {
-        let endpoint = InviteUserToShareEndpoint(for: shareId, with: request)
+        let endpoint = InviteUserToShareEndpoint(shareId: shareId, request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func sendInviteReminderToUser(shareId: String, userId: String) async throws -> Bool {
-        let endpoint = SendInviteReminderToUserEndpoint(for: shareId, with: userId)
+    func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool {
+        let endpoint = SendInviteReminderToUserEndpoint(shareId: shareId, inviteId: inviteId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func deleteShareUserInvite(shareId: String, userId: String) async throws -> Bool {
-        let endpoint = DeleteInviteEndpoint(for: shareId, with: userId)
+    func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool {
+        let endpoint = DeleteShareInviteEndpoint(shareId: shareId, inviteId: inviteId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
     }

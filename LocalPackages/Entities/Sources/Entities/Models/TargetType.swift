@@ -1,6 +1,6 @@
 //
-// DeleteInviteEndpoint.swift
-// Proton Pass - Created on 11/07/2023.
+// TargetType.swift
+// Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,20 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
-import ProtonCore_Services
+import Foundation
 
-public struct DeleteInviteEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-
-    public init(for shareId: String, with userId: String) {
-        debugDescription = "Delete an invite"
-        path = "/pass/v1/share/\(shareId)/invite/\(userId)"
-        method = .delete
-    }
+public enum TargetType: Int64, Decodable {
+    case unknown = 0
+    case vault = 1
+    case item = 2
 }

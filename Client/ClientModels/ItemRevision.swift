@@ -20,22 +20,9 @@
 
 import Core
 import CryptoKit
+import Entities
 import ProtonCore_DataModel
 import ProtonCore_Login
-
-public enum ItemState: Int16, CaseIterable {
-    case active = 1
-    case trashed = 2
-
-    public var description: String {
-        switch self {
-        case .active:
-            return "active"
-        case .trashed:
-            return "trashed"
-        }
-    }
-}
 
 public struct ItemRevisionsPaginated: Decodable {
     public let total: Int
@@ -46,7 +33,7 @@ public struct ItemRevisionsPaginated: Decodable {
 public struct ItemRevision: Decodable, Equatable {
     public let itemID: String
     public let revision: Int64
-    public let contentFormatVersion: Int16
+    public let contentFormatVersion: Int64
     public let keyRotation: Int64
     public let content: String
 
@@ -54,7 +41,7 @@ public struct ItemRevision: Decodable, Equatable {
     public let itemKey: String?
 
     /// Revision state. Values: 1 = Active, 2 = Trashed
-    public let state: Int16
+    public let state: Int64
 
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?
