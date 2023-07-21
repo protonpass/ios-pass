@@ -31,8 +31,8 @@ public struct InviteUserToShareEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: InviteUserToShareRequest?
 
-    public init(for shareId: String, with request: InviteUserToShareRequest) {
-        debugDescription = "Invite a user to share."
+    public init(shareId: String, request: InviteUserToShareRequest) {
+        debugDescription = "Invite a user to share"
         path = "/pass/v1/share/\(shareId)/invite"
         method = .post
         body = request
@@ -40,22 +40,31 @@ public struct InviteUserToShareEndpoint: Endpoint {
 }
 
 public struct InviteUserToShareRequest {
+    /// List of keys encrypted for the other user's address key and signed with your address key
     public let keys: [ItemKey]
+    /// Email of the target user
     public let email: String
-    public let targetType: String // 1 = Vault, 2 = Item
-    public let itemId: String? // only for item sharing
-    public let expirationDate: Int?
+    /// Invite target type. 1 = Vault, 2 = Item
+    public let targetType: Int
+    /// ShareRoleID assigned to this invite
+    public let shareRoleId: String
+    /// Invite encrypted item ID (only in case the invite is of type Item)
+    public let itemId: String?
+    /// Expiration time for the share
+    public let expirationTime: Int?
 
     public init(keys: [ItemKey],
                 email: String,
-                targetType: String,
+                targetType: TargetType,
+                shareRole: ShareRole,
                 itemId: String? = nil,
-                expirationDate: Int? = nil) {
+                expirationDate: Date? = nil) {
         self.keys = keys
         self.email = email
-        self.targetType = targetType
+        self.targetType = Int(targetType.rawValue)
+        shareRoleId = shareRole.rawValue
         self.itemId = itemId
-        self.expirationDate = expirationDate
+        expirationTime = Int(expirationDate?.timeIntervalSince1970 ?? 0)
     }
 }
 
@@ -64,7 +73,8 @@ extension InviteUserToShareRequest: Encodable {
         case keys = "Keys"
         case email = "Email"
         case targetType = "TargetType"
+        case shareRoleId = "ShareRoleID"
         case itemId = "ItemID"
-        case expirationDate = "ExpirationTime"
+        case expirationTime = "ExpirationTime"
     }
 }
