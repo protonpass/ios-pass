@@ -70,8 +70,8 @@ public final class RepositoryManager: DeinitPrintable {
         let remoteTelemetryEventDatasource = RemoteTelemetryEventDatasource(apiService: apiService)
         let localTelemetryEventDatasource = LocalTelemetryEventDatasource(container: container)
 
-        let passPlanRepository = PassPlanRepository(localPassPlanDatasource: localPassPlanDatasource,
-                                                    remotePassPlanDatasource: remotePassPlanDatasource,
+        let passPlanRepository = PassPlanRepository(localDatasource: localPassPlanDatasource,
+                                                    remoteDatasource: remotePassPlanDatasource,
                                                     userId: userData.user.ID,
                                                     logManager: logManager)
 
