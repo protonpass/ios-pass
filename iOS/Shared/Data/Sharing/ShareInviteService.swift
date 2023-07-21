@@ -19,17 +19,18 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Entities
 
 public protocol ShareInviteServiceProtocol: Actor, Sendable {
     var currentSelectedVault: Vault? { get }
     var currentSelectedVaultItems: Int? { get }
     var currentDestinationUserEmail: String? { get }
-    var currentUserRole: String? { get }
+    var currentUserRole: ShareRole? { get }
 
     func setCurrentSelectedVault(with vault: Vault)
     func setCurrentSelectedVaultItem(with itemNum: Int)
     func setCurrentDestinationUserEmail(with email: String)
-    func setCurrentUserRole(with role: String)
+    func setCurrentUserRole(with role: ShareRole)
     func resetShareInviteInformations()
 }
 
@@ -37,7 +38,7 @@ actor ShareInviteService: ShareInviteServiceProtocol {
     private(set) var currentSelectedVault: Vault?
     private(set) var currentSelectedVaultItems: Int?
     private(set) var currentDestinationUserEmail: String?
-    private(set) var currentUserRole: String?
+    private(set) var currentUserRole: ShareRole?
 
     public func setCurrentSelectedVault(with vault: Vault) {
         currentSelectedVault = vault
@@ -51,25 +52,9 @@ actor ShareInviteService: ShareInviteServiceProtocol {
         currentDestinationUserEmail = email
     }
 
-    public func setCurrentUserRole(with role: String) {
+    public func setCurrentUserRole(with role: ShareRole) {
         currentUserRole = role
     }
-
-//    func currentSelectedVault() async -> Vault? {
-//        currentSelectedVault
-//    }
-//
-//    func currentSelectedVaultItem() async -> Int? {
-//        currentSelectedVaultItems
-//    }
-//
-//    func currentDestinationUserEmail() async -> String? {
-//        currentDestinationUserEmail
-//    }
-//
-//    func currentUserRole() async -> String? {
-//        currentUserRole
-//    }
 
     public func resetShareInviteInformations() {
         currentSelectedVault = nil

@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 import Factory
 import Foundation
 
@@ -29,7 +30,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
     @Published private(set) var vault: Vault?
     @Published private(set) var email = ""
     @Published private(set) var itemNum = 0
-    @Published private(set) var role: UserPermission?
+    @Published private(set) var role: ShareRole?
 
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
 
@@ -48,9 +49,7 @@ private extension SharingSummaryViewModel {
             self.vault = infos.vault
             self.email = infos.email ?? ""
             self.itemNum = infos.itemsNum ?? 0
-            if let role = infos.role {
-                self.role = UserPermission(rawValue: role)
-            }
+            self.role = infos.role
         }
     }
 }

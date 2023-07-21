@@ -41,18 +41,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     @Published var showingAlert = false
 
-    // TODO: move this to a use case
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private var sharedVault: Vault?
+    private(set) var numberOfAliasforSharedVault = 0
 
-    var numberOfAliasforSharedVault: Int {
-        guard let sharedVault else {
-            return 0
-        }
-        return vaultsManager.getItem(for: sharedVault).filter { $0.type == .alias }.count
-    }
-
-    let logger: Logger
+    private let logger: Logger
     let vaultsManager: VaultsManager
 
     weak var delegate: EditableVaultListViewModelDelegate?
@@ -103,8 +95,9 @@ extension EditableVaultListViewModel {
             guard let self else {
                 return
             }
-            await self.setShareInviteVault(with: vault, and: self.numberOfAliasforSharedVault)
-            self.sharedVault = vault
+            let numberOfItems = vaultsManager.getItem(for: vault)
+            await self.setShareInviteVault(with: vault, and: numberOfItems.count)
+            self.numberOfAliasforSharedVault = numberOfItems.filter { $0.type == .alias }.count
             self.showingAlert = true
         }
     }
