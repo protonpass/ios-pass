@@ -36,8 +36,8 @@ public protocol ItemRepositoryDelegate: AnyObject {
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     var userData: UserData { get }
     var symmetricKey: SymmetricKey { get }
-    var localItemDatasoure: LocalItemDatasourceProtocol { get }
-    var remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol { get }
+    var localDatasoure: LocalItemDatasourceProtocol { get }
+    var remoteDatasource: RemoteItemRevisionDatasourceProtocol { get }
     var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
     var passKeyManager: PassKeyManagerProtocol { get }
     var logger: Logger { get }
@@ -121,19 +121,19 @@ private extension ItemRepositoryProtocol {
 
 public extension ItemRepositoryProtocol {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
-        try await localItemDatasoure.getAllItems()
+        try await localDatasoure.getAllItems()
     }
 
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        try await localItemDatasoure.getItems(state: state)
+        try await localDatasoure.getItems(state: state)
     }
 
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        try await localItemDatasoure.getItems(shareId: shareId, state: state)
+        try await localDatasoure.getItems(shareId: shareId, state: state)
     }
 
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
-        try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
+        try await localDatasoure.getItem(shareId: shareId, itemId: itemId)
     }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
@@ -142,12 +142,12 @@ public extension ItemRepositoryProtocol {
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
-        try await localItemDatasoure.getAliasItem(email: email)
+        try await localDatasoure.getAliasItem(email: email)
     }
 
     func refreshItems(shareId: String) async throws {
         logger.trace("Refreshing share \(shareId)")
-        let itemRevisions = try await remoteItemRevisionDatasource.getItemRevisions(shareId: shareId)
+        let itemRevisions = try await remoteDatasource.getItemRevisions(shareId: shareId)
         logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
@@ -158,11 +158,11 @@ public extension ItemRepositoryProtocol {
         }
 
         logger.trace("Removing all local old items if any for share \(shareId)")
-        try await localItemDatasoure.removeAllItems(shareId: shareId)
+        try await localDatasoure.removeAllItems(shareId: shareId)
         logger.trace("Removed all local old items for share \(shareId)")
 
         logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
-        try await localItemDatasoure.upsertItems(encryptedItems)
+        try await localDatasoure.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
         logger.trace("Refreshing last event ID for share \(shareId)")
@@ -181,11 +181,11 @@ public extension ItemRepositoryProtocol {
                     shareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating item for share \(shareId)")
         let request = try await createItemRequest(itemContent: itemContent, shareId: shareId)
-        let createdItemRevision = try await remoteItemRevisionDatasource.createItem(shareId: shareId,
-                                                                                    request: request)
+        let createdItemRevision = try await remoteDatasource.createItem(shareId: shareId,
+                                                                        request: request)
         logger.trace("Saving newly created item \(createdItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
-        try await localItemDatasoure.upsertItems([encryptedItem])
+        try await localDatasoure.upsertItems([encryptedItem])
         logger.trace("Saved item \(createdItemRevision.itemID) to local database")
 
         let newCredentials = try getCredentials(from: [encryptedItem], state: .active)
@@ -203,11 +203,11 @@ public extension ItemRepositoryProtocol {
         let createAliasRequest = CreateCustomAliasRequest(info: info,
                                                           item: createItemRequest)
         let createdItemRevision =
-            try await remoteItemRevisionDatasource.createAlias(shareId: shareId,
-                                                               request: createAliasRequest)
+            try await remoteDatasource.createAlias(shareId: shareId,
+                                                   request: createAliasRequest)
         logger.trace("Saving newly created alias \(createdItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
-        try await localItemDatasoure.upsertItems([encryptedItem])
+        try await localDatasoure.upsertItems([encryptedItem])
         logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
         return encryptedItem
     }
@@ -223,12 +223,12 @@ public extension ItemRepositoryProtocol {
         let request = CreateAliasAndAnotherItemRequest(info: info,
                                                        aliasItem: createAliasItemRequest,
                                                        otherItem: createOtherItemRequest)
-        let bundle = try await remoteItemRevisionDatasource.createAliasAndAnotherItem(shareId: shareId,
-                                                                                      request: request)
+        let bundle = try await remoteDatasource.createAliasAndAnotherItem(shareId: shareId,
+                                                                          request: request)
         logger.trace("Saving newly created alias & other item to local database")
         let encryptedAlias = try await symmetricallyEncrypt(itemRevision: bundle.alias, shareId: shareId)
         let encryptedOtherItem = try await symmetricallyEncrypt(itemRevision: bundle.item, shareId: shareId)
-        try await localItemDatasoure.upsertItems([encryptedAlias, encryptedOtherItem])
+        try await localDatasoure.upsertItems([encryptedAlias, encryptedOtherItem])
         logger.trace("Saved alias & other item to local database")
         return (encryptedAlias, encryptedOtherItem)
     }
@@ -243,10 +243,10 @@ public extension ItemRepositoryProtocol {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Trashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                    try await remoteItemRevisionDatasource.trashItemRevisions(batch.map(\.item),
-                                                                              shareId: shareId)
-                try await localItemDatasoure.upsertItems(batch,
-                                                         modifiedItems: modifiedItems)
+                    try await remoteDatasource.trashItemRevisions(batch.map(\.item),
+                                                                  shareId: shareId)
+                try await localDatasoure.upsertItems(batch,
+                                                     modifiedItems: modifiedItems)
                 logger.trace("Trashed \(batch.count) items for share \(shareId)")
             }
         }
@@ -259,7 +259,7 @@ public extension ItemRepositoryProtocol {
 
     func deleteAlias(email: String) async throws {
         logger.trace("Deleting alias item \(email)")
-        guard let item = try await localItemDatasoure.getAliasItem(email: email) else {
+        guard let item = try await localDatasoure.getAliasItem(email: email) else {
             logger.trace("Failed to delete alias item. No alias item found for \(email)")
             return
         }
@@ -276,10 +276,10 @@ public extension ItemRepositoryProtocol {
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Untrashing \(batch.count) items for share \(shareId)")
                 let modifiedItems =
-                    try await remoteItemRevisionDatasource.untrashItemRevisions(batch.map(\.item),
-                                                                                shareId: shareId)
-                try await localItemDatasoure.upsertItems(batch,
-                                                         modifiedItems: modifiedItems)
+                    try await remoteDatasource.untrashItemRevisions(batch.map(\.item),
+                                                                    shareId: shareId)
+                try await localDatasoure.upsertItems(batch,
+                                                     modifiedItems: modifiedItems)
                 logger.trace("Untrashed \(batch.count) items for share \(shareId)")
             }
         }
@@ -299,10 +299,10 @@ public extension ItemRepositoryProtocol {
             guard let encryptedItems = itemsByShareId[shareId] else { continue }
             for batch in encryptedItems.chunked(into: kBatchPageSize) {
                 logger.trace("Deleting \(batch.count) items for share \(shareId)")
-                try await remoteItemRevisionDatasource.deleteItemRevisions(batch.map(\.item),
-                                                                           shareId: shareId,
-                                                                           skipTrash: skipTrash)
-                try await localItemDatasoure.deleteItems(batch)
+                try await remoteDatasource.deleteItemRevisions(batch.map(\.item),
+                                                               shareId: shareId,
+                                                               skipTrash: skipTrash)
+                try await localDatasoure.deleteItems(batch)
                 logger.trace("Deleted \(batch.count) items for share \(shareId)")
             }
         }
@@ -310,19 +310,19 @@ public extension ItemRepositoryProtocol {
 
     func deleteAllItemsLocally() async throws {
         logger.trace("Deleting all items locally")
-        try await localItemDatasoure.removeAllItems()
+        try await localDatasoure.removeAllItems()
         logger.trace("Deleted all items locally")
     }
 
     func deleteAllItemsLocally(shareId: String) async throws {
         logger.trace("Deleting all items locally for share \(shareId)")
-        try await localItemDatasoure.removeAllItems(shareId: shareId)
+        try await localDatasoure.removeAllItems(shareId: shareId)
         logger.trace("Deleted all items locally for share \(shareId)")
     }
 
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws {
         logger.trace("Deleting locally items \(itemIds) for share \(shareId)")
-        try await localItemDatasoure.deleteItems(itemIds: itemIds, shareId: shareId)
+        try await localDatasoure.deleteItems(itemIds: itemIds, shareId: shareId)
         logger.trace("Deleted locally items \(itemIds) for share \(shareId)")
     }
 
@@ -331,7 +331,7 @@ public extension ItemRepositoryProtocol {
                     shareId: String) async throws {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
-        let symmetricallyEncryptedOldItem = try await localItemDatasoure.getItem(shareId: shareId, itemId: itemId)
+        let symmetricallyEncryptedOldItem = try await localDatasoure.getItem(shareId: shareId, itemId: itemId)
         let oldItemContentData = try symmetricallyEncryptedOldItem?.getItemContent(symmetricKey: symmetricKey)
         let latestItemKey = try await passKeyManager.getLatestItemKey(shareId: shareId,
                                                                       itemId: itemId)
@@ -339,12 +339,12 @@ public extension ItemRepositoryProtocol {
                                             latestItemKey: latestItemKey,
                                             itemContent: newItemContent)
         let updatedItemRevision =
-            try await remoteItemRevisionDatasource.updateItem(shareId: shareId,
-                                                              itemId: itemId,
-                                                              request: request)
+            try await remoteDatasource.updateItem(shareId: shareId,
+                                                  itemId: itemId,
+                                                  request: request)
         logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
-        try await localItemDatasoure.upsertItems([encryptedItem])
+        try await localDatasoure.upsertItems([encryptedItem])
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
 
         if case let .login(oldData) = oldItemContentData?.contentData,
@@ -372,7 +372,7 @@ public extension ItemRepositoryProtocol {
         let encryptedItems = try await items.parallelMap {
             try await symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }
-        try await localItemDatasoure.upsertItems(encryptedItems)
+        try await localDatasoure.upsertItems(encryptedItems)
     }
 
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
@@ -386,19 +386,19 @@ public extension ItemRepositoryProtocol {
         let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
                                           destinationShareId: toShareId,
                                           destinationShareKey: destinationShareKey)
-        let newItem = try await remoteItemRevisionDatasource.move(itemId: item.itemId,
-                                                                  fromShareId: item.shareId,
-                                                                  request: request)
+        let newItem = try await remoteDatasource.move(itemId: item.itemId,
+                                                      fromShareId: item.shareId,
+                                                      request: request)
         let newEncryptedItem = try await symmetricallyEncrypt(itemRevision: newItem, shareId: toShareId)
-        try await localItemDatasoure.deleteItems([oldEncryptedItem])
-        try await localItemDatasoure.upsertItems([newEncryptedItem])
+        try await localDatasoure.deleteItems([oldEncryptedItem])
+        try await localDatasoure.upsertItems([newEncryptedItem])
         logger.info("Moved \(item.debugInformation) to share \(toShareId)")
         return newEncryptedItem
     }
 
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {
         logger.trace("Getting local active log in items for all shares")
-        let logInItems = try await localItemDatasoure.getActiveLogInItems()
+        let logInItems = try await localDatasoure.getActiveLogInItems()
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
     }
@@ -406,12 +406,12 @@ public extension ItemRepositoryProtocol {
     func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws {
         logger.trace("Updating lastUsedTime \(item.debugInformation)")
         let updatedItem =
-            try await remoteItemRevisionDatasource.updateLastUseTime(shareId: item.shareId,
-                                                                     itemId: item.itemId,
-                                                                     lastUseTime: lastUseTime)
+            try await remoteDatasource.updateLastUseTime(shareId: item.shareId,
+                                                         itemId: item.itemId,
+                                                         lastUseTime: lastUseTime)
         let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
                                                                   shareId: item.shareId)
-        try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
+        try await localDatasoure.upsertItems([encryptedUpdatedItem])
         logger.trace("Updated lastUsedTime \(item.debugInformation)")
     }
 }
@@ -469,7 +469,7 @@ private extension ItemRepositoryProtocol {
 
 public extension ItemRepositoryProtocol {
     func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64? {
-        let items = try await localItemDatasoure.getAllItems()
+        let items = try await localDatasoure.getAllItems()
 
         let loginItemsWithTotp =
             try items
@@ -497,8 +497,8 @@ public extension ItemRepositoryProtocol {
 public final class ItemRepository: ItemRepositoryProtocol {
     public let userData: UserData
     public let symmetricKey: SymmetricKey
-    public let localItemDatasoure: LocalItemDatasourceProtocol
-    public let remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol
+    public let localDatasoure: LocalItemDatasourceProtocol
+    public let remoteDatasource: RemoteItemRevisionDatasourceProtocol
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let passKeyManager: PassKeyManagerProtocol
     public let logger: Logger
@@ -506,15 +506,15 @@ public final class ItemRepository: ItemRepositoryProtocol {
 
     public init(userData: UserData,
                 symmetricKey: SymmetricKey,
-                localItemDatasoure: LocalItemDatasourceProtocol,
-                remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol,
+                localDatasoure: LocalItemDatasourceProtocol,
+                remoteDatasource: RemoteItemRevisionDatasourceProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManagerProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
-        self.localItemDatasoure = localItemDatasoure
-        self.remoteItemRevisionDatasource = remoteItemRevisionDatasource
+        self.localDatasoure = localDatasoure
+        self.remoteDatasource = remoteDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
@@ -527,8 +527,8 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 logManager: LogManagerProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
-        localItemDatasoure = LocalItemDatasource(container: container)
-        remoteItemRevisionDatasource = RemoteItemRevisionDatasource(apiService: apiService)
+        localDatasoure = LocalItemDatasource(container: container)
+        remoteDatasource = RemoteItemRevisionDatasource(apiService: apiService)
         shareEventIDRepository = ShareEventIDRepository(container: container,
                                                         apiService: apiService,
                                                         logManager: logManager)
