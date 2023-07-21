@@ -199,7 +199,7 @@ private extension ProfileTabViewModel {
     func refreshFeatureFlags() {
         Task { @MainActor in
             do {
-                let flags = try await featureFlagsRepository.getFlags()
+                try await featureFlagsRepository.refreshFlags()
             } catch {
                 logger.error(error)
             }
