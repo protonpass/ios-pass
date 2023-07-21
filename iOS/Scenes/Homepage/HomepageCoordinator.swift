@@ -41,7 +41,6 @@ protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorDidFailLocallyAuthenticating()
 }
 
-// swiftlint:disable line_length
 final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -179,8 +178,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                         counter: vaultsManager,
                                         totpChecker: itemRepository)
         featureFlagsRepository =
-            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
-                                   remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: container),
+                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
                                    userId: userData.user.ID,
                                    logManager: logManager)
         self.vaultsManager = vaultsManager
@@ -1563,5 +1562,3 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.error(error)
     }
 }
-
-// swiftlint:enable line_length
