@@ -676,6 +676,7 @@
 		5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */; };
 		5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */; };
 		5B1453B42A6A8D110048B022 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B32A6A8D110048B022 /* Int+Extensions.swift */; };
+		5B1453B72A6AB9F00048B022 /* GetSharingFlagStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B62A6AB9F00048B022 /* GetSharingFlagStatus.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1507,6 +1508,7 @@
 		5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryView.swift; sourceTree = "<group>"; };
 		5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryViewModel.swift; sourceTree = "<group>"; };
 		5B1453B32A6A8D110048B022 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		5B1453B62A6AB9F00048B022 /* GetSharingFlagStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharingFlagStatus.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -3068,6 +3070,14 @@
 			path = ClientModels;
 			sourceTree = "<group>";
 		};
+		5B1453B52A6AB4750048B022 /* FeatureFlags */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453B62A6AB9F00048B022 /* GetSharingFlagStatus.swift */,
+			);
+			path = FeatureFlags;
+	sourceTree = "<group>";
+		};
 		5B14538B2A681AFA0048B022 /* Routers */ = {
 			isa = PBXGroup;
 			children = (
@@ -3187,6 +3197,7 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				5B1453B52A6AB4750048B022 /* FeatureFlags */,
 				5B1453AB2A696C5B0048B022 /* Vault */,
 				5B14539B2A6963B00048B022 /* Sharing */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
@@ -4743,6 +4754,7 @@
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				35CEA8D72A60675900343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				5B503FEA2A4D7AFE00E6681C /* SendUserFeedBack.swift in Sources */,
+				5B1453B72A6AB9F00048B022 /* GetSharingFlagStatus.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */,
 				3572E51B299399AD00775FAC /* PPError.swift in Sources */,
