@@ -568,6 +568,9 @@
 		35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */; };
+		35B932172A6A99B3004A8643 /* RepositoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B932162A6A99B3004A8643 /* RepositoryData.swift */; };
+		35B932192A6A9A24004A8643 /* RepositoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B932162A6A99B3004A8643 /* RepositoryData.swift */; };
+		35B9321A2A6A9A25004A8643 /* RepositoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B932162A6A99B3004A8643 /* RepositoryData.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35C2162729EA8B0B001720FF /* macOS-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
@@ -1390,6 +1393,7 @@
 		35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldEditionCoordinator.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveTextField.swift; sourceTree = "<group>"; };
+		35B932162A6A99B3004A8643 /* RepositoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryData.swift; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
 		35C2161529EA8991001720FF /* iOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
@@ -2977,6 +2981,7 @@
 			children = (
 				355E92772A59D2D500C22703 /* Factory+Extensions.swift */,
 				5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */,
+				35B932162A6A99B3004A8643 /* RepositoryData.swift */,
 				5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */,
 				5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */,
 				5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */,
@@ -4461,6 +4466,7 @@
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
+				35B932192A6A9A24004A8643 /* RepositoryData.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
@@ -4530,6 +4536,7 @@
 				3549AC9B2982F27900BA5CD6 /* ProtonPass.xcdatamodeld in Sources */,
 				3559BAA92A5B32640020E172 /* ClipboardExpiration.swift in Sources */,
 				356125032982438300EDA991 /* KeyboardViewController.swift in Sources */,
+				35B9321A2A6A9A25004A8643 /* RepositoryData.swift in Sources */,
 				3559BAA82A5B32640020E172 /* Theme.swift in Sources */,
 				35CEA8E12A60761D00343A4E /* CheckBiometryType.swift in Sources */,
 				35CEA8DF2A6075F500343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */,
@@ -4702,6 +4709,7 @@
 				354E9AAB2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */,
+				35B932172A6A99B3004A8643 /* RepositoryData.swift in Sources */,
 				3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
