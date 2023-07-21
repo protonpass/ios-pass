@@ -1,5 +1,5 @@
 //
-// Services+DependencyInjections.swift
+// SharedServices+DependencyInjections.swift
 // Proton Pass - Created on 06/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
