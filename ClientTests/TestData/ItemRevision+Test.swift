@@ -22,7 +22,7 @@
 import Entities
 
 extension ItemState {
-    static func random() -> Int16 {
+    static func random() -> Int64 {
         allCases.map { $0.rawValue }.randomElement() ?? Self.active.rawValue
     }
 }

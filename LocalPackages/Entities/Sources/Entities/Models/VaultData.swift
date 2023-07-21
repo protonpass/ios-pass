@@ -22,10 +22,10 @@ import Foundation
 
 public struct VaultData: Decodable {
     public let content: String
-    public let contentKeyRotation: Int64
-    public let contentFormatVersion: Int64
-    public let memberCount: Int64
-    public let itemCount: Int64
+    public let contentKeyRotation: Int
+    public let contentFormatVersion: Int
+    public let memberCount: Int
+    public let itemCount: Int
 
     enum CodingKeys: String, CodingKey {
         case content = "Content"
