@@ -66,7 +66,7 @@ extension SharedRepositoryContainer {
 
     var aliasRepository: Factory<AliasRepositoryProtocol> {
         self {
-            AliasRepository(remoteAliasDatasouce: RemoteAliasDatasource(apiService: self.apiService))
+            AliasRepository(remoteDatasouce: RemoteAliasDatasource(apiService: self.apiService))
         }
     }
 
@@ -82,11 +82,9 @@ extension SharedRepositoryContainer {
 
     var shareEventIDRepository: Factory<ShareEventIDRepositoryProtocol> {
         self {
-            ShareEventIDRepository(localShareEventIDDatasource: LocalShareEventIDDatasource(container: self
-                                       .container()),
-            remoteShareEventIDDatasource: RemoteShareEventIDDatasource(apiService: self
-                .apiService),
-            logManager: self.logManager)
+            ShareEventIDRepository(localDatasource: LocalShareEventIDDatasource(container: self.container()),
+                                   remoteDatasource: RemoteShareEventIDDatasource(apiService: self.apiService),
+                                   logManager: self.logManager)
         }
     }
 
@@ -103,8 +101,8 @@ extension SharedRepositoryContainer {
         self {
             ItemRepository(userData: self.userData(),
                            symmetricKey: self.symmetricKey(),
-                           localItemDatasoure: LocalItemDatasource(container: self.container()),
-                           remoteItemRevisionDatasource: RemoteItemRevisionDatasource(apiService: self.apiService),
+                           localDatasoure: LocalItemDatasource(container: self.container()),
+                           remoteDatasource: RemoteItemRevisionDatasource(apiService: self.apiService),
                            shareEventIDRepository: self.shareEventIDRepository(),
                            passKeyManager: self.passKeyManager(),
                            logManager: self.logManager)

@@ -87,8 +87,8 @@ public final class RepositoryManager: DeinitPrintable {
                                             symmetricKey: symmetricKey)
 
         let shareEventIDRepository =
-            ShareEventIDRepository(localShareEventIDDatasource: localShareEventIDDatasource,
-                                   remoteShareEventIDDatasource: remoteShareEventIDDatasource,
+            ShareEventIDRepository(localDatasource: localShareEventIDDatasource,
+                                   remoteDatasource: remoteShareEventIDDatasource,
                                    logManager: logManager)
 
         let shareRepository = ShareRepository(symmetricKey: symmetricKey,
@@ -105,11 +105,11 @@ public final class RepositoryManager: DeinitPrintable {
 
         let userId = userData.user.ID
 
-        aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+        aliasRepository = AliasRepository(remoteDatasouce: remoteAliasDatasource)
         itemRepository = ItemRepository(userData: userData,
                                         symmetricKey: symmetricKey,
-                                        localItemDatasoure: localItemDatasource,
-                                        remoteItemRevisionDatasource: remoteItemDatasource,
+                                        localDatasoure: localItemDatasource,
+                                        remoteDatasource: remoteItemDatasource,
                                         shareEventIDRepository: shareEventIDRepository,
                                         passKeyManager: passKeyManager,
                                         logManager: logManager)
