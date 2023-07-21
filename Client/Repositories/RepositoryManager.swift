@@ -75,8 +75,8 @@ public final class RepositoryManager: DeinitPrintable {
                                                     userId: userData.user.ID,
                                                     logManager: logManager)
 
-        let shareKeyRepository = ShareKeyRepository(localShareKeyDatasource: localShareKeyDatasource,
-                                                    remoteShareKeyDatasource: remoteShareKeyDatasource,
+        let shareKeyRepository = ShareKeyRepository(localDatasource: localShareKeyDatasource,
+                                                    remoteDatasource: remoteShareKeyDatasource,
                                                     logManager: logManager,
                                                     symmetricKey: symmetricKey,
                                                     userData: userData)
