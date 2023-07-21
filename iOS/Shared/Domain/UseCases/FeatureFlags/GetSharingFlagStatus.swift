@@ -1,6 +1,7 @@
 //
-// FeatureFlags.swift
-// Proton Pass - Created on 09/06/2023.
+//
+// GetSharingFlagStatus.swift
+// Proton Pass - Created on 21/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,17 +18,31 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Client
 
-public struct FeatureFlags: Hashable, Codable {
-    let flags: [FeatureFlag]
+protocol GetSharingFlagStatusUseCase: Sendable {
+    func execute() async -> Bool
+}
 
-    static var `default`: FeatureFlags {
-        FeatureFlags(flags: [])
+extension GetSharingFlagStatusUseCase {
+    func callAsFunction() async -> Bool {
+        await execute()
+    }
+}
+
+final class GetSharingFlagStatus: GetSharingFlagStatusUseCase {
+    private let repository: FeatureFlagsRepositoryProtocol
+
+    init(repository: FeatureFlagsRepositoryProtocol) {
+        self.repository = repository
     }
 
-    public func isFlagEnable(for key: String) -> Bool {
-        flags.first { $0.name == key }?.enabled ?? false
+    func execute() async -> Bool {
+        guard let flags = try? await repository.getFlags() else {
+            return false
+        }
+        return flags.isFlagEnable(for: FeatureFlagType.passSharingV1.rawValue)
     }
 }
