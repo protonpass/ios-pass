@@ -21,23 +21,17 @@
 import Foundation
 
 public struct VaultData: Decodable {
-    public let itemID: String
-    public let revision: Int16
-    public let contentFormatVersion: Int16
-    public let keyRotation: Int64
     public let content: String
-    public let createTime: Int64
-    public let modifyTime: Int64
-    public let revisionTime: Int64
+    public let contentKeyRotation: Int64
+    public let contentFormatVersion: Int64
+    public let memberCount: Int64
+    public let itemCount: Int64
 
     enum CodingKeys: String, CodingKey {
-        case itemID = "ItemID"
-        case revision = "Revision"
-        case contentFormatVersion = "ContentFormatVersion"
-        case keyRotation = "KeyRotation"
         case content = "Content"
-        case createTime = "CreateTime"
-        case modifyTime = "ModifyTime"
-        case revisionTime = "RevisionTime"
+        case contentKeyRotation = "ContentKeyRotation"
+        case contentFormatVersion = "ContentFormatVersion"
+        case memberCount = "MemberCount"
+        case itemCount = "ItemCount"
     }
 }
