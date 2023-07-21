@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum ShareRole: String {
+public enum ShareRole: String, CaseIterable, Equatable {
     /// Administrator
     case admin = "1"
     /// Full write permission. They can do anything an admin can do except manage membership and invite users.

@@ -20,19 +20,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Entities
 import Factory
 import Foundation
 
-enum UserPermission: String, CaseIterable, Equatable {
-    case read = "3"
-    case edit = "2"
-    case admin = "1"
-
+extension ShareRole {
     var title: String {
         switch self {
         case .read:
             return "Can View"
-        case .edit:
+        case .write:
             return "Can Edit"
         case .admin:
             return "Can Manage"
@@ -43,7 +40,7 @@ enum UserPermission: String, CaseIterable, Equatable {
         switch self {
         case .read:
             return "Can view items in this vault."
-        case .edit:
+        case .write:
             return "Can create, edit, delete and export items in this vault."
         case .admin:
             return "Can grant and revoke access to this vault."
@@ -54,7 +51,7 @@ enum UserPermission: String, CaseIterable, Equatable {
         switch self {
         case .read:
             return "only view items in this vault."
-        case .edit:
+        case .write:
             return "create, edit, delete and export items in this vault."
         case .admin:
             return "grant and revoke access to this vault."
@@ -64,7 +61,7 @@ enum UserPermission: String, CaseIterable, Equatable {
 
 @MainActor
 final class UserPermissionViewModel: ObservableObject, Sendable {
-    @Published private(set) var selectedUserPermission: UserPermission = .read
+    @Published private(set) var selectedUserRole: ShareRole = .read
     @Published private(set) var vaultName = ""
     @Published private(set) var email = ""
     @Published private(set) var canContinue = false
@@ -76,13 +73,13 @@ final class UserPermissionViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func select(permission: UserPermission) {
+    func select(role: ShareRole) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
             }
-            await self.setShareInviteRole(with: permission.rawValue)
-            self.selectedUserPermission = permission
+            await self.setShareInviteRole(with: role)
+            self.selectedUserRole = role
         }
     }
 }
@@ -94,8 +91,8 @@ private extension UserPermissionViewModel {
                 return
             }
             let infos = await self.getShareInviteInfos()
-            self.selectedUserPermission = UserPermission(rawValue: infos.role ?? "3") ?? .read
-            await self.setShareInviteRole(with: self.selectedUserPermission.rawValue)
+            self.selectedUserRole = infos.role ?? .read
+            await self.setShareInviteRole(with: self.selectedUserRole)
             self.canContinue = true
             self.vaultName = infos.vault?.name ?? ""
             self.email = infos.email ?? ""

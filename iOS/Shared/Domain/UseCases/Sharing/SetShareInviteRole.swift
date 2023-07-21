@@ -20,12 +20,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Entities
+
 protocol SetShareInviteRoleUseCase: Sendable {
-    func execute(with role: String) async
+    func execute(with role: ShareRole) async
 }
 
 extension SetShareInviteRoleUseCase {
-    func callAsFunction(with role: String) async {
+    func callAsFunction(with role: ShareRole) async {
         await execute(with: role)
     }
 }
@@ -37,7 +39,7 @@ final class SetShareInviteRole: SetShareInviteRoleUseCase {
         self.shareInviteService = shareInviteService
     }
 
-    func execute(with role: String) async {
+    func execute(with role: ShareRole) async {
         await shareInviteService.setCurrentUserRole(with: role)
     }
 }
