@@ -99,7 +99,7 @@ struct UserEmailView: View {
             headerView
 
             TextField("Proton email address", text: $viewModel.email)
-                .font(.callout)
+                .font(.title)
                 .autocorrectionDisabled()
                 .keyboardType(.emailAddress)
                 .foregroundColor(PassColor.textNorm.toColor)
@@ -108,7 +108,13 @@ struct UserEmailView: View {
             Spacer()
         }
         .onAppear {
-            defaultFocus = true
+            if #available(iOS 16, *) {
+                defaultFocus = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                    defaultFocus = true
+                }
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
@@ -155,7 +161,7 @@ private extension UserEmailView {
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: !viewModel.canContinue,
-                                        action: viewModel.saveEmail)
+                                        action: { viewModel.saveEmail() })
         }
     }
 }
