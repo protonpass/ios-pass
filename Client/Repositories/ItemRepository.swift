@@ -21,6 +21,7 @@
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -112,9 +113,6 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     /// Update the last use time of an item. Only log in items are concerned.
     func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws
-
-    /// Temporary function to re-encrypt all items locally. Can be removed after going public.
-    func reencryptAllItemsTemp() async throws
 }
 
 private extension ItemRepositoryProtocol {
@@ -416,15 +414,6 @@ public extension ItemRepositoryProtocol {
         try await localItemDatasoure.upsertItems([encryptedUpdatedItem])
         logger.trace("Updated lastUsedTime \(item.debugInformation)")
     }
-
-    func reencryptAllItemsTemp() async throws {
-        let allItems = try await getAllItems()
-        for item in allItems {
-            let encryptedItem = try await symmetricallyEncrypt(itemRevision: item.item,
-                                                               shareId: item.shareId)
-            try await localItemDatasoure.upsertItems([encryptedItem])
-        }
-    }
 }
 
 // MARK: - Private util functions
@@ -521,7 +510,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 remoteItemRevisionDatasource: RemoteItemRevisionDatasourceProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
         self.localItemDatasoure = localItemDatasoure
@@ -535,7 +524,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
                 symmetricKey: SymmetricKey,
                 container: NSPersistentContainer,
                 apiService: APIService,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.userData = userData
         self.symmetricKey = symmetricKey
         localItemDatasoure = LocalItemDatasource(container: container)

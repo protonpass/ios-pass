@@ -40,8 +40,9 @@ final class TurnOnAutoFillViewModel: ObservableObject {
     }
 
     private func checkAutoFillStatus() {
-        Task { @MainActor in
-            enabled = await credentialManager.isAutoFillEnabled()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            self.enabled = await self.credentialManager.isAutoFillEnabled()
         }
     }
 }

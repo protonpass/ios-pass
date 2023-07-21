@@ -65,7 +65,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 
     init(itemRepository: ItemRepositoryProtocol,
          manualLogIn: Bool,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          shareRepository: ShareRepositoryProtocol,
          symmetricKey: SymmetricKey,
          preferences: Preferences) {
@@ -83,8 +83,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 private extension VaultsManager {
     @MainActor
     func createDefaultVault(isPrimary: Bool) async throws {
-        let userId = shareRepository.userData.user.ID
-        logger.trace("Creating default vault for user \(userId)")
+        logger.trace("Creating default vault for user")
         let vault = VaultProtobuf(name: "Personal",
                                   description: "Personal vault",
                                   color: .color1,
@@ -93,9 +92,9 @@ private extension VaultsManager {
         if isPrimary {
             logger.trace("Created default vault. Setting as primary \(createdShare.shareID)")
             _ = try await shareRepository.setPrimaryVault(shareId: createdShare.shareID)
-            logger.info("Created default primary vault for user \(userId)")
+            logger.info("Created default primary vault for user")
         } else {
-            logger.info("Created default vault for user \(userId)")
+            logger.info("Created default vault for user")
         }
     }
 
@@ -137,9 +136,13 @@ extension VaultsManager {
 
             do {
                 // No need to show loading indicator once items are loaded beforehand.
+                var cryptoErrorOccured = false
                 switch state {
                 case .loaded:
                     break
+                case let .error(error):
+                    cryptoErrorOccured = error is CryptoKitError
+                    state = .loading
                 default:
                     state = .loading
                 }
@@ -149,12 +152,11 @@ extension VaultsManager {
                     try await fullSync()
                     manualLogIn = false
                     logger.info("Manual login, done full sync")
-                    preferences.didReencryptAllItems = true
+                } else if cryptoErrorOccured {
+                    logger.info("Crypto error occured. Doing full sync")
+                    try await fullSync()
+                    logger.info("Crypto error occured. Done full sync")
                 } else {
-                    if !preferences.didReencryptAllItems {
-                        try await itemRepository.reencryptAllItemsTemp()
-                        preferences.didReencryptAllItems = true
-                    }
                     logger.info("Not manual login, getting local shares & items")
                     let vaults = try await shareRepository.getVaults()
                     try await loadContents(for: vaults)

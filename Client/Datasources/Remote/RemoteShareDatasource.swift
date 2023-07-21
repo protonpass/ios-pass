@@ -18,11 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
+    func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos]
+    func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos
+    func updateUserSharePermission(shareId: String,
+                                   userId: String,
+                                   request: UserSharePermissionRequest) async throws -> Bool
+    func deleteUserShare(shareId: String,
+                         userId: String) async throws -> Bool
+
     func createVault(request: CreateVaultRequest) async throws -> Share
     func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share
     func deleteVault(shareId: String) async throws
@@ -42,6 +51,60 @@ public extension RemoteShareDatasourceProtocol {
         return response.share
     }
 
+    /*
+      Get users that have access to the whole vault, or item
+      Response:
+      ```json
+     {
+       "Shares": [
+         {
+           "ShareID": "AF39EF234BB==",
+           "UserName": "Leonard Nimoy",
+           "UserEmail": "leo@nimoy.com",
+           "TargetType": "1",
+           "TargetID": "DEFC342CA23==",
+           "Permission": "3",
+           "ExpireTime": "18332832",
+           "CreateTime": "18332832"
+         }
+       ],
+       "Total": "32",
+       "Code": 1000
+     }
+     ```*/
+    func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos] {
+        let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.shares
+    }
+
+    func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos {
+        let endpoint = GetUserInformationForShareEndpoint(for: shareId, and: userId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.share
+    }
+
+    func updateUserSharePermission(shareId: String,
+                                   userId: String,
+                                   request: UserSharePermissionRequest) async throws -> Bool {
+        let endpoint = UpdateUserSharePermissionsEndpoint(shareId: shareId,
+                                                          userId: userId,
+                                                          request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+
+    func deleteUserShare(shareId: String,
+                         userId: String) async throws -> Bool {
+        let endpoint = DeleteUserShareEndpoint(for: shareId, and: userId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+}
+
+// MARK: Vaults Utils
+
+public extension RemoteShareDatasourceProtocol {
     func createVault(request: CreateVaultRequest) async throws -> Share {
         let endpoint = CreateVaultEndpoint(request: request)
         let response = try await apiService.exec(endpoint: endpoint)

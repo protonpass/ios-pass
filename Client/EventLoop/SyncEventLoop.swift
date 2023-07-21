@@ -103,7 +103,7 @@ public final class SyncEventLoop: DeinitPrintable {
                 remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
                 itemRepository: ItemRepositoryProtocol,
                 shareKeyRepository: ShareKeyRepositoryProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
         self.userId = userId
         self.shareRepository = shareRepository

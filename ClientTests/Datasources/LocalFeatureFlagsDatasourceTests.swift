@@ -40,7 +40,7 @@ extension LocalFeatureFlagsDatasourceTests {
     func testUpsertAndGetFlags() async throws {
         // Given
         let givenUserId = String.random()
-        let givenFlags = FeatureFlags(creditCardV1: .random())
+        let givenFlags = FeatureFlags(flags: [FeatureFlag(name: "PassSharingV1", enabled: true, variant: nil)])
 
         // When
         try await sut.upsertFlags(givenFlags, userId: givenUserId)
@@ -48,5 +48,7 @@ extension LocalFeatureFlagsDatasourceTests {
 
         // Then
         XCTAssertEqual(flags, givenFlags)
+        XCTAssertTrue(flags.isFlagEnable(for: "PassSharingV1"))
+        XCTAssertFalse(flags.isFlagEnable(for: "NonValidKeyFlag"))
     }
 }

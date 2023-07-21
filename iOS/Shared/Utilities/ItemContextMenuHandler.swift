@@ -40,7 +40,7 @@ final class ItemContextMenuHandler {
 
     init(clipboardManager: ClipboardManager,
          itemRepository: ItemRepositoryProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         self.clipboardManager = clipboardManager
         self.itemRepository = itemRepository
         logger = .init(manager: logManager)
