@@ -20,6 +20,7 @@
 
 import Core
 import CoreData
+import Entities
 import ProtonCore_Services
 
 public protocol PublicKeyRepositoryProtocol {
@@ -35,7 +36,7 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
 
     init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
          remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,
-         logManager: LogManager) {
+         logManager: LogManagerProtocol) {
         self.localPublicKeyDatasource = localPublicKeyDatasource
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
         logger = .init(manager: logManager)
@@ -65,7 +66,7 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
 
     public init(container: NSPersistentContainer,
                 apiService: APIService,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         localPublicKeyDatasource = LocalPublicKeyDatasource(container: container)
         remotePublicKeyDatasource = RemotePublicKeyDatasource(apiService: apiService)
         logger = .init(manager: logManager)

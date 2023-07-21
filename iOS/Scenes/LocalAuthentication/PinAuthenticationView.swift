@@ -18,26 +18,84 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
+import Factory
 import SwiftUI
 import UIComponents
 
 struct PinAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
+    @FocusState private var isFocused
+    @State private var pinCode = ""
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     init(viewModel: LocalAuthenticationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        ZStack {
-            PassColor.backgroundNorm.toColor
-                .edgesIgnoringSafeArea(.all)
-            Text("PIN authentication")
-                .foregroundColor(PassColor.signalDanger.toColor)
+        VStack(alignment: .center) {
+            Image(uiImage: PassIcon.passIcon)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 160)
+
+            Text("Enter your PIN code")
+                .foregroundColor(PassColor.textNorm.toColor)
+                .font(.title.bold())
+
+            Spacer()
+
+            SecureField("", text: $pinCode)
+                .labelsHidden()
+                .foregroundColor(PassColor.textNorm.toColor)
+                .font(.title.bold())
+                .focused($isFocused)
+                .multilineTextAlignment(.center)
+                .keyboardType(.numberPad)
+
+            Spacer()
+
+            switch viewModel.state {
+            case .noAttempts:
+                EmptyView()
+            case let .remainingAttempts(count):
+                Text("Incorrect PIN. \(count) remaining attempts")
+                    .foregroundColor(PassColor.signalDanger.toColor)
+            case .lastAttempt:
+                Text("This is your last attempt. You will be logged out after failing to authenticate again.")
+                    .foregroundColor(PassColor.signalDanger.toColor)
+                    .multilineTextAlignment(.center)
+            }
+
+            Spacer()
+
+            DisablableCapsuleTextButton(title: "Unlock",
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textInvert,
+                                        backgroundColor: PassColor.interactionNormMajor1,
+                                        disableBackgroundColor: PassColor.interactionNormMajor1
+                                            .withAlphaComponent(0.3),
+                                        disabled: pinCode.count < Constants.PINCode.minLength,
+                                        height: 60,
+                                        action: { viewModel.checkPinCode(pinCode) })
         }
-        .theme(viewModel.preferences.theme)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+        .accentColor(PassColor.interactionNorm.toColor)
+        .tint(PassColor.interactionNorm.toColor)
+        .animation(.default, value: viewModel.state)
+        .onChange(of: viewModel.state) { _ in
+            pinCode = ""
+        }
         .onAppear {
-            assertionFailure("PIN authentication not yet supported")
+            if #available(iOS 16, *) {
+                isFocused = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                    isFocused = true
+                }
+            }
         }
     }
 }

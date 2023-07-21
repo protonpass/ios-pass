@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -32,7 +33,7 @@ struct ProfileTabView: View {
                 VStack {
                     itemCountSection
 
-                    biometricAuthenticationSection
+                    securitySection
                         .padding(.vertical)
 
                     if viewModel.autoFillEnabled {
@@ -53,7 +54,7 @@ struct ProfileTabView: View {
                         qaFeaturesSection
                     }
 
-                    Text(viewModel.appVersion)
+                    Text("Version \(Bundle.main.displayedAppVersion)")
                         .sectionTitleText()
 
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -61,6 +62,7 @@ struct ProfileTabView: View {
                 }
                 .padding(.top)
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
+                .animation(.default, value: viewModel.localAuthenticationMethod)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
@@ -91,82 +93,79 @@ struct ProfileTabView: View {
             Text("Items")
                 .profileSectionTitle()
                 .padding(.horizontal)
-            ItemCountView(vaultsManager: viewModel.vaultsManager,
-                          creditCardV1: viewModel.creditCardV1)
+            ItemCountView(vaultsManager: viewModel.vaultsManager)
         }
     }
 
-    private var biometricAuthenticationSection: some View {
+    private var securitySection: some View {
         VStack(spacing: 0) {
-            Text("Manage my profile")
+            Text("Security")
                 .profileSectionTitle()
                 .padding(.bottom, kItemDetailSectionPadding)
 
-            switch viewModel.biometricAuthenticator.biometryTypeState {
-            case .idle, .initializing:
-                OptionRow(height: .medium) {
-                    ProgressView()
-                }
-                .roundedEditableSection()
+            VStack(spacing: 0) {
+                OptionRow(action: viewModel.editLocalAuthenticationMethod,
+                          height: .tall,
+                          content: {
+                              VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
+                                  Text("Unlock with")
+                                      .sectionTitleText()
 
-            case let .initialized(biometryType):
-                if let uiModel = biometryType.uiModel {
-                    VStack(spacing: 0) {
-                        OptionRow(height: .medium) {
-                            Toggle(isOn: $viewModel.biometricAuthenticator.enabled) {
-                                Label(title: {
-                                    Text(uiModel.title)
-                                        .foregroundColor(Color(uiColor: PassColor.textNorm))
-                                }, icon: {
-                                    if let icon = uiModel.icon {
-                                        Image(systemName: icon)
-                                            .foregroundColor(Color(uiColor: PassColor.interactionNorm))
-                                    } else {
-                                        EmptyView()
-                                    }
-                                })
-                            }
-                            .tint(Color(uiColor: PassColor.interactionNorm))
+                                  Text(viewModel.localAuthenticationMethod.title)
+                                      .foregroundColor(PassColor.textNorm.toColor)
+                              }
+                          },
+                          trailing: { ChevronRight() })
+
+                if viewModel.localAuthenticationMethod != .none {
+                    PassDivider()
+
+                    OptionRow(action: viewModel.editAppLockTime,
+                              height: .tall,
+                              content: {
+                                  VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 2) {
+                                      Text("Automatic lock")
+                                          .sectionTitleText()
+
+                                      Text(viewModel.appLockTime.description)
+                                          .foregroundColor(PassColor.textNorm.toColor)
+                                  }
+                              },
+                              trailing: { ChevronRight() })
+                }
+
+                switch viewModel.localAuthenticationMethod {
+                case .none:
+                    EmptyView()
+
+                case .biometric:
+                    PassDivider()
+
+                    OptionRow(height: .tall) {
+                        Toggle(isOn: $viewModel.fallbackToPasscode) {
+                            Text("Use system passcode when \(viewModel.localAuthenticationMethod.title) fails")
+                                .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
+                        .tint(Color(uiColor: PassColor.interactionNorm))
+                    }
 
-                        if viewModel.biometricAuthenticator.enabled {
-                            PassSectionDivider()
+                case .pin:
+                    PassDivider()
 
-                            OptionRow(action: viewModel.editAppLockTime,
-                                      title: "App lock time",
-                                      height: .tall,
-                                      content: {
-                                          Text(viewModel.preferences.appLockTime.description)
-                                              .foregroundColor(Color(uiColor: PassColor.textNorm))
-                                      },
-                                      trailing: { ChevronRight() })
+                    OptionRow(action: viewModel.editPINCode, height: .medium) {
+                        HStack {
+                            Text("Change PIN code")
+                            Spacer()
+                            CircleButton(icon: IconProvider.grid3,
+                                         iconColor: PassColor.interactionNormMajor2,
+                                         backgroundColor: PassColor.interactionNormMinor1,
+                                         action: nil)
                         }
+                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
                     }
-                    .animation(.default, value: viewModel.biometricAuthenticator.enabled)
-                    .roundedEditableSection()
-                } else {
-                    OptionRow(height: .medium) {
-                        Text("Biometric authentication not supported")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    }
-                    .roundedEditableSection()
                 }
-            case let .error(error):
-                OptionRow(height: .medium) {
-                    Text(error.localizedDescription)
-                        .foregroundColor(Color(uiColor: PassColor.signalDanger))
-                }
-                .roundedEditableSection()
             }
-
-            if case let .initialized(biometryType) = viewModel.biometricAuthenticator.biometryTypeState,
-               biometryType != .none {
-                Text("Unlock Proton Pass with a glance")
-                    .sectionTitleText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, kItemDetailSectionPadding / 2)
-            }
+            .roundedEditableSection()
         }
         .padding(.horizontal)
     }

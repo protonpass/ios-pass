@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct EditCustomFieldView<Field: Hashable>: View {
-    let focusedField: FocusState<Field>.Binding
+    let focusedField: FocusState<Field?>.Binding
     let field: Field
     @State private var isRemoved = false
     let contentType: ItemContentType

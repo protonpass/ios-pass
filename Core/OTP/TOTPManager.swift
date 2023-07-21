@@ -110,7 +110,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
     /// The current `URI` whether it's valid or not
     public private(set) var uri = ""
 
-    public init(logManager: LogManager) {
+    public init(logManager: LogManagerProtocol) {
         logger = .init(manager: logManager)
     }
 

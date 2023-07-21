@@ -44,7 +44,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: EditableVaultListViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(vaultsManager: VaultsManager, logManager: LogManager) {
+    init(vaultsManager: VaultsManager, logManager: LogManagerProtocol) {
         self.vaultsManager = vaultsManager
         logger = .init(manager: logManager)
         finalizeInitialization()

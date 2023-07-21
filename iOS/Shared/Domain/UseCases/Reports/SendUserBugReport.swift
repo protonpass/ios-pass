@@ -113,12 +113,10 @@ final class SendUserBugReport: SendUserBugReportUseCase {
 }
 
 private extension SendUserBugReport {
-    func createLogsFile(for module: PassLogModule) async -> URL? {
-        let commit = Bundle.main.gitCommitHash ?? "?"
-        let filename = "\(module == .hostApp ? "hostApp" : "autofill")feedbackLogs-\(commit).log"
+    func createLogsFile(for module: PassModule) async -> URL? {
         guard let entries = try? await getLogEntries(for: module),
               let logFileUrl = try? await extractLogsToFile(for: entries,
-                                                            in: filename) else {
+                                                            in: module.exportLogFileName) else {
             return nil
         }
         return logFileUrl

@@ -32,7 +32,12 @@ public extension NSPersistentContainer {
             } else {
                 url = URL.storeURL(for: Constants.appGroup, databaseName: name)
             }
-            container.persistentStoreDescriptions = [.init(url: url)]
+            /* add necessary support for migration */
+            let description = NSPersistentStoreDescription(url: url)
+            description.shouldMigrateStoreAutomatically = true
+            description.shouldInferMappingModelAutomatically = true
+            container.persistentStoreDescriptions = [description]
+            /* add necessary support for migration */
 
             container.loadPersistentStores { _, error in
                 if let error {

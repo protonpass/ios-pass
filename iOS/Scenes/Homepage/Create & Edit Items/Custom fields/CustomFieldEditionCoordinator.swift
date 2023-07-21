@@ -22,13 +22,23 @@ import Client
 import Core
 import SwiftUI
 
-struct CustomFieldUiModel: Identifiable {
+struct CustomFieldUiModel: Identifiable, Equatable, Hashable {
     var id = UUID().uuidString
     var customField: CustomField
 }
 
+extension CustomFieldUiModel {
+    func update(title: String? = nil, content: String? = nil) -> CustomFieldUiModel {
+        CustomFieldUiModel(id: id,
+                           customField: CustomField(title: title ?? customField.title,
+                                                    type: customField.type,
+                                                    content: content ?? customField.content))
+    }
+}
+
 protocol CustomFieldEditionDelegate: AnyObject {
     func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
+    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String)
 }
 
 final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {

@@ -55,7 +55,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
-    private let logManager: LogManager
+    private let logManager: LogManagerProtocol
     private let manualLogIn: Bool
     private let paymentsManager: PaymentsManager
     private let preferences: Preferences
@@ -89,7 +89,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     init(apiService: APIService,
          container: NSPersistentContainer,
          credentialManager: CredentialManagerProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          manualLogIn: Bool,
          preferences: Preferences,
          symmetricKey: SymmetricKey,
@@ -144,7 +144,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                           logManager: logManager)
         favIconRepository = FavIconRepository(apiService: apiService,
                                               containerUrl: URL.favIconsContainerURL(),
-                                              preferences: preferences,
+                                              settings: preferences,
                                               symmetricKey: symmetricKey)
         itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                        itemRepository: itemRepository,
@@ -214,11 +214,11 @@ private extension HomepageCoordinator {
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                DispatchQueue.main.async {
-                    self.rootViewController.overrideUserInterfaceStyle = self.preferences.theme.userInterfaceStyle
-                }
+                self.rootViewController.setUserInterfaceStyle(self.preferences
+                    .theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
 
@@ -249,20 +249,16 @@ private extension HomepageCoordinator {
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(apiService: apiService,
-                                                      credentialManager: credentialManager,
+        let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
                                                       shareRepository: shareRepository,
-                                                      preferences: preferences,
-                                                      logManager: logManager,
                                                       featureFlagsRepository: featureFlagsRepository,
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
                                                           .shared
-                                                          .notificationService(ToolingContainer
-                                                              .shared
-                                                              .logger()))
+                                                          .notificationService(logManager),
+                                                      childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
@@ -277,9 +273,7 @@ private extension HomepageCoordinator {
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
-            .localAuthentication(preferences: preferences,
-                                 delayed: false,
-                                 logManager: logManager,
+            .localAuthentication(delayed: false,
                                  onAuth: { [weak self] in
                                      self?.dismissAllViewControllers(animated: false)
                                      self?.hideSecondaryView()
@@ -488,7 +482,7 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentLogsView(for module: PassLogModule) {
+    func presentLogsView(for module: PassModule) {
         let viewModel = LogsViewModel(module: module)
         viewModel.delegate = self
         let view = LogsView(viewModel: viewModel)
@@ -563,9 +557,7 @@ extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
         let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
-                                                      preferences: preferences,
-                                                      bannerManager: bannerManager,
-                                                      logManager: logManager)
+                                                      bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -605,6 +597,85 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
         if !isCollapsed() {
             profileTabViewModelWantsToShowAccountMenu()
         }
+    }
+}
+
+// MARK: - ChildCoordinatorDelegate
+
+extension HomepageCoordinator: ChildCoordinatorDelegate {
+    func childCoordinatorWantsToPresent(viewController: UIViewController,
+                                        viewOption: ChildCoordinatorViewOption,
+                                        presentationOption: ChildCoordinatorPresentationOption) {
+        switch viewOption {
+        case .sheet:
+            // Nothing special to set up
+            break
+
+        case .sheetWithGrabber:
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+
+        case let .customSheet(height):
+            viewController.setDetentType(.custom(CGFloat(height)),
+                                         parentViewController: rootViewController)
+
+        case let .customSheetWithGrabber(height):
+            viewController.setDetentType(.custom(CGFloat(height)),
+                                         parentViewController: rootViewController)
+            viewController.sheetPresentationController?.prefersGrabberVisible = true
+
+        case .fullScreen:
+            viewController.modalPresentationStyle = .fullScreen
+        }
+
+        switch presentationOption {
+        case .none:
+            present(viewController)
+
+        case .dismissTopViewController:
+            dismissTopMostViewController { [weak self] in
+                self?.present(viewController)
+            }
+
+        case .dismissAllViewControllers:
+            dismissAllViewControllers { [weak self] in
+                self?.present(viewController)
+            }
+        }
+    }
+
+    func childCoordinatorWantsToDisplayBanner(bannerOption: ChildCoordinatorBannerOption,
+                                              presentationOption: ChildCoordinatorPresentationOption) {
+        let display: () -> Void = { [weak self] in
+            guard let self else { return }
+            switch bannerOption {
+            case let .info(message):
+                self.bannerManager.displayBottomInfoMessage(message)
+            case let .success(message):
+                self.bannerManager.displayBottomSuccessMessage(message)
+            case let .error(message):
+                self.bannerManager.displayTopErrorMessage(message)
+            }
+        }
+        switch presentationOption {
+        case .none:
+            display()
+        case .dismissTopViewController:
+            dismissTopMostViewController(animated: true, completion: display)
+        case .dismissAllViewControllers:
+            dismissAllViewControllers(animated: true, completion: display)
+        }
+    }
+
+    func childCoordinatorWantsToDismissTopViewController() {
+        dismissTopMostViewController()
+    }
+
+    func childCoordinatorDidFailLocalAuthentication() {
+        delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+    }
+
+    func childCoordinatorDidEncounter(error: Error) {
+        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -755,18 +826,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         startUpgradeFlow()
     }
 
-    func profileTabViewModelWantsToEditAppLockTime() {
-        let view = EditAppLockTimeView(preferences: preferences)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * AppLockTime.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet,
@@ -861,7 +920,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         present(view)
     }
 
-    func profileTabViewModelWantsDidEncounter(error: Error) {
+    func profileTabViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
     }
 }
@@ -987,7 +1046,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToClearLogs() {
         Task {
-            let modules = PassLogModule.allCases.map(LogManager.init)
+            let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage("All logs cleared")
@@ -1460,6 +1519,9 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 
     func logsViewModelWantsToShareLogs(_ url: URL) {
         let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        if UIDevice.current.isIpad {
+            activityVC.popoverPresentationController?.sourceView = topMostViewController.view
+        }
         present(activityVC)
     }
 

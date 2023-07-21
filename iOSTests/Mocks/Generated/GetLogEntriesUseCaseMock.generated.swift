@@ -28,15 +28,15 @@ final class GetLogEntriesUseCaseMock: @unchecked Sendable, GetLogEntriesUseCase 
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var invokedExecuteParameters: (logModule: PassLogModule, Void)?
-    var invokedExecuteParametersList = [(logModule: PassLogModule, Void)]()
+    var invokedExecuteParameters: (module: PassModule, Void)?
+    var invokedExecuteParametersList = [(module: PassModule, Void)]()
     var stubbedExecuteResult: [LogEntry]!
 
-    func execute(for logModule: PassLogModule) async throws -> [LogEntry] {
+    func execute(for module: PassModule) async throws -> [LogEntry] {
         invokedExecute = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (logModule, ())
-        invokedExecuteParametersList.append((logModule, ()))
+        invokedExecuteParameters = (module, ())
+        invokedExecuteParametersList.append((module, ()))
         if let error = executeForThrowableError {
             throw error
         }

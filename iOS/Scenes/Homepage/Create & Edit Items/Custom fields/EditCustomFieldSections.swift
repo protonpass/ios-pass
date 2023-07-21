@@ -22,9 +22,9 @@ import Client
 import ProtonCore_UIFoundations
 import SwiftUI
 
-struct EditCustomFieldSections: View {
-    @FocusState private var focusState: String?
-    let focusedFieldId: String?
+struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
+    let focusedField: FocusState<Field?>.Binding
+    let focusedCustomField: CustomFieldUiModel?
     let contentType: ItemContentType
     @Binding var uiModels: [CustomFieldUiModel]
     let canAddMore: Bool
@@ -34,15 +34,15 @@ struct EditCustomFieldSections: View {
 
     var body: some View {
         ForEach($uiModels) { $uiModel in
-            EditCustomFieldView(focusedField: $focusState,
-                                field: uiModel.id,
+            EditCustomFieldView(focusedField: focusedField,
+                                field: .custom(uiModel),
                                 contentType: contentType,
                                 uiModel: $uiModel,
                                 onEditTitle: { onEditTitle(uiModel) },
                                 onRemove: { uiModels.removeAll(where: { $0.id == uiModel.id }) })
         }
-        .onChange(of: focusedFieldId) { newValue in
-            focusState = newValue
+        .onChange(of: focusedCustomField) { newValue in
+            focusedField.wrappedValue = .custom(newValue)
         }
 
         if canAddMore {

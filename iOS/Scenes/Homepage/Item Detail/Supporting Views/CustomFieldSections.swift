@@ -28,7 +28,7 @@ struct CustomFieldSections: View {
     let itemContentType: ItemContentType
     let uiModels: [CustomFieldUiModel]
     let isFreeUser: Bool
-    let logManager: LogManager
+    let logManager: LogManagerProtocol
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
 
@@ -161,7 +161,7 @@ struct TotpCustomFieldSection: View {
          content: String,
          itemContentType: ItemContentType,
          isFreeUser: Bool,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          onSelectTotpToken: @escaping (String) -> Void,
          onUpgrade: @escaping () -> Void) {
         _totpManager = .init(wrappedValue: .init(logManager: logManager))

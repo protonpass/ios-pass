@@ -73,7 +73,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     init(mode: VaultMode,
          shareRepository: ShareRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          theme: Theme) {
         self.mode = mode
         switch mode {

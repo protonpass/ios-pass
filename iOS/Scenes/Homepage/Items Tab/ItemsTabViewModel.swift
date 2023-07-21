@@ -51,7 +51,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let passPlanRepository: PassPlanRepositoryProtocol
     let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     let logger: Logger
-    let logManager: LogManager
+    let logManager: LogManagerProtocol
     let preferences: Preferences
     let vaultsManager: VaultsManager
 
@@ -69,7 +69,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
          credentialManager: CredentialManagerProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManager,
+         logManager: LogManagerProtocol,
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {

@@ -28,15 +28,27 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
     func getCurrentDate() -> Date { kMockedDate }
 }
 
+final class TelemetryThresholdProviderMock: TelemetryThresholdProviderProtocol {
+    var telemetryThreshold: TimeInterval?
+
+    func getThreshold() -> TimeInterval? {
+        telemetryThreshold
+    }
+
+    func setThreshold(_ threshold: TimeInterval?) {
+        self.telemetryThreshold = threshold
+    }
+}
+
 final class TelemetrySchedulerTests: XCTestCase {
     var sut: TelemetrySchedulerProtocol!
-    var preferences: Preferences!
+    var thresholdProvider: TelemetryThresholdProviderMock!
 
     override func setUp() {
         super.setUp()
-        preferences = .init()
+        thresholdProvider = TelemetryThresholdProviderMock()
         sut = TelemetryScheduler(currentDateProvider: MockedCurrentDateProvider(),
-                                 thresholdProvider: preferences)
+                                 thresholdProvider: thresholdProvider)
     }
 
     override func tearDown() {
@@ -50,13 +62,13 @@ extension TelemetrySchedulerTests {
         // When
         sut.threshhold = nil
         // Then
-        XCTAssertNil(preferences.telemetryThreshold)
+        XCTAssertNil(thresholdProvider.telemetryThreshold)
 
         // When
         let date = Date.now
         sut.threshhold = date
         // Then
-        XCTAssertEqual(preferences.telemetryThreshold, date.timeIntervalSince1970)
+        XCTAssertEqual(thresholdProvider.telemetryThreshold, date.timeIntervalSince1970)
     }
 
     func testShouldSendEventsWhenCurrentDateIsAfterThresholdDate() {

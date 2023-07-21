@@ -22,23 +22,73 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct GetFeatureFlagEndpointResponse: Decodable {
-    let code: Int
-    let feature: FeatureFlagResponse
+    public let code: Int
+    public let toggles: [FeatureFlag]
 }
 
-public struct FeatureFlagResponse: Decodable {
-    public let value: Bool
+public struct FeatureFlag: Codable, Equatable, Hashable {
+    public let name: String
+    public let enabled: Bool
+    public let variant: FeatureFlagVariant?
 }
 
-public enum FeatureFlagType {
-    case creditCardV1
+// MARK: - Variant
 
-    var path: String {
+public struct FeatureFlagVariant: Codable, Equatable, Hashable {
+    public let name: String
+    public let enabled: Bool
+    public let payload: FeatureFlagVariantPayload?
+}
+
+// MARK: - Payload
+
+public struct FeatureFlagVariantPayload: Codable, Equatable, Hashable {
+    public let type: String
+    public let value: FeatureFlagVariantPayloadValue
+}
+
+// As we don't know the exact type of the payload from unleash we should update the following as explained in
+// https://stackoverflow.com/questions/52681385/swift-codable-multiple-types
+// If new cases are implemented on the unleash backend we need to update the parsing cases
+public enum FeatureFlagVariantPayloadValue: Codable, Equatable, Hashable {
+    case string(String)
+    case nonDecodable
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let value = try? container.decode(String.self) {
+            self = .string(value)
+            return
+        } else {
+            self = .nonDecodable
+        }
+        throw DecodingError.typeMismatch(FeatureFlagVariantPayloadValue.self,
+                                         DecodingError.Context(codingPath: decoder.codingPath,
+                                                               debugDescription: "Wrong type for MyValue"))
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
         switch self {
-        case .creditCardV1:
-            return "PassCreditCardsV1"
+        case let .string(value):
+            try container.encode(value)
+        default:
+            return
         }
     }
+
+    public var stringValue: String? {
+        switch self {
+        case let .string(value):
+            return value
+        default:
+            return nil
+        }
+    }
+}
+
+public enum FeatureFlagType: String, CaseIterable {
+    case passSharingV1 = "PassSharingV1"
 }
 
 public struct GetFeatureFlagEndpoint: Endpoint {
@@ -47,9 +97,11 @@ public struct GetFeatureFlagEndpoint: Endpoint {
 
     public var debugDescription: String
     public var path: String
+    public var method: HTTPMethod
 
-    public init(flagType: FeatureFlagType) {
-        debugDescription = "Get feature flag \(flagType.path)"
-        path = "/core/v4/features/\(flagType.path)"
+    public init() {
+        debugDescription = "Get all feature flags from unleash"
+        path = "/feature/v2/frontend"
+        method = .get
     }
 }

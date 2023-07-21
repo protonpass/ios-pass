@@ -18,10 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
+import Entities
 
-extension PublicKey {
+ extension PublicKey {
     static func random() -> PublicKey {
-        .init(value: .random())
+        PublicKey(value: .random())
     }
-}
+ }

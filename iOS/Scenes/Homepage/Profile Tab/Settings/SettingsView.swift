@@ -178,11 +178,12 @@ struct SettingsView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
-                TextOptionRow(title: "Application logs", action: viewModel.viewHostAppLogs)
+                TextOptionRow(title: PassModule.hostApp.logTitle,
+                              action: viewModel.viewHostAppLogs)
 
                 PassSectionDivider()
 
-                TextOptionRow(title: "AutoFill extension logs",
+                TextOptionRow(title: PassModule.autoFillExtension.logTitle,
                               action: viewModel.viewAutoFillExensionLogs)
             }
             .roundedEditableSection()

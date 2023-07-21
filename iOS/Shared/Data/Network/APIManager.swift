@@ -22,12 +22,14 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import Factory
 import ProtonCore_Authentication
 import ProtonCore_Challenge
 import ProtonCore_CryptoGoInterface
 import ProtonCore_Environment
 import ProtonCore_FeatureSwitch
 import ProtonCore_ForceUpgrade
+import ProtonCore_Foundations
 import ProtonCore_HumanVerification
 import ProtonCore_Keymaker
 import ProtonCore_Login
@@ -44,13 +46,12 @@ public protocol APIManagerProtocol {
     var apiService: APIService { get }
 }
 
-// swiftlint:disable line_length
 final class APIManager: APIManagerProtocol {
-    private let logManager: LogManager
-    private let logger: Logger
-    private let appVer: String
-    private let appData: AppData
-    private let trustKitDelegate: LoggingTrustKitDelegate
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let appVer = resolve(\SharedToolingContainer.appVersion)
+    private let appData = resolve(\SharedToolingContainer.appData)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let trustKitDelegate: TrustKitDelegate
 
     private(set) var apiService: APIService
     private(set) var authHelper: AuthHelper
@@ -65,28 +66,23 @@ final class APIManager: APIManagerProtocol {
         appData.userData
     }
 
-    init(logManager: LogManager, appVer: String, appData: AppData, preferences: Preferences) {
-        let logger = Logger(manager: logManager)
-        let trustKitDelegate = LoggingTrustKitDelegate(logger: logger)
+    init() {
+        let trustKitDelegate = PassTrustKitDelegate()
         APIManager.setUpCertificatePinning(trustKitDelegate: trustKitDelegate)
-
         self.trustKitDelegate = trustKitDelegate
-        self.logManager = logManager
-        self.appVer = appVer
-        self.logger = logger
-        self.appData = appData
 
+        let doh = ProtonPassDoH()
         let apiService: PMAPIService
+        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
+                                                                          challenge: .init())
         if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
-            apiService = PMAPIService.createAPIService(doh: ProtonPassDoH(),
+            apiService = PMAPIService.createAPIService(doh: doh,
                                                        sessionUID: credential.sessionID,
-                                                       challengeParametersProvider: .forAPIService(clientApp: .pass,
-                                                                                                   challenge: .init()))
+                                                       challengeParametersProvider: challengeProvider)
             authHelper = AuthHelper(authCredential: credential)
         } else {
-            apiService = PMAPIService.createAPIServiceWithoutSession(doh: ProtonPassDoH(),
-                                                                     challengeParametersProvider: .forAPIService(clientApp: .pass,
-                                                                                                                 challenge: .init()))
+            apiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                                     challengeParametersProvider: challengeProvider)
             authHelper = AuthHelper()
         }
         self.apiService = apiService
@@ -96,7 +92,9 @@ final class APIManager: APIManagerProtocol {
         apiService.loggingDelegate = self
 
         humanHelper = HumanCheckHelper(apiService: apiService,
-                                       inAppTheme: { preferences.theme.inAppTheme },
+                                       inAppTheme: { [weak self] in
+                                           self?.preferences.theme.inAppTheme ?? .matchSystem
+                                       },
                                        clientApp: .pass)
         apiService.humanDelegate = humanHelper
 
@@ -279,12 +277,10 @@ extension APIManager: APIServiceLoggingDelegate {
 
 // MARK: - TrustKitDelegate
 
-private class LoggingTrustKitDelegate: TrustKitDelegate {
-    let logger: Logger
+private class PassTrustKitDelegate: TrustKitDelegate {
+    let logger = resolve(\SharedToolingContainer.logger)
 
-    init(logger: Logger) {
-        self.logger = logger
-    }
+    init() {}
 
     func onTrustKitValidationError(_ error: TrustKitError) {
         // just logging right now
@@ -296,5 +292,3 @@ private class LoggingTrustKitDelegate: TrustKitDelegate {
         }
     }
 }
-
-// swiftlint:enable line_length
