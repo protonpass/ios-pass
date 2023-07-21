@@ -129,18 +129,17 @@ extension SharedRepositoryContainer {
 
     var telemetryEventRepository: Factory<TelemetryEventRepositoryProtocol> {
         self {
-            let localDatasource = LocalTelemetryEventDatasource(container: self.container())
-            let remoteDatasource = RemoteTelemetryEventDatasource(apiService: self.apiService)
-            let remoteUserSettingsDatasource = RemoteUserSettingsDatasource(apiService: self.apiService)
-            let scheduler = TelemetryScheduler(currentDateProvider: self.currentDateProvider,
-                                               thresholdProvider: self.preferences)
-            return TelemetryEventRepository(localTelemetryEventDatasource: localDatasource,
-                                            remoteTelemetryEventDatasource: remoteDatasource,
-                                            remoteUserSettingsDatasource: remoteUserSettingsDatasource,
-                                            passPlanRepository: self.passPlanRepository(),
-                                            logManager: self.logManager,
-                                            scheduler: scheduler,
-                                            userId: self.userData().user.ID)
+            // swiftformat:next:disable all
+            TelemetryEventRepository(
+                localDatasource: LocalTelemetryEventDatasource(container: self.container()),
+                remoteDatasource: RemoteTelemetryEventDatasource(apiService: self.apiService),
+                remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: self
+                    .apiService),
+                passPlanRepository: self.passPlanRepository(),
+                logManager: self.logManager,
+                scheduler: TelemetryScheduler(currentDateProvider: self.currentDateProvider,
+                                              thresholdProvider: self.preferences),
+                userId: self.userData().user.ID)
         }
     }
 

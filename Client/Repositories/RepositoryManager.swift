@@ -119,8 +119,8 @@ public final class RepositoryManager: DeinitPrintable {
         self.shareRepository = shareRepository
         self.shareKeyRepository = shareKeyRepository
         telemetryEventRepository =
-            TelemetryEventRepository(localTelemetryEventDatasource: localTelemetryEventDatasource,
-                                     remoteTelemetryEventDatasource: remoteTelemetryEventDatasource,
+            TelemetryEventRepository(localDatasource: localTelemetryEventDatasource,
+                                     remoteDatasource: remoteTelemetryEventDatasource,
                                      remoteUserSettingsDatasource: remoteUserSettingsDatasource,
                                      passPlanRepository: passPlanRepository,
                                      logManager: logManager,
