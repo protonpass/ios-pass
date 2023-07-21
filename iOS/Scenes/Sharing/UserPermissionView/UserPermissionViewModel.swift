@@ -49,6 +49,17 @@ enum UserPermission: String, CaseIterable, Equatable {
             return "Can grant and revoke access to this vault."
         }
     }
+
+    var summary: String {
+        switch self {
+        case .read:
+            return "only view items in this vault."
+        case .edit:
+            return "create, edit, delete and export items in this vault."
+        case .admin:
+            return "grant and revoke access to this vault."
+        }
+    }
 }
 
 @MainActor
@@ -83,6 +94,7 @@ private extension UserPermissionViewModel {
                 return
             }
             let infos = await self.getShareInviteInfos()
+            self.selectedUserPermission = UserPermission(rawValue: infos.role ?? "3") ?? .read
             await self.setShareInviteRole(with: self.selectedUserPermission.rawValue)
             self.canContinue = true
             self.vaultName = infos.vault?.name ?? ""

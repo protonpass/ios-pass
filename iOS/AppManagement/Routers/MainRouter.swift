@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import SwiftUI
 
 enum RouterDestination: Hashable {
     case userSharePermission
@@ -41,8 +42,6 @@ final class MainUIKitSwiftUIRouter {
         newSheetDestination.send(destination)
     }
 }
-
-import SwiftUI
 
 @available(iOS 16.0, *)
 final class MainNavStackRouter {
@@ -69,9 +68,7 @@ final class MainNavViewRouter {
         case .userSharePermission:
             UserPermissionView()
         case .shareSummary:
-            SummaryView()
-        default:
-            EmptyView()
+            SharingSummaryView()
         }
     }
 }

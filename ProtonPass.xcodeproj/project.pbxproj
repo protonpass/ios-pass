@@ -670,8 +670,9 @@
 		5B1453A82A6969DB0048B022 /* ResetSharingInviteInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */; };
 		5B1453AA2A696A7C0048B022 /* Services+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453A92A696A7C0048B022 /* Services+DependencyInjections.swift */; };
 		5B1453AD2A696C830048B022 /* GetVaultItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */; };
-		5B1453B12A69816C0048B022 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AF2A69816C0048B022 /* SummaryView.swift */; };
-		5B1453B22A69816C0048B022 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B02A69816C0048B022 /* SummaryViewModel.swift */; };
+		5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */; };
+		5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */; };
+		5B1453B42A6A8D110048B022 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B32A6A8D110048B022 /* Int+Extensions.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1499,8 +1500,9 @@
 		5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetSharingInviteInfos.swift; sourceTree = "<group>"; };
 		5B1453A92A696A7C0048B022 /* Services+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Services+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVaultItemCount.swift; sourceTree = "<group>"; };
-		5B1453AF2A69816C0048B022 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
-		5B1453B02A69816C0048B022 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
+		5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryView.swift; sourceTree = "<group>"; };
+		5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryViewModel.swift; sourceTree = "<group>"; };
+		5B1453B32A6A8D110048B022 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -3036,6 +3038,7 @@
 				5BB2B6EE2A447545005E831C /* Bundle+Extensions.swift */,
 				5B50400E2A53072E00E6681C /* Array+Extensions.swift */,
 				5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */,
+				5B1453B32A6A8D110048B022 /* Int+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3128,8 +3131,8 @@
 		5B1453AE2A69814C0048B022 /* SummaryView */ = {
 			isa = PBXGroup;
 			children = (
-				5B1453AF2A69816C0048B022 /* SummaryView.swift */,
-				5B1453B02A69816C0048B022 /* SummaryViewModel.swift */,
+				5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */,
+				5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */,
 			);
 			path = SummaryView;
 			sourceTree = "<group>";
@@ -4818,7 +4821,7 @@
 				3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
-				5B1453B22A69816C0048B022 /* SummaryViewModel.swift in Sources */,
+				5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
 				35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */,
 				5B1453A82A6969DB0048B022 /* ResetSharingInviteInfos.swift in Sources */,
@@ -4836,7 +4839,7 @@
 				356BC35229D6C5B400F03497 /* SettingsViewModel.swift in Sources */,
 				5B1453A62A69662D0048B022 /* ShareInviteService.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
-				5B1453B12A69816C0048B022 /* SummaryView.swift in Sources */,
+				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
@@ -5138,6 +5141,7 @@
 				5B0C74E82A2E1B8700272CE8 /* MF_Base32CodecPass.m in Sources */,
 				35855ABF2A0AA45A0091992F /* PassphraseGenerator.swift in Sources */,
 				353E8B74287622F300A2C5E3 /* BundleExtensions.swift in Sources */,
+				5B1453B42A6A8D110048B022 /* Int+Extensions.swift in Sources */,
 				355222ED293F67A600786F64 /* URLExtensions.swift in Sources */,
 				35426B6028EF187800F89BB7 /* DomainParserContant.swift in Sources */,
 				355938C32A33583D0053B7F6 /* BackOffManager.swift in Sources */,

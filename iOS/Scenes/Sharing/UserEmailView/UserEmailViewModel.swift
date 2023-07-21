@@ -25,7 +25,7 @@ import Factory
 import Foundation
 import ProtonCore_HumanVerification
 
-// @MainActor
+@MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published private(set) var canContinue = false
@@ -65,7 +65,7 @@ private extension UserEmailViewModel {
     func setUp() {
         Task { @MainActor [weak self] in
             let infos = await self?.getShareInviteInfos()
-            vaultName = infos?.vault?.name ?? ""
+            self?.vaultName = infos?.vault?.name ?? ""
         }
 
         $email
