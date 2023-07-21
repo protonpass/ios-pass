@@ -61,7 +61,7 @@ public struct ItemToBeModified: Encodable {
 public struct ModifiedItem: Decodable {
     public let itemID: String
     public let revision: Int64
-    public let state: Int16
+    public let state: Int64
     public let modifyTime: Int64
     public let revisionTime: Int64
 }

@@ -31,6 +31,7 @@ final class ShareTests: XCTestCase {
                                targetID: .random(),
                                permission: .random(in: 100...200),
                                primary: false,
+                               owner: .random(),
                                content: .random(),
                                contentKeyRotation: .random(in: 100...200),
                                contentFormatVersion: .random(in: 100...200),

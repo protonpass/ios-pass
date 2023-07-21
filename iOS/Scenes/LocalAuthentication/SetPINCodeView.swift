@@ -65,7 +65,15 @@ struct SetPINCodeView: View {
             .background(PassColor.backgroundNorm.toColor)
             .animation(.default, value: viewModel.error)
             .toolbar { toolbarContent }
-            .onAppear { isFocused = true }
+            .onAppear {
+                if #available(iOS 16, *) {
+                    isFocused = true
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                        isFocused = true
+                    }
+                }
+            }
         }
         .navigationViewStyle(.stack)
         .accentColor(PassColor.interactionNormMajor1.toColor)
