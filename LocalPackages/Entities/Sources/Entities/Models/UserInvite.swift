@@ -24,9 +24,10 @@ import Foundation
 
 public struct UserInvite: Decodable {
     public let inviteToken: String
-    public let remindersSent: Int16
-    public let targetType: Int16
+    public let remindersSent: Int64
+    public let targetType: Int64
     public let targetID, inviterEmail, invitedEmail: String
+    /// Share keys encrypted for the address key of the invitee and signed with the user keys of the inviter
     public let keys: [ItemKey]
     public let vaultData: VaultData?
     public let createTime: Int64

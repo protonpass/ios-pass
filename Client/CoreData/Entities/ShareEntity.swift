@@ -34,16 +34,16 @@ extension ShareEntity {
 
     @NSManaged var addressID: String
     @NSManaged var content: String?
-    @NSManaged var contentFormatVersion: Int16
+    @NSManaged var contentFormatVersion: Int64
     @NSManaged var contentKeyRotation: Int64
     @NSManaged var createTime: Int64
     @NSManaged var expireTime: Int64
-    @NSManaged var permission: Int16
+    @NSManaged var permission: Int64
     @NSManaged var primary: Bool
     @NSManaged var shareID: String
     @NSManaged var symmetricallyEncryptedContent: String?
     @NSManaged var targetID: String
-    @NSManaged var targetType: Int16
+    @NSManaged var targetType: Int64
     @NSManaged var vaultID: String
     @NSManaged var userID: String
 }

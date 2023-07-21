@@ -33,7 +33,7 @@ public struct ItemRevisionsPaginated: Decodable {
 public struct ItemRevision: Decodable, Equatable {
     public let itemID: String
     public let revision: Int64
-    public let contentFormatVersion: Int16
+    public let contentFormatVersion: Int64
     public let keyRotation: Int64
     public let content: String
 
@@ -41,7 +41,7 @@ public struct ItemRevision: Decodable, Equatable {
     public let itemKey: String?
 
     /// Revision state. Values: 1 = Active, 2 = Trashed
-    public let state: Int16
+    public let state: Int64
 
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?

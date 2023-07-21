@@ -64,16 +64,16 @@ final class CoreDataEntityStructureTests: XCTestCase {
     func testShareEntity() {
         let sut = entity(byName: "ShareEntity")
         verifyAttribute(named: "content", on: sut, hasType: .string)
-        verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)
+        verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer64)
         verifyAttribute(named: "contentKeyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "expireTime", on: sut, hasType: .integer64)
-        verifyAttribute(named: "permission", on: sut, hasType: .integer16)
+        verifyAttribute(named: "permission", on: sut, hasType: .integer64)
         verifyAttribute(named: "primary", on: sut, hasType: .boolean)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
         verifyAttribute(named: "targetID", on: sut, hasType: .string)
-        verifyAttribute(named: "targetType", on: sut, hasType: .integer16)
+        verifyAttribute(named: "targetType", on: sut, hasType: .integer64)
         verifyAttribute(named: "vaultID", on: sut, hasType: .string)
         verifyAttribute(named: "addressID", on: sut, hasType: .string)
     }
@@ -92,7 +92,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         let sut = entity(byName: "ItemEntity")
         verifyAttribute(named: "aliasEmail", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
-        verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer16)
+        verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer64)
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "isLogInItem", on: sut, hasType: .boolean)
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
@@ -103,7 +103,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "revision", on: sut, hasType: .integer64)
         verifyAttribute(named: "revisionTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
-        verifyAttribute(named: "state", on: sut, hasType: .integer16)
+        verifyAttribute(named: "state", on: sut, hasType: .integer64)
         verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
     }
 
