@@ -40,13 +40,13 @@ public struct Share: Decodable, Swift.Hashable {
     public let addressID: String
 
     /// Type of share
-    public let targetType: Int16
+    public let targetType: Int64
 
     /// ID of the top shared object
     public let targetID: String
 
     /// Permissions for this share
-    public let permission: Int16
+    public let permission: Int64
 
     /// Whether this vault is primary for this user
     public let primary: Bool
@@ -57,7 +57,7 @@ public struct Share: Decodable, Swift.Hashable {
     public let contentKeyRotation: Int64?
 
     /// Version of the content's format
-    public let contentFormatVersion: Int16?
+    public let contentFormatVersion: Int64?
 
     /// Expiration time for this share
     public let expireTime: Int64?
