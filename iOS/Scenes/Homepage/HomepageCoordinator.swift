@@ -164,9 +164,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         telemetryEventRepository =
-            TelemetryEventRepository(localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
-                                     remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-
+            TelemetryEventRepository(localDatasource: LocalTelemetryEventDatasource(container: container),
+                                     remoteDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
                                      remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
                                      passPlanRepository: passPlanRepository,
                                      logManager: logManager,
