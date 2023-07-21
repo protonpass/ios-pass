@@ -23,21 +23,21 @@ import SwiftUI
 import UIComponents
 
 struct EditAppLockTimeView: View {
-    @Environment(\.dismiss) private var dismiss
-    let preferences: Preferences
+    let selectedAppLockTime: AppLockTime
+    let onSelect: (AppLockTime) -> Void
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(AppLockTime.allCases, id: \.rawValue) { time in
-                        SelectableOptionRow(action: { preferences.appLockTime = time; dismiss() },
+                        SelectableOptionRow(action: { onSelect(time) },
                                             height: .compact,
                                             content: {
                                                 Text(time.description)
                                                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                                             },
-                                            isSelected: time == preferences.appLockTime)
+                                            isSelected: time == selectedAppLockTime)
 
                         PassDivider()
                     }
@@ -49,7 +49,7 @@ struct EditAppLockTimeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("App lock time")
+                    Text("Automatic lock")
                         .navigationTitleText()
                 }
             }

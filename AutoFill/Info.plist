@@ -6,6 +6,8 @@
 	<string>$(APP_VERSION_IDENTIFIER =
 	<key>IS_QA_BUILD =
 	<string>$(IS_QA_BUILD =
+	<key>MODULE</key>
+	<string>AUTOFILL_EXTENSION</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>

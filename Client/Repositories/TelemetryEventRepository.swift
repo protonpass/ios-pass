@@ -106,7 +106,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
                 remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
                 remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
                 passPlanRepository: PassPlanRepositoryProtocol,
-                logManager: LogManager,
+                logManager: LogManagerProtocol,
                 scheduler: TelemetrySchedulerProtocol,
                 userId: String,
                 eventCount: Int = 500) {
@@ -182,9 +182,4 @@ public final class TelemetryScheduler: TelemetrySchedulerProtocol {
 public protocol TelemetryThresholdProviderProtocol {
     func getThreshold() -> TimeInterval?
     func setThreshold(_ threshold: TimeInterval?)
-}
-
-extension Preferences: TelemetryThresholdProviderProtocol {
-    public func getThreshold() -> TimeInterval? { telemetryThreshold }
-    public func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
 }

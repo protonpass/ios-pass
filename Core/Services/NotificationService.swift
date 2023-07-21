@@ -39,10 +39,10 @@ public final class NotificationService: LocalNotificationServiceProtocol {
     private var currentTimers: [String: Timer] = [:]
     private let logger: Logger
 
-    public init(logger: Logger,
+    public init(logManager: LogManagerProtocol,
                 unUserNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         self.unUserNotificationCenter = unUserNotificationCenter
-        self.logger = logger
+        logger = .init(manager: logManager)
     }
 
     public func requestNotificationPermission(with options: UNAuthorizationOptions = []) {

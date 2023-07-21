@@ -20,6 +20,10 @@
 
 import CoreData
 
+enum FeatureFlagError: Error {
+    case couldNotEncodeFlags
+}
+
 public protocol LocalFeatureFlagsDatasourceProtocol: LocalDatasourceProtocol {
     func getFeatureFlags(userId: String) async throws -> FeatureFlags?
     func upsertFlags(_ flags: FeatureFlags, userId: String) async throws
@@ -37,11 +41,16 @@ public extension LocalFeatureFlagsDatasourceProtocol {
     }
 
     func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
+        let encoder = JSONEncoder()
+        guard let flagsData = try? encoder.encode(flags.flags) else {
+            throw FeatureFlagError.couldNotEncodeFlags
+        }
+
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
             newBatchInsertRequest(entity: FeatureFlagsEntity.entity(context: taskContext),
-                                  sourceItems: [flags]) { managedObject, flags in
+                                  sourceItems: [flagsData]) { managedObject, flags in
                 (managedObject as? FeatureFlagsEntity)?.hydrate(from: flags, userId: userId)
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)

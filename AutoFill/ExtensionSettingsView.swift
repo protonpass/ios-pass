@@ -70,9 +70,7 @@ struct ExtensionSettingsView: View {
         }
         .navigationViewStyle(.stack)
         .theme(viewModel.preferences.theme)
-        .localAuthentication(preferences: viewModel.preferences,
-                             delayed: false,
-                             logManager: viewModel.logManager,
+        .localAuthentication(delayed: false,
                              onAuth: {},
                              onSuccess: {},
                              onFailure: viewModel.logOut)

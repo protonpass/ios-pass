@@ -82,7 +82,7 @@ public final class PassPlanRepository: PassPlanRepositoryProtocol {
     public init(localPassPlanDatasource: LocalPassPlanDatasourceProtocol,
                 remotePassPlanDatasource: RemotePassPlanDatasourceProtocol,
                 userId: String,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.localPassPlanDatasource = localPassPlanDatasource
         self.remotePassPlanDatasource = remotePassPlanDatasource
         self.userId = userId

@@ -122,7 +122,7 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
 
     public init(localShareKeyDatasource: LocalShareKeyDatasourceProtocol,
                 remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol,
-                logManager: LogManager,
+                logManager: LogManagerProtocol,
                 symmetricKey: CryptoKit.SymmetricKey,
                 userData: UserData) {
         self.localShareKeyDatasource = localShareKeyDatasource
@@ -134,7 +134,7 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
 
     public init(container: NSPersistentContainer,
                 apiService: APIService,
-                logManager: LogManager,
+                logManager: LogManagerProtocol,
                 symmetricKey: CryptoKit.SymmetricKey,
                 userData: UserData) {
         localShareKeyDatasource = LocalShareKeyDatasource(container: container)
