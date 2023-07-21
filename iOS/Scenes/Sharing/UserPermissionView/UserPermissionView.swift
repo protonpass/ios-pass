@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Entities
 import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -50,8 +51,8 @@ struct UserPermissionView: View {
     }
 
     @ViewBuilder
-    func butonDisplay(with permission: UserPermission) -> some View {
-        if viewModel.selectedUserPermission == permission {
+    func butonDisplay(with permission: ShareRole) -> some View {
+        if viewModel.selectedUserRole == permission {
             Circle()
                 .fill(PassColor.interactionNormMajor1.toColor)
                 .frame(width: 15, height: 15)
@@ -93,35 +94,35 @@ private extension UserPermissionView {
 private extension UserPermissionView {
     var roleList: some View {
         VStack(spacing: 12) {
-            ForEach(UserPermission.allCases, id: \.self) { permission in
+            ForEach(ShareRole.allCases, id: \.self) { role in
                 Button {
-                    viewModel.select(permission: permission)
+                    viewModel.select(role: role)
                 } label: {
                     HStack(spacing: 16) {
                         VStack(alignment: .leading) {
-                            Text(permission.title)
+                            Text(role.title)
                                 .font(.body)
                                 .foregroundColor(PassColor.textNorm.toColor)
                                 .padding(.bottom, 2)
 
-                            Text(permission.description)
+                            Text(role.description)
                                 .font(.body)
                                 .foregroundColor(PassColor.textWeak.toColor)
                         }
                         Spacer()
 
                         Circle()
-                            .strokeBorder(viewModel.selectedUserPermission == permission ? PassColor
+                            .strokeBorder(viewModel.selectedUserRole == role ? PassColor
                                 .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
                                 lineWidth: 2)
-                            .overlay(butonDisplay(with: permission))
+                            .overlay(butonDisplay(with: role))
                             .frame(width: 24, height: 24)
                     }
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cornerRadius(16)
                     .overlay(RoundedRectangle(cornerRadius: 16)
-                        .stroke(viewModel.selectedUserPermission == permission ? PassColor
+                        .stroke(viewModel.selectedUserRole == role ? PassColor
                             .interactionNormMajor1
                             .toColor : PassColor.textWeak.toColor,
                             lineWidth: 1))
