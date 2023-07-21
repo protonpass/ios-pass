@@ -31,11 +31,10 @@ struct EditableVaultListView: View {
     private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var body: some View {
-        let vaultsManager = viewModel.vaultsManager
         VStack(alignment: .leading) {
             ScrollView {
                 VStack(spacing: 0) {
-                    switch vaultsManager.state {
+                    switch viewModel.vaultsManager.state {
                     case .error, .loading:
                         // Should never happen
                         ProgressView()
@@ -56,7 +55,7 @@ struct EditableVaultListView: View {
                 }
                 .padding(.horizontal)
             }
-            .animation(.default, value: vaultsManager.state)
+            .animation(.default, value: viewModel.vaultsManager.state)
 
             HStack {
                 CapsuleTextButton(title: "Create vault",
@@ -81,7 +80,10 @@ struct EditableVaultListView: View {
                           })
                },
                message: {
-                   Text("This vault contains \(viewModel.numberOfAliasforSharedVault) Aliases. Alias sharing is currently not supported and they won’t be shared.")
+                   Text("""
+                   This vault contains \(viewModel.numberOfAliasforSharedVault) Aliases.
+                   Alias sharing is currently not supported and they won’t be shared.
+                   """)
                })
     }
 
@@ -140,7 +142,6 @@ struct EditableVaultListView: View {
                     Image(uiImage: IconProvider.pencil)
                         .renderingMode(.template)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
-
                 })
             })
 

@@ -21,11 +21,12 @@
 //
 
 import Client
+import Entities
 
 struct SharingInfos {
     let vault: Vault?
     let email: String?
-    let role: String?
+    let role: ShareRole?
     let itemsNum: Int?
 }
 
