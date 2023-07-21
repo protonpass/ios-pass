@@ -49,8 +49,8 @@ public protocol ShareRepositoryProtocol {
 
     func updateUserPermission(userId: String,
                               shareId: String,
-                              permission: String?,
-                              expiredTime: String?) async throws -> String
+                              shareRole: ShareRole?,
+                              expireTime: Int?) async throws -> Bool
 
     func deleteUserShare(userId: String, shareId: String) async throws -> Bool
 
@@ -125,7 +125,7 @@ public extension ShareRepository {
             logger.trace("Got \(shares.count) local shares for user \(userId)")
             return shares
         } catch {
-            logger.debug("Failed to get local shares for user \(userId). \(String(describing: error))")
+            logger.error(message: "Failed to get local shares for user \(userId)", error: error)
             throw error
         }
     }
@@ -137,7 +137,7 @@ public extension ShareRepository {
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
         } catch {
-            logger.debug("Failed to get remote shares for user \(userId). \(String(describing: error))")
+            logger.error(message: "Failed to get remote shares for user \(userId)", error: error)
             throw error
         }
     }
@@ -168,51 +168,52 @@ public extension ShareRepository {
             logger.trace("Got \(users.count) remote user for \(shareId)")
             return users
         } catch {
-            logger.debug("Failed to get remote user for shareId \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to get remote user for shareId \(shareId)", error: error)
             throw error
         }
     }
 
     func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
-        logger.trace("Getting user information linked to shareId \(shareId)")
+        let logInfo = "user \(userId), share \(shareId)"
+        logger.trace("Getting user information \(logInfo)")
         do {
             let user = try await remoteDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
-            logger.trace("Got \(user) remote information for \(shareId)")
+            logger.trace("Got user information \(logInfo)")
             return user
         } catch {
-            logger
-                .debug("Failed to get user \(userId) information for shareId \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to get user information \(logInfo)", error: error)
             throw error
         }
     }
 
     func updateUserPermission(userId: String,
                               shareId: String,
-                              permission: String?,
-                              expiredTime: String?) async throws -> String {
-        logger.trace("Changing user permission linked to shareId \(shareId)")
+                              shareRole: ShareRole?,
+                              expireTime: Int?) async throws -> Bool {
+        let logInfo = "permission \(shareRole?.rawValue ?? ""), user \(userId), share \(shareId)"
+        logger.trace("Updating \(logInfo)")
         do {
-            let request = UserSharePermissionRequest(with: permission, and: expiredTime)
-            let newPermission = try await remoteDatasouce.updateUserSharePermission(shareId: shareId,
-                                                                                    userId: userId,
-                                                                                    request: request)
-            logger.trace("Got new permission \(String(describing: permission))")
-            return String(newPermission)
+            let request = UserSharePermissionRequest(shareRole: shareRole, expireTime: expireTime)
+            let updated = try await remoteDatasouce.updateUserSharePermission(shareId: shareId,
+                                                                              userId: userId,
+                                                                              request: request)
+            logger.trace("Updated \(logInfo)")
+            return updated
         } catch {
-            logger
-                .debug("Failed to change user \(userId) permission for share \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to update \(logInfo)", error: error)
             throw error
         }
     }
 
     func deleteUserShare(userId: String, shareId: String) async throws -> Bool {
-        logger.trace("Deleting user \(userId) share \(shareId)")
+        let logInfo = "user \(userId), share \(shareId)"
+        logger.trace("Deleting user share \(logInfo)")
         do {
             let deleted = try await remoteDatasouce.deleteUserShare(shareId: shareId, userId: userId)
-            logger.trace("Deleted status for user share \(deleted)")
+            logger.trace("Deleted \(deleted) user share \(logInfo)")
             return deleted
         } catch {
-            logger.debug("Failed to delete user \(userId) share \(shareId). \(String(describing: error))")
+            logger.error(message: "Failed to delete user share \(logInfo)", error: error)
             throw error
         }
     }
