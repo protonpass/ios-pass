@@ -1,5 +1,5 @@
 //
-// Alias.swift
+// ShareInvite.swift
 // Proton Pass - Created on 15/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -26,24 +26,6 @@ public struct ShareInvite: Codable {
     public let targetID: String
     public let remindersSent, createTime, modifyTime: Int
 
-    public init(inviteID: String,
-                invitedEmail: String,
-                inviterEmail: String,
-                targetType: Int,
-                targetID: String,
-                remindersSent: Int,
-                createTime: Int,
-                modifyTime: Int) {
-        self.inviteID = inviteID
-        self.invitedEmail = invitedEmail
-        self.inviterEmail = inviterEmail
-        self.targetType = targetType
-        self.targetID = targetID
-        self.remindersSent = remindersSent
-        self.createTime = createTime
-        self.modifyTime = modifyTime
-    }
-
     enum CodingKeys: String, CodingKey {
         case inviteID = "InviteID"
         case invitedEmail = "InvitedEmail"
@@ -53,5 +35,9 @@ public struct ShareInvite: Codable {
         case remindersSent = "RemindersSent"
         case createTime = "CreateTime"
         case modifyTime = "ModifyTime"
+    }
+
+    public var shareType: TargetType {
+        .init(rawValue: Int64(targetType)) ?? .unknown
     }
 }

@@ -40,6 +40,7 @@ public struct AcceptInviteEndpoint: Endpoint {
 }
 
 public struct AcceptInviteRequest {
+    /// Invite keys encrypted and signed with the User Key
     public let keys: [ItemKey]
 
     public init(keys: [ItemKey]) {

@@ -30,6 +30,7 @@ extension Share {
               targetID: .random(),
               permission: .random(in: 0...10),
               primary: .random(),
+              owner: .random(),
               content: .random(),
               contentKeyRotation: contentKeyRotation ?? .random(in: 0...10),
               contentFormatVersion: .random(in: 0...10),

@@ -29,9 +29,9 @@ public struct SendInviteReminderToUserEndpoint: Endpoint {
     public var path: String
     public var method: HTTPMethod
 
-    public init(for shareId: String, with userId: String) {
+    public init(shareId: String, inviteId: String) {
         debugDescription = "Send invite reminder"
-        path = "/pass/v1/share/\(shareId)/invite/\(userId)/reminder"
+        path = "/pass/v1/share/\(shareId)/invite/\(inviteId)/reminder"
         method = .post
     }
 }
