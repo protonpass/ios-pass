@@ -1,7 +1,7 @@
 //
-// SendInviteReminderToUserEndpoint.swift
-// Proton Pass - Created on 11/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Mailbox.swift
+// Proton Pass - Created on 15/09/2022.
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,20 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
-import ProtonCore_Services
-
-public struct SendInviteReminderToUserEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-
-    public init(shareId: String, inviteId: String) {
-        debugDescription = "Send invite reminder"
-        path = "/pass/v1/share/\(shareId)/invite/\(inviteId)/reminder"
-        method = .post
-    }
+public struct Mailbox: Decodable, Hashable, Equatable {
+    // Should not rename to "id" otherwise decode process breaks
+    public let ID: Int
+    public let email: String
 }

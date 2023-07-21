@@ -93,8 +93,8 @@ public final class RepositoryManager: DeinitPrintable {
 
         let shareRepository = ShareRepository(symmetricKey: symmetricKey,
                                               userData: userData,
-                                              localShareDatasource: localShareDatasource,
-                                              remoteShareDatasouce: remoteShareDatasource,
+                                              localDatasource: localShareDatasource,
+                                              remoteDatasouce: remoteShareDatasource,
                                               passKeyManager: passKeyManager,
                                               logManager: logManager)
 
