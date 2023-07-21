@@ -1,7 +1,6 @@
 //
-//  
-// SummaryViewModel.swift
-// Proton Pass - Created on 20/07/2023.
+// Int+Extensions.swift
+// Proton Pass - Created on 21/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,19 +17,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Foundation
 
-@MainActor
-final class SummaryViewModel: ObservableObject, Sendable {
-        
-    init() {
-        setUp()
-    }
-}
-
-private extension SummaryViewModel {
-    func setUp() {
+public extension Int {
+    var toString: String {
+        String(self)
     }
 }

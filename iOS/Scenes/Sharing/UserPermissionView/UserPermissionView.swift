@@ -30,7 +30,7 @@ struct UserPermissionView: View {
     private var router = resolve(\RouterContainer.mainNavViewRouter)
     @StateObject private var viewModel = UserPermissionViewModel()
     @State var goToNextStep = false
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             NavigationLink(destination: router.navigate(to: .shareSummary),
@@ -102,7 +102,7 @@ private extension UserPermissionView {
                             Text(permission.title)
                                 .font(.body)
                                 .foregroundColor(PassColor.textNorm.toColor)
-                                .padding(.bottom, 5)
+                                .padding(.bottom, 2)
 
                             Text(permission.description)
                                 .font(.body)
@@ -136,7 +136,7 @@ private extension UserPermissionView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.chevronLeft,
+            CircleButton(icon: IconProvider.arrowLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          action: dismiss.callAsFunction)
@@ -159,33 +159,3 @@ struct UserPermissionView_Previews: PreviewProvider {
         UserPermissionView()
     }
 }
-
-//
-// struct ItemDetailTitleView: View {
-//    let itemContent: ItemContent
-//    let vault: Vault?
-//    let favIconRepository: FavIconRepositoryProtocol
-//
-//    var body: some View {
-//        HStack(spacing: kItemDetailSectionPadding) {
-//            ItemSquircleThumbnail(data: itemContent.thumbnailData(),
-//                                  repository: favIconRepository,
-//                                  size: .large)
-//
-//            VStack(alignment: .leading, spacing: 4) {
-//                Text(itemContent.name)
-//                    .font(.title)
-//                    .fontWeight(.bold)
-//                    .textSelection(.enabled)
-//                    .lineLimit(1)
-//                    .foregroundColor(Color(uiColor: PassColor.textNorm))
-//
-//                if let vault {
-//                    VaultLabel(vault: vault)
-//                }
-//            }
-//        }
-//        .frame(maxWidth: .infinity, alignment: .leading)
-//        .frame(height: 60)
-//    }
-// }
