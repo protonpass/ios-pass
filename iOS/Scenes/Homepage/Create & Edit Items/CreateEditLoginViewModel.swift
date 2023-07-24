@@ -80,11 +80,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
-    init(mode: ItemMode,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vaults: [Vault],
-         emailAddress: String) throws {
-        self.emailAddress = emailAddress
+    override init(mode: ItemMode,
+                  upgradeChecker: UpgradeCheckerProtocol,
+                  vaults: [Vault]) throws {
+        let userData = resolve(\SharedRepositoryContainer.userData)
+        emailAddress = userData.addresses.first?.email ?? ""
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
