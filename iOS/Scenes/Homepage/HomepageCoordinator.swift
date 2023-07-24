@@ -227,14 +227,7 @@ private extension HomepageCoordinator {
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
-                                                      itemRepository: itemRepository,
-                                                      shareRepository: shareRepository,
-                                                      passPlanRepository: passPlanRepository,
-                                                      vaultsManager: vaultsManager,
-                                                      notificationService: SharedServiceContainer
-                                                          .shared
-                                                          .notificationService(),
+        let profileTabViewModel = ProfileTabViewModel(vaultsManager: vaultsManager,
                                                       childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
