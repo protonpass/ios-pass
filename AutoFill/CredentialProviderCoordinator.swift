@@ -110,9 +110,6 @@ public final class CredentialProviderCoordinator {
                                                userData: userData)
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
-            SharedRepositoryContainer.shared.container.register { self.container }
-            SharedRepositoryContainer.shared.userData.register { userData }
-            SharedRepositoryContainer.shared.symmetricKey.register { symmetricKey }
             showCredentialsView(userData: userData,
                                 symmetricKey: symmetricKey,
                                 serviceIdentifiers: serviceIdentifiers)
