@@ -83,7 +83,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
-        let userData = resolve(\SharedRepositoryContainer.userData)
+        let userData = resolve(\SharedDataContainer.userData)
         emailAddress = userData.addresses.first?.email ?? ""
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
