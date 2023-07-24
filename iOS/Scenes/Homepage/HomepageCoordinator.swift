@@ -255,7 +255,7 @@ private extension HomepageCoordinator {
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
                                                           .shared
-                                                          .notificationService(logManager),
+                                                          .notificationService(),
                                                       childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
