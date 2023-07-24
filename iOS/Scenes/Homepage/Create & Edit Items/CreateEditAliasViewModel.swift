@@ -129,7 +129,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     init(mode: ItemMode,
-         itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
@@ -137,7 +136,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          logManager: LogManagerProtocol) throws {
         self.aliasRepository = aliasRepository
         try super.init(mode: mode,
-                       itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults,
                        preferences: preferences,

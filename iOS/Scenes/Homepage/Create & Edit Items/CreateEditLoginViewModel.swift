@@ -81,7 +81,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     init(mode: ItemMode,
-         itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
@@ -91,7 +90,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         self.emailAddress = emailAddress
         self.aliasRepository = aliasRepository
         try super.init(mode: mode,
-                       itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults,
                        preferences: preferences,
