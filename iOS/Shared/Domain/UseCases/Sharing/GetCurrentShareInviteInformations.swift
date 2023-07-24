@@ -23,13 +23,6 @@
 import Client
 import Entities
 
-struct SharingInfos {
-    let vault: Vault?
-    let email: String?
-    let role: ShareRole?
-    let itemsNum: Int?
-}
-
 protocol GetCurrentShareInviteInformationsUseCase: Sendable {
     func execute() async -> SharingInfos
 }
