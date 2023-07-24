@@ -224,7 +224,6 @@ private extension HomepageCoordinator {
     func start() {
         let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
                                                   credentialManager: credentialManager,
-                                                  passPlanRepository: passPlanRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
                                                   syncEventLoop: eventLoop,
