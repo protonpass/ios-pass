@@ -71,7 +71,6 @@ struct LogInDetailView: View {
                         CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                             uiModels: viewModel.customFieldUiModels,
                                             isFreeUser: viewModel.isFreeUser,
-                                            logManager: viewModel.logManager,
                                             onSelectTotpToken: { token in
                                                 viewModel.copyToClipboard(text: token,
                                                                           message: "Two Factor Authentication code copied") // swiftlint:disable:this line_length
