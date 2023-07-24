@@ -1,7 +1,6 @@
 //
-//
-// GetSharingFlagStatus.swift
-// Proton Pass - Created on 21/07/2023.
+// SharingInfos.swift
+// Proton Pass - Created on 24/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,31 +17,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Client
+import Entities
 
-protocol GetSharingFlagStatusUseCase: Sendable {
-    func execute() async -> Bool
-}
-
-extension GetSharingFlagStatusUseCase {
-    func callAsFunction() async -> Bool {
-        await execute()
-    }
-}
-
-final class GetSharingFlagStatus: GetSharingFlagStatusUseCase {
-    private let repository: FeatureFlagsRepositoryProtocol
-
-    init(repository: FeatureFlagsRepositoryProtocol) {
-        self.repository = repository
-    }
-
-    func execute() async -> Bool {
-        guard let flags = try? await repository.getFlags() else {
-            return false
-        }
-        return flags.isFlagEnable(for: FeatureFlagType.passSharingV1)
-    }
+struct SharingInfos {
+    let vault: Vault?
+    let email: String?
+    let role: ShareRole?
+    let itemsNum: Int?
 }
