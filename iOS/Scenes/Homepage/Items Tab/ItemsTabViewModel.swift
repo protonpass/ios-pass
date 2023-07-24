@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
@@ -44,8 +45,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @Published private(set) var banners: [InfoBanner] = []
 
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let itemContextMenuHandler: ItemContextMenuHandler
-    let itemRepository: ItemRepositoryProtocol
     let credentialManager: CredentialManagerProtocol
     let passPlanRepository: PassPlanRepositoryProtocol
     let logger: Logger
@@ -62,7 +63,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let syncEventLoop: SyncEventLoop
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
-         itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          logManager: LogManagerProtocol,
@@ -70,7 +70,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
         self.itemContextMenuHandler = itemContextMenuHandler
-        self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.passPlanRepository = passPlanRepository
         self.logManager = logManager
