@@ -18,10 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import CoreData
+import CryptoKit
 import Factory
 import LocalAuthentication
 import ProtonCore_Keymaker
+import ProtonCore_Login
+import ProtonCore_Services
 
 /// Contain tools shared between main iOS app and extensions
 final class SharedToolingContainer: SharedContainer, AutoRegistering {
@@ -104,6 +109,10 @@ extension SharedToolingContainer {
 extension SharedToolingContainer {
     var preferences: Factory<Preferences> {
         self { Preferences() }
+    }
+
+    var currentDateProvider: Factory<CurrentDateProviderProtocol> {
+        self { CurrentDateProvider() }
     }
 }
 

@@ -41,7 +41,6 @@ protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorDidFailLocallyAuthenticating()
 }
 
-// swiftlint:disable line_length
 final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -120,8 +119,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                               logManager: logManager)
 
         let passPlanRepository =
-            PassPlanRepository(localPassPlanDatasource: LocalPassPlanDatasource(container: container),
-                               remotePassPlanDatasource: RemotePassPlanDatasource(apiService: apiService),
+            PassPlanRepository(localDatasource: LocalPassPlanDatasource(container: container),
+                               remoteDatasource: RemotePassPlanDatasource(apiService: apiService),
                                userId: userData.user.ID,
                                logManager: logManager)
 
@@ -132,7 +131,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                           symmetricKey: symmetricKey,
                                           preferences: preferences)
 
-        aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+        aliasRepository = AliasRepository(remoteDatasouce: remoteAliasDatasource)
         self.apiService = apiService
         clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
@@ -166,9 +165,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         telemetryEventRepository =
-            TelemetryEventRepository(localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
-                                     remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-
+            TelemetryEventRepository(localDatasource: LocalTelemetryEventDatasource(container: container),
+                                     remoteDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
                                      remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
                                      passPlanRepository: passPlanRepository,
                                      logManager: logManager,
@@ -182,8 +180,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                         counter: vaultsManager,
                                         totpChecker: itemRepository)
         featureFlagsRepository =
-            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
-                                   remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: container),
+                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
                                    userId: userData.user.ID,
                                    logManager: logManager)
         self.vaultsManager = vaultsManager
@@ -281,7 +279,7 @@ private extension HomepageCoordinator {
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
                                                           .shared
-                                                          .notificationService(logManager),
+                                                          .notificationService(),
                                                       childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
@@ -1597,5 +1595,3 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.error(error)
     }
 }
-
-// swiftlint:enable line_length
