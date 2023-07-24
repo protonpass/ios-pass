@@ -30,8 +30,8 @@ typealias Encryptor = ProtonCore_Crypto.Encryptor
 
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol {
-    var localShareKeyDatasource: LocalShareKeyDatasourceProtocol { get }
-    var remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol { get }
+    var localDatasource: LocalShareKeyDatasourceProtocol { get }
+    var remoteDatasource: RemoteShareKeyDatasourceProtocol { get }
     var logger: Logger { get }
     var symmetricKey: CryptoKit.SymmetricKey { get }
     var userData: UserData { get }
@@ -47,7 +47,7 @@ public protocol ShareKeyRepositoryProtocol {
 public extension ShareKeyRepositoryProtocol {
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
-        let keys = try await localShareKeyDatasource.getKeys(shareId: shareId)
+        let keys = try await localDatasource.getKeys(shareId: shareId)
         if keys.isEmpty {
             logger.trace("No local keys for share \(shareId). Fetching from remote.")
             let keys = try await refreshKeys(shareId: shareId)
@@ -61,7 +61,7 @@ public extension ShareKeyRepositoryProtocol {
 
     func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Refreshing keys for share \(shareId)")
-        let keys = try await remoteShareKeyDatasource.getKeys(shareId: shareId)
+        let keys = try await remoteDatasource.getKeys(shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
         let encryptedKeys = try keys.map { key in
@@ -73,7 +73,7 @@ public extension ShareKeyRepositoryProtocol {
                                                   shareKey: key)
         }
 
-        try await localShareKeyDatasource.upsertKeys(encryptedKeys)
+        try await localDatasource.upsertKeys(encryptedKeys)
         logger.trace("Saved \(keys.count) keys to local database for share \(shareId)")
 
         logger.trace("Refreshed keys for share \(shareId)")
@@ -114,19 +114,19 @@ private extension ShareKeyRepositoryProtocol {
 }
 
 public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
-    public let localShareKeyDatasource: LocalShareKeyDatasourceProtocol
-    public let remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol
+    public let localDatasource: LocalShareKeyDatasourceProtocol
+    public let remoteDatasource: RemoteShareKeyDatasourceProtocol
     public let logger: Logger
     public let symmetricKey: CryptoKit.SymmetricKey
     public var userData: UserData
 
-    public init(localShareKeyDatasource: LocalShareKeyDatasourceProtocol,
-                remoteShareKeyDatasource: RemoteShareKeyDatasourceProtocol,
+    public init(localDatasource: LocalShareKeyDatasourceProtocol,
+                remoteDatasource: RemoteShareKeyDatasourceProtocol,
                 logManager: LogManagerProtocol,
                 symmetricKey: CryptoKit.SymmetricKey,
                 userData: UserData) {
-        self.localShareKeyDatasource = localShareKeyDatasource
-        self.remoteShareKeyDatasource = remoteShareKeyDatasource
+        self.localDatasource = localDatasource
+        self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
         self.symmetricKey = symmetricKey
         self.userData = userData
@@ -137,8 +137,8 @@ public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
                 logManager: LogManagerProtocol,
                 symmetricKey: CryptoKit.SymmetricKey,
                 userData: UserData) {
-        localShareKeyDatasource = LocalShareKeyDatasource(container: container)
-        remoteShareKeyDatasource = RemoteShareKeyDatasource(apiService: apiService)
+        localDatasource = LocalShareKeyDatasource(container: container)
+        remoteDatasource = RemoteShareKeyDatasource(apiService: apiService)
         logger = .init(manager: logManager)
         self.symmetricKey = symmetricKey
         self.userData = userData
