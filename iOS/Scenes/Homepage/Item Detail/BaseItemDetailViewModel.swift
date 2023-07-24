@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import Factory
 import UIKit
 
 let kItemDetailSectionPadding: CGFloat = 16
@@ -46,7 +47,7 @@ class BaseItemDetailViewModel {
     @Published private(set) var isFreeUser = false
 
     let isShownAsSheet: Bool
-    let itemRepository: ItemRepositoryProtocol
+    let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
         didSet {
@@ -66,7 +67,6 @@ class BaseItemDetailViewModel {
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vault: Vault?,
          logManager: LogManagerProtocol,
@@ -74,7 +74,6 @@ class BaseItemDetailViewModel {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
-        self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
         self.vault = vault
         logger = .init(manager: logManager)
