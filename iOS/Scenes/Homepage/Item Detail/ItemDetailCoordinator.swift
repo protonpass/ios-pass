@@ -32,7 +32,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
 
     private let aliasRepository: AliasRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
-    private let favIconRepository: FavIconRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
     private let logManager: LogManagerProtocol
     private let preferences: Preferences
@@ -44,7 +43,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
 
     init(aliasRepository: AliasRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         favIconRepository: FavIconRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManagerProtocol,
          preferences: Preferences,
@@ -52,7 +50,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
          itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
         self.aliasRepository = aliasRepository
         self.itemRepository = itemRepository
-        self.favIconRepository = favIconRepository
         self.upgradeChecker = upgradeChecker
         self.logManager = logManager
         self.preferences = preferences

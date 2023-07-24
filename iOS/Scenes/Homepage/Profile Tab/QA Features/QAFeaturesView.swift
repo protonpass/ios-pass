@@ -34,7 +34,7 @@ struct QAFeaturesView: View {
                 OnboardSection(viewModel: viewModel)
                 HapticFeedbacksSection()
                 Section {
-                    CachedFavIconsSection(favIconRepository: viewModel.favIconRepository)
+                    CachedFavIconsSection()
                     TelemetryEventsSection(telemetryEventRepository: viewModel.telemetryEventRepository,
                                            userId: viewModel.userData.user.ID)
                     TrashItemsSection(itemRepository: viewModel.itemRepository,
