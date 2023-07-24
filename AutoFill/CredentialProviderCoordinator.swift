@@ -110,6 +110,9 @@ public final class CredentialProviderCoordinator {
                                                userData: userData)
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
+            SharedRepositoryContainer.shared.container.register { self.container }
+            SharedRepositoryContainer.shared.userData.register { userData }
+            SharedRepositoryContainer.shared.symmetricKey.register { symmetricKey }
             showCredentialsView(userData: userData,
                                 symmetricKey: symmetricKey,
                                 serviceIdentifiers: serviceIdentifiers)
@@ -512,12 +515,10 @@ private extension CredentialProviderCoordinator {
             let creationType = ItemCreationType.login(title: url?.host,
                                                       url: url?.schemeAndHost,
                                                       autofill: true)
-            let emailAddress = appData.userData?.addresses.first?.email ?? ""
             let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                        type: creationType),
                                                          upgradeChecker: upgradeChecker,
-                                                         vaults: vaults,
-                                                         emailAddress: emailAddress)
+                                                         vaults: vaults)
             viewModel.delegate = self
             viewModel.createEditLoginViewModelDelegate = self
             let view = CreateEditLoginView(viewModel: viewModel)
