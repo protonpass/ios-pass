@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 import UIComponents
 import UIKit
@@ -58,14 +59,13 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
                   itemContent: ItemContent,
                   upgradeChecker: UpgradeCheckerProtocol,
                   vault: Vault?,
-                  logManager: LogManagerProtocol,
                   theme: Theme) {
+        let logManager = resolve(\SharedToolingContainer.logManager)
         totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker,
                    vault: vault,
-                   logManager: logManager,
                    theme: theme)
         totpManager.attach(to: self, storeIn: &cancellables)
     }
