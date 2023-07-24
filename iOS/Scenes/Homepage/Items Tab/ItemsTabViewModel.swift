@@ -47,10 +47,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     let itemContextMenuHandler: ItemContextMenuHandler
-    let credentialManager: CredentialManagerProtocol
     let vaultsManager: VaultsManager
 
     weak var delegate: ItemsTabViewModelDelegate?
@@ -62,11 +62,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let syncEventLoop: SyncEventLoop
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
-         credentialManager: CredentialManagerProtocol,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
         self.itemContextMenuHandler = itemContextMenuHandler
-        self.credentialManager = credentialManager
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
         finalizeInitialization()
