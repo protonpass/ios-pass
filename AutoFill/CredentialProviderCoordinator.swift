@@ -517,7 +517,6 @@ private extension CredentialProviderCoordinator {
                                                                        type: creationType),
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaults,
-                                                         preferences: preferences,
                                                          emailAddress: emailAddress)
             viewModel.delegate = self
             viewModel.createEditLoginViewModelDelegate = self

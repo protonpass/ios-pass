@@ -83,13 +83,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     init(mode: ItemMode,
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
-         preferences: Preferences,
          emailAddress: String) throws {
         self.emailAddress = emailAddress
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
-                       vaults: vaults,
-                       preferences: preferences)
+                       vaults: vaults)
         Publishers
             .CombineLatest($title, $username)
             .combineLatest($password)

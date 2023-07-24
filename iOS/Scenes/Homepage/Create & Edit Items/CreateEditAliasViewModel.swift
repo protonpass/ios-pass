@@ -131,12 +131,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
-                  vaults: [Vault],
-                  preferences: Preferences) throws {
+                  vaults: [Vault]) throws {
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
-                       vaults: vaults,
-                       preferences: preferences)
+                       vaults: vaults)
 
         if case let .edit(itemContent) = mode {
             title = itemContent.name
