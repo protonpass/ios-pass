@@ -67,14 +67,14 @@ class BaseItemDetailViewModel {
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?,
-         theme: Theme) {
+         vault: Vault?) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
         self.vault = vault
-        self.theme = theme
+        let preferences = resolve(\SharedToolingContainer.preferences)
+        theme = preferences.theme
         bindValues()
         checkIfFreeUser()
     }
