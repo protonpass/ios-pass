@@ -327,7 +327,6 @@ private extension HomepageCoordinator {
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
         let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
                                                 upgradeChecker: upgradeChecker,
-                                                logManager: logManager,
                                                 preferences: preferences,
                                                 vaultsManager: vaultsManager,
                                                 itemDetailViewModelDelegate: self)

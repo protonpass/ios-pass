@@ -38,14 +38,12 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vault: Vault?,
-         logManager: LogManagerProtocol,
          theme: Theme) {
         self.aliasRepository = aliasRepository
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker,
                    vault: vault,
-                   logManager: logManager,
                    theme: theme)
     }
 

@@ -32,7 +32,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
 
     private let aliasRepository: AliasRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let logManager: LogManagerProtocol
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
     private weak var itemDetailViewModelDelegate: ItemDetailViewModelDelegate?
@@ -42,13 +41,11 @@ final class ItemDetailCoordinator: DeinitPrintable {
 
     init(aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol,
          preferences: Preferences,
          vaultsManager: VaultsManager,
          itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
         self.aliasRepository = aliasRepository
         self.upgradeChecker = upgradeChecker
-        self.logManager = logManager
         self.preferences = preferences
         self.vaultsManager = vaultsManager
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
@@ -101,7 +98,6 @@ private extension ItemDetailCoordinator {
                                              itemContent: itemContent,
                                              upgradeChecker: upgradeChecker,
                                              vault: vault,
-                                             logManager: logManager,
                                              theme: preferences.theme)
         viewModel.logInDetailViewModelDelegate = self
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
@@ -115,7 +111,6 @@ private extension ItemDetailCoordinator {
                                              aliasRepository: aliasRepository,
                                              upgradeChecker: upgradeChecker,
                                              vault: vault,
-                                             logManager: logManager,
                                              theme: preferences.theme)
         return .init(viewModel: viewModel, view: AliasDetailView(viewModel: viewModel))
     }
@@ -127,7 +122,6 @@ private extension ItemDetailCoordinator {
                                             itemContent: itemContent,
                                             upgradeChecker: upgradeChecker,
                                             vault: vault,
-                                            logManager: logManager,
                                             theme: preferences.theme)
         return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
@@ -139,7 +133,6 @@ private extension ItemDetailCoordinator {
                                                   itemContent: itemContent,
                                                   upgradeChecker: upgradeChecker,
                                                   vault: vault,
-                                                  logManager: logManager,
                                                   theme: preferences.theme)
         return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
     }
