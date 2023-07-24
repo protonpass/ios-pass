@@ -46,9 +46,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var banners: [InfoBanner] = []
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     let itemContextMenuHandler: ItemContextMenuHandler
     let credentialManager: CredentialManagerProtocol
-    let passPlanRepository: PassPlanRepositoryProtocol
     let logger: Logger
     let logManager: LogManagerProtocol
     let preferences: Preferences
@@ -64,14 +64,12 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
          credentialManager: CredentialManagerProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol,
          logManager: LogManagerProtocol,
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
         self.itemContextMenuHandler = itemContextMenuHandler
         self.credentialManager = credentialManager
-        self.passPlanRepository = passPlanRepository
         self.logManager = logManager
         logger = .init(manager: logManager)
         self.preferences = preferences
