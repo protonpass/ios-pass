@@ -70,13 +70,13 @@ public final class RepositoryManager: DeinitPrintable {
         let remoteTelemetryEventDatasource = RemoteTelemetryEventDatasource(apiService: apiService)
         let localTelemetryEventDatasource = LocalTelemetryEventDatasource(container: container)
 
-        let passPlanRepository = PassPlanRepository(localPassPlanDatasource: localPassPlanDatasource,
-                                                    remotePassPlanDatasource: remotePassPlanDatasource,
+        let passPlanRepository = PassPlanRepository(localDatasource: localPassPlanDatasource,
+                                                    remoteDatasource: remotePassPlanDatasource,
                                                     userId: userData.user.ID,
                                                     logManager: logManager)
 
-        let shareKeyRepository = ShareKeyRepository(localShareKeyDatasource: localShareKeyDatasource,
-                                                    remoteShareKeyDatasource: remoteShareKeyDatasource,
+        let shareKeyRepository = ShareKeyRepository(localDatasource: localShareKeyDatasource,
+                                                    remoteDatasource: remoteShareKeyDatasource,
                                                     logManager: logManager,
                                                     symmetricKey: symmetricKey,
                                                     userData: userData)
@@ -87,8 +87,8 @@ public final class RepositoryManager: DeinitPrintable {
                                             symmetricKey: symmetricKey)
 
         let shareEventIDRepository =
-            ShareEventIDRepository(localShareEventIDDatasource: localShareEventIDDatasource,
-                                   remoteShareEventIDDatasource: remoteShareEventIDDatasource,
+            ShareEventIDRepository(localDatasource: localShareEventIDDatasource,
+                                   remoteDatasource: remoteShareEventIDDatasource,
                                    logManager: logManager)
 
         let shareRepository = ShareRepository(symmetricKey: symmetricKey,
@@ -105,11 +105,11 @@ public final class RepositoryManager: DeinitPrintable {
 
         let userId = userData.user.ID
 
-        aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
+        aliasRepository = AliasRepository(remoteDatasouce: remoteAliasDatasource)
         itemRepository = ItemRepository(userData: userData,
                                         symmetricKey: symmetricKey,
-                                        localItemDatasoure: localItemDatasource,
-                                        remoteItemRevisionDatasource: remoteItemDatasource,
+                                        localDatasoure: localItemDatasource,
+                                        remoteDatasource: remoteItemDatasource,
                                         shareEventIDRepository: shareEventIDRepository,
                                         passKeyManager: passKeyManager,
                                         logManager: logManager)
@@ -119,16 +119,16 @@ public final class RepositoryManager: DeinitPrintable {
         self.shareRepository = shareRepository
         self.shareKeyRepository = shareKeyRepository
         telemetryEventRepository =
-            TelemetryEventRepository(localTelemetryEventDatasource: localTelemetryEventDatasource,
-                                     remoteTelemetryEventDatasource: remoteTelemetryEventDatasource,
+            TelemetryEventRepository(localDatasource: localTelemetryEventDatasource,
+                                     remoteDatasource: remoteTelemetryEventDatasource,
                                      remoteUserSettingsDatasource: remoteUserSettingsDatasource,
                                      passPlanRepository: passPlanRepository,
                                      logManager: logManager,
                                      scheduler: telemetryScheduler,
                                      userId: userId)
         featureFlagsRepository =
-            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
-                                   remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
+            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: container),
+                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
                                    userId: userId,
                                    logManager: logManager)
 
