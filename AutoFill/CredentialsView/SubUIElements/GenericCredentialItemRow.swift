@@ -23,7 +23,6 @@ import SwiftUI
 
 struct GenericCredentialItemRow: View {
     let item: any CredentialItem
-    let favIconRepository: FavIconRepositoryProtocol
     let selectItem: (TitledItemIdentifiable) -> Void
 
     var body: some View {
@@ -31,18 +30,14 @@ struct GenericCredentialItemRow: View {
             selectItem(item)
         } label: {
             if let item = item as? ItemUiModel {
-                GeneralItemRow(thumbnailView: {
-                                   ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                         repository: favIconRepository)
-                               },
+                GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                                title: item.title,
                                description: item.description)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else if let item = item as? ItemSearchResult {
                 HStack {
                     VStack {
-                        ItemSquircleThumbnail(data: item.thumbnailData(),
-                                              repository: favIconRepository)
+                        ItemSquircleThumbnail(data: item.thumbnailData())
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
 
