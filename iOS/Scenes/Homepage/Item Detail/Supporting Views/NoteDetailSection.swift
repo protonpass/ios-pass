@@ -28,9 +28,9 @@ import UIComponents
 /// Note section of item detail pages
 struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
+    private let theme = resolve(\SharedToolingContainer.theme)
     let itemContent: ItemContent
     let vault: Vault?
-    let theme: Theme
 
     var body: some View {
         let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
