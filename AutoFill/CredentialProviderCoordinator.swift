@@ -515,7 +515,6 @@ private extension CredentialProviderCoordinator {
             let emailAddress = appData.userData?.addresses.first?.email ?? ""
             let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                        type: creationType),
-                                                         itemRepository: itemRepository,
                                                          aliasRepository: aliasRepository,
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaults,
