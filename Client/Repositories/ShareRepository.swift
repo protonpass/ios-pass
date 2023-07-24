@@ -236,6 +236,7 @@ public extension ShareRepository {
 
             return .init(id: share.share.vaultID,
                          shareId: share.share.shareID,
+                         addressId: share.share.addressID,
                          name: vaultContent.name,
                          description: vaultContent.description_p,
                          displayPreferences: vaultContent.display,

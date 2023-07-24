@@ -39,10 +39,11 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    @Published var showingAlert = false
+    @Published var showingAliasAlert = false
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private(set) var numberOfAliasforSharedVault = 0
+    let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private let logger: Logger
     let vaultsManager: VaultsManager
@@ -98,7 +99,11 @@ extension EditableVaultListViewModel {
             let numberOfItems = vaultsManager.getItem(for: vault)
             await self.setShareInviteVault(with: vault, and: numberOfItems.count)
             self.numberOfAliasforSharedVault = numberOfItems.filter { $0.type == .alias }.count
-            self.showingAlert = true
+            if numberOfAliasforSharedVault > 0 {
+                self.showingAliasAlert = true
+            } else {
+                router.presentSheet(for: .sharingFlow)
+            }
         }
     }
 

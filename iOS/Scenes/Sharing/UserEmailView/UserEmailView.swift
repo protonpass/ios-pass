@@ -25,64 +25,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-extension View {
-    @ViewBuilder
-    func navigationModifier() -> some View {
-        if #available(iOS 16.0, *) {
-            NavigationStack {
-                self
-            }
-        } else {
-            NavigationView {
-                self
-            }
-        }
-    }
-}
-
-//    .routingProvided
-//    .withSheetDestinations(sheetDestinations: $router.presentedSheet)
-//    .navigationStackEmbeded(with: $router.path)
-//
-//
-// @MainActor
-// extension View {
-//    var routingProvided: some View {
-//        navigationDestination(for: RouterDestination.self) { destination in
-//            EmptyView()
-////            switch destination {
-////            case let .photoDetail(photo):
-////                DetailView(viewModel: DetailViewModel(photo: photo))
-////            default:
-////                Text("Not implemented yet")
-////            }
-//        }
-//    }
-//
-//    func withSheetDestinations(sheetDestinations: Binding<SheetDestination?>) -> some View {
-//        sheet(item: sheetDestinations) { destination in
-//            EmptyView()
-////            switch destination {
-////            case .searchSettings:
-////                SearchSettingsView()
-////                    .presentationDetents([.medium, .large])
-////                    .presentationBackground(.ultraThinMaterial)
-////            }
-//        }
-//    }
-//
-// }
-//
-//
-// public extension View {
-//    @ViewBuilder
-//    func navigationStackEmbeded(with path: Binding<NavigationPath>) -> some View {
-//        NavigationStack(path: path) {
-//            self
-//        }
-//    }
-// }
-
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()

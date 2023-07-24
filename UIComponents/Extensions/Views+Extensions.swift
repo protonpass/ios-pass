@@ -1,7 +1,6 @@
 //
-//
-// GetSharingFlagStatus.swift
-// Proton Pass - Created on 21/07/2023.
+// Views+Extensions.swift
+// Proton Pass - Created on 24/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,31 +17,20 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
+import SwiftUI
 
-protocol GetSharingFlagStatusUseCase: Sendable {
-    func execute() async -> Bool
-}
-
-extension GetSharingFlagStatusUseCase {
-    func callAsFunction() async -> Bool {
-        await execute()
-    }
-}
-
-final class GetSharingFlagStatus: GetSharingFlagStatusUseCase {
-    private let repository: FeatureFlagsRepositoryProtocol
-
-    init(repository: FeatureFlagsRepositoryProtocol) {
-        self.repository = repository
-    }
-
-    func execute() async -> Bool {
-        guard let flags = try? await repository.getFlags() else {
-            return false
+public extension View {
+    @ViewBuilder
+    func navigationModifier() -> some View {
+        if #available(iOS 16.0, *) {
+            NavigationStack {
+                self
+            }
+        } else {
+            NavigationView {
+                self
+            }
         }
-        return flags.isFlagEnable(for: FeatureFlagType.passSharingV1)
     }
 }
