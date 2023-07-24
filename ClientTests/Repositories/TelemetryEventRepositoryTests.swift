@@ -104,8 +104,8 @@ extension TelemetryEventRepositoryTests {
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(
-            localTelemetryEventDatasource: localDatasource,
-            remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+            localDatasource: localDatasource,
+            remoteDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
             logManager: LogManager.dummyLogManager(),
@@ -133,8 +133,8 @@ extension TelemetryEventRepositoryTests {
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(
-            localTelemetryEventDatasource: localDatasource,
-            remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+            localDatasource: localDatasource,
+            remoteDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
             logManager: LogManager.dummyLogManager(),
@@ -162,8 +162,8 @@ extension TelemetryEventRepositoryTests {
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(
-            localTelemetryEventDatasource: localDatasource,
-            remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+            localDatasource: localDatasource,
+            remoteDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
             logManager: LogManager.dummyLogManager(),
@@ -191,8 +191,8 @@ extension TelemetryEventRepositoryTests {
         // Send only 1 event at a time to test if the while loop inside TelemetryEventRepository
         // works correctly when dealing with a large number of events
         sut = TelemetryEventRepository(
-            localTelemetryEventDatasource: localDatasource,
-            remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+            localDatasource: localDatasource,
+            remoteDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
             logManager: LogManager.dummyLogManager(),
@@ -233,8 +233,8 @@ extension TelemetryEventRepositoryTests {
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: mockedCurrentDateProvider,
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(
-            localTelemetryEventDatasource: localDatasource,
-            remoteTelemetryEventDatasource: MockedRemoteDatasource(),
+            localDatasource: localDatasource,
+            remoteDatasource: MockedRemoteDatasource(),
             remoteUserSettingsDatasource: MockedTelemetryOffUserSettingsDatasource(),
             passPlanRepository: MockedFreePlanRepository(),
             logManager: LogManager.dummyLogManager(),
