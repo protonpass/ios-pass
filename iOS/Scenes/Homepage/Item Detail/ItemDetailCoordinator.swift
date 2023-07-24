@@ -31,7 +31,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let preferences: Preferences
     private let vaultsManager: VaultsManager
     private weak var itemDetailViewModelDelegate: ItemDetailViewModelDelegate?
     private var currentViewModel: BaseItemDetailViewModel?
@@ -39,11 +38,9 @@ final class ItemDetailCoordinator: DeinitPrintable {
     weak var delegate: ItemDetailCoordinatorDelegate?
 
     init(upgradeChecker: UpgradeCheckerProtocol,
-         preferences: Preferences,
          vaultsManager: VaultsManager,
          itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
         self.upgradeChecker = upgradeChecker
-        self.preferences = preferences
         self.vaultsManager = vaultsManager
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
     }
@@ -94,8 +91,7 @@ private extension ItemDetailCoordinator {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
                                              upgradeChecker: upgradeChecker,
-                                             vault: vault,
-                                             theme: preferences.theme)
+                                             vault: vault)
         viewModel.logInDetailViewModelDelegate = self
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
     }
@@ -106,8 +102,7 @@ private extension ItemDetailCoordinator {
         let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
                                              upgradeChecker: upgradeChecker,
-                                             vault: vault,
-                                             theme: preferences.theme)
+                                             vault: vault)
         return .init(viewModel: viewModel, view: AliasDetailView(viewModel: viewModel))
     }
 
@@ -117,8 +112,7 @@ private extension ItemDetailCoordinator {
         let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
                                             itemContent: itemContent,
                                             upgradeChecker: upgradeChecker,
-                                            vault: vault,
-                                            theme: preferences.theme)
+                                            vault: vault)
         return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
 
@@ -128,8 +122,7 @@ private extension ItemDetailCoordinator {
         let viewModel = CreditCardDetailViewModel(isShownAsSheet: asSheet,
                                                   itemContent: itemContent,
                                                   upgradeChecker: upgradeChecker,
-                                                  vault: vault,
-                                                  theme: preferences.theme)
+                                                  vault: vault)
         return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
     }
 }
