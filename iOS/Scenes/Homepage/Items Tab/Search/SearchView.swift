@@ -88,7 +88,6 @@ struct SearchView: View {
             case let .results(itemCount, results):
                 SearchResultsView(selectedType: $viewModel.selectedType,
                                   selectedSortType: $viewModel.selectedSortType,
-                                  favIconRepository: viewModel.favIconRepository,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                   itemCount: itemCount,
                                   results: results,
