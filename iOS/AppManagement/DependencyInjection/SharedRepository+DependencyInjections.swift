@@ -159,10 +159,6 @@ extension SharedRepositoryContainer {
                                  symmetricKey: self.symmetricKey()) }
     }
 
-    var credentialManager: Factory<CredentialManagerProtocol> {
-        self { CredentialManager(logManager: self.logManager) }
-    }
-
     var localSearchEntryDatasource: Factory<LocalSearchEntryDatasourceProtocol> {
         self { LocalSearchEntryDatasource(container: self.container()) }
     }
