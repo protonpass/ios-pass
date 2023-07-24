@@ -25,7 +25,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public protocol AliasRepositoryProtocol {
-    var remoteAliasDatasouce: RemoteAliasDatasourceProtocol { get }
+    var remoteDatasouce: RemoteAliasDatasourceProtocol { get }
 
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
@@ -35,15 +35,15 @@ public protocol AliasRepositoryProtocol {
 
 public extension AliasRepositoryProtocol {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
-        try await remoteAliasDatasouce.getAliasOptions(shareId: shareId)
+        try await remoteDatasouce.getAliasOptions(shareId: shareId)
     }
 
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
-        try await remoteAliasDatasouce.getAliasDetails(shareId: shareId, itemId: itemId)
+        try await remoteDatasouce.getAliasDetails(shareId: shareId, itemId: itemId)
     }
 
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
-        try await remoteAliasDatasouce.changeMailboxes(shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
+        try await remoteDatasouce.changeMailboxes(shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
     }
 }
 
@@ -58,13 +58,13 @@ public extension AliasRepositoryProtocol {
 }
 
 public struct AliasRepository: AliasRepositoryProtocol {
-    public let remoteAliasDatasouce: RemoteAliasDatasourceProtocol
+    public let remoteDatasouce: RemoteAliasDatasourceProtocol
 
-    public init(remoteAliasDatasouce: RemoteAliasDatasourceProtocol) {
-        self.remoteAliasDatasouce = remoteAliasDatasouce
+    public init(remoteDatasouce: RemoteAliasDatasourceProtocol) {
+        self.remoteDatasouce = remoteDatasouce
     }
 
     public init(apiService: APIService) {
-        remoteAliasDatasouce = RemoteAliasDatasource(apiService: apiService)
+        remoteDatasouce = RemoteAliasDatasource(apiService: apiService)
     }
 }

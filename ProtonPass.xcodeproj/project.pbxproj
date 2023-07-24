@@ -568,6 +568,9 @@
 		35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
 		35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */; };
+		35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
+		35B9321D2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
+		35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35C2162729EA8B0B001720FF /* macOS-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
@@ -1412,6 +1415,7 @@
 		35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldEditionCoordinator.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
 		35B494F12A00FCCF00B5D986 /* SensitiveTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveTextField.swift; sourceTree = "<group>"; };
+		35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRepository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
 		35C2161529EA8991001720FF /* iOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
@@ -3024,6 +3028,7 @@
 			children = (
 				355E92772A59D2D500C22703 /* Factory+Extensions.swift */,
 				5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */,
+				35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */,
 				5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */,
 				5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */,
 				5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */,
@@ -4563,6 +4568,7 @@
 				354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				354E9AAC2A44699E00AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
 				35CEA8D32A60443C00343A4E /* AuthenticateBiometrically.swift in Sources */,
+				35B9321D2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35AC9A662A0BE4C700FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				35702C952A1E44140089B539 /* VaultSelectorViewModel.swift in Sources */,
 				355694A529D46923005DD2EB /* VaultListUiModel.swift in Sources */,
@@ -4687,6 +4693,7 @@
 				3549ACA1298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift in Sources */,
 				3562BC31299542D7003FCB13 /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3559BAAB2A5B32640020E172 /* AppLockTime.swift in Sources */,
+				35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				3565FD5A298D427500E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				354F1F1C29D8CAC600A6B1E8 /* AppData.swift in Sources */,
 				358C682A2A68137A006E720F /* Preferences+LocalAuthentication.swift in Sources */,
@@ -4904,6 +4911,7 @@
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
+				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,

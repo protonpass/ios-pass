@@ -72,7 +72,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
                     self.relativeThreshold = "Next batch \(relativeDate)"
                 }
                 let events =
-                    try await telemetryEventRepository.localTelemetryEventDatasource.getAllEvents(userId: userId)
+                    try await telemetryEventRepository.localDatasource.getAllEvents(userId: userId)
                 // Reverse to move new events to the top of the list
                 self.uiModels = events.reversed().map { TelemetryEventUiModel(event: $0,
                                                                               formatter: formatter) }
