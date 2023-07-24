@@ -50,13 +50,11 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
                   vaults: [Vault],
-                  preferences: Preferences,
-                  logManager: LogManagerProtocol) throws {
+                  preferences: Preferences) throws {
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults,
-                       preferences: preferences,
-                       logManager: logManager)
+                       preferences: preferences)
 
         $cardNumber
             .removeDuplicates()
