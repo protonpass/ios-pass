@@ -40,7 +40,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let aliasRepository: AliasRepositoryProtocol
-    private let itemRepository: ItemRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
     private let logManager: LogManagerProtocol
     private let preferences: Preferences
@@ -54,7 +53,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     weak var delegate: CreateEditItemCoordinatorDelegate?
 
     init(aliasRepository: AliasRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          logManager: LogManagerProtocol,
          preferences: Preferences,
@@ -62,7 +60,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
          userData: UserData,
          createEditItemDelegates: CreateEditItemDelegates?) {
         self.aliasRepository = aliasRepository
-        self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
         self.logManager = logManager
         self.preferences = preferences
@@ -128,7 +125,6 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = try CreateEditLoginViewModel(mode: mode,
-                                                     itemRepository: itemRepository,
                                                      aliasRepository: aliasRepository,
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults(),
@@ -144,7 +140,6 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditAliasView(mode: ItemMode) throws {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
-                                                     itemRepository: itemRepository,
                                                      aliasRepository: aliasRepository,
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults(),
@@ -159,7 +154,6 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
         let viewModel = try CreateEditCreditCardViewModel(mode: mode,
-                                                          itemRepository: itemRepository,
                                                           upgradeChecker: upgradeChecker,
                                                           vaults: vaultsManager.getAllVaults(),
                                                           preferences: preferences,
@@ -172,7 +166,6 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditNoteView(mode: ItemMode) throws {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
-                                                    itemRepository: itemRepository,
                                                     upgradeChecker: upgradeChecker,
                                                     vaults: vaultsManager.getAllVaults(),
                                                     preferences: preferences,
