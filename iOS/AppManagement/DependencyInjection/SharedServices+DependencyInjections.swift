@@ -18,10 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Factory
 
 final class SharedServiceContainer: SharedContainer, AutoRegistering {
+    private let logManager = resolve(\SharedToolingContainer.logManager)
     static let shared = SharedServiceContainer()
     let manager = ContainerManager()
 
@@ -31,7 +33,11 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
 }
 
 extension SharedServiceContainer {
-    var notificationService: ParameterFactory<LogManagerProtocol, LocalNotificationServiceProtocol> {
-        self { NotificationService(logManager: $0) }
+    var notificationService: Factory<LocalNotificationServiceProtocol> {
+        self { NotificationService(logManager: self.logManager) }
+    }
+
+    var credentialManager: Factory<CredentialManagerProtocol> {
+        self { CredentialManager(logManager: self.logManager) }
     }
 }

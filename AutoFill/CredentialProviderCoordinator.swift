@@ -87,7 +87,7 @@ public final class CredentialProviderCoordinator {
         self.context = context
         credentialManager = CredentialManager(logManager: logManager)
         logger = .init(manager: logManager)
-        notificationService = SharedServiceContainer.shared.notificationService(logManager)
+        notificationService = SharedServiceContainer.shared.notificationService()
         self.rootViewController = rootViewController
 
         // Post init
