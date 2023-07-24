@@ -43,6 +43,6 @@ final class GetSharingFlagStatus: GetSharingFlagStatusUseCase {
         guard let flags = try? await repository.getFlags() else {
             return false
         }
-        return flags.isFlagEnable(for: FeatureFlagType.passSharingV1.rawValue)
+        return flags.isFlagEnable(for: FeatureFlagType.passSharingV1)
     }
 }

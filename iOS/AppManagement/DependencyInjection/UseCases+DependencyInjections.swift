@@ -88,6 +88,13 @@ extension UseCasesContainer {
     var resetSharingInviteInfos: Factory<ResetSharingInviteInfosUseCase> {
         self { ResetSharingInviteInfos(shareInviteService: ServiceContainer.shared.shareInviteService()) }
     }
+
+//    var sendShareInvite: Factory<SendShareInviteUseCase> {
+//        self { SendShareInvite(publicKeyRepository: PublicKeyRepositoryProtocol,
+//                               passKeyManager: <#T##PassKeyManagerProtocol#>,
+//                               shareInviteRepository: <#T##ShareInviteRepositoryProtocol#>,
+//                               userData: <#T##UserData#>)}
+//    }
 }
 
 // MARK: - Vault

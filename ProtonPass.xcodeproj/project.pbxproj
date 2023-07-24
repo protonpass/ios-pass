@@ -677,6 +677,10 @@
 		5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */; };
 		5B1453B42A6A8D110048B022 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B32A6A8D110048B022 /* Int+Extensions.swift */; };
 		5B1453B72A6AB9F00048B022 /* GetSharingFlagStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B62A6AB9F00048B022 /* GetSharingFlagStatus.swift */; };
+		5B1453B92A6ACE160048B022 /* SendShareInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B82A6ACE160048B022 /* SendShareInvite.swift */; };
+		5B1453BD2A6EA8890048B022 /* SharingInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453BC2A6EA8890048B022 /* SharingInfos.swift */; };
+		5B1453BF2A6EA9870048B022 /* Views+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453BE2A6EA9870048B022 /* Views+Extensions.swift */; };
+		5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1509,6 +1513,10 @@
 		5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryViewModel.swift; sourceTree = "<group>"; };
 		5B1453B32A6A8D110048B022 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		5B1453B62A6AB9F00048B022 /* GetSharingFlagStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSharingFlagStatus.swift; sourceTree = "<group>"; };
+		5B1453B82A6ACE160048B022 /* SendShareInvite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendShareInvite.swift; sourceTree = "<group>"; };
+		5B1453BC2A6EA8890048B022 /* SharingInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingInfos.swift; sourceTree = "<group>"; };
+		5B1453BE2A6EA9870048B022 /* Views+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views+Extensions.swift"; sourceTree = "<group>"; };
+		5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIRouter.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -1907,6 +1915,7 @@
 				3569B29E29B77A760070830B /* VaultContentUiModel.swift */,
 				35733B7C29CC5DB700052229 /* VaultIcon.swift */,
 				355694A329D4673A005DD2EB /* VaultListUiModel.swift */,
+				5B1453BC2A6EA8890048B022 /* SharingInfos.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3031,6 +3040,7 @@
 				5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */,
 				5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */,
 				356F7FCE2A3C4B64002D412E /* UIViewController+Extensions.swift */,
+				5B1453BE2A6EA9870048B022 /* Views+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3070,18 +3080,11 @@
 			path = ClientModels;
 			sourceTree = "<group>";
 		};
-		5B1453B52A6AB4750048B022 /* FeatureFlags */ = {
-			isa = PBXGroup;
-			children = (
-				5B1453B62A6AB9F00048B022 /* GetSharingFlagStatus.swift */,
-			);
-			path = FeatureFlags;
-	sourceTree = "<group>";
-		};
 		5B14538B2A681AFA0048B022 /* Routers */ = {
 			isa = PBXGroup;
 			children = (
 				5B14538C2A681B400048B022 /* MainRouter.swift */,
+				5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -3122,6 +3125,7 @@
 				5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */,
 				5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */,
 				5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */,
+				5B1453B82A6ACE160048B022 /* SendShareInvite.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -3149,6 +3153,14 @@
 				5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */,
 			);
 			path = SummaryView;
+			sourceTree = "<group>";
+		};
+		5B1453B52A6AB4750048B022 /* FeatureFlags */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453B62A6AB9F00048B022 /* GetSharingFlagStatus.swift */,
+			);
+			path = FeatureFlags;
 			sourceTree = "<group>";
 		};
 		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
@@ -4779,6 +4791,7 @@
 				3571B59429BF1321008D4350 /* HighlightText.swift in Sources */,
 				3572E5232993D68800775FAC /* ItemContent+UIRelatedProperties.swift in Sources */,
 				3565FD57298D3E9400E2A0EE /* TOTPText.swift in Sources */,
+				5B1453BD2A6EA8890048B022 /* SharingInfos.swift in Sources */,
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
 				35E152C42A38866900E47E57 /* CreateEditCreditCardViewModel.swift in Sources */,
@@ -4822,6 +4835,7 @@
 				35E50654286F82DC00A3F6EA /* AppDelegate.swift in Sources */,
 				358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */,
 				355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */,
+				5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */,
 				35AC9A562A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift in Sources */,
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				3569B29F29B77A760070830B /* VaultContentUiModel.swift in Sources */,
@@ -4829,6 +4843,7 @@
 				353739E529EAEA6000A3255E /* QAFeaturesViewModel.swift in Sources */,
 				356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
+				5B1453B92A6ACE160048B022 /* SendShareInvite.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,
 				356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */,
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,
@@ -5237,6 +5252,7 @@
 				5B0C750D2A321DCD00272CE8 /* Color+Extensions.swift in Sources */,
 				3565FD46298CF4FA00E2A0EE /* CircleButton.swift in Sources */,
 				355DC72629E15EAF00946867 /* Coordinator.swift in Sources */,
+				5B1453BF2A6EA9870048B022 /* Views+Extensions.swift in Sources */,
 				35B494F22A00FCCF00B5D986 /* SensitiveTextField.swift in Sources */,
 				354DCCF9291BECC100A5D87C /* View+AdaptiveScrollDisabled.swift in Sources */,
 				3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */,

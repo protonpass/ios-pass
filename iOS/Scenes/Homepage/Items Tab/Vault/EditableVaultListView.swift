@@ -28,7 +28,6 @@ struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: EditableVaultListViewModel
     @State private var isShowingEmptyTrashAlert = false
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -70,13 +69,13 @@ struct EditableVaultListView: View {
         .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
         .alert("Aliases won’t be shared",
-               isPresented: $viewModel.showingAlert,
+               isPresented: $viewModel.showingAliasAlert,
                actions: {
                    Button(action: {
-                              router.presentSheet(for: .sharingFlow)
+                              viewModel.router.presentSheet(for: .sharingFlow)
                           },
                           label: {
-                              Text("Ok")
+                              Text("OK")
                           })
                },
                message: {

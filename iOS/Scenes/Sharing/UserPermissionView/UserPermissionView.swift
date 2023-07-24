@@ -94,7 +94,7 @@ private extension UserPermissionView {
 private extension UserPermissionView {
     var roleList: some View {
         VStack(spacing: 12) {
-            ForEach(ShareRole.allCases, id: \.self) { role in
+            ForEach(ShareRole.allCases.reversed(), id: \.self) { role in
                 Button {
                     viewModel.select(role: role)
                 } label: {

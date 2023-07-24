@@ -21,54 +21,39 @@
 import Combine
 import SwiftUI
 
-enum RouterDestination: Hashable {
-    case userSharePermission
-    case shareSummary
-}
+enum CoordinatorRouterDestination: Hashable {}
 
-enum SheetDestination: Hashable {
+enum CoordinatorSheetDestination: Hashable {
     case sharingFlow
 }
 
 final class MainUIKitSwiftUIRouter {
-    let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
-    let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
+    let newPresentationDestination: PassthroughSubject<CoordinatorRouterDestination, Never> = .init()
+    let newSheetDestination: PassthroughSubject<CoordinatorSheetDestination, Never> = .init()
 
-    func navigate(to destination: RouterDestination) {
+    func navigate(to destination: CoordinatorRouterDestination) {
         newPresentationDestination.send(destination)
     }
 
-    func presentSheet(for destination: SheetDestination) {
+    func presentSheet(for destination: CoordinatorSheetDestination) {
         newSheetDestination.send(destination)
     }
 }
 
-@available(iOS 16.0, *)
-final class MainNavStackRouter {
-    @Published public var path = NavigationPath()
-    @Published public var presentedSheet: SheetDestination?
-
-    func navigate(to destination: RouterDestination) {
-        path.append(destination)
-    }
-
-    func popToRoot() {
-        path.removeLast(path.count)
-    }
-
-    func back(to numberOfScreen: Int = 1) {
-        path.removeLast(numberOfScreen)
-    }
-}
-
-final class MainNavViewRouter {
-    @ViewBuilder
-    func navigate(to destination: RouterDestination) -> some View {
-        switch destination {
-        case .userSharePermission:
-            UserPermissionView()
-        case .shareSummary:
-            SharingSummaryView()
-        }
-    }
-}
+// @available(iOS 16.0, *)
+// final class MainNavStackRouter {
+//    @Published public var path = NavigationPath()
+//    @Published public var presentedSheet: SheetDestination?
+//
+//    func navigate(to destination: RouterDestination) {
+//        path.append(destination)
+//    }
+//
+//    func popToRoot() {
+//        path.removeLast(path.count)
+//    }
+//
+//    func back(to numberOfScreen: Int = 1) {
+//        path.removeLast(numberOfScreen)
+//    }
+// }

@@ -69,7 +69,7 @@ private extension SharingSummaryView {
     func attributedText(for text: String) -> AttributedString {
         var result = AttributedString(text)
         result.font = .body.bold()
-        result.foregroundColor = .white
+        result.foregroundColor = PassColor.textNorm
         return result
     }
 }
