@@ -314,7 +314,6 @@ private extension HomepageCoordinator {
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
         let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
                                                     upgradeChecker: upgradeChecker,
-                                                    logManager: logManager,
                                                     preferences: preferences,
                                                     vaultsManager: vaultsManager,
                                                     userData: userData,

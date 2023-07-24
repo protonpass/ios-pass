@@ -132,14 +132,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
-         preferences: Preferences,
-         logManager: LogManagerProtocol) throws {
+         preferences: Preferences) throws {
         self.aliasRepository = aliasRepository
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults,
-                       preferences: preferences,
-                       logManager: logManager)
+                       preferences: preferences)
 
         if case let .edit(itemContent) = mode {
             title = itemContent.name
