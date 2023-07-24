@@ -30,7 +30,6 @@ protocol ItemDetailCoordinatorDelegate: AnyObject {
 final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let aliasRepository: AliasRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
@@ -39,12 +38,10 @@ final class ItemDetailCoordinator: DeinitPrintable {
 
     weak var delegate: ItemDetailCoordinatorDelegate?
 
-    init(aliasRepository: AliasRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
+    init(upgradeChecker: UpgradeCheckerProtocol,
          preferences: Preferences,
          vaultsManager: VaultsManager,
          itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
-        self.aliasRepository = aliasRepository
         self.upgradeChecker = upgradeChecker
         self.preferences = preferences
         self.vaultsManager = vaultsManager
@@ -108,7 +105,6 @@ private extension ItemDetailCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
-                                             aliasRepository: aliasRepository,
                                              upgradeChecker: upgradeChecker,
                                              vault: vault,
                                              theme: preferences.theme)
