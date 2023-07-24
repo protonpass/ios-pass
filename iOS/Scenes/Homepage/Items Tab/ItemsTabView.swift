@@ -250,10 +250,7 @@ struct ItemsTabView: View {
         Button(action: {
             viewModel.viewDetail(of: item)
         }, label: {
-            GeneralItemRow(thumbnailView: {
-                               ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                     repository: viewModel.favIconRepository)
-                           },
+            GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                            title: item.title,
                            description: item.description)
                 .itemContextMenu(item: item,
