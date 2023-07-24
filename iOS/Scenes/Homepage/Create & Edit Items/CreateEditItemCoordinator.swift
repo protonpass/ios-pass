@@ -39,7 +39,6 @@ typealias CreateEditItemDelegates =
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let aliasRepository: AliasRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
@@ -51,13 +50,11 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 
     weak var delegate: CreateEditItemCoordinatorDelegate?
 
-    init(aliasRepository: AliasRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
+    init(upgradeChecker: UpgradeCheckerProtocol,
          preferences: Preferences,
          vaultsManager: VaultsManager,
          userData: UserData,
          createEditItemDelegates: CreateEditItemDelegates?) {
-        self.aliasRepository = aliasRepository
         self.upgradeChecker = upgradeChecker
         self.preferences = preferences
         self.vaultsManager = vaultsManager
@@ -122,7 +119,6 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = try CreateEditLoginViewModel(mode: mode,
-                                                     aliasRepository: aliasRepository,
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults(),
                                                      preferences: preferences,
@@ -136,7 +132,6 @@ private extension CreateEditItemCoordinator {
 
     func presentCreateEditAliasView(mode: ItemMode) throws {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
-                                                     aliasRepository: aliasRepository,
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults(),
                                                      preferences: preferences)
