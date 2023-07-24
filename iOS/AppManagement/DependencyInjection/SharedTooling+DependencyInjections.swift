@@ -108,6 +108,10 @@ extension SharedToolingContainer {
         self { Preferences() }
     }
 
+    var theme: Factory<Theme> {
+        self { self.preferences().theme }
+    }
+
     var currentDateProvider: Factory<CurrentDateProviderProtocol> {
         self { CurrentDateProvider() }
     }

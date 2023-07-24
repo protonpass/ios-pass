@@ -78,7 +78,6 @@ class BaseCreateEditItemViewModel {
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: UpgradeCheckerProtocol
-    let preferences: Preferences
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
 
@@ -93,8 +92,7 @@ class BaseCreateEditItemViewModel {
 
     init(mode: ItemMode,
          upgradeChecker: UpgradeCheckerProtocol,
-         vaults: [Vault],
-         preferences: Preferences) throws {
+         vaults: [Vault]) throws {
         let vaultShareId: String
         switch mode {
         case let .create(shareId, _):
@@ -110,7 +108,6 @@ class BaseCreateEditItemViewModel {
         selectedVault = vault
         self.mode = mode
         self.upgradeChecker = upgradeChecker
-        self.preferences = preferences
         self.vaults = vaults
         bindValues()
         checkIfFreeUser()
