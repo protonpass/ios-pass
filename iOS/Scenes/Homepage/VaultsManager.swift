@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import Factory
 import ProtonCore_Login
 
 enum VaultManagerState {
@@ -49,32 +50,19 @@ enum VaultSelection {
 final class VaultsManager: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let itemRepository: ItemRepositoryProtocol
-    private var manualLogIn: Bool
-    private let logger: Logger
-    private let shareRepository: ShareRepositoryProtocol
-    private let symmetricKey: SymmetricKey
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let symmetricKey = resolve(\SharedRepositoryContainer.symmetricKey)
+    private let logger = resolve(\SharedToolingContainer.logger)
 
-    /// Can be removed after going public
-    private let preferences: Preferences
+    private var manualLogIn: Bool
+    private var isRefreshing = false
 
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
 
-    private var isRefreshing = false
-
-    init(itemRepository: ItemRepositoryProtocol,
-         manualLogIn: Bool,
-         logManager: LogManagerProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         preferences: Preferences) {
-        self.itemRepository = itemRepository
+    init(manualLogIn: Bool) {
         self.manualLogIn = manualLogIn
-        logger = .init(manager: logManager)
-        self.shareRepository = shareRepository
-        self.symmetricKey = symmetricKey
-        self.preferences = preferences
     }
 }
 

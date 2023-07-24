@@ -122,12 +122,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                userId: userData.user.ID,
                                logManager: logManager)
 
-        let vaultsManager = VaultsManager(itemRepository: itemRepository,
-                                          manualLogIn: manualLogIn,
-                                          logManager: logManager,
-                                          shareRepository: shareRepository,
-                                          symmetricKey: symmetricKey,
-                                          preferences: preferences)
+        let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
 
         aliasRepository = AliasRepository(remoteDatasouce: remoteAliasDatasource)
         self.apiService = apiService
