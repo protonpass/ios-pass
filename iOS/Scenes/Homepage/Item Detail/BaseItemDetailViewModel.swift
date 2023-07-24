@@ -58,7 +58,6 @@ class BaseItemDetailViewModel {
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger = resolve(\SharedToolingContainer.logger)
-    let theme: Theme
 
     weak var delegate: ItemDetailViewModelDelegate?
 
@@ -74,7 +73,6 @@ class BaseItemDetailViewModel {
         self.upgradeChecker = upgradeChecker
         self.vault = vault
         let preferences = resolve(\SharedToolingContainer.preferences)
-        theme = preferences.theme
         bindValues()
         checkIfFreeUser()
     }
