@@ -40,7 +40,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let preferences: Preferences
     private let vaultsManager: VaultsManager
     private let userData: UserData
     private weak var createEditItemDelegates: CreateEditItemDelegates?
@@ -51,12 +50,10 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     weak var delegate: CreateEditItemCoordinatorDelegate?
 
     init(upgradeChecker: UpgradeCheckerProtocol,
-         preferences: Preferences,
          vaultsManager: VaultsManager,
          userData: UserData,
          createEditItemDelegates: CreateEditItemDelegates?) {
         self.upgradeChecker = upgradeChecker
-        self.preferences = preferences
         self.vaultsManager = vaultsManager
         self.userData = userData
         self.createEditItemDelegates = createEditItemDelegates
@@ -121,7 +118,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults(),
-                                                     preferences: preferences,
                                                      emailAddress: emailAddress)
         viewModel.delegate = createEditItemDelegates
         viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
@@ -133,8 +129,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditAliasView(mode: ItemMode) throws {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
-                                                     vaults: vaultsManager.getAllVaults(),
-                                                     preferences: preferences)
+                                                     vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
         viewModel.createEditAliasViewModelDelegate = createEditItemDelegates
         let view = CreateEditAliasView(viewModel: viewModel)
@@ -145,8 +140,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
         let viewModel = try CreateEditCreditCardViewModel(mode: mode,
                                                           upgradeChecker: upgradeChecker,
-                                                          vaults: vaultsManager.getAllVaults(),
-                                                          preferences: preferences)
+                                                          vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -156,8 +150,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditNoteView(mode: ItemMode) throws {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
                                                     upgradeChecker: upgradeChecker,
-                                                    vaults: vaultsManager.getAllVaults(),
-                                                    preferences: preferences)
+                                                    vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissable: false)
