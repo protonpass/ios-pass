@@ -48,7 +48,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let shareRepository: ShareRepositoryProtocol
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let passPlanRepository: PassPlanRepositoryProtocol
     private let notificationService: LocalNotificationServiceProtocol
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
@@ -85,7 +85,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     init(credentialManager: CredentialManagerProtocol,
          itemRepository: ItemRepositoryProtocol,
          shareRepository: ShareRepositoryProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          vaultsManager: VaultsManager,
          notificationService: LocalNotificationServiceProtocol,
@@ -93,7 +92,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        self.featureFlagsRepository = featureFlagsRepository
         self.passPlanRepository = passPlanRepository
         self.vaultsManager = vaultsManager
         self.notificationService = notificationService

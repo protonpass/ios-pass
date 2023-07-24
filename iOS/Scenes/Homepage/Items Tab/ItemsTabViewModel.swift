@@ -48,7 +48,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let itemRepository: ItemRepositoryProtocol
     let credentialManager: CredentialManagerProtocol
     let passPlanRepository: PassPlanRepositoryProtocol
-    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     let logger: Logger
     let logManager: LogManagerProtocol
     let preferences: Preferences
@@ -66,7 +65,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
          itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          logManager: LogManagerProtocol,
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
@@ -75,7 +73,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
         self.passPlanRepository = passPlanRepository
-        self.featureFlagsRepository = featureFlagsRepository
         self.logManager = logManager
         logger = .init(manager: logManager)
         self.preferences = preferences

@@ -234,7 +234,6 @@ private extension HomepageCoordinator {
                                                   itemRepository: itemRepository,
                                                   credentialManager: credentialManager,
                                                   passPlanRepository: passPlanRepository,
-                                                  featureFlagsRepository: featureFlagsRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
                                                   syncEventLoop: eventLoop,
@@ -244,7 +243,6 @@ private extension HomepageCoordinator {
         let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
                                                       shareRepository: shareRepository,
-                                                      featureFlagsRepository: featureFlagsRepository,
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
