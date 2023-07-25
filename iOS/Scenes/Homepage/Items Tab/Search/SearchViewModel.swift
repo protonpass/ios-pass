@@ -63,7 +63,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private(set) var vaultSelection: VaultSelection
-    let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
 
     // Self-intialized properties
@@ -80,8 +79,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
 
-    init(favIconRepository: FavIconRepositoryProtocol,
-         itemContextMenuHandler: ItemContextMenuHandler,
+    init(itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
          logManager: LogManagerProtocol,
          searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
@@ -89,7 +87,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
          featureFlagsRepository: FeatureFlagsRepositoryProtocol,
          symmetricKey: SymmetricKey,
          vaultSelection: VaultSelection) {
-        self.favIconRepository = favIconRepository
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
         logger = .init(manager: logManager)

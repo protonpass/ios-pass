@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -28,7 +29,6 @@ struct SearchResultsView: View, Equatable {
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
-    let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
     let results: any SearchResults
@@ -40,9 +40,7 @@ struct SearchResultsView: View, Equatable {
 
     var body: some View {
         VStack(spacing: 0) {
-            SearchResultChips(selectedType: $selectedType,
-                              itemCount: itemCount)
-
+            SearchResultChips(selectedType: $selectedType, itemCount: itemCount)
             topBarSearchInformations
             searchListItems
         }
@@ -78,7 +76,7 @@ struct SearchResultsView: View, Equatable {
         Button(action: {
             onSelectItem(item)
         }, label: {
-            ItemSearchResultView(result: item, favIconRepository: favIconRepository)
+            ItemSearchResultView(result: item)
                 .itemContextMenu(item: item,
                                  isTrashed: isTrash,
                                  onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
@@ -195,8 +193,8 @@ private extension SearchResultsView {
 }
 
 private struct ItemSearchResultView: View, Equatable {
+    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     let result: ItemSearchResult
-    let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
         HStack {
