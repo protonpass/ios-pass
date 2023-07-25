@@ -82,7 +82,7 @@ public final class CredentialProviderCoordinator {
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
         bannerManager = .init(container: rootViewController)
-        clipboardManager = .init(preferences: preferences)
+        clipboardManager = .init()
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.context = context
         credentialManager = CredentialManager(logManager: logManager)
