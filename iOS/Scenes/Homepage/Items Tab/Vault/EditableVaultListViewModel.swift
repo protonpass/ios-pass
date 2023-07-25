@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToShowSpinner()
@@ -38,23 +39,22 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    let logger: Logger
+    private let logger = resolve(\SharedToolingContainer.logger)
     let vaultsManager: VaultsManager
 
     weak var delegate: EditableVaultListViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(vaultsManager: VaultsManager, logManager: LogManagerProtocol) {
+    init(vaultsManager: VaultsManager) {
         self.vaultsManager = vaultsManager
-        logger = .init(manager: logManager)
-        finalizeInitialization()
+        setUp()
     }
 }
 
 // MARK: - Private APIs
 
 private extension EditableVaultListViewModel {
-    func finalizeInitialization() {
+    func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
     }
 
