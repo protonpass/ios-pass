@@ -49,7 +49,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let itemContextMenuHandler: ItemContextMenuHandler
+    private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let logManager: LogManagerProtocol
@@ -123,7 +123,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.apiService = apiService
         clipboardManager = .init()
         self.credentialManager = credentialManager
-        itemContextMenuHandler = .init()
         self.itemRepository = itemRepository
         logger = .init(manager: logManager)
         self.logManager = logManager
@@ -210,8 +209,7 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                                  vaultsManager: vaultsManager)
+        let itemsTabViewModel = ItemsTabViewModel(vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
         let profileTabViewModel = ProfileTabViewModel(vaultsManager: vaultsManager,
@@ -641,8 +639,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                        vaultSelection: vaultSelection)
+        let viewModel = SearchViewModel(vaultSelection: vaultSelection)
         viewModel.delegate = self
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
