@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import ProtonCore_Payments
 import ProtonCore_PaymentsUI
 import ProtonCore_Services
@@ -26,39 +27,27 @@ import ProtonCore_Services
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
 
-    private let userDataProvider: UserDataProvider
-    private let mainKeyProvider: MainKeyProvider
+    private let apiManager = resolve(\SharedToolingContainer.apiManager)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let payments: Payments
     private var paymentsUI: PaymentsUI?
-    private let logger: Logger
-    private let preferences: Preferences
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
     private let inMemoryTokenStorage: PaymentTokenStorage
 
     // swiftlint:disable:next todo
     // TODO: should we provide the actual BugAlertHandler?
-    init(apiService: APIService,
-         userDataProvider: UserDataProvider,
-         mainKeyProvider: MainKeyProvider,
-         logger: Logger,
-         preferences: Preferences,
-         storage: UserDefaults,
+    init(storage: UserDefaults,
          bugAlertHandler: BugAlertHandler = nil) {
+        inMemoryTokenStorage = InMemoryTokenStorage()
         let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
-        let inMemoryTokenStorage = InMemoryTokenStorage()
-
         let payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
-                                apiService: apiService,
+                                apiService: apiManager.apiService,
                                 localStorage: persistentDataStorage,
                                 reportBugAlertHandler: bugAlertHandler)
-        self.userDataProvider = userDataProvider
-        self.mainKeyProvider = mainKeyProvider
-        self.inMemoryTokenStorage = inMemoryTokenStorage
         self.payments = payments
-        self.logger = logger
-        self.preferences = preferences
-
         payments.storeKitManager.delegate = self
-
         initializePaymentsStack()
     }
 
