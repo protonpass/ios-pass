@@ -62,7 +62,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let symmetricKey = resolve(\SharedRepositoryContainer.symmetricKey)
+    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
     private(set) var vaultSelection: VaultSelection
     let itemContextMenuHandler: ItemContextMenuHandler
 
