@@ -19,13 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct NoCameraPermissionView: View {
     @Environment(\.dismiss) private var dismiss
-    let theme: Theme
+    private let theme = resolve(\SharedToolingContainer.theme)
     let onOpenSettings: () -> Void
 
     var body: some View {

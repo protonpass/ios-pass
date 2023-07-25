@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import Factory
 import UIKit
 
 let kItemDetailSectionPadding: CGFloat = 16
@@ -46,7 +47,7 @@ class BaseItemDetailViewModel {
     @Published private(set) var isFreeUser = false
 
     let isShownAsSheet: Bool
-    let itemRepository: ItemRepositoryProtocol
+    let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
         didSet {
@@ -56,9 +57,7 @@ class BaseItemDetailViewModel {
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
-    let logger: Logger
-    let logManager: LogManagerProtocol
-    let theme: Theme
+    let logger = resolve(\SharedToolingContainer.logger)
 
     weak var delegate: ItemDetailViewModelDelegate?
 
@@ -66,20 +65,14 @@ class BaseItemDetailViewModel {
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?,
-         logManager: LogManagerProtocol,
-         theme: Theme) {
+         vault: Vault?) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
-        self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
         self.vault = vault
-        logger = .init(manager: logManager)
-        self.logManager = logManager
-        self.theme = theme
+        let preferences = resolve(\SharedToolingContainer.preferences)
         bindValues()
         checkIfFreeUser()
     }

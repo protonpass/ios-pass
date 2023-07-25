@@ -54,7 +54,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     /// Proton account email address
     let emailAddress: String
 
-    private let aliasRepository: AliasRepositoryProtocol
+    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
@@ -80,22 +80,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
-    init(mode: ItemMode,
-         itemRepository: ItemRepositoryProtocol,
-         aliasRepository: AliasRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vaults: [Vault],
-         preferences: Preferences,
-         logManager: LogManagerProtocol,
-         emailAddress: String) throws {
-        self.emailAddress = emailAddress
-        self.aliasRepository = aliasRepository
+    override init(mode: ItemMode,
+                  upgradeChecker: UpgradeCheckerProtocol,
+                  vaults: [Vault]) throws {
+        let userData = resolve(\SharedDataContainer.userData)
+        emailAddress = userData.addresses.first?.email ?? ""
         try super.init(mode: mode,
-                       itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
-                       vaults: vaults,
-                       preferences: preferences,
-                       logManager: logManager)
+                       vaults: vaults)
         Publishers
             .CombineLatest($title, $username)
             .combineLatest($password)

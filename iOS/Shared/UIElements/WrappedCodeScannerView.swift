@@ -20,6 +20,7 @@
 
 import CodeScanner
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -27,11 +28,10 @@ import UIComponents
 public struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isGaleryPresented = false
-    let theme: Theme
+    private let theme = resolve(\SharedToolingContainer.theme)
     let completion: (Result<String, Error>) -> Void
 
-    public init(theme: Theme, completion: @escaping (Result<String, Error>) -> Void) {
-        self.theme = theme
+    public init(completion: @escaping (Result<String, Error>) -> Void) {
         self.completion = completion
     }
 
