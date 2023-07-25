@@ -31,9 +31,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let aliasRepository: AliasRepositoryProtocol
-    private let itemRepository: ItemRepositoryProtocol
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let logManager: LogManagerProtocol
     private let preferences: Preferences
     private let vaultsManager: VaultsManager
     private weak var itemDetailViewModelDelegate: ItemDetailViewModelDelegate?
@@ -42,16 +40,12 @@ final class ItemDetailCoordinator: DeinitPrintable {
     weak var delegate: ItemDetailCoordinatorDelegate?
 
     init(aliasRepository: AliasRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol,
          preferences: Preferences,
          vaultsManager: VaultsManager,
          itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
         self.aliasRepository = aliasRepository
-        self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
-        self.logManager = logManager
         self.preferences = preferences
         self.vaultsManager = vaultsManager
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
@@ -102,10 +96,8 @@ private extension ItemDetailCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
-                                             itemRepository: itemRepository,
                                              upgradeChecker: upgradeChecker,
                                              vault: vault,
-                                             logManager: logManager,
                                              theme: preferences.theme)
         viewModel.logInDetailViewModelDelegate = self
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
@@ -116,11 +108,9 @@ private extension ItemDetailCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
-                                             itemRepository: itemRepository,
                                              aliasRepository: aliasRepository,
                                              upgradeChecker: upgradeChecker,
                                              vault: vault,
-                                             logManager: logManager,
                                              theme: preferences.theme)
         return .init(viewModel: viewModel, view: AliasDetailView(viewModel: viewModel))
     }
@@ -130,10 +120,8 @@ private extension ItemDetailCoordinator {
                             vault: Vault?) -> ItemDetailPage {
         let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
                                             itemContent: itemContent,
-                                            itemRepository: itemRepository,
                                             upgradeChecker: upgradeChecker,
                                             vault: vault,
-                                            logManager: logManager,
                                             theme: preferences.theme)
         return .init(viewModel: viewModel, view: NoteDetailView(viewModel: viewModel))
     }
@@ -143,10 +131,8 @@ private extension ItemDetailCoordinator {
                                   vault: Vault?) -> ItemDetailPage {
         let viewModel = CreditCardDetailViewModel(isShownAsSheet: asSheet,
                                                   itemContent: itemContent,
-                                                  itemRepository: itemRepository,
                                                   upgradeChecker: upgradeChecker,
                                                   vault: vault,
-                                                  logManager: logManager,
                                                   theme: preferences.theme)
         return .init(viewModel: viewModel, view: CreditCardDetailView(viewModel: viewModel))
     }
