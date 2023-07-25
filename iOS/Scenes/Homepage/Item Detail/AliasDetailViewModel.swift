@@ -35,7 +35,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          aliasRepository: AliasRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
@@ -45,7 +44,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         self.aliasRepository = aliasRepository
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
-                   favIconRepository: favIconRepository,
                    itemRepository: itemRepository,
                    upgradeChecker: upgradeChecker,
                    vault: vault,
