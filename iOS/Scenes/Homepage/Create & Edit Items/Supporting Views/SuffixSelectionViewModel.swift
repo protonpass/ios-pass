@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 
 protocol SuffixSelectionViewModelDelegate: AnyObject {
     func suffixSelectionViewModelWantsToUpgrade()
@@ -32,16 +33,14 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var shouldUpgrade = false
 
-    let logger: Logger
+    private let logger = resolve(\SharedToolingContainer.logger)
     let suffixSelection: SuffixSelection
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: SuffixSelectionViewModelDelegate?
 
     init(suffixSelection: SuffixSelection,
-         upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol) {
-        logger = .init(manager: logManager)
+         upgradeChecker: UpgradeCheckerProtocol) {
         self.suffixSelection = suffixSelection
 
         suffixSelection.attach(to: self, storeIn: &cancellables)

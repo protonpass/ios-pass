@@ -358,8 +358,7 @@ private extension HomepageCoordinator {
 
     func presentSuffixSelectionView(selection: SuffixSelection) {
         let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
-                                                 upgradeChecker: upgradeChecker,
-                                                 logManager: logManager)
+                                                 upgradeChecker: upgradeChecker)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)

@@ -837,8 +837,7 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
         guard let upgradeChecker, let rootViewController else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection,
-                                                 upgradeChecker: upgradeChecker,
-                                                 logManager: logManager)
+                                                 upgradeChecker: upgradeChecker)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
