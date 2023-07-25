@@ -746,7 +746,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             return
         }
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           preferences: preferences,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
