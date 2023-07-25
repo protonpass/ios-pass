@@ -313,9 +313,7 @@ private extension HomepageCoordinator {
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
         let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
-                                                    itemRepository: itemRepository,
                                                     upgradeChecker: upgradeChecker,
-                                                    logManager: logManager,
                                                     preferences: preferences,
                                                     vaultsManager: vaultsManager,
                                                     userData: userData,
@@ -327,9 +325,7 @@ private extension HomepageCoordinator {
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
         let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
-                                                itemRepository: itemRepository,
                                                 upgradeChecker: upgradeChecker,
-                                                logManager: logManager,
                                                 preferences: preferences,
                                                 vaultsManager: vaultsManager,
                                                 itemDetailViewModelDelegate: self)
