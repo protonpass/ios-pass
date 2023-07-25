@@ -180,13 +180,14 @@ extension SettingsViewModel {
 
 private extension SettingsViewModel {
     func emptyFavIconCache() {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                logger.trace("Fav icons are disabled. Removing all cached fav icons")
-                try favIconRepository.emptyCache()
-                logger.info("Removed all cached fav icons")
+                self.logger.trace("Fav icons are disabled. Removing all cached fav icons")
+                try self.favIconRepository.emptyCache()
+                self.logger.info("Removed all cached fav icons")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
     }
