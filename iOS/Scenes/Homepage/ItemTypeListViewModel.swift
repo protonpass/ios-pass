@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import UIComponents
 
@@ -45,26 +46,14 @@ protocol ItemTypeListViewModelDelegate: AnyObject {
 
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
+    private let logger = resolve(\SharedToolingContainer.logger)
 
     weak var delegate: ItemTypeListViewModelDelegate?
 
-    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol) {
-        let logger = Logger(manager: logManager)
-
+    init(upgradeChecker: UpgradeCheckerProtocol) {
         Task { @MainActor in
             do {
                 limitation = try await upgradeChecker.aliasLimitation()
-            } catch {
-                logger.error(error)
-                delegate?.itemTypeListViewModelDidEncounter(error: error)
-            }
-        }
-
-        Task { @MainActor in
-            do {
-                let flags = try await featureFlagsRepository.getFlags()
             } catch {
                 logger.error(error)
                 delegate?.itemTypeListViewModelDidEncounter(error: error)
