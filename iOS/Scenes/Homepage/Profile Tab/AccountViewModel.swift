@@ -20,7 +20,6 @@
 
 import Client
 import Core
-import ProtonCore_Services
 
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
@@ -32,10 +31,8 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let isShownAsSheet: Bool
-    let apiService: APIService
     let paymentsManager: PaymentsManager
     let logger: Logger
-    let theme: Theme
     let username: String
     let passPlanRepository: PassPlanRepositoryProtocol
     @Published private(set) var plan: PassPlan?
@@ -43,18 +40,14 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: AccountViewModelDelegate?
 
     init(isShownAsSheet: Bool,
-         apiService: APIService,
          paymentsManager: PaymentsManager,
          logManager: LogManagerProtocol,
-         theme: Theme,
          username: String,
          passPlanRepository: PassPlanRepositoryProtocol) {
         self.isShownAsSheet = isShownAsSheet
-        self.apiService = apiService
         self.paymentsManager = paymentsManager
         logger = .init(manager: logManager)
         self.username = username
-        self.theme = theme
         self.passPlanRepository = passPlanRepository
         refreshUserPlan()
     }
