@@ -121,11 +121,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
 
         self.apiService = apiService
-        clipboardManager = .init(preferences: preferences)
+        clipboardManager = .init()
         self.credentialManager = credentialManager
-        itemContextMenuHandler = .init(clipboardManager: clipboardManager,
-                                       itemRepository: itemRepository,
-                                       logManager: logManager)
+        itemContextMenuHandler = .init()
         self.itemRepository = itemRepository
         logger = .init(manager: logManager)
         self.logManager = logManager
