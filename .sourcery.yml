@@ -26,5 +26,5 @@ configurations:
             target: iOSTests
             group: iOSTests/Mocks/Generated
       args:
-        testableImport: "Proton_Pass" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
+        testableImport: "Client" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
         containedPathSubstringToApplyTemplate: "/Client/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.
