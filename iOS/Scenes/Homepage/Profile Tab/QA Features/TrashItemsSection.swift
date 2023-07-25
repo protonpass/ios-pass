@@ -19,27 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import SwiftUI
 import UIComponents
 
 struct TrashItemsSection: View {
-    private let itemRepository: ItemRepositoryProtocol
-    private let shareRepository: ShareRepositoryProtocol
     private let bannerManager: BannerManager
 
-    init(itemRepository: ItemRepositoryProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         bannerManager: BannerManager) {
-        self.itemRepository = itemRepository
-        self.shareRepository = shareRepository
+    init(bannerManager: BannerManager) {
         self.bannerManager = bannerManager
     }
 
     var body: some View {
         NavigationLink(destination: {
-            TrashItemsView(itemRepository: itemRepository,
-                           shareRepository: shareRepository,
-                           bannerManager: bannerManager)
+            TrashItemsView(bannerManager: bannerManager)
         }, label: {
             Text("Trash all items")
         })
@@ -50,12 +43,8 @@ private struct TrashItemsView: View {
     @StateObject private var viewModel: TrashItemsViewModel
     @State private var selectedUiModel: VaultListUiModel?
 
-    init(itemRepository: ItemRepositoryProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         bannerManager: BannerManager) {
-        _viewModel = .init(wrappedValue: .init(itemRepository: itemRepository,
-                                               shareRepository: shareRepository,
-                                               bannerManager: bannerManager))
+    init(bannerManager: BannerManager) {
+        _viewModel = .init(wrappedValue: .init(bannerManager: bannerManager))
     }
 
     var body: some View {
@@ -136,15 +125,11 @@ private final class TrashItemsViewModel: ObservableObject {
 
     @Published private(set) var state = State.loading
 
-    private let itemRepository: ItemRepositoryProtocol
-    private let shareRepository: ShareRepositoryProtocol
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let bannerManager: BannerManager
 
-    init(itemRepository: ItemRepositoryProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         bannerManager: BannerManager) {
-        self.itemRepository = itemRepository
-        self.shareRepository = shareRepository
+    init(bannerManager: BannerManager) {
         self.bannerManager = bannerManager
         loadVaults()
     }
