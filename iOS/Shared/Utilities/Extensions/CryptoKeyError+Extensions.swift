@@ -1,5 +1,5 @@
 //
-// SharingErrors.swift
+// CryptoKeyError+Extensions.swift
 // Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -19,8 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Crypto
 
-public enum SharingErrors: LocalizedError {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
+extension CryptoKeyError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .noKeyCouldBeUnlocked:
+            return "Keys could not be unlocked"
+        case .noKeyCouldBeParsed:
+            return "Keys could not be parsed"
+        }
+    }
+
+    public var recoverySuggestion: String? {
+        switch self {
+        case let .noKeyCouldBeUnlocked(errors):
+            return "Keys unlocking failed due to \(errors)"
+        case let .noKeyCouldBeParsed(errors):
+            return "Keys parsing failed due to \(errors)"
+        }
+    }
 }

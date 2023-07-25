@@ -97,10 +97,11 @@ extension UseCasesContainer {
     }
 }
 
-// MARK: - Vault
+// MARK: - Flags
 
-// extension UseCasesContainer {
-//    var GetVaultItemCount: Factory<GetVaultItemCountUseCase> {
-//        self { GetVaultItemCount }
-//    }
-// }
+extension UseCasesContainer {
+    var userSharingStatus: Factory<UserSharingStatusUseCase> {
+        self { UserSharingStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository()) }
+    }
+}
