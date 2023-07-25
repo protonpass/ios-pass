@@ -211,8 +211,7 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(upgradeChecker: upgradeChecker,
-                                                    vaultsManager: vaultsManager,
+        let coordinator = CreateEditItemCoordinator(vaultsManager: vaultsManager,
                                                     createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
@@ -220,8 +219,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(upgradeChecker: upgradeChecker,
-                                                vaultsManager: vaultsManager,
+        let coordinator = ItemDetailCoordinator(vaultsManager: vaultsManager,
                                                 itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
@@ -240,7 +238,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel(upgradeChecker: upgradeChecker)
+        let viewModel = ItemTypeListViewModel()
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)

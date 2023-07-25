@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import SwiftUI
 import UIKit
 
@@ -30,17 +31,15 @@ protocol ItemDetailCoordinatorDelegate: AnyObject {
 final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker: UpgradeCheckerProtocol
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let vaultsManager: VaultsManager
     private weak var itemDetailViewModelDelegate: ItemDetailViewModelDelegate?
     private var currentViewModel: BaseItemDetailViewModel?
 
     weak var delegate: ItemDetailCoordinatorDelegate?
 
-    init(upgradeChecker: UpgradeCheckerProtocol,
-         vaultsManager: VaultsManager,
+    init(vaultsManager: VaultsManager,
          itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
-        self.upgradeChecker = upgradeChecker
         self.vaultsManager = vaultsManager
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
     }
