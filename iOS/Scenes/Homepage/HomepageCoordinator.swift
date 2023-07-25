@@ -342,7 +342,6 @@ private extension HomepageCoordinator {
                                      titleMode: MailboxSection.Mode) {
         let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
                                                   upgradeChecker: upgradeChecker,
-                                                  logManager: logManager,
                                                   mode: mode,
                                                   titleMode: titleMode)
         viewModel.delegate = self
