@@ -995,8 +995,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         let vaultContents = vaultsManager.getAllVaultContents()
         let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
                                                selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker,
-                                               logManager: logManager)
+                                               upgradeChecker: upgradeChecker)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
