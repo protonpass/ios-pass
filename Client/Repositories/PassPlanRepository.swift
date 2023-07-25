@@ -24,6 +24,7 @@ public protocol PassPlanRepositoryDelegate: AnyObject {
     func passPlanRepositoryDidUpdateToNewPlan()
 }
 
+// sourcery: AutoMockable
 public protocol PassPlanRepositoryProtocol: AnyObject {
     var localDatasource: LocalPassPlanDatasourceProtocol { get }
     var remoteDatasource: RemotePassPlanDatasourceProtocol { get }
