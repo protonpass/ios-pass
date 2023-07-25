@@ -127,6 +127,18 @@ extension SharedRepositoryContainer {
                                logManager: self.logManager) }
     }
 
+    var publicKeyRepository: Factory<PublicKeyRepositoryProtocol> {
+        self { PublicKeyRepository(localPublicKeyDatasource: LocalPublicKeyDatasource(container: self.container()),
+                                   remotePublicKeyDatasource: RemotePublicKeyDatasource(apiService: self
+                                       .apiService),
+                                   logManager: self.logManager) }
+    }
+
+    var shareInviteRepository: Factory<ShareInviteRepositoryProtocol> {
+        self { ShareInviteRepository(remoteDataSource: RemoteShareInviteDatasource(apiService: self.apiService),
+                                     logManager: self.logManager) }
+    }
+
     var telemetryEventRepository: Factory<TelemetryEventRepositoryProtocol> {
         self {
             // swiftformat:disable:next all
