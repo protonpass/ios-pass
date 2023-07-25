@@ -20,6 +20,7 @@
 
 import Core
 
+// sourcery: AutoMockable
 public protocol FeatureFlagsRepositoryProtocol: AnyObject {
     /// Get from local, refresh if not exist
     func getFlags() async throws -> FeatureFlags
