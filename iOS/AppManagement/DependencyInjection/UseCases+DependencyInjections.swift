@@ -93,7 +93,7 @@ extension UseCasesContainer {
         self { SendShareInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
                                passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository(),
-                               userData: SharedRepositoryContainer.shared.userData()) }
+                               userData: SharedDataContainer.shared.userData()) }
     }
 }
 
