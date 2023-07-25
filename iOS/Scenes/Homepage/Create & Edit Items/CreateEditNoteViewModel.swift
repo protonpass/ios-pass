@@ -33,17 +33,13 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     override var isSaveable: Bool { !title.isEmpty }
 
     override init(mode: ItemMode,
-                  itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
                   vaults: [Vault],
-                  preferences: Preferences,
-                  logManager: LogManagerProtocol) throws {
+                  preferences: Preferences) throws {
         try super.init(mode: mode,
-                       itemRepository: itemRepository,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults,
-                       preferences: preferences,
-                       logManager: logManager)
+                       preferences: preferences)
 
         Publishers
             .CombineLatest($title, $note)

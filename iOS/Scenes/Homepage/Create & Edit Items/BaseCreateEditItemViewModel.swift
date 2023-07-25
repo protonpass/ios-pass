@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import ProtonCore_Login
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
@@ -75,10 +76,10 @@ class BaseCreateEditItemViewModel {
     @Published var isObsolete = false
 
     let mode: ItemMode
-    let itemRepository: ItemRepositoryProtocol
+    let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: UpgradeCheckerProtocol
     let preferences: Preferences
-    let logger: Logger
+    let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
 
     var hasEmptyCustomField: Bool {
@@ -91,11 +92,9 @@ class BaseCreateEditItemViewModel {
     var cancellables = Set<AnyCancellable>()
 
     init(mode: ItemMode,
-         itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vaults: [Vault],
-         preferences: Preferences,
-         logManager: LogManagerProtocol) throws {
+         preferences: Preferences) throws {
         let vaultShareId: String
         switch mode {
         case let .create(shareId, _):
@@ -110,10 +109,8 @@ class BaseCreateEditItemViewModel {
         }
         selectedVault = vault
         self.mode = mode
-        self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
         self.preferences = preferences
-        logger = .init(manager: logManager)
         self.vaults = vaults
         bindValues()
         checkIfFreeUser()
