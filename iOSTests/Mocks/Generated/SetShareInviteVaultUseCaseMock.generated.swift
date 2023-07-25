@@ -1,7 +1,6 @@
-//
-//
-// SetShareInviteVault.swift
-// Proton Pass - Created on 20/07/2023.
+// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// DO NOT EDIT
+// Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,30 +17,24 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
+// swiftlint:disable all
 
+@testable import Proton_Pass
 import Client
 
-// sourcery: AutoMockable
-protocol SetShareInviteVaultUseCase: Sendable {
-    func execute(with vault: Vault, and itemNumber: Int) async
-}
-
-extension SetShareInviteVaultUseCase {
-    func callAsFunction(with vault: Vault, and itemNumber: Int) async {
-        await execute(with: vault, and: itemNumber)
-    }
-}
-
-final class SetShareInviteVault: SetShareInviteVaultUseCase {
-    private let shareInviteService: ShareInviteServiceProtocol
-
-    init(shareInviteService: ShareInviteServiceProtocol) {
-        self.shareInviteService = shareInviteService
-    }
+final class SetShareInviteVaultUseCaseMock: @unchecked Sendable, SetShareInviteVaultUseCase {
+    // MARK: - execute
+    var closureExecute: () -> () = {}
+    var invokedExecute = false
+    var invokedExecuteCount = 0
+    var invokedExecuteParameters: (vault: Vault, itemNumber: Int)?
+    var invokedExecuteParametersList = [(vault: Vault, itemNumber: Int)]()
 
     func execute(with vault: Vault, and itemNumber: Int) async {
-        await shareInviteService.setCurrentSelectedVault(with: vault)
-        await shareInviteService.setCurrentSelectedVaultItem(with: itemNumber)
+        invokedExecute = true
+        invokedExecuteCount += 1
+        invokedExecuteParameters = (vault, itemNumber)
+        invokedExecuteParametersList.append((vault, itemNumber))
+        closureExecute()
     }
 }

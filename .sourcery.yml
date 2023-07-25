@@ -1,10 +1,8 @@
 # READ MORE ABOUT configuration here https://merowing.info/Sourcery/usage.html
 configurations:
-    # -- Blueground configuration --
     - sources:
         include:
           - iOS
-#          - Sourcery # We need to read the FixturableCommonExamples.swift
       templates:
         - tools/Templates/
       output:
@@ -16,3 +14,17 @@ configurations:
       args:
         testableImport: "Proton_Pass" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
         containedPathSubstringToApplyTemplate: "/iOS/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.
+    - sources:
+        include:
+          - Client
+      templates:
+        - tools/Templates/
+      output:
+          path: iOSTests/Mocks/Generated
+          link:
+            project: ProtonPass.xcodeproj
+            target: iOSTests
+            group: iOSTests/Mocks/Generated
+      args:
+        testableImport: "Proton_Pass" # [MANDATORY] Your mocks will have "@testable import <testableImport>"
+        containedPathSubstringToApplyTemplate: "/Client/" # [MANDATORY] If a protocol with Automockable annotation exists but it's path doesn't contain <focusFolder> it will be ignored.
