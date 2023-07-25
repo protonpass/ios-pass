@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
@@ -30,37 +31,33 @@ protocol AccountViewModelDelegate: AnyObject {
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let userData = resolve(\SharedDataContainer.userData)
+    private let logger = resolve(\SharedToolingContainer.logger)
     let isShownAsSheet: Bool
     let paymentsManager: PaymentsManager
-    let logger: Logger
-    let username: String
-    let passPlanRepository: PassPlanRepositoryProtocol
     @Published private(set) var plan: PassPlan?
 
     weak var delegate: AccountViewModelDelegate?
 
-    init(isShownAsSheet: Bool,
-         paymentsManager: PaymentsManager,
-         logManager: LogManagerProtocol,
-         username: String,
-         passPlanRepository: PassPlanRepositoryProtocol) {
+    var username: String { userData.user.email ?? "" }
+
+    init(isShownAsSheet: Bool, paymentsManager: PaymentsManager) {
         self.isShownAsSheet = isShownAsSheet
         self.paymentsManager = paymentsManager
-        logger = .init(manager: logManager)
-        self.username = username
-        self.passPlanRepository = passPlanRepository
         refreshUserPlan()
     }
 
     private func refreshUserPlan() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 // First get local plan to optimistically display it
                 // and then try to refresh the plan to have it updated
-                plan = try await passPlanRepository.getPlan()
-                plan = try await passPlanRepository.refreshPlan()
+                self.plan = try await self.passPlanRepository.getPlan()
+                self.plan = try await self.passPlanRepository.refreshPlan()
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
     }
