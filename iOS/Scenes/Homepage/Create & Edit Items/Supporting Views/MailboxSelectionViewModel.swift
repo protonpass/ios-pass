@@ -57,7 +57,6 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
     }
 
     init(mailboxSelection: MailboxSelection,
-         upgradeChecker: UpgradeCheckerProtocol,
          mode: MailboxSelectionViewModel.Mode,
          titleMode: MailboxSection.Mode) {
         self.mailboxSelection = mailboxSelection
@@ -65,17 +64,6 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
         self.titleMode = titleMode
 
         mailboxSelection.attach(to: self, storeIn: &cancellables)
-
-        /*
-         Task { @MainActor in
-             do {
-                 shouldUpgrade = try await upgradeChecker.isFreeUser()
-             } catch {
-                 logger.error(error)
-                 delegate?.mailboxSelectionViewModelDidEncounter(error: error)
-             }
-         }
-          */
     }
 
     func upgrade() {
