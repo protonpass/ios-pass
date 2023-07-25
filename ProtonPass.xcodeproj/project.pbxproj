@@ -552,6 +552,7 @@
 		359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A800C29096A2200EEBC51 /* SyncEventLoop.swift */; };
 		359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29A29B76BF60070830B /* VaultsManager.swift */; };
 		359DB2A62A700BF100549466 /* VaultContentUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29E29B77A760070830B /* VaultContentUiModel.swift */; };
+		359DB2A72A703FC200549466 /* UserDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567414E2A28927800C99C32 /* UserDataProvider.swift */; };
 		359EB88A2A20CF0D009588A9 /* RightIconLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB8892A20CF0D009588A9 /* RightIconLabelStyle.swift */; };
 		359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88B2A20CF74009588A9 /* InfoBannerView.swift */; };
 		359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */; };
@@ -4488,6 +4489,7 @@
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
+				359DB2A72A703FC200549466 /* UserDataProvider.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
