@@ -59,13 +59,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-    let syncEventLoop: SyncEventLoop
+    let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
-    init(itemContextMenuHandler: ItemContextMenuHandler,
-         syncEventLoop: SyncEventLoop,
-         vaultsManager: VaultsManager) {
+    init(itemContextMenuHandler: ItemContextMenuHandler, vaultsManager: VaultsManager) {
         self.itemContextMenuHandler = itemContextMenuHandler
-        self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
         finalizeInitialization()
         refreshBanners()

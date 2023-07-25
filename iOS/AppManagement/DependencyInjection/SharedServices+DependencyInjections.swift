@@ -40,4 +40,17 @@ extension SharedServiceContainer {
     var credentialManager: Factory<CredentialManagerProtocol> {
         self { CredentialManager(logManager: self.logManager) }
     }
+
+    var syncEventLoop: Factory<SyncEventLoop> {
+        self {
+            .init(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
+                  userId: SharedDataContainer.shared.userData().user.ID,
+                  shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                  shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
+                  remoteSyncEventsDatasource: SharedRepositoryContainer.shared.remoteSyncEventsDatasource(),
+                  itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                  shareKeyRepository: SharedRepositoryContainer.shared.shareKeyRepository(),
+                  logManager: self.logManager)
+        }
+    }
 }
