@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import ProtonCore_Login
 
 enum VaultColorIcon {
@@ -54,10 +55,9 @@ final class CreateEditVaultViewModel: ObservableObject {
     @Published var title: String
 
     private let mode: VaultMode
-    private let logger: Logger
-    private let shareRepository: ShareRepositoryProtocol
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let upgradeChecker: UpgradeCheckerProtocol
-    let theme: Theme
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -70,11 +70,7 @@ final class CreateEditVaultViewModel: ObservableObject {
         }
     }
 
-    init(mode: VaultMode,
-         shareRepository: ShareRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol,
-         theme: Theme) {
+    init(mode: VaultMode, upgradeChecker: UpgradeCheckerProtocol) {
         self.mode = mode
         switch mode {
         case .create:
@@ -87,10 +83,7 @@ final class CreateEditVaultViewModel: ObservableObject {
             title = vault.name
         }
 
-        logger = .init(manager: logManager)
-        self.shareRepository = shareRepository
         self.upgradeChecker = upgradeChecker
-        self.theme = theme
         verifyLimitation()
     }
 }
@@ -99,17 +92,18 @@ final class CreateEditVaultViewModel: ObservableObject {
 
 private extension CreateEditVaultViewModel {
     func verifyLimitation() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 // Primary vault can always be edited
-                if case let .edit(vault) = mode, vault.isPrimary {
-                    canCreateOrEdit = true
+                if case let .edit(vault) = self.mode, vault.isPrimary {
+                    self.canCreateOrEdit = true
                 } else {
-                    canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
+                    self.canCreateOrEdit = try await self.upgradeChecker.canCreateMoreVaults()
                 }
             } catch {
-                logger.error(error)
-                delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
             }
         }
     }
@@ -122,33 +116,36 @@ private extension CreateEditVaultViewModel {
     }
 
     func editVault(_ oldVault: Vault) {
-        Task { @MainActor in
-            defer { delegate?.createEditVaultViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.createEditVaultViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Editing vault \(oldVault.id)")
-                delegate?.createEditVaultViewModelWantsToShowSpinner()
-                try await shareRepository.edit(oldVault: oldVault, newVault: generateVaultProtobuf())
-                delegate?.createEditVaultViewModelDidEditVault()
-                logger.info("Edited vault \(oldVault.id)")
+                self.logger.trace("Editing vault \(oldVault.id)")
+                self.delegate?.createEditVaultViewModelWantsToShowSpinner()
+                try await self.shareRepository.edit(oldVault: oldVault,
+                                                    newVault: generateVaultProtobuf())
+                self.delegate?.createEditVaultViewModelDidEditVault()
+                self.logger.info("Edited vault \(oldVault.id)")
             } catch {
-                logger.error(error)
-                delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
             }
         }
     }
 
     func createVault() {
-        Task { @MainActor in
-            defer { delegate?.createEditVaultViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.createEditVaultViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Creating vault")
-                delegate?.createEditVaultViewModelWantsToShowSpinner()
-                try await shareRepository.createVault(generateVaultProtobuf())
-                delegate?.createEditVaultViewModelDidCreateVault()
-                logger.info("Created vault")
+                self.logger.trace("Creating vault")
+                self.delegate?.createEditVaultViewModelWantsToShowSpinner()
+                try await self.shareRepository.createVault(generateVaultProtobuf())
+                self.delegate?.createEditVaultViewModelDidCreateVault()
+                self.logger.info("Created vault")
             } catch {
-                logger.error(error)
-                delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
             }
         }
     }
