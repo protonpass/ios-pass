@@ -89,12 +89,12 @@ extension UseCasesContainer {
         self { ResetSharingInviteInfos(shareInviteService: ServiceContainer.shared.shareInviteService()) }
     }
 
-//    var sendShareInvite: Factory<SendShareInviteUseCase> {
-//        self { SendShareInvite(publicKeyRepository: PublicKeyRepositoryProtocol,
-//                               passKeyManager: <#T##PassKeyManagerProtocol#>,
-//                               shareInviteRepository: <#T##ShareInviteRepositoryProtocol#>,
-//                               userData: <#T##UserData#>)}
-//    }
+    var sendShareInvite: Factory<SendShareInviteUseCase> {
+        self { SendShareInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
+                               passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                               shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository(),
+                               userData: SharedRepositoryContainer.shared.userData()) }
+    }
 }
 
 // MARK: - Vault
