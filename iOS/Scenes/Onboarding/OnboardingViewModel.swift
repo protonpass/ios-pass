@@ -30,7 +30,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published private(set) var finished = false
     @Published private(set) var state = OnboardingViewState.autoFill
 
-    private let credentialManager: CredentialManagerProtocol
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let bannerManager: BannerManager
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let preferences = resolve(\SharedToolingContainer.preferences)
@@ -39,9 +39,7 @@ final class OnboardingViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(credentialManager: CredentialManagerProtocol,
-         bannerManager: BannerManager) {
-        self.credentialManager = credentialManager
+    init(bannerManager: BannerManager) {
         self.bannerManager = bannerManager
 
         checkAutoFillStatus()

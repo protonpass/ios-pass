@@ -23,30 +23,9 @@ import Core
 import ProtonCore_Login
 
 final class QAFeaturesViewModel: ObservableObject {
-    let credentialManager: CredentialManagerProtocol
-    let itemRepository: ItemRepositoryProtocol
-    let shareRepository: ShareRepositoryProtocol
-    let telemetryEventRepository: TelemetryEventRepositoryProtocol
-    let preferences: Preferences
     let bannerManager: BannerManager
-    let logManager: LogManagerProtocol
-    let userData: UserData
 
-    init(credentialManager: CredentialManagerProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         telemetryEventRepository: TelemetryEventRepositoryProtocol,
-         preferences: Preferences,
-         bannerManager: BannerManager,
-         logManager: LogManagerProtocol,
-         userData: UserData) {
-        self.credentialManager = credentialManager
-        self.itemRepository = itemRepository
-        self.shareRepository = shareRepository
-        self.telemetryEventRepository = telemetryEventRepository
-        self.preferences = preferences
+    init(bannerManager: BannerManager) {
         self.bannerManager = bannerManager
-        self.logManager = logManager
-        self.userData = userData
     }
 }
