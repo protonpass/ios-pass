@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 
 protocol MailboxSelectionViewModelDelegate: AnyObject {
@@ -33,8 +34,8 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var shouldUpgrade = false
 
+    private let logger = resolve(\SharedToolingContainer.logger)
     let mailboxSelection: MailboxSelection
-    let logger: Logger
     let mode: Mode
     let titleMode: MailboxSection.Mode
 
@@ -57,11 +58,9 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
 
     init(mailboxSelection: MailboxSelection,
          upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol,
          mode: MailboxSelectionViewModel.Mode,
          titleMode: MailboxSection.Mode) {
         self.mailboxSelection = mailboxSelection
-        logger = .init(manager: logManager)
         self.mode = mode
         self.titleMode = titleMode
 
