@@ -48,7 +48,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let apiService: APIService
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
-    private let eventLoop: SyncEventLoop
+    private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
@@ -123,14 +123,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.apiService = apiService
         clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        eventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                          userId: userData.user.ID,
-                          shareRepository: shareRepository,
-                          shareEventIDRepository: shareEventIDRepository,
-                          remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                          itemRepository: itemRepository,
-                          shareKeyRepository: shareKeyRepository,
-                          logManager: logManager)
         itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                        itemRepository: itemRepository,
                                        logManager: logManager)
