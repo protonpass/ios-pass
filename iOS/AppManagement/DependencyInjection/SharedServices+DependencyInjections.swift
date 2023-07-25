@@ -57,4 +57,8 @@ extension SharedServiceContainer {
     var clipboardManager: Factory<ClipboardManager> {
         self { ClipboardManager() }
     }
+
+    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
+        self { ItemContextMenuHandler() }
+    }
 }
