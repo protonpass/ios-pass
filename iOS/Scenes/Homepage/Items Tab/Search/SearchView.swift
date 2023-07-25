@@ -69,7 +69,6 @@ struct SearchView: View {
 
             case let .history(history):
                 SearchRecentResultsView(results: history,
-                                        favIconRepository: viewModel.favIconRepository,
                                         onSelect: { viewModel.viewDetail(of: $0) },
                                         onRemove: { viewModel.removeFromHistory($0) },
                                         onClearResults: viewModel.removeAllSearchHistory)
