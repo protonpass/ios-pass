@@ -313,9 +313,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel(featureFlagsRepository: featureFlagsRepository,
-                                              upgradeChecker: upgradeChecker,
-                                              logManager: logManager)
+        let viewModel = ItemTypeListViewModel(upgradeChecker: upgradeChecker)
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
