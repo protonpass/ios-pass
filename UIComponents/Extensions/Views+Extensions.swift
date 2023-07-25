@@ -31,7 +31,7 @@ public extension View {
             NavigationView {
                 self
             }
-            .navigationViewStyle(.stack)
+//            .navigationViewStyle(.stack)
         }
     }
 
@@ -40,6 +40,7 @@ public extension View {
         background(NavigationLink(destination: destination,
                                   isActive: isActive,
                                   label: EmptyView.init)
+                .isDetailLink(false)
                 .hidden())
     }
 }
