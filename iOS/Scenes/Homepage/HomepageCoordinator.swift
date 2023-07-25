@@ -219,8 +219,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(vaultsManager: vaultsManager,
-                                                itemDetailViewModelDelegate: self)
+        let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
         itemDetailCoordinator = coordinator
@@ -689,7 +688,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet, vaultsManager: vaultsManager)
+        let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
