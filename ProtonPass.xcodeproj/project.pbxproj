@@ -300,6 +300,7 @@
 		355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
 		355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */; };
 		355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355C138829DB71D800264CD0 /* HomepageTabbarView.swift */; };
+		355CA07E2A6FEF1900866024 /* ItemContextMenuHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */; };
 		355CA56429F19041000B8248 /* CheckAccessAndPlanEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CA56329F19041000B8248 /* CheckAccessAndPlanEndpoint.swift */; };
 		355CA56629F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CA56529F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift */; };
 		355CA56829F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CA56729F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift */; };
@@ -4456,6 +4457,7 @@
 				354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */,
 				5B1F5CED2A5ED7A600A6C3ED /* CustomFieldTypes.swift in Sources */,
 				3559BAA32A5B32600020E172 /* Theme.swift in Sources */,
+				355CA07E2A6FEF1900866024 /* ItemContextMenuHandler.swift in Sources */,
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
 				35CEA8DE2A6075F500343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */,
 				3559BAA62A5B32600020E172 /* AppLockTime.swift in Sources */,
