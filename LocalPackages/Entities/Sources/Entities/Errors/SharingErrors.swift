@@ -1,6 +1,6 @@
 //
-// ItemKey.swift
-// Proton Pass - Created on 11/04/2023.
+// SharingErrors.swift
+// Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,18 +20,7 @@
 
 import Foundation
 
-public struct ItemKey: Codable {
-    /// Encrypted key encoded in base64
-    public let key: String
-    public let keyRotation: Int64
-
-    public init(key: String, keyRotation: Int64) {
-        self.key = key
-        self.keyRotation = keyRotation
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case key = "Key"
-        case keyRotation = "KeyRotation"
-    }
+public enum SharingErrors: Error {
+    case incompleteInformation
+    case failedEncryptionKeysFetching
 }

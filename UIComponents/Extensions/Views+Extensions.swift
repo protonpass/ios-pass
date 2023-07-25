@@ -31,6 +31,15 @@ public extension View {
             NavigationView {
                 self
             }
+            .navigationViewStyle(.stack)
         }
+    }
+
+    func navigate(isActive: Binding<Bool>,
+                  destination: (some View)?) -> some View {
+        background(NavigationLink(destination: destination,
+                                  isActive: isActive,
+                                  label: EmptyView.init)
+                .hidden())
     }
 }

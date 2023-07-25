@@ -23,7 +23,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct InviteUserToShareEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
+    public typealias Body = InviteUserToShareRequest
     public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
@@ -64,7 +64,11 @@ public struct InviteUserToShareRequest {
         self.targetType = Int(targetType.rawValue)
         shareRoleId = shareRole.rawValue
         self.itemId = itemId
-        expirationTime = Int(expirationDate?.timeIntervalSince1970 ?? 0)
+        if let date = expirationDate?.timeIntervalSince1970 {
+            expirationTime = Int(date)
+        } else {
+            expirationTime = nil
+        }
     }
 }
 

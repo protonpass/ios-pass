@@ -107,6 +107,11 @@
             isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "Debug_log_inactive"
+            value = "1"
+            isEnabled = "NO">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "me.proton.pass.NetworkDebug"
             value = "1"
             isEnabled = "NO">

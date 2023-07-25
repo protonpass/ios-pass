@@ -232,7 +232,9 @@ private extension Logger {
             return
         case .debug:
             #if DEBUG
-            printToConsole()
+            if ProcessInfo.processInfo.environment["Debug_log_inactive"] != "1" {
+                printToConsole()
+            }
             #endif
         case let .conditioned(condition):
             if condition {
