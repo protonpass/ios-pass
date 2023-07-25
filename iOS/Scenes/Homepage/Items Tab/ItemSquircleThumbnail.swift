@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import SwiftUI
 import UIComponents
 
@@ -47,15 +48,12 @@ enum ItemSquircleThumbnailSize {
 struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
+    private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let data: ItemThumbnailData
-    private let repository: FavIconRepositoryProtocol
     private let size: ItemSquircleThumbnailSize
 
-    init(data: ItemThumbnailData,
-         repository: FavIconRepositoryProtocol,
-         size: ItemSquircleThumbnailSize = .regular) {
+    init(data: ItemThumbnailData, size: ItemSquircleThumbnailSize = .regular) {
         self.data = data
-        self.repository = repository
         self.size = size
     }
 

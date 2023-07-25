@@ -44,7 +44,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @Published private(set) var banners: [InfoBanner] = []
 
-    let favIconRepository: FavIconRepositoryProtocol
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemRepository: ItemRepositoryProtocol
     let credentialManager: CredentialManagerProtocol
@@ -63,8 +62,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop: SyncEventLoop
 
-    init(favIconRepository: FavIconRepositoryProtocol,
-         itemContextMenuHandler: ItemContextMenuHandler,
+    init(itemContextMenuHandler: ItemContextMenuHandler,
          itemRepository: ItemRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
@@ -73,7 +71,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
          preferences: Preferences,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
-        self.favIconRepository = favIconRepository
         self.itemContextMenuHandler = itemContextMenuHandler
         self.itemRepository = itemRepository
         self.credentialManager = credentialManager
