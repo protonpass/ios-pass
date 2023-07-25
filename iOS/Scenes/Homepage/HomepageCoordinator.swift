@@ -148,7 +148,7 @@ private extension HomepageCoordinator {
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
-        let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
+        let placeholderView = ItemDetailPlaceholderView { [unowned self] in
             popTopViewController(animated: true)
         }
 
@@ -447,7 +447,7 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
         if !isCollapsed() {
-            let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
+            let placeholderView = ItemDetailPlaceholderView { [unowned self] in
                 popTopViewController(animated: true)
             }
             push(placeholderView)
