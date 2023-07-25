@@ -50,7 +50,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop: SyncEventLoop
-    private let favIconRepository: FavIconRepositoryProtocol
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
@@ -136,10 +135,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                           itemRepository: itemRepository,
                           shareKeyRepository: shareKeyRepository,
                           logManager: logManager)
-        favIconRepository = FavIconRepository(apiService: apiService,
-                                              containerUrl: URL.favIconsContainerURL(),
-                                              settings: preferences,
-                                              symmetricKey: symmetricKey)
         itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                        itemRepository: itemRepository,
                                        logManager: logManager)
@@ -234,7 +229,6 @@ private extension HomepageCoordinator {
                                                   itemRepository: itemRepository,
                                                   credentialManager: credentialManager,
                                                   passPlanRepository: passPlanRepository,
-                                                  featureFlagsRepository: featureFlagsRepository,
                                                   logManager: logManager,
                                                   preferences: preferences,
                                                   syncEventLoop: eventLoop,
@@ -244,7 +238,6 @@ private extension HomepageCoordinator {
         let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
                                                       itemRepository: itemRepository,
                                                       shareRepository: shareRepository,
-                                                      featureFlagsRepository: featureFlagsRepository,
                                                       passPlanRepository: passPlanRepository,
                                                       vaultsManager: vaultsManager,
                                                       notificationService: SharedServiceContainer
@@ -335,7 +328,6 @@ private extension HomepageCoordinator {
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
         let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
                                                 itemRepository: itemRepository,
-                                                favIconRepository: favIconRepository,
                                                 upgradeChecker: upgradeChecker,
                                                 logManager: logManager,
                                                 preferences: preferences,
@@ -697,8 +689,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(favIconRepository: favIconRepository,
-                                        itemContextMenuHandler: itemContextMenuHandler,
+        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
                                         itemRepository: itemRepository,
                                         logManager: logManager,
                                         searchEntryDatasource: searchEntryDatasource,
@@ -900,7 +891,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToQaFeatures() {
         let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
-                                            favIconRepository: favIconRepository,
                                             itemRepository: itemRepository,
                                             shareRepository: shareRepository,
                                             telemetryEventRepository: telemetryEventRepository,
@@ -926,7 +916,6 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 
     func accountViewModelWantsToSignOut() {
         eventLoop.stop()
-        try? favIconRepository.emptyCache()
         delegate?.homepageCoordinatorWantsToLogOut()
     }
 
@@ -1043,16 +1032,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             await MainActor.run { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage("All logs cleared")
             }
-        }
-    }
-
-    func settingsViewModelDidDisableFavIcons() {
-        do {
-            logger.trace("Fav icons are disabled. Removing all cached fav icons")
-            try favIconRepository.emptyCache()
-            logger.info("Removed all cached fav icons")
-        } catch {
-            logger.error(error)
         }
     }
 
