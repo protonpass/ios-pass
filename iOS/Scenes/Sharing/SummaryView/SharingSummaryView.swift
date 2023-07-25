@@ -42,6 +42,13 @@ struct SharingSummaryView: View {
                isPresented: $viewModel.showingAlert) {
             Button("OK") {}
         }
+        .overlay {
+            if viewModel.sendingInvite {
+                ProgressView()
+            } else {
+                EmptyView()
+            }
+        }
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
