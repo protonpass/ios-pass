@@ -49,7 +49,7 @@ public protocol APIManagerProtocol {
 final class APIManager: APIManagerProtocol {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
-    private let appData = resolve(\SharedToolingContainer.appData)
+    private let appData = resolve(\SharedDataContainer.appData)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let trustKitDelegate: TrustKitDelegate
 
