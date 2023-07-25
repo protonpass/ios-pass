@@ -22,6 +22,7 @@
 
 import Client
 
+// sourcery: AutoMockable
 protocol SetShareInviteVaultUseCase: Sendable {
     func execute(with vault: Vault, and itemNumber: Int) async
 }

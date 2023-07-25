@@ -23,6 +23,7 @@ import Entities
 import Foundation
 import ProtonCore_Login
 
+// sourcery: AutoMockable
 public protocol ShareInviteRepositoryProtocol {
     func getAllPendingInvites(shareId: String) async throws -> [ShareInvite]
 
