@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 
 protocol EditPrimaryVaultViewModelDelegate: AnyObject {
     func editPrimaryVaultViewModelWantsToShowSpinner()
@@ -35,16 +36,13 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var isLoading = false
     @Published private(set) var primaryVault: Vault
 
-    private let shareRepository: ShareRepositoryProtocol
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
 
     weak var delegate: EditPrimaryVaultViewModelDelegate?
 
-    init(allVaults: [VaultListUiModel],
-         primaryVault: Vault,
-         shareRepository: ShareRepositoryProtocol) {
+    init(allVaults: [VaultListUiModel], primaryVault: Vault) {
         self.allVaults = allVaults
         self.primaryVault = primaryVault
-        self.shareRepository = shareRepository
     }
 
     func setAsPrimary(vault: Vault) {
@@ -52,20 +50,21 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
             delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
             return
         }
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             defer {
-                isLoading = false
-                delegate?.editPrimaryVaultViewModelWantsToHideSpinner()
+                self.isLoading = false
+                self.delegate?.editPrimaryVaultViewModelWantsToHideSpinner()
             }
             do {
-                isLoading = true
-                delegate?.editPrimaryVaultViewModelWantsToShowSpinner()
-                if try await shareRepository.setPrimaryVault(shareId: vault.shareId) {
+                self.isLoading = true
+                self.delegate?.editPrimaryVaultViewModelWantsToShowSpinner()
+                if try await self.shareRepository.setPrimaryVault(shareId: vault.shareId) {
                     self.primaryVault = vault
-                    delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
+                    self.delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
                 }
             } catch {
-                delegate?.editPrimaryVaultViewModelDidEncounter(error: error)
+                self.delegate?.editPrimaryVaultViewModelDidEncounter(error: error)
             }
         }
     }
