@@ -31,6 +31,7 @@ protocol VaultSelectorViewModelDelegate: AnyObject {
 final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     let allVaults: [VaultListUiModel]
 
@@ -39,9 +40,7 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: VaultSelectorViewModelDelegate?
 
-    init(allVaults: [VaultListUiModel],
-         selectedVault: Vault,
-         upgradeChecker: UpgradeCheckerProtocol) {
+    init(allVaults: [VaultListUiModel], selectedVault: Vault) {
         self.allVaults = allVaults
         self.selectedVault = selectedVault
 
@@ -49,8 +48,8 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
             guard let self else { return }
             guard self.allVaults.count > 1 else { return }
             do {
-                self.isFreeUser = try await upgradeChecker.isFreeUser()
-                if self.isFreeUser, let primaryVault = self.allVaults.first(where: { $0.vault.isPrimary }) {
+                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
+                if self.isFreeUser, let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
                     self.selectedVault = primaryVault.vault
                 }
             } catch {
