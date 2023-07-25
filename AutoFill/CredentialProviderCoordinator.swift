@@ -820,7 +820,6 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         guard let upgradeChecker, let rootViewController else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
                                                   upgradeChecker: upgradeChecker,
-                                                  logManager: logManager,
                                                   mode: .createAliasLite,
                                                   titleMode: .create)
         viewModel.delegate = self
