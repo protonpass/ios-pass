@@ -56,7 +56,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let manualLogIn: Bool
     private let paymentsManager: PaymentsManager
     private let preferences: Preferences
-    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let telemetryEventRepository: TelemetryEventRepositoryProtocol
@@ -148,7 +147,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                           preferences: preferences,
                                           storage: kSharedUserDefaults)
         self.preferences = preferences
-        searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         telemetryEventRepository =
@@ -540,8 +538,7 @@ private extension HomepageCoordinator {
 extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
-        let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
-                                                      bannerManager: bannerManager)
+        let onboardingViewModel = OnboardingViewModel(bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -690,11 +687,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
         let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                        itemRepository: itemRepository,
-                                        logManager: logManager,
-                                        searchEntryDatasource: searchEntryDatasource,
-                                        shareRepository: shareRepository,
-                                        featureFlagsRepository: featureFlagsRepository,
                                         symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
         viewModel.delegate = self
@@ -883,21 +875,12 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                 self?.bannerManager.displayBottomSuccessMessage("Report successfully sent")
             }
         }
-        let view = BugReportView(planRepository: passPlanRepository,
-                                 onError: errorHandler,
-                                 onSuccess: successHandler)
+        let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
         present(view)
     }
 
     func profileTabViewModelWantsToQaFeatures() {
-        let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
-                                            itemRepository: itemRepository,
-                                            shareRepository: shareRepository,
-                                            telemetryEventRepository: telemetryEventRepository,
-                                            preferences: preferences,
-                                            bannerManager: bannerManager,
-                                            logManager: logManager,
-                                            userData: userData)
+        let viewModel = QAFeaturesViewModel(bannerManager: bannerManager)
         let view = QAFeaturesView(viewModel: viewModel)
         present(view)
     }
