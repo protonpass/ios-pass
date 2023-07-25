@@ -917,8 +917,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                    delegate: VaultSelectorViewModelDelegate) {
         let vaultContents = vaultsManager.getAllVaultContents()
         let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
-                                               selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker)
+                                               selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -1164,8 +1163,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         guard !allVaults.isEmpty,
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
         let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
-                                               currentVault: .init(vaultContent: currentVault),
-                                               upgradeChecker: upgradeChecker)
+                                               currentVault: .init(vaultContent: currentVault))
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
