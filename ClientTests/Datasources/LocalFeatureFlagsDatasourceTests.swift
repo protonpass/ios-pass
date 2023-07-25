@@ -48,7 +48,6 @@ extension LocalFeatureFlagsDatasourceTests {
 
         // Then
         XCTAssertEqual(flags, givenFlags)
-        XCTAssertTrue(flags.isFlagEnable(for: "PassSharingV1"))
-        XCTAssertFalse(flags.isFlagEnable(for: "NonValidKeyFlag"))
+        XCTAssertTrue(flags.isFlagEnable(for: .passSharingV1))
     }
 }

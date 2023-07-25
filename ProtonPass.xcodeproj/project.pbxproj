@@ -692,6 +692,8 @@
 		5B1453C32A6FFE240048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453C22A6FFE240048B022 /* Entities */; };
 		5B1453C52A6FFE380048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453C42A6FFE380048B022 /* Entities */; };
 		5B1453C82A7007620048B022 /* CryptoKeyError+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453C72A7007610048B022 /* CryptoKeyError+Extensions.swift */; };
+		5B1453CB2A7015C60048B022 /* UserSharingStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453CA2A7015C60048B022 /* UserSharingStatusTests.swift */; };
+		5B1453CD2A7019D00048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453CC2A7019D00048B022 /* Entities */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1478,7 +1480,7 @@
 		3CB08929D9AE79A08B4DE9B4 /* Pods-Client-iOSTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		43F661E6FE41689C1D7DEAEA /* Pods-iOSUITests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-beta.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		448BC1603E67AC907A982299 /* Pods-macOS.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug-qa.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug-qa.xcconfig"; sourceTree = "<group>"; };
-		526CC5CA408FFC5207B1928D /* FeatureFlagsRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = FeatureFlagsRepositoryProtocolMock.generated.swift; path = FeatureFlagsRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
+		526CC5CA408FFC5207B1928D /* FeatureFlagsRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = FeatureFlagsRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
 		58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = ExtractLogsToFileUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		5B0C74E52A2E1B8700272CE8 /* MF_Base32CodecPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base32CodecPass.h; sourceTree = "<group>"; };
 		5B0C74E62A2E1B8700272CE8 /* MF_Base32CodecPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base32CodecPass.m; sourceTree = "<group>"; };
@@ -1534,6 +1536,7 @@
 		5B1453BE2A6EA9870048B022 /* Views+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views+Extensions.swift"; sourceTree = "<group>"; };
 		5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIRouter.swift; sourceTree = "<group>"; };
 		5B1453C72A7007610048B022 /* CryptoKeyError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoKeyError+Extensions.swift"; sourceTree = "<group>"; };
+		5B1453CA2A7015C60048B022 /* UserSharingStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSharingStatusTests.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -1591,7 +1594,7 @@
 		69062710305A395AF0DBECC5 /* Pods-iOSUITests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.debug-qa.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		690F4F6F7F80FCF4C1866632 /* Pods-Client-iOSTests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-beta.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		692DBE97BA3DF802EC640BC1 /* Pods-Client.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-tf.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-tf.xcconfig"; sourceTree = "<group>"; };
-		6EDC794BB63195BC291133D5 /* PassPlanRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = PassPlanRepositoryProtocolMock.generated.swift; path = PassPlanRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
+		6EDC794BB63195BC291133D5 /* PassPlanRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PassPlanRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
 		7513C54429A5E89B006F7160 /* AutoFillRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoFillRobot.swift; sourceTree = "<group>"; };
 		7513C54629A5F963006F7160 /* FaceIDRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceIDRobot.swift; sourceTree = "<group>"; };
 		7513C54829A5F9F9006F7160 /* GetStartedRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStartedRobot.swift; sourceTree = "<group>"; };
@@ -1622,7 +1625,7 @@
 		A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Core_CoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE004305A8122A3370B89379 /* Pods-Core-CoreTests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release-beta.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		AE600C4385B47ECF0C9F0C26 /* Pods-Client.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-beta.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-beta.xcconfig"; sourceTree = "<group>"; };
-		B1591514FAFE9C76A530FCD5 /* ShareInviteRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = ShareInviteRepositoryProtocolMock.generated.swift; path = ShareInviteRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
+		B1591514FAFE9C76A530FCD5 /* ShareInviteRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = ShareInviteRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
 		B2480988BBA392616E26247C /* Pods-Client-ClientTests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-beta.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		B877D1D5A97BF77E119AA848 /* Pods-AutoFill.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.release-tf.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.release-tf.xcconfig"; sourceTree = "<group>"; };
 		BD0AFF12E1F2F402CC2E9B32 /* Pods-AutoFill.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.debug-qa.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.debug-qa.xcconfig"; sourceTree = "<group>"; };
@@ -1636,7 +1639,7 @@
 		CFB71E80BD19503054C6D101 /* Pods-Core.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-tf.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-tf.xcconfig"; sourceTree = "<group>"; };
 		D1D4D4AB14D2DB358A7F5539 /* Pods-iOSUITests.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSUITests.release-tf.xcconfig"; path = "Target Support Files/Pods-iOSUITests/Pods-iOSUITests.release-tf.xcconfig"; sourceTree = "<group>"; };
 		D56F1368DBEE5894B8A7AA5C /* Pods_iOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D62E9861AC0EF5385C2714F2 /* UserSharingStatusUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = UserSharingStatusUseCaseMock.generated.swift; path = UserSharingStatusUseCaseMock.generated.swift; sourceTree = "<group>"; };
+		D62E9861AC0EF5385C2714F2 /* UserSharingStatusUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = UserSharingStatusUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		D817C441253549DC8F078A3F /* Pods-Client-ClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		D8E8D5E563338181886BC10D /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC4C15957574DF9317C4FE1 /* Pods-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release.xcconfig"; sourceTree = "<group>"; };
@@ -1667,6 +1670,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAAEB05BFBCBEB08162111D3 /* Pods_Client_iOSTests.framework in Frameworks */,
+				5B1453CD2A7019D00048B022 /* Entities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3196,6 +3200,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		5B1453C92A7015A30048B022 /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453CA2A7015C60048B022 /* UserSharingStatusTests.swift */,
+			);
+			path = Sharing;
+			sourceTree = "<group>";
+		};
 		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
 			isa = PBXGroup;
 			children = (
@@ -3275,6 +3287,7 @@
 		5B503FF32A4DD5A300E6681C /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				5B1453C92A7015A30048B022 /* Sharing */,
 				5B5040062A52E90200E6681C /* Reports */,
 				5B503FF62A4E01C000E6681C /* Logs */,
 			);
@@ -3653,6 +3666,9 @@
 				354A804128D8B8D8003F49CF /* PBXTargetDependency */,
 			);
 			name = iOSTests;
+			packageProductDependencies = (
+				5B1453CC2A7019D00048B022 /* Entities */,
+			);
 			productName = iOSTests;
 			productReference = 354A803C28D8B8D8003F49CF /* iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -4680,6 +4696,7 @@
 				5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */,
 				5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */,
 				3559BA9C2A5B321E0020E172 /* PreferencesTests.swift in Sources */,
+				5B1453CB2A7015C60048B022 /* UserSharingStatusTests.swift in Sources */,
 				257643B547A3E22A61A627B3 /* ReportRepositoryProtocolMock.generated.swift in Sources */,
 				5B5040082A52E94800E6681C /* SendUserFeedBackTests.swift in Sources */,
 				355F05512A5C4807007DF053 /* KeychainMainkeyProviderMock.swift in Sources */,
@@ -8354,6 +8371,10 @@
 			productName = Entities;
 		};
 		5B1453C42A6FFE380048B022 /* Entities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Entities;
+		};
+		5B1453CC2A7019D00048B022 /* Entities */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Entities;
 		};
