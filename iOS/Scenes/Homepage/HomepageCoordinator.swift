@@ -266,7 +266,6 @@ private extension HomepageCoordinator {
                                      mode: MailboxSelectionViewModel.Mode,
                                      titleMode: MailboxSection.Mode) {
         let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
-                                                  upgradeChecker: upgradeChecker,
                                                   mode: mode,
                                                   titleMode: titleMode)
         viewModel.delegate = self
@@ -282,8 +281,7 @@ private extension HomepageCoordinator {
     }
 
     func presentSuffixSelectionView(selection: SuffixSelection) {
-        let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
-                                                 upgradeChecker: upgradeChecker)
+        let viewModel = SuffixSelectionViewModel(suffixSelection: selection)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
