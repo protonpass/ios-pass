@@ -58,7 +58,6 @@ class BaseItemDetailViewModel {
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger = resolve(\SharedToolingContainer.logger)
-    let theme: Theme
 
     weak var delegate: ItemDetailViewModelDelegate?
 
@@ -67,14 +66,13 @@ class BaseItemDetailViewModel {
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?,
-         theme: Theme) {
+         vault: Vault?) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
         self.vault = vault
-        self.theme = theme
+        let preferences = resolve(\SharedToolingContainer.preferences)
         bindValues()
         checkIfFreeUser()
     }

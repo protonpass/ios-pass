@@ -57,8 +57,7 @@ struct AliasDetailView: View {
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
-                                          vault: viewModel.vault,
-                                          theme: viewModel.theme)
+                                          vault: viewModel.vault)
                     }
 
                     ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,

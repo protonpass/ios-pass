@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Entities
+import Factory
 import ProtonCore_Login
 import SwiftUI
 
@@ -115,7 +116,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var alias: Alias?
     private(set) var suffixSelection: SuffixSelection?
     private(set) var mailboxSelection: MailboxSelection?
-    let aliasRepository: AliasRepositoryProtocol
+    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
@@ -128,16 +129,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    init(mode: ItemMode,
-         aliasRepository: AliasRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vaults: [Vault],
-         preferences: Preferences) throws {
-        self.aliasRepository = aliasRepository
+    override init(mode: ItemMode,
+                  upgradeChecker: UpgradeCheckerProtocol,
+                  vaults: [Vault]) throws {
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
-                       vaults: vaults,
-                       preferences: preferences)
+                       vaults: vaults)
 
         if case let .edit(itemContent) = mode {
             title = itemContent.name
