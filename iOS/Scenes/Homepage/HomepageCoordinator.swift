@@ -57,9 +57,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
-    private let upgradeChecker: UpgradeCheckerProtocol
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private let vaultsManager: VaultsManager
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = .init(container: rootViewController)
@@ -87,22 +87,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          userData: UserData,
          appData: AppData,
          mainKeyProvider: MainKeyProvider) {
-        let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
-        let itemRepository = ItemRepository(userData: userData,
-                                            symmetricKey: symmetricKey,
-                                            container: container,
-                                            apiService: apiService,
-                                            logManager: logManager)
         paymentsManager = PaymentsManager(apiService: apiService,
                                           userDataProvider: appData,
                                           mainKeyProvider: mainKeyProvider,
                                           logger: logger,
                                           preferences: preferences,
                                           storage: kSharedUserDefaults)
-        upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                        counter: vaultsManager,
-                                        totpChecker: itemRepository)
-        self.vaultsManager = vaultsManager
         super.init()
         finalizeInitialization()
         vaultsManager.refresh()
@@ -155,11 +145,10 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let itemsTabViewModel = ItemsTabViewModel(vaultsManager: vaultsManager)
+        let itemsTabViewModel = ItemsTabViewModel()
         itemsTabViewModel.delegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(vaultsManager: vaultsManager,
-                                                      childCoordinatorDelegate: self)
+        let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 

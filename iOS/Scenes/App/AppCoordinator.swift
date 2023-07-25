@@ -158,7 +158,8 @@ final class AppCoordinator {
             let symmetricKey = try appData.getSymmetricKey()
             SharedDataContainer.shared.resolve(container: container,
                                                symmetricKey: symmetricKey,
-                                               userData: userData)
+                                               userData: userData,
+                                               manualLogIn: manualLogIn)
             let homepageCoordinator = HomepageCoordinator(apiService: apiService,
                                                           container: container,
                                                           credentialManager: credentialManager,
