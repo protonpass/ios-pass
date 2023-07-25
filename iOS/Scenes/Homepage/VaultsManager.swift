@@ -52,7 +52,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let symmetricKey = resolve(\SharedRepositoryContainer.symmetricKey)
+    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
     private let logger = resolve(\SharedToolingContainer.logger)
 
     private var manualLogIn: Bool
