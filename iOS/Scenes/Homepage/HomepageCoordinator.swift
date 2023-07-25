@@ -387,11 +387,7 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
-        let viewModel = CreateEditVaultViewModel(mode: mode,
-                                                 shareRepository: shareRepository,
-                                                 upgradeChecker: upgradeChecker,
-                                                 logManager: logManager,
-                                                 theme: preferences.theme)
+        let viewModel = CreateEditVaultViewModel(mode: mode, upgradeChecker: upgradeChecker)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
