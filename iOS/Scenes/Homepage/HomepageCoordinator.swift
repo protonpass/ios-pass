@@ -514,8 +514,7 @@ private extension HomepageCoordinator {
 extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
-        let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
-                                                      bannerManager: bannerManager)
+        let onboardingViewModel = OnboardingViewModel(bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -857,14 +856,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToQaFeatures() {
-        let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
-                                            itemRepository: itemRepository,
-                                            shareRepository: shareRepository,
-                                            telemetryEventRepository: telemetryEventRepository,
-                                            preferences: preferences,
-                                            bannerManager: bannerManager,
-                                            logManager: logManager,
-                                            userData: userData)
+        let viewModel = QAFeaturesViewModel(bannerManager: bannerManager)
         let view = QAFeaturesView(viewModel: viewModel)
         present(view)
     }
