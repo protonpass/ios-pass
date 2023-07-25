@@ -223,23 +223,11 @@ private extension HomepageCoordinator {
 
     func start() {
         let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                                  itemRepository: itemRepository,
-                                                  credentialManager: credentialManager,
-                                                  passPlanRepository: passPlanRepository,
-                                                  logManager: logManager,
-                                                  preferences: preferences,
                                                   syncEventLoop: eventLoop,
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
-                                                      itemRepository: itemRepository,
-                                                      shareRepository: shareRepository,
-                                                      passPlanRepository: passPlanRepository,
-                                                      vaultsManager: vaultsManager,
-                                                      notificationService: SharedServiceContainer
-                                                          .shared
-                                                          .notificationService(),
+        let profileTabViewModel = ProfileTabViewModel(vaultsManager: vaultsManager,
                                                       childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
@@ -311,7 +299,6 @@ private extension HomepageCoordinator {
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
         let coordinator = CreateEditItemCoordinator(upgradeChecker: upgradeChecker,
                                                     vaultsManager: vaultsManager,
-                                                    userData: userData,
                                                     createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator

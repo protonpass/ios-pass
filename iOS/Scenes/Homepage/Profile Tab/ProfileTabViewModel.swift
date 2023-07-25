@@ -43,14 +43,14 @@ protocol ProfileTabViewModelDelegate: AnyObject {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let credentialManager: CredentialManagerProtocol
-    private let itemRepository: ItemRepositoryProtocol
-    private let shareRepository: ShareRepositoryProtocol
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private let passPlanRepository: PassPlanRepositoryProtocol
-    private let notificationService: LocalNotificationServiceProtocol
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
     let vaultsManager: VaultsManager
 
@@ -82,19 +82,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
 
-    init(credentialManager: CredentialManagerProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol,
-         vaultsManager: VaultsManager,
-         notificationService: LocalNotificationServiceProtocol,
-         childCoordinatorDelegate: ChildCoordinatorDelegate) {
-        self.credentialManager = credentialManager
-        self.itemRepository = itemRepository
-        self.shareRepository = shareRepository
-        self.passPlanRepository = passPlanRepository
+    init(vaultsManager: VaultsManager, childCoordinatorDelegate: ChildCoordinatorDelegate) {
         self.vaultsManager = vaultsManager
-        self.notificationService = notificationService
 
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate

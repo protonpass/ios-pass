@@ -41,7 +41,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 
     private let upgradeChecker: UpgradeCheckerProtocol
     private let vaultsManager: VaultsManager
-    private let userData: UserData
     private weak var createEditItemDelegates: CreateEditItemDelegates?
 
     private var currentViewModel: BaseCreateEditItemViewModel?
@@ -51,11 +50,9 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 
     init(upgradeChecker: UpgradeCheckerProtocol,
          vaultsManager: VaultsManager,
-         userData: UserData,
          createEditItemDelegates: CreateEditItemDelegates?) {
         self.upgradeChecker = upgradeChecker
         self.vaultsManager = vaultsManager
-        self.userData = userData
         self.createEditItemDelegates = createEditItemDelegates
     }
 }
@@ -114,11 +111,9 @@ private extension CreateEditItemCoordinator {
     }
 
     func presentCreateEditLoginView(mode: ItemMode) throws {
-        let emailAddress = userData.addresses.first?.email ?? ""
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
-                                                     vaults: vaultsManager.getAllVaults(),
-                                                     emailAddress: emailAddress)
+                                                     vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
         viewModel.createEditLoginViewModelDelegate = createEditItemDelegates
         let view = CreateEditLoginView(viewModel: viewModel)
