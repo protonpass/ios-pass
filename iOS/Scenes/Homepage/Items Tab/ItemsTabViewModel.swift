@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
@@ -44,14 +45,12 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     @Published private(set) var banners: [InfoBanner] = []
 
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
     let itemContextMenuHandler: ItemContextMenuHandler
-    let itemRepository: ItemRepositoryProtocol
-    let credentialManager: CredentialManagerProtocol
-    let passPlanRepository: PassPlanRepositoryProtocol
-    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    let logger: Logger
-    let logManager: LogManagerProtocol
-    let preferences: Preferences
     let vaultsManager: VaultsManager
 
     weak var delegate: ItemsTabViewModelDelegate?
@@ -63,22 +62,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let syncEventLoop: SyncEventLoop
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
-         itemRepository: ItemRepositoryProtocol,
-         credentialManager: CredentialManagerProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManagerProtocol,
-         preferences: Preferences,
          syncEventLoop: SyncEventLoop,
          vaultsManager: VaultsManager) {
         self.itemContextMenuHandler = itemContextMenuHandler
-        self.itemRepository = itemRepository
-        self.credentialManager = credentialManager
-        self.passPlanRepository = passPlanRepository
-        self.featureFlagsRepository = featureFlagsRepository
-        self.logManager = logManager
-        logger = .init(manager: logManager)
-        self.preferences = preferences
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
         finalizeInitialization()
