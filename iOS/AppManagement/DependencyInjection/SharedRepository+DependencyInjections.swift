@@ -115,7 +115,7 @@ extension SharedRepositoryContainer {
     }
 
     var publicKeyRepository: Factory<PublicKeyRepositoryProtocol> {
-        self { PublicKeyRepository(localPublicKeyDatasource: LocalPublicKeyDatasource(container: self.container()),
+        self { PublicKeyRepository(localPublicKeyDatasource: LocalPublicKeyDatasource(container: self.container),
                                    remotePublicKeyDatasource: RemotePublicKeyDatasource(apiService: self
                                        .apiService),
                                    logManager: self.logManager) }
