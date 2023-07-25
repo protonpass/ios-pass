@@ -23,6 +23,7 @@
 import Client
 import Entities
 
+// sourcery: AutoMockable
 protocol GetCurrentShareInviteInformationsUseCase: Sendable {
     func execute() async -> SharingInfos
 }

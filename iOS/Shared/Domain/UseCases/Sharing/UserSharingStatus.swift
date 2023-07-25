@@ -23,6 +23,7 @@
 import Client
 import ProtonCore_Login
 
+// sourcery: AutoMockable
 protocol UserSharingStatusUseCase: Sendable {
     func execute() async -> Bool
 }
