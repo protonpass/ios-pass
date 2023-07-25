@@ -936,9 +936,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToEdit(primaryVault: Vault) {
         let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
-        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
-                                                  primaryVault: primaryVault,
-                                                  shareRepository: shareRepository)
+        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults, primaryVault: primaryVault)
         viewModel.delegate = self
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
