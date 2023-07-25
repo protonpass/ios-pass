@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import SwiftUI
 
 public extension View {
@@ -31,7 +32,6 @@ public extension View {
             NavigationView {
                 self
             }
-//            .navigationViewStyle(.stack)
         }
     }
 
@@ -42,5 +42,16 @@ public extension View {
                                   label: EmptyView.init)
                 .isDetailLink(false)
                 .hidden())
+    }
+
+    func errorAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
+        let localizedAlertError = LocalizedAlertError(error: error.wrappedValue)
+        return alert(isPresented: .constant(localizedAlertError != nil), error: localizedAlertError) { _ in
+            Button(buttonTitle) {
+                error.wrappedValue = nil
+            }
+        } message: { error in
+            Text(error.recoverySuggestion ?? "")
+        }
     }
 }

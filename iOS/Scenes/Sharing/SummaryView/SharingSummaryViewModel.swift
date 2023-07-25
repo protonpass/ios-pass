@@ -28,8 +28,8 @@ import Foundation
 @MainActor
 final class SharingSummaryViewModel: ObservableObject, Sendable {
     @Published private(set) var infos: SharingInfos?
-    @Published var showingAlert = false
     @Published var sendingInvite = false
+    @Published var error: Error?
 
     private var lastTask: Task<Void, Never>?
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
@@ -41,7 +41,6 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
 
     deinit {
         print("woot deinit")
-//        lastTask?.cancel()
     }
 
     func sendInvite() {
@@ -50,10 +49,12 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
             guard let self, let infos else {
                 return
             }
-            self.sendingInvite = true
             defer {
                 self.sendingInvite = false
+                self.lastTask?.cancel()
+                self.lastTask = nil
             }
+            self.sendingInvite = true
             do {
                 if Task.isCancelled {
                     return
@@ -61,11 +62,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 _ = try await self.sendShareInvite(with: infos)
             } catch {
                 print(error.localizedDescription)
-//                await MainActor.run { [weak self] in
-                self.showingAlert = true
-                self.lastTask?.cancel()
-                self.lastTask = nil
-//                }
+                self.error = error
             }
         }
     }

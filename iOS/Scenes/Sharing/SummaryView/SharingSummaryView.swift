@@ -38,10 +38,7 @@ struct SharingSummaryView: View {
             permissionInfo
             Spacer()
         }
-        .alert("Could not send the invite to \(viewModel.infos?.email ?? "")",
-               isPresented: $viewModel.showingAlert) {
-            Button("OK") {}
-        }
+        .errorAlert(error: $viewModel.error)
         .overlay {
             if viewModel.sendingInvite {
                 ProgressView()

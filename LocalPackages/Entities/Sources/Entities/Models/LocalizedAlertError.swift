@@ -1,7 +1,6 @@
 //
-//
-// GetSharingFlagStatus.swift
-// Proton Pass - Created on 21/07/2023.
+// LocalizedAlertError.swift
+// Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,31 +17,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
+import Foundation
 
-protocol GetSharingFlagStatusUseCase: Sendable {
-    func execute() async -> Bool
-}
+public struct LocalizedAlertError: LocalizedError {
+    private let underlyingError: LocalizedError
 
-extension GetSharingFlagStatusUseCase {
-    func callAsFunction() async -> Bool {
-        await execute()
-    }
-}
-
-final class GetSharingFlagStatus: GetSharingFlagStatusUseCase {
-    private let repository: FeatureFlagsRepositoryProtocol
-
-    init(repository: FeatureFlagsRepositoryProtocol) {
-        self.repository = repository
+    public var errorDescription: String? {
+        underlyingError.errorDescription
     }
 
-    func execute() async -> Bool {
-        guard let flags = try? await repository.getFlags() else {
-            return false
-        }
-        return flags.isFlagEnable(for: FeatureFlagType.passSharingV1)
+    public var recoverySuggestion: String? {
+        underlyingError.recoverySuggestion
+    }
+
+    public init?(error: Error?) {
+        guard let localizedError = error as? LocalizedError else { return nil }
+        underlyingError = localizedError
     }
 }

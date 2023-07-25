@@ -40,10 +40,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published var showingAliasAlert = false
+    @Published private(set) var isAllowedToShare = false
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private(set) var numberOfAliasforSharedVault = 0
+    private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
     let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+
+    private(set) var numberOfAliasforSharedVault = 0
 
     private let logger: Logger
     let vaultsManager: VaultsManager
@@ -63,6 +66,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 private extension EditableVaultListViewModel {
     func finalizeInitialization() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            self.isAllowedToShare = await self.userSharingStatus()
+        }
     }
 
     func doDelete(vault: Vault) {
