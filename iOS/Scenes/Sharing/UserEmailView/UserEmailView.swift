@@ -33,11 +33,6 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 31) {
-            NavigationLink(destination: router.navigate(to: .userSharePermission),
-                           isActive: $viewModel.goToNextStep) {
-                EmptyView()
-            }
-
             headerView
 
             TextField("Proton email address", text: $viewModel.email)
@@ -58,6 +53,7 @@ struct UserEmailView: View {
                 }
             }
         }
+        .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
