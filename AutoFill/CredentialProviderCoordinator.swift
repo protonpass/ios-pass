@@ -726,10 +726,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
-        guard let vaultListUiModels, let upgradeChecker, let rootViewController else { return }
+        guard let vaultListUiModels, let rootViewController else { return }
         let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels,
-                                               selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker)
+                                               selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
