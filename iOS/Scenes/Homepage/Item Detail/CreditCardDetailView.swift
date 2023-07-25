@@ -61,8 +61,7 @@ private extension CreditCardDetailView {
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
-                                          vault: viewModel.vault,
-                                          theme: viewModel.theme)
+                                          vault: viewModel.vault)
                             .padding(.top, 8)
                     }
 

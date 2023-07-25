@@ -45,7 +45,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let aliasRepository: AliasRepositoryProtocol
     private let apiService: APIService
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
@@ -99,7 +98,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                             container: container,
                                             apiService: apiService,
                                             logManager: logManager)
-        let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiService)
         let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
         let shareKeyRepository = ShareKeyRepository(container: container,
                                                     apiService: apiService,
@@ -123,7 +121,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
         let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
 
-        aliasRepository = AliasRepository(remoteDatasouce: remoteAliasDatasource)
         self.apiService = apiService
         clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
@@ -312,9 +309,7 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
-                                                    upgradeChecker: upgradeChecker,
-                                                    preferences: preferences,
+        let coordinator = CreateEditItemCoordinator(upgradeChecker: upgradeChecker,
                                                     vaultsManager: vaultsManager,
                                                     userData: userData,
                                                     createEditItemDelegates: self)
@@ -324,9 +319,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
-                                                upgradeChecker: upgradeChecker,
-                                                preferences: preferences,
+        let coordinator = ItemDetailCoordinator(upgradeChecker: upgradeChecker,
                                                 vaultsManager: vaultsManager,
                                                 itemDetailViewModelDelegate: self)
         coordinator.delegate = self
