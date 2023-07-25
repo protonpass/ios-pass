@@ -29,4 +29,9 @@ public struct ItemKey: Codable {
         self.key = key
         self.keyRotation = keyRotation
     }
+
+    enum CodingKeys: String, CodingKey {
+        case key = "Key"
+        case keyRotation = "KeyRotation"
+    }
 }

@@ -32,9 +32,9 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
     private let remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol
     private let logger: Logger
 
-    init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
-         remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,
-         logManager: LogManagerProtocol) {
+    public init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
+                remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,
+                logManager: LogManagerProtocol) {
         self.localPublicKeyDatasource = localPublicKeyDatasource
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
         logger = .init(manager: logManager)

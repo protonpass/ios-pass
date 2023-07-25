@@ -26,17 +26,13 @@ import Entities
 import ProtonCore_Crypto
 import ProtonCore_Login
 
-enum SharingErrors: Error {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-}
-
 protocol SendShareInviteUseCase: Sendable {
     func execute(with infos: SharingInfos, and targetType: TargetType) async throws -> Bool
 }
 
 extension SendShareInviteUseCase {
-    func callAsFunction(with infos: SharingInfos, and targetType: TargetType = .vault) async throws -> Bool {
+    func callAsFunction(with infos: SharingInfos,
+                        and targetType: TargetType = .vault) async throws -> Bool {
         try await execute(with: infos, and: targetType)
     }
 }
@@ -68,7 +64,8 @@ final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase {
             throw SharingErrors.failedEncryptionKeysFetching
         }
 
-        let signedKeys = try encryptKeys(receivingKey: receivingKeys.first?.value ?? "",
+        let signedKeys = try encryptKeys(addressId: vault.addressId,
+                                         receivingKey: receivingKeys.first?.value ?? "",
                                          userData: userData,
                                          vaultKey: sharedKeys)
 
@@ -81,31 +78,23 @@ final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase {
 }
 
 private extension SendShareInvite {
-    func encryptKeys(receivingKey: String, userData: UserData, vaultKey: DecryptedShareKey) throws -> ItemKey {
-//        contentFormatVersion = 1
-//        let addressID = userData.addresses.first?.addressID ?? ""
-        guard let adressKey = try CryptoUtils.unlockAddressKeys(addressID: "", userData: userData).first else {
-            throw PPClientError.crypto(.addressNotFound(addressID: ""))
+    func encryptKeys(addressId: String,
+                     receivingKey: String,
+                     userData: UserData,
+                     vaultKey: DecryptedShareKey) throws -> ItemKey {
+        guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
+                                                                 userData: userData).first else {
+            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
         }
-//        guard let userKey = userData.user.keys.first else {
-//            throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
-//        }
-//
-//        guard let passphrase = userData.passphrases[userKey.keyID] else {
-//            throw PPClientError.crypto(.missingPassphrase(keyID: userKey.keyID))
-//        }
 
         let publicKey = ArmoredKey(value: receivingKey)
-//        let privateKey = ArmoredKey(value: adressKey.privateKey)
-        let signerKey = SigningKey(privateKey: adressKey.privateKey,
-                                   passphrase: adressKey.passphrase)
+        let signerKey = SigningKey(privateKey: addressKey.privateKey,
+                                   passphrase: addressKey.passphrase)
 
-//        let vaultKey = try Data.random()
         let encryptedVaultKeyString = try Encryptor.encrypt(publicKey: publicKey,
                                                             clearData: vaultKey.keyData,
                                                             signerKey: signerKey)
             .unArmor().value.base64EncodedString()
-//        try encryptedVaultKeyData.unArmor().value.base64EncodedString()
 
         return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
     }

@@ -38,6 +38,10 @@ struct SharingSummaryView: View {
             permissionInfo
             Spacer()
         }
+        .alert("Could not send the invite to \(viewModel.infos?.email ?? "")",
+               isPresented: $viewModel.showingAlert) {
+            Button("OK") {}
+        }
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
@@ -55,11 +59,11 @@ private extension SharingSummaryView {
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
             Text("""
-            You are about to invite \(attributedText(for: viewModel
-                    .email)) into your \(attributedText(for: viewModel.vault?.name ?? "")) vault.
-            They will gain access to \(attributedText(for: viewModel.itemNum
-                    .toString)) items and they will be able to \(attributedText(for: viewModel
-                    .role?.summary ?? ""))
+            You are about to invite \(attributedText(for: viewModel.infos?
+                    .email ?? "")) into your \(attributedText(for: viewModel.infos?.vault?.name ?? "")) vault.
+            They will gain access to \(attributedText(for: viewModel.infos?.itemsNum?
+                    .toString ?? "0")) items and they will be able to \(attributedText(for: viewModel.infos?.role?
+                    .summary ?? ""))
             """)
             .font(.body)
             .foregroundColor(PassColor.textWeak.toColor)
@@ -81,7 +85,7 @@ private extension SharingSummaryView {
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
-            if let vault = viewModel.vault {
+            if let vault = viewModel.infos?.vault {
                 VaultRow(thumbnail: {
                              CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
                                           iconColor: vault.displayPreferences.color.color.color,
@@ -89,7 +93,7 @@ private extension SharingSummaryView {
                                               .withAlphaComponent(0.16))
                          },
                          title: vault.name,
-                         itemCount: viewModel.itemNum,
+                         itemCount: viewModel.infos?.itemsNum ?? 0,
                          isSelected: false,
                          height: 60)
             }
@@ -105,11 +109,11 @@ private extension SharingSummaryView {
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             HStack(spacing: kItemDetailSectionPadding) {
-                SquircleThumbnail(data: .initials(viewModel.email.initialsRemovingEmojis()),
+                SquircleThumbnail(data: .initials(viewModel.infos?.email?.initialsRemovingEmojis() ?? ""),
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(viewModel.email)
+                    Text(viewModel.infos?.email ?? "")
                         .foregroundColor(PassColor.textNorm.toColor)
                 }
             }
@@ -125,7 +129,7 @@ private extension SharingSummaryView {
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
-            if let role = viewModel.role {
+            if let role = viewModel.infos?.role {
                 HStack(spacing: 5) {
                     VStack(alignment: .leading) {
                         Text(role.title)
@@ -164,7 +168,7 @@ private extension SharingSummaryView {
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: false,
-                                        action: {})
+                                        action: { viewModel.sendInvite() })
         }
     }
 }
