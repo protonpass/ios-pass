@@ -156,9 +156,9 @@ final class AppCoordinator {
         do {
             let apiService = apiManager.apiService
             let symmetricKey = try appData.getSymmetricKey()
-            SharedRepositoryContainer.shared.container.register { self.container }
-            SharedRepositoryContainer.shared.symmetricKey.register { symmetricKey }
-            SharedRepositoryContainer.shared.userData.register { userData }
+            SharedDataContainer.shared.resolve(container: container,
+                                               symmetricKey: symmetricKey,
+                                               userData: userData)
             let homepageCoordinator = HomepageCoordinator(apiService: apiService,
                                                           container: container,
                                                           credentialManager: credentialManager,
