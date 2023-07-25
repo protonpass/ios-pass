@@ -21,6 +21,7 @@
 import Client
 import Core
 import Entities
+import Factory
 
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -31,21 +32,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var mailboxes: [Mailbox]?
     @Published private(set) var error: Error?
 
-    private let aliasRepository: AliasRepositoryProtocol
-
-    init(isShownAsSheet: Bool,
-         itemContent: ItemContent,
-         aliasRepository: AliasRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?,
-         theme: Theme) {
-        self.aliasRepository = aliasRepository
-        super.init(isShownAsSheet: isShownAsSheet,
-                   itemContent: itemContent,
-                   upgradeChecker: upgradeChecker,
-                   vault: vault,
-                   theme: theme)
-    }
+    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     override func bindValues() {
         aliasEmail = itemContent.item.aliasEmail ?? ""

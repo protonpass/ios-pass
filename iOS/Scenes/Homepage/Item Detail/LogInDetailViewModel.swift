@@ -58,15 +58,13 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
                   upgradeChecker: UpgradeCheckerProtocol,
-                  vault: Vault?,
-                  theme: Theme) {
+                  vault: Vault?) {
         let logManager = resolve(\SharedToolingContainer.logManager)
         totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker,
-                   vault: vault,
-                   theme: theme)
+                   vault: vault)
         totpManager.attach(to: self, storeIn: &cancellables)
     }
 
