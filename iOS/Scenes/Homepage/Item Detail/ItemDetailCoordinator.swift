@@ -105,7 +105,6 @@ private extension ItemDetailCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
-                                             favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
                                              upgradeChecker: upgradeChecker,
                                              vault: vault,
@@ -120,7 +119,6 @@ private extension ItemDetailCoordinator {
                                  vault: Vault?) -> ItemDetailPage {
         let viewModel = AliasDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
-                                             favIconRepository: favIconRepository,
                                              itemRepository: itemRepository,
                                              aliasRepository: aliasRepository,
                                              upgradeChecker: upgradeChecker,
@@ -135,7 +133,6 @@ private extension ItemDetailCoordinator {
                             vault: Vault?) -> ItemDetailPage {
         let viewModel = NoteDetailViewModel(isShownAsSheet: asSheet,
                                             itemContent: itemContent,
-                                            favIconRepository: favIconRepository,
                                             itemRepository: itemRepository,
                                             upgradeChecker: upgradeChecker,
                                             vault: vault,
@@ -149,7 +146,6 @@ private extension ItemDetailCoordinator {
                                   vault: Vault?) -> ItemDetailPage {
         let viewModel = CreditCardDetailViewModel(isShownAsSheet: asSheet,
                                                   itemContent: itemContent,
-                                                  favIconRepository: favIconRepository,
                                                   itemRepository: itemRepository,
                                                   upgradeChecker: upgradeChecker,
                                                   vault: vault,
