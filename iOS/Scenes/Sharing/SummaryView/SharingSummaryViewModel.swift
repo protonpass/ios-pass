@@ -27,15 +27,41 @@ import Foundation
 
 @MainActor
 final class SharingSummaryViewModel: ObservableObject, Sendable {
-    @Published private(set) var vault: Vault?
-    @Published private(set) var email = ""
-    @Published private(set) var itemNum = 0
-    @Published private(set) var role: ShareRole?
-
+    @Published private(set) var infos: SharingInfos?
+    @Published var showingAlert = false
+    private var lastTask: Task<Void, Never>?
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
+    private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
 
     init() {
         setUp()
+    }
+
+    deinit {
+        print("woot deinit")
+//        lastTask?.cancel()
+    }
+
+    func sendInvite() {
+        lastTask?.cancel()
+        lastTask = Task { [weak self] in
+            guard let self, let infos else {
+                return
+            }
+            do {
+                if Task.isCancelled {
+                    return
+                }
+                _ = try await self.sendShareInvite(with: infos)
+            } catch {
+                print(error.localizedDescription)
+                await MainActor.run { [weak self] in
+                    self?.showingAlert = true
+                    self?.lastTask?.cancel()
+                    self?.lastTask = nil
+                }
+            }
+        }
     }
 }
 
@@ -45,11 +71,7 @@ private extension SharingSummaryViewModel {
             guard let self else {
                 return
             }
-            let infos = await self.getShareInviteInfos()
-            self.vault = infos.vault
-            self.email = infos.email ?? ""
-            self.itemNum = infos.itemsNum ?? 0
-            self.role = infos.role
+            self.infos = await self.getShareInviteInfos()
         }
     }
 }
