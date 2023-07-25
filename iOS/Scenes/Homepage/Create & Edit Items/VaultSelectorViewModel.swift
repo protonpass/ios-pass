@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 
 protocol VaultSelectorViewModelDelegate: AnyObject {
     func vaultSelectorViewModelWantsToUpgrade()
@@ -30,6 +31,7 @@ protocol VaultSelectorViewModelDelegate: AnyObject {
 final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    private let logger = resolve(\SharedToolingContainer.logger)
     let allVaults: [VaultListUiModel]
 
     @Published private(set) var selectedVault: Vault
@@ -39,22 +41,21 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
 
     init(allVaults: [VaultListUiModel],
          selectedVault: Vault,
-         upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol) {
+         upgradeChecker: UpgradeCheckerProtocol) {
         self.allVaults = allVaults
         self.selectedVault = selectedVault
 
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             guard allVaults.count > 1 else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
-                if isFreeUser, let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
+                self.isFreeUser = try await upgradeChecker.isFreeUser()
+                if self.isFreeUser, let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
                     self.selectedVault = primaryVault.vault
                 }
             } catch {
-                let logger = Logger(manager: logManager)
-                logger.error(error)
-                delegate?.vaultSelectorViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.vaultSelectorViewModelDidEncounter(error: error)
             }
         }
     }
