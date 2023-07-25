@@ -48,16 +48,14 @@ final class BugReportViewModel: ObservableObject {
 
     var cantSend: Bool { object == nil || description.count < 10 }
 
-    private let planRepository: PassPlanRepositoryProtocol
+    private let planRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let sendUserBugReport = resolve(\UseCasesContainer.sendUserBugReport)
 
     enum SendError: Error {
         case failedToSendReport
     }
 
-    init(planRepository: PassPlanRepositoryProtocol) {
-        self.planRepository = planRepository
-    }
+    init() {}
 
     func send() {
         assert(object != nil, "An object must be selected")
