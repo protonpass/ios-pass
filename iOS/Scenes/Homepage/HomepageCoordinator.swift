@@ -759,10 +759,8 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet,
-                                         apiService: apiService,
                                          paymentsManager: paymentsManager,
                                          logManager: logManager,
-                                         theme: preferences.theme,
                                          username: userData.user.email ?? "",
                                          passPlanRepository: passPlanRepository)
         viewModel.delegate = self
