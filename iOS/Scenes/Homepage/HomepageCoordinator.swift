@@ -664,8 +664,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
-        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager,
-                                                   logManager: logManager)
+        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
