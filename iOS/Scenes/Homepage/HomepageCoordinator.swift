@@ -1242,8 +1242,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
         let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
                                                currentVault: .init(vaultContent: currentVault),
-                                               upgradeChecker: upgradeChecker,
-                                               logManager: logManager)
+                                               upgradeChecker: upgradeChecker)
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
