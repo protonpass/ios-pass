@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -28,7 +29,6 @@ struct CustomFieldSections: View {
     let itemContentType: ItemContentType
     let uiModels: [CustomFieldUiModel]
     let isFreeUser: Bool
-    let logManager: LogManagerProtocol
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
 
@@ -56,7 +56,6 @@ struct CustomFieldSections: View {
                                        content: content,
                                        itemContentType: itemContentType,
                                        isFreeUser: isFreeUser,
-                                       logManager: logManager,
                                        onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
             }
@@ -161,9 +160,9 @@ struct TotpCustomFieldSection: View {
          content: String,
          itemContentType: ItemContentType,
          isFreeUser: Bool,
-         logManager: LogManagerProtocol,
          onSelectTotpToken: @escaping (String) -> Void,
          onUpgrade: @escaping () -> Void) {
+        let logManager = resolve(\SharedToolingContainer.logManager)
         _totpManager = .init(wrappedValue: .init(logManager: logManager))
         self.title = title
         self.content = content

@@ -512,16 +512,10 @@ private extension CredentialProviderCoordinator {
             let creationType = ItemCreationType.login(title: url?.host,
                                                       url: url?.schemeAndHost,
                                                       autofill: true)
-            let emailAddress = appData.userData?.addresses.first?.email ?? ""
             let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                        type: creationType),
-                                                         itemRepository: itemRepository,
-                                                         aliasRepository: aliasRepository,
                                                          upgradeChecker: upgradeChecker,
-                                                         vaults: vaults,
-                                                         preferences: preferences,
-                                                         logManager: logManager,
-                                                         emailAddress: emailAddress)
+                                                         vaults: vaults)
             viewModel.delegate = self
             viewModel.createEditLoginViewModelDelegate = self
             let view = CreateEditLoginView(viewModel: viewModel)

@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 
 protocol SettingsViewModelDelegate: AnyObject {
@@ -34,7 +35,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToViewHostAppLogs()
     func settingsViewModelWantsToViewAutoFillExtensionLogs()
     func settingsViewModelWantsToClearLogs()
-    func settingsViewModelDidDisableFavIcons()
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidEncounter(error: Error)
 }
@@ -43,6 +43,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let isShownAsSheet: Bool
+    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let logger: Logger
     private let preferences: Preferences
     private let syncEventLoop: SyncEventLoopActionProtocol
@@ -56,7 +57,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         didSet {
             preferences.displayFavIcons = displayFavIcons
             if !displayFavIcons {
-                delegate?.settingsViewModelDidDisableFavIcons()
+                emptyFavIconCache()
             }
         }
     }
@@ -170,6 +171,23 @@ extension SettingsViewModel {
             } catch {
                 self?.logger.error(error)
                 self?.delegate?.settingsViewModelDidEncounter(error: error)
+            }
+        }
+    }
+}
+
+// MARK: - Private APIs
+
+private extension SettingsViewModel {
+    func emptyFavIconCache() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                self.logger.trace("Fav icons are disabled. Removing all cached fav icons")
+                try self.favIconRepository.emptyCache()
+                self.logger.info("Removed all cached fav icons")
+            } catch {
+                self.logger.error(error)
             }
         }
     }

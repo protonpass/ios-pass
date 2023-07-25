@@ -63,9 +63,6 @@ extension SharedToolingContainer {
             .unique
     }
 
-    /// Should be made private once transitionned to `Factory`
-    /// All objects that want to log should create and hold a new instance of `Logger` with
-    /// `resolve(\SharedToolingContainer.logger)`
     var logManager: Factory<LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
@@ -109,6 +106,10 @@ extension SharedToolingContainer {
 extension SharedToolingContainer {
     var preferences: Factory<Preferences> {
         self { Preferences() }
+    }
+
+    var theme: Factory<Theme> {
+        self { self.preferences().theme }
     }
 
     var currentDateProvider: Factory<CurrentDateProviderProtocol> {
