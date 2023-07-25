@@ -65,6 +65,7 @@ final class UserPermissionViewModel: ObservableObject, Sendable {
     @Published private(set) var vaultName = ""
     @Published private(set) var email = ""
     @Published private(set) var canContinue = false
+    @Published var goToNextStep = false
 
     private let setShareInviteRole = resolve(\UseCasesContainer.setShareInviteRole)
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)

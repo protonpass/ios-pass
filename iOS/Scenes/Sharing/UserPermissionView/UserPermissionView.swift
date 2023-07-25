@@ -30,18 +30,15 @@ struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
     private var router = resolve(\RouterContainer.mainNavViewRouter)
     @StateObject private var viewModel = UserPermissionViewModel()
-    @State var goToNextStep = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            NavigationLink(destination: router.navigate(to: .shareSummary),
-                           isActive: $goToNextStep) { EmptyView() }
-
             headerView
             emailDisplayView
             roleList
             Spacer()
         }
+        .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .shareSummary))
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
@@ -150,7 +147,7 @@ private extension UserPermissionView {
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
                                         disabled: !viewModel.canContinue,
-                                        action: { goToNextStep = true })
+                                        action: { viewModel.goToNextStep = true })
         }
     }
 }
