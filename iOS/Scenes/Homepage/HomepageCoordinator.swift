@@ -314,7 +314,7 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
-        let viewModel = CreateEditVaultViewModel(mode: mode, upgradeChecker: upgradeChecker)
+        let viewModel = CreateEditVaultViewModel(mode: mode)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
