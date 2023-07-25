@@ -44,7 +44,6 @@ struct OnboardSection: View {
     }
 
     private var onboardingView: some View {
-        OnboardingView(viewModel: .init(credentialManager: viewModel.credentialManager,
-                                        bannerManager: viewModel.bannerManager))
+        OnboardingView(viewModel: .init(bannerManager: viewModel.bannerManager))
     }
 }
