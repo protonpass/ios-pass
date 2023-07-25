@@ -56,7 +56,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
-                  favIconRepository: FavIconRepositoryProtocol,
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
                   vault: Vault?,
@@ -65,7 +64,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
         totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
-                   favIconRepository: favIconRepository,
                    itemRepository: itemRepository,
                    upgradeChecker: upgradeChecker,
                    vault: vault,

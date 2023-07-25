@@ -46,7 +46,6 @@ class BaseItemDetailViewModel {
     @Published private(set) var isFreeUser = false
 
     let isShownAsSheet: Bool
-    let favIconRepository: FavIconRepositoryProtocol
     let itemRepository: ItemRepositoryProtocol
     let upgradeChecker: UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
@@ -67,7 +66,6 @@ class BaseItemDetailViewModel {
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         favIconRepository: FavIconRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
          upgradeChecker: UpgradeCheckerProtocol,
          vault: Vault?,
@@ -76,7 +74,6 @@ class BaseItemDetailViewModel {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
-        self.favIconRepository = favIconRepository
         self.itemRepository = itemRepository
         self.upgradeChecker = upgradeChecker
         self.vault = vault
