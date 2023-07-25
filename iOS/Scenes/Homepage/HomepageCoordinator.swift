@@ -48,7 +48,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let apiService: APIService
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
-    private let eventLoop: SyncEventLoop
+    private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
@@ -123,14 +123,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.apiService = apiService
         clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        eventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                          userId: userData.user.ID,
-                          shareRepository: shareRepository,
-                          shareEventIDRepository: shareEventIDRepository,
-                          remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                          itemRepository: itemRepository,
-                          shareKeyRepository: shareKeyRepository,
-                          logManager: logManager)
         itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                        itemRepository: itemRepository,
                                        logManager: logManager)
@@ -221,7 +213,6 @@ private extension HomepageCoordinator {
 
     func start() {
         let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                                  syncEventLoop: eventLoop,
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
@@ -793,11 +784,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet,
-                                          logManager: logManager,
-                                          preferences: preferences,
-                                          vaultsManager: vaultsManager,
-                                          syncEventLoop: eventLoop)
+        let viewModel = SettingsViewModel(isShownAsSheet: asSheet, vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
