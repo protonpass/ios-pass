@@ -56,7 +56,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let manualLogIn: Bool
     private let paymentsManager: PaymentsManager
     private let preferences: Preferences
-    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let telemetryEventRepository: TelemetryEventRepositoryProtocol
@@ -146,7 +145,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                                           preferences: preferences,
                                           storage: kSharedUserDefaults)
         self.preferences = preferences
-        searchEntryDatasource = LocalSearchEntryDatasource(container: container)
         self.shareRepository = shareRepository
         self.symmetricKey = symmetricKey
         telemetryEventRepository =
@@ -666,11 +664,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
         let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                        itemRepository: itemRepository,
-                                        logManager: logManager,
-                                        searchEntryDatasource: searchEntryDatasource,
-                                        shareRepository: shareRepository,
-                                        featureFlagsRepository: featureFlagsRepository,
                                         symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
         viewModel.delegate = self
