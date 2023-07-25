@@ -19,21 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import SwiftUI
 import UIComponents
 
 struct TelemetryEventsSection: View {
-    let telemetryEventRepository: TelemetryEventRepositoryProtocol
-    let userId: String
-
     var body: some View {
-        NavigationLink(destination: {
-            let viewModel = TelemetryEventsViewModel(telemetryEventRepository: telemetryEventRepository,
-                                                     userId: userId)
-            TelemetryEventsView(viewModel: viewModel)
-        }, label: {
-            Text("Telemetry events")
-        })
+        NavigationLink(destination: { TelemetryEventsView() },
+                       label: { Text("Telemetry events") })
     }
 }
 
@@ -50,16 +43,14 @@ private struct TelemetryEventUiModel: Identifiable {
 }
 
 private final class TelemetryEventsViewModel: ObservableObject {
-    let telemetryEventRepository: TelemetryEventRepositoryProtocol
-    let userId: String
+    private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
+    private let userData = resolve(\SharedDataContainer.userData)
 
     @Published private(set) var uiModels = [TelemetryEventUiModel]()
     @Published private(set) var relativeThreshold = ""
     @Published private(set) var error: Error?
 
-    init(telemetryEventRepository: TelemetryEventRepositoryProtocol, userId: String) {
-        self.telemetryEventRepository = telemetryEventRepository
-        self.userId = userId
+    init() {
         refresh()
     }
 
@@ -71,6 +62,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
                     let relativeDate = formatter.localizedString(for: threshold, relativeTo: .now)
                     self.relativeThreshold = "Next batch \(relativeDate)"
                 }
+                let userId = userData.user.ID
                 let events =
                     try await telemetryEventRepository.localDatasource.getAllEvents(userId: userId)
                 // Reverse to move new events to the top of the list
@@ -85,7 +77,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
 }
 
 private struct TelemetryEventsView: View {
-    @StateObject var viewModel: TelemetryEventsViewModel
+    @StateObject private var viewModel = TelemetryEventsViewModel()
 
     var body: some View {
         if let error = viewModel.error {
