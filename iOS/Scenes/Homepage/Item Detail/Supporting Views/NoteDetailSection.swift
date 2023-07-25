@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -30,7 +31,6 @@ struct NoteDetailSection: View {
     let itemContent: ItemContent
     let vault: Vault?
     let theme: Theme
-    let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
         let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
@@ -59,29 +59,24 @@ struct NoteDetailSection: View {
         .tint(tintColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
-            FullNoteView(itemContent: itemContent,
-                         vault: vault,
-                         theme: theme,
-                         favIconRepository: favIconRepository)
+            FullNoteView(itemContent: itemContent, vault: vault, theme: theme)
         }
     }
 }
 
 private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
+    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     let itemContent: ItemContent
     let vault: Vault?
     let theme: Theme
-    let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
         let tintColor = Color(uiColor: itemContent.type.normMajor2Color)
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ItemDetailTitleView(itemContent: itemContent,
-                                        vault: vault,
-                                        favIconRepository: favIconRepository)
+                    ItemDetailTitleView(itemContent: itemContent, vault: vault)
                         .padding(.bottom)
                     Text("Note")
                         .sectionTitleText()

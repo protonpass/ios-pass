@@ -201,8 +201,7 @@ private struct ItemSearchResultView: View, Equatable {
     var body: some View {
         HStack {
             VStack {
-                ItemSquircleThumbnail(data: result.thumbnailData(),
-                                      repository: favIconRepository)
+                ItemSquircleThumbnail(data: result.thumbnailData())
             }
             .frame(maxHeight: .infinity, alignment: .top)
 
