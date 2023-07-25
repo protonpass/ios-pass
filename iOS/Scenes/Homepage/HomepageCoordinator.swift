@@ -852,9 +852,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                 self?.bannerManager.displayBottomSuccessMessage("Report successfully sent")
             }
         }
-        let view = BugReportView(planRepository: passPlanRepository,
-                                 onError: errorHandler,
-                                 onSuccess: successHandler)
+        let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
         present(view)
     }
 
