@@ -45,25 +45,20 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let apiService: APIService
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
-    private let credentialManager: CredentialManagerProtocol
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
-    private let itemRepository: ItemRepositoryProtocol
-    private let logger: Logger
-    private let logManager: LogManagerProtocol
-    private let manualLogIn: Bool
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager: PaymentsManager
-    private let preferences: Preferences
-    private let shareRepository: ShareRepositoryProtocol
-    private let symmetricKey: SymmetricKey
-    private let telemetryEventRepository: TelemetryEventRepositoryProtocol
-    private let urlOpener: UrlOpener
-    private let userData: UserData
-    private let passPlanRepository: PassPlanRepositoryProtocol
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
+    private let urlOpener = UrlOpener()
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let upgradeChecker: UpgradeCheckerProtocol
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let vaultsManager: VaultsManager
 
     // Lazily initialized properties
@@ -92,73 +87,25 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          userData: UserData,
          appData: AppData,
          mainKeyProvider: MainKeyProvider) {
+        let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
         let itemRepository = ItemRepository(userData: userData,
                                             symmetricKey: symmetricKey,
                                             container: container,
                                             apiService: apiService,
                                             logManager: logManager)
-        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    symmetricKey: symmetricKey,
-                                                    userData: userData)
-        let shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                            apiService: apiService,
-                                                            logManager: logManager)
-        let shareRepository = ShareRepository(symmetricKey: symmetricKey,
-                                              userData: userData,
-                                              container: container,
-                                              apiService: apiService,
-                                              logManager: logManager)
-
-        let passPlanRepository =
-            PassPlanRepository(localDatasource: LocalPassPlanDatasource(container: container),
-                               remoteDatasource: RemotePassPlanDatasource(apiService: apiService),
-                               userId: userData.user.ID,
-                               logManager: logManager)
-
-        let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
-
-        self.apiService = apiService
-        self.credentialManager = credentialManager
-        self.itemRepository = itemRepository
-        logger = .init(manager: logManager)
-        self.logManager = logManager
-        self.manualLogIn = manualLogIn
         paymentsManager = PaymentsManager(apiService: apiService,
                                           userDataProvider: appData,
                                           mainKeyProvider: mainKeyProvider,
                                           logger: logger,
                                           preferences: preferences,
                                           storage: kSharedUserDefaults)
-        self.preferences = preferences
-        self.shareRepository = shareRepository
-        self.symmetricKey = symmetricKey
-        telemetryEventRepository =
-            TelemetryEventRepository(localDatasource: LocalTelemetryEventDatasource(container: container),
-                                     remoteDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-                                     remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
-                                     passPlanRepository: passPlanRepository,
-                                     logManager: logManager,
-                                     scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                                                   thresholdProvider: preferences),
-                                     userId: userData.user.ID)
-        urlOpener = .init(preferences: preferences)
-        self.userData = userData
-        self.passPlanRepository = passPlanRepository
         upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
                                         counter: vaultsManager,
                                         totpChecker: itemRepository)
-        featureFlagsRepository =
-            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: container),
-                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
-                                   userId: userData.user.ID,
-                                   logManager: logManager)
         self.vaultsManager = vaultsManager
         super.init()
         finalizeInitialization()
-        self.vaultsManager.refresh()
+        vaultsManager.refresh()
         start()
         eventLoop.start()
         refreshPlan()
@@ -842,7 +789,8 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToDeleteAccount() {
-        let accountDeletion = AccountDeletionService(api: apiService)
+        let apiManager = resolve(\SharedToolingContainer.apiManager)
+        let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
         accountDeletion.initiateAccountDeletionProcess(over: topMostViewController,
