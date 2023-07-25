@@ -57,7 +57,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let mode: VaultMode
     private let logger = resolve(\SharedToolingContainer.logger)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let upgradeChecker: UpgradeCheckerProtocol
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -70,7 +70,7 @@ final class CreateEditVaultViewModel: ObservableObject {
         }
     }
 
-    init(mode: VaultMode, upgradeChecker: UpgradeCheckerProtocol) {
+    init(mode: VaultMode) {
         self.mode = mode
         switch mode {
         case .create:
@@ -82,8 +82,6 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedIcon = vault.displayPreferences.icon.icon
             title = vault.name
         }
-
-        self.upgradeChecker = upgradeChecker
         verifyLimitation()
     }
 }
