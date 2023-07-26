@@ -50,8 +50,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    let itemContextMenuHandler: ItemContextMenuHandler
-    let vaultsManager: VaultsManager
+    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     weak var delegate: ItemsTabViewModelDelegate?
 
@@ -61,10 +61,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
-    init(itemContextMenuHandler: ItemContextMenuHandler, vaultsManager: VaultsManager) {
-        self.itemContextMenuHandler = itemContextMenuHandler
-        self.vaultsManager = vaultsManager
-        finalizeInitialization()
+    init() {
+        setUp()
         refreshBanners()
     }
 }
@@ -72,7 +70,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
-    func finalizeInitialization() {
+    func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
 
         NotificationCenter.default
@@ -84,16 +82,17 @@ private extension ItemsTabViewModel {
     }
 
     func refreshBanners() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 var banners: [InfoBanner] = []
                 for banner in InfoBanner.allCases {
-                    var dismissed = preferences.dismissedBannerIds.contains { $0 == banner.id }
+                    var dismissed = self.preferences.dismissedBannerIds.contains { $0 == banner.id }
 
                     switch banner {
                     case .trial:
                         // If not in trial, consider dismissed
-                        let plan = try await passPlanRepository.getPlan()
+                        let plan = try await self.passPlanRepository.getPlan()
                         switch plan.planType {
                         case .trial:
                             break
@@ -119,8 +118,8 @@ private extension ItemsTabViewModel {
 
                 self.banners = banners
             } catch {
-                logger.error(error)
-                delegate?.itemsTabViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
     }
@@ -168,14 +167,15 @@ extension ItemsTabViewModel {
     }
 
     func viewDetail(of item: ItemUiModel) {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
-                                                                             itemId: item.itemId) {
-                    delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
+                if let itemContent = try await self.itemRepository.getItemContent(shareId: item.shareId,
+                                                                                  itemId: item.itemId) {
+                    self.delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                delegate?.itemsTabViewModelDidEncounter(error: error)
+                self.delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
     }

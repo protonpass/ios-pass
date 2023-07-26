@@ -54,16 +54,13 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
     private let logger = resolve(\SharedToolingContainer.logger)
-
-    private var manualLogIn: Bool
+    private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
 
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
 
-    init(manualLogIn: Bool) {
-        self.manualLogIn = manualLogIn
-    }
+    init() {}
 }
 
 // MARK: - Private APIs

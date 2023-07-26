@@ -82,7 +82,7 @@ public final class CredentialProviderCoordinator {
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
         bannerManager = .init(container: rootViewController)
-        clipboardManager = .init(preferences: preferences)
+        clipboardManager = .init()
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.context = context
         credentialManager = CredentialManager(logManager: logManager)
@@ -107,7 +107,8 @@ public final class CredentialProviderCoordinator {
             let symmetricKey = try appData.getSymmetricKey()
             SharedDataContainer.shared.resolve(container: container,
                                                symmetricKey: symmetricKey,
-                                               userData: userData)
+                                               userData: userData,
+                                               manualLogIn: false)
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
             showCredentialsView(userData: userData,
@@ -746,7 +747,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             return
         }
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           preferences: preferences,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
