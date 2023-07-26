@@ -122,7 +122,7 @@ public final class CredentialProviderCoordinator {
 
     func configureExtension() {
         guard appData.userData != nil else {
-            let notLoggedInView = NotLoggedInView(preferences: preferences) { [context] in
+            let notLoggedInView = NotLoggedInView { [context] in
                 context.completeExtensionConfigurationRequest()
             }
             showView(notLoggedInView)
@@ -492,7 +492,7 @@ private extension CredentialProviderCoordinator {
     }
 
     func showNotLoggedInView() {
-        let view = NotLoggedInView(preferences: preferences) { [weak self] in
+        let view = NotLoggedInView { [weak self] in
             self?.cancel(errorCode: .userCanceled)
         }
         showView(view)
