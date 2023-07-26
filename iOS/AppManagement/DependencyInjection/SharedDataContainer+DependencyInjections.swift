@@ -36,10 +36,12 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
 
     func resolve(container: NSPersistentContainer,
                  symmetricKey: SymmetricKey,
-                 userData: UserData) {
+                 userData: UserData,
+                 manualLogIn: Bool) {
         self.container.register { container }
         self.symmetricKey.register { symmetricKey }
         self.userData.register { userData }
+        self.manualLogIn.register { manualLogIn }
     }
 }
 
@@ -54,5 +56,9 @@ extension SharedDataContainer {
 
     var userData: Factory<UserData> {
         self { fatalError("userData not registered") }
+    }
+
+    var manualLogIn: Factory<Bool> {
+        self { fatalError("manualLogIn not registered") }
     }
 }
