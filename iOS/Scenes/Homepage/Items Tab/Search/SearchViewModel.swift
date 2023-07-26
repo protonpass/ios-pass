@@ -80,9 +80,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
 
-    init(itemContextMenuHandler: ItemContextMenuHandler,
-         symmetricKey: SymmetricKey,
-         vaultSelection: VaultSelection) {
+    init(itemContextMenuHandler: ItemContextMenuHandler, vaultSelection: VaultSelection) {
         self.itemContextMenuHandler = itemContextMenuHandler
         self.vaultSelection = vaultSelection
         setup()
