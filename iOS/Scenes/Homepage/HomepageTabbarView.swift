@@ -68,10 +68,6 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     }
 }
 
-extension Notification.Name {
-    static let forceRefreshItemsTab = Notification.Name("forceRefreshItemsTab")
-}
-
 protocol HomepageTabBarControllerDelegate: AnyObject {
     func homepageTabBarControllerDidSelectItemsTab()
     func homepageTabBarControllerWantToCreateNewItem()
@@ -147,19 +143,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
                 item.imageInsets = .init(top: 8, left: 0, bottom: -8, right: 0)
             }
         }
-
-        NotificationCenter.default.publisher(for: .forceRefreshItemsTab)
-            .sink { [weak self] _ in
-                // Workaround a SwiftUI bug that makes the view at the top untappable
-                // (vaut switcher & search bar) when a sheet is closed.
-                // Only applicable when currently selected tab is items tab
-                // https://stackoverflow.com/a/60492031
-                if self?.selectedViewController == self?.viewControllers?.first {
-                    self?.select(tab: .profile)
-                    self?.select(tab: .items)
-                }
-            }
-            .store(in: &cancellables)
 
         refreshTabBarIcons()
     }
