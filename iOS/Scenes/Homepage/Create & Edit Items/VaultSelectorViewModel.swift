@@ -47,10 +47,10 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            guard allVaults.count > 1 else { return }
+            guard self.allVaults.count > 1 else { return }
             do {
                 self.isFreeUser = try await upgradeChecker.isFreeUser()
-                if self.isFreeUser, let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
+                if self.isFreeUser, let primaryVault = self.allVaults.first(where: { $0.vault.isPrimary }) {
                     self.selectedVault = primaryVault.vault
                 }
             } catch {
