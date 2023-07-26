@@ -49,7 +49,7 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
             guard self.allVaults.count > 1 else { return }
             do {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
-                if self.isFreeUser, let primaryVault = allVaults.first(where: { $0.vault.isPrimary }) {
+                if self.isFreeUser, let primaryVault = self.allVaults.first(where: { $0.vault.isPrimary }) {
                     self.selectedVault = primaryVault.vault
                 }
             } catch {
