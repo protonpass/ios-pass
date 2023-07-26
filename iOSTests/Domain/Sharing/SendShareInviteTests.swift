@@ -51,8 +51,22 @@ final class SendShareInviteTests: XCTestCase {
         }
     }
     
-    func testSendShareInvite_ShouldNotBeValid_BecauseOfFreeStatus() async throws {
-
+    func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAdresss() async throws {
+        publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
+        passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
+        let vault = Vault(id: "uhppq5QrsteiLDPAogeigTxEthMQ695gHXCiUdGgzWfwA6O4Ac9M9EDmR4CbM45SfAyhpLWqsSoU9RdSrxGAhA",
+                          shareId: "y3f09sYakL5JFBA_7sNFZv0Xut6y-rvwTn-RMGWVOyuoKqb04RkiQGRjt5ULy-5-SlO-Ly2sfcijLcW1dqAdRA==",
+                          addressId: "fANeSjpLbBu4DCGmPpsNMq5roCKQZNqNFDTSFnasuQX_g4imqjQ2imcEhoONECMEd-ruB10N9XWdD9WL-ciXnw==",
+                          name: "Bear",
+                          description: "",
+                          displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences(),
+                          isPrimary: false)
+        var infos = SharingInfos(vault: vault, email: "Test@test.com", role: .read, itemsNum: 100)
+        do {
+            _ = try await sut(with: infos)
+            XCTFail("Error needs to be thrown")
+        } catch {
+            XCTAssertTrue(error is PPClientError)
+        }
     }
 }
-
