@@ -23,4 +23,5 @@ import Foundation
 public enum SharingErrors: LocalizedError {
     case incompleteInformation
     case failedEncryptionKeysFetching
+    case noPublicKeyAssociatedWithEmail
 }

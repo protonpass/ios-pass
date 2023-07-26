@@ -31,12 +31,14 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
     @Published private(set) var vaultName = ""
+    @Published private(set) var error: String?
 
     private var cancellables = Set<AnyCancellable>()
-
     private let setShareInviteUserEmail = resolve(\UseCasesContainer.setShareInviteUserEmail)
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let resetSharingInviteInfos = resolve(\UseCasesContainer.resetSharingInviteInfos)
+    private let checkEmailPublicKey = resolve(\UseCasesContainer.checkEmailPublicKey)
+    private var checkTask: Task<Void, Never>?
 
     init() {
         setUp()
@@ -69,10 +71,41 @@ private extension UserEmailViewModel {
         }
 
         $email
+            .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
-                self?.canContinue = newValue.isValidEmail()
+                if newValue.isValidEmail() {
+                    self?.checkEmail(email: newValue)
+                } else {
+                    self?.canContinue = false
+                }
             }
             .store(in: &cancellables)
+    }
+
+    func checkEmail(email: String) {
+        checkTask?.cancel()
+        error = nil
+        canContinue = false
+        checkTask = Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                self.checkTask?.cancel()
+                self.checkTask = nil
+            }
+            do {
+                if Task.isCancelled {
+                    return
+                }
+                _ = try await checkEmailPublicKey(with: email)
+                self.canContinue = true
+            } catch {
+                self.error = "You cannot share \(vaultName) vault with this email"
+            }
+        }
     }
 }

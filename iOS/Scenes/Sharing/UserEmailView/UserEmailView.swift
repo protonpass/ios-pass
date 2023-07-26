@@ -35,12 +35,20 @@ struct UserEmailView: View {
         VStack(alignment: .leading, spacing: 31) {
             headerView
 
-            TextField("Proton email address", text: $viewModel.email)
-                .font(.title)
-                .autocorrectionDisabled()
-                .keyboardType(.emailAddress)
-                .foregroundColor(PassColor.textNorm.toColor)
-                .focused($defaultFocus, equals: true)
+            VStack(alignment: .leading) {
+                TextField("Proton email address", text: $viewModel.email)
+                    .font(.title)
+                    .autocorrectionDisabled()
+                    .keyboardType(.emailAddress)
+                    .foregroundColor(PassColor.textNorm.toColor)
+                    .focused($defaultFocus, equals: true)
+
+                if let error = viewModel.error {
+                    Text(error)
+                        .font(.callout)
+                        .foregroundColor(PassColor.textWeak.toColor)
+                }
+            }
 
             Spacer()
         }
