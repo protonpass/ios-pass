@@ -18,12 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct ExtensionSettingsView: View {
     @StateObject var viewModel: ExtensionSettingsViewModel
+    private let theme = resolve(\SharedToolingContainer.theme)
 
     var body: some View {
         NavigationView {
@@ -69,7 +71,7 @@ struct ExtensionSettingsView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .theme(viewModel.preferences.theme)
+        .theme(theme)
         .localAuthentication(delayed: false,
                              onAuth: {},
                              onSuccess: {},
