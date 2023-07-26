@@ -44,7 +44,21 @@ public extension View {
                 .hidden())
     }
 
+    @ViewBuilder
     func errorAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
+        if let unwrappedError = error.wrappedValue {
+            alert(unwrappedError.localizedDescription,
+                  isPresented: .constant(true)) {
+                Button(buttonTitle) {
+                    error.wrappedValue = nil
+                }
+            }
+        } else {
+            self
+        }
+    }
+
+    func errorLocalizedAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
         let localizedAlertError = LocalizedAlertError(error: error.wrappedValue)
         return alert(isPresented: .constant(localizedAlertError != nil), error: localizedAlertError) { _ in
             Button(buttonTitle) {

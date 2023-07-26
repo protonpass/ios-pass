@@ -10,6 +10,7 @@
 		03533AC82F5409923B22B587 /* UserSharingStatusUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62E9861AC0EF5385C2714F2 /* UserSharingStatusUseCaseMock.generated.swift */; };
 		233B8DF9F3C2171097E3F584 /* ShareInviteRepositoryProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1591514FAFE9C76A530FCD5 /* ShareInviteRepositoryProtocolMock.generated.swift */; };
 		257643B547A3E22A61A627B3 /* ReportRepositoryProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C568872206CABDC15BF60087 /* ReportRepositoryProtocolMock.generated.swift */; };
+		259F729CCBEEEE2AFB240FB5 /* PublicKeyRepositoryProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7412105340D89D3D20B0B89A /* PublicKeyRepositoryProtocolMock.generated.swift */; };
 		2F569EEE26B55411B8A3A17E /* Pods_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D56F1368DBEE5894B8A7AA5C /* Pods_iOSUITests.framework */; };
 		350A97D22885BF7E00A7168B /* Protobufable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D12885BF7E00A7168B /* Protobufable.swift */; };
 		350A97D72885C0D500A7168B /* Share+ShareProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350A97D62885C0D500A7168B /* Share+ShareProviderTests.swift */; };
@@ -625,6 +626,7 @@
 		35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */; };
 		35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
+		38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */; };
 		43D8E83DEA8EF33F5E68C83E /* Pods_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */; };
 		5A505CC575D99C2B28D00648 /* ExtractLogsToFileUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */; };
 		5B0C74E02A2E083C00272CE8 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74DF2A2E083C00272CE8 /* OneTimePassword */; };
@@ -691,9 +693,11 @@
 		5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */; };
 		5B1453C32A6FFE240048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453C22A6FFE240048B022 /* Entities */; };
 		5B1453C52A6FFE380048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453C42A6FFE380048B022 /* Entities */; };
-		5B1453C82A7007620048B022 /* CryptoKeyError+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453C72A7007610048B022 /* CryptoKeyError+Extensions.swift */; };
 		5B1453CB2A7015C60048B022 /* UserSharingStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453CA2A7015C60048B022 /* UserSharingStatusTests.swift */; };
 		5B1453CD2A7019D00048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453CC2A7019D00048B022 /* Entities */; };
+		5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453CE2A7114530048B022 /* UserDataMock.swift */; };
+		5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */; };
+		5B1453D32A7123C00048B022 /* CheckEmailPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1535,8 +1539,10 @@
 		5B1453BC2A6EA8890048B022 /* SharingInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingInfos.swift; sourceTree = "<group>"; };
 		5B1453BE2A6EA9870048B022 /* Views+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views+Extensions.swift"; sourceTree = "<group>"; };
 		5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIRouter.swift; sourceTree = "<group>"; };
-		5B1453C72A7007610048B022 /* CryptoKeyError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoKeyError+Extensions.swift"; sourceTree = "<group>"; };
 		5B1453CA2A7015C60048B022 /* UserSharingStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSharingStatusTests.swift; sourceTree = "<group>"; };
+		5B1453CE2A7114530048B022 /* UserDataMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataMock.swift; sourceTree = "<group>"; };
+		5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendShareInviteTests.swift; sourceTree = "<group>"; };
+		5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckEmailPublicKey.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -1595,6 +1601,7 @@
 		690F4F6F7F80FCF4C1866632 /* Pods-Client-iOSTests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release-beta.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		692DBE97BA3DF802EC640BC1 /* Pods-Client.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-tf.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-tf.xcconfig"; sourceTree = "<group>"; };
 		6EDC794BB63195BC291133D5 /* PassPlanRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PassPlanRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
+		7412105340D89D3D20B0B89A /* PublicKeyRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PublicKeyRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
 		7513C54429A5E89B006F7160 /* AutoFillRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoFillRobot.swift; sourceTree = "<group>"; };
 		7513C54629A5F963006F7160 /* FaceIDRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceIDRobot.swift; sourceTree = "<group>"; };
 		7513C54829A5F9F9006F7160 /* GetStartedRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStartedRobot.swift; sourceTree = "<group>"; };
@@ -1626,6 +1633,7 @@
 		AE004305A8122A3370B89379 /* Pods-Core-CoreTests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.release-beta.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		AE600C4385B47ECF0C9F0C26 /* Pods-Client.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release-beta.xcconfig"; path = "Target Support Files/Pods-Client/Pods-Client.release-beta.xcconfig"; sourceTree = "<group>"; };
 		B1591514FAFE9C76A530FCD5 /* ShareInviteRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = ShareInviteRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
+		B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PassKeyManagerProtocolMock.generated.swift; sourceTree = "<group>"; };
 		B2480988BBA392616E26247C /* Pods-Client-ClientTests.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release-beta.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release-beta.xcconfig"; sourceTree = "<group>"; };
 		B877D1D5A97BF77E119AA848 /* Pods-AutoFill.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.release-tf.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.release-tf.xcconfig"; sourceTree = "<group>"; };
 		BD0AFF12E1F2F402CC2E9B32 /* Pods-AutoFill.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoFill.debug-qa.xcconfig"; path = "Target Support Files/Pods-AutoFill/Pods-AutoFill.debug-qa.xcconfig"; sourceTree = "<group>"; };
@@ -1949,7 +1957,6 @@
 		3543615A2941E192000CAE12 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				5B1453C62A7007310048B022 /* Extensions */,
 				3560843929DD4909001F7487 /* AppearanceSettings.swift */,
 				3571B59929BF173A008D4350 /* BannerManager.swift */,
 				3557441A295A064F00EA4AF0 /* ClipboardManager.swift */,
@@ -3156,6 +3163,7 @@
 				5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */,
 				5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */,
 				5B1453B82A6ACE160048B022 /* SendShareInvite.swift */,
+				5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -3192,18 +3200,11 @@
 			path = FeatureFlags;
 			sourceTree = "<group>";
 		};
-		5B1453C62A7007310048B022 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				5B1453C72A7007610048B022 /* CryptoKeyError+Extensions.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		5B1453C92A7015A30048B022 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
 				5B1453CA2A7015C60048B022 /* UserSharingStatusTests.swift */,
+				5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -3297,6 +3298,7 @@
 		5B503FF62A4E01C000E6681C /* Logs */ = {
 			isa = PBXGroup;
 			children = (
+				6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */,
 				5B503FF72A4E01D700E6681C /* GetLogsEntriesTests.swift */,
 				5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */,
 			);
@@ -3448,7 +3450,7 @@
 				355F05502A5C4807007DF053 /* KeychainMainkeyProviderMock.swift */,
 				6699002D29A77197001033B6 /* KeychainMock.swift */,
 				5B503FF42A4E018500E6681C /* LogingManagerMock.swift */,
-				6699002F29A771DB001033B6 /* MainKeyProviderMock.swift */,
+				5B1453CE2A7114530048B022 /* UserDataMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -3527,6 +3529,8 @@
 				526CC5CA408FFC5207B1928D /* FeatureFlagsRepositoryProtocolMock.generated.swift */,
 				6EDC794BB63195BC291133D5 /* PassPlanRepositoryProtocolMock.generated.swift */,
 				B1591514FAFE9C76A530FCD5 /* ShareInviteRepositoryProtocolMock.generated.swift */,
+				B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */,
+				7412105340D89D3D20B0B89A /* PublicKeyRepositoryProtocolMock.generated.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
@@ -4689,10 +4693,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */,
 				6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */,
 				6699002E29A77197001033B6 /* KeychainMock.swift in Sources */,
 				6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */,
 				5B503FF52A4E018500E6681C /* LogingManagerMock.swift in Sources */,
+				5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */,
 				5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */,
 				5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */,
 				3559BA9C2A5B321E0020E172 /* PreferencesTests.swift in Sources */,
@@ -4707,6 +4713,8 @@
 				E0475AFB1A5D9E16038813DC /* FeatureFlagsRepositoryProtocolMock.generated.swift in Sources */,
 				9888D9D21FFC53C849C70726 /* PassPlanRepositoryProtocolMock.generated.swift in Sources */,
 				233B8DF9F3C2171097E3F584 /* ShareInviteRepositoryProtocolMock.generated.swift in Sources */,
+				38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */,
+				259F729CCBEEEE2AFB240FB5 /* PublicKeyRepositoryProtocolMock.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4861,6 +4869,7 @@
 				354361552941D251000CAE12 /* OnboardingView.swift in Sources */,
 				356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */,
 				35E152C42A38866900E47E57 /* CreateEditCreditCardViewModel.swift in Sources */,
+				5B1453D32A7123C00048B022 /* CheckEmailPublicKey.swift in Sources */,
 				5B1453A12A69654A0048B022 /* SetShareInviteUserEmail.swift in Sources */,
 				353EC0162A05A7EF004AF925 /* TrashItemsSection.swift in Sources */,
 				354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */,
@@ -4875,7 +4884,6 @@
 				3559BA9F2A5B32550020E172 /* ClipboardExpiration.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
-				5B1453C82A7007620048B022 /* CryptoKeyError+Extensions.swift in Sources */,
 				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,

@@ -95,6 +95,10 @@ extension UseCasesContainer {
                                shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository(),
                                userData: SharedDataContainer.shared.userData()) }
     }
+
+    var checkEmailPublicKey: Factory<CheckEmailPublicKeyUseCase> {
+        self { CheckEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
+    }
 }
 
 // MARK: - Flags
