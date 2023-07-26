@@ -43,14 +43,14 @@ public final class CredentialProviderCoordinator {
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
+    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+    private let notificationService = resolve(\SharedServiceContainer.notificationService)
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let bannerManager: BannerManager
-    private let clipboardManager: ClipboardManager
     private let container: NSPersistentContainer
     private let context: ASCredentialProviderExtensionContext
-    private let credentialManager: CredentialManagerProtocol
-    private let logger: Logger
     private weak var rootViewController: UIViewController?
-    private var notificationService: LocalNotificationServiceProtocol
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -82,12 +82,8 @@ public final class CredentialProviderCoordinator {
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
         bannerManager = .init(container: rootViewController)
-        clipboardManager = .init()
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.context = context
-        credentialManager = CredentialManager(logManager: logManager)
-        logger = .init(manager: logManager)
-        notificationService = SharedServiceContainer.shared.notificationService()
         self.rootViewController = rootViewController
 
         // Post init
