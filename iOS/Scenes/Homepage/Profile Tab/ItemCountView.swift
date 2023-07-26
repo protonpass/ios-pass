@@ -19,13 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import SwiftUI
 import UIComponents
 
 private let kChipHeight: CGFloat = 56
 
 struct ItemCountView: View {
-    @StateObject var vaultsManager: VaultsManager
+    @StateObject private var vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     var body: some View {
         switch vaultsManager.state {

@@ -50,8 +50,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
-    let vaultsManager: VaultsManager
 
     weak var delegate: ItemsTabViewModelDelegate?
 
@@ -61,8 +61,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
-    init(vaultsManager: VaultsManager) {
-        self.vaultsManager = vaultsManager
+    init() {
         setUp()
         refreshBanners()
     }
