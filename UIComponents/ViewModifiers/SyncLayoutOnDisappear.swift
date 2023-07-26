@@ -20,6 +20,10 @@
 
 import SwiftUI
 
+/// https://developer.apple.com/forums/thread/718495
+/// https://developer.apple.com/forums/thread/724598?answerId=746253022#746253022
+/// This modifier is used to fix an issue of offset appearing on Home page screen after the dismiss of a sheet content
+/// This modifier should be applied to the content of the sheet being presented to force a recalculation of the view frame
 public struct SyncLayoutOnDisappear: ViewModifier {
     public init() {}
 
