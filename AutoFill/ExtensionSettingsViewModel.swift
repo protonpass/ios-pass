@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import UserNotifications
 
 protocol ExtensionSettingsViewModelDelegate: AnyObject {
@@ -43,32 +44,16 @@ final class ExtensionSettingsViewModel: ObservableObject {
 
     @Published var isLocked: Bool
 
-    let credentialManager: CredentialManagerProtocol
-    let itemRepository: ItemRepositoryProtocol
-    let shareRepository: ShareRepositoryProtocol
-    let passPlanRepository: PassPlanRepositoryProtocol
-    let logger: Logger
-    let logManager: LogManagerProtocol
-    let preferences: Preferences
-    private let notificationService: LocalNotificationServiceProtocol
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let notificationService = resolve(\SharedServiceContainer.notificationService)
     weak var delegate: ExtensionSettingsViewModelDelegate?
 
-    init(credentialManager: CredentialManagerProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol,
-         logManager: LogManagerProtocol,
-         preferences: Preferences,
-         notificationService: LocalNotificationServiceProtocol) {
-        self.credentialManager = credentialManager
-        self.itemRepository = itemRepository
-        self.shareRepository = shareRepository
-        self.passPlanRepository = passPlanRepository
-        self.logManager = logManager
-        logger = .init(manager: logManager)
-        self.preferences = preferences
-        self.notificationService = notificationService
-
+    init() {
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode
         isLocked = preferences.localAuthenticationMethod != .none
@@ -92,26 +77,28 @@ extension ExtensionSettingsViewModel {
 private extension ExtensionSettingsViewModel {
     func populateOrRemoveCredentials() {
         guard quickTypeBar != preferences.quickTypeBar else { return }
-        Task { @MainActor in
-            defer { delegate?.extensionSettingsViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.extensionSettingsViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
-                delegate?.extensionSettingsViewModelWantsToShowSpinner()
-                if quickTypeBar {
-                    try await credentialManager.insertAllCredentials(itemRepository: itemRepository,
-                                                                     shareRepository: shareRepository,
-                                                                     passPlanRepository: passPlanRepository,
-                                                                     forceRemoval: true)
-                    logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
+                self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
+                self.delegate?.extensionSettingsViewModelWantsToShowSpinner()
+                if self.quickTypeBar {
+                    try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
+                                                                          shareRepository: self.shareRepository,
+                                                                          passPlanRepository: self
+                                                                              .passPlanRepository,
+                                                                          forceRemoval: true)
+                    self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
                 } else {
-                    try await credentialManager.removeAllCredentials()
-                    logger.info("Nuked credential database QuickTypeBar \(quickTypeBar)")
+                    try await self.credentialManager.removeAllCredentials()
+                    self.logger.info("Nuked credential database QuickTypeBar \(self.quickTypeBar)")
                 }
-                preferences.quickTypeBar = quickTypeBar
+                self.preferences.quickTypeBar = self.quickTypeBar
             } catch {
-                logger.error(error)
-                quickTypeBar.toggle() // rollback to previous value
-                delegate?.extensionSettingsViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.quickTypeBar.toggle() // rollback to previous value
+                self.delegate?.extensionSettingsViewModelDidEncounter(error: error)
             }
         }
     }
