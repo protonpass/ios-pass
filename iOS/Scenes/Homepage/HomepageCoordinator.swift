@@ -169,10 +169,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
     }
-
-    override func coordinatorDidDismiss() {
-        NotificationCenter.default.post(name: .forceRefreshItemsTab, object: nil)
-    }
 }
 
 // MARK: - Private APIs

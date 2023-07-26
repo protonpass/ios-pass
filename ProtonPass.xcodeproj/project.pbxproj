@@ -665,6 +665,7 @@
 		5B1453832A6070260048B022 /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453822A6070260048B022 /* PublicKey+Test.swift */; };
 		5B1453872A6587730048B022 /* ShareInviteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453862A6587730048B022 /* ShareInviteRepository.swift */; };
 		5B1453892A6591B20048B022 /* InviteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453882A6591B20048B022 /* InviteRepository.swift */; };
+		5B1453D62A7162DC0048B022 /* SyncLayoutOnDisappear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1481,6 +1482,7 @@
 		5B1453862A6587730048B022 /* ShareInviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInviteRepository.swift; sourceTree = "<group>"; };
 		5B1453882A6591B20048B022 /* InviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteRepository.swift; sourceTree = "<group>"; };
 		5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ProtonPass 2.xcdatamodel"; sourceTree = "<group>"; };
+		5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncLayoutOnDisappear.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -2792,6 +2794,7 @@
 		35E506AB286F920300A3F6EA /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				5B1453D42A7162390048B022 /* ViewModifiers */,
 				5BB2B6E02A4332D4005E831C /* UIElements */,
 				5B0C750B2A321DAE00272CE8 /* Extensions */,
 				35E506AC286F920300A3F6EA /* UIComponents.h */,
@@ -3037,6 +3040,14 @@
 				5B1453652A6032D20048B022 /* SyncEvents.swift */,
 			);
 			path = ClientModels;
+			sourceTree = "<group>";
+		};
+		5B1453D42A7162390048B022 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */,
+			);
+			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
@@ -5120,6 +5131,7 @@
 				5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */,
 				3562D7272A56F88500232BBE /* View+ShowSpinner.swift in Sources */,
 				355DC72729E15EAF00946867 /* Representable.swift in Sources */,
+				5B1453D62A7162DC0048B022 /* SyncLayoutOnDisappear.swift in Sources */,
 				3562BC2F29950680003FCB13 /* View+OnFirstAppear.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

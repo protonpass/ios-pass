@@ -255,8 +255,6 @@ open class Coordinator: CoordinatorProtocol {
             return splitViewController.isCollapsed
         }
     }
-
-    open func coordinatorDidDismiss() {}
 }
 
 public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
