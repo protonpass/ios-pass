@@ -572,7 +572,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -1155,7 +1155,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func itemDetailViewModelWantsToUpgrade() {
