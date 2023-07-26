@@ -232,7 +232,7 @@ private extension Logger {
             return
         case .debug:
             #if DEBUG
-            if ProcessInfo.processInfo.environment["Debug_log_inactive"] != "1" {
+            if ProcessInfo.processInfo.environment["me.proton.pass.LogDebug"] != "1" {
                 printToConsole()
             }
             #endif

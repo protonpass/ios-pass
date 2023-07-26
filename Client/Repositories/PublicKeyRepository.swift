@@ -23,6 +23,7 @@ import CoreData
 import Entities
 import ProtonCore_Services
 
+// sourcery: AutoMockable
 public protocol PublicKeyRepositoryProtocol {
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }
