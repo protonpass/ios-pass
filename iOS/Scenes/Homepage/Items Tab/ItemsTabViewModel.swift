@@ -29,7 +29,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToHideSpinner()
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
-    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+    func itemsTabViewModelWantsToPresentVaultList()
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsToShowTrialDetail()
@@ -155,7 +155,7 @@ extension ItemsTabViewModel {
     func presentVaultList() {
         switch vaultsManager.state {
         case .loaded:
-            delegate?.itemsTabViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
+            delegate?.itemsTabViewModelWantsToPresentVaultList()
         default:
             logger.error("Can not present vault list. Vaults are not loaded.")
         }
