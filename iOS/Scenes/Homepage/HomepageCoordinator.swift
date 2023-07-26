@@ -46,7 +46,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Injected & self-initialized properties
     private let apiService: APIService
-    private let clipboardManager: ClipboardManager
+    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -121,7 +121,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
 
         self.apiService = apiService
-        clipboardManager = .init()
         self.credentialManager = credentialManager
         self.itemRepository = itemRepository
         logger = .init(manager: logManager)
