@@ -46,10 +46,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Injected & self-initialized properties
     private let apiService: APIService
-    private let clipboardManager: ClipboardManager
+    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let credentialManager: CredentialManagerProtocol
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let itemContextMenuHandler: ItemContextMenuHandler
+    private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
     private let logManager: LogManagerProtocol
@@ -121,11 +121,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
 
         self.apiService = apiService
-        clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        itemContextMenuHandler = .init(clipboardManager: clipboardManager,
-                                       itemRepository: itemRepository,
-                                       logManager: logManager)
         self.itemRepository = itemRepository
         logger = .init(manager: logManager)
         self.logManager = logManager
@@ -212,8 +208,7 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                                  vaultsManager: vaultsManager)
+        let itemsTabViewModel = ItemsTabViewModel(vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
         let profileTabViewModel = ProfileTabViewModel(vaultsManager: vaultsManager,
@@ -643,8 +638,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                        vaultSelection: vaultSelection)
+        let viewModel = SearchViewModel(vaultSelection: vaultSelection)
         viewModel.delegate = self
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
@@ -1010,7 +1004,6 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           preferences: preferences,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
@@ -1243,8 +1236,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
         let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
                                                currentVault: .init(vaultContent: currentVault),
-                                               upgradeChecker: upgradeChecker,
-                                               logManager: logManager)
+                                               upgradeChecker: upgradeChecker)
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
