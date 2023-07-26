@@ -61,7 +61,6 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 }
                 _ = try await self.sendShareInvite(with: infos)
             } catch {
-                print(error.localizedDescription)
                 self.error = error
             }
         }
