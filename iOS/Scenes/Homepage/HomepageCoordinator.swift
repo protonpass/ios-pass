@@ -28,7 +28,6 @@ import Factory
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Login
-import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import StoreKit
@@ -67,7 +66,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
-    private var paymentsUI: PaymentsUI?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var wordProvider: WordProviderProtocol?
@@ -196,8 +194,7 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(vaultsManager: vaultsManager,
-                                                    createEditItemDelegates: self)
+        let coordinator = CreateEditItemCoordinator(createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator
