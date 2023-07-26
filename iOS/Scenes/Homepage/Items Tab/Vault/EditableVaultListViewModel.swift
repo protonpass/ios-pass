@@ -40,13 +40,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let logger = resolve(\SharedToolingContainer.logger)
-    let vaultsManager: VaultsManager
+    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     weak var delegate: EditableVaultListViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(vaultsManager: VaultsManager) {
-        self.vaultsManager = vaultsManager
+    init() {
         setUp()
     }
 }
@@ -59,15 +58,16 @@ private extension EditableVaultListViewModel {
     }
 
     func doDelete(vault: Vault) {
-        Task { @MainActor in
-            defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.editableVaultListViewModelWantsToHideSpinner() }
             do {
-                delegate?.editableVaultListViewModelWantsToShowSpinner()
-                try await vaultsManager.delete(vault: vault)
-                delegate?.editableVaultListViewModelDidDelete(vault: vault)
+                self.delegate?.editableVaultListViewModelWantsToShowSpinner()
+                try await self.vaultsManager.delete(vault: vault)
+                self.delegate?.editableVaultListViewModelDidDelete(vault: vault)
             } catch {
-                logger.error(error)
-                delegate?.editableVaultListViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.editableVaultListViewModelDidEncounter(error: error)
             }
         }
     }
@@ -95,33 +95,35 @@ extension EditableVaultListViewModel {
     }
 
     func restoreAllTrashedItems() {
-        Task { @MainActor in
-            defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.editableVaultListViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Restoring all trashed items")
-                delegate?.editableVaultListViewModelWantsToShowSpinner()
-                try await vaultsManager.restoreAllTrashedItems()
-                delegate?.editableVaultListViewModelDidRestoreAllTrashedItems()
-                logger.info("Restored all trashed items")
+                self.logger.trace("Restoring all trashed items")
+                self.delegate?.editableVaultListViewModelWantsToShowSpinner()
+                try await self.vaultsManager.restoreAllTrashedItems()
+                self.delegate?.editableVaultListViewModelDidRestoreAllTrashedItems()
+                self.logger.info("Restored all trashed items")
             } catch {
-                logger.error(error)
-                delegate?.editableVaultListViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.editableVaultListViewModelDidEncounter(error: error)
             }
         }
     }
 
     func emptyTrash() {
-        Task { @MainActor in
-            defer { delegate?.editableVaultListViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.editableVaultListViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Emptying all trashed items")
-                delegate?.editableVaultListViewModelWantsToShowSpinner()
-                try await vaultsManager.permanentlyDeleteAllTrashedItems()
-                delegate?.editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
-                logger.info("Emptied all trashed items")
+                self.logger.trace("Emptying all trashed items")
+                self.delegate?.editableVaultListViewModelWantsToShowSpinner()
+                try await self.vaultsManager.permanentlyDeleteAllTrashedItems()
+                self.delegate?.editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
+                self.logger.info("Emptied all trashed items")
             } catch {
-                logger.error(error)
-                delegate?.editableVaultListViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.editableVaultListViewModelDidEncounter(error: error)
             }
         }
     }
