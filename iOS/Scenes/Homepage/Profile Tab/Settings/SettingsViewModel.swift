@@ -44,9 +44,9 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     let isShownAsSheet: Bool
     private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
-    private let logger: Logger
-    private let preferences: Preferences
-    private let syncEventLoop: SyncEventLoopActionProtocol
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
     let vaultsManager: VaultsManager
 
     let supportedBrowsers: [Browser]
@@ -67,15 +67,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(isShownAsSheet: Bool,
-         logManager: LogManagerProtocol,
-         preferences: Preferences,
-         vaultsManager: VaultsManager,
-         syncEventLoop: SyncEventLoopActionProtocol) {
+    init(isShownAsSheet: Bool, vaultsManager: VaultsManager) {
         self.isShownAsSheet = isShownAsSheet
-        logger = .init(manager: logManager)
-        self.preferences = preferences
-        self.syncEventLoop = syncEventLoop
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
