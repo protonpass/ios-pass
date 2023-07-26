@@ -758,13 +758,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = AccountViewModel(isShownAsSheet: asSheet,
-                                         apiService: apiService,
-                                         paymentsManager: paymentsManager,
-                                         logManager: logManager,
-                                         theme: preferences.theme,
-                                         username: userData.user.email ?? "",
-                                         passPlanRepository: passPlanRepository)
+        let viewModel = AccountViewModel(isShownAsSheet: asSheet, paymentsManager: paymentsManager)
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
@@ -1001,8 +995,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         let vaultContents = vaultsManager.getAllVaultContents()
         let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
                                                selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker,
-                                               logManager: logManager)
+                                               upgradeChecker: upgradeChecker)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
