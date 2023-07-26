@@ -726,10 +726,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
-        guard let vaultListUiModels, let upgradeChecker, let rootViewController else { return }
+        guard let vaultListUiModels, let rootViewController else { return }
         let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels,
-                                               selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker)
+                                               selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -816,9 +815,8 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
 extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        guard let upgradeChecker, let rootViewController else { return }
+        guard let rootViewController else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
-                                                  upgradeChecker: upgradeChecker,
                                                   mode: .createAliasLite,
                                                   titleMode: .create)
         viewModel.delegate = self
@@ -834,9 +832,8 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     }
 
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        guard let upgradeChecker, let rootViewController else { return }
-        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection,
-                                                 upgradeChecker: upgradeChecker)
+        guard let rootViewController else { return }
+        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)

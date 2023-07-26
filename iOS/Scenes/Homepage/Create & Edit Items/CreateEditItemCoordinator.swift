@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import ProtonCore_Login
 import SwiftUI
 import UIKit
@@ -39,7 +40,7 @@ typealias CreateEditItemDelegates =
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker: UpgradeCheckerProtocol
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let vaultsManager: VaultsManager
     private weak var createEditItemDelegates: CreateEditItemDelegates?
 
@@ -48,10 +49,8 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 
     weak var delegate: CreateEditItemCoordinatorDelegate?
 
-    init(upgradeChecker: UpgradeCheckerProtocol,
-         vaultsManager: VaultsManager,
+    init(vaultsManager: VaultsManager,
          createEditItemDelegates: CreateEditItemDelegates?) {
-        self.upgradeChecker = upgradeChecker
         self.vaultsManager = vaultsManager
         self.createEditItemDelegates = createEditItemDelegates
     }

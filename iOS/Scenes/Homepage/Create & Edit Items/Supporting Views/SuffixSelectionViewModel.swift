@@ -39,22 +39,9 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: SuffixSelectionViewModelDelegate?
 
-    init(suffixSelection: SuffixSelection,
-         upgradeChecker: UpgradeCheckerProtocol) {
+    init(suffixSelection: SuffixSelection) {
         self.suffixSelection = suffixSelection
-
         suffixSelection.attach(to: self, storeIn: &cancellables)
-
-        /*
-         Task { @MainActor in
-             do {
-                 shouldUpgrade = try await upgradeChecker.isFreeUser()
-             } catch {
-                 logger.error(error)
-                 delegate?.suffixSelectionViewModelDidEncounter(error: error)
-             }
-         }
-          */
     }
 
     func upgrade() {
