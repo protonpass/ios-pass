@@ -39,6 +39,7 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    private let logger = resolve(\SharedToolingContainer.logger)
     @Published var showingAliasAlert = false
     @Published private(set) var isAllowedToShare = false
 
@@ -47,24 +48,21 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private(set) var numberOfAliasforSharedVault = 0
-
-    private let logger: Logger
     let vaultsManager: VaultsManager
 
     weak var delegate: EditableVaultListViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(vaultsManager: VaultsManager, logManager: LogManagerProtocol) {
+    init(vaultsManager: VaultsManager) {
         self.vaultsManager = vaultsManager
-        logger = .init(manager: logManager)
-        finalizeInitialization()
+        setUp()
     }
 }
 
 // MARK: - Private APIs
 
 private extension EditableVaultListViewModel {
-    func finalizeInitialization() {
+    func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
         Task { @MainActor [weak self] in
             guard let self else {

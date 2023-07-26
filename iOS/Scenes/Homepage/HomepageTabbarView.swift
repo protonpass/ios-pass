@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -38,16 +39,12 @@ protocol HomepageTabDelegete: AnyObject {
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
-    let passPlanRepository: PassPlanRepositoryProtocol
-    let logManager: LogManagerProtocol
     weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
         let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
-                                                  profileTabView: .init(viewModel: profileTabViewModel),
-                                                  passPlanRepository: passPlanRepository,
-                                                  logManager: logManager)
+                                                  profileTabView: .init(viewModel: profileTabViewModel))
         controller.homepageTabBarControllerDelegate = delegate
         context.coordinator.homepageTabBarController = controller
         homepageCoordinator?.homepageTabDelegete = context.coordinator
@@ -88,21 +85,16 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private let profileTabView: ProfileTabView
     private var profileTabViewController: UIViewController?
 
-    private let passPlanRepository: PassPlanRepositoryProtocol
-    private let logger: Logger
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let logger = resolve(\SharedToolingContainer.logger)
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(itemsTabView: ItemsTabView,
-         profileTabView: ProfileTabView,
-         passPlanRepository: PassPlanRepositoryProtocol,
-         logManager: LogManagerProtocol) {
+    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
-        self.passPlanRepository = passPlanRepository
-        logger = .init(manager: logManager)
         super.init(nibName: nil, bundle: nil)
     }
 

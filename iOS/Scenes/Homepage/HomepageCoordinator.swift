@@ -48,7 +48,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let apiService: APIService
     private let clipboardManager: ClipboardManager
     private let credentialManager: CredentialManagerProtocol
-    private let eventLoop: SyncEventLoop
+    private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler: ItemContextMenuHandler
     private let itemRepository: ItemRepositoryProtocol
     private let logger: Logger
@@ -125,14 +125,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         self.apiService = apiService
         clipboardManager = .init(preferences: preferences)
         self.credentialManager = credentialManager
-        eventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                          userId: userData.user.ID,
-                          shareRepository: shareRepository,
-                          shareEventIDRepository: shareEventIDRepository,
-                          remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                          itemRepository: itemRepository,
-                          shareKeyRepository: shareKeyRepository,
-                          logManager: logManager)
         itemContextMenuHandler = .init(clipboardManager: clipboardManager,
                                        itemRepository: itemRepository,
                                        logManager: logManager)
@@ -245,7 +237,6 @@ private extension HomepageCoordinator {
 
     func start() {
         let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                                  syncEventLoop: eventLoop,
                                                   vaultsManager: vaultsManager)
         itemsTabViewModel.delegate = self
 
@@ -260,8 +251,6 @@ private extension HomepageCoordinator {
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
-                                          passPlanRepository: passPlanRepository,
-                                          logManager: logManager,
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
@@ -348,9 +337,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel(featureFlagsRepository: featureFlagsRepository,
-                                              upgradeChecker: upgradeChecker,
-                                              logManager: logManager)
+        let viewModel = ItemTypeListViewModel(upgradeChecker: upgradeChecker)
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -379,7 +366,6 @@ private extension HomepageCoordinator {
                                      titleMode: MailboxSection.Mode) {
         let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
                                                   upgradeChecker: upgradeChecker,
-                                                  logManager: logManager,
                                                   mode: mode,
                                                   titleMode: titleMode)
         viewModel.delegate = self
@@ -396,8 +382,7 @@ private extension HomepageCoordinator {
 
     func presentSuffixSelectionView(selection: SuffixSelection) {
         let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
-                                                 upgradeChecker: upgradeChecker,
-                                                 logManager: logManager)
+                                                 upgradeChecker: upgradeChecker)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -426,11 +411,7 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
-        let viewModel = CreateEditVaultViewModel(mode: mode,
-                                                 shareRepository: shareRepository,
-                                                 upgradeChecker: upgradeChecker,
-                                                 logManager: logManager,
-                                                 theme: preferences.theme)
+        let viewModel = CreateEditVaultViewModel(mode: mode, upgradeChecker: upgradeChecker)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
@@ -687,7 +668,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
         let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                        symmetricKey: symmetricKey,
                                         vaultSelection: vaultSelection)
         viewModel.delegate = self
         searchViewModel = viewModel
@@ -701,8 +681,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
-        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager,
-                                                   logManager: logManager)
+        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -817,11 +796,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet,
-                                          logManager: logManager,
-                                          preferences: preferences,
-                                          vaultsManager: vaultsManager,
-                                          syncEventLoop: eventLoop)
+        let viewModel = SettingsViewModel(isShownAsSheet: asSheet, vaultsManager: vaultsManager)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
@@ -985,9 +960,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToEdit(primaryVault: Vault) {
         let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
-        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
-                                                  primaryVault: primaryVault,
-                                                  shareRepository: shareRepository)
+        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults, primaryVault: primaryVault)
         viewModel.delegate = self
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
