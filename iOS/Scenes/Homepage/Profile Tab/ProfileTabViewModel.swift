@@ -52,7 +52,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
-    let vaultsManager: VaultsManager
 
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
@@ -82,9 +81,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
 
-    init(vaultsManager: VaultsManager, childCoordinatorDelegate: ChildCoordinatorDelegate) {
-        self.vaultsManager = vaultsManager
-
+    init(childCoordinatorDelegate: ChildCoordinatorDelegate) {
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator

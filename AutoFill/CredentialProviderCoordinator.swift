@@ -107,7 +107,8 @@ public final class CredentialProviderCoordinator {
             let symmetricKey = try appData.getSymmetricKey()
             SharedDataContainer.shared.resolve(container: container,
                                                symmetricKey: symmetricKey,
-                                               userData: userData)
+                                               userData: userData,
+                                               manualLogIn: false)
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
             showCredentialsView(userData: userData,
