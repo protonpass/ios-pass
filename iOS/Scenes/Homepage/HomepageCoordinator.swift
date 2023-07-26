@@ -45,26 +45,21 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let apiService: APIService
-    private let clipboardManager: ClipboardManager
-    private let credentialManager: CredentialManagerProtocol
+    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let itemContextMenuHandler: ItemContextMenuHandler
-    private let itemRepository: ItemRepositoryProtocol
-    private let logger: Logger
-    private let logManager: LogManagerProtocol
-    private let manualLogIn: Bool
+    private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager: PaymentsManager
-    private let preferences: Preferences
-    private let shareRepository: ShareRepositoryProtocol
-    private let symmetricKey: SymmetricKey
-    private let telemetryEventRepository: TelemetryEventRepositoryProtocol
-    private let urlOpener: UrlOpener
-    private let userData: UserData
-    private let passPlanRepository: PassPlanRepositoryProtocol
-    private let upgradeChecker: UpgradeCheckerProtocol
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    private let vaultsManager: VaultsManager
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
+    private let urlOpener = UrlOpener()
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = .init(container: rootViewController)
@@ -92,77 +87,15 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
          userData: UserData,
          appData: AppData,
          mainKeyProvider: MainKeyProvider) {
-        let itemRepository = ItemRepository(userData: userData,
-                                            symmetricKey: symmetricKey,
-                                            container: container,
-                                            apiService: apiService,
-                                            logManager: logManager)
-        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    symmetricKey: symmetricKey,
-                                                    userData: userData)
-        let shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                            apiService: apiService,
-                                                            logManager: logManager)
-        let shareRepository = ShareRepository(symmetricKey: symmetricKey,
-                                              userData: userData,
-                                              container: container,
-                                              apiService: apiService,
-                                              logManager: logManager)
-
-        let passPlanRepository =
-            PassPlanRepository(localDatasource: LocalPassPlanDatasource(container: container),
-                               remoteDatasource: RemotePassPlanDatasource(apiService: apiService),
-                               userId: userData.user.ID,
-                               logManager: logManager)
-
-        let vaultsManager = VaultsManager(manualLogIn: manualLogIn)
-
-        self.apiService = apiService
-        clipboardManager = .init(preferences: preferences)
-        self.credentialManager = credentialManager
-        itemContextMenuHandler = .init(clipboardManager: clipboardManager,
-                                       itemRepository: itemRepository,
-                                       logManager: logManager)
-        self.itemRepository = itemRepository
-        logger = .init(manager: logManager)
-        self.logManager = logManager
-        self.manualLogIn = manualLogIn
         paymentsManager = PaymentsManager(apiService: apiService,
                                           userDataProvider: appData,
                                           mainKeyProvider: mainKeyProvider,
                                           logger: logger,
                                           preferences: preferences,
                                           storage: kSharedUserDefaults)
-        self.preferences = preferences
-        self.shareRepository = shareRepository
-        self.symmetricKey = symmetricKey
-        telemetryEventRepository =
-            TelemetryEventRepository(localDatasource: LocalTelemetryEventDatasource(container: container),
-                                     remoteDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-                                     remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
-                                     passPlanRepository: passPlanRepository,
-                                     logManager: logManager,
-                                     scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                                                   thresholdProvider: preferences),
-                                     userId: userData.user.ID)
-        urlOpener = .init(preferences: preferences)
-        self.userData = userData
-        self.passPlanRepository = passPlanRepository
-        upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                        counter: vaultsManager,
-                                        totpChecker: itemRepository)
-        featureFlagsRepository =
-            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: container),
-                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
-                                   userId: userData.user.ID,
-                                   logManager: logManager)
-        self.vaultsManager = vaultsManager
         super.init()
         finalizeInitialization()
-        self.vaultsManager.refresh()
+        vaultsManager.refresh()
         start()
         eventLoop.start()
         refreshPlan()
@@ -208,12 +141,10 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let itemsTabViewModel = ItemsTabViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                                  vaultsManager: vaultsManager)
+        let itemsTabViewModel = ItemsTabViewModel()
         itemsTabViewModel.delegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(vaultsManager: vaultsManager,
-                                                      childCoordinatorDelegate: self)
+        let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
@@ -639,8 +570,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(itemContextMenuHandler: itemContextMenuHandler,
-                                        vaultSelection: vaultSelection)
+        let viewModel = SearchViewModel(vaultSelection: vaultSelection)
         viewModel.delegate = self
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
@@ -844,7 +774,8 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToDeleteAccount() {
-        let accountDeletion = AccountDeletionService(api: apiService)
+        let apiManager = resolve(\SharedToolingContainer.apiManager)
+        let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
         accountDeletion.initiateAccountDeletionProcess(over: topMostViewController,
@@ -1006,7 +937,6 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           preferences: preferences,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
@@ -1239,8 +1169,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
         let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
                                                currentVault: .init(vaultContent: currentVault),
-                                               upgradeChecker: upgradeChecker,
-                                               logManager: logManager)
+                                               upgradeChecker: upgradeChecker)
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
