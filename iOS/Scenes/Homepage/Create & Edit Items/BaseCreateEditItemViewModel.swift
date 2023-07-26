@@ -152,7 +152,7 @@ private extension BaseCreateEditItemViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.isFreeUser = try await upgradeChecker.isFreeUser()
+                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
                 self.delegate?.createEditItemViewModelDidEncounter(error: error)
