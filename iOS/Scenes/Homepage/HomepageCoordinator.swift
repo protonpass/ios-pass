@@ -148,7 +148,7 @@ private extension HomepageCoordinator {
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
-        let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
+        let placeholderView = ItemDetailPlaceholderView { [unowned self] in
             popTopViewController(animated: true)
         }
 
@@ -211,8 +211,7 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(upgradeChecker: upgradeChecker,
-                                                    vaultsManager: vaultsManager,
+        let coordinator = CreateEditItemCoordinator(vaultsManager: vaultsManager,
                                                     createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
@@ -220,8 +219,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(upgradeChecker: upgradeChecker,
-                                                vaultsManager: vaultsManager,
+        let coordinator = ItemDetailCoordinator(vaultsManager: vaultsManager,
                                                 itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
@@ -240,7 +238,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel(upgradeChecker: upgradeChecker)
+        let viewModel = ItemTypeListViewModel()
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -268,7 +266,6 @@ private extension HomepageCoordinator {
                                      mode: MailboxSelectionViewModel.Mode,
                                      titleMode: MailboxSection.Mode) {
         let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
-                                                  upgradeChecker: upgradeChecker,
                                                   mode: mode,
                                                   titleMode: titleMode)
         viewModel.delegate = self
@@ -284,8 +281,7 @@ private extension HomepageCoordinator {
     }
 
     func presentSuffixSelectionView(selection: SuffixSelection) {
-        let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
-                                                 upgradeChecker: upgradeChecker)
+        let viewModel = SuffixSelectionViewModel(suffixSelection: selection)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -314,7 +310,7 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
-        let viewModel = CreateEditVaultViewModel(mode: mode, upgradeChecker: upgradeChecker)
+        let viewModel = CreateEditVaultViewModel(mode: mode)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
@@ -447,7 +443,7 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
         if !isCollapsed() {
-            let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
+            let placeholderView = ItemDetailPlaceholderView { [unowned self] in
                 popTopViewController(animated: true)
             }
             push(placeholderView)
@@ -921,8 +917,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                    delegate: VaultSelectorViewModelDelegate) {
         let vaultContents = vaultsManager.getAllVaultContents()
         let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
-                                               selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker)
+                                               selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -1168,8 +1163,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         guard !allVaults.isEmpty,
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
         let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
-                                               currentVault: .init(vaultContent: currentVault),
-                                               upgradeChecker: upgradeChecker)
+                                               currentVault: .init(vaultContent: currentVault))
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
