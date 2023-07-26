@@ -123,7 +123,7 @@ private extension CreateEditVaultViewModel {
                 self.logger.trace("Editing vault \(oldVault.id)")
                 self.delegate?.createEditVaultViewModelWantsToShowSpinner()
                 try await self.shareRepository.edit(oldVault: oldVault,
-                                                    newVault: generateVaultProtobuf())
+                                                    newVault: self.generateVaultProtobuf())
                 self.delegate?.createEditVaultViewModelDidEditVault()
                 self.logger.info("Edited vault \(oldVault.id)")
             } catch {
@@ -140,7 +140,7 @@ private extension CreateEditVaultViewModel {
             do {
                 self.logger.trace("Creating vault")
                 self.delegate?.createEditVaultViewModelWantsToShowSpinner()
-                try await self.shareRepository.createVault(generateVaultProtobuf())
+                try await self.shareRepository.createVault(self.generateVaultProtobuf())
                 self.delegate?.createEditVaultViewModelDidCreateVault()
                 self.logger.info("Created vault")
             } catch {
