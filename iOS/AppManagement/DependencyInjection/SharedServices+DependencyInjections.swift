@@ -53,4 +53,12 @@ extension SharedServiceContainer {
                   logManager: self.logManager)
         }
     }
+
+    var clipboardManager: Factory<ClipboardManager> {
+        self { ClipboardManager() }
+    }
+
+    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
+        self { ItemContextMenuHandler() }
+    }
 }
