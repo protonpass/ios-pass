@@ -41,7 +41,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let vaultsManager: VaultsManager
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private weak var createEditItemDelegates: CreateEditItemDelegates?
 
     private var currentViewModel: BaseCreateEditItemViewModel?
@@ -49,9 +49,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 
     weak var delegate: CreateEditItemCoordinatorDelegate?
 
-    init(vaultsManager: VaultsManager,
-         createEditItemDelegates: CreateEditItemDelegates?) {
-        self.vaultsManager = vaultsManager
+    init(createEditItemDelegates: CreateEditItemDelegates?) {
         self.createEditItemDelegates = createEditItemDelegates
     }
 }
