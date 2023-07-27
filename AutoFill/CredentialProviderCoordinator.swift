@@ -37,12 +37,6 @@ import UIComponents
 import UserNotifications
 
 public final class CredentialProviderCoordinator {
-    deinit {
-        Task {
-            await logManager.saveAllLogs()
-        }
-    }
-
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
