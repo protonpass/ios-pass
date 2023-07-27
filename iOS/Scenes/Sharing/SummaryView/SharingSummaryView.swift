@@ -42,6 +42,7 @@ struct SharingSummaryView: View {
         .overlay {
             if viewModel.sendingInvite {
                 ProgressView()
+                    .scaleEffect(2)
             } else {
                 EmptyView()
             }
