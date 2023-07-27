@@ -178,6 +178,7 @@ struct GeneratePasswordView: View {
     private var characterCountRow: some View {
         HStack {
             Text("\(Int(viewModel.characterCount)) characters")
+                .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .animationsDisabled()
@@ -191,6 +192,7 @@ struct GeneratePasswordView: View {
     private var wordCountRow: some View {
         HStack {
             Text("\(Int(viewModel.wordCount)) word(s)")
+                .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                 .animationsDisabled()
