@@ -51,7 +51,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let paymentsManager: PaymentsManager
+    private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
@@ -77,22 +77,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
 
-    init(apiService: APIService,
-         container: NSPersistentContainer,
-         credentialManager: CredentialManagerProtocol,
-         logManager: LogManagerProtocol,
-         manualLogIn: Bool,
-         preferences: Preferences,
-         symmetricKey: SymmetricKey,
-         userData: UserData,
-         appData: AppData,
-         mainKeyProvider: MainKeyProvider) {
-        paymentsManager = PaymentsManager(apiService: apiService,
-                                          userDataProvider: appData,
-                                          mainKeyProvider: mainKeyProvider,
-                                          logger: logger,
-                                          preferences: preferences,
-                                          storage: kSharedUserDefaults)
+    override init() {
         super.init()
         finalizeInitialization()
         vaultsManager.refresh()
@@ -219,8 +204,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(vaultsManager: vaultsManager,
-                                                itemDetailViewModelDelegate: self)
+        let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
         itemDetailCoordinator = coordinator
@@ -681,7 +665,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = AccountViewModel(isShownAsSheet: asSheet, paymentsManager: paymentsManager)
+        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
@@ -689,7 +673,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet, vaultsManager: vaultsManager)
+        let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
