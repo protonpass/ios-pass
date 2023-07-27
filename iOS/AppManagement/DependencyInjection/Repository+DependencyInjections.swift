@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Factory
 import Foundation
@@ -35,5 +36,12 @@ extension RepositoryContainer {
     var reportRepository: Factory<ReportRepositoryProtocol> {
         self { ReportRepository(apiManager: SharedToolingContainer.shared.apiManager(),
                                 logManager: SharedToolingContainer.shared.logManager()) }
+    }
+
+    var inviteRepository: Factory<InviteRepositoryProtocol> {
+        self { InviteRepository(remoteInviteDatasource:
+            RemoteInviteDatasource(apiService: SharedToolingContainer.shared.apiManager()
+                .apiService),
+            logManager: SharedToolingContainer.shared.logManager()) }
     }
 }

@@ -20,13 +20,22 @@
 
 import Entities
 import Foundation
+import ProtonCore_Services
 
-public protocol RemoteInviteDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool
 }
 
-public extension RemoteInviteDatasourceProtocol {
+public actor RemoteInviteDatasource: RemoteInviteDatasourceProtocol {
+    private let apiService: APIService
+
+    public init(apiService: APIService) {
+        self.apiService = apiService
+    }
+}
+
+public extension RemoteInviteDatasource {
     func getPendingInvitesForUser() async throws -> [UserInvite] {
         let getSharesEndpoint = GetPendingInviteForUserEndpoint()
         let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
@@ -39,5 +48,3 @@ public extension RemoteInviteDatasourceProtocol {
         return response.isSuccessful
     }
 }
-
-public final class RemoteInviteDatasource: RemoteDatasource, RemoteInviteDatasourceProtocol {}

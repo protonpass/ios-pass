@@ -24,6 +24,7 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import Factory
 import MBProgressHUD
 import ProtonCore_AccountDeletion
@@ -122,6 +123,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
                 switch destination {
                 case .sharingFlow:
                     self?.presentSharingFlow()
+                case let .acceptRejectInvite(invite):
+                    self?.presentAcceptRejectInvite(with: invite)
                 }
             }
             .store(in: &cancellables)
@@ -1375,6 +1378,17 @@ extension HomepageCoordinator {
     func presentSharingFlow() {
         let userEmailView = UserEmailView()
         present(userEmailView)
+    }
+
+    func presentAcceptRejectInvite(with invite: UserInvite) {
+        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
+
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.mediumAndLarge,
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 }
 

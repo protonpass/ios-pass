@@ -22,7 +22,7 @@ import Foundation
 
 // MARK: - User Invite
 
-public struct UserInvite: Decodable {
+public struct UserInvite: Decodable, Hashable, Equatable, Identifiable {
     public let inviteToken: String
     public let remindersSent: Int
     public let targetType: Int
@@ -31,6 +31,28 @@ public struct UserInvite: Decodable {
     public let keys: [ItemKey]
     public let vaultData: VaultData?
     public let createTime: Int
+
+    public var id: String {
+        inviteToken
+    }
+
+    public var inviteType: TargetType {
+        .init(rawValue: Int64(targetType)) ?? .unknown
+    }
+
+    public init(inviteToken: String, remindersSent: Int, targetType: Int, targetID: String,
+                inviterEmail: String, invitedEmail: String, keys: [ItemKey], vaultData: VaultData?,
+                createTime: Int) {
+        self.inviteToken = inviteToken
+        self.remindersSent = remindersSent
+        self.targetType = targetType
+        self.targetID = targetID
+        self.inviterEmail = inviterEmail
+        self.invitedEmail = invitedEmail
+        self.keys = keys
+        self.vaultData = vaultData
+        self.createTime = createTime
+    }
 
     enum CodingKeys: String, CodingKey {
         case inviteToken = "InviteToken"
@@ -43,8 +65,18 @@ public struct UserInvite: Decodable {
         case vaultData = "VaultData"
         case createTime = "CreateTime"
     }
+}
 
-    public var inviteType: TargetType {
-        .init(rawValue: Int64(targetType)) ?? .unknown
+public extension UserInvite {
+    static var mocked: UserInvite {
+        UserInvite(inviteToken: "12345789",
+                   remindersSent: 1,
+                   targetType: 1,
+                   targetID: "id",
+                   inviterEmail: "inviterEmail@test.com",
+                   invitedEmail: "invitedEmail@test.com",
+                   keys: [],
+                   vaultData: VaultData.mocked,
+                   createTime: 1)
     }
 }
