@@ -29,6 +29,7 @@ struct CustomFieldSections: View {
     let itemContentType: ItemContentType
     let uiModels: [CustomFieldUiModel]
     let isFreeUser: Bool
+    let onSelectHiddenText: (String) -> Void
     let onSelectTotpToken: (String) -> Void
     let onUpgrade: () -> Void
 
@@ -50,6 +51,7 @@ struct CustomFieldSections: View {
                                          content: content,
                                          itemContentType: itemContentType,
                                          isFreeUser: isFreeUser,
+                                         onSelect: { onSelectHiddenText(content) },
                                          onUpgrade: onUpgrade)
             case .totp:
                 TotpCustomFieldSection(title: title,
@@ -103,6 +105,7 @@ struct HiddenCustomFieldSection: View {
     let content: String
     let itemContentType: ItemContentType
     let isFreeUser: Bool
+    let onSelect: () -> Void
     let onUpgrade: () -> Void
 
     var body: some View {
@@ -128,6 +131,12 @@ struct HiddenCustomFieldSection: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if !isFreeUser {
+                    onSelect()
+                }
+            }
 
             if !isFreeUser, !content.isEmpty {
                 CircleButton(icon: isShowingText ? IconProvider.eyeSlash : IconProvider.eye,
