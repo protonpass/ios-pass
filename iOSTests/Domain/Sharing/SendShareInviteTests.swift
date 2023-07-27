@@ -25,7 +25,7 @@ import Entities
 @testable import Client
 
 final class SendShareInviteTests: XCTestCase {
-    var sut: SendShareInviteUseCase!
+    var sut: SendVaultShareInviteUseCase!
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
@@ -35,7 +35,7 @@ final class SendShareInviteTests: XCTestCase {
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
-        sut = SendShareInvite(publicKeyRepository: publicKeyRepository,
+        sut = SendVaultShareInvite(publicKeyRepository: publicKeyRepository,
                               passKeyManager: passKeyManager,
                               shareInviteRepository: shareInviteRepository,
                               userData: UserData.mock)
@@ -47,11 +47,11 @@ final class SendShareInviteTests: XCTestCase {
             _ = try await sut(with: infos)
             XCTFail("Error needs to be thrown")
         } catch {
-            XCTAssertEqual(error as! SharingErrors, SharingErrors.incompleteInformation)
+            XCTAssertEqual(error as! SharingError, SharingError.incompleteInformation)
         }
     }
     
-    func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAdresss() async throws {
+    func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
         let vault = Vault(id: "uhppq5QrsteiLDPAogeigTxEthMQ695gHXCiUdGgzWfwA6O4Ac9M9EDmR4CbM45SfAyhpLWqsSoU9RdSrxGAhA",

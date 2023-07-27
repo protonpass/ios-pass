@@ -28,6 +28,7 @@ public struct Vault: Identifiable, Hashable, Equatable {
     public let description: String
     public let displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences
     public let isPrimary: Bool
+    public let isOwner: Bool
 
     public init(id: String,
                 shareId: String,
@@ -35,7 +36,8 @@ public struct Vault: Identifiable, Hashable, Equatable {
                 name: String,
                 description: String,
                 displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences,
-                isPrimary: Bool) {
+                isPrimary: Bool,
+                isOwner: Bool) {
         self.id = id
         self.shareId = shareId
         self.name = name
@@ -43,5 +45,6 @@ public struct Vault: Identifiable, Hashable, Equatable {
         self.displayPreferences = displayPreferences
         self.isPrimary = isPrimary
         self.addressId = addressId
+        self.isOwner = isOwner
     }
 }

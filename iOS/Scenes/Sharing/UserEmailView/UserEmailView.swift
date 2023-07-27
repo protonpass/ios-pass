@@ -35,22 +35,18 @@ struct UserEmailView: View {
         VStack(alignment: .leading, spacing: 31) {
             headerView
 
-            VStack(alignment: .leading) {
-                TextField("Proton email address", text: $viewModel.email)
-                    .font(.title)
-                    .autocorrectionDisabled()
-                    .keyboardType(.emailAddress)
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .focused($defaultFocus, equals: true)
-
-                if let error = viewModel.error {
-                    Text(error)
-                        .font(.callout)
-                        .foregroundColor(PassColor.textWeak.toColor)
-                }
-            }
+            emailTextField
 
             Spacer()
+        }
+        .overlay {
+            if viewModel.isChecking {
+                ProgressView("Checking")
+                    .scaleEffect(2)
+                    .font(.body)
+            } else {
+                EmptyView()
+            }
         }
         .onAppear {
             if #available(iOS 16, *) {
@@ -61,6 +57,7 @@ struct UserEmailView: View {
                 }
             }
         }
+        .animation(.default, value: viewModel.error)
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
@@ -83,6 +80,28 @@ private extension UserEmailView {
             Text("This user will receive an invitation to join your ‘\(viewModel.vaultName)’ vault.")
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
+        }
+    }
+}
+
+private extension UserEmailView {
+    var emailTextField: some View {
+        VStack(alignment: .leading) {
+            TextField("Proton email address", text: $viewModel.email)
+                .font(.title)
+                .autocorrectionDisabled()
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .foregroundColor(PassColor.textNorm.toColor)
+                .focused($defaultFocus, equals: true)
+                .accentColor(PassColor.interactionNorm.toColor)
+                .tint(PassColor.interactionNorm.toColor)
+
+            if let error = viewModel.error {
+                Text(error)
+                    .font(.callout)
+                    .foregroundColor(PassColor.textWeak.toColor)
+            }
         }
     }
 }
