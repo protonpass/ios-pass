@@ -1,6 +1,7 @@
 //
-// ItemKey.swift
-// Proton Pass - Created on 11/04/2023.
+//
+// AcceptRejectInviteView.swift
+// Proton Pass - Created on 27/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,21 +18,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Entities
+import SwiftUI
 
-public struct ItemKey: Codable, Equatable, Hashable {
-    /// Encrypted key encoded in base64
-    public let key: String
-    public let keyRotation: Int64
+struct AcceptRejectInviteView: View {
+    @StateObject var viewModel: AcceptRejectInviteViewModel
 
-    public init(key: String, keyRotation: Int64) {
-        self.key = key
-        self.keyRotation = keyRotation
+    var body: some View {
+        Text("Add some view here")
     }
+}
 
-    enum CodingKeys: String, CodingKey {
-        case key = "Key"
-        case keyRotation = "KeyRotation"
+struct AcceptRejectInviteView_Previews: PreviewProvider {
+    static var previews: some View {
+        AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: UserInvite.mocked))
     }
 }

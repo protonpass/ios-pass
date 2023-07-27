@@ -1,6 +1,7 @@
 //
-// ItemKey.swift
-// Proton Pass - Created on 11/04/2023.
+//
+// AcceptRejectInviteViewModel.swift
+// Proton Pass - Created on 27/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,21 +18,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
+import Entities
 import Foundation
 
-public struct ItemKey: Codable, Equatable, Hashable {
-    /// Encrypted key encoded in base64
-    public let key: String
-    public let keyRotation: Int64
-
-    public init(key: String, keyRotation: Int64) {
-        self.key = key
-        self.keyRotation = keyRotation
+final class AcceptRejectInviteViewModel: ObservableObject, Sendable {
+    init(invite: UserInvite) {
+        setUp()
     }
+}
 
-    enum CodingKeys: String, CodingKey {
-        case key = "Key"
-        case keyRotation = "KeyRotation"
-    }
+private extension AcceptRejectInviteViewModel {
+    func setUp() {}
 }

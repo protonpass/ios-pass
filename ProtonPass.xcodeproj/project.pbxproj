@@ -672,7 +672,6 @@
 		5B1453832A6070260048B022 /* PublicKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453822A6070260048B022 /* PublicKey+Test.swift */; };
 		5B1453872A6587730048B022 /* ShareInviteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453862A6587730048B022 /* ShareInviteRepository.swift */; };
 		5B1453892A6591B20048B022 /* InviteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453882A6591B20048B022 /* InviteRepository.swift */; };
-		5B1453D62A7162DC0048B022 /* SyncLayoutOnDisappear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */; };
 		5B14538D2A681B400048B022 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
 		5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */; };
 		5B1453942A6832780048B022 /* UserEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453922A6832780048B022 /* UserEmailView.swift */; };
@@ -702,6 +701,12 @@
 		5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453CE2A7114530048B022 /* UserDataMock.swift */; };
 		5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */; };
 		5B1453D32A7123C00048B022 /* CheckEmailPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */; };
+		5B1453D62A7162DC0048B022 /* SyncLayoutOnDisappear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */; };
+		5B1453D82A7263700048B022 /* GetPendingUserInvitations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */; };
+		5B1453DB2A726AD00048B022 /* InviteBannerViewStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */; };
+		5B1453DD2A727E0F0048B022 /* InviteBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */; };
+		5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */; };
+		5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1521,7 +1526,6 @@
 		5B1453862A6587730048B022 /* ShareInviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInviteRepository.swift; sourceTree = "<group>"; };
 		5B1453882A6591B20048B022 /* InviteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteRepository.swift; sourceTree = "<group>"; };
 		5B14538A2A66B5350048B022 /* ProtonPass 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ProtonPass 2.xcdatamodel"; sourceTree = "<group>"; };
-		5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncLayoutOnDisappear.swift; sourceTree = "<group>"; };
 		5B14538C2A681B400048B022 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Router+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B1453922A6832780048B022 /* UserEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailView.swift; sourceTree = "<group>"; };
@@ -1548,6 +1552,12 @@
 		5B1453CE2A7114530048B022 /* UserDataMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataMock.swift; sourceTree = "<group>"; };
 		5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendShareInviteTests.swift; sourceTree = "<group>"; };
 		5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckEmailPublicKey.swift; sourceTree = "<group>"; };
+		5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncLayoutOnDisappear.swift; sourceTree = "<group>"; };
+		5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingUserInvitations.swift; sourceTree = "<group>"; };
+		5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteBannerViewStack.swift; sourceTree = "<group>"; };
+		5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteBannerView.swift; sourceTree = "<group>"; };
+		5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteView.swift; sourceTree = "<group>"; };
+		5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteViewModel.swift; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -2378,6 +2388,7 @@
 		3569B2A229B7888B0070830B /* Items Tab */ = {
 			isa = PBXGroup;
 			children = (
+				5B1453D92A726A8F0048B022 /* InviteBanner */,
 				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */,
@@ -2985,6 +2996,7 @@
 		35E5070B286FB57800A3F6EA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */,
 				5B1453902A6831C60048B022 /* Sharing */,
 				35E5070C286FB58800A3F6EA /* App */,
 				35F8CCFE29B617510017DBC6 /* Homepage */,
@@ -3122,14 +3134,6 @@
 			path = ClientModels;
 			sourceTree = "<group>";
 		};
-		5B1453D42A7162390048B022 /* ViewModifiers */ = {
-			isa = PBXGroup;
-			children = (
-				5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */,
-			);
-			path = ViewModifiers;
-	sourceTree = "<group>";
-		};
 		5B14538B2A681AFA0048B022 /* Routers */ = {
 			isa = PBXGroup;
 			children = (
@@ -3167,7 +3171,7 @@
 			path = UserPermissionView;
 			sourceTree = "<group>";
 		};
-		5B14539B2A6963B00048B022 /* Sharing */ = {
+		5B14539B2A6963B00048B022 /* Sharing+Invitations */ = {
 			isa = PBXGroup;
 			children = (
 				5B1453B62A6AB9F00048B022 /* UserSharingStatus.swift */,
@@ -3178,8 +3182,9 @@
 				5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */,
 				5B1453B82A6ACE160048B022 /* SendShareInvite.swift */,
 				5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */,
+				5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */,
 			);
-			path = Sharing;
+			path = "Sharing+Invitations";
 			sourceTree = "<group>";
 		};
 		5B1453A42A69660E0048B022 /* Sharing */ = {
@@ -3221,6 +3226,32 @@
 				5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */,
 			);
 			path = Sharing;
+			sourceTree = "<group>";
+		};
+		5B1453D42A7162390048B022 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		5B1453D92A726A8F0048B022 /* InviteBanner */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */,
+				5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */,
+			);
+			path = InviteBanner;
+			sourceTree = "<group>";
+		};
+		5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */,
+				5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */,
+			);
+			path = AcceptRejectInviteView;
 			sourceTree = "<group>";
 		};
 		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
@@ -3271,7 +3302,7 @@
 			children = (
 				5B1453B52A6AB4750048B022 /* FeatureFlags */,
 				5B1453AB2A696C5B0048B022 /* Vault */,
-				5B14539B2A6963B00048B022 /* Sharing */,
+				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
 				35CEA8CC2A603FFE00343A4E /* Local Authentication */,
 				5B503FE32A4D6D7000E6681C /* Logs */,
@@ -4800,6 +4831,7 @@
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
+				5B1453DB2A726AD00048B022 /* InviteBannerViewStack.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
 				5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */,
 				353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */,
@@ -4892,6 +4924,7 @@
 				354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */,
 				5B503FFC2A52C04D00E6681C /* SendUserBugReport.swift in Sources */,
 				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
+				5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */,
 				35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
@@ -4906,6 +4939,7 @@
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				3559BA952A5AE3DE0020E172 /* PassModule.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
+				5B1453D82A7263700048B022 /* GetPendingUserInvitations.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
 				35661CB429B8BFCD003BBAD6 /* EditableVaultListViewModel.swift in Sources */,
 				5B503FE52A4D6FD000E6681C /* ExtractLogsToFile.swift in Sources */,
@@ -4991,11 +5025,13 @@
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
+				5B1453DD2A727E0F0048B022 /* InviteBannerView.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
+				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
