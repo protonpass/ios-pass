@@ -370,9 +370,3 @@ private struct ItemListView<Content: View>: View {
         .refreshable(action: onRefresh)
     }
 }
-
-public extension View {
-    func syncLayoutOnDisappear() -> some View {
-        modifier(SyncLayoutOnDisappear())
-    }
-}
