@@ -39,10 +39,7 @@ import UIKit
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
-    private lazy var logger: Logger = .init(manager: logManager)
     private var container: NSPersistentContainer
-    private lazy var credentialManager: CredentialManagerProtocol = CredentialManager(logManager: logManager)
-
     private var isUITest: Bool
 
     private var homepageCoordinator: HomepageCoordinator?
@@ -54,9 +51,10 @@ final class AppCoordinator {
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
-    private let appData = resolve(\SharedToolingContainer.appData)
+    private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
 
     init(window: UIWindow) {
         self.window = window
@@ -154,22 +152,12 @@ final class AppCoordinator {
 
     private func showHomeScene(userData: UserData, manualLogIn: Bool) {
         do {
-            let apiService = apiManager.apiService
             let symmetricKey = try appData.getSymmetricKey()
             SharedDataContainer.shared.resolve(container: container,
                                                symmetricKey: symmetricKey,
                                                userData: userData,
                                                manualLogIn: manualLogIn)
-            let homepageCoordinator = HomepageCoordinator(apiService: apiService,
-                                                          container: container,
-                                                          credentialManager: credentialManager,
-                                                          logManager: logManager,
-                                                          manualLogIn: manualLogIn,
-                                                          preferences: preferences,
-                                                          symmetricKey: symmetricKey,
-                                                          userData: userData,
-                                                          appData: appData,
-                                                          mainKeyProvider: mainKeyProvider)
+            let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
             self.homepageCoordinator = homepageCoordinator
             welcomeCoordinator = nil

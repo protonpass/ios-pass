@@ -32,15 +32,13 @@ final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let vaultsManager: VaultsManager
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private weak var itemDetailViewModelDelegate: ItemDetailViewModelDelegate?
     private var currentViewModel: BaseItemDetailViewModel?
 
     weak var delegate: ItemDetailCoordinatorDelegate?
 
-    init(vaultsManager: VaultsManager,
-         itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
-        self.vaultsManager = vaultsManager
+    init(itemDetailViewModelDelegate: ItemDetailViewModelDelegate?) {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
     }
 

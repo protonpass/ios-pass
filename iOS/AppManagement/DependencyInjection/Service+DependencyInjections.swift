@@ -1,6 +1,6 @@
 //
-// Services+DependencyInjections.swift
-// Proton Pass - Created on 20/07/2023.
+// Service+DependencyInjections.swift
+// Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -31,6 +31,10 @@ final class ServiceContainer: SharedContainer, AutoRegistering {
 }
 
 extension ServiceContainer {
+    var paymentManager: Factory<PaymentsManager> {
+        self { .init(storage: kSharedUserDefaults) }
+    }
+
     var shareInviteService: Factory<ShareInviteServiceProtocol> {
         self { ShareInviteService() }
     }
