@@ -165,10 +165,4 @@ extension SharedRepositoryContainer {
     var remoteSyncEventsDatasource: Factory<RemoteSyncEventsDatasourceProtocol> {
         self { RemoteSyncEventsDatasource(apiService: self.apiService) }
     }
-
-    var upgradeChecker: ParameterFactory<LimitationCounterProtocol, UpgradeCheckerProtocol> {
-        self { UpgradeChecker(passPlanRepository: self.passPlanRepository(),
-                              counter: $0,
-                              totpChecker: self.itemRepository()) }
-    }
 }

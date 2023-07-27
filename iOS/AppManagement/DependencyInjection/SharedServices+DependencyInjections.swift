@@ -53,4 +53,22 @@ extension SharedServiceContainer {
                   logManager: self.logManager)
         }
     }
+
+    var clipboardManager: Factory<ClipboardManager> {
+        self { ClipboardManager() }
+    }
+
+    var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
+        self { ItemContextMenuHandler() }
+    }
+
+    var vaultsManager: Factory<VaultsManager> {
+        self { VaultsManager() }
+    }
+
+    var upgradeChecker: Factory<UpgradeCheckerProtocol> {
+        self { UpgradeChecker(passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                              counter: self.vaultsManager(),
+                              totpChecker: SharedRepositoryContainer.shared.itemRepository()) }
+    }
 }

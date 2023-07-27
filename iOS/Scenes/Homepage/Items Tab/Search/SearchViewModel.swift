@@ -64,7 +64,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
     private(set) var vaultSelection: VaultSelection
-    let itemContextMenuHandler: ItemContextMenuHandler
+    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     // Self-intialized properties
     private var lastSearchQuery = ""
@@ -80,8 +80,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
 
-    init(itemContextMenuHandler: ItemContextMenuHandler, vaultSelection: VaultSelection) {
-        self.itemContextMenuHandler = itemContextMenuHandler
+    init(vaultSelection: VaultSelection) {
         self.vaultSelection = vaultSelection
         setup()
     }
