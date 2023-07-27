@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 import SwiftUI
 import UIComponents
 
@@ -30,15 +31,12 @@ protocol CustomFieldAdditionDelegate: AnyObject {
 final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
     deinit { print(deinitMessage) }
 
+    private let theme = resolve(\SharedToolingContainer.theme)
     weak var rootViewController: UIViewController!
-    let preferences: Preferences
     let delegate: CustomFieldAdditionDelegate
 
-    init(rootViewController: UIViewController,
-         preferences: Preferences,
-         delegate: CustomFieldAdditionDelegate) {
+    init(rootViewController: UIViewController, delegate: CustomFieldAdditionDelegate) {
         self.rootViewController = rootViewController
-        self.preferences = preferences
         self.delegate = delegate
     }
 
@@ -59,7 +57,7 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        viewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+        viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
         rootViewController.topMostViewController.present(viewController, animated: true)
     }
 }

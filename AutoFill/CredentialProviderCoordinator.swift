@@ -82,7 +82,7 @@ public final class CredentialProviderCoordinator {
     init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
         bannerManager = .init(container: rootViewController)
-        clipboardManager = .init(preferences: preferences)
+        clipboardManager = .init()
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.context = context
         credentialManager = CredentialManager(logManager: logManager)
@@ -107,7 +107,8 @@ public final class CredentialProviderCoordinator {
             let symmetricKey = try appData.getSymmetricKey()
             SharedDataContainer.shared.resolve(container: container,
                                                symmetricKey: symmetricKey,
-                                               userData: userData)
+                                               userData: userData,
+                                               manualLogIn: false)
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
             showCredentialsView(userData: userData,
@@ -725,10 +726,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
-        guard let vaultListUiModels, let upgradeChecker, let rootViewController else { return }
+        guard let vaultListUiModels, let rootViewController else { return }
         let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels,
-                                               selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker)
+                                               selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -746,7 +746,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             return
         }
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           preferences: preferences,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
@@ -816,9 +815,8 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
 extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        guard let upgradeChecker, let rootViewController else { return }
+        guard let rootViewController else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
-                                                  upgradeChecker: upgradeChecker,
                                                   mode: .createAliasLite,
                                                   titleMode: .create)
         viewModel.delegate = self
@@ -834,9 +832,8 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     }
 
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        guard let upgradeChecker, let rootViewController else { return }
-        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection,
-                                                 upgradeChecker: upgradeChecker)
+        guard let rootViewController else { return }
+        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
