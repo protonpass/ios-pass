@@ -39,10 +39,6 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    deinit {
-        print("woot deinit")
-    }
-
     func sendInvite() {
         lastTask?.cancel()
         lastTask = Task { @MainActor [weak self] in
@@ -69,11 +65,6 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
 
 private extension SharingSummaryViewModel {
     func setUp() {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            self.infos = await self.getShareInviteInfos()
-        }
+        infos = getShareInviteInfos()
     }
 }

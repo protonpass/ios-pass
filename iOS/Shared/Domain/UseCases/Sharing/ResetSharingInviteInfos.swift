@@ -20,13 +20,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-protocol ResetSharingInviteInfosUseCase: Sendable {
-    func execute() async
+protocol ResetSharingInviteInfosUseCase {
+    func execute()
 }
 
 extension ResetSharingInviteInfosUseCase {
-    func callAsFunction() async {
-        await execute()
+    func callAsFunction() {
+        execute()
     }
 }
 
@@ -37,7 +37,7 @@ final class ResetSharingInviteInfos: ResetSharingInviteInfosUseCase {
         self.shareInviteService = shareInviteService
     }
 
-    func execute() async {
-        await shareInviteService.resetShareInviteInformations()
+    func execute() {
+        shareInviteService.resetShareInviteInformations()
     }
 }

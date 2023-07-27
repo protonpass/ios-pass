@@ -60,7 +60,8 @@ final class SendShareInviteTests: XCTestCase {
                           name: "Bear",
                           description: "",
                           displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences(),
-                          isPrimary: false)
+                          isPrimary: false,
+                          isOwner: true)
         var infos = SharingInfos(vault: vault, email: "Test@test.com", role: .read, itemsNum: 100)
         do {
             _ = try await sut(with: infos)
