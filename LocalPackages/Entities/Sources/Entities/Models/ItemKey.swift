@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ItemKey: Codable {
+public struct ItemKey: Codable, Equatable, Hashable {
     /// Encrypted key encoded in base64
     public let key: String
     public let keyRotation: Int64
