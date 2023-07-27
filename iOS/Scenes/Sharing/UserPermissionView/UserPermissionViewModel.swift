@@ -24,41 +24,6 @@ import Entities
 import Factory
 import Foundation
 
-extension ShareRole {
-    var title: String {
-        switch self {
-        case .read:
-            return "Can View"
-        case .write:
-            return "Can Edit"
-        case .admin:
-            return "Can Manage"
-        }
-    }
-
-    var description: String {
-        switch self {
-        case .read:
-            return "Can view items in this vault."
-        case .write:
-            return "Can create, edit, delete and export items in this vault."
-        case .admin:
-            return "Can grant and revoke access to this vault."
-        }
-    }
-
-    var summary: String {
-        switch self {
-        case .read:
-            return "only view items in this vault."
-        case .write:
-            return "create, edit, delete and export items in this vault."
-        case .admin:
-            return "grant and revoke access to this vault."
-        }
-    }
-}
-
 @MainActor
 final class UserPermissionViewModel: ObservableObject, Sendable {
     @Published private(set) var selectedUserRole: ShareRole = .read
@@ -75,28 +40,18 @@ final class UserPermissionViewModel: ObservableObject, Sendable {
     }
 
     func select(role: ShareRole) {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            await self.setShareInviteRole(with: role)
-            self.selectedUserRole = role
-        }
+        setShareInviteRole(with: role)
+        selectedUserRole = role
     }
 }
 
 private extension UserPermissionViewModel {
     func setUp() {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            let infos = await self.getShareInviteInfos()
-            self.selectedUserRole = infos.role ?? .read
-            await self.setShareInviteRole(with: self.selectedUserRole)
-            self.canContinue = true
-            self.vaultName = infos.vault?.name ?? ""
-            self.email = infos.email ?? ""
-        }
+        let infos = getShareInviteInfos()
+        selectedUserRole = infos.role ?? .read
+        setShareInviteRole(with: selectedUserRole)
+        canContinue = true
+        vaultName = infos.vault?.name ?? ""
+        email = infos.email ?? ""
     }
 }

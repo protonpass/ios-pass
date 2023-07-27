@@ -20,13 +20,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-protocol SetShareInviteUserEmailUseCase: Sendable {
-    func execute(with email: String) async
+protocol SetShareInviteUserEmailUseCase {
+    func execute(with email: String)
 }
 
 extension SetShareInviteUserEmailUseCase {
-    func callAsFunction(with email: String) async {
-        await execute(with: email)
+    func callAsFunction(with email: String) {
+        execute(with: email)
     }
 }
 
@@ -37,7 +37,7 @@ final class SetShareInviteUserEmail: SetShareInviteUserEmailUseCase {
         self.shareInviteService = shareInviteService
     }
 
-    func execute(with email: String) async {
-        await shareInviteService.setCurrentDestinationUserEmail(with: email)
+    func execute(with email: String) {
+        shareInviteService.setCurrentDestinationUserEmail(with: email)
     }
 }
