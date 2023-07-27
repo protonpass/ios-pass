@@ -3067,6 +3067,7 @@
 			children = (
 				355E92772A59D2D500C22703 /* Factory+Extensions.swift */,
 				5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */,
+				5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */,
 				359DB2A82A70435800549466 /* Service+DependencyInjections.swift */,
 				350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */,
 				35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */,
@@ -3074,7 +3075,6 @@
 				5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */,
 				5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */,
 				5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */,
-				5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */,
 			);
 			path = DependencyInjection;
 			sourceTree = "<group>";
