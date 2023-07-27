@@ -39,7 +39,7 @@ import UserNotifications
 public final class CredentialProviderCoordinator {
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let appData = resolve(\SharedToolingContainer.appData)
+    private let appData = resolve(\SharedDataContainer.appData)
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
