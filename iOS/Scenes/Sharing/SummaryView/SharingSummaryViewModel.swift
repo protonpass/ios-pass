@@ -33,7 +33,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
 
     private var lastTask: Task<Void, Never>?
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
-    private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
+    private let sendShareInvite = resolve(\UseCasesContainer.sendVaultShareInvite)
 
     init() {
         setUp()
