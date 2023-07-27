@@ -19,12 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
 struct NotLoggedInView: View {
-    let preferences: Preferences
+    private let theme = resolve(\SharedToolingContainer.theme)
     let onCancel: () -> Void
 
     var body: some View {
@@ -48,6 +49,6 @@ struct NotLoggedInView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .theme(preferences.theme)
+        .theme(theme)
     }
 }
