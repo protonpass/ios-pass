@@ -122,25 +122,17 @@ public final class CredentialProviderCoordinator {
 
     func configureExtension() {
         guard appData.userData != nil else {
-            let view = NotLoggedInView(preferences: preferences) { [context] in
+            let notLoggedInView = NotLoggedInView(preferences: preferences) { [context] in
                 context.completeExtensionConfigurationRequest()
             }
-            showView(view)
+            showView(notLoggedInView)
             return
         }
 
-        guard let itemRepository, let shareRepository, let upgradeChecker else { return }
-
-        let viewModel = ExtensionSettingsViewModel(credentialManager: credentialManager,
-                                                   itemRepository: itemRepository,
-                                                   shareRepository: shareRepository,
-                                                   passPlanRepository: upgradeChecker.passPlanRepository,
-                                                   logManager: logManager,
-                                                   preferences: preferences,
-                                                   notificationService: notificationService)
+        let viewModel = ExtensionSettingsViewModel()
         viewModel.delegate = self
-        let view = ExtensionSettingsView(viewModel: viewModel)
-        showView(view)
+        let settingsView = ExtensionSettingsView(viewModel: viewModel)
+        showView(settingsView)
     }
 
     /// QuickType bar support
@@ -263,6 +255,10 @@ public final class CredentialProviderCoordinator {
     private func makeSymmetricKeyAndRepositories() {
         guard let userData = appData.userData,
               let symmetricKey = try? appData.getSymmetricKey() else { return }
+        SharedDataContainer.shared.resolve(container: container,
+                                           symmetricKey: symmetricKey,
+                                           userData: userData,
+                                           manualLogIn: false)
         let apiService = apiManager.apiService
 
         let repositoryManager = RepositoryManager(apiService: apiService,
