@@ -89,11 +89,12 @@ extension UseCasesContainer {
         self { ResetSharingInviteInfos(shareInviteService: ServiceContainer.shared.shareInviteService()) }
     }
 
-    var sendShareInvite: Factory<SendShareInviteUseCase> {
-        self { SendShareInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
-                               passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
-                               shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository(),
-                               userData: SharedDataContainer.shared.userData()) }
+    var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
+        self { SendVaultShareInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
+                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                                    shareInviteRepository: SharedRepositoryContainer.shared
+                                        .shareInviteRepository(),
+                                    userData: SharedDataContainer.shared.userData()) }
     }
 
     var checkEmailPublicKey: Factory<CheckEmailPublicKeyUseCase> {
@@ -106,6 +107,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var userSharingStatus: Factory<UserSharingStatusUseCase> {
         self { UserSharingStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository()) }
+                                 passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                 logManager: SharedToolingContainer.shared.logManager()) }
     }
 }

@@ -43,7 +43,7 @@ final class CheckEmailPublicKey: @unchecked Sendable, CheckEmailPublicKeyUseCase
     func execute(with email: String) async throws -> [PublicKey] {
         let keys = try await publicKeyRepository.getPublicKeys(email: email)
         guard !keys.isEmpty else {
-            throw SharingErrors.noPublicKeyAssociatedWithEmail
+            throw SharingError.noPublicKeyAssociatedWithEmail
         }
         return keys
     }

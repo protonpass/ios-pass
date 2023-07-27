@@ -32,6 +32,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var goToNextStep = false
     @Published private(set) var vaultName = ""
     @Published private(set) var error: String?
+    @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
     private let setShareInviteUserEmail = resolve(\UseCasesContainer.setShareInviteUserEmail)
@@ -65,7 +66,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
 
 private extension UserEmailViewModel {
     func setUp() {
-        Task { @MainActor [weak self] in
+        Task { [weak self] in
             let infos = await self?.getShareInviteInfos()
             self?.vaultName = infos?.vault?.name ?? ""
         }
@@ -79,7 +80,7 @@ private extension UserEmailViewModel {
                 if newValue.isValidEmail() {
                     self?.checkEmail(email: newValue)
                 } else {
-                    self?.canContinue = false
+                    self?.reset()
                 }
             }
             .store(in: &cancellables)
@@ -87,13 +88,13 @@ private extension UserEmailViewModel {
 
     func checkEmail(email: String) {
         checkTask?.cancel()
-        error = nil
-        canContinue = false
-        checkTask = Task { @MainActor [weak self] in
+        reset()
+        checkTask = Task { [weak self] in
             guard let self else {
                 return
             }
             defer {
+                self.isChecking = false
                 self.checkTask?.cancel()
                 self.checkTask = nil
             }
@@ -101,11 +102,18 @@ private extension UserEmailViewModel {
                 if Task.isCancelled {
                     return
                 }
-                _ = try await checkEmailPublicKey(with: email)
+                self.isChecking = true
+                _ = try await self.checkEmailPublicKey(with: email)
                 self.canContinue = true
             } catch {
                 self.error = "You cannot share \(vaultName) vault with this email"
             }
         }
+    }
+
+    func reset() {
+        error = nil
+        canContinue = false
+        isChecking = false
     }
 }
