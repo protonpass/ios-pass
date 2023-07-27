@@ -34,17 +34,16 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     let isShownAsSheet: Bool
-    let paymentsManager: PaymentsManager
     @Published private(set) var plan: PassPlan?
 
     weak var delegate: AccountViewModelDelegate?
 
     var username: String { userData.user.email ?? "" }
 
-    init(isShownAsSheet: Bool, paymentsManager: PaymentsManager) {
+    init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
-        self.paymentsManager = paymentsManager
         refreshUserPlan()
     }
 

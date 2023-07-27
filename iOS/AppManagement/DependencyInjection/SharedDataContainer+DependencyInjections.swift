@@ -61,4 +61,12 @@ extension SharedDataContainer {
     var manualLogIn: Factory<Bool> {
         self { fatalError("manualLogIn not registered") }
     }
+
+    var appData: Factory<AppData> {
+        self { AppData() }
+    }
+
+    var userDataProvider: Factory<UserDataProvider> {
+        self { self.appData() }
+    }
 }

@@ -85,10 +85,6 @@ extension SharedToolingContainer {
 // MARK: Data tools
 
 extension SharedToolingContainer {
-    var appData: Factory<AppData> {
-        self { AppData() }
-    }
-
     var appVersion: Factory<String> {
         self { "ios-pass@\(Bundle.main.fullAppVersionName)" }
             .onArg(PassModule.autoFillExtension) {

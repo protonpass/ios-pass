@@ -47,7 +47,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
-    let vaultsManager: VaultsManager
+    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     let supportedBrowsers: [Browser]
     @Published private(set) var selectedBrowser: Browser
@@ -67,7 +67,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(isShownAsSheet: Bool, vaultsManager: VaultsManager) {
+    init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
@@ -95,7 +95,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         selectedClipboardExpiration = preferences.clipboardExpiration
         displayFavIcons = preferences.displayFavIcons
         shareClipboard = preferences.shareClipboard
-        self.vaultsManager = vaultsManager
 
         preferences
             .objectWillChange
