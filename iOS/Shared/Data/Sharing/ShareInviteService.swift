@@ -21,7 +21,7 @@
 import Client
 import Entities
 
-public protocol ShareInviteServiceProtocol: Actor, Sendable {
+public protocol ShareInviteServiceProtocol {
     var currentSelectedVault: Vault? { get }
     var currentSelectedVaultItems: Int? { get }
     var currentDestinationUserEmail: String? { get }
@@ -34,7 +34,7 @@ public protocol ShareInviteServiceProtocol: Actor, Sendable {
     func resetShareInviteInformations()
 }
 
-actor ShareInviteService: ShareInviteServiceProtocol {
+final class ShareInviteService: ShareInviteServiceProtocol {
     private(set) var currentSelectedVault: Vault?
     private(set) var currentSelectedVaultItems: Int?
     private(set) var currentDestinationUserEmail: String?

@@ -20,7 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
+import Client
 
 protocol GetVaultItemCountUseCase: Sendable {
     func execute(for vault: Vault, and type: ItemContentType?) -> Int

@@ -22,13 +22,13 @@
 
 import Entities
 
-protocol SetShareInviteRoleUseCase: Sendable {
-    func execute(with role: ShareRole) async
+protocol SetShareInviteRoleUseCase {
+    func execute(with role: ShareRole)
 }
 
 extension SetShareInviteRoleUseCase {
-    func callAsFunction(with role: ShareRole) async {
-        await execute(with: role)
+    func callAsFunction(with role: ShareRole) {
+        execute(with: role)
     }
 }
 
@@ -39,7 +39,7 @@ final class SetShareInviteRole: SetShareInviteRoleUseCase {
         self.shareInviteService = shareInviteService
     }
 
-    func execute(with role: ShareRole) async {
-        await shareInviteService.setCurrentUserRole(with: role)
+    func execute(with role: ShareRole) {
+        shareInviteService.setCurrentUserRole(with: role)
     }
 }

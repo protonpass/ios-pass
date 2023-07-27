@@ -99,18 +99,13 @@ extension EditableVaultListViewModel {
     }
 
     func share(vault: Vault) {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            let numberOfItems = vaultsManager.getItem(for: vault)
-            await self.setShareInviteVault(with: vault, and: numberOfItems.count)
-            self.numberOfAliasforSharedVault = numberOfItems.filter { $0.type == .alias }.count
-            if numberOfAliasforSharedVault > 0 {
-                self.showingAliasAlert = true
-            } else {
-                router.presentSheet(for: .sharingFlow)
-            }
+        let numberOfItems = vaultsManager.getItem(for: vault)
+        setShareInviteVault(with: vault, and: numberOfItems.count)
+        numberOfAliasforSharedVault = numberOfItems.filter { $0.type == .alias }.count
+        if numberOfAliasforSharedVault > 0 {
+            showingAliasAlert = true
+        } else {
+            router.presentSheet(for: .sharingFlow)
         }
     }
 
