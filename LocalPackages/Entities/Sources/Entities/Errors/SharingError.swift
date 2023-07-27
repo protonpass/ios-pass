@@ -1,5 +1,5 @@
 //
-// SharingErrors.swift
+// SharingError.swift
 // Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum SharingErrors: LocalizedError {
+public enum SharingError: LocalizedError {
     case incompleteInformation
     case failedEncryptionKeysFetching
     case noPublicKeyAssociatedWithEmail
