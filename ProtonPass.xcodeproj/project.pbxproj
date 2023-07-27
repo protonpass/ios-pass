@@ -703,6 +703,7 @@
 		5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */; };
 		5B1453D32A7123C00048B022 /* CheckEmailPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */; };
 		5B1453D62A7162DC0048B022 /* SyncLayoutOnDisappear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */; };
+		5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -1549,6 +1550,7 @@
 		5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendShareInviteTests.swift; sourceTree = "<group>"; };
 		5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckEmailPublicKey.swift; sourceTree = "<group>"; };
 		5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncLayoutOnDisappear.swift; sourceTree = "<group>"; };
+		5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareRole+Extensions.swift"; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -3224,6 +3226,14 @@
 			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
+		5B1453E32A72BF2A0048B022 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
 			isa = PBXGroup;
 			children = (
@@ -3383,6 +3393,7 @@
 		5BB2B6E72A444DAF005E831C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				5B1453E32A72BF2A0048B022 /* Extensions */,
 				5B1F5CE72A5EAC7100A6C3ED /* UIElements */,
 				3559BA9A2A5B31900020E172 /* Configuration */,
 				5B503FE02A4D6D0700E6681C /* Data */,
@@ -5003,6 +5014,7 @@
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
+				5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */,
 				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
 				350CF79C2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,

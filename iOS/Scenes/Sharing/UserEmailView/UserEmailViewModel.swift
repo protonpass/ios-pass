@@ -46,33 +46,21 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func saveEmail() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            await self.setShareInviteUserEmail(with: self.email)
-            await MainActor.run {
-                self.goToNextStep = true
-            }
-        }
+        setShareInviteUserEmail(with: email)
+        goToNextStep = true
     }
 
     func resetSharingInfos() {
-        Task { [weak self] in
-            await self?.resetSharingInviteInfos()
-        }
+        resetSharingInviteInfos()
     }
 }
 
 private extension UserEmailViewModel {
     func setUp() {
-        Task { [weak self] in
-            let infos = await self?.getShareInviteInfos()
-            self?.vaultName = infos?.vault?.name ?? ""
-        }
+        vaultName = getShareInviteInfos().vault?.name ?? ""
 
         $email
-            .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .debounce(for: 0.2, scheduler: DispatchQueue.main)
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
