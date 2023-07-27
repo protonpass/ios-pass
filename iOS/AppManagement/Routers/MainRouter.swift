@@ -19,12 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Entities
 import SwiftUI
 
 enum CoordinatorRouterDestination: Hashable {}
 
-enum CoordinatorSheetDestination: Hashable {
+enum CoordinatorSheetDestination: Equatable, Hashable {
     case sharingFlow
+    case acceptRejectInvite(UserInvite)
 }
 
 final class MainUIKitSwiftUIRouter {

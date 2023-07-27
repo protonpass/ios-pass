@@ -1,6 +1,7 @@
 //
-// ItemKey.swift
-// Proton Pass - Created on 11/04/2023.
+//
+// GetPendingUserInvitations.swift
+// Proton Pass - Created on 27/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,21 +18,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Client
+import Entities
 
-public struct ItemKey: Codable, Equatable, Hashable {
-    /// Encrypted key encoded in base64
-    public let key: String
-    public let keyRotation: Int64
+protocol GetPendingUserInvitationsUseCase: Sendable {
+    func execute() async throws -> [UserInvite]
+}
 
-    public init(key: String, keyRotation: Int64) {
-        self.key = key
-        self.keyRotation = keyRotation
+extension GetPendingUserInvitationsUseCase {
+    func callAsFunction() async throws -> [UserInvite] {
+        try await execute()
+    }
+}
+
+final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
+    private let repository: InviteRepositoryProtocol
+
+    init(repository: InviteRepositoryProtocol) {
+        self.repository = repository
     }
 
-    enum CodingKeys: String, CodingKey {
-        case key = "Key"
-        case keyRotation = "KeyRotation"
+    func execute() async throws -> [UserInvite] {
+        try await repository.getPendingInvitesForUser()
     }
 }

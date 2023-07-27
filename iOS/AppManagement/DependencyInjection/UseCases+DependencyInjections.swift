@@ -101,6 +101,14 @@ extension UseCasesContainer {
     }
 }
 
+// MARK: - Invites
+
+extension UseCasesContainer {
+    var getPendingUserInvitations: Factory<GetPendingUserInvitationsUseCase> {
+        self { GetPendingUserInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
+}
+
 // MARK: - Flags
 
 extension UseCasesContainer {

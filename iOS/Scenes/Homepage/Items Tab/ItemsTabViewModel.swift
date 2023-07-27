@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Entities
 import Factory
 import SwiftUI
 
@@ -44,17 +45,19 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var banners: [InfoBanner] = []
+    @Published private(set) var invites: [UserInvite] = []
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     weak var delegate: ItemsTabViewModelDelegate?
-
+    private var inviteRefreshTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance
@@ -178,6 +181,25 @@ extension ItemsTabViewModel {
                 self.delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
+    }
+}
+
+// MARK: - Invites {
+
+extension ItemsTabViewModel {
+    func refreshInvites() {
+//        inviteRefreshTask?.cancel()
+//        inviteRefreshTask = Task { @MainActor [weak self] in
+//            guard let self else { return }
+//            do {
+//                if Task.isCancelled {
+//                    return
+//                }
+//                self.invites = try await getPendingUserInvitations()
+//            } catch {
+//                self.logger.error(error)
+//            }
+//        }
     }
 }
 

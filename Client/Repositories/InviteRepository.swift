@@ -23,7 +23,7 @@ import Entities
 import Foundation
 import ProtonCore_Login
 
-public protocol InviteRepositoryProtocol {
+public protocol InviteRepositoryProtocol: Sendable {
     // MARK: - Invites
 
     func getPendingInvitesForUser() async throws -> [UserInvite]
@@ -35,7 +35,7 @@ public final class InviteRepository: InviteRepositoryProtocol {
     public let logger: Logger
 
     public init(remoteInviteDatasource: RemoteInviteDatasourceProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.remoteInviteDatasource = remoteInviteDatasource
         logger = .init(manager: logManager)
     }

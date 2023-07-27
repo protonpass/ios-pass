@@ -51,6 +51,10 @@ struct ItemsTabView: View {
                                    onRetry: viewModel.vaultsManager.refresh)
             }
         }
+        .onAppear {
+            print("woot on appear itemsTab")
+            viewModel.refreshInvites()
+        }
         .animation(.default, value: vaultsManager.state)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarHidden(true)
@@ -67,6 +71,12 @@ struct ItemsTabView: View {
                                         dismiss: viewModel.dismiss(banner:),
                                         action: viewModel.handleAction(banner:))
                         .padding([.horizontal, .top])
+                }
+
+                if !viewModel.invites.isEmpty {
+                    InviteBannerViewStack(invites: viewModel.invites)
+                        .padding()
+                        .padding(.top)
                 }
 
                 if items.isEmpty {

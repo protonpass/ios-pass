@@ -39,6 +39,8 @@ public extension PassIcon {
     static var infoBannerAutoFill = UIImage(named: "InfoBannerAutoFill")!
     static var infoBannerPass = UIImage(named: "InfoBannerPass")!
 
+    static var inviteBannerIcon = UIImage(named: "InviteBannerIcon")!
+
     static var onboardAliases = UIImage(named: "OnboardAliases")!
     static var onboardAuthentication = UIImage(named: "OnboardAuthentication")!
     static var onboardAuthenticationBackground = UIImage(named: "OnboardAuthenticationBackground")!
