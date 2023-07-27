@@ -585,7 +585,8 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
 
         // Num of vaults + all items + trash + create vault button
-        let customHeight = 66 * vaultsManager.getVaultCount() + 66 + 66 + 120
+        let rowHeight = 74
+        let customHeight = rowHeight * vaultsManager.getVaultCount() + rowHeight + rowHeight + 120
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 
