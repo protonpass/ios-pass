@@ -24,4 +24,14 @@ public struct ItemKey: Codable {
     /// Encrypted key encoded in base64
     public let key: String
     public let keyRotation: Int64
+
+    public init(key: String, keyRotation: Int64) {
+        self.key = key
+        self.keyRotation = keyRotation
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case key = "Key"
+        case keyRotation = "KeyRotation"
+    }
 }

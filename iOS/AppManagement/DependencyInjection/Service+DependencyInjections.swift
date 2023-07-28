@@ -34,4 +34,9 @@ extension ServiceContainer {
     var paymentManager: Factory<PaymentsManager> {
         self { .init(storage: kSharedUserDefaults) }
     }
+
+    var shareInviteService: Factory<ShareInviteServiceProtocol> {
+        self { ShareInviteService() }
+            .shared
+    }
 }

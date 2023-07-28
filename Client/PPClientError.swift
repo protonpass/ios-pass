@@ -22,7 +22,7 @@ import CoreData
 import Foundation
 
 /// Proton Pass client module related errors.
-public enum PPClientError: Error, CustomDebugStringConvertible {
+public enum PPClientError: Error, CustomDebugStringConvertible, LocalizedError {
     case coreData(CoreDataFailureReason)
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)

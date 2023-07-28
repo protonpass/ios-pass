@@ -35,6 +35,7 @@ public struct DecryptedItemKey: Hashable {
     public let keyData: Data
 }
 
+// sourcery: AutoMockable
 public protocol PassKeyManagerProtocol: AnyObject {
     var itemKeyDatasource: RemoteItemKeyDatasourceProtocol { get }
     var shareKeyRepository: ShareKeyRepositoryProtocol { get }
