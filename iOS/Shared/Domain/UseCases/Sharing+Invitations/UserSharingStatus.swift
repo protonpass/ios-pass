@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 import ProtonCore_Login
 
 // sourcery: AutoMockable
@@ -37,18 +38,24 @@ extension UserSharingStatusUseCase {
 final class UserSharingStatus: @unchecked Sendable, UserSharingStatusUseCase {
     private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
     private let passPlanRepository: PassPlanRepositoryProtocol
+    private let logger: Logger
 
     init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol) {
+         passPlanRepository: PassPlanRepositoryProtocol,
+         logManager: LogManagerProtocol) {
         self.featureFlagsRepository = featureFlagsRepository
         self.passPlanRepository = passPlanRepository
+        logger = Logger(manager: logManager)
     }
 
     func execute() async -> Bool {
-        guard let flags = try? await featureFlagsRepository.getFlags(),
-              let plan = try? await passPlanRepository.getPlan() else {
+        do {
+            let flags = try await featureFlagsRepository.getFlags()
+            let plan = try await passPlanRepository.getPlan()
+            return flags.isFlagEnable(for: FeatureFlagType.passSharingV1) && !plan.isFreeUser
+        } catch {
+            logger.error(error)
             return false
         }
-        return flags.isFlagEnable(for: FeatureFlagType.passSharingV1) && !plan.isFreeUser
     }
 }

@@ -20,24 +20,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-protocol SetShareInviteUserEmailUseCase: Sendable {
-    func execute(with email: String) async
+import Entities
+
+protocol SetShareInviteUserEmailAndKeysUseCase {
+    func execute(with email: String, and publicKeys: [PublicKey])
 }
 
-extension SetShareInviteUserEmailUseCase {
-    func callAsFunction(with email: String) async {
-        await execute(with: email)
+extension SetShareInviteUserEmailAndKeysUseCase {
+    func callAsFunction(with email: String, and publicKeys: [PublicKey]) {
+        execute(with: email, and: publicKeys)
     }
 }
 
-final class SetShareInviteUserEmail: SetShareInviteUserEmailUseCase {
+final class SetShareInviteUserEmailAndKeys: SetShareInviteUserEmailAndKeysUseCase {
     private let shareInviteService: ShareInviteServiceProtocol
 
     init(shareInviteService: ShareInviteServiceProtocol) {
         self.shareInviteService = shareInviteService
     }
 
-    func execute(with email: String) async {
-        await shareInviteService.setCurrentDestinationUserEmail(with: email)
+    func execute(with email: String, and publicKeys: [PublicKey]) {
+        shareInviteService.setCurrentDestinationUserEmail(with: email)
+        shareInviteService.setReceiverPublicKeys(with: publicKeys)
     }
 }

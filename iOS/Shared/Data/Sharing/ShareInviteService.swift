@@ -21,24 +21,27 @@
 import Client
 import Entities
 
-public protocol ShareInviteServiceProtocol: Actor, Sendable {
+public protocol ShareInviteServiceProtocol {
     var currentSelectedVault: Vault? { get }
     var currentSelectedVaultItems: Int? { get }
     var currentDestinationUserEmail: String? { get }
     var currentUserRole: ShareRole? { get }
+    var receiverPublicKeys: [PublicKey]? { get }
 
     func setCurrentSelectedVault(with vault: Vault)
     func setCurrentSelectedVaultItem(with itemNum: Int)
     func setCurrentDestinationUserEmail(with email: String)
     func setCurrentUserRole(with role: ShareRole)
+    func setReceiverPublicKeys(with keys: [PublicKey])
     func resetShareInviteInformations()
 }
 
-actor ShareInviteService: ShareInviteServiceProtocol {
+final class ShareInviteService: ShareInviteServiceProtocol {
     private(set) var currentSelectedVault: Vault?
     private(set) var currentSelectedVaultItems: Int?
     private(set) var currentDestinationUserEmail: String?
     private(set) var currentUserRole: ShareRole?
+    private(set) var receiverPublicKeys: [PublicKey]?
 
     public func setCurrentSelectedVault(with vault: Vault) {
         currentSelectedVault = vault
@@ -56,10 +59,15 @@ actor ShareInviteService: ShareInviteServiceProtocol {
         currentUserRole = role
     }
 
+    public func setReceiverPublicKeys(with keys: [PublicKey]) {
+        receiverPublicKeys = keys
+    }
+
     public func resetShareInviteInformations() {
         currentSelectedVault = nil
         currentDestinationUserEmail = nil
         currentUserRole = nil
         currentSelectedVaultItems = nil
+        receiverPublicKeys = nil
     }
 }

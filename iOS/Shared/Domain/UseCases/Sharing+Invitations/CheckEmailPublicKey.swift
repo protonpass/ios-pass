@@ -23,17 +23,17 @@
 import Client
 import Entities
 
-protocol CheckEmailPublicKeyUseCase: Sendable {
+protocol GetEmailPublicKeyUseCase: Sendable {
     func execute(with email: String) async throws -> [PublicKey]
 }
 
-extension CheckEmailPublicKeyUseCase {
+extension GetEmailPublicKeyUseCase {
     func callAsFunction(with email: String) async throws -> [PublicKey] {
         try await execute(with: email)
     }
 }
 
-final class CheckEmailPublicKey: @unchecked Sendable, CheckEmailPublicKeyUseCase {
+final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseCase {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
 
     init(publicKeyRepository: PublicKeyRepositoryProtocol) {
@@ -43,7 +43,7 @@ final class CheckEmailPublicKey: @unchecked Sendable, CheckEmailPublicKeyUseCase
     func execute(with email: String) async throws -> [PublicKey] {
         let keys = try await publicKeyRepository.getPublicKeys(email: email)
         guard !keys.isEmpty else {
-            throw SharingErrors.noPublicKeyAssociatedWithEmail
+            throw SharingError.noPublicKeyAssociatedWithEmail
         }
         return keys
     }

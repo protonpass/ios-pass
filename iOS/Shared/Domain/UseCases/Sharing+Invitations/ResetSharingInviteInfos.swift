@@ -1,7 +1,6 @@
 //
-//
-// ResetSharingInviteInfos.swift
-// Proton Pass - Created on 20/07/2023.
+// Service+DependencyInjections.swift
+// Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +17,26 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-protocol ResetSharingInviteInfosUseCase: Sendable {
-    func execute() async
-}
+import Core
+import Factory
 
-extension ResetSharingInviteInfosUseCase {
-    func callAsFunction() async {
-        await execute()
+final class ServiceContainer: SharedContainer, AutoRegistering {
+    static let shared = ServiceContainer()
+    let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
     }
 }
 
-final class ResetSharingInviteInfos: ResetSharingInviteInfosUseCase {
-    private let shareInviteService: ShareInviteServiceProtocol
-
-    init(shareInviteService: ShareInviteServiceProtocol) {
-        self.shareInviteService = shareInviteService
+extension ServiceContainer {
+    var paymentManager: Factory<PaymentsManager> {
+        self { .init(storage: kSharedUserDefaults) }
     }
 
-    func execute() async {
-        await shareInviteService.resetShareInviteInformations()
+    var shareInviteService: Factory<ShareInviteServiceProtocol> {
+        self { ShareInviteService() }
+            .shared
     }
 }

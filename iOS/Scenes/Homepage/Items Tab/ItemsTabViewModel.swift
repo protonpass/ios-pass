@@ -30,7 +30,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToHideSpinner()
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
-    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+    func itemsTabViewModelWantsToPresentVaultList()
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsToShowTrialDetail()
@@ -158,7 +158,7 @@ extension ItemsTabViewModel {
     func presentVaultList() {
         switch vaultsManager.state {
         case .loaded:
-            delegate?.itemsTabViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
+            delegate?.itemsTabViewModelWantsToPresentVaultList()
         default:
             logger.error("Can not present vault list. Vaults are not loaded.")
         }
@@ -188,18 +188,18 @@ extension ItemsTabViewModel {
 
 extension ItemsTabViewModel {
     func refreshInvites() {
-//        inviteRefreshTask?.cancel()
-//        inviteRefreshTask = Task { @MainActor [weak self] in
-//            guard let self else { return }
-//            do {
-//                if Task.isCancelled {
-//                    return
-//                }
-//                self.invites = try await getPendingUserInvitations()
-//            } catch {
-//                self.logger.error(error)
-//            }
-//        }
+        inviteRefreshTask?.cancel()
+        inviteRefreshTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                if Task.isCancelled {
+                    return
+                }
+                self.invites = try await getPendingUserInvitations()
+            } catch {
+                self.logger.error(error)
+            }
+        }
     }
 }
 

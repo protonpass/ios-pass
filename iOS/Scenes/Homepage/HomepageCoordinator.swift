@@ -29,7 +29,6 @@ import Factory
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Login
-import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import StoreKit
@@ -52,7 +51,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let paymentsManager: PaymentsManager
+    private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
@@ -68,7 +67,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
-    private var paymentsUI: PaymentsUI?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var wordProvider: WordProviderProtocol?
@@ -80,22 +78,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
 
-    init(apiService: APIService,
-         container: NSPersistentContainer,
-         credentialManager: CredentialManagerProtocol,
-         logManager: LogManagerProtocol,
-         manualLogIn: Bool,
-         preferences: Preferences,
-         symmetricKey: SymmetricKey,
-         userData: UserData,
-         appData: AppData,
-         mainKeyProvider: MainKeyProvider) {
-        paymentsManager = PaymentsManager(apiService: apiService,
-                                          userDataProvider: appData,
-                                          mainKeyProvider: mainKeyProvider,
-                                          logger: logger,
-                                          preferences: preferences,
-                                          storage: kSharedUserDefaults)
+    override init() {
         super.init()
         setUpRouting()
         finalizeInitialization()
@@ -105,29 +88,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshPlan()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
-    }
-
-    private func setUpRouting() {
-        router
-            .newPresentationDestination
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                print("plop")
-            }
-            .store(in: &cancellables)
-
-        router
-            .newSheetDestination
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] destination in
-                switch destination {
-                case .sharingFlow:
-                    self?.presentSharingFlow()
-                case let .acceptRejectInvite(invite):
-                    self?.presentAcceptRejectInvite(with: invite)
-                }
-            }
-            .store(in: &cancellables)
     }
 }
 
@@ -238,16 +198,14 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(vaultsManager: vaultsManager,
-                                                    createEditItemDelegates: self)
+        let coordinator = CreateEditItemCoordinator(createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(vaultsManager: vaultsManager,
-                                                itemDetailViewModelDelegate: self)
+        let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
         itemDetailCoordinator = coordinator
@@ -440,6 +398,58 @@ private extension HomepageCoordinator {
     }
 }
 
+// MARK: - Navigation & Routing
+
+private extension HomepageCoordinator {
+    func setUpRouting() {
+        router
+            .newPresentationDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("plop")
+            }
+            .store(in: &cancellables)
+
+        router
+            .newSheetDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                switch destination {
+                case .sharingFlow:
+                    self?.presentSharingFlow()
+                case .manageShareVault:
+                    self?.presentManageShareVault()
+                case let .acceptRejectInvite(invite):
+                    self?.presentAcceptRejectInvite(with: invite)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func presentSharingFlow() {
+        let userEmailView = UserEmailView()
+        present(userEmailView)
+    }
+
+    func presentManageShareVault() {
+        dismissTopMostViewController { [weak self] in
+            let manageShareVaultView = Text("Manage Share Vault Screen")
+            self?.present(manageShareVaultView)
+        }
+    }
+
+    func presentAcceptRejectInvite(with invite: UserInvite) {
+        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
+
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.mediumAndLarge,
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+}
+
 // MARK: - Public APIs
 
 extension HomepageCoordinator {
@@ -605,19 +615,20 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         presentCreateItemView(for: type.type)
     }
 
-    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
-        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager)
+    func itemsTabViewModelWantsToPresentVaultList() {
+        let viewModel = EditableVaultListViewModel()
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
         // Num of vaults + all items + trash + create vault button
-        let customHeight = 66 * vaultsManager.getVaultCount() + 66 + 66 + 120
+        let rowHeight = 74
+        let customHeight = rowHeight * vaultsManager.getVaultCount() + rowHeight + rowHeight + 120
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -707,7 +718,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = AccountViewModel(isShownAsSheet: asSheet, paymentsManager: paymentsManager)
+        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
@@ -715,7 +726,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet, vaultsManager: vaultsManager)
+        let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
@@ -1200,7 +1211,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func itemDetailViewModelWantsToUpgrade() {
@@ -1369,26 +1380,6 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 
     func logsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - Navigation
-
-extension HomepageCoordinator {
-    func presentSharingFlow() {
-        let userEmailView = UserEmailView()
-        present(userEmailView)
-    }
-
-    func presentAcceptRejectInvite(with invite: UserInvite) {
-        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
-
-        let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.mediumAndLarge,
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 }
 
