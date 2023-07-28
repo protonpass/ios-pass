@@ -192,6 +192,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         if let aliasEmail = aliasItem?.item.aliasEmail, !isAlias {
             try await itemRepository.deleteAlias(email: aliasEmail)
         }
+        // Create new alias item if applicable
+        else if let aliasCreationInfo = generateAliasCreationInfo(),
+                let aliasItemContent = generateAliasItemContent() {
+            try await itemRepository.createAlias(info: aliasCreationInfo,
+                                                 itemContent: aliasItemContent,
+                                                 shareId: selectedVault.shareId)
+        }
     }
 
     func generateAlias() {
