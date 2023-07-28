@@ -35,20 +35,7 @@ struct UserEmailView: View {
         VStack(alignment: .leading, spacing: 31) {
             headerView
 
-            VStack(alignment: .leading) {
-                TextField("Proton email address", text: $viewModel.email)
-                    .font(.title)
-                    .autocorrectionDisabled()
-                    .keyboardType(.emailAddress)
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .focused($defaultFocus, equals: true)
-
-                if let error = viewModel.error {
-                    Text(error)
-                        .font(.callout)
-                        .foregroundColor(PassColor.textWeak.toColor)
-                }
-            }
+            emailTextField
 
             Spacer()
         }
@@ -61,6 +48,7 @@ struct UserEmailView: View {
                 }
             }
         }
+        .animation(.default, value: viewModel.error)
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
@@ -88,26 +76,49 @@ private extension UserEmailView {
 }
 
 private extension UserEmailView {
+    var emailTextField: some View {
+        VStack(alignment: .leading) {
+            TextField("Proton email address", text: $viewModel.email)
+                .font(.title)
+                .autocorrectionDisabled()
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .foregroundColor(PassColor.textNorm.toColor)
+                .focused($defaultFocus, equals: true)
+                .accentColor(PassColor.interactionNorm.toColor)
+                .tint(PassColor.interactionNorm.toColor)
+
+            if let error = viewModel.error {
+                Text(error)
+                    .font(.callout)
+                    .foregroundColor(PassColor.textWeak.toColor)
+            }
+        }
+    }
+}
+
+private extension UserEmailView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         action: {
-                             viewModel.resetSharingInfos()
-                             dismiss()
-                         })
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: "Continue",
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.interactionNormMajor1,
-                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: !viewModel.canContinue,
-                                        action: { viewModel.saveEmail() })
+            if viewModel.isChecking {
+                ProgressView()
+            } else {
+                DisablableCapsuleTextButton(title: "Continue",
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: PassColor.interactionNormMajor1,
+                                            disableBackgroundColor: PassColor.interactionNormMinor1,
+                                            disabled: !viewModel.canContinue,
+                                            action: { viewModel.saveEmail() })
+            }
         }
     }
 }

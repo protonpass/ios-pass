@@ -26,14 +26,6 @@ public struct VaultData: Decodable, Equatable, Hashable {
     public let contentFormatVersion: Int
     public let memberCount: Int
     public let itemCount: Int
-
-    enum CodingKeys: String, CodingKey {
-        case content = "Content"
-        case contentKeyRotation = "ContentKeyRotation"
-        case contentFormatVersion = "ContentFormatVersion"
-        case memberCount = "MemberCount"
-        case itemCount = "ItemCount"
-    }
 }
 
 public extension VaultData {

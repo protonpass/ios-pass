@@ -26,60 +26,59 @@ import Entities
 import ProtonCore_Crypto
 import ProtonCore_Login
 
-protocol SendShareInviteUseCase: Sendable {
-    func execute(with infos: SharingInfos, and targetType: TargetType) async throws -> Bool
+protocol SendVaultShareInviteUseCase: Sendable {
+    func execute(with infos: SharingInfos) async throws -> Bool
 }
 
-extension SendShareInviteUseCase {
-    func callAsFunction(with infos: SharingInfos,
-                        and targetType: TargetType = .vault) async throws -> Bool {
-        try await execute(with: infos, and: targetType)
+extension SendVaultShareInviteUseCase {
+    func callAsFunction(with infos: SharingInfos) async throws -> Bool {
+        try await execute(with: infos)
     }
 }
 
-final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase {
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
+final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
 
-    init(publicKeyRepository: PublicKeyRepositoryProtocol,
-         passKeyManager: PassKeyManagerProtocol,
+    init(passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData) {
-        self.publicKeyRepository = publicKeyRepository
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userData = userData
     }
 
-    func execute(with infos: SharingInfos, and targetType: TargetType = .vault) async throws -> Bool {
+    func execute(with infos: SharingInfos) async throws -> Bool {
         guard let vault = infos.vault,
               let email = infos.email,
-              let role = infos.role else {
-            throw SharingErrors.incompleteInformation
+              let role = infos.role,
+              let publicReceiverKeys = infos.receiverPublicKeys else {
+            throw SharingError.incompleteInformation
         }
-        guard let receivingKeys = try? await publicKeyRepository.getPublicKeys(email: email),
-              let sharedKeys = try? await passKeyManager.getLatestShareKey(shareId: vault.shareId) else {
-            throw SharingErrors.failedEncryptionKeysFetching
+
+        let sharedKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
+
+        guard let publicReceiverKey = publicReceiverKeys.first?.value else {
+            throw SharingError.failedEncryptionKeysFetching
         }
 
         let signedKeys = try encryptKeys(addressId: vault.addressId,
-                                         receivingKey: receivingKeys.first?.value ?? "",
+                                         publicReceiverKey: publicReceiverKey,
                                          userData: userData,
-                                         vaultKey: sharedKeys)
+                                         vaultKey: sharedKey)
 
         return try await shareInviteRepository.sendInvite(shareId: vault.shareId,
                                                           keys: [signedKeys],
                                                           email: email,
-                                                          targetType: targetType,
+                                                          targetType: .vault,
                                                           shareRole: role)
     }
 }
 
-private extension SendShareInvite {
+private extension SendVaultShareInvite {
     func encryptKeys(addressId: String,
-                     receivingKey: String,
+                     publicReceiverKey: String,
                      userData: UserData,
                      vaultKey: DecryptedShareKey) throws -> ItemKey {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
@@ -87,7 +86,7 @@ private extension SendShareInvite {
             throw PPClientError.crypto(.addressNotFound(addressID: addressId))
         }
 
-        let publicKey = ArmoredKey(value: receivingKey)
+        let publicKey = ArmoredKey(value: publicReceiverKey)
         let signerKey = SigningKey(privateKey: addressKey.privateKey,
                                    passphrase: addressKey.passphrase)
 

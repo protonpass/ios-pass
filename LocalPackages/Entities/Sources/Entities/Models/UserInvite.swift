@@ -40,8 +40,14 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable {
         .init(rawValue: Int64(targetType)) ?? .unknown
     }
 
-    public init(inviteToken: String, remindersSent: Int, targetType: Int, targetID: String,
-                inviterEmail: String, invitedEmail: String, keys: [ItemKey], vaultData: VaultData?,
+    public init(inviteToken: String,
+                remindersSent: Int,
+                targetType: Int,
+                targetID: String,
+                inviterEmail: String,
+                invitedEmail: String,
+                keys: [ItemKey],
+                vaultData: VaultData?,
                 createTime: Int) {
         self.inviteToken = inviteToken
         self.remindersSent = remindersSent
@@ -52,18 +58,6 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable {
         self.keys = keys
         self.vaultData = vaultData
         self.createTime = createTime
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case inviteToken = "InviteToken"
-        case remindersSent = "RemindersSent"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case inviterEmail = "InviterEmail"
-        case invitedEmail = "InvitedEmail"
-        case keys = "Keys"
-        case vaultData = "VaultData"
-        case createTime = "CreateTime"
     }
 }
 

@@ -32,12 +32,12 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var goToNextStep = false
     @Published private(set) var vaultName = ""
     @Published private(set) var error: String?
+    @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
-    private let setShareInviteUserEmail = resolve(\UseCasesContainer.setShareInviteUserEmail)
+    private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
-    private let resetSharingInviteInfos = resolve(\UseCasesContainer.resetSharingInviteInfos)
-    private let checkEmailPublicKey = resolve(\UseCasesContainer.checkEmailPublicKey)
+    private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
     private var checkTask: Task<Void, Never>?
 
     init() {
@@ -45,55 +45,13 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func saveEmail() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            await self.setShareInviteUserEmail(with: self.email)
-            await MainActor.run {
-                self.goToNextStep = true
-            }
-        }
-    }
-
-    func resetSharingInfos() {
-        Task { [weak self] in
-            await self?.resetSharingInviteInfos()
-        }
-    }
-}
-
-private extension UserEmailViewModel {
-    func setUp() {
-        Task { @MainActor [weak self] in
-            let infos = await self?.getShareInviteInfos()
-            self?.vaultName = infos?.vault?.name ?? ""
-        }
-
-        $email
-            .debounce(for: 0.4, scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newValue in
-                if newValue.isValidEmail() {
-                    self?.checkEmail(email: newValue)
-                } else {
-                    self?.canContinue = false
-                }
-            }
-            .store(in: &cancellables)
-    }
-
-    func checkEmail(email: String) {
         checkTask?.cancel()
-        error = nil
-        canContinue = false
-        checkTask = Task { @MainActor [weak self] in
+        checkTask = Task { [weak self] in
             guard let self else {
                 return
             }
             defer {
+                self.isChecking = false
                 self.checkTask?.cancel()
                 self.checkTask = nil
             }
@@ -101,11 +59,32 @@ private extension UserEmailViewModel {
                 if Task.isCancelled {
                     return
                 }
-                _ = try await checkEmailPublicKey(with: email)
-                self.canContinue = true
+                self.isChecking = true
+                let receiverPublicKeys = try await self.getEmailPublicKey(with: email)
+                self.setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
+                self.goToNextStep = true
             } catch {
                 self.error = "You cannot share \(vaultName) vault with this email"
             }
         }
+    }
+}
+
+private extension UserEmailViewModel {
+    func setUp() {
+        vaultName = getShareInviteInfos().vault?.name ?? ""
+        assert(getShareInviteInfos().vault != nil, "Vault is not set")
+
+        $email
+            .removeDuplicates()
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                if self?.error != nil {
+                    self?.error = nil
+                }
+                self?.canContinue = newValue.isValidEmail()
+            }
+            .store(in: &cancellables)
     }
 }

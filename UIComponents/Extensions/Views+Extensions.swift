@@ -22,19 +22,6 @@ import Entities
 import SwiftUI
 
 public extension View {
-    @ViewBuilder
-    func navigationModifier() -> some View {
-        if #available(iOS 16.0, *) {
-            NavigationStack {
-                self
-            }
-        } else {
-            NavigationView {
-                self
-            }
-        }
-    }
-
     func navigate(isActive: Binding<Bool>,
                   destination: (some View)?) -> some View {
         background(NavigationLink(destination: destination,
@@ -44,6 +31,21 @@ public extension View {
                 .hidden())
     }
 
+    func errorLocalizedAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
+        let localizedAlertError = LocalizedAlertError(error: error.wrappedValue)
+        return alert(isPresented: .constant(localizedAlertError != nil), error: localizedAlertError) { _ in
+            Button(buttonTitle) {
+                error.wrappedValue = nil
+            }
+        } message: { error in
+            Text(error.recoverySuggestion ?? "")
+        }
+    }
+}
+
+// MARK: - ViewBuilders
+
+public extension View {
     @ViewBuilder
     func errorAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
         if let unwrappedError = error.wrappedValue {
@@ -58,14 +60,24 @@ public extension View {
         }
     }
 
-    func errorLocalizedAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
-        let localizedAlertError = LocalizedAlertError(error: error.wrappedValue)
-        return alert(isPresented: .constant(localizedAlertError != nil), error: localizedAlertError) { _ in
-            Button(buttonTitle) {
-                error.wrappedValue = nil
+    @ViewBuilder
+    func navigationModifier() -> some View {
+        if #available(iOS 16.0, *) {
+            NavigationStack {
+                self
             }
-        } message: { error in
-            Text(error.recoverySuggestion ?? "")
+        } else {
+            NavigationView {
+                self
+            }
         }
+    }
+}
+
+// MARK: - Modifier helpers
+
+public extension View {
+    func syncLayoutOnDisappear() -> some View {
+        modifier(SyncLayoutOnDisappear())
     }
 }
