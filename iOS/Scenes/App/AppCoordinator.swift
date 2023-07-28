@@ -153,10 +153,16 @@ final class AppCoordinator {
     private func showHomeScene(userData: UserData, manualLogIn: Bool) {
         do {
             let symmetricKey = try appData.getSymmetricKey()
+
+            SharedDataContainer.shared.reset()
             SharedDataContainer.shared.resolve(container: container,
                                                symmetricKey: symmetricKey,
                                                userData: userData,
                                                manualLogIn: manualLogIn)
+            SharedToolingContainer.shared.resetCache()
+            SharedRepositoryContainer.shared.reset()
+            SharedServiceContainer.shared.reset()
+
             let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
             self.homepageCoordinator = homepageCoordinator
