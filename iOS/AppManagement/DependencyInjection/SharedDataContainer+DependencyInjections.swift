@@ -28,6 +28,7 @@ import ProtonCore_Login
 
 final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()
+    private var resolved = false
     let manager = ContainerManager()
 
     func autoRegister() {
@@ -42,6 +43,14 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
         self.symmetricKey.register { symmetricKey }
         self.userData.register { userData }
         self.manualLogIn.register { manualLogIn }
+        resolved = true
+    }
+
+    func reset() {
+        // Check if resolved before resetting otherwise it'll crash
+        if resolved {
+            manager.reset()
+        }
     }
 }
 
