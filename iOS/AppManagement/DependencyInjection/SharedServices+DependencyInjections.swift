@@ -27,6 +27,10 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
     static let shared = SharedServiceContainer()
     let manager = ContainerManager()
 
+    func reset() {
+        manager.reset()
+    }
+
     func autoRegister() {
         manager.defaultScope = .singleton
     }
