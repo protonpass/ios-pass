@@ -97,6 +97,7 @@ struct ItemsTabView: View {
             .edgesIgnoringSafeArea(.bottom)
             .animation(.default, value: viewModel.vaultsManager.state)
             .animation(.default, value: viewModel.banners.count)
+            .animation(.default, value: viewModel.invites.count)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }
@@ -378,11 +379,5 @@ private struct ItemListView<Content: View>: View {
         .listStyle(.plain)
         .scrollIndicatorsHidden(!showScrollIndicators)
         .refreshable(action: onRefresh)
-    }
-}
-
-public extension View {
-    func syncLayoutOnDisappear() -> some View {
-        modifier(SyncLayoutOnDisappear())
     }
 }

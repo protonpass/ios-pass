@@ -28,15 +28,17 @@ import UIComponents
 
 struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
-    private var router = resolve(\RouterContainer.mainNavViewRouter)
+    private let router = resolve(\RouterContainer.mainNavViewRouter)
     @StateObject private var viewModel = UserPermissionViewModel()
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            headerView
-            emailDisplayView
-            roleList
-            Spacer()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                headerView
+                emailDisplayView
+                roleList
+                Spacer()
+            }
         }
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .shareSummary))
         .navigationBarBackButtonHidden(true)
@@ -66,7 +68,7 @@ private extension UserPermissionView {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("Select the level of access this user will gain when they join your ‘\(viewModel.vaultName)’ vault.")
+            Text("Select the level of access this user will gain when they join your ‘\(viewModel.vaultName)’ vault")
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
@@ -96,7 +98,7 @@ private extension UserPermissionView {
                     viewModel.select(role: role)
                 } label: {
                     HStack(spacing: 16) {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 2) {
                             Text(role.title)
                                 .font(.body)
                                 .foregroundColor(PassColor.textNorm.toColor)
@@ -118,8 +120,9 @@ private extension UserPermissionView {
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .cornerRadius(16)
+                    .contentShape(Rectangle())
                     .overlay(RoundedRectangle(cornerRadius: 16)
-                        .stroke(viewModel.selectedUserRole == role ? PassColor
+                        .strokeBorder(viewModel.selectedUserRole == role ? PassColor
                             .interactionNormMajor1
                             .toColor : PassColor.textWeak.toColor,
                             lineWidth: 1))
@@ -127,6 +130,7 @@ private extension UserPermissionView {
                 .buttonStyle(.plain)
             }
         }
+        .animation(.default, value: viewModel.selectedUserRole)
     }
 }
 
