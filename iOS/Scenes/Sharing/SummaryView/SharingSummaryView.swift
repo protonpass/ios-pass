@@ -130,22 +130,20 @@ private extension SharingSummaryView {
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             if let role = viewModel.infos?.role {
-                HStack(spacing: 5) {
-                    VStack(alignment: .leading) {
-                        Text(role.title)
-                            .font(.body)
-                            .foregroundColor(PassColor.textNorm.toColor)
-                        Text(role.description)
-                            .font(.body)
-                            .foregroundColor(PassColor.textWeak.toColor)
-                    }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(role.title)
+                        .font(.body)
+                        .foregroundColor(PassColor.textNorm.toColor)
+                    Text(role.description)
+                        .font(.body)
+                        .foregroundColor(PassColor.textWeak.toColor)
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .cornerRadius(16)
                 .overlay(RoundedRectangle(cornerRadius: 16)
-                    .stroke(PassColor.textWeak.toColor,
-                            lineWidth: 1))
+                    .strokeBorder(PassColor.textWeak.toColor,
+                                  lineWidth: 1))
             }
         }
     }
