@@ -25,5 +25,6 @@ struct SharingInfos {
     let vault: Vault?
     let email: String?
     let role: ShareRole?
+    let receiverPublicKeys: [PublicKey]?
     let itemsNum: Int?
 }

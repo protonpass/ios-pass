@@ -37,16 +37,13 @@ extension SendVaultShareInviteUseCase {
 }
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
 
-    init(publicKeyRepository: PublicKeyRepositoryProtocol,
-         passKeyManager: PassKeyManagerProtocol,
+    init(passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData) {
-        self.publicKeyRepository = publicKeyRepository
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userData = userData
@@ -55,11 +52,11 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     func execute(with infos: SharingInfos) async throws -> Bool {
         guard let vault = infos.vault,
               let email = infos.email,
-              let role = infos.role else {
+              let role = infos.role,
+              let publicReceiverKeys = infos.receiverPublicKeys else {
             throw SharingError.incompleteInformation
         }
 
-        let publicReceiverKeys = try await publicKeyRepository.getPublicKeys(email: email)
         let sharedKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
 
         guard let publicReceiverKey = publicReceiverKeys.first?.value else {

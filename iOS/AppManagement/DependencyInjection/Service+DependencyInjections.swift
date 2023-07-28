@@ -37,5 +37,6 @@ extension ServiceContainer {
 
     var shareInviteService: Factory<ShareInviteServiceProtocol> {
         self { ShareInviteService() }
+            .shared
     }
 }

@@ -25,6 +25,7 @@ enum CoordinatorRouterDestination: Hashable {}
 
 enum CoordinatorSheetDestination: Hashable {
     case sharingFlow
+    case manageShareVault
 }
 
 final class MainUIKitSwiftUIRouter {

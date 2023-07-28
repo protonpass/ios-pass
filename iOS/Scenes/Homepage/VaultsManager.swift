@@ -210,7 +210,7 @@ extension VaultsManager {
         }
     }
 
-    func getItem(for vault: Vault) -> [ItemUiModel] {
+    func getItems(for vault: Vault) -> [ItemUiModel] {
         guard case let .loaded(vaults, _) = state else { return [] }
 
         return vaults.first { $0.vault.id == vault.id }?.items ?? []
