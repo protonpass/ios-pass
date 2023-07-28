@@ -685,7 +685,6 @@
 		5B1453A12A69654A0048B022 /* SetShareInviteUserEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */; };
 		5B1453A32A69655E0048B022 /* SetShareInviteRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */; };
 		5B1453A62A69662D0048B022 /* ShareInviteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453A52A69662D0048B022 /* ShareInviteService.swift */; };
-		5B1453A82A6969DB0048B022 /* ResetSharingInviteInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */; };
 		5B1453AD2A696C830048B022 /* GetVaultItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */; };
 		5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */; };
 		5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */; };
@@ -1535,7 +1534,6 @@
 		5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetShareInviteUserEmail.swift; sourceTree = "<group>"; };
 		5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetShareInviteRole.swift; sourceTree = "<group>"; };
 		5B1453A52A69662D0048B022 /* ShareInviteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInviteService.swift; sourceTree = "<group>"; };
-		5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetSharingInviteInfos.swift; sourceTree = "<group>"; };
 		5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVaultItemCount.swift; sourceTree = "<group>"; };
 		5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryView.swift; sourceTree = "<group>"; };
 		5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryViewModel.swift; sourceTree = "<group>"; };
@@ -3170,7 +3168,6 @@
 				5B14539E2A69652D0048B022 /* SetShareInviteVault.swift */,
 				5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */,
 				5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */,
-				5B1453A72A6969DA0048B022 /* ResetSharingInviteInfos.swift */,
 				5B1453B82A6ACE160048B022 /* SendShareInvite.swift */,
 				5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */,
 			);
@@ -3200,13 +3197,6 @@
 				5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */,
 			);
 			path = SummaryView;
-			sourceTree = "<group>";
-		};
-		5B1453B52A6AB4750048B022 /* FeatureFlags */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = FeatureFlags;
 			sourceTree = "<group>";
 		};
 		5B1453C92A7015A30048B022 /* Sharing */ = {
@@ -3280,7 +3270,6 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				5B1453B52A6AB4750048B022 /* FeatureFlags */,
 				5B1453AB2A696C5B0048B022 /* Vault */,
 				5B14539B2A6963B00048B022 /* Sharing */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
@@ -4965,7 +4954,6 @@
 				5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
 				35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */,
-				5B1453A82A6969DB0048B022 /* ResetSharingInviteInfos.swift in Sources */,
 				354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */,
 				5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */,
 				3559BAA12A5B32550020E172 /* AppLockTime.swift in Sources */,
