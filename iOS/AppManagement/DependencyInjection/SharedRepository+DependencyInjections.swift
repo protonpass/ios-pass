@@ -44,6 +44,10 @@ final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
     func autoRegister() {
         manager.defaultScope = .cached
     }
+
+    func reset() {
+        manager.reset()
+    }
 }
 
 // MARK: Repositories
