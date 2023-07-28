@@ -28,14 +28,6 @@ import ProtonCore_Services
 
 /// Contain all repositories
 final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
-    private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
-    private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let currentDateProvider = resolve(\SharedToolingContainer.currentDateProvider)
-    private let container = resolve(\SharedDataContainer.container)
-    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
-    private let userData = resolve(\SharedDataContainer.userData)
-
     static let shared = SharedRepositoryContainer()
     let manager = ContainerManager()
 
@@ -44,13 +36,49 @@ final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
     func autoRegister() {
         manager.defaultScope = .cached
     }
+
+    func reset() {
+        manager.reset()
+    }
+}
+
+private extension SharedRepositoryContainer {
+    var apiManager: APIManager {
+        SharedToolingContainer.shared.apiManager()
+    }
+
+    var apiService: APIService {
+        apiManager.apiService
+    }
+
+    var logManager: LogManagerProtocol {
+        SharedToolingContainer.shared.logManager()
+    }
+
+    var preferences: Preferences {
+        SharedToolingContainer.shared.preferences()
+    }
+
+    var currentDateProvider: CurrentDateProviderProtocol {
+        SharedToolingContainer.shared.currentDateProvider()
+    }
+
+    var container: NSPersistentContainer {
+        SharedDataContainer.shared.container()
+    }
+
+    var symmetricKey: SymmetricKey {
+        SharedDataContainer.shared.symmetricKey()
+    }
+
+    var userData: UserData {
+        SharedDataContainer.shared.userData()
+    }
 }
 
 // MARK: Repositories
 
 extension SharedRepositoryContainer {
-    private var apiService: APIService { apiManager.apiService }
-
     var aliasRepository: Factory<AliasRepositoryProtocol> {
         self {
             AliasRepository(remoteDatasouce: RemoteAliasDatasource(apiService: self.apiService))
