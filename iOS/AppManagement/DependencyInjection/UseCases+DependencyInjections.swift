@@ -85,10 +85,6 @@ extension UseCasesContainer {
         self { SetShareInviteRole(shareInviteService: ServiceContainer.shared.shareInviteService()) }
     }
 
-    var resetSharingInviteInfos: Factory<ResetSharingInviteInfosUseCase> {
-        self { ResetSharingInviteInfos(shareInviteService: ServiceContainer.shared.shareInviteService()) }
-    }
-
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
         self { SendVaultShareInvite(passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
