@@ -98,7 +98,7 @@ private extension UserPermissionView {
                     viewModel.select(role: role)
                 } label: {
                     HStack(spacing: 16) {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 2) {
                             Text(role.title)
                                 .font(.body)
                                 .foregroundColor(PassColor.textNorm.toColor)
@@ -122,7 +122,7 @@ private extension UserPermissionView {
                     .cornerRadius(16)
                     .contentShape(Rectangle())
                     .overlay(RoundedRectangle(cornerRadius: 16)
-                        .stroke(viewModel.selectedUserRole == role ? PassColor
+                        .strokeBorder(viewModel.selectedUserRole == role ? PassColor
                             .interactionNormMajor1
                             .toColor : PassColor.textWeak.toColor,
                             lineWidth: 1))
@@ -130,6 +130,7 @@ private extension UserPermissionView {
                 .buttonStyle(.plain)
             }
         }
+        .animation(.default, value: viewModel.selectedUserRole)
     }
 }
 
