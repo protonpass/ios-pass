@@ -23,7 +23,6 @@ import Core
 import Factory
 
 final class SharedServiceContainer: SharedContainer, AutoRegistering {
-    private let logManager = resolve(\SharedToolingContainer.logManager)
     static let shared = SharedServiceContainer()
     let manager = ContainerManager()
 
@@ -32,7 +31,13 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
     }
 
     func autoRegister() {
-        manager.defaultScope = .singleton
+        manager.defaultScope = .cached
+    }
+}
+
+private extension SharedServiceContainer {
+    var logManager: LogManagerProtocol {
+        SharedToolingContainer.shared.logManager()
     }
 }
 
