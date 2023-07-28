@@ -77,8 +77,8 @@ extension UseCasesContainer {
         self { SetShareInviteVault(shareInviteService: ServiceContainer.shared.shareInviteService()) }
     }
 
-    var setShareInviteUserEmail: Factory<SetShareInviteUserEmailUseCase> {
-        self { SetShareInviteUserEmail(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    var setShareInviteUserEmailAndKeys: Factory<SetShareInviteUserEmailAndKeysUseCase> {
+        self { SetShareInviteUserEmailAndKeys(shareInviteService: ServiceContainer.shared.shareInviteService()) }
     }
 
     var setShareInviteRole: Factory<SetShareInviteRoleUseCase> {
@@ -90,15 +90,14 @@ extension UseCasesContainer {
     }
 
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
-        self { SendVaultShareInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
-                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+        self { SendVaultShareInvite(passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
                                     userData: SharedDataContainer.shared.userData()) }
     }
 
-    var checkEmailPublicKey: Factory<CheckEmailPublicKeyUseCase> {
-        self { CheckEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
+    var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
+        self { GetEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
     }
 }
 
@@ -109,5 +108,13 @@ extension UseCasesContainer {
         self { UserSharingStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                                  passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
                                  logManager: SharedToolingContainer.shared.logManager()) }
+    }
+}
+
+// MARK: - Vaults
+
+extension UseCasesContainer {
+    var getVaultItemCount: Factory<GetVaultItemCountUseCase> {
+        self { GetVaultItemCount(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
 }

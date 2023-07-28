@@ -31,28 +31,23 @@ struct SharingSummaryView: View {
     @StateObject private var viewModel = SharingSummaryViewModel()
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 26) {
-            headerView
-            vaultInfo
-            emailInfo
-            permissionInfo
-            Spacer()
-        }
-        .errorAlert(error: $viewModel.error)
-        .overlay {
-            if viewModel.sendingInvite {
-                ProgressView()
-                    .scaleEffect(2)
-            } else {
-                EmptyView()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 26) {
+                headerView
+                vaultInfo
+                emailInfo
+                permissionInfo
+                Spacer()
             }
         }
+        .errorAlert(error: $viewModel.error)
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
+        .showSpinner(viewModel.sendingInvite)
     }
 }
 

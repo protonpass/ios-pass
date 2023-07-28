@@ -39,15 +39,6 @@ struct UserEmailView: View {
 
             Spacer()
         }
-        .overlay {
-            if viewModel.isChecking {
-                ProgressView("Checking")
-                    .scaleEffect(2)
-                    .font(.body)
-            } else {
-                EmptyView()
-            }
-        }
         .onAppear {
             if #available(iOS 16, *) {
                 defaultFocus = true
@@ -113,20 +104,21 @@ private extension UserEmailView {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         action: {
-                             viewModel.resetSharingInfos()
-                             dismiss()
-                         })
+                         action: dismiss.callAsFunction)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: "Continue",
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.interactionNormMajor1,
-                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: !viewModel.canContinue,
-                                        action: { viewModel.saveEmail() })
+            if viewModel.isChecking {
+                ProgressView()
+            } else {
+                DisablableCapsuleTextButton(title: "Continue",
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: PassColor.interactionNormMajor1,
+                                            disableBackgroundColor: PassColor.interactionNormMinor1,
+                                            disabled: !viewModel.canContinue,
+                                            action: { viewModel.saveEmail() })
+            }
         }
     }
 }
