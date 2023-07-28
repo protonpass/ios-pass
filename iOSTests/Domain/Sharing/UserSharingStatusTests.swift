@@ -32,7 +32,8 @@ final class UserSharingStatusTests: XCTestCase {
         featureFlagsRepository = FeatureFlagsRepositoryProtocolMock()
         passPlanRepository = PassPlanRepositoryProtocolMock()
         sut = UserSharingStatus(featureFlagsRepository: featureFlagsRepository,
-                                passPlanRepository: passPlanRepository)
+                                passPlanRepository: passPlanRepository,
+                                logManager: LogManagerMock())
     }
 
     func testUserSharingStatus_ShouldBeValid() async throws {

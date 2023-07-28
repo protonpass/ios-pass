@@ -31,27 +31,23 @@ struct SharingSummaryView: View {
     @StateObject private var viewModel = SharingSummaryViewModel()
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 26) {
-            headerView
-            vaultInfo
-            emailInfo
-            permissionInfo
-            Spacer()
-        }
-        .errorAlert(error: $viewModel.error)
-        .overlay {
-            if viewModel.sendingInvite {
-                ProgressView()
-            } else {
-                EmptyView()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 26) {
+                headerView
+                vaultInfo
+                emailInfo
+                permissionInfo
+                Spacer()
             }
         }
+        .errorAlert(error: $viewModel.error)
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
+        .showSpinner(viewModel.sendingInvite)
     }
 }
 
@@ -134,22 +130,20 @@ private extension SharingSummaryView {
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             if let role = viewModel.infos?.role {
-                HStack(spacing: 5) {
-                    VStack(alignment: .leading) {
-                        Text(role.title)
-                            .font(.body)
-                            .foregroundColor(PassColor.textNorm.toColor)
-                        Text(role.description)
-                            .font(.body)
-                            .foregroundColor(PassColor.textWeak.toColor)
-                    }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(role.title)
+                        .font(.body)
+                        .foregroundColor(PassColor.textNorm.toColor)
+                    Text(role.description)
+                        .font(.body)
+                        .foregroundColor(PassColor.textWeak.toColor)
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .cornerRadius(16)
                 .overlay(RoundedRectangle(cornerRadius: 16)
-                    .stroke(PassColor.textWeak.toColor,
-                            lineWidth: 1))
+                    .strokeBorder(PassColor.textWeak.toColor,
+                                  lineWidth: 1))
             }
         }
     }

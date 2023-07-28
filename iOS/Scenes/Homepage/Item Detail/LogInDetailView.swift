@@ -70,10 +70,8 @@ struct LogInDetailView: View {
                         CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                             uiModels: viewModel.customFieldUiModels,
                                             isFreeUser: viewModel.isFreeUser,
-                                            onSelectTotpToken: { token in
-                                                viewModel.copyToClipboard(text: token,
-                                                                          message: "Two Factor Authentication code copied") // swiftlint:disable:this line_length
-                                            },
+                                            onSelectHiddenText: copyHiddenText,
+                                            onSelectTotpToken: copyTOTPToken,
                                             onUpgrade: viewModel.upgrade)
 
                         ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
@@ -348,5 +346,16 @@ struct LogInDetailView: View {
         .background(Color(uiColor: PassColor.backgroundMedium))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.showAliasDetail)
+    }
+}
+
+private extension LogInDetailView {
+    func copyTOTPToken(_ token: String) {
+        viewModel.copyToClipboard(text: token,
+                                  message: "Two Factor Authentication code copied")
+    }
+
+    func copyHiddenText(_ text: String) {
+        viewModel.copyToClipboard(text: text, message: "Hidden text copied")
     }
 }

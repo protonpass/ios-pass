@@ -24,13 +24,13 @@ import Client
 import Entities
 
 // sourcery: AutoMockable
-protocol GetCurrentShareInviteInformationsUseCase: Sendable {
-    func execute() async -> SharingInfos
+protocol GetCurrentShareInviteInformationsUseCase {
+    func execute() -> SharingInfos
 }
 
 extension GetCurrentShareInviteInformationsUseCase {
-    func callAsFunction() async -> SharingInfos {
-        await execute()
+    func callAsFunction() -> SharingInfos {
+        execute()
     }
 }
 
@@ -41,12 +41,17 @@ final class GetCurrentShareInviteInformations: GetCurrentShareInviteInformations
         self.shareInviteService = shareInviteService
     }
 
-    func execute() async -> SharingInfos {
-        let vault = await shareInviteService.currentSelectedVault
-        let email = await shareInviteService.currentDestinationUserEmail
-        let role = await shareInviteService.currentUserRole
-        let itemNum = await shareInviteService.currentSelectedVaultItems
+    func execute() -> SharingInfos {
+        let vault = shareInviteService.currentSelectedVault
+        let email = shareInviteService.currentDestinationUserEmail
+        let role = shareInviteService.currentUserRole
+        let receiverPublicKeys = shareInviteService.receiverPublicKeys
+        let itemNum = shareInviteService.currentSelectedVaultItems
 
-        return SharingInfos(vault: vault, email: email, role: role, itemsNum: itemNum)
+        return SharingInfos(vault: vault,
+                            email: email,
+                            role: role,
+                            receiverPublicKeys: receiverPublicKeys,
+                            itemsNum: itemNum)
     }
 }
