@@ -28,8 +28,9 @@ import Foundation
 @MainActor
 final class SharingSummaryViewModel: ObservableObject, Sendable {
     @Published private(set) var infos: SharingInfos?
-    @Published var sendingInvite = false
+    @Published private(set) var sendingInvite = false
     @Published var error: Error?
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var lastTask: Task<Void, Never>?
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
@@ -41,7 +42,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
 
     func sendInvite() {
         lastTask?.cancel()
-        lastTask = Task { @MainActor [weak self] in
+        lastTask = Task { [weak self] in
             guard let self, let infos else {
                 return
             }
@@ -56,6 +57,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                     return
                 }
                 _ = try await self.sendShareInvite(with: infos)
+                self.router.presentSheet(for: .manageShareVault)
             } catch {
                 self.error = error
             }
@@ -66,5 +68,6 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
 private extension SharingSummaryViewModel {
     func setUp() {
         infos = getShareInviteInfos()
+        assert(infos?.vault != nil, "Vault is not set")
     }
 }

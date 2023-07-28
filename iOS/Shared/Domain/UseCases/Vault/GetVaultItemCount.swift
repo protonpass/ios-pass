@@ -41,8 +41,8 @@ final class GetVaultItemCount: @unchecked Sendable, GetVaultItemCountUseCase {
 
     func execute(for vault: Vault, and type: ItemContentType?) -> Int {
         if let type {
-            return vaultsManager.getItem(for: vault).filter { $0.type == type }.count
+            return vaultsManager.getItems(for: vault).filter { $0.type == type }.count
         }
-        return vaultsManager.getItem(for: vault).count
+        return vaultsManager.getItems(for: vault).count
     }
 }
