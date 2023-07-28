@@ -46,6 +46,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
+    private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
+
     let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private(set) var numberOfAliasforSharedVault = 0
@@ -99,9 +101,8 @@ extension EditableVaultListViewModel {
     }
 
     func share(vault: Vault) {
-        let numberOfItems = vaultsManager.getItem(for: vault)
-        setShareInviteVault(with: vault, and: numberOfItems.count)
-        numberOfAliasforSharedVault = numberOfItems.filter { $0.type == .alias }.count
+        setShareInviteVault(with: vault, and: getVaultItemCount(for: vault))
+        numberOfAliasforSharedVault = getVaultItemCount(for: vault, and: .alias)
         if numberOfAliasforSharedVault > 0 {
             showingAliasAlert = true
         } else {

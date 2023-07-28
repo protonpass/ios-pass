@@ -88,27 +88,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
     }
-
-    private func setUpRouting() {
-        router
-            .newPresentationDestination
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                print("plop")
-            }
-            .store(in: &cancellables)
-
-        router
-            .newSheetDestination
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] destination in
-                switch destination {
-                case .sharingFlow:
-                    self?.presentSharingFlow()
-                }
-            }
-            .store(in: &cancellables)
-    }
 }
 
 // MARK: - Private APIs
@@ -414,6 +393,45 @@ private extension HomepageCoordinator {
            preferences.createdItemsCount >= 10,
            let windowScene = rootViewController.view.window?.windowScene {
             SKStoreReviewController.requestReview(in: windowScene)
+        }
+    }
+}
+
+// MARK: - Navigation & Routing
+
+private extension HomepageCoordinator {
+    func setUpRouting() {
+        router
+            .newPresentationDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("plop")
+            }
+            .store(in: &cancellables)
+
+        router
+            .newSheetDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                switch destination {
+                case .sharingFlow:
+                    self?.presentSharingFlow()
+                case .manageShareVault:
+                    self?.presentManageShareVault()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func presentSharingFlow() {
+        let userEmailView = UserEmailView()
+        present(userEmailView)
+    }
+
+    func presentManageShareVault() {
+        dismissTopMostViewController { [weak self] in
+            let manageShareVaultView = Text("Manage Share Vault Screen")
+            self?.present(manageShareVaultView)
         }
     }
 }
@@ -1348,15 +1366,6 @@ extension HomepageCoordinator: LogsViewModelDelegate {
 
     func logsViewModelDidEncounter(error: Error) {
         bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - Navigation
-
-extension HomepageCoordinator {
-    func presentSharingFlow() {
-        let userEmailView = UserEmailView()
-        present(userEmailView)
     }
 }
 
