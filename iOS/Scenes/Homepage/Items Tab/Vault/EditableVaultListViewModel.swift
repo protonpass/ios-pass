@@ -41,6 +41,16 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private let logger = resolve(\SharedToolingContainer.logger)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    @Published var showingAliasAlert = false
+    @Published private(set) var isAllowedToShare = false
+
+    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
+    private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
+    private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
+
+    let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+
+    private(set) var numberOfAliasforSharedVault = 0
 
     weak var delegate: EditableVaultListViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
@@ -55,6 +65,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 private extension EditableVaultListViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            self.isAllowedToShare = await self.userSharingStatus()
+        }
     }
 
     func doDelete(vault: Vault) {
@@ -82,6 +98,16 @@ extension EditableVaultListViewModel {
 
     func edit(vault: Vault) {
         delegate?.editableVaultListViewModelWantsToEdit(vault: vault)
+    }
+
+    func share(vault: Vault) {
+        setShareInviteVault(with: vault, and: getVaultItemCount(for: vault))
+        numberOfAliasforSharedVault = getVaultItemCount(for: vault, and: .alias)
+        if numberOfAliasforSharedVault > 0 {
+            showingAliasAlert = true
+        } else {
+            router.presentSheet(for: .sharingFlow)
+        }
     }
 
     func delete(vault: Vault) {

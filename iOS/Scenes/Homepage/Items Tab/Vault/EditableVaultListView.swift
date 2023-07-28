@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -29,11 +30,10 @@ struct EditableVaultListView: View {
     @State private var isShowingEmptyTrashAlert = false
 
     var body: some View {
-        let vaultsManager = viewModel.vaultsManager
         VStack(alignment: .leading) {
             ScrollView {
                 VStack(spacing: 0) {
-                    switch vaultsManager.state {
+                    switch viewModel.vaultsManager.state {
                     case .error, .loading:
                         // Should never happen
                         ProgressView()
@@ -54,7 +54,7 @@ struct EditableVaultListView: View {
                 }
                 .padding(.horizontal)
             }
-            .animation(.default, value: vaultsManager.state)
+            .animation(.default, value: viewModel.vaultsManager.state)
 
             HStack {
                 CapsuleTextButton(title: "Create vault",
@@ -68,6 +68,22 @@ struct EditableVaultListView: View {
         }
         .background(Color(uiColor: PassColor.backgroundWeak))
         .frame(maxWidth: .infinity, alignment: .leading)
+        .alert("Aliases won’t be shared",
+               isPresented: $viewModel.showingAliasAlert,
+               actions: {
+                   Button(action: {
+                              viewModel.router.presentSheet(for: .sharingFlow)
+                          },
+                          label: {
+                              Text("OK")
+                          })
+               },
+               message: {
+                   Text("""
+                   This vault contains \(viewModel.numberOfAliasforSharedVault) Aliases.
+                   Alias sharing is currently not supported and they won’t be shared.
+                   """)
+               })
     }
 
     @ViewBuilder
@@ -123,8 +139,22 @@ struct EditableVaultListView: View {
                     Text("Edit")
                 }, icon: {
                     Image(uiImage: IconProvider.pencil)
+                        .renderingMode(.template)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                 })
             })
+
+            if !vault.isPrimary, vault.isOwner, viewModel.isAllowedToShare {
+                Button(action: {
+                    viewModel.share(vault: vault)
+                }, label: {
+                    Label(title: {
+                        Text("Share")
+                    }, icon: {
+                        IconProvider.userPlus
+                    })
+                })
+            }
 
             Divider()
 

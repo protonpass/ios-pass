@@ -64,3 +64,53 @@ extension UseCasesContainer {
                                  .specificLogManager(.keyboardExtension)) }
     }
 }
+
+// MARK: - Sharing
+
+extension UseCasesContainer {
+    var getCurrentShareInviteInformations: Factory<GetCurrentShareInviteInformationsUseCase> {
+        self { GetCurrentShareInviteInformations(shareInviteService: ServiceContainer.shared.shareInviteService())
+        }
+    }
+
+    var setShareInviteVault: Factory<SetShareInviteVaultUseCase> {
+        self { SetShareInviteVault(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var setShareInviteUserEmailAndKeys: Factory<SetShareInviteUserEmailAndKeysUseCase> {
+        self { SetShareInviteUserEmailAndKeys(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var setShareInviteRole: Factory<SetShareInviteRoleUseCase> {
+        self { SetShareInviteRole(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
+        self { SendVaultShareInvite(passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                                    shareInviteRepository: SharedRepositoryContainer.shared
+                                        .shareInviteRepository(),
+                                    userData: SharedDataContainer.shared.userData()) }
+    }
+
+    var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
+        self { GetEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
+    }
+}
+
+// MARK: - Flags
+
+extension UseCasesContainer {
+    var userSharingStatus: Factory<UserSharingStatusUseCase> {
+        self { UserSharingStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                 logManager: SharedToolingContainer.shared.logManager()) }
+    }
+}
+
+// MARK: - Vaults
+
+extension UseCasesContainer {
+    var getVaultItemCount: Factory<GetVaultItemCountUseCase> {
+        self { GetVaultItemCount(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+}
