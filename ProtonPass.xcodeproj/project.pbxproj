@@ -132,6 +132,7 @@
 		354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */; };
 		354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */; };
 		354B247B2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */; };
+		354B247D2A77ED6B0060EDF7 /* CancelAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B247C2A77ED6B0060EDF7 /* CancelAutoFill.swift */; };
 		354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */; };
 		354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB13C28A240E000F50040 /* TextExtensions.swift */; };
 		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
@@ -1092,6 +1093,7 @@
 		354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillUseCase+DependencyInjections.swift"; sourceTree = "<group>"; };
 		354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyTotpTokenAndNotify.swift; sourceTree = "<group>"; };
 		354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillData+DependencyInjections.swift"; sourceTree = "<group>"; };
+		354B247C2A77ED6B0060EDF7 /* CancelAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelAutoFill.swift; sourceTree = "<group>"; };
 		354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashItemsEndpoint.swift; sourceTree = "<group>"; };
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
@@ -2037,6 +2039,7 @@
 		354B24742A77DA570060EDF7 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				354B247C2A77ED6B0060EDF7 /* CancelAutoFill.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
 				354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */,
 			);
@@ -4657,6 +4660,7 @@
 				3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */,
 				3560844229DDA1C4001F7487 /* ExtensionSettingsView.swift in Sources */,
 				3552A28E29EC8B5600ABDB6E /* URLExtensions.swift in Sources */,
+				354B247D2A77ED6B0060EDF7 /* CancelAutoFill.swift in Sources */,
 				3565FD59298D423A00E2A0EE /* TOTPText.swift in Sources */,
 				354B24822A781E370060EDF7 /* ItemTypeFilter.swift in Sources */,
 				35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
