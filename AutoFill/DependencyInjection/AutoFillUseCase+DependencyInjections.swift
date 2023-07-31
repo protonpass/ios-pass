@@ -24,8 +24,8 @@ import Core
 import Factory
 import Foundation
 
-final class AutoFillUseCasesContainer: SharedContainer, AutoRegistering {
-    static let shared = AutoFillUseCasesContainer()
+final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
+    static let shared = AutoFillUseCaseContainer()
     let manager = ContainerManager()
 
     func autoRegister() {
@@ -33,7 +33,7 @@ final class AutoFillUseCasesContainer: SharedContainer, AutoRegistering {
     }
 }
 
-private extension AutoFillUseCasesContainer {
+private extension AutoFillUseCaseContainer {
     var preferences: Preferences {
         SharedToolingContainer.shared.preferences()
     }
@@ -51,7 +51,7 @@ private extension AutoFillUseCasesContainer {
     }
 }
 
-extension AutoFillUseCasesContainer {
+extension AutoFillUseCaseContainer {
     var updateCredentialRank: Factory<UpdateCredentialRankUseCase> {
         self { UpdateCredentialRank(credentialManager: self.credentialManager,
                                     logManager: self.logManager) }
