@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import Factory
@@ -57,15 +58,47 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
 
+    private var cancellables = Set<AnyCancellable>()
+
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
+    @Published private(set) var itemCount = ItemCount.zero
 
-    init() {}
+    init() {
+        setUp()
+    }
 }
 
 // MARK: - Private APIs
 
 private extension VaultsManager {
+    func setUp() {
+        $state
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.updateItemCount()
+            }
+            .store(in: &cancellables)
+    }
+
+    func updateItemCount() {
+        guard case let .loaded(vaults, trash) = state else { return }
+        let items: [ItemTypeIdentifiable]
+        switch vaultSelection {
+        case .all:
+            items = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+        case let .precise(selectedVault):
+            items = vaults
+                .filter { $0.vault.shareId == selectedVault.shareId }
+                .map(\.items)
+                .reduce(into: []) { $0 += $1 }
+        case .trash:
+            items = trash
+        }
+        itemCount = .init(items: items)
+    }
+
     @MainActor
     func createDefaultVault(isPrimary: Bool) async throws {
         logger.trace("Creating default vault for user")
