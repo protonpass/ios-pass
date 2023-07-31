@@ -54,8 +54,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCasesContainer.cancelAutoFill)
-    private let updateCredentialRank = resolve(\AutoFillUseCasesContainer.updateCredentialRank)
-    private let copyTotpTokenAndNotify = resolve(\AutoFillUseCasesContainer.copyTotpTokenAndNotify)
+    private let completeAutoFill = resolve(\AutoFillUseCasesContainer.completeAutoFill)
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -319,40 +318,13 @@ private extension CredentialProviderCoordinator {
                   upgradeChecker: UpgradeCheckerProtocol,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         Task {
-            do {
-                try await copyTotpTokenAndNotify(itemContent: itemContent,
-                                                 clipboardManager: clipboardManager,
-                                                 upgradeChecker: upgradeChecker)
-
-                context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
-                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(itemContent.debugInformation)")
-
-                let lastUseTime = Date().timeIntervalSince1970
-                logger.trace("Updating rank \(itemContent.debugInformation)")
-                try await updateCredentialRank(itemContent: itemContent,
-                                               serviceIdentifiers: serviceIdentifiers,
-                                               lastUseTime: lastUseTime)
-                logger.info("Updated rank \(itemContent.debugInformation)")
-
-                logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
-                try await itemRepository.update(item: itemContent, lastUseTime: lastUseTime)
-                logger.info("Updated lastUseTime \(itemContent.debugInformation)")
-
-                if quickTypeBar {
-                    addNewEvent(type: .autofillTriggeredFromSource)
-                } else {
-                    addNewEvent(type: .autofillTriggeredFromApp)
-                }
-
-                await logManager.saveAllLogs()
-            } catch {
-                logger.error(error)
-                if quickTypeBar {
-                    cancelAutoFill(reason: .userInteractionRequired)
-                } else {
-                    alert(error: error)
-                }
-            }
+            await completeAutoFill(quickTypeBar: quickTypeBar,
+                                   credential: credential,
+                                   itemContent: itemContent,
+                                   itemRepository: itemRepository,
+                                   upgradeChecker: upgradeChecker,
+                                   serviceIdentifiers: serviceIdentifiers,
+                                   telemetryEventRepository: telemetryEventRepository)
         }
     }
 }

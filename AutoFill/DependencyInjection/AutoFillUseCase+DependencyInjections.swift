@@ -66,4 +66,12 @@ extension AutoFillUseCasesContainer {
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
         self { CancelAutoFill(context: self.context, logManager: self.logManager) }
     }
+
+    var completeAutoFill: Factory<CompleteAutoFillUseCase> {
+        self { CompleteAutoFill(context: self.context,
+                                logManager: self.logManager,
+                                clipboardManager: SharedServiceContainer.shared.clipboardManager(),
+                                copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
+                                updateCredentialRank: self.updateCredentialRank()) }
+    }
 }
