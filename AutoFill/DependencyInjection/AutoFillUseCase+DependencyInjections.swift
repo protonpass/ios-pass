@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AuthenticationServices
 import Client
 import Core
 import Factory
@@ -41,6 +42,10 @@ private extension AutoFillUseCasesContainer {
         SharedToolingContainer.shared.logManager()
     }
 
+    var context: ASCredentialProviderExtensionContext {
+        AutoFillDataContainer.shared.context()
+    }
+
     var credentialManager: CredentialManagerProtocol {
         SharedServiceContainer.shared.credentialManager()
     }
@@ -56,5 +61,9 @@ extension AutoFillUseCasesContainer {
         self { CopyTotpTokenAndNotify(preferences: self.preferences,
                                       logManager: self.logManager,
                                       notificationService: SharedServiceContainer.shared.notificationService()) }
+    }
+
+    var cancelAutoFill: Factory<CancelAutoFillUseCase> {
+        self { CancelAutoFill(context: self.context, logManager: self.logManager) }
     }
 }
