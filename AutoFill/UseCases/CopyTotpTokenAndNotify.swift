@@ -77,14 +77,14 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
         }
         let totpData = try TOTPData(uri: data.totpUri)
 
-        clipboardManager.copy(text: totpData.code, bannerMessage: "")
+        await MainActor.run {
+            clipboardManager.copy(text: totpData.code, bannerMessage: "")
+        }
         logger.trace("Copied TOTP token \(itemContent.debugInformation)")
 
         let content = UNMutableNotificationContent()
         content.title = "Two Factor Authentication code copied"
-        if let username = totpData.username {
-            content.subtitle = username
-        }
+        content.subtitle = itemContent.name
         content.body = """
         "\(totpData.code)" is copied to clipboard.
         Expiring in \(totpData.timerData.remaining) seconds.
