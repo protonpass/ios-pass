@@ -35,7 +35,9 @@ import ProtonCore_Services
 import SwiftUI
 import UIComponents
 
-public final class CredentialProviderCoordinator {
+public final class CredentialProviderCoordinator: DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
@@ -47,7 +49,7 @@ public final class CredentialProviderCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let bannerManager: BannerManager
     private let container: NSPersistentContainer
-    private let context: ASCredentialProviderExtensionContext
+    private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
 
     // Use cases
@@ -81,11 +83,10 @@ public final class CredentialProviderCoordinator {
         rootViewController?.topMostViewController
     }
 
-    init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
+    init(rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
         bannerManager = .init(container: rootViewController)
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-        self.context = context
         self.rootViewController = rootViewController
 
         // Post init
@@ -103,10 +104,10 @@ public final class CredentialProviderCoordinator {
 
         do {
             let symmetricKey = try appData.getSymmetricKey()
-            SharedDataContainer.shared.resolve(container: container,
-                                               symmetricKey: symmetricKey,
-                                               userData: userData,
-                                               manualLogIn: false)
+            SharedDataContainer.shared.register(container: container,
+                                                symmetricKey: symmetricKey,
+                                                userData: userData,
+                                                manualLogIn: false)
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
             showCredentialsView(userData: userData,
@@ -253,10 +254,10 @@ public final class CredentialProviderCoordinator {
     private func makeSymmetricKeyAndRepositories() {
         guard let userData = appData.userData,
               let symmetricKey = try? appData.getSymmetricKey() else { return }
-        SharedDataContainer.shared.resolve(container: container,
-                                           symmetricKey: symmetricKey,
-                                           userData: userData,
-                                           manualLogIn: false)
+        SharedDataContainer.shared.register(container: container,
+                                            symmetricKey: symmetricKey,
+                                            userData: userData,
+                                            manualLogIn: false)
         let apiService = apiManager.apiService
 
         let repositoryManager = RepositoryManager(apiService: apiService,
