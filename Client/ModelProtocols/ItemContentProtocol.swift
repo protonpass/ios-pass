@@ -299,18 +299,6 @@ extension ItemContent: ItemThumbnailable {
     }
 }
 
-public extension ItemContent {
-    /// Get `TOTPData` of the current moment
-    func totpData() throws -> TOTPData? {
-        if case let .login(logInData) = contentData,
-           !logInData.totpUri.isEmpty {
-            return try .init(uri: logInData.totpUri)
-        } else {
-            return nil
-        }
-    }
-}
-
 // MARK: - Symmetric encryption/decryption
 
 public extension ItemContentProtobuf {

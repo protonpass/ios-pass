@@ -34,7 +34,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import SwiftUI
 import UIComponents
-import UserNotifications
 
 public final class CredentialProviderCoordinator {
     /// Self-initialized properties
@@ -45,7 +44,6 @@ public final class CredentialProviderCoordinator {
 
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let bannerManager: BannerManager
     private let container: NSPersistentContainer
@@ -54,6 +52,7 @@ public final class CredentialProviderCoordinator {
 
     // Use cases
     private let updateCredentialRank = resolve(\AutoFillUseCasesContainer.updateCredentialRank)
+    private let copyTotpTokenAndNotify = resolve(\AutoFillUseCasesContainer.copyTotpTokenAndNotify)
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -325,24 +324,11 @@ private extension CredentialProviderCoordinator {
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        Task { @MainActor in
+        Task {
             do {
-                let getTotpData: () async -> TOTPData? = {
-                    do {
-                        if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
-                            return try itemContent.totpData()
-                        } else {
-                            return nil
-                        }
-                    } catch {
-                        self.logger.error(error)
-                        return nil
-                    }
-                }
-
-                if preferences.automaticallyCopyTotpCode, let totpData = await getTotpData() {
-                    copyAndNotify(totpData: totpData)
-                }
+                try await copyTotpTokenAndNotify(itemContent: itemContent,
+                                                 clipboardManager: clipboardManager,
+                                                 upgradeChecker: upgradeChecker)
 
                 context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
                 logger.info("Autofilled from QuickType bar \(quickTypeBar). \(itemContent.debugInformation)")
@@ -374,25 +360,6 @@ private extension CredentialProviderCoordinator {
                 }
             }
         }
-    }
-
-    func copyAndNotify(totpData: TOTPData) {
-        clipboardManager.copy(text: totpData.code, bannerMessage: "")
-        let content = UNMutableNotificationContent()
-        content.title = "Two Factor Authentication code copied"
-        if let username = totpData.username {
-            content.subtitle = username
-        }
-        content.body =
-            "\"\(totpData.code)\" is copied to clipboard. Expiring in \(totpData.timerData.remaining) seconds"
-
-        let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                            content: content,
-                                            trigger: nil) // Deliver immediately
-        // There seems to be a 5 second limit to autofill extension.
-        // if the delay goes above it stops working and doesn't remove the notification
-        let delay = min(totpData.timerData.remaining, 5)
-        notificationService.addWithTimer(for: request, and: Double(delay))
     }
 }
 
