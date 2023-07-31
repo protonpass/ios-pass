@@ -38,10 +38,10 @@ struct ItemCountView: View {
             let itemCount = ItemCount(items: allItems)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ItemContentTypeCountView(type: .login, count: itemCount.loginCount)
-                    ItemContentTypeCountView(type: .alias, count: itemCount.aliasCount)
-                    ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCardCount)
-                    ItemContentTypeCountView(type: .note, count: itemCount.noteCount)
+                    ItemContentTypeCountView(type: .login, count: itemCount.login)
+                    ItemContentTypeCountView(type: .alias, count: itemCount.alias)
+                    ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCard)
+                    ItemContentTypeCountView(type: .note, count: itemCount.note)
                 }
                 .padding(.horizontal)
             }
