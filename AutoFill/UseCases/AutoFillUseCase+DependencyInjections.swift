@@ -33,6 +33,10 @@ final class AutoFillUseCasesContainer: SharedContainer, AutoRegistering {
 }
 
 private extension AutoFillUseCasesContainer {
+    var preferences: Preferences {
+        SharedToolingContainer.shared.preferences()
+    }
+
     var logManager: LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
@@ -46,5 +50,11 @@ extension AutoFillUseCasesContainer {
     var updateCredentialRank: Factory<UpdateCredentialRankUseCase> {
         self { UpdateCredentialRank(credentialManager: self.credentialManager,
                                     logManager: self.logManager) }
+    }
+
+    var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
+        self { CopyTotpTokenAndNotify(preferences: self.preferences,
+                                      logManager: self.logManager,
+                                      notificationService: SharedServiceContainer.shared.notificationService()) }
     }
 }

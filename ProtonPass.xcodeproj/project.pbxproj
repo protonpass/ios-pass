@@ -130,6 +130,7 @@
 		354B24862A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */; };
 		354B24732A77D1BD0060EDF7 /* UpdateCredentialRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */; };
 		354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */; };
+		354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */; };
 		354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */; };
 		354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB13C28A240E000F50040 /* TextExtensions.swift */; };
 		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
@@ -1088,6 +1089,7 @@
 		354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOptionsView.swift; sourceTree = "<group>"; };
 		354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCredentialRank.swift; sourceTree = "<group>"; };
 		354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillUseCase+DependencyInjections.swift"; sourceTree = "<group>"; };
+		354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyTotpTokenAndNotify.swift; sourceTree = "<group>"; };
 		354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashItemsEndpoint.swift; sourceTree = "<group>"; };
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
@@ -2033,6 +2035,7 @@
 			isa = PBXGroup;
 			children = (
 				354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */,
+				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
 				354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */,
 			);
 			path = UseCases;
@@ -4721,6 +4724,7 @@
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
 				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
 				35733B7829CC525900052229 /* APIManager.swift in Sources */,
+				354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */,
 				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
 				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
