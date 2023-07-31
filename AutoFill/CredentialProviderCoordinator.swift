@@ -53,6 +53,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private weak var rootViewController: UIViewController?
 
     // Use cases
+    private let cancelAutoFill = resolve(\AutoFillUseCasesContainer.cancelAutoFill)
     private let updateCredentialRank = resolve(\AutoFillUseCasesContainer.updateCredentialRank)
     private let copyTotpTokenAndNotify = resolve(\AutoFillUseCasesContainer.copyTotpTokenAndNotify)
 
@@ -139,12 +140,12 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         guard let itemRepository,
               let upgradeChecker,
               let recordIdentifier = credentialIdentity.recordIdentifier else {
-            cancel(errorCode: .failed)
+            cancelAutoFill(reason: .failed)
             return
         }
 
         if preferences.localAuthenticationMethod != .none {
-            cancel(errorCode: .userInteractionRequired)
+            cancelAutoFill(reason: .userInteractionRequired)
         } else {
             Task {
                 do {
@@ -164,11 +165,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                         }
                     } else {
                         logger.warning("Failed to autofill. Item not found.")
-                        cancel(errorCode: .failed)
+                        cancelAutoFill(reason: .failed)
                     }
                 } catch {
                     logger.error(error)
-                    cancel(errorCode: .failed)
+                    cancelAutoFill(reason: .failed)
                 }
             }
         }
@@ -177,7 +178,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     // Biometric authentication
     func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
         guard let symmetricKey, let itemRepository, let upgradeChecker else {
-            cancel(errorCode: .failed)
+            cancelAutoFill(reason: .failed)
             return
         }
 
@@ -212,11 +213,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
         switch reason {
         case .userCancelled:
-            cancel(errorCode: .userCanceled)
+            cancelAutoFill(reason: .userCanceled)
             return
         case .failedToAuthenticate:
             Task {
-                defer { cancel(errorCode: .failed) }
+                defer { cancelAutoFill(reason: .failed) }
                 do {
                     logger.trace("Authenticaion failed. Removing all credentials")
                     appData.userData = nil
@@ -310,14 +311,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 // MARK: - Context actions
 
 private extension CredentialProviderCoordinator {
-    func cancel(errorCode: ASExtensionError.Code) {
-        let error = NSError(domain: ASExtensionErrorDomain, code: errorCode.rawValue)
-        context.cancelRequest(withError: error)
-        Task {
-            await logManager.saveAllLogs()
-        }
-    }
-
     // swiftlint:disable:next function_parameter_count
     func complete(quickTypeBar: Bool,
                   credential: ASPasswordCredential,
@@ -355,7 +348,7 @@ private extension CredentialProviderCoordinator {
             } catch {
                 logger.error(error)
                 if quickTypeBar {
-                    cancel(errorCode: .userInteractionRequired)
+                    cancelAutoFill(reason: .userInteractionRequired)
                 } else {
                     alert(error: error)
                 }
@@ -418,7 +411,7 @@ private extension CredentialProviderCoordinator {
 
     func showNotLoggedInView() {
         let view = NotLoggedInView { [weak self] in
-            self?.cancel(errorCode: .userCanceled)
+            self?.cancelAutoFill(reason: .userCanceled)
         }
         showView(view)
     }
@@ -507,7 +500,7 @@ private extension CredentialProviderCoordinator {
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
-            self?.cancel(errorCode: .failed)
+            self?.cancelAutoFill(reason: .failed)
         }
         alert.addAction(cancelAction)
         rootViewController?.present(alert, animated: true)
@@ -545,7 +538,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCancel() {
-        cancel(errorCode: .userCanceled)
+        cancelAutoFill(reason: .userCanceled)
     }
 
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
