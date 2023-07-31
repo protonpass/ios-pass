@@ -34,4 +34,16 @@ public struct ItemKey: Codable, Equatable, Hashable {
         case key = "Key"
         case keyRotation = "KeyRotation"
     }
+
+    // custom decoder
+    public init(from decoder: Decoder) throws {
+        // keys that work with `JSONDecoder.KeyDecodingStrategy.decapitaliseFirstLetter`
+        enum DecodingKeys: String, CodingKey {
+            case key
+            case keyRotation
+        }
+        let container = try decoder.container(keyedBy: DecodingKeys.self)
+        key = try container.decode(String.self, forKey: .key)
+        keyRotation = try container.decode(Int64.self, forKey: .keyRotation)
+    }
 }
