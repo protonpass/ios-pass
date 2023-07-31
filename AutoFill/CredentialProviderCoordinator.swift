@@ -53,8 +53,8 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private weak var rootViewController: UIViewController?
 
     // Use cases
-    private let cancelAutoFill = resolve(\AutoFillUseCasesContainer.cancelAutoFill)
-    private let completeAutoFill = resolve(\AutoFillUseCasesContainer.completeAutoFill)
+    private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
+    private let completeAutoFill = resolve(\AutoFillUseCaseContainer.completeAutoFill)
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
