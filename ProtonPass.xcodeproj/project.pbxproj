@@ -131,6 +131,7 @@
 		354B24732A77D1BD0060EDF7 /* UpdateCredentialRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */; };
 		354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */; };
 		354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */; };
+		354B247B2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */; };
 		354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */; };
 		354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB13C28A240E000F50040 /* TextExtensions.swift */; };
 		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
@@ -1090,6 +1091,7 @@
 		354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCredentialRank.swift; sourceTree = "<group>"; };
 		354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillUseCase+DependencyInjections.swift"; sourceTree = "<group>"; };
 		354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyTotpTokenAndNotify.swift; sourceTree = "<group>"; };
+		354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillData+DependencyInjections.swift"; sourceTree = "<group>"; };
 		354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashItemsEndpoint.swift; sourceTree = "<group>"; };
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
@@ -2002,6 +2004,7 @@
 			children = (
 				5BFFB5012A58035A00C2D1F9 /* Models */,
 				5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */,
+				354B24792A77E8010060EDF7 /* DependencyInjection */,
 				354B24742A77DA570060EDF7 /* UseCases */,
 				352866BF28E30662000630E2 /* AutoFillDebug-Black.entitlements */,
 				352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */,
@@ -2034,11 +2037,19 @@
 		354B24742A77DA570060EDF7 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
 				354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */,
 			);
 			path = UseCases;
+			sourceTree = "<group>";
+		};
+		354B24792A77E8010060EDF7 /* DependencyInjection */ = {
+			isa = PBXGroup;
+			children = (
+				354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */,
+				354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */,
+			);
+			path = DependencyInjection;
 			sourceTree = "<group>";
 		};
 		354BB14728A27E8100F50040 /* Search */ = {
@@ -4704,6 +4715,7 @@
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
+				354B247B2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift in Sources */,
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				359DB2A72A703FC200549466 /* UserDataProvider.swift in Sources */,
