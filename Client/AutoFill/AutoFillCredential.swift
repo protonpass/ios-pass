@@ -18,17 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AuthenticationServices
 import Core
 
+/// A proxy object for `ASPasswordCredentialIdentity` to interact with the credential database
 public struct AutoFillCredential {
+    /// A combination of `shareId` and `itemId` of an item to make up an unique ID
     public struct IDs: CodableBase64, ItemIdentifiable {
         public let shareId: String
         public let itemId: String
     }
 
+    /// Maps the `recordIdentifier` property
     let ids: IDs
+    /// Maps the `user` property
     let username: String
+    /// Maps the `serviceIdentifier` property
     let url: String
+    /// Maps the `rank` property
     let lastUseTime: Int64
 }
 
@@ -42,5 +49,14 @@ public extension AutoFillCredential {
         self.username = username
         self.url = url
         self.lastUseTime = lastUseTime
+    }
+}
+
+extension ASPasswordCredentialIdentity {
+    convenience init(_ credential: AutoFillCredential) throws {
+        try self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
+                      user: credential.username,
+                      recordIdentifier: credential.ids.serializeBase64())
+        rank = Int(credential.lastUseTime)
     }
 }

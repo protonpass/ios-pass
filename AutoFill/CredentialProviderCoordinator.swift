@@ -52,6 +52,9 @@ public final class CredentialProviderCoordinator {
     private let context: ASCredentialProviderExtensionContext
     private weak var rootViewController: UIViewController?
 
+    // Use cases
+    private let updateCredentialRank = resolve(\AutoFillUseCasesContainer.updateCredentialRank)
+
     /// Derived properties
     private var lastChildViewController: UIViewController?
     private var symmetricKey: SymmetricKey?
@@ -304,47 +307,6 @@ public final class CredentialProviderCoordinator {
     }
 }
 
-extension CredentialProviderCoordinator {
-    private func updateRank(itemContent: ItemContent,
-                            symmetricKey: SymmetricKey,
-                            serviceIdentifiers: [ASCredentialServiceIdentifier],
-                            lastUseTime: TimeInterval) async throws {
-        if case let .login(data) = itemContent.contentData {
-            let serviceUrls = serviceIdentifiers
-                .map { serviceIdentifier in
-                    switch serviceIdentifier.type {
-                    case .URL:
-                        return serviceIdentifier.identifier
-                    case .domain:
-                        return "https://\(serviceIdentifier.identifier)"
-                    @unknown default:
-                        return serviceIdentifier.identifier
-                    }
-                }
-                .compactMap { URL(string: $0) }
-            let itemUrls = data.urls.compactMap { URL(string: $0) }
-            let matchedUrls = itemUrls.filter { itemUrl in
-                serviceUrls.contains { serviceUrl in
-                    if case .matched = URLUtils.Matcher.compare(itemUrl, serviceUrl) {
-                        return true
-                    }
-                    return false
-                }
-            }
-
-            let credentials = matchedUrls
-                .map { AutoFillCredential(shareId: itemContent.shareId,
-                                          itemId: itemContent.itemId,
-                                          username: data.username,
-                                          url: $0.absoluteString,
-                                          lastUseTime: Int64(lastUseTime)) }
-            try await credentialManager.insert(credentials: credentials)
-        } else {
-            throw PPError.credentialProvider(.notLogInItem)
-        }
-    }
-}
-
 // MARK: - Context actions
 
 private extension CredentialProviderCoordinator {
@@ -387,10 +349,9 @@ private extension CredentialProviderCoordinator {
 
                 let lastUseTime = Date().timeIntervalSince1970
                 logger.trace("Updating rank \(itemContent.debugInformation)")
-                try await updateRank(itemContent: itemContent,
-                                     symmetricKey: itemRepository.symmetricKey,
-                                     serviceIdentifiers: serviceIdentifiers,
-                                     lastUseTime: lastUseTime)
+                try await updateCredentialRank(itemContent: itemContent,
+                                               serviceIdentifiers: serviceIdentifiers,
+                                               lastUseTime: lastUseTime)
                 logger.info("Updated rank \(itemContent.debugInformation)")
 
                 logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
