@@ -511,6 +511,8 @@ extension CredentialsViewModel: SyncEventLoopDelegate {
         } else {
             logger.info("Has no new events. Do nothing.")
         }
+        // We're only interested in refreshing items just once when in autofill context
+        syncEventLoop.stop()
     }
 
     func syncEventLoopDidFailLoop(error: Error) {

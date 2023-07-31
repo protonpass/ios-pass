@@ -113,12 +113,21 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
 
         NotificationCenter.default
+            .publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.eventLoop.stop()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
                 self.logger.info("App goes back to foreground")
                 self.refresh()
                 self.sendAllEventsIfApplicable()
+                self.eventLoop.start()
                 self.eventLoop.forceSync()
                 self.updateCredentials(forceRemoval: false)
                 self.refreshPlan()
