@@ -129,6 +129,8 @@ public extension CredentialManagerProtocol {
 
             let itemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
             if case let .login(data) = itemContent.contentData {
+                // A login item can have multiple associated URLs while the OS expects a single URL per item,
+                // so we need to make a separate entry for each URL in the credential database.
                 for url in data.urls {
                     credentials.append(.init(shareId: itemContent.shareId,
                                              itemId: itemContent.item.itemID,
@@ -188,14 +190,5 @@ extension CredentialManager: ItemRepositoryDelegate {
                 logger.error(error)
             }
         }
-    }
-}
-
-private extension ASPasswordCredentialIdentity {
-    convenience init(_ credential: AutoFillCredential) throws {
-        try self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
-                      user: credential.username,
-                      recordIdentifier: credential.ids.serializeBase64())
-        rank = Int(credential.lastUseTime)
     }
 }
