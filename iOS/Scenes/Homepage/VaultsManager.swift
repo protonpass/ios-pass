@@ -81,6 +81,17 @@ private extension VaultsManager {
                 self?.updateItemCount()
             }
             .store(in: &cancellables)
+
+        $vaultSelection
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                // Reset back to filter "all" when switching vaults
+                self.filterOption = .all
+                self.updateItemCount()
+            }
+            .store(in: &cancellables)
     }
 
     func updateItemCount() {
