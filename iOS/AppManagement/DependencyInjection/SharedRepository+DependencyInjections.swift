@@ -42,6 +42,8 @@ final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
     }
 }
 
+// MARK: - Computed properties
+
 private extension SharedRepositoryContainer {
     var apiManager: APIManager {
         SharedToolingContainer.shared.apiManager()

@@ -34,14 +34,27 @@ final class RepositoryContainer: SharedContainer, AutoRegistering {
 
 extension RepositoryContainer {
     var reportRepository: Factory<ReportRepositoryProtocol> {
-        self { ReportRepository(apiManager: SharedToolingContainer.shared.apiManager(),
-                                logManager: SharedToolingContainer.shared.logManager()) }
+        self { ReportRepository(apiManager: self.apiManager,
+                                logManager: self.logManager) }
     }
 
     var inviteRepository: Factory<InviteRepositoryProtocol> {
-        self { InviteRepository(remoteInviteDatasource:
-            RemoteInviteDatasource(apiService: SharedToolingContainer.shared.apiManager()
-                .apiService),
-            logManager: SharedToolingContainer.shared.logManager()) }
+        self {
+            InviteRepository(remoteInviteDatasource: RemoteInviteDatasource(apiService: self.apiManager
+                                 .apiService),
+            logManager: self.logManager)
+        }
+    }
+}
+
+// MARK: - Computed properties
+
+private extension RepositoryContainer {
+    var apiManager: APIManager {
+        SharedToolingContainer.shared.apiManager()
+    }
+
+    var logManager: LogManagerProtocol {
+        SharedToolingContainer.shared.logManager()
     }
 }

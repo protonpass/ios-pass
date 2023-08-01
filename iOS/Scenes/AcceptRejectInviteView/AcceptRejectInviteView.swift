@@ -50,14 +50,13 @@ struct AcceptRejectInviteView: View {
         .errorAlert(error: $viewModel.error)
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundWeak.toColor)
         .animation(.default, value: viewModel.vaultInfos)
         .showSpinner(viewModel.executingAction)
         .onChange(of: viewModel.shouldCloseSheet) { value in
-            guard value else {
-                return
+            if value {
+                dismiss()
             }
-            dismiss()
         }
     }
 }
@@ -73,7 +72,6 @@ private extension AcceptRejectInviteView {
     }
 }
 
-// swiftlint:disable line_length
 private extension AcceptRejectInviteView {
     func vaultInformation(infos: VaultProtobuf) -> some View {
         VStack {
@@ -91,47 +89,27 @@ private extension AcceptRejectInviteView {
             .frame(width: 64, height: 64)
 
             Text(infos.name)
-                .font(.title2)
+                .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("\(viewModel.userInvite.vaultData.itemCount) items • \(viewModel.userInvite.vaultData.memberCount) members")
+            Text(viewModel.userInvite.vaultsCountInfos)
                 .font(.title3)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
     }
 }
-// swiftlint:enable line_length
 
 private extension AcceptRejectInviteView {
     var actionButtons: some View {
         VStack {
-            Button { viewModel.accept() } label: {
-                HStack(alignment: .center, spacing: 4) {
-                    Spacer()
+            CapsuleTextButton(title: "Join shared vault",
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNorm,
+                              action: viewModel.accept)
 
-                    Text("Join shared vault")
-                        .font(.body)
-                        .foregroundColor(PassColor.textInvert.toColor)
-                    Spacer()
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .background(PassColor.interactionNorm.toColor)
-                .cornerRadius(32)
-            }
-
-            Button { viewModel.reject() } label: {
-                HStack(alignment: .center, spacing: 4) {
-                    Spacer()
-                    Text("Reject invitation")
-                        .font(.body)
-                        .foregroundColor(PassColor.interactionNormMajor1.toColor)
-                    Spacer()
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .background(PassColor.interactionNormMinor1.toColor)
-                .cornerRadius(32)
-            }
+            CapsuleTextButton(title: "Reject invitation",
+                              titleColor: PassColor.interactionNormMajor1,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              action: viewModel.reject)
         }
     }
 }
@@ -139,5 +117,11 @@ private extension AcceptRejectInviteView {
 struct AcceptRejectInviteView_Previews: PreviewProvider {
     static var previews: some View {
         AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: UserInvite.mocked))
+    }
+}
+
+private extension UserInvite {
+    var vaultsCountInfos: String {
+        "\(vaultData?.itemCount ?? 0) items • \(vaultData?.memberCount ?? 0) members"
     }
 }

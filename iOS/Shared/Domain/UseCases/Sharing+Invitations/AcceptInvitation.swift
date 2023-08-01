@@ -65,39 +65,48 @@ private extension AcceptInvitation {
                                                             userData: userData)
         let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
         let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
-        let reencrytedKeys: [ItemKey] = try keys.compactMap { key -> ItemKey? in
-            guard let decodeKey = try? key.key.base64Decode() else {
-                throw SharingError.cannotDecode
-            }
 
-            let armoredEncryptedKeyData = try CryptoUtils.armorMessage(decodeKey)
-            let armorMessage = ArmoredMessage(value: armoredEncryptedKeyData)
-
-            let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: addressKeys,
-                                                                      value: armorMessage,
-                                                                      verificationKeys: armoredInviterPublicKeys)
-
-            guard let userKey = userData.user.keys.first else {
-                throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
-            }
-
-            guard let passphrase = userData.passphrases[userKey.keyID] else {
-                throw PPClientError.crypto(.missingPassphrase(keyID: userKey.keyID))
-            }
-
-            let publicKey = ArmoredKey(value: userKey.publicKey)
-            let privateKey = ArmoredKey(value: userKey.privateKey)
-            let signerKey = SigningKey(privateKey: privateKey,
-                                       passphrase: .init(value: passphrase))
-
-            let encryptedVaultKeyDataString = try Encryptor.encrypt(publicKey: publicKey,
-                                                                    clearData: decode.content,
-                                                                    signerKey: signerKey)
-                .unArmor().value.base64EncodedString()
-
-            return ItemKey(key: encryptedVaultKeyDataString,
-                           keyRotation: key.keyRotation)
+        let reencrytedKeys: [ItemKey] = try keys.compactMap { key in
+            try transformKey(key: key,
+                             addressKeys: addressKeys,
+                             armoredInviterPublicKeys: armoredInviterPublicKeys)
         }
         return reencrytedKeys
+    }
+
+    func transformKey(key: ItemKey,
+                      addressKeys: [DecryptionKey],
+                      armoredInviterPublicKeys: [ArmoredKey]) throws -> ItemKey {
+        guard let decodeKey = try? key.key.base64Decode() else {
+            throw SharingError.cannotDecode
+        }
+
+        let armoredEncryptedKeyData = try CryptoUtils.armorMessage(decodeKey)
+        let armorMessage = ArmoredMessage(value: armoredEncryptedKeyData)
+
+        let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: addressKeys,
+                                                                  value: armorMessage,
+                                                                  verificationKeys: armoredInviterPublicKeys)
+
+        guard let userKey = userData.user.keys.first else {
+            throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
+        }
+
+        guard let passphrase = userData.passphrases[userKey.keyID] else {
+            throw PPClientError.crypto(.missingPassphrase(keyID: userKey.keyID))
+        }
+
+        let publicKey = ArmoredKey(value: userKey.publicKey)
+        let privateKey = ArmoredKey(value: userKey.privateKey)
+        let signerKey = SigningKey(privateKey: privateKey,
+                                   passphrase: .init(value: passphrase))
+
+        let encryptedVaultKeyDataString = try Encryptor.encrypt(publicKey: publicKey,
+                                                                clearData: decode.content,
+                                                                signerKey: signerKey)
+            .unArmor().value.base64EncodedString()
+
+        return ItemKey(key: encryptedVaultKeyDataString,
+                       keyRotation: key.keyRotation)
     }
 }
