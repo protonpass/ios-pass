@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Entities
 import Factory
 import SwiftUI
 
@@ -44,19 +45,21 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var banners: [InfoBanner] = []
+    @Published private(set) var invites: [UserInvite] = []
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemsTabViewModelDelegate?
-
+    private var inviteRefreshTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance
@@ -74,6 +77,13 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
+        getPendingUserInvitations()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] invites in
+                self?.invites = invites
+            }
+            .store(in: &cancellables)
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)

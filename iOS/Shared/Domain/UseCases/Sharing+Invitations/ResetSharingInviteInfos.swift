@@ -1,5 +1,5 @@
 //
-// SharingError.swift
+// Service+DependencyInjections.swift
 // Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,12 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Core
+import Factory
 
-public enum SharingError: LocalizedError {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-    case noPublicKeyAssociatedWithEmail
-    case invalidKeyOrAddress
-    case cannotDecode
+final class ServiceContainer: SharedContainer, AutoRegistering {
+    static let shared = ServiceContainer()
+    let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
+    }
+}
+
+extension ServiceContainer {
+    var paymentManager: Factory<PaymentsManager> {
+        self { .init(storage: kSharedUserDefaults) }
+    }
+
+    var shareInviteService: Factory<ShareInviteServiceProtocol> {
+        self { ShareInviteService() }
+            .shared
+    }
 }

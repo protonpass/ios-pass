@@ -62,6 +62,12 @@ struct ItemsTabView: View {
                         .padding([.horizontal, .top])
                 }
 
+                if !viewModel.invites.isEmpty {
+                    InviteBannerViewStack(invites: viewModel.invites)
+                        .padding()
+                        .padding(.top)
+                }
+
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
                     case .all, .precise:
@@ -81,6 +87,7 @@ struct ItemsTabView: View {
             .animation(.default, value: viewModel.vaultsManager.state)
             .animation(.default, value: viewModel.vaultsManager.filterOption)
             .animation(.default, value: viewModel.banners.count)
+            .animation(.default, value: viewModel.invites.count)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }

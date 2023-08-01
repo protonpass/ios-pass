@@ -20,7 +20,7 @@
 
 import CryptoKit
 
-enum AssociatedData: String {
+public enum AssociatedData: String {
     case itemContent = "itemcontent"
     case itemKey = "itemkey"
     case vaultContent = "vaultcontent"
@@ -28,7 +28,7 @@ enum AssociatedData: String {
     var data: Data { rawValue.data(using: .utf8) ?? .init() }
 }
 
-extension AES.GCM {
+public extension AES.GCM {
     static func seal(_ data: Data, key: Data, associatedData: AssociatedData) throws -> SealedBox {
         try AES.GCM.seal(data, using: .init(data: key), authenticating: associatedData.data)
     }
