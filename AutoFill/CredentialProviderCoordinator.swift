@@ -307,8 +307,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 }
 
-// MARK: - Context actions
-
 private extension CredentialProviderCoordinator {
     // swiftlint:disable:next function_parameter_count
     func complete(quickTypeBar: Bool,
@@ -317,15 +315,13 @@ private extension CredentialProviderCoordinator {
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        Task {
-            await completeAutoFill(quickTypeBar: quickTypeBar,
-                                   credential: credential,
-                                   itemContent: itemContent,
-                                   itemRepository: itemRepository,
-                                   upgradeChecker: upgradeChecker,
-                                   serviceIdentifiers: serviceIdentifiers,
-                                   telemetryEventRepository: telemetryEventRepository)
-        }
+        completeAutoFill(quickTypeBar: quickTypeBar,
+                         credential: credential,
+                         itemContent: itemContent,
+                         itemRepository: itemRepository,
+                         upgradeChecker: upgradeChecker,
+                         serviceIdentifiers: serviceIdentifiers,
+                         telemetryEventRepository: telemetryEventRepository)
     }
 }
 
