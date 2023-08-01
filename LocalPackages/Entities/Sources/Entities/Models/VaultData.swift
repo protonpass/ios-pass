@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct VaultData: Decodable, Equatable, Hashable {
+public struct VaultData: Decodable, Equatable, Hashable, Sendable {
     public let content: String
     public let contentKeyRotation: Int
     public let contentFormatVersion: Int

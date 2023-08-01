@@ -76,6 +76,13 @@ private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
 
+        getPendingUserInvitations()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] invites in
+                self?.invites = invites
+            }
+            .store(in: &cancellables)
+
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
@@ -179,25 +186,6 @@ extension ItemsTabViewModel {
                 }
             } catch {
                 self.delegate?.itemsTabViewModelDidEncounter(error: error)
-            }
-        }
-    }
-}
-
-// MARK: - Invites {
-
-extension ItemsTabViewModel {
-    func refreshInvites() {
-        inviteRefreshTask?.cancel()
-        inviteRefreshTask = Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                if Task.isCancelled {
-                    return
-                }
-                self.invites = try await getPendingUserInvitations()
-            } catch {
-                self.logger.error(error)
             }
         }
     }
