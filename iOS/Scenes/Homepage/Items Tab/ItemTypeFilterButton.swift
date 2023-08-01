@@ -52,7 +52,13 @@ private extension ItemTypeFilterButton {
                 Button(action: {
                     onSelect(option)
                 }, label: {
-                    text(for: uiModel)
+                    Label(title: {
+                        text(for: uiModel)
+                    }, icon: {
+                        if option == selectedOption {
+                            Image(systemName: "checkmark")
+                        }
+                    })
                 })
                 // swiftformat:disable:next isEmpty
                 .disabled(uiModel.count == 0) // swiftlint:disable:this empty_count
