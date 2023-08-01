@@ -109,7 +109,6 @@ public extension InviteRepository {
                     self.currentPendingInvites.send(invites)
                 }
                 logger.trace("Invites refreshed with \(invites)")
-
             } catch {
                 self.logger.error(message: "Could not refresh all the user's invitations", error: error)
             }
@@ -117,7 +116,7 @@ public extension InviteRepository {
     }
 
     func removeCachedInvite(containing inviteToken: String) async {
-        self.logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
+        logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
         let newInvites = currentPendingInvites.value.filter { $0.inviteToken != inviteToken }
         currentPendingInvites.send(newInvites)
     }
