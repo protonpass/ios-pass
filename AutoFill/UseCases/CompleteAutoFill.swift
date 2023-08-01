@@ -30,7 +30,7 @@ protocol CompleteAutoFillUseCase: Sendable {
                  itemRepository: ItemRepositoryProtocol,
                  upgradeChecker: UpgradeCheckerProtocol,
                  serviceIdentifiers: [ASCredentialServiceIdentifier],
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async
+                 telemetryEventRepository: TelemetryEventRepositoryProtocol?)
 }
 
 extension CompleteAutoFillUseCase {
@@ -40,14 +40,14 @@ extension CompleteAutoFillUseCase {
                         itemRepository: ItemRepositoryProtocol,
                         upgradeChecker: UpgradeCheckerProtocol,
                         serviceIdentifiers: [ASCredentialServiceIdentifier],
-                        telemetryEventRepository: TelemetryEventRepositoryProtocol?) async {
-        await execute(quickTypeBar: quickTypeBar,
-                      credential: credential,
-                      itemContent: itemContent,
-                      itemRepository: itemRepository,
-                      upgradeChecker: upgradeChecker,
-                      serviceIdentifiers: serviceIdentifiers,
-                      telemetryEventRepository: telemetryEventRepository)
+                        telemetryEventRepository: TelemetryEventRepositoryProtocol?) {
+        execute(quickTypeBar: quickTypeBar,
+                credential: credential,
+                itemContent: itemContent,
+                itemRepository: itemRepository,
+                upgradeChecker: upgradeChecker,
+                serviceIdentifiers: serviceIdentifiers,
+                telemetryEventRepository: telemetryEventRepository)
     }
 }
 
@@ -84,33 +84,29 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                  itemRepository: ItemRepositoryProtocol,
                  upgradeChecker: UpgradeCheckerProtocol,
                  serviceIdentifiers: [ASCredentialServiceIdentifier],
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async {
-        await withCheckedContinuation { continuation in
-            context.completeRequest(withSelectedCredential: credential) { _ in
-                Task { [weak self] in
-                    guard let self else { return }
-                    do {
-                        if quickTypeBar {
-                            try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
-                        } else {
-                            try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
-                        }
-                        self.logger
-                            .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugInformation)")
-                        try await self.complete(itemContent: itemContent,
-                                                itemRepository: itemRepository,
-                                                upgradeChecker: upgradeChecker,
-                                                serviceIdentifiers: serviceIdentifiers)
-                        await self.logManager.saveAllLogs()
-                        continuation.resume()
-                    } catch {
-                        // Do nothing but only log the errors
-                        self.logger.error(error)
-                        // Repeat the "saveAllLogs" function instead of deferring
-                        // because we can't "await" in defer block
-                        await self.logManager.saveAllLogs()
-                        continuation.resume()
+                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) {
+        context.completeRequest(withSelectedCredential: credential) { _ in
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    if quickTypeBar {
+                        try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
+                    } else {
+                        try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
                     }
+                    self.logger
+                        .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugInformation)")
+                    try await self.complete(itemContent: itemContent,
+                                            itemRepository: itemRepository,
+                                            upgradeChecker: upgradeChecker,
+                                            serviceIdentifiers: serviceIdentifiers)
+                    await self.logManager.saveAllLogs()
+                } catch {
+                    // Do nothing but only log the errors
+                    self.logger.error(error)
+                    // Repeat the "saveAllLogs" function instead of deferring
+                    // because we can't "await" in defer block
+                    await self.logManager.saveAllLogs()
                 }
             }
         }
