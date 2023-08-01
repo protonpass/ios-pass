@@ -1,6 +1,7 @@
 //
-// SharingError.swift
-// Proton Pass - Created on 25/07/2023.
+//
+// RefreshInvitations.swift
+// Proton Pass - Created on 31/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,13 +18,30 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Client
 
-public enum SharingError: LocalizedError {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-    case noPublicKeyAssociatedWithEmail
-    case invalidKeyOrAddress
-    case cannotDecode
+protocol RefreshInvitationsUseCase: Sendable {
+    func execute()
+}
+
+extension RefreshInvitationsUseCase {
+    func callAsFunction() {
+        execute()
+    }
+}
+
+final class RefreshInvitations: RefreshInvitationsUseCase {
+    private let repository: InviteRepositoryProtocol
+
+    init(repository: InviteRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    func execute() {
+        Task { [weak self] in
+            await self?.repository.refreshInvites()
+        }
+    }
 }

@@ -1,6 +1,7 @@
 //
-// SharingError.swift
-// Proton Pass - Created on 25/07/2023.
+//
+// GetPendingUserInvitations.swift
+// Proton Pass - Created on 27/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,13 +18,30 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Client
+import Combine
+import Entities
 
-public enum SharingError: LocalizedError {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-    case noPublicKeyAssociatedWithEmail
-    case invalidKeyOrAddress
-    case cannotDecode
+protocol GetPendingUserInvitationsUseCase: Sendable {
+    func execute() -> CurrentValueSubject<[UserInvite], Never>
+}
+
+extension GetPendingUserInvitationsUseCase {
+    func callAsFunction() -> CurrentValueSubject<[UserInvite], Never> {
+        execute()
+    }
+}
+
+final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
+    private let repository: InviteRepositoryProtocol
+
+    init(repository: InviteRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    func execute() -> CurrentValueSubject<[UserInvite], Never> {
+        repository.currentPendingInvites
+    }
 }
