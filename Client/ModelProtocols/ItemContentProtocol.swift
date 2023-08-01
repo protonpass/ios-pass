@@ -22,7 +22,7 @@ import Core
 import CryptoKit
 
 // RawValue is used for telemetry, we need to know the item type of the actions
-public enum ItemContentType: Int, CaseIterable {
+public enum ItemContentType: Int, CaseIterable, Equatable {
     case login = 0
     case alias = 1
     case note = 2

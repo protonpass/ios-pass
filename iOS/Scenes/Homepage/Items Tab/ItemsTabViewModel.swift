@@ -53,6 +53,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+
     weak var delegate: ItemsTabViewModelDelegate?
 
     private var cancellables = Set<AnyCancellable>()
@@ -178,6 +180,10 @@ extension ItemsTabViewModel {
                 self.delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
+    }
+
+    func showFilterOptions() {
+        router.presentSheet(for: .filterItems)
     }
 }
 
