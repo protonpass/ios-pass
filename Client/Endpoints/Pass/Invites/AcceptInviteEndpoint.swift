@@ -23,7 +23,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public struct AcceptInviteEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
+    public typealias Body = AcceptInviteRequest
     public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
@@ -33,7 +33,7 @@ public struct AcceptInviteEndpoint: Endpoint {
 
     public init(with inviteToken: String, and request: AcceptInviteRequest) {
         debugDescription = "Accept an invite"
-        path = "pass/v1/invite/\(inviteToken)"
+        path = "/pass/v1/invite/\(inviteToken)"
         method = .post
         body = request
     }

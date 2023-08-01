@@ -24,4 +24,6 @@ public enum SharingError: LocalizedError {
     case incompleteInformation
     case failedEncryptionKeysFetching
     case noPublicKeyAssociatedWithEmail
+    case invalidKeyOrAddress
+    case cannotDecode
 }
