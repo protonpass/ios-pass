@@ -130,6 +130,19 @@ extension ItemContentType {
         }
     }
 
+    var filterTitle: String {
+        switch self {
+        case .login:
+            return "Logins"
+        case .alias:
+            return "Aliases"
+        case .note:
+            return "Notes"
+        case .creditCard:
+            return "Credit cards"
+        }
+    }
+
     var createItemTitle: String {
         switch self {
         case .login:

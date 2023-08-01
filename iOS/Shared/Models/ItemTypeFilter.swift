@@ -19,8 +19,56 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import ProtonCore_UIFoundations
+import UIKit
 
-enum ItemTypeFilterOption {
+enum ItemTypeFilterOption: Equatable, Hashable {
     case all
     case precise(ItemContentType)
+
+    static var allCases: [ItemTypeFilterOption] {
+        // We want to control the order of appearance so we construct the array manually
+        // instead of looping through "ItemContentType.allCases"
+        let allCases: [ItemTypeFilterOption] = [
+            .all,
+            .precise(.login),
+            .precise(.alias),
+            .precise(.creditCard),
+            .precise(.note)
+        ]
+        assert(allCases.count == ItemContentType.allCases.count + 1, "Some type is missing")
+        return allCases
+    }
+
+    func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
+        switch self {
+        case .all:
+            return .init(icon: IconProvider.grid2, title: "All", count: itemCount.total)
+        case let .precise(type):
+            return type.uiModel(from: itemCount)
+        }
+    }
+}
+
+struct ItemTypeFilterOptionUiModel {
+    let icon: UIImage
+    let title: String
+    let count: Int
+}
+
+private extension ItemContentType {
+    func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
+        let count: Int
+        switch self {
+        case .login:
+            count = itemCount.login
+        case .alias:
+            count = itemCount.alias
+        case .note:
+            count = itemCount.note
+        case .creditCard:
+            count = itemCount.creditCard
+        }
+        return .init(icon: regularIcon, title: filterTitle, count: count)
+    }
 }
