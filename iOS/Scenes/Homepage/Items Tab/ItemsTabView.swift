@@ -139,7 +139,8 @@ struct ItemsTabView: View {
         HStack {
             ItemTypeFilterButton(itemCount: viewModel.vaultsManager.itemCount,
                                  selectedOption: viewModel.vaultsManager.filterOption,
-                                 onSelect: viewModel.vaultsManager.updateItemTypeFilterOption)
+                                 onSelect: viewModel.vaultsManager.updateItemTypeFilterOption,
+                                 onTap: viewModel.showFilterOptions)
 
             Spacer()
 

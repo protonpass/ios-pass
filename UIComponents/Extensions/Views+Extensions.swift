@@ -70,6 +70,7 @@ public extension View {
             NavigationView {
                 self
             }
+            .navigationViewStyle(.stack)
         }
     }
 }
