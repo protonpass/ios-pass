@@ -48,7 +48,7 @@ public struct AcceptInviteRequest {
     }
 }
 
-extension AcceptInviteRequest: Codable {
+extension AcceptInviteRequest: Encodable {
     enum CodingKeys: String, CodingKey {
         case keys = "Keys"
     }
