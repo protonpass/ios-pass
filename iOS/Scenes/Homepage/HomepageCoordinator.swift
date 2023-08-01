@@ -413,11 +413,14 @@ private extension HomepageCoordinator {
             .newSheetDestination
             .receive(on: DispatchQueue.main)
             .sink { [weak self] destination in
+                guard let self else { return }
                 switch destination {
                 case .sharingFlow:
-                    self?.presentSharingFlow()
+                    self.presentSharingFlow()
                 case .manageShareVault:
-                    self?.presentManageShareVault()
+                    self.presentManageShareVault()
+                case .filterItems:
+                    self.presentItemFilterOptions()
                 }
             }
             .store(in: &cancellables)
@@ -433,6 +436,16 @@ private extension HomepageCoordinator {
             let manageShareVaultView = Text("Manage Share Vault Screen")
             self?.present(manageShareVaultView)
         }
+    }
+
+    func presentItemFilterOptions() {
+        let view = ItemTypeFilterOptionsView()
+        let viewController = UIHostingController(rootView: view)
+        let height = ItemTypeFilterOptionsView.rowHeight * CGFloat(ItemTypeFilterOption.allCases.count) + 70
+        viewController.setDetentType(.customAndLarge(height),
+                                     parentViewController: rootViewController)
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 }
 
