@@ -20,15 +20,87 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
+import CryptoKit
 import Entities
+import Factory
 import Foundation
+import ProtonCore_Crypto
+import ProtonCore_Login
 
-final class AcceptRejectInviteViewModel: ObservableObject, Sendable {
+final class AcceptRejectInviteViewModel: ObservableObject {
+    @Published private(set) var userInvite: UserInvite
+    @Published private(set) var vaultInfos: VaultProtobuf?
+    @Published private(set) var executingAction = false
+    @Published private(set) var shouldCloseSheet = false
+    @Published var error: Error?
+
+    private let rejectInvitation = resolve(\UseCasesContainer.rejectInvitation)
+    private let acceptInvitation = resolve(\UseCasesContainer.acceptInvitation)
+    private let decodeShareVaultInformation = resolve(\UseCasesContainer.decodeShareVaultInformation)
+    private let updateCachedInvitations = resolve(\UseCasesContainer.updateCachedInvitations)
+
     init(invite: UserInvite) {
+        userInvite = invite
         setUp()
+    }
+
+    func reject() {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                self.executingAction = false
+            }
+
+            do {
+                self.executingAction = true
+                _ = try await self.rejectInvitation(for: self.userInvite.inviteToken)
+                await self.updateCachedInvitations(for: self.userInvite.inviteToken)
+                self.shouldCloseSheet = true
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    func accept() {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                self.executingAction = false
+            }
+
+            do {
+                self.executingAction = true
+                _ = try await self.acceptInvitation(with: self.userInvite)
+                await self.updateCachedInvitations(for: self.userInvite.inviteToken)
+                self.shouldCloseSheet = true
+            } catch {
+                self.error = error
+            }
+        }
     }
 }
 
 private extension AcceptRejectInviteViewModel {
-    func setUp() {}
+    func setUp() {
+        decodeVaultData()
+    }
+
+    func decodeVaultData() {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                self.vaultInfos = try await self.decodeShareVaultInformation(with: self.userInvite)
+            } catch {
+                print(error)
+            }
+        }
+    }
 }
