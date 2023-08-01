@@ -37,14 +37,7 @@ struct ItemsTabView: View {
                 ItemsTabsSkeleton()
 
             case .loaded:
-                switch vaultsManager.vaultSelection {
-                case .all:
-                    vaultContent(vaultsManager.getItem(for: .all))
-                case let .precise(selectedVault):
-                    vaultContent(vaultsManager.getItem(for: .precise(selectedVault)))
-                case .trash:
-                    vaultContent(vaultsManager.getItem(for: .trash))
-                }
+                vaultContent(vaultsManager.getFilteredItems())
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
@@ -86,6 +79,7 @@ struct ItemsTabView: View {
             .ignoresSafeArea(edges: .bottom)
             .edgesIgnoringSafeArea(.bottom)
             .animation(.default, value: viewModel.vaultsManager.state)
+            .animation(.default, value: viewModel.vaultsManager.filterOption)
             .animation(.default, value: viewModel.banners.count)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
@@ -143,13 +137,9 @@ struct ItemsTabView: View {
     @ViewBuilder
     private func itemList(_ items: [ItemUiModel]) -> some View {
         HStack {
-            Text("All")
-                .font(.callout)
-                .fontWeight(.bold)
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" (\(items.count))")
-                .font(.callout)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
+            ItemTypeFilterButton(itemCount: viewModel.vaultsManager.itemCount,
+                                 selectedOption: viewModel.vaultsManager.filterOption,
+                                 onSelect: viewModel.vaultsManager.updateItemTypeFilterOption)
 
             Spacer()
 
