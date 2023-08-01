@@ -25,9 +25,27 @@ import UIComponents
 struct ItemTypeFilterButton: View {
     let itemCount: ItemCount
     let selectedOption: ItemTypeFilterOption
+    /// Applicable to platforms other than iOS
     let onSelect: (ItemTypeFilterOption) -> Void
+    /// Applicable to iOS only
+    let onTap: () -> Void
 
     var body: some View {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            Button(action: onTap) {
+                let uiModel = selectedOption.uiModel(from: itemCount)
+                text(for: uiModel)
+                    .font(.callout.weight(.medium))
+                    .foregroundColor(PassColor.interactionNormMajor2.toColor)
+            }
+        } else {
+            menu
+        }
+    }
+}
+
+private extension ItemTypeFilterButton {
+    var menu: some View {
         Menu(content: {
             ForEach(ItemTypeFilterOption.allCases, id: \.self) { option in
                 let uiModel = option.uiModel(from: itemCount)
@@ -47,9 +65,7 @@ struct ItemTypeFilterButton: View {
         })
         .animationsDisabled()
     }
-}
 
-private extension ItemTypeFilterButton {
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
         Text("\(uiModel.title) (\(uiModel.count))")
     }
