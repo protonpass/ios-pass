@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import Factory
@@ -57,15 +58,59 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
 
+    private var cancellables = Set<AnyCancellable>()
+
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
+    @Published private(set) var filterOption = ItemTypeFilterOption.all
+    @Published private(set) var itemCount = ItemCount.zero
 
-    init() {}
+    init() {
+        setUp()
+    }
 }
 
 // MARK: - Private APIs
 
 private extension VaultsManager {
+    func setUp() {
+        $state
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.updateItemCount()
+            }
+            .store(in: &cancellables)
+
+        $vaultSelection
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                // Reset back to filter "all" when switching vaults
+                self.filterOption = .all
+                self.updateItemCount()
+            }
+            .store(in: &cancellables)
+    }
+
+    func updateItemCount() {
+        guard case let .loaded(vaults, trashedItems) = state else { return }
+        let items: [ItemTypeIdentifiable]
+        switch vaultSelection {
+        case .all:
+            items = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+        case let .precise(selectedVault):
+            items = vaults
+                .filter { $0.vault.shareId == selectedVault.shareId }
+                .map(\.items)
+                .reduce(into: []) { $0 += $1 }
+        case .trash:
+            items = trashedItems
+        }
+        itemCount = .init(items: items)
+    }
+
     @MainActor
     func createDefaultVault(isPrimary: Bool) async throws {
         logger.trace("Creating default vault for user")
@@ -198,18 +243,6 @@ extension VaultsManager {
         vaultSelection == selection
     }
 
-    func getItem(for selection: VaultSelection) -> [ItemUiModel] {
-        guard case let .loaded(vaults, trashedItems) = state else { return [] }
-        switch vaultSelection {
-        case .all:
-            return vaults.map(\.items).reduce(into: []) { $0 += $1 }
-        case let .precise(selectedVault):
-            return vaults.first { $0.vault == selectedVault }?.items ?? []
-        case .trash:
-            return trashedItems
-        }
-    }
-
     func getItems(for vault: Vault) -> [ItemUiModel] {
         guard case let .loaded(vaults, _) = state else { return [] }
 
@@ -294,6 +327,33 @@ extension VaultsManager {
         case let .precise(vault):
             return vault.shareId
         }
+    }
+
+    func getFilteredItems() -> [ItemUiModel] {
+        guard case let .loaded(vaults, trashedItems) = state else { return [] }
+        let items: [ItemUiModel]
+        switch vaultSelection {
+        case .all:
+            items = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+        case let .precise(selectedVault):
+            items = vaults
+                .filter { $0.vault.shareId == selectedVault.shareId }
+                .map(\.items)
+                .reduce(into: []) { $0 += $1 }
+        case .trash:
+            items = trashedItems
+        }
+
+        switch filterOption {
+        case .all:
+            return items
+        case let .precise(type):
+            return items.filter { $0.type == type }
+        }
+    }
+
+    func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
+        self.filterOption = filterOption
     }
 }
 
