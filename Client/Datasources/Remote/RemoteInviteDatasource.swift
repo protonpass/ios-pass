@@ -25,6 +25,7 @@ import ProtonCore_Services
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool
+    func rejectInvite(inviteToken: String) async throws -> Bool
 }
 
 public actor RemoteInviteDatasource: RemoteInviteDatasourceProtocol {
@@ -44,6 +45,12 @@ public extension RemoteInviteDatasource {
 
     func acceptInvite(inviteToken: String, request: AcceptInviteRequest) async throws -> Bool {
         let endpoint = AcceptInviteEndpoint(with: inviteToken, and: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+
+    func rejectInvite(inviteToken: String) async throws -> Bool {
+        let endpoint = RejectInviteEndpoint(with: inviteToken)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
     }

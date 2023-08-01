@@ -60,6 +60,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
 
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = .init(container: rootViewController)
@@ -83,6 +84,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         setUpRouting()
         finalizeInitialization()
         vaultsManager.refresh()
+        refreshInvitations()
         start()
         eventLoop.start()
         refreshPlan()
@@ -119,6 +121,7 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 self.logger.info("App goes back to foreground")
                 self.refresh()
+                self.refreshInvitations()
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.forceSync()
                 self.updateCredentials(forceRemoval: false)
@@ -442,7 +445,7 @@ private extension HomepageCoordinator {
         let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
 
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.mediumAndLarge,
+        viewController.setDetentType(.medium,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
@@ -1404,6 +1407,8 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+        refreshInvitations()
+
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
             refresh()

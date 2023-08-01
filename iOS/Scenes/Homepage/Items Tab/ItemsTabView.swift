@@ -51,10 +51,6 @@ struct ItemsTabView: View {
                                    onRetry: viewModel.vaultsManager.refresh)
             }
         }
-        .onAppear {
-            print("woot on appear itemsTab")
-            viewModel.refreshInvites()
-        }
         .animation(.default, value: vaultsManager.state)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarHidden(true)

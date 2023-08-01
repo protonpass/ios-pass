@@ -40,6 +40,8 @@ struct InviteBannerView: View {
 
                     Text("You’ve been invited to a vault. Tap here to see the invitation.")
                         .font(.body)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.8)
                 }
                 .foregroundColor(PassColor.textNorm.toColor)
                 Image(uiImage: PassIcon.inviteBannerIcon)
@@ -47,6 +49,7 @@ struct InviteBannerView: View {
             }
             .padding(.horizontal, 32)
             .padding(.vertical, 16)
+            .contentShape(Rectangle())
         }
         .frame(height: Self.height)
         .background(Color(uiColor: PassColor.backgroundMedium))
