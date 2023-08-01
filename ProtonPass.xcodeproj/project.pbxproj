@@ -124,6 +124,10 @@
 		3549ACA1298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549ACA0298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift */; };
 		3549ACA329830E8400BA5CD6 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557441A295A064F00EA4AF0 /* ClipboardManager.swift */; };
 		354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354AD95F28CB5934000E645B /* EmptyTrashView.swift */; };
+		354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
+		354B24822A781E370060EDF7 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
+		354B24842A7820120060EDF7 /* ItemTypeFilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24832A7820120060EDF7 /* ItemTypeFilterButton.swift */; };
+		354B24862A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */; };
 		354B7A7428C9FF1B00459AED /* TrashItemsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */; };
 		354BB13D28A240E000F50040 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB13C28A240E000F50040 /* TextExtensions.swift */; };
 		354BB14428A2683E00F50040 /* ItemContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BB14328A2683E00F50040 /* ItemContentProtocol.swift */; };
@@ -1088,6 +1092,9 @@
 		3549ACA0298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPLogInItemDetailViewModel.swift; sourceTree = "<group>"; };
 		354A803C28D8B8D8003F49CF /* iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		354AD95F28CB5934000E645B /* EmptyTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTrashView.swift; sourceTree = "<group>"; };
+		354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilter.swift; sourceTree = "<group>"; };
+		354B24832A7820120060EDF7 /* ItemTypeFilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterButton.swift; sourceTree = "<group>"; };
+		354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOptionsView.swift; sourceTree = "<group>"; };
 		354B7A7328C9FF1B00459AED /* TrashItemsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashItemsEndpoint.swift; sourceTree = "<group>"; };
 		354BB13C28A240E000F50040 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
 		354BB14328A2683E00F50040 /* ItemContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContentProtocol.swift; sourceTree = "<group>"; };
@@ -1968,16 +1975,17 @@
 		3542E2CE28DA4E6000194F24 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */,
 				3542E2CF28DA4E7400194F24 /* ItemUiModel.swift */,
 				35CEA8D62A60675900343A4E /* LocalAuthenticationMethod.swift */,
 				3559BA942A5AE3DE0020E172 /* PassModule.swift */,
 				3572E51A299399AD00775FAC /* PPError.swift */,
 				355E33AB29C499E400402CAE /* SearchEntryUiModel.swift */,
+				5B1453BC2A6EA8890048B022 /* SharingInfos.swift */,
 				35733B7E29CC60D200052229 /* VaultColor.swift */,
 				3569B29E29B77A760070830B /* VaultContentUiModel.swift */,
 				35733B7C29CC5DB700052229 /* VaultIcon.swift */,
 				355694A329D4673A005DD2EB /* VaultListUiModel.swift */,
-				5B1453BC2A6EA8890048B022 /* SharingInfos.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2404,6 +2412,8 @@
 				5B1453D92A726A8F0048B022 /* InviteBanner */,
 				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
+				354B24832A7820120060EDF7 /* ItemTypeFilterButton.swift */,
+				354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */,
 				355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
@@ -4669,6 +4679,7 @@
 				3560844229DDA1C4001F7487 /* ExtensionSettingsView.swift in Sources */,
 				3552A28E29EC8B5600ABDB6E /* URLExtensions.swift in Sources */,
 				3565FD59298D423A00E2A0EE /* TOTPText.swift in Sources */,
+				354B24822A781E370060EDF7 /* ItemTypeFilter.swift in Sources */,
 				35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				3559BAA52A5B32600020E172 /* Preferences.swift in Sources */,
 				355E92792A59D70800C22703 /* Factory+Extensions.swift in Sources */,
@@ -5011,6 +5022,7 @@
 				35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */,
 				354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */,
 				5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */,
+				354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */,
 				3559BAA12A5B32550020E172 /* AppLockTime.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
@@ -5049,6 +5061,7 @@
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
+				354B24842A7820120060EDF7 /* ItemTypeFilterButton.swift in Sources */,
 				5B1453DD2A727E0F0048B022 /* InviteBannerView.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
@@ -5058,6 +5071,7 @@
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
+				354B24862A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
 				5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */,
