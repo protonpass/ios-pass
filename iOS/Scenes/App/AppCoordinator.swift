@@ -155,10 +155,10 @@ final class AppCoordinator {
             let symmetricKey = try appData.getSymmetricKey()
 
             SharedDataContainer.shared.reset()
-            SharedDataContainer.shared.resolve(container: container,
-                                               symmetricKey: symmetricKey,
-                                               userData: userData,
-                                               manualLogIn: manualLogIn)
+            SharedDataContainer.shared.register(container: container,
+                                                symmetricKey: symmetricKey,
+                                                userData: userData,
+                                                manualLogIn: manualLogIn)
             SharedToolingContainer.shared.resetCache()
             SharedRepositoryContainer.shared.reset()
             SharedServiceContainer.shared.reset()
