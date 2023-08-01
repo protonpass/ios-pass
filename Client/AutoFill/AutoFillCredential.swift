@@ -51,12 +51,3 @@ public extension AutoFillCredential {
         self.lastUseTime = lastUseTime
     }
 }
-
-extension ASPasswordCredentialIdentity {
-    convenience init(_ credential: AutoFillCredential) throws {
-        try self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
-                      user: credential.username,
-                      recordIdentifier: credential.ids.serializeBase64())
-        rank = Int(credential.lastUseTime)
-    }
-}
