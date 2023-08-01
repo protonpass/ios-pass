@@ -34,9 +34,10 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import SwiftUI
 import UIComponents
-import UserNotifications
 
-public final class CredentialProviderCoordinator {
+public final class CredentialProviderCoordinator: DeinitPrintable {
+    deinit { print(deinitMessage) }
+
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
@@ -45,12 +46,15 @@ public final class CredentialProviderCoordinator {
 
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let bannerManager: BannerManager
     private let container: NSPersistentContainer
-    private let context: ASCredentialProviderExtensionContext
+    private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
+
+    // Use cases
+    private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
+    private let completeAutoFill = resolve(\AutoFillUseCaseContainer.completeAutoFill)
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -79,11 +83,10 @@ public final class CredentialProviderCoordinator {
         rootViewController?.topMostViewController
     }
 
-    init(context: ASCredentialProviderExtensionContext, rootViewController: UIViewController) {
+    init(rootViewController: UIViewController) {
         injectDefaultCryptoImplementation()
         bannerManager = .init(container: rootViewController)
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-        self.context = context
         self.rootViewController = rootViewController
 
         // Post init
@@ -101,10 +104,10 @@ public final class CredentialProviderCoordinator {
 
         do {
             let symmetricKey = try appData.getSymmetricKey()
-            SharedDataContainer.shared.resolve(container: container,
-                                               symmetricKey: symmetricKey,
-                                               userData: userData,
-                                               manualLogIn: false)
+            SharedDataContainer.shared.register(container: container,
+                                                symmetricKey: symmetricKey,
+                                                userData: userData,
+                                                manualLogIn: false)
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
             showCredentialsView(userData: userData,
@@ -136,12 +139,12 @@ public final class CredentialProviderCoordinator {
         guard let itemRepository,
               let upgradeChecker,
               let recordIdentifier = credentialIdentity.recordIdentifier else {
-            cancel(errorCode: .failed)
+            cancelAutoFill(reason: .failed)
             return
         }
 
         if preferences.localAuthenticationMethod != .none {
-            cancel(errorCode: .userInteractionRequired)
+            cancelAutoFill(reason: .userInteractionRequired)
         } else {
             Task {
                 do {
@@ -161,11 +164,11 @@ public final class CredentialProviderCoordinator {
                         }
                     } else {
                         logger.warning("Failed to autofill. Item not found.")
-                        cancel(errorCode: .failed)
+                        cancelAutoFill(reason: .failed)
                     }
                 } catch {
                     logger.error(error)
-                    cancel(errorCode: .failed)
+                    cancelAutoFill(reason: .failed)
                 }
             }
         }
@@ -174,7 +177,7 @@ public final class CredentialProviderCoordinator {
     // Biometric authentication
     func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
         guard let symmetricKey, let itemRepository, let upgradeChecker else {
-            cancel(errorCode: .failed)
+            cancelAutoFill(reason: .failed)
             return
         }
 
@@ -209,11 +212,11 @@ public final class CredentialProviderCoordinator {
 
         switch reason {
         case .userCancelled:
-            cancel(errorCode: .userCanceled)
+            cancelAutoFill(reason: .userCanceled)
             return
         case .failedToAuthenticate:
             Task {
-                defer { cancel(errorCode: .failed) }
+                defer { cancelAutoFill(reason: .failed) }
                 do {
                     logger.trace("Authenticaion failed. Removing all credentials")
                     appData.userData = nil
@@ -251,10 +254,10 @@ public final class CredentialProviderCoordinator {
     private func makeSymmetricKeyAndRepositories() {
         guard let userData = appData.userData,
               let symmetricKey = try? appData.getSymmetricKey() else { return }
-        SharedDataContainer.shared.resolve(container: container,
-                                           symmetricKey: symmetricKey,
-                                           userData: userData,
-                                           manualLogIn: false)
+        SharedDataContainer.shared.register(container: container,
+                                            symmetricKey: symmetricKey,
+                                            userData: userData,
+                                            manualLogIn: false)
         let apiService = apiManager.apiService
 
         let repositoryManager = RepositoryManager(apiService: apiService,
@@ -304,58 +307,7 @@ public final class CredentialProviderCoordinator {
     }
 }
 
-extension CredentialProviderCoordinator {
-    private func updateRank(itemContent: ItemContent,
-                            symmetricKey: SymmetricKey,
-                            serviceIdentifiers: [ASCredentialServiceIdentifier],
-                            lastUseTime: TimeInterval) async throws {
-        if case let .login(data) = itemContent.contentData {
-            let serviceUrls = serviceIdentifiers
-                .map { serviceIdentifier in
-                    switch serviceIdentifier.type {
-                    case .URL:
-                        return serviceIdentifier.identifier
-                    case .domain:
-                        return "https://\(serviceIdentifier.identifier)"
-                    @unknown default:
-                        return serviceIdentifier.identifier
-                    }
-                }
-                .compactMap { URL(string: $0) }
-            let itemUrls = data.urls.compactMap { URL(string: $0) }
-            let matchedUrls = itemUrls.filter { itemUrl in
-                serviceUrls.contains { serviceUrl in
-                    if case .matched = URLUtils.Matcher.compare(itemUrl, serviceUrl) {
-                        return true
-                    }
-                    return false
-                }
-            }
-
-            let credentials = matchedUrls
-                .map { AutoFillCredential(shareId: itemContent.shareId,
-                                          itemId: itemContent.itemId,
-                                          username: data.username,
-                                          url: $0.absoluteString,
-                                          lastUseTime: Int64(lastUseTime)) }
-            try await credentialManager.insert(credentials: credentials)
-        } else {
-            throw PPError.credentialProvider(.notLogInItem)
-        }
-    }
-}
-
-// MARK: - Context actions
-
 private extension CredentialProviderCoordinator {
-    func cancel(errorCode: ASExtensionError.Code) {
-        let error = NSError(domain: ASExtensionErrorDomain, code: errorCode.rawValue)
-        context.cancelRequest(withError: error)
-        Task {
-            await logManager.saveAllLogs()
-        }
-    }
-
     // swiftlint:disable:next function_parameter_count
     func complete(quickTypeBar: Bool,
                   credential: ASPasswordCredential,
@@ -363,75 +315,13 @@ private extension CredentialProviderCoordinator {
                   itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
                   serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        Task { @MainActor in
-            do {
-                let getTotpData: () async -> TOTPData? = {
-                    do {
-                        if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
-                            return try itemContent.totpData()
-                        } else {
-                            return nil
-                        }
-                    } catch {
-                        self.logger.error(error)
-                        return nil
-                    }
-                }
-
-                if preferences.automaticallyCopyTotpCode, let totpData = await getTotpData() {
-                    copyAndNotify(totpData: totpData)
-                }
-
-                context.completeRequest(withSelectedCredential: credential, completionHandler: nil)
-                logger.info("Autofilled from QuickType bar \(quickTypeBar). \(itemContent.debugInformation)")
-
-                let lastUseTime = Date().timeIntervalSince1970
-                logger.trace("Updating rank \(itemContent.debugInformation)")
-                try await updateRank(itemContent: itemContent,
-                                     symmetricKey: itemRepository.symmetricKey,
-                                     serviceIdentifiers: serviceIdentifiers,
-                                     lastUseTime: lastUseTime)
-                logger.info("Updated rank \(itemContent.debugInformation)")
-
-                logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
-                try await itemRepository.update(item: itemContent, lastUseTime: lastUseTime)
-                logger.info("Updated lastUseTime \(itemContent.debugInformation)")
-
-                if quickTypeBar {
-                    addNewEvent(type: .autofillTriggeredFromSource)
-                } else {
-                    addNewEvent(type: .autofillTriggeredFromApp)
-                }
-
-                await logManager.saveAllLogs()
-            } catch {
-                logger.error(error)
-                if quickTypeBar {
-                    cancel(errorCode: .userInteractionRequired)
-                } else {
-                    alert(error: error)
-                }
-            }
-        }
-    }
-
-    func copyAndNotify(totpData: TOTPData) {
-        clipboardManager.copy(text: totpData.code, bannerMessage: "")
-        let content = UNMutableNotificationContent()
-        content.title = "Two Factor Authentication code copied"
-        if let username = totpData.username {
-            content.subtitle = username
-        }
-        content.body =
-            "\"\(totpData.code)\" is copied to clipboard. Expiring in \(totpData.timerData.remaining) seconds"
-
-        let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                            content: content,
-                                            trigger: nil) // Deliver immediately
-        // There seems to be a 5 second limit to autofill extension.
-        // if the delay goes above it stops working and doesn't remove the notification
-        let delay = min(totpData.timerData.remaining, 5)
-        notificationService.addWithTimer(for: request, and: Double(delay))
+        completeAutoFill(quickTypeBar: quickTypeBar,
+                         credential: credential,
+                         itemContent: itemContent,
+                         itemRepository: itemRepository,
+                         upgradeChecker: upgradeChecker,
+                         serviceIdentifiers: serviceIdentifiers,
+                         telemetryEventRepository: telemetryEventRepository)
     }
 }
 
@@ -489,7 +379,7 @@ private extension CredentialProviderCoordinator {
 
     func showNotLoggedInView() {
         let view = NotLoggedInView { [weak self] in
-            self?.cancel(errorCode: .userCanceled)
+            self?.cancelAutoFill(reason: .userCanceled)
         }
         showView(view)
     }
@@ -578,7 +468,7 @@ private extension CredentialProviderCoordinator {
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
-            self?.cancel(errorCode: .failed)
+            self?.cancelAutoFill(reason: .failed)
         }
         alert.addAction(cancelAction)
         rootViewController?.present(alert, animated: true)
@@ -616,7 +506,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCancel() {
-        cancel(errorCode: .userCanceled)
+        cancelAutoFill(reason: .userCanceled)
     }
 
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
