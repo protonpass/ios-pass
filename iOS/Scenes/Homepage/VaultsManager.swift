@@ -62,6 +62,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
 
     @Published private(set) var state = VaultManagerState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
+    @Published private(set) var filterOption = ItemTypeFilterOption.all
     @Published private(set) var itemCount = ItemCount.zero
 
     init() {
@@ -83,7 +84,7 @@ private extension VaultsManager {
     }
 
     func updateItemCount() {
-        guard case let .loaded(vaults, trash) = state else { return }
+        guard case let .loaded(vaults, trashedItems) = state else { return }
         let items: [ItemTypeIdentifiable]
         switch vaultSelection {
         case .all:
@@ -94,7 +95,7 @@ private extension VaultsManager {
                 .map(\.items)
                 .reduce(into: []) { $0 += $1 }
         case .trash:
-            items = trash
+            items = trashedItems
         }
         itemCount = .init(items: items)
     }
@@ -231,18 +232,6 @@ extension VaultsManager {
         vaultSelection == selection
     }
 
-    func getItem(for selection: VaultSelection) -> [ItemUiModel] {
-        guard case let .loaded(vaults, trashedItems) = state else { return [] }
-        switch vaultSelection {
-        case .all:
-            return vaults.map(\.items).reduce(into: []) { $0 += $1 }
-        case let .precise(selectedVault):
-            return vaults.first { $0.vault == selectedVault }?.items ?? []
-        case .trash:
-            return trashedItems
-        }
-    }
-
     func getItems(for vault: Vault) -> [ItemUiModel] {
         guard case let .loaded(vaults, _) = state else { return [] }
 
@@ -327,6 +316,33 @@ extension VaultsManager {
         case let .precise(vault):
             return vault.shareId
         }
+    }
+
+    func getFilteredItems() -> [ItemUiModel] {
+        guard case let .loaded(vaults, trashedItems) = state else { return [] }
+        let items: [ItemUiModel]
+        switch vaultSelection {
+        case .all:
+            items = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+        case let .precise(selectedVault):
+            items = vaults
+                .filter { $0.vault.shareId == selectedVault.shareId }
+                .map(\.items)
+                .reduce(into: []) { $0 += $1 }
+        case .trash:
+            items = trashedItems
+        }
+
+        switch filterOption {
+        case .all:
+            return items
+        case let .precise(type):
+            return items.filter { $0.type == type }
+        }
+    }
+
+    func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
+        self.filterOption = filterOption
     }
 }
 
