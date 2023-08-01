@@ -56,7 +56,6 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 self.executingAction = true
                 try await self.rejectInvitation(for: self.userInvite.inviteToken)
                 await self.updateCachedInvitations(for: self.userInvite.inviteToken)
-                self.syncEventLoop.forceSync()
                 self.shouldCloseSheet = true
             } catch {
                 self.logger.error(message: "Could not reject invitation \(userInvite)", error: error)
@@ -78,6 +77,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 self.executingAction = true
                 _ = try await self.acceptInvitation(with: self.userInvite)
                 await self.updateCachedInvitations(for: self.userInvite.inviteToken)
+                self.syncEventLoop.forceSync()
                 self.shouldCloseSheet = true
             } catch {
                 self.logger.error(message: "Could not accept invitation \(userInvite)", error: error)

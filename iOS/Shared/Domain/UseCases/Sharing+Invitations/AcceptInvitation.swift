@@ -66,7 +66,7 @@ private extension AcceptInvitation {
         let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
         let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
 
-        let reencrytedKeys: [ItemKey] = try keys.compactMap { key in
+        let reencrytedKeys: [ItemKey] = try keys.map { key in
             try transformKey(key: key,
                              addressKeys: addressKeys,
                              armoredInviterPublicKeys: armoredInviterPublicKeys)
