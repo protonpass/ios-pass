@@ -21,15 +21,16 @@
 //
 
 import Client
+import Combine
 import Entities
 
 protocol GetPendingUserInvitationsUseCase: Sendable {
-    func execute() async throws -> [UserInvite]
+    func execute() -> CurrentValueSubject<[UserInvite], Never>
 }
 
 extension GetPendingUserInvitationsUseCase {
-    func callAsFunction() async throws -> [UserInvite] {
-        try await execute()
+    func callAsFunction() -> CurrentValueSubject<[UserInvite], Never> {
+        execute()
     }
 }
 
@@ -40,7 +41,7 @@ final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
         self.repository = repository
     }
 
-    func execute() async throws -> [UserInvite] {
-        try await repository.getPendingInvitesForUser()
+    func execute() -> CurrentValueSubject<[UserInvite], Never> {
+        repository.currentPendingInvites
     }
 }

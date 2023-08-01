@@ -103,6 +103,29 @@ extension UseCasesContainer {
     var getPendingUserInvitations: Factory<GetPendingUserInvitationsUseCase> {
         self { GetPendingUserInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
     }
+
+    var refreshInvitations: Factory<RefreshInvitationsUseCase> {
+        self { RefreshInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
+
+    var rejectInvitation: Factory<RejectInvitationUseCase> {
+        self { RejectInvitation(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
+
+    var acceptInvitation: Factory<AcceptInvitationUseCase> {
+        self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
+                                userData: SharedDataContainer.shared.userData(),
+                                getEmailPublicKey: self.getEmailPublicKey()) }
+    }
+
+    var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
+        self { DecodeShareVaultInformation(userData: SharedDataContainer.shared.userData(),
+                                           getEmailPublicKey: self.getEmailPublicKey()) }
+    }
+
+    var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
+        self { UpdateCachedInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
 }
 
 // MARK: - Flags

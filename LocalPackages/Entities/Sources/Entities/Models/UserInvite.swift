@@ -22,14 +22,15 @@ import Foundation
 
 // MARK: - User Invite
 
-public struct UserInvite: Decodable, Hashable, Equatable, Identifiable {
+public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable {
     public let inviteToken: String
     public let remindersSent: Int
     public let targetType: Int
     public let targetID, inviterEmail, invitedEmail: String
     /// Share keys encrypted for the address key of the invitee and signed with the user keys of the inviter
+    /// These are invite keys and not item keys these are the intermediate step
     public let keys: [ItemKey]
-    public let vaultData: VaultData?
+    public let vaultData: VaultData
     public let createTime: Int
 
     public var id: String {
@@ -47,7 +48,7 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable {
                 inviterEmail: String,
                 invitedEmail: String,
                 keys: [ItemKey],
-                vaultData: VaultData?,
+                vaultData: VaultData,
                 createTime: Int) {
         self.inviteToken = inviteToken
         self.remindersSent = remindersSent

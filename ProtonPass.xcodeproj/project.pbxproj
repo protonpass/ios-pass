@@ -702,12 +702,12 @@
 		5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */; };
 		5B1453D32A7123C00048B022 /* CheckEmailPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */; };
 		5B1453D62A7162DC0048B022 /* SyncLayoutOnDisappear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */; };
-		5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */; };
 		5B1453D82A7263700048B022 /* GetPendingUserInvitations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */; };
 		5B1453DB2A726AD00048B022 /* InviteBannerViewStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */; };
 		5B1453DD2A727E0F0048B022 /* InviteBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */; };
 		5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */; };
 		5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */; };
+		5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */; };
 		5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */; };
 		5B1F5CCD2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */; };
 		5B1F5CCF2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */; };
@@ -744,6 +744,12 @@
 		5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */; };
 		5B50400F2A53072E00E6681C /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B50400E2A53072E00E6681C /* Array+Extensions.swift */; };
 		5B5040132A53114600E6681C /* ExtractLogsToFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */; };
+		5B653AE92A77DC3D00D6869A /* RejectInviteEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AE82A77DC3D00D6869A /* RejectInviteEndpoint.swift */; };
+		5B653AEB2A77DF0B00D6869A /* RefreshInvitations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AEA2A77DF0B00D6869A /* RefreshInvitations.swift */; };
+		5B653AED2A77E09F00D6869A /* RejectInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AEC2A77E09F00D6869A /* RejectInvitation.swift */; };
+		5B653AEF2A77E9AB00D6869A /* AcceptInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AEE2A77E9AB00D6869A /* AcceptInvitation.swift */; };
+		5B653AF12A780CD000D6869A /* DecodeShareVaultInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF02A780CD000D6869A /* DecodeShareVaultInformation.swift */; };
+		5B653AF32A78EE0700D6869A /* UpdateCachedInvitations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
@@ -1553,12 +1559,12 @@
 		5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendShareInviteTests.swift; sourceTree = "<group>"; };
 		5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckEmailPublicKey.swift; sourceTree = "<group>"; };
 		5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncLayoutOnDisappear.swift; sourceTree = "<group>"; };
-		5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareRole+Extensions.swift"; sourceTree = "<group>"; };
 		5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingUserInvitations.swift; sourceTree = "<group>"; };
 		5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteBannerViewStack.swift; sourceTree = "<group>"; };
 		5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteBannerView.swift; sourceTree = "<group>"; };
 		5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteView.swift; sourceTree = "<group>"; };
 		5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteViewModel.swift; sourceTree = "<group>"; };
+		5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareRole+Extensions.swift"; sourceTree = "<group>"; };
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareLinkedUsersEndpoint.swift; sourceTree = "<group>"; };
 		5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareInformationForUserEndpoint.swift; sourceTree = "<group>"; };
@@ -1589,6 +1595,12 @@
 		5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendUserBugReportTests.swift; sourceTree = "<group>"; };
 		5B50400E2A53072E00E6681C /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		5B5040122A53114600E6681C /* ExtractLogsToFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractLogsToFileTests.swift; sourceTree = "<group>"; };
+		5B653AE82A77DC3D00D6869A /* RejectInviteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RejectInviteEndpoint.swift; sourceTree = "<group>"; };
+		5B653AEA2A77DF0B00D6869A /* RefreshInvitations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshInvitations.swift; sourceTree = "<group>"; };
+		5B653AEC2A77E09F00D6869A /* RejectInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RejectInvitation.swift; sourceTree = "<group>"; };
+		5B653AEE2A77E9AB00D6869A /* AcceptInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptInvitation.swift; sourceTree = "<group>"; };
+		5B653AF02A780CD000D6869A /* DecodeShareVaultInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodeShareVaultInformation.swift; sourceTree = "<group>"; };
+		5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCachedInvitations.swift; sourceTree = "<group>"; };
 		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
@@ -2270,16 +2282,16 @@
 				354146D928D1F585007E45A6 /* AliasRepository.swift */,
 				355AA31D29E97B0900C20F5F /* FavIconRepository.swift */,
 				355938C02A333B010053B7F6 /* FeatureFlagsRepository.swift */,
+				5B1453882A6591B20048B022 /* InviteRepository.swift */,
 				3542E2CA28D9FE8600194F24 /* ItemRepository.swift */,
 				355A5B132A041FCC0089E0AC /* PassPlanRepository.swift */,
 				358A509B28AD8B6C00F5285C /* PublicKeyRepository.swift */,
 				35533BB629D58C8F00EC58DE /* RepositoryManager.swift */,
 				35581818290AB8B300DD94DB /* ShareEventIDRepository.swift */,
+				5B1453862A6587730048B022 /* ShareInviteRepository.swift */,
 				356BDA3128DFAA9600B02E5A /* ShareKeyRepository.swift */,
 				35610B8828ABCF1900955ACB /* ShareRepository.swift */,
 				357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */,
-				5B1453862A6587730048B022 /* ShareInviteRepository.swift */,
-				5B1453882A6591B20048B022 /* InviteRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -3175,14 +3187,19 @@
 		5B14539B2A6963B00048B022 /* Sharing+Invitations */ = {
 			isa = PBXGroup;
 			children = (
-				5B1453B62A6AB9F00048B022 /* UserSharingStatus.swift */,
-				5B14539C2A6963E60048B022 /* GetCurrentShareInviteInformations.swift */,
-				5B14539E2A69652D0048B022 /* SetShareInviteVault.swift */,
-				5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */,
-				5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */,
-				5B1453B82A6ACE160048B022 /* SendShareInvite.swift */,
+				5B653AEE2A77E9AB00D6869A /* AcceptInvitation.swift */,
 				5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */,
+				5B653AF02A780CD000D6869A /* DecodeShareVaultInformation.swift */,
+				5B14539C2A6963E60048B022 /* GetCurrentShareInviteInformations.swift */,
 				5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */,
+				5B653AEA2A77DF0B00D6869A /* RefreshInvitations.swift */,
+				5B653AEC2A77E09F00D6869A /* RejectInvitation.swift */,
+				5B1453B82A6ACE160048B022 /* SendShareInvite.swift */,
+				5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */,
+				5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */,
+				5B14539E2A69652D0048B022 /* SetShareInviteVault.swift */,
+				5B1453B62A6AB9F00048B022 /* UserSharingStatus.swift */,
+				5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */,
 			);
 			path = "Sharing+Invitations";
 			sourceTree = "<group>";
@@ -3229,14 +3246,6 @@
 			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
-		5B1453E32A72BF2A0048B022 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		5B1453D92A726A8F0048B022 /* InviteBanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -3255,11 +3264,20 @@
 			path = AcceptRejectInviteView;
 			sourceTree = "<group>";
 		};
+		5B1453E32A72BF2A0048B022 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5B1F5CDE2A5D986700A6C3ED /* Invites */ = {
 			isa = PBXGroup;
 			children = (
 				5B1F5CDC2A5D985F00A6C3ED /* GetPendingInviteForUserEndpoint.swift */,
 				5B14534B2A60245C0048B022 /* AcceptInviteEndpoint.swift */,
+				5B653AE82A77DC3D00D6869A /* RejectInviteEndpoint.swift */,
 			);
 			path = Invites;
 			sourceTree = "<group>";
@@ -4864,6 +4882,7 @@
 				359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */,
 				35AC9A652A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */,
+				5B653AED2A77E09F00D6869A /* RejectInvitation.swift in Sources */,
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */,
@@ -4872,6 +4891,7 @@
 				3559BAA02A5B32550020E172 /* Preferences.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
+				5B653AF32A78EE0700D6869A /* UpdateCachedInvitations.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
 				3559BA9D2A5B32550020E172 /* Browser.swift in Sources */,
@@ -4987,6 +5007,7 @@
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
+				5B653AEF2A77E9AB00D6869A /* AcceptInvitation.swift in Sources */,
 				35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */,
 				354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */,
 				5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */,
@@ -4994,6 +5015,7 @@
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
+				5B653AEB2A77DF0B00D6869A /* RefreshInvitations.swift in Sources */,
 				3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */,
 				3565622429BA5C5900C43F72 /* SortTypeListView.swift in Sources */,
 				35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */,
@@ -5049,6 +5071,7 @@
 				5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */,
 				3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */,
 				354F1F1A29D8C2A200A6B1E8 /* AppData.swift in Sources */,
+				5B653AF12A780CD000D6869A /* DecodeShareVaultInformation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5078,6 +5101,7 @@
 				359A800D29096A2200EEBC51 /* SyncEventLoop.swift in Sources */,
 				35533BB729D58C8F00EC58DE /* RepositoryManager.swift in Sources */,
 				3552F49428D37CFF00547146 /* ChangeMailboxesEndpoint.swift in Sources */,
+				5B653AE92A77DC3D00D6869A /* RejectInviteEndpoint.swift in Sources */,
 				358A509C28AD8B6C00F5285C /* PublicKeyRepository.swift in Sources */,
 				5B14536A2A6036560048B022 /* SymmetricallyEncryptedShare.swift in Sources */,
 				3542E2C528D9E2E700194F24 /* ItemEntity.swift in Sources */,
