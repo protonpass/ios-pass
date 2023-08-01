@@ -21,12 +21,8 @@
 //
 
 import Client
-import CryptoKit
 import Entities
 import Factory
-import Foundation
-import ProtonCore_Crypto
-import ProtonCore_Login
 
 final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var userInvite: UserInvite
@@ -39,6 +35,8 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let acceptInvitation = resolve(\UseCasesContainer.acceptInvitation)
     private let decodeShareVaultInformation = resolve(\UseCasesContainer.decodeShareVaultInformation)
     private let updateCachedInvitations = resolve(\UseCasesContainer.updateCachedInvitations)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
     init(invite: UserInvite) {
         userInvite = invite
@@ -56,10 +54,12 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
             do {
                 self.executingAction = true
-                _ = try await self.rejectInvitation(for: self.userInvite.inviteToken)
+                try await self.rejectInvitation(for: self.userInvite.inviteToken)
                 await self.updateCachedInvitations(for: self.userInvite.inviteToken)
+                self.syncEventLoop.forceSync()
                 self.shouldCloseSheet = true
             } catch {
+                self.logger.error(message: "Could not reject invitation \(userInvite)", error: error)
                 self.error = error
             }
         }
@@ -80,6 +80,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 await self.updateCachedInvitations(for: self.userInvite.inviteToken)
                 self.shouldCloseSheet = true
             } catch {
+                self.logger.error(message: "Could not accept invitation \(userInvite)", error: error)
                 self.error = error
             }
         }
@@ -99,7 +100,8 @@ private extension AcceptRejectInviteViewModel {
             do {
                 self.vaultInfos = try await self.decodeShareVaultInformation(with: self.userInvite)
             } catch {
-                print(error)
+                self.logger.error(message: "Could not decode vault content from invitation", error: error)
+                self.error = error
             }
         }
     }

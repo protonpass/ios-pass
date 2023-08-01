@@ -23,11 +23,11 @@
 import Client
 
 protocol RejectInvitationUseCase: Sendable {
-    func execute(for inviteToken: String) async throws -> Bool
+    func execute(for inviteToken: String) async throws
 }
 
 extension RejectInvitationUseCase {
-    func callAsFunction(for inviteToken: String) async throws -> Bool {
+    func callAsFunction(for inviteToken: String) async throws {
         try await execute(for: inviteToken)
     }
 }
@@ -39,7 +39,7 @@ final class RejectInvitation: RejectInvitationUseCase {
         self.repository = repository
     }
 
-    func execute(for inviteToken: String) async throws -> Bool {
+    func execute(for inviteToken: String) async throws {
         try await repository.rejectInvite(with: inviteToken)
     }
 }
