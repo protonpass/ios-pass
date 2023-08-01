@@ -66,28 +66,18 @@ public extension InviteRepository {
 
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool {
         logger.trace("Accepting invite \(inviteToken)")
-        do {
-            let request = AcceptInviteRequest(keys: keys)
-            let acceptStatus = try await remoteInviteDatasource.acceptInvite(inviteToken: inviteToken,
-                                                                             request: request)
-            logger.trace("Invite acceptance status \(acceptStatus)")
-            return acceptStatus
-        } catch {
-            logger.error(message: "Failed to accept invite \(inviteToken).", error: error)
-            throw error
-        }
+        let request = AcceptInviteRequest(keys: keys)
+        let acceptStatus = try await remoteInviteDatasource.acceptInvite(inviteToken: inviteToken,
+                                                                         request: request)
+        logger.trace("Invite acceptance status \(acceptStatus)")
+        return acceptStatus
     }
 
     func rejectInvite(with inviteToken: String) async throws -> Bool {
         logger.trace("Reject invite \(inviteToken)")
-        do {
-            let acceptStatus = try await remoteInviteDatasource.rejectInvite(inviteToken: inviteToken)
-            logger.trace("Invite rejection status \(acceptStatus)")
-            return acceptStatus
-        } catch {
-            logger.debug("Failed to reject invite \(inviteToken). \(String(describing: error))")
-            throw error
-        }
+        let rejectedStatus = try await remoteInviteDatasource.rejectInvite(inviteToken: inviteToken)
+        logger.trace("Invite rejection status \(rejectedStatus)")
+        return rejectedStatus
     }
 
     func refreshInvites() async {
