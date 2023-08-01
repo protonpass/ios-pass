@@ -1,6 +1,6 @@
 //
-// SharingError.swift
-// Proton Pass - Created on 25/07/2023.
+// RejectInviteEndpoint.swift
+// Proton Pass - Created on 31/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,12 +18,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Networking
 
-public enum SharingError: LocalizedError {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-    case noPublicKeyAssociatedWithEmail
-    case invalidKeyOrAddress
-    case cannotDecode
+public struct RejectInviteEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = CodeOnlyResponse
+
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init(with inviteToken: String) {
+        debugDescription = "Reject an invite"
+        path = "/pass/v1/invite/\(inviteToken)"
+        method = .delete
+    }
 }

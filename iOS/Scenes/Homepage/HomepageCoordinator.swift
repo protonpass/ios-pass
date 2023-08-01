@@ -24,6 +24,7 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import Factory
 import MBProgressHUD
 import ProtonCore_AccountDeletion
@@ -59,6 +60,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
 
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = .init(container: rootViewController)
@@ -82,6 +84,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         setUpRouting()
         finalizeInitialization()
         vaultsManager.refresh()
+        refreshInvitations()
         start()
         eventLoop.start()
         refreshPlan()
@@ -126,6 +129,7 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 self.logger.info("App goes back to foreground")
                 self.refresh()
+                self.refreshInvitations()
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.start()
                 self.eventLoop.forceSync()
@@ -430,6 +434,8 @@ private extension HomepageCoordinator {
                     self.presentManageShareVault()
                 case .filterItems:
                     self.presentItemFilterOptions()
+                case let .acceptRejectInvite(invite):
+                    self.presentAcceptRejectInvite(with: invite)
                 }
             }
             .store(in: &cancellables)
@@ -453,6 +459,17 @@ private extension HomepageCoordinator {
         let height = ItemTypeFilterOptionsView.rowHeight * CGFloat(ItemTypeFilterOption.allCases.count) + 70
         viewController.setDetentType(.customAndLarge(height),
                                      parentViewController: rootViewController)
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+
+    func presentAcceptRejectInvite(with invite: UserInvite) {
+        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
+
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.medium,
+                                     parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
@@ -1412,6 +1429,8 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+        refreshInvitations()
+
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
             refresh()

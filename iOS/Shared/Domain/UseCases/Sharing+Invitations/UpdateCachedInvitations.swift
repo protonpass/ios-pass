@@ -1,6 +1,7 @@
 //
-// SharingError.swift
-// Proton Pass - Created on 25/07/2023.
+//
+// UpdateCachedInvitations.swift
+// Proton Pass - Created on 01/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,13 +18,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Client
 
-public enum SharingError: LocalizedError {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-    case noPublicKeyAssociatedWithEmail
-    case invalidKeyOrAddress
-    case cannotDecode
+protocol UpdateCachedInvitationsUseCase: Sendable {
+    func execute(for inviteToken: String) async
+}
+
+extension UpdateCachedInvitationsUseCase {
+    func callAsFunction(for inviteToken: String) async {
+        await execute(for: inviteToken)
+    }
+}
+
+final class UpdateCachedInvitations: UpdateCachedInvitationsUseCase {
+    private let repository: InviteRepositoryProtocol
+
+    init(repository: InviteRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    func execute(for inviteToken: String) async {
+        await repository.removeCachedInvite(containing: inviteToken)
+    }
 }
