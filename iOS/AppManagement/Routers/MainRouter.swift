@@ -27,6 +27,7 @@ enum CoordinatorRouterDestination: Hashable {}
 enum CoordinatorSheetDestination: Equatable, Hashable {
     case sharingFlow
     case manageShareVault
+    case filterItems
     case acceptRejectInvite(UserInvite)
 }
 

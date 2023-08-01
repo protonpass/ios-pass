@@ -36,10 +36,10 @@ struct SearchResultChips: View {
                               isSelected: selectedType == nil,
                               action: { selectedType = nil })
 
-                chip(for: .login, count: itemCount.loginCount)
-                chip(for: .alias, count: itemCount.aliasCount)
-                chip(for: .creditCard, count: itemCount.creditCardCount)
-                chip(for: .note, count: itemCount.noteCount)
+                chip(for: .login, count: itemCount.login)
+                chip(for: .alias, count: itemCount.alias)
+                chip(for: .creditCard, count: itemCount.creditCard)
+                chip(for: .note, count: itemCount.note)
             }
             .padding(.horizontal)
         }
