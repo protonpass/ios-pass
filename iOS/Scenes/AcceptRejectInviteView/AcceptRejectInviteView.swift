@@ -50,6 +50,7 @@ struct AcceptRejectInviteView: View {
         .errorAlert(error: $viewModel.error)
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
+        .background(Color(uiColor: PassColor.backgroundNorm))
         .animation(.default, value: viewModel.vaultInfos)
         .showSpinner(viewModel.executingAction)
         .onChange(of: viewModel.shouldCloseSheet) { value in
@@ -72,6 +73,7 @@ private extension AcceptRejectInviteView {
     }
 }
 
+// swiftlint:disable line_length
 private extension AcceptRejectInviteView {
     func vaultInformation(infos: VaultProtobuf) -> some View {
         VStack {
@@ -97,6 +99,7 @@ private extension AcceptRejectInviteView {
         }
     }
 }
+// swiftlint:enable line_length
 
 private extension AcceptRejectInviteView {
     var actionButtons: some View {
