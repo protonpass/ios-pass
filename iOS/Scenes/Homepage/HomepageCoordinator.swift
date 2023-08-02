@@ -151,8 +151,8 @@ private extension HomepageCoordinator {
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
-        let placeholderView = ItemDetailPlaceholderView { [unowned self] in
-            popTopViewController(animated: true)
+        let placeholderView = ItemDetailPlaceholderView { [weak self] in
+            self?.popTopViewController(animated: true)
         }
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
@@ -180,11 +180,11 @@ private extension HomepageCoordinator {
     }
 
     func refreshPlan() {
-        Task {
+        Task { [weak self] in
             do {
-                try await passPlanRepository.refreshPlan()
+                try await self?.passPlanRepository.refreshPlan()
             } catch {
-                logger.error(error)
+                self?.logger.error(error)
             }
         }
     }
@@ -347,32 +347,33 @@ private extension HomepageCoordinator {
     }
 
     func sendAllEventsIfApplicable() {
-        Task {
+        Task { [weak self] in
             do {
-                try await telemetryEventRepository.sendAllEventsIfApplicable()
+                try await self?.telemetryEventRepository.sendAllEventsIfApplicable()
             } catch {
-                logger.error(error)
+                self?.logger.error(error)
             }
         }
     }
 
     func updateCredentials(forceRemoval: Bool) {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                try await credentialManager.insertAllCredentials(itemRepository: itemRepository,
-                                                                 shareRepository: shareRepository,
-                                                                 passPlanRepository: passPlanRepository,
-                                                                 forceRemoval: forceRemoval)
-                logger.info("Updated all credentials.")
+                try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
+                                                                      shareRepository: self.shareRepository,
+                                                                      passPlanRepository: self.passPlanRepository,
+                                                                      forceRemoval: forceRemoval)
+                self.logger.info("Updated all credentials.")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
     }
 
     func startUpgradeFlow() {
-        dismissAllViewControllers(animated: true) { [unowned self] in
-            paymentsManager.upgradeSubscription { [weak self] result in
+        dismissAllViewControllers(animated: true) { [weak self] in
+            self?.paymentsManager.upgradeSubscription { [weak self] result in
                 switch result {
                 case let .success(inAppPurchasePlan):
                     if inAppPurchasePlan != nil {
@@ -493,8 +494,8 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
         if !isCollapsed() {
-            let placeholderView = ItemDetailPlaceholderView { [unowned self] in
-                popTopViewController(animated: true)
+            let placeholderView = ItemDetailPlaceholderView { [weak self] in
+                self?.popTopViewController(animated: true)
             }
             push(placeholderView)
         }
@@ -594,8 +595,8 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
 
 extension HomepageCoordinator: ItemTypeListViewModelDelegate {
     func itemTypeListViewModelDidSelect(type: ItemType) {
-        dismissTopMostViewController { [unowned self] in
-            presentCreateItemView(for: type)
+        dismissTopMostViewController { [weak self] in
+            self?.presentCreateItemView(for: type)
         }
     }
 
@@ -650,25 +651,26 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToShowTrialDetail() {
-        Task { @MainActor in
-            defer { hideLoadingHud() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.hideLoadingHud() }
             do {
-                showLoadingHud()
+                self.showLoadingHud()
 
-                let plan = try await upgradeChecker.passPlanRepository.getPlan()
+                let plan = try await self.upgradeChecker.passPlanRepository.getPlan()
                 guard let trialEnd = plan.trialEnd else { return }
                 let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
                 let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)
 
-                hideLoadingHud()
+                self.hideLoadingHud()
 
                 let view = TrialDetailView(daysLeft: abs(daysLeft),
-                                           onUpgrade: startUpgradeFlow,
+                                           onUpgrade: { self.startUpgradeFlow() },
                                            onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
-                present(view)
+                self.present(view)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                self.logger.error(error)
+                self.bannerManager.displayTopErrorMessage(error)
             }
         }
     }
@@ -926,7 +928,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        Task {
+        Task { [weak self] in
             let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
@@ -1001,8 +1003,8 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
         addNewEvent(type: .create(type))
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomInfoMessage(type.creationMessage)
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage(type.creationMessage)
         }
         vaultsManager.refresh()
         homepageTabDelegete?.homepageTabShouldChange(tab: .items)
@@ -1014,8 +1016,8 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
-        dismissTopMostViewController { [unowned self] in
-            bannerManager.displayBottomInfoMessage(type.updateMessage)
+        dismissTopMostViewController { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage(type.updateMessage)
         }
     }
 
@@ -1111,8 +1113,8 @@ extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
 
 extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            clipboardManager.copy(text: password, bannerMessage: "Password copied")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.clipboardManager.copy(text: password, bannerMessage: "Password copied")
         }
     }
 }
@@ -1202,8 +1204,8 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
         }
         refresh()
         addNewEvent(type: .update(item.type))
@@ -1233,30 +1235,30 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
         refresh()
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
+        dismissTopMostViewController(animated: true) { [weak self] in
+            let undoBlock: (PMBanner) -> Void = { [weak self] banner in
                 banner.dismiss()
-                itemContextMenuHandler.restore(item)
+                self?.itemContextMenuHandler.restore(item)
             }
-            bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                   dismissButtonTitle: "Undo",
-                                                   onDismiss: undoBlock)
+            self?.bannerManager.displayBottomInfoMessage(item.trashMessage,
+                                                         dismissButtonTitle: "Undo",
+                                                         onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
     }
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
         refresh()
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
         addNewEvent(type: .update(item.type))
     }
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
         refresh()
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
         addNewEvent(type: .delete(item.type))
     }
@@ -1331,15 +1333,15 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     }
 
     func createEditVaultViewModelDidCreateVault() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage("Vault created")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage("Vault created")
         }
         vaultsManager.refresh()
     }
 
     func createEditVaultViewModelDidEditVault() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomInfoMessage("Changes saved")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage("Changes saved")
         }
         vaultsManager.refresh()
     }
@@ -1361,8 +1363,8 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
     }
 
     func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage("Primary vault updated")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage("Primary vault updated")
         }
         vaultsManager.refresh()
     }
