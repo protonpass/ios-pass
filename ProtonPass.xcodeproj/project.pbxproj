@@ -482,6 +482,7 @@
 		35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
 		35711D582A7A62DD003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
 		35711D5A2A7A76A9003B6845 /* CheckAccessToPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */; };
+		35711D5D2A7A7A01003B6845 /* RefreshFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59929BF173A008D4350 /* BannerManager.swift */; };
@@ -1389,6 +1390,7 @@
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		35711D552A7A61B8003B6845 /* SaveAllLogs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAllLogs.swift; sourceTree = "<group>"; };
 		35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccessToPass.swift; sourceTree = "<group>"; };
+		35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshFeatureFlags.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59929BF173A008D4350 /* BannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerManager.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -2513,6 +2515,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		35711D5B2A7A79C8003B6845 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */,
+				35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		3572E51729938A1200775FAC /* OTP */ = {
 			isa = PBXGroup;
 			children = (
@@ -3372,13 +3383,13 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */,
 				5B1453AB2A696C5B0048B022 /* Vault */,
 				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
 				35CEA8CC2A603FFE00343A4E /* Local Authentication */,
 				5B503FE32A4D6D7000E6681C /* Logs */,
 				5B503FE82A4D7ADA00E6681C /* Reports */,
+				35711D5B2A7A79C8003B6845 /* User */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -4952,6 +4963,7 @@
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */,
+				35711D5D2A7A7A01003B6845 /* RefreshFeatureFlags.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
 				3559BAA02A5B32550020E172 /* Preferences.swift in Sources */,
