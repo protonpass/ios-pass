@@ -122,7 +122,7 @@ struct ItemSquircleThumbnail: View {
 
         Task {
             do {
-                if let favIcon = try await repository.getIcon(for: url),
+                if let favIcon = try await self.repository.getIcon(for: url),
                    let image = UIImage(data: favIcon.data) {
                     await MainActor.run {
                         self.image = image

@@ -192,7 +192,7 @@ extension CredentialsViewModel {
             do {
                 self.logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await self.getItemTask(item: item).value
-                let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+                let oldContent = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
                 guard case let .login(oldData) = oldContent.contentData else {
                     throw PPError.credentialProvider(.notLogInItem)
                 }
@@ -249,7 +249,7 @@ extension CredentialsViewModel {
                 let (credential, itemContent) = try await self.getCredentialTask(for: item).value
                 self.delegate?.credentialsViewModelDidSelect(credential: credential,
                                                              itemContent: itemContent,
-                                                             serviceIdentifiers: serviceIdentifiers)
+                                                             serviceIdentifiers: self.serviceIdentifiers)
                 self.logger.info("Selected \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
@@ -298,7 +298,7 @@ private extension CredentialsViewModel {
             let hashedTerm = term.sha256
             self.logger.trace("Searching for term \(hashedTerm)")
             self.state = .searching
-            let searchResults = results?.searchableItems.result(for: term) ?? []
+            let searchResults = self.results?.searchableItems.result(for: term) ?? []
             if Task.isCancelled {
                 return
             }
