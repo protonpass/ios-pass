@@ -761,8 +761,12 @@
 		5B653AEF2A77E9AB00D6869A /* AcceptInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AEE2A77E9AB00D6869A /* AcceptInvitation.swift */; };
 		5B653AF12A780CD000D6869A /* DecodeShareVaultInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF02A780CD000D6869A /* DecodeShareVaultInformation.swift */; };
 		5B653AF32A78EE0700D6869A /* UpdateCachedInvitations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */; };
+		5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */; };
+		5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
+		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
+		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1622,8 +1626,12 @@
 		5B653AEE2A77E9AB00D6869A /* AcceptInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptInvitation.swift; sourceTree = "<group>"; };
 		5B653AF02A780CD000D6869A /* DecodeShareVaultInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodeShareVaultInformation.swift; sourceTree = "<group>"; };
 		5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCachedInvitations.swift; sourceTree = "<group>"; };
+		5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultView.swift; sourceTree = "<group>"; };
+		5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultViewModel.swift; sourceTree = "<group>"; };
 		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
+		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
+		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
@@ -2532,6 +2540,7 @@
 				3565FD54298D3E5700E2A0EE /* TOTPCircularTimer.swift */,
 				3565FD56298D3E9400E2A0EE /* TOTPText.swift */,
 				355792D829E7FB85001198DA /* VaultLabel.swift */,
+				5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -3056,6 +3065,7 @@
 		35E5070B286FB57800A3F6EA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */,
 				5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */,
 				5B1453902A6831C60048B022 /* Sharing */,
 				35E5070C286FB58800A3F6EA /* App */,
@@ -3315,6 +3325,7 @@
 			isa = PBXGroup;
 			children = (
 				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
+				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3433,6 +3444,15 @@
 				5B5040092A52ED4800E6681C /* SendUserBugReportTests.swift */,
 			);
 			path = Reports;
+			sourceTree = "<group>";
+		};
+		5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */ = {
+			isa = PBXGroup;
+			children = (
+				5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */,
+				5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */,
+			);
+			path = ManageSharedVaultView;
 			sourceTree = "<group>";
 		};
 		5B8256D12A4B25B300BCEE6D /* Protocols */ = {
@@ -4925,6 +4945,7 @@
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
 				5B14539F2A69652D0048B022 /* SetShareInviteVault.swift in Sources */,
+				5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemUiModel.swift in Sources */,
 				3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */,
 				5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */,
@@ -5060,6 +5081,7 @@
 				35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */,
+				5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
 				5B653AEF2A77E9AB00D6869A /* AcceptInvitation.swift in Sources */,
 				35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */,
@@ -5096,12 +5118,14 @@
 				35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */,
 				3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */,
+				5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */,
 				5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */,
 				3569B2A629B7C39F0070830B /* View+Theme.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
+				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
 				354B24842A7820120060EDF7 /* ItemTypeFilterButton.swift in Sources */,

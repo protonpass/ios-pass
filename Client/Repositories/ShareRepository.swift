@@ -241,7 +241,9 @@ public extension ShareRepository {
                          description: vaultContent.description_p,
                          displayPreferences: vaultContent.display,
                          isPrimary: share.share.primary,
-                         isOwner: share.share.owner)
+                         isOwner: share.share.owner,
+                         shareRole: share.share.shareRoleID,
+                         members: Int(share.share.targetMembers))
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
