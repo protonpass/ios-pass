@@ -481,6 +481,7 @@
 		35711D562A7A61B8003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
 		35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
 		35711D582A7A62DD003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
+		35711D5A2A7A76A9003B6845 /* CheckAccessToPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59929BF173A008D4350 /* BannerManager.swift */; };
@@ -1387,6 +1388,7 @@
 		3570D20229C1F14D00805445 /* SearchResultChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultChips.swift; sourceTree = "<group>"; };
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		35711D552A7A61B8003B6845 /* SaveAllLogs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAllLogs.swift; sourceTree = "<group>"; };
+		35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccessToPass.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59929BF173A008D4350 /* BannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerManager.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -3370,6 +3372,7 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */,
 				5B1453AB2A696C5B0048B022 /* Vault */,
 				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
@@ -4910,6 +4913,7 @@
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
+				35711D5A2A7A76A9003B6845 /* CheckAccessToPass.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				5B1453DB2A726AD00048B022 /* InviteBannerViewStack.swift in Sources */,
