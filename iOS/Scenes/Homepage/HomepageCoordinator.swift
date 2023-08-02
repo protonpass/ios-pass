@@ -65,8 +65,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = .init(container: rootViewController)
 
-    // Use case
+    // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
@@ -342,13 +343,7 @@ private extension HomepageCoordinator {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        Task {
-            do {
-                try await telemetryEventRepository.addNewEvent(type: type)
-            } catch {
-                logger.error(error)
-            }
-        }
+        addTelemetryEvent(with: telemetryEventRepository, eventType: type)
     }
 
     func sendAllEventsIfApplicable() {
