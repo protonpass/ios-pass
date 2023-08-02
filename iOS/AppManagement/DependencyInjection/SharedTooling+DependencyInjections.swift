@@ -85,6 +85,12 @@ extension SharedToolingContainer {
 // MARK: Data tools
 
 extension SharedToolingContainer {
+    var module: Factory<PassModule> {
+        self { .hostApp }
+            .onArg(PassModule.autoFillExtension) { .autoFillExtension }
+            .onArg(PassModule.keyboardExtension) { .keyboardExtension }
+    }
+
     var appVersion: Factory<String> {
         self { "ios-pass@\(Bundle.main.fullAppVersionName)" }
             .onArg(PassModule.autoFillExtension) {
