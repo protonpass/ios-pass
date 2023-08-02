@@ -45,16 +45,18 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     }
 
     func getAlias() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 let alias =
-                    try await aliasRepository.getAliasDetailsTask(shareId: itemContent.shareId,
-                                                                  itemId: itemContent.item.itemID).value
-                aliasEmail = alias.email
-                mailboxes = alias.mailboxes
-                logger.info("Get alias detail successfully \(itemContent.debugInformation)")
+                try await self.aliasRepository.getAliasDetailsTask(
+                    shareId: self.itemContent.shareId,
+                    itemId: self.itemContent.item.itemID).value
+                self.aliasEmail = alias.email
+                self.mailboxes = alias.mailboxes
+                self.logger.info("Get alias detail successfully \(self.itemContent.debugInformation)")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
                 self.error = error
             }
         }
