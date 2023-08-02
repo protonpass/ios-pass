@@ -160,40 +160,41 @@ extension VaultsManager {
     func refresh() {
         guard !isRefreshing else { return }
 
-        Task { @MainActor in
-            defer { isRefreshing = false }
-            isRefreshing = true
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.isRefreshing = false }
+            self.isRefreshing = true
 
             do {
                 // No need to show loading indicator once items are loaded beforehand.
                 var cryptoErrorOccured = false
-                switch state {
+                switch self.state {
                 case .loaded:
                     break
                 case let .error(error):
                     cryptoErrorOccured = error is CryptoKitError
-                    state = .loading
+                    self.state = .loading
                 default:
-                    state = .loading
+                    self.state = .loading
                 }
 
-                if manualLogIn {
-                    logger.info("Manual login, doing full sync")
-                    try await fullSync()
-                    manualLogIn = false
-                    logger.info("Manual login, done full sync")
+                if self.manualLogIn {
+                    self.logger.info("Manual login, doing full sync")
+                    try await self.fullSync()
+                    self.manualLogIn = false
+                    self.logger.info("Manual login, done full sync")
                 } else if cryptoErrorOccured {
-                    logger.info("Crypto error occured. Doing full sync")
-                    try await fullSync()
-                    logger.info("Crypto error occured. Done full sync")
+                    self.logger.info("Crypto error occured. Doing full sync")
+                    try await self.fullSync()
+                    self.logger.info("Crypto error occured. Done full sync")
                 } else {
-                    logger.info("Not manual login, getting local shares & items")
-                    let vaults = try await shareRepository.getVaults()
-                    try await loadContents(for: vaults)
-                    logger.info("Not manual login, done getting local shares & items")
+                    self.logger.info("Not manual login, getting local shares & items")
+                    let vaults = try await self.shareRepository.getVaults()
+                    try await self.loadContents(for: vaults)
+                    self.logger.info("Not manual login, done getting local shares & items")
                 }
             } catch {
-                state = .error(error)
+                self.state = .error(error)
             }
         }
     }
@@ -208,9 +209,9 @@ extension VaultsManager {
         let remoteShares = try await shareRepository.getRemoteShares()
         await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in remoteShares {
-                taskGroup.addTask { [unowned self] in
-                    try await shareRepository.upsertShares([share])
-                    try await itemRepository.refreshItems(shareId: share.shareID)
+                taskGroup.addTask { [weak self] in
+                    try await self?.shareRepository.upsertShares([share])
+                    try await self?.itemRepository.refreshItems(shareId: share.shareID)
                 }
             }
         }

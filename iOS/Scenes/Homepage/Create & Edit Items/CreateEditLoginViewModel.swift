@@ -128,9 +128,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 }
                 note = itemContent.note
 
-                Task { @MainActor in
-                    aliasItem = try await itemRepository.getAliasItem(email: username)
-                    isAlias = aliasItem != nil
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
+                    self.isAlias = self.aliasItem != nil
                 }
             }
 
@@ -140,8 +141,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 urls = [url ?? ""].map { .init(value: $0) }
             }
 
-            Task { @MainActor in
-                canAddOrEdit2FAURI = try await upgradeChecker.canHaveMoreLoginsWith2FA()
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.canAddOrEdit2FAURI = try await self.upgradeChecker.canHaveMoreLoginsWith2FA()
             }
         }
     }
@@ -208,11 +210,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                                               creationInfo: aliasCreationLiteInfo,
                                                               delegate: self)
         } else {
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
                 do {
-                    delegate?.createEditItemViewModelWantsToShowLoadingHud()
-                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
-                    delegate?.createEditItemViewModelWantsToHideLoadingHud()
+                    self.delegate?.createEditItemViewModelWantsToShowLoadingHud()
+                    let aliasOptions = try await self.aliasRepository.getAliasOptions(shareId: self.selectedVault.shareId)
+                    self.delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     if let firstSuffix = aliasOptions.suffixes.first,
                        let firstMailbox = aliasOptions.mailboxes.first {
                         var prefix = PrefixUtils.generatePrefix(fromTitle: title)
@@ -224,11 +227,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.aliasCreationLiteInfo = .init(prefix: prefix,
                                                            suffix: firstSuffix,
                                                            mailboxes: [firstMailbox])
-                        generateAlias()
+                        self.generateAlias()
                     }
                 } catch {
-                    delegate?.createEditItemViewModelWantsToHideLoadingHud()
-                    delegate?.createEditItemViewModelDidEncounter(error: error)
+                    self.delegate?.createEditItemViewModelWantsToHideLoadingHud()
+                    self.delegate?.createEditItemViewModelDidEncounter(error: error)
                 }
             }
         }
