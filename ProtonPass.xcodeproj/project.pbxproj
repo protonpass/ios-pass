@@ -478,6 +478,9 @@
 		3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */; };
 		3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20229C1F14D00805445 /* SearchResultChips.swift */; };
 		3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20629C20A7E00805445 /* SearchResultsView.swift */; };
+		35711D562A7A61B8003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
+		35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
+		35711D582A7A62DD003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59929BF173A008D4350 /* BannerManager.swift */; };
@@ -1383,6 +1386,7 @@
 		3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemContextMenus.swift"; sourceTree = "<group>"; };
 		3570D20229C1F14D00805445 /* SearchResultChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultChips.swift; sourceTree = "<group>"; };
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
+		35711D552A7A61B8003B6845 /* SaveAllLogs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAllLogs.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59929BF173A008D4350 /* BannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerManager.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -3382,6 +3386,7 @@
 				5B503FE42A4D6FD000E6681C /* ExtractLogsToFile.swift */,
 				5B503FE62A4D7AAD00E6681C /* ExtractLogsToData.swift */,
 				5B503FF12A4DC6DA00E6681C /* GetLogEntries.swift */,
+				35711D552A7A61B8003B6845 /* SaveAllLogs.swift */,
 			);
 			path = Logs;
 			sourceTree = "<group>";
@@ -4749,6 +4754,7 @@
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
+				35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
 				3559BA962A5AE4DB0020E172 /* PassModule.swift in Sources */,
 				5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */,
@@ -4858,6 +4864,7 @@
 				35612519298262A300EDA991 /* LoggerManager+Initializer.swift in Sources */,
 				35CEA8D92A606E3700343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				356125102982544400EDA991 /* KeyboardNotLoggedInView.swift in Sources */,
+				35711D582A7A62DD003B6845 /* SaveAllLogs.swift in Sources */,
 				3572E51D2993AC1700775FAC /* PPError.swift in Sources */,
 				3549AC9B2982F27900BA5CD6 /* ProtonPass.xcdatamodeld in Sources */,
 				3559BAA92A5B32640020E172 /* ClipboardExpiration.swift in Sources */,
@@ -4926,6 +4933,7 @@
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
 				5B14539F2A69652D0048B022 /* SetShareInviteVault.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemUiModel.swift in Sources */,
+				35711D562A7A61B8003B6845 /* SaveAllLogs.swift in Sources */,
 				3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */,
 				5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */,
 				35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */,
