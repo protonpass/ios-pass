@@ -231,11 +231,11 @@ private extension ProfileTabViewModel {
                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
                 self.delegate?.profileTabViewModelWantsToShowSpinner()
                 if self.quickTypeBar {
-                    try await self.credentialManager.insertAllCredentials(
-                        itemRepository: self.itemRepository,
-                        shareRepository: self.shareRepository,
-                        passPlanRepository: self.passPlanRepository,
-                        forceRemoval: true)
+                    try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
+                                                                          shareRepository: self.shareRepository,
+                                                                          passPlanRepository: self
+                                                                              .passPlanRepository,
+                                                                          forceRemoval: true)
                     self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
                 } else {
                     try await self.credentialManager.removeAllCredentials()
