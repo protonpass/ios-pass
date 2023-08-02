@@ -27,6 +27,7 @@ struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var focusedField: Field?
     @State private var isShowingDiscardAlert = false
+    private let dummyId = UUID().uuidString
 
     init(viewModel: CreateEditNoteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -38,31 +39,42 @@ struct CreateEditNoteView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVStack {
-                    CreateEditItemTitleSection(title: .constant(""),
-                                               focusedField: $focusedField,
-                                               field: .title,
-                                               selectedVault: viewModel.selectedVault,
-                                               itemContentType: viewModel.itemContentType(),
-                                               isEditMode: viewModel.mode.isEditMode,
-                                               onChangeVault: viewModel.changeVault)
-                        .padding(.bottom, 18)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack {
+                        CreateEditItemTitleSection(title: .constant(""),
+                                                   focusedField: $focusedField,
+                                                   field: .title,
+                                                   selectedVault: viewModel.selectedVault,
+                                                   itemContentType: viewModel.itemContentType(),
+                                                   isEditMode: viewModel.mode.isEditMode,
+                                                   onChangeVault: viewModel.changeVault)
+                            .padding(.bottom, 18)
 
-                    TextEditorWithPlaceholder(text: $viewModel.title,
-                                              focusedField: $focusedField,
-                                              field: .title,
-                                              placeholder: "Untitled",
-                                              font: .title,
-                                              fontWeight: .bold,
-                                              onSubmit: { focusedField = .content })
+                        TextEditorWithPlaceholder(text: $viewModel.title,
+                                                  focusedField: $focusedField,
+                                                  field: .title,
+                                                  placeholder: "Untitled",
+                                                  font: .title,
+                                                  fontWeight: .bold,
+                                                  onSubmit: { focusedField = .content })
 
-                    TextEditorWithPlaceholder(text: $viewModel.note,
-                                              focusedField: $focusedField,
-                                              field: .content,
-                                              placeholder: "Note")
+                        Text("")
+                            .id(dummyId)
+
+                        TextEditorWithPlaceholder(text: $viewModel.note,
+                                                  focusedField: $focusedField,
+                                                  field: .content,
+                                                  placeholder: "Note")
+                    }
+                    .padding()
                 }
-                .padding()
+                .onAppear {
+                    // Workaround a SwiftUI bug that causes the text editors to be scrolled
+                    // to bottom when it's first focused
+                    // https://stackoverflow.com/q/75403453/2034535
+                    proxy.scrollTo(dummyId)
+                }
             }
             .background(Color(uiColor: PassColor.backgroundNorm))
             .navigationBarTitleDisplayMode(.inline)
