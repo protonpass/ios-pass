@@ -202,8 +202,11 @@ private extension BaseItemDetailViewModel {
 
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
-            guard let item = try await self?.itemRepository.getItem(shareId: item.shareId,
-                                                                    itemId: item.itemId) else {
+            guard let self else {
+                throw PPError.deallocatedSelf
+            }
+            guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
+                                                                   itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return item

@@ -274,15 +274,21 @@ extension CreateEditAliasViewModel {
 
 private extension CreateEditAliasViewModel {
     func getAliasOptionsTask(shareId: String) -> Task<AliasOptions, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await self.aliasRepository.getAliasOptions(shareId: shareId)
+        Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else {
+                throw PPError.deallocatedSelf
+            }
+            return try await self.aliasRepository.getAliasOptions(shareId: shareId)
         }
     }
 
     func changeMailboxesTask(shareId: String,
                              itemId: String,
                              mailboxIDs: [Int]) -> Task<Void, Error> {
-        Task.detached(priority: .userInitiated) {
+        Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else {
+                throw PPError.deallocatedSelf
+            }
             try await self.aliasRepository.changeMailboxes(shareId: shareId,
                                                            itemId: itemId,
                                                            mailboxIDs: mailboxIDs)
