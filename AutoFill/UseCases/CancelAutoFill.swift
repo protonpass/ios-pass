@@ -35,19 +35,17 @@ extension CancelAutoFillUseCase {
 
 final class CancelAutoFill: @unchecked Sendable, CancelAutoFillUseCase {
     private let context: ASCredentialProviderExtensionContext
-    private let logManager: LogManagerProtocol
+    private let saveAllLogs: SaveAllLogsUseCase
 
     init(context: ASCredentialProviderExtensionContext,
-         logManager: LogManagerProtocol) {
+         saveAllLogs: SaveAllLogsUseCase) {
         self.context = context
-        self.logManager = logManager
+        self.saveAllLogs = saveAllLogs
     }
 
     func execute(reason: ASExtensionError.Code) {
         let error = NSError(domain: ASExtensionErrorDomain, code: reason.rawValue)
         context.cancelRequest(withError: error)
-        Task {
-            await logManager.saveAllLogs()
-        }
+        saveAllLogs()
     }
 }
