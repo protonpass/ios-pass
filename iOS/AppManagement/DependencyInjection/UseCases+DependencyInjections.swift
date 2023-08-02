@@ -20,7 +20,7 @@
 
 import Core
 import Factory
-import Foundation
+import ProtonCore_Services
 
 final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
@@ -28,6 +28,18 @@ final class UseCasesContainer: SharedContainer, AutoRegistering {
 
     func autoRegister() {
         manager.defaultScope = .shared
+    }
+}
+
+// MARK: - Computed properties
+
+private extension UseCasesContainer {
+    var apiService: APIService {
+        SharedToolingContainer.shared.apiManager().apiService
+    }
+
+    var logManager: LogManagerProtocol {
+        SharedToolingContainer.shared.logManager()
     }
 }
 
@@ -143,5 +155,13 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var getVaultItemCount: Factory<GetVaultItemCountUseCase> {
         self { GetVaultItemCount(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+}
+
+// MARK: - Generic
+
+extension UseCasesContainer {
+    var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
+        self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
     }
 }

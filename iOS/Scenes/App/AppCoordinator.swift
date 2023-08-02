@@ -56,6 +56,9 @@ final class AppCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
 
+    // Use cases
+    private let checkAccessToPass = resolve(\UseCasesContainer.checkAccessToPass)
+
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
@@ -194,19 +197,20 @@ final class AppCoordinator {
             mainKeyProvider.wipeMainKey()
         }
         preferences.reset(isTests: isUITest)
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running
             do {
-                try await credentialManager.removeAllCredentials()
-                logger.info("Removed all credentials")
+                try await self.credentialManager.removeAllCredentials()
+                self.logger.info("Removed all credentials")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
 
             do {
                 // Delete existing persistent stores
-                let storeContainer = container.persistentStoreCoordinator
+                let storeContainer = self.container.persistentStoreCoordinator
                 for store in storeContainer.persistentStores {
                     if let url = store.url {
                         try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
@@ -214,25 +218,10 @@ final class AppCoordinator {
                 }
 
                 // Re-create persistent container
-                container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-                logger.info("Nuked local data")
+                self.container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
+                self.logger.info("Nuked local data")
             } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    /// Inform the BE that the users had logged in into Pass
-    /// so that welcome or instruction emails can be sent
-    private func checkAccessToPass() {
-        Task { [weak self] in
-            do {
-                self?.logger.trace("Checking access to Pass")
-                let endpoint = CheckAccessAndPlanEndpoint()
-                _ = try await self?.apiManager.apiService.exec(endpoint: endpoint)
-                self?.logger.info("Checked access to Pass")
-            } catch {
-                self?.logger.error(error)
+                self.logger.error(error)
             }
         }
     }
