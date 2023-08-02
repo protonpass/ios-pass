@@ -97,14 +97,15 @@ class BaseItemDetailViewModel {
     }
 
     func refresh() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             guard let updatedItemContent =
-                try await itemRepository.getItemContent(shareId: itemContent.shareId,
-                                                        itemId: itemContent.item.itemID) else {
+                try await self.itemRepository.getItemContent(shareId: self.itemContent.shareId,
+                                                             itemId: self.itemContent.item.itemID) else {
                 return
             }
-            itemContent = updatedItemContent
-            bindValues()
+            self.itemContent = updatedItemContent
+            self.bindValues()
         }
     }
 
@@ -121,57 +122,60 @@ class BaseItemDetailViewModel {
     }
 
     func moveToTrash() {
-        Task { @MainActor in
-            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Trashing \(itemContent.debugInformation)")
-                delegate?.itemDetailViewModelWantsToShowSpinner()
-                let encryptedItem = try await getItemTask(item: itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                try await itemRepository.trashItems([encryptedItem])
-                delegate?.itemDetailViewModelDidMoveToTrash(item: item)
-                logger.info("Trashed \(item.debugInformation)")
+                self.logger.trace("Trashing \(self.itemContent.debugInformation)")
+                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                let encryptedItem = try await self.getItemTask(item: self.itemContent).value
+                let item = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
+                try await self.itemRepository.trashItems([encryptedItem])
+                self.delegate?.itemDetailViewModelDidMoveToTrash(item: item)
+                self.logger.info("Trashed \(item.debugInformation)")
             } catch {
-                logger.error(error)
-                delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
 
     func restore() {
-        Task { @MainActor in
-            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Restoring \(itemContent.debugInformation)")
-                delegate?.itemDetailViewModelWantsToShowSpinner()
-                let encryptedItem = try await getItemTask(item: itemContent).value
-                let symmetricKey = itemRepository.symmetricKey
+                self.logger.trace("Restoring \(self.itemContent.debugInformation)")
+                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                let encryptedItem = try await self.getItemTask(item: self.itemContent).value
+                let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                try await itemRepository.untrashItems([encryptedItem])
-                delegate?.itemDetailViewModelDidRestore(item: item)
-                logger.info("Restored \(item.debugInformation)")
+                try await self.itemRepository.untrashItems([encryptedItem])
+                self.delegate?.itemDetailViewModelDidRestore(item: item)
+                self.logger.info("Restored \(item.debugInformation)")
             } catch {
-                logger.error(error)
-                delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
 
     func permanentlyDelete() {
-        Task { @MainActor in
-            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Permanently deleting \(itemContent.debugInformation)")
-                delegate?.itemDetailViewModelWantsToShowSpinner()
-                let encryptedItem = try await getItemTask(item: itemContent).value
-                let symmetricKey = itemRepository.symmetricKey
+                self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
+                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                let encryptedItem = try await self.getItemTask(item: self.itemContent).value
+                let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
-                delegate?.itemDetailViewModelDidPermanentlyDelete(item: item)
-                logger.info("Permanently deleted \(item.debugInformation)")
+                try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
+                self.delegate?.itemDetailViewModelDidPermanentlyDelete(item: item)
+                self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
-                logger.error(error)
-                delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
@@ -185,18 +189,22 @@ class BaseItemDetailViewModel {
 
 private extension BaseItemDetailViewModel {
     func checkIfFreeUser() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
+                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
-                logger.error(error)
-                delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
 
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
-        Task.detached(priority: .userInitiated) {
+        Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else {
+                throw PPError.deallocatedSelf
+            }
             guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
                                                                    itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
@@ -206,17 +214,18 @@ private extension BaseItemDetailViewModel {
     }
 
     func doMove(to vault: Vault) {
-        Task { @MainActor in
-            defer { delegate?.itemDetailViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Moving \(itemContent.debugInformation) to share \(vault.shareId)")
-                delegate?.itemDetailViewModelWantsToShowSpinner()
-                try await itemRepository.move(item: itemContent, toShareId: vault.shareId)
-                logger.trace("Moved \(itemContent.debugInformation) to share \(vault.shareId)")
-                delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
+                self.logger.trace("Moving \(self.itemContent.debugInformation) to share \(vault.shareId)")
+                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                try await self.itemRepository.move(item: self.itemContent, toShareId: vault.shareId)
+                self.logger.trace("Moved \(self.itemContent.debugInformation) to share \(vault.shareId)")
+                self.delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
             } catch {
-                logger.error(error)
-                delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }

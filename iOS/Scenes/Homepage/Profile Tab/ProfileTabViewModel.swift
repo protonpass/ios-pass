@@ -56,6 +56,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
 
+    // Use cases
+    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
     @Published var fallbackToPasscode = true {
@@ -117,11 +120,12 @@ extension ProfileTabViewModel {
     }
 
     func refreshPlan() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             // First get local plan to optimistically display it
             // and then try to refresh the plan to have it updated
-            plan = try await passPlanRepository.getPlan()
-            plan = try await passPlanRepository.refreshPlan()
+            self.plan = try await self.passPlanRepository.getPlan()
+            self.plan = try await self.passPlanRepository.refreshPlan()
         }
     }
 
@@ -180,16 +184,6 @@ private extension ProfileTabViewModel {
         refreshFeatureFlags()
     }
 
-    func refreshFeatureFlags() {
-        Task { @MainActor in
-            do {
-                try await featureFlagsRepository.refreshFlags()
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
-
     func updateSecuritySettings() {
         switch preferences.localAuthenticationMethod {
         case .none:
@@ -218,8 +212,9 @@ private extension ProfileTabViewModel {
     }
 
     func updateAutoFillAvalability() {
-        Task { @MainActor in
-            self.autoFillEnabled = await credentialManager.isAutoFillEnabled()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            self.autoFillEnabled = await self.credentialManager.isAutoFillEnabled()
         }
     }
 
@@ -229,26 +224,28 @@ private extension ProfileTabViewModel {
         guard autoFillEnabled else { return }
 
         guard quickTypeBar != preferences.quickTypeBar else { return }
-        Task { @MainActor in
-            defer { delegate?.profileTabViewModelWantsToHideSpinner() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.profileTabViewModelWantsToHideSpinner() }
             do {
-                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
-                delegate?.profileTabViewModelWantsToShowSpinner()
-                if quickTypeBar {
-                    try await credentialManager.insertAllCredentials(itemRepository: itemRepository,
-                                                                     shareRepository: shareRepository,
-                                                                     passPlanRepository: passPlanRepository,
-                                                                     forceRemoval: true)
-                    logger.info("Populated credential database QuickTypeBar \(quickTypeBar)")
+                self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
+                self.delegate?.profileTabViewModelWantsToShowSpinner()
+                if self.quickTypeBar {
+                    try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
+                                                                          shareRepository: self.shareRepository,
+                                                                          passPlanRepository: self
+                                                                              .passPlanRepository,
+                                                                          forceRemoval: true)
+                    self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
                 } else {
-                    try await credentialManager.removeAllCredentials()
-                    logger.info("Nuked credential database QuickTypeBar \(quickTypeBar)")
+                    try await self.credentialManager.removeAllCredentials()
+                    self.logger.info("Nuked credential database QuickTypeBar \(self.quickTypeBar)")
                 }
-                preferences.quickTypeBar = quickTypeBar
+                self.preferences.quickTypeBar = self.quickTypeBar
             } catch {
-                logger.error(error)
-                quickTypeBar.toggle() // rollback to previous value
-                delegate?.profileTabViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.quickTypeBar.toggle() // rollback to previous value
+                self.delegate?.profileTabViewModelDidEncounter(error: error)
             }
         }
     }
