@@ -176,8 +176,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .CombineLatest($title, $prefix)
             .combineLatest($note)
             .dropFirst()
-            .sink(receiveValue: { [unowned self] _ in
-                didEditSomething = true
+            .sink(receiveValue: { [weak self] _ in
+                self?.didEditSomething = true
             })
             .store(in: &cancellables)
     }
