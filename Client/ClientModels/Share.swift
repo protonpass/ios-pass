@@ -48,6 +48,12 @@ public struct Share: Decodable, Swift.Hashable {
     /// Permissions for this share
     public let permission: Int64
 
+    /// Role given to the user when invited with sharing feature
+    public let shareRoleID: String
+
+    /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
+    public let targetMembers: Int64
+
     /// Whether this vault is primary for this user
     public let primary: Bool
 
@@ -100,7 +106,9 @@ public extension Share {
                               description: vaultContent.description_p,
                               displayPreferences: vaultContent.display,
                               isPrimary: primary,
-                              isOwner: owner)
+                              isOwner: owner,
+                              shareRole: shareRoleID,
+                              members: Int(targetMembers))
             return .vault(vault)
         case .item:
             return .item
@@ -114,6 +122,8 @@ public extension Share {
               targetType: targetType,
               targetID: targetID,
               permission: permission,
+              shareRoleID: shareRoleID,
+              targetMembers: targetMembers,
               primary: isPrimary,
               owner: owner,
               content: content,
