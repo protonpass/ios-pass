@@ -28,6 +28,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var appCoverView: UIView?
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
+    private let saveAllLogs = resolve(\SharedUseCasesContainer.saveAllLogs)
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -43,9 +44,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillResignActive(_ scene: UIScene) {
         coverApp()
-        Task {
-            await SharedToolingContainer.shared.logManager().saveAllLogs()
-        }
+        saveAllLogs()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {

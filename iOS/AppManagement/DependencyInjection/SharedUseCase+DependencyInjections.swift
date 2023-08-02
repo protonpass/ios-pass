@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Core
 import Factory
 import LocalAuthentication
 
@@ -27,6 +29,14 @@ final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
 
     func autoRegister() {
         manager.defaultScope = .shared
+    }
+}
+
+// MARK: Computed properties
+
+private extension SharedUseCasesContainer {
+    var logManager: LogManagerProtocol {
+        SharedToolingContainer.shared.logManager()
     }
 }
 
@@ -51,5 +61,17 @@ extension SharedUseCasesContainer {
 
     var getLocalAuthenticationMethods: Factory<GetLocalAuthenticationMethodsUseCase> {
         self { GetLocalAuthenticationMethods(checkBiometryType: self.checkBiometryType()) }
+    }
+
+    var saveAllLogs: Factory<SaveAllLogsUseCase> {
+        self { SaveAllLogs(logManager: self.logManager) }
+    }
+}
+
+// MARK: Telemetry
+
+extension SharedUseCasesContainer {
+    var addTelemetryEvent: Factory<AddTelemetryEventUseCase> {
+        self { AddTelemetryEvent(logManager: self.logManager) }
     }
 }
