@@ -928,7 +928,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        Task { [weak self] in
+        Task {
             let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
