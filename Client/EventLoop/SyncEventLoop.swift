@@ -202,28 +202,29 @@ private extension SyncEventLoop {
         if ongoingTask != nil {
             delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished)
         } else {
-            ongoingTask = Task { @MainActor in
+            ongoingTask = Task { @MainActor [weak self] in
+                guard let self else { return }
                 defer {
-                    ongoingTask = nil
-                    pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                    self.ongoingTask = nil
+                    self.pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
                 }
 
                 do {
-                    delegate?.syncEventLoopDidBeginNewLoop()
+                    self.delegate?.syncEventLoopDidBeginNewLoop()
                     if Task.isCancelled {
                         return
                     }
-                    let hasNewEvents = try await sync()
-                    delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
-                    backOffManager.recordSuccess()
+                    let hasNewEvents = try await self.sync()
+                    self.delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
+                    self.backOffManager.recordSuccess()
                 } catch {
-                    logger.error(error)
-                    delegate?.syncEventLoopDidFailLoop(error: error)
+                    self.logger.error(error)
+                    self.delegate?.syncEventLoopDidFailLoop(error: error)
                     if let responseError = error as? ResponseError,
                        let httpCode = responseError.httpCode,
                        (500...599).contains(httpCode) {
-                        logger.debug("Server is down, backing off")
-                        backOffManager.recordFailure()
+                        self.logger.debug("Server is down, backing off")
+                        self.backOffManager.recordFailure()
                     }
                 }
             }
@@ -253,13 +254,16 @@ private extension SyncEventLoop {
 
         let hasNewEvents = try await withThrowingTaskGroup(of: Bool.self,
                                                            returning: Bool.self) { taskGroup in
-            taskGroup.addTask {
-                try await self.syncCreateAndUpdateEvents(localShares: localShares,
-                                                         remoteShares: remoteShares)
+            taskGroup.addTask { [weak self] in
+                guard let self else { return false }
+                return try await self.syncCreateAndUpdateEvents(localShares: localShares,
+                                                                remoteShares: remoteShares)
             }
 
-            taskGroup.addTask {
-                try await self.syncDeleteEvents(localShares: localShares, remoteShares: remoteShares)
+            taskGroup.addTask { [weak self] in
+                guard let self else { return false }
+                return try await self.syncDeleteEvents(localShares: localShares,
+                                                       remoteShares: remoteShares)
             }
 
             return try await taskGroup.contains { $0 }
@@ -275,7 +279,8 @@ private extension SyncEventLoop {
         try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
             for remoteShare in remoteShares {
                 // Task group returning `true` if new events found, `false` other wise
-                taskGroup.addTask {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return false }
                     var hasNewEvents = false
                     if localShares.contains(where: { $0.share.shareID == remoteShare.shareID }) {
                         // Existing share
@@ -314,7 +319,8 @@ private extension SyncEventLoop {
         try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
             for localShare in localShares {
                 // Task group returning `true` if new events found, `false` other wise
-                taskGroup.addTask {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return false }
                     let shareId = localShare.share.shareID
                     if !remoteShares.contains(where: { $0.shareID == shareId }) {
                         // We can blindly remove the local share and its items from the database
