@@ -65,6 +65,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = .init(container: rootViewController)
 
+    // Use case
+    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
@@ -179,16 +182,6 @@ private extension HomepageCoordinator {
         Task {
             do {
                 try await passPlanRepository.refreshPlan()
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    func refreshFeatureFlags() {
-        Task {
-            do {
-                try await featureFlagsRepository.refreshFlags()
             } catch {
                 logger.error(error)
             }
