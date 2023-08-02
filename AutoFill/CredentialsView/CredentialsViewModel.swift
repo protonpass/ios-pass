@@ -268,11 +268,12 @@ extension CredentialsViewModel {
 
     func createLoginItem() {
         guard case .idle = state else { return }
-        Task { @MainActor in
-            let vaults = try await shareRepository.getVaults()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            let vaults = try await self.shareRepository.getVaults()
             guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
-            delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
-                                                                 url: urls.first)
+            self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
+                                                                      url: self.urls.first)
         }
     }
 
