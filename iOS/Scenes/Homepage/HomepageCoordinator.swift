@@ -448,7 +448,10 @@ private extension HomepageCoordinator {
 
     func presentManageShareVault() {
         dismissTopMostViewController { [weak self] in
-            let manageShareVaultView = Text("Manage Share Vault Screen")
+            if self?.rootViewController.topMostViewController is UIHostingController<ManageSharedVaultView> {
+                return
+            }
+            let manageShareVaultView = ManageSharedVaultView()
             self?.present(manageShareVaultView)
         }
     }

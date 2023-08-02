@@ -29,6 +29,11 @@ public struct Vault: Identifiable, Hashable, Equatable {
     public let displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences
     public let isPrimary: Bool
     public let isOwner: Bool
+    /// Role given to the user when invited with sharing feature
+    public let shareRole: String
+
+    /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
+    public let members: Int
 
     public init(id: String,
                 shareId: String,
@@ -37,7 +42,9 @@ public struct Vault: Identifiable, Hashable, Equatable {
                 description: String,
                 displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences,
                 isPrimary: Bool,
-                isOwner: Bool) {
+                isOwner: Bool,
+                shareRole: String,
+                members: Int) {
         self.id = id
         self.shareId = shareId
         self.name = name
@@ -46,5 +53,7 @@ public struct Vault: Identifiable, Hashable, Equatable {
         self.isPrimary = isPrimary
         self.addressId = addressId
         self.isOwner = isOwner
+        self.shareRole = shareRole
+        self.members = members
     }
 }
