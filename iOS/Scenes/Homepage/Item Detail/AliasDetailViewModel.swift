@@ -49,9 +49,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
             guard let self else { return }
             do {
                 let alias =
-                try await self.aliasRepository.getAliasDetailsTask(
-                    shareId: self.itemContent.shareId,
-                    itemId: self.itemContent.item.itemID).value
+                    try await self.aliasRepository.getAliasDetailsTask(shareId: self.itemContent.shareId,
+                                                                       itemId: self.itemContent.item.itemID).value
                 self.aliasEmail = alias.email
                 self.mailboxes = alias.mailboxes
                 self.logger.info("Get alias detail successfully \(self.itemContent.debugInformation)")

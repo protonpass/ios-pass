@@ -65,7 +65,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
                 }
                 let userId = self.userData.user.ID
                 let events =
-                try await self.telemetryEventRepository.localDatasource.getAllEvents(userId: userId)
+                    try await self.telemetryEventRepository.localDatasource.getAllEvents(userId: userId)
                 // Reverse to move new events to the top of the list
                 self.uiModels = events.reversed().map { TelemetryEventUiModel(event: $0,
                                                                               formatter: formatter) }

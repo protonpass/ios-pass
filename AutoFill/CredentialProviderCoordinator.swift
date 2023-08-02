@@ -55,6 +55,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
     private let completeAutoFill = resolve(\AutoFillUseCaseContainer.completeAutoFill)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -146,29 +147,30 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         if preferences.localAuthenticationMethod != .none {
             cancelAutoFill(reason: .userInteractionRequired)
         } else {
-            Task {
+            Task { [weak self] in
+                guard let self else { return }
                 do {
-                    logger.trace("Autofilling from QuickType bar")
+                    self.logger.trace("Autofilling from QuickType bar")
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                     if let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
                                                                                  itemId: ids.itemId) {
                         if case let .login(data) = itemContent.contentData {
-                            complete(quickTypeBar: true,
-                                     credential: .init(user: data.username, password: data.password),
-                                     itemContent: itemContent,
-                                     itemRepository: itemRepository,
-                                     upgradeChecker: upgradeChecker,
-                                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+                            self.complete(quickTypeBar: true,
+                                          credential: .init(user: data.username, password: data.password),
+                                          itemContent: itemContent,
+                                          itemRepository: itemRepository,
+                                          upgradeChecker: upgradeChecker,
+                                          serviceIdentifiers: [credentialIdentity.serviceIdentifier])
                         } else {
-                            logger.error("Failed to autofill. Not log in item.")
+                            self.logger.error("Failed to autofill. Not log in item.")
                         }
                     } else {
-                        logger.warning("Failed to autofill. Item not found.")
-                        cancelAutoFill(reason: .failed)
+                        self.logger.warning("Failed to autofill. Item not found.")
+                        self.cancelAutoFill(reason: .failed)
                     }
                 } catch {
-                    logger.error(error)
-                    cancelAutoFill(reason: .failed)
+                    self.logger.error(error)
+                    self.cancelAutoFill(reason: .failed)
                 }
             }
         }
@@ -215,15 +217,16 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             cancelAutoFill(reason: .userCanceled)
             return
         case .failedToAuthenticate:
-            Task {
-                defer { cancelAutoFill(reason: .failed) }
+            Task { [weak self] in
+                guard let self else { return }
+                defer { self.cancelAutoFill(reason: .failed) }
                 do {
-                    logger.trace("Authenticaion failed. Removing all credentials")
-                    appData.userData = nil
-                    try await credentialManager.removeAllCredentials()
-                    logger.info("Removed all credentials after authentication failure")
+                    self.logger.trace("Authenticaion failed. Removing all credentials")
+                    self.appData.userData = nil
+                    try await self.credentialManager.removeAllCredentials()
+                    self.logger.info("Removed all credentials after authentication failure")
                 } catch {
-                    logger.error(error)
+                    self.logger.error(error)
                 }
             }
         default:
@@ -287,21 +290,17 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        Task {
-            do {
-                try await telemetryEventRepository?.addNewEvent(type: type)
-            } catch {
-                logger.error(error)
-            }
+        if let telemetryEventRepository {
+            addTelemetryEvent(with: telemetryEventRepository, eventType: type)
         }
     }
 
     func sendAllEventsIfApplicable() {
-        Task {
+        Task { [weak self] in
             do {
-                try await telemetryEventRepository?.sendAllEventsIfApplicable()
+                try await self?.telemetryEventRepository?.sendAllEventsIfApplicable()
             } catch {
-                logger.error(error)
+                self?.logger.error(error)
             }
         }
     }
@@ -419,14 +418,15 @@ private extension CredentialProviderCoordinator {
             coordinator.start()
             generatePasswordCoordinator = coordinator
         } else {
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
                 do {
                     let wordProvider = try await WordProvider()
                     self.wordProvider = wordProvider
-                    showGeneratePasswordView(delegate: delegate)
+                    self.showGeneratePasswordView(delegate: delegate)
                 } catch {
-                    logger.error(error)
-                    bannerManager.displayTopErrorMessage(error)
+                    self.logger.error(error)
+                    self.bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
@@ -541,9 +541,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                                 vaults: vaultListUiModels.map(\.vault),
                                 url: url)
         } else {
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
                 do {
-                    showLoadingHud()
+                    self.showLoadingHud()
                     let items = try await itemRepository.getAllItems()
                     let vaults = try await shareRepository.getVaults()
 
@@ -563,12 +564,12 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                         .filter(\.hasTotpUri)
                         .count
 
-                    hideLoadingHud()
-                    credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: url)
+                    self.hideLoadingHud()
+                    self.credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: url)
                 } catch {
-                    logger.error(error)
-                    hideLoadingHud()
-                    bannerManager.displayTopErrorMessage(error)
+                    self.logger.error(error)
+                    self.hideLoadingHud()
+                    self.bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
