@@ -95,8 +95,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .combineLatest($urls)
             .combineLatest($note)
             .dropFirst(mode.isEditMode ? 1 : 3)
-            .sink(receiveValue: { [unowned self] _ in
-                didEditSomething = true
+            .sink(receiveValue: { [weak self] _ in
+                self?.didEditSomething = true
             })
             .store(in: &cancellables)
 
@@ -104,12 +104,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .eraseToAnyPublisher()
             .dropFirst()
             .receive(on: RunLoop.main)
-            .sink { [unowned self] _ in
-                if aliasOptions != nil {
-                    aliasOptions = nil
-                    aliasCreationLiteInfo = nil
-                    isAlias = false
-                    username = ""
+            .sink { [weak self] _ in
+                guard let self else { return }
+                if self.aliasOptions != nil {
+                    self.aliasOptions = nil
+                    self.aliasCreationLiteInfo = nil
+                    self.isAlias = false
+                    self.username = ""
                 }
             }
             .store(in: &cancellables)

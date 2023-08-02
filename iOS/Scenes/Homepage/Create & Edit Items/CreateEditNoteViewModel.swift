@@ -42,8 +42,8 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
         Publishers
             .CombineLatest($title, $note)
             .dropFirst(mode.isEditMode ? 1 : 3)
-            .sink(receiveValue: { [unowned self] _ in
-                didEditSomething = true
+            .sink(receiveValue: { [weak self] _ in
+                self?.didEditSomething = true
             })
             .store(in: &cancellables)
     }

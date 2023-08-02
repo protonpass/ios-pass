@@ -139,14 +139,15 @@ final class AppCoordinator {
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         homepageCoordinator = nil
-        animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
+        animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
+            guard let self else { return }
             switch reason {
             case .expiredRefreshToken:
-                alertRefreshTokenExpired()
+                self.alertRefreshTokenExpired()
             case .failedBiometricAuthentication:
-                alertFailedBiometricAuthentication()
+                self.alertFailedBiometricAuthentication()
             case .sessionInvalidated:
-                alertSessionInvalidated()
+                self.alertSessionInvalidated()
             default:
                 break
             }
