@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Factory
 import LocalAuthentication
@@ -64,5 +65,13 @@ extension SharedUseCasesContainer {
 
     var saveAllLogs: Factory<SaveAllLogsUseCase> {
         self { SaveAllLogs(logManager: self.logManager) }
+    }
+}
+
+// MARK: Telemetry
+
+extension SharedUseCasesContainer {
+    var addTelemetryEvent: Factory<AddTelemetryEventUseCase> {
+        self { AddTelemetryEvent(logManager: self.logManager) }
     }
 }
