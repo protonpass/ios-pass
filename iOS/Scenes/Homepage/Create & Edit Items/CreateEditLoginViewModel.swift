@@ -214,7 +214,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 guard let self else { return }
                 do {
                     self.delegate?.createEditItemViewModelWantsToShowLoadingHud()
-                    let aliasOptions = try await self.aliasRepository.getAliasOptions(shareId: self.selectedVault.shareId)
+                    let aliasOptions = try await self.aliasRepository
+                        .getAliasOptions(shareId: self.selectedVault.shareId)
                     self.delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     if let firstSuffix = aliasOptions.suffixes.first,
                        let firstMailbox = aliasOptions.mailboxes.first {
