@@ -158,10 +158,15 @@ extension UseCasesContainer {
     }
 }
 
-// MARK: - Generic
+// MARK: - User
 
 extension UseCasesContainer {
     var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
         self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
+    }
+
+    var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
+        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   logManager: self.logManager) }
     }
 }

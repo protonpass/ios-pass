@@ -56,6 +56,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
 
+    // Use cases
+    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
     @Published var fallbackToPasscode = true {
@@ -117,11 +120,12 @@ extension ProfileTabViewModel {
     }
 
     func refreshPlan() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             // First get local plan to optimistically display it
             // and then try to refresh the plan to have it updated
-            plan = try await passPlanRepository.getPlan()
-            plan = try await passPlanRepository.refreshPlan()
+            self.plan = try await self.passPlanRepository.getPlan()
+            self.plan = try await self.passPlanRepository.refreshPlan()
         }
     }
 
@@ -178,16 +182,6 @@ private extension ProfileTabViewModel {
         updateSecuritySettings()
         refreshPlan()
         refreshFeatureFlags()
-    }
-
-    func refreshFeatureFlags() {
-        Task { @MainActor in
-            do {
-                try await featureFlagsRepository.refreshFlags()
-            } catch {
-                logger.error(error)
-            }
-        }
     }
 
     func updateSecuritySettings() {
