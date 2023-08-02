@@ -97,7 +97,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let upgradeChecker: UpgradeCheckerProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
-    private let logger: Logger
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logManager = resolve(\SharedToolingContainer.logManager)
 
     let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
@@ -132,7 +133,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
             return URL(string: id)
         }
 
-        let logManager = resolve(\SharedToolingContainer.logManager)
         syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
                               userId: userId,
                               shareRepository: shareRepository,
@@ -141,7 +141,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                               itemRepository: itemRepository,
                               shareKeyRepository: shareKeyRepository,
                               logManager: logManager)
-        logger = .init(manager: logManager)
 
         setup()
     }
