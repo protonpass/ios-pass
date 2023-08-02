@@ -55,16 +55,17 @@ private final class TelemetryEventsViewModel: ObservableObject {
     }
 
     func refresh() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 let formatter = RelativeDateTimeFormatter()
-                if let threshold = telemetryEventRepository.scheduler.threshhold {
+                if let threshold = self.telemetryEventRepository.scheduler.threshhold {
                     let relativeDate = formatter.localizedString(for: threshold, relativeTo: .now)
                     self.relativeThreshold = "Next batch \(relativeDate)"
                 }
-                let userId = userData.user.ID
+                let userId = self.userData.user.ID
                 let events =
-                    try await telemetryEventRepository.localDatasource.getAllEvents(userId: userId)
+                try await self.telemetryEventRepository.localDatasource.getAllEvents(userId: userId)
                 // Reverse to move new events to the top of the list
                 self.uiModels = events.reversed().map { TelemetryEventUiModel(event: $0,
                                                                               formatter: formatter) }
