@@ -55,7 +55,10 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
     private let completeAutoFill = resolve(\AutoFillUseCaseContainer.completeAutoFill)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+
+    // Lazily injected because it depends on `TelemetryEventRepositoryProtocol`
+    // which is not registered when the user is not logged in
+    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -290,9 +293,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        if let telemetryEventRepository {
-            addTelemetryEvent(with: telemetryEventRepository, eventType: type)
-        }
+        addTelemetryEvent(with: type)
     }
 
     func sendAllEventsIfApplicable() {
