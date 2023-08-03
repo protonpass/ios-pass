@@ -22,9 +22,6 @@ import AuthenticationServices
 import Core
 
 public protocol CredentialManagerProtocol {
-    var store: ASCredentialIdentityStore { get }
-    var logger: Logger { get }
-
     /// Whether users had choosen Proton Pass as AutoFill Provider
     func isAutoFillEnabled() async -> Bool
 
@@ -44,12 +41,23 @@ public protocol CredentialManagerProtocol {
     func removeAllCredentials() async throws
 }
 
-public extension CredentialManagerProtocol {
-    func isAutoFillEnabled() async -> Bool {
+public final class CredentialManager {
+    public var store: ASCredentialIdentityStore
+    public var logger: Logger
+
+    public init(logManager: LogManagerProtocol,
+                store: ASCredentialIdentityStore = .shared) {
+        self.store = store
+        logger = .init(manager: logManager)
+    }
+}
+
+extension CredentialManager: CredentialManagerProtocol {
+    public func isAutoFillEnabled() async -> Bool {
         await store.state().isEnabled
     }
 
-    func insert(credentials: [AutoFillCredential]) async throws {
+    public func insert(credentials: [AutoFillCredential]) async throws {
         logger.trace("Trying to insert \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
@@ -69,7 +77,7 @@ public extension CredentialManagerProtocol {
         logger.trace("Inserted \(credentials.count) credentials.")
     }
 
-    func remove(credentials: [AutoFillCredential]) async throws {
+    public func remove(credentials: [AutoFillCredential]) async throws {
         logger.trace("Trying to remove \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
@@ -88,10 +96,10 @@ public extension CredentialManagerProtocol {
         }
     }
 
-    func insertAllCredentials(itemRepository: ItemRepositoryProtocol,
-                              shareRepository: ShareRepositoryProtocol,
-                              passPlanRepository: PassPlanRepositoryProtocol,
-                              forceRemoval: Bool) async throws {
+    public func insertAllCredentials(itemRepository: ItemRepositoryProtocol,
+                                     shareRepository: ShareRepositoryProtocol,
+                                     passPlanRepository: PassPlanRepositoryProtocol,
+                                     forceRemoval: Bool) async throws {
         logger.trace("Trying to insert all credentials from ItemRepository")
         let state = await store.state()
         guard state.isEnabled else {
@@ -143,7 +151,7 @@ public extension CredentialManagerProtocol {
         try await insert(credentials: credentials)
     }
 
-    func removeAllCredentials() async throws {
+    public func removeAllCredentials() async throws {
         logger.trace("Removing all credentials.")
         let state = await store.state()
         guard state.isEnabled else {
@@ -153,17 +161,6 @@ public extension CredentialManagerProtocol {
 
         try await store.removeAllCredentialIdentities()
         logger.trace("Removed all credentials.")
-    }
-}
-
-public final class CredentialManager: CredentialManagerProtocol {
-    public var store: ASCredentialIdentityStore
-    public var logger: Logger
-
-    public init(logManager: LogManagerProtocol,
-                store: ASCredentialIdentityStore = .shared) {
-        self.store = store
-        logger = .init(manager: logManager)
     }
 }
 
