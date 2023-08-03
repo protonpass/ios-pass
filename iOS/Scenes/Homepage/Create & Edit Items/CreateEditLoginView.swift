@@ -477,11 +477,10 @@ struct CreateEditLoginView: View {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
-            NoCameraPermissionView(theme: viewModel.preferences.theme,
-                                   onOpenSettings: viewModel.openSettings)
+            NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
         }
         .sheet(isPresented: $viewModel.isShowingCodeScanner) {
-            WrappedCodeScannerView(theme: viewModel.preferences.theme) { result in
+            WrappedCodeScannerView { result in
                 switch focusedField {
                 case .totp:
                     viewModel.handleScanResult(result)

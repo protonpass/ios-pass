@@ -19,22 +19,18 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import SwiftUI
 
 struct BannersSection: View {
-    let preferences: Preferences
-
     var body: some View {
-        NavigationLink(destination: {
-            ManageBannersView(preferences: preferences)
-        }, label: {
-            Text("Banners")
-        })
+        NavigationLink(destination: { ManageBannersView() },
+                       label: { Text("Banners") })
     }
 }
 
 private struct ManageBannersView: View {
-    @StateObject var preferences: Preferences
+    @StateObject private var preferences = resolve(\SharedToolingContainer.preferences)
 
     var body: some View {
         Form {

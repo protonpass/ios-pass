@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -38,16 +39,12 @@ protocol HomepageTabDelegete: AnyObject {
 struct HomepageTabbarView: UIViewControllerRepresentable {
     let itemsTabViewModel: ItemsTabViewModel
     let profileTabViewModel: ProfileTabViewModel
-    let passPlanRepository: PassPlanRepositoryProtocol
-    let logManager: LogManagerProtocol
     weak var homepageCoordinator: HomepageCoordinator?
     weak var delegate: HomepageTabBarControllerDelegate?
 
     func makeUIViewController(context: Context) -> HomepageTabBarController {
         let controller = HomepageTabBarController(itemsTabView: .init(viewModel: itemsTabViewModel),
-                                                  profileTabView: .init(viewModel: profileTabViewModel),
-                                                  passPlanRepository: passPlanRepository,
-                                                  logManager: logManager)
+                                                  profileTabView: .init(viewModel: profileTabViewModel))
         controller.homepageTabBarControllerDelegate = delegate
         context.coordinator.homepageTabBarController = controller
         homepageCoordinator?.homepageTabDelegete = context.coordinator
@@ -71,10 +68,6 @@ struct HomepageTabbarView: UIViewControllerRepresentable {
     }
 }
 
-extension Notification.Name {
-    static let forceRefreshItemsTab = Notification.Name("forceRefreshItemsTab")
-}
-
 protocol HomepageTabBarControllerDelegate: AnyObject {
     func homepageTabBarControllerDidSelectItemsTab()
     func homepageTabBarControllerWantToCreateNewItem()
@@ -88,21 +81,16 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private let profileTabView: ProfileTabView
     private var profileTabViewController: UIViewController?
 
-    private let passPlanRepository: PassPlanRepositoryProtocol
-    private let logger: Logger
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let logger = resolve(\SharedToolingContainer.logger)
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(itemsTabView: ItemsTabView,
-         profileTabView: ProfileTabView,
-         passPlanRepository: PassPlanRepositoryProtocol,
-         logManager: LogManagerProtocol) {
+    init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView
-        self.passPlanRepository = passPlanRepository
-        logger = .init(manager: logManager)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -156,19 +144,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
             }
         }
 
-        NotificationCenter.default.publisher(for: .forceRefreshItemsTab)
-            .sink { [weak self] _ in
-                // Workaround a SwiftUI bug that makes the view at the top untappable
-                // (vaut switcher & search bar) when a sheet is closed.
-                // Only applicable when currently selected tab is items tab
-                // https://stackoverflow.com/a/60492031
-                if self?.selectedViewController == self?.viewControllers?.first {
-                    self?.select(tab: .profile)
-                    self?.select(tab: .items)
-                }
-            }
-            .store(in: &cancellables)
-
         refreshTabBarIcons()
     }
 }
@@ -186,9 +161,10 @@ extension HomepageTabBarController {
     }
 
     func refreshTabBarIcons() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                let plan = try await passPlanRepository.getPlan()
+                let plan = try await self.passPlanRepository.getPlan()
 
                 let image: UIImage
                 let selectedImage: UIImage
@@ -204,10 +180,10 @@ extension HomepageTabBarController {
                     selectedImage = PassIcon.tabProfileTrialSelected
                 }
 
-                profileTabViewController?.tabBarItem.image = image
-                profileTabViewController?.tabBarItem.selectedImage = selectedImage
+                self.profileTabViewController?.tabBarItem.image = image
+                self.profileTabViewController?.tabBarItem.selectedImage = selectedImage
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
     }

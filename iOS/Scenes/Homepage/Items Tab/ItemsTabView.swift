@@ -37,14 +37,7 @@ struct ItemsTabView: View {
                 ItemsTabsSkeleton()
 
             case .loaded:
-                switch vaultsManager.vaultSelection {
-                case .all:
-                    vaultContent(vaultsManager.getItem(for: .all))
-                case let .precise(selectedVault):
-                    vaultContent(vaultsManager.getItem(for: .precise(selectedVault)))
-                case .trash:
-                    vaultContent(vaultsManager.getItem(for: .trash))
-                }
+                vaultContent(vaultsManager.getFilteredItems())
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
@@ -69,6 +62,12 @@ struct ItemsTabView: View {
                         .padding([.horizontal, .top])
                 }
 
+                if !viewModel.invites.isEmpty {
+                    InviteBannerViewStack(invites: viewModel.invites)
+                        .padding()
+                        .padding(.top)
+                }
+
                 if items.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
                     case .all, .precise:
@@ -86,7 +85,9 @@ struct ItemsTabView: View {
             .ignoresSafeArea(edges: .bottom)
             .edgesIgnoringSafeArea(.bottom)
             .animation(.default, value: viewModel.vaultsManager.state)
+            .animation(.default, value: viewModel.vaultsManager.filterOption)
             .animation(.default, value: viewModel.banners.count)
+            .animation(.default, value: viewModel.invites.count)
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }
@@ -143,13 +144,10 @@ struct ItemsTabView: View {
     @ViewBuilder
     private func itemList(_ items: [ItemUiModel]) -> some View {
         HStack {
-            Text("All")
-                .font(.callout)
-                .fontWeight(.bold)
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" (\(items.count))")
-                .font(.callout)
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
+            ItemTypeFilterButton(itemCount: viewModel.vaultsManager.itemCount,
+                                 selectedOption: viewModel.vaultsManager.filterOption,
+                                 onSelect: viewModel.vaultsManager.updateItemTypeFilterOption,
+                                 onTap: viewModel.showFilterOptions)
 
             Spacer()
 
@@ -250,10 +248,7 @@ struct ItemsTabView: View {
         Button(action: {
             viewModel.viewDetail(of: item)
         }, label: {
-            GeneralItemRow(thumbnailView: {
-                               ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                     repository: viewModel.favIconRepository)
-                           },
+            GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                            title: item.title,
                            description: item.description)
                 .itemContextMenu(item: item,

@@ -80,12 +80,12 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
             do {
                 let authenticated = try await self.authenticate(policy: self.preferences.localAuthenticationPolicy)
                 if authenticated {
-                    recordSuccess()
+                    self.recordSuccess()
                 } else {
-                    recordFailure(nil)
+                    self.recordFailure(nil)
                 }
             } catch {
-                recordFailure(error)
+                self.recordFailure(error)
             }
         }
     }

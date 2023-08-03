@@ -19,17 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Factory
 import SafariServices
 import UIComponents
 import UIKit
 
 final class UrlOpener {
-    private let preferences: Preferences
+    private let preferences = resolve(\SharedToolingContainer.preferences)
     weak var rootViewController: UIViewController?
 
-    init(preferences: Preferences) {
-        self.preferences = preferences
-    }
+    init() {}
 
     func open(urlString: String) {
         assert(rootViewController != nil)

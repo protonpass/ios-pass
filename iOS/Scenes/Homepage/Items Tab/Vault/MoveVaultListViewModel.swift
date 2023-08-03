@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Factory
 
 protocol MoveVaultListViewModelDelegate: AnyObject {
     func moveVaultListViewModelWantsToUpgrade()
@@ -30,6 +31,9 @@ protocol MoveVaultListViewModelDelegate: AnyObject {
 final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let logger = resolve(\SharedToolingContainer.logger)
+
     @Published private(set) var isFreeUser = false
     @Published var selectedVault: VaultListUiModel
 
@@ -38,21 +42,18 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     let allVaults: [VaultListUiModel]
     let currentVault: VaultListUiModel
 
-    init(allVaults: [VaultListUiModel],
-         currentVault: VaultListUiModel,
-         upgradeChecker: UpgradeCheckerProtocol,
-         logManager: LogManagerProtocol) {
+    init(allVaults: [VaultListUiModel], currentVault: VaultListUiModel) {
         self.allVaults = allVaults
         self.currentVault = currentVault
         selectedVault = currentVault
 
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
+                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
-                let logger = Logger(manager: logManager)
-                logger.error(error)
-                delegate?.moveVaultListViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.moveVaultListViewModelDidEncounter(error: error)
             }
         }
     }

@@ -51,9 +51,7 @@ struct LogInDetailView: View {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
-                        ItemDetailTitleView(itemContent: viewModel.itemContent,
-                                            vault: viewModel.vault,
-                                            favIconRepository: viewModel.favIconRepository)
+                        ItemDetailTitleView(itemContent: viewModel.itemContent, vault: viewModel.vault)
                             .padding(.bottom, 40)
 
                         usernamePassword2FaSection
@@ -65,20 +63,15 @@ struct LogInDetailView: View {
 
                         if !viewModel.itemContent.note.isEmpty {
                             NoteDetailSection(itemContent: viewModel.itemContent,
-                                              vault: viewModel.vault,
-                                              theme: viewModel.theme,
-                                              favIconRepository: viewModel.favIconRepository)
+                                              vault: viewModel.vault)
                                 .padding(.top, 8)
                         }
 
                         CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                             uiModels: viewModel.customFieldUiModels,
                                             isFreeUser: viewModel.isFreeUser,
-                                            logManager: viewModel.logManager,
-                                            onSelectTotpToken: { token in
-                                                viewModel.copyToClipboard(text: token,
-                                                                          message: "Two Factor Authentication code copied") // swiftlint:disable:this line_length
-                                            },
+                                            onSelectHiddenText: copyHiddenText,
+                                            onSelectTotpToken: copyTOTPToken,
                                             onUpgrade: viewModel.upgrade)
 
                         ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
@@ -353,5 +346,16 @@ struct LogInDetailView: View {
         .background(Color(uiColor: PassColor.backgroundMedium))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.showAliasDetail)
+    }
+}
+
+private extension LogInDetailView {
+    func copyTOTPToken(_ token: String) {
+        viewModel.copyToClipboard(text: token,
+                                  message: "Two Factor Authentication code copied")
+    }
+
+    func copyHiddenText(_ text: String) {
+        viewModel.copyToClipboard(text: text, message: "Hidden text copied")
     }
 }

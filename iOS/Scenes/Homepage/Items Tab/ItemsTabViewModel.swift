@@ -21,6 +21,8 @@
 import Client
 import Combine
 import Core
+import Entities
+import Factory
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
@@ -28,7 +30,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToHideSpinner()
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
-    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager)
+    func itemsTabViewModelWantsToPresentVaultList()
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsToShowTrialDetail()
@@ -43,48 +45,29 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var banners: [InfoBanner] = []
+    @Published private(set) var invites: [UserInvite] = []
 
-    let favIconRepository: FavIconRepositoryProtocol
-    let itemContextMenuHandler: ItemContextMenuHandler
-    let itemRepository: ItemRepositoryProtocol
-    let credentialManager: CredentialManagerProtocol
-    let passPlanRepository: PassPlanRepositoryProtocol
-    let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    let logger: Logger
-    let logManager: LogManagerProtocol
-    let preferences: Preferences
-    let vaultsManager: VaultsManager
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
+    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
+
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemsTabViewModelDelegate?
-
+    private var inviteRefreshTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-    let syncEventLoop: SyncEventLoop
+    let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
-    init(favIconRepository: FavIconRepositoryProtocol,
-         itemContextMenuHandler: ItemContextMenuHandler,
-         itemRepository: ItemRepositoryProtocol,
-         credentialManager: CredentialManagerProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManagerProtocol,
-         preferences: Preferences,
-         syncEventLoop: SyncEventLoop,
-         vaultsManager: VaultsManager) {
-        self.favIconRepository = favIconRepository
-        self.itemContextMenuHandler = itemContextMenuHandler
-        self.itemRepository = itemRepository
-        self.credentialManager = credentialManager
-        self.passPlanRepository = passPlanRepository
-        self.featureFlagsRepository = featureFlagsRepository
-        self.logManager = logManager
-        logger = .init(manager: logManager)
-        self.preferences = preferences
-        self.syncEventLoop = syncEventLoop
-        self.vaultsManager = vaultsManager
-        finalizeInitialization()
+    init() {
+        setUp()
         refreshBanners()
     }
 }
@@ -92,8 +75,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
-    func finalizeInitialization() {
+    func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
+        getPendingUserInvitations()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] invites in
+                self?.invites = invites
+            }
+            .store(in: &cancellables)
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
@@ -104,16 +94,17 @@ private extension ItemsTabViewModel {
     }
 
     func refreshBanners() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 var banners: [InfoBanner] = []
                 for banner in InfoBanner.allCases {
-                    var dismissed = preferences.dismissedBannerIds.contains { $0 == banner.id }
+                    var dismissed = self.preferences.dismissedBannerIds.contains { $0 == banner.id }
 
                     switch banner {
                     case .trial:
                         // If not in trial, consider dismissed
-                        let plan = try await passPlanRepository.getPlan()
+                        let plan = try await self.passPlanRepository.getPlan()
                         switch plan.planType {
                         case .trial:
                             break
@@ -139,8 +130,8 @@ private extension ItemsTabViewModel {
 
                 self.banners = banners
             } catch {
-                logger.error(error)
-                delegate?.itemsTabViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
     }
@@ -176,7 +167,7 @@ extension ItemsTabViewModel {
     func presentVaultList() {
         switch vaultsManager.state {
         case .loaded:
-            delegate?.itemsTabViewModelWantsToPresentVaultList(vaultsManager: vaultsManager)
+            delegate?.itemsTabViewModelWantsToPresentVaultList()
         default:
             logger.error("Can not present vault list. Vaults are not loaded.")
         }
@@ -188,16 +179,21 @@ extension ItemsTabViewModel {
     }
 
     func viewDetail(of item: ItemUiModel) {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
-                                                                             itemId: item.itemId) {
-                    delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
+                if let itemContent = try await self.itemRepository.getItemContent(shareId: item.shareId,
+                                                                                  itemId: item.itemId) {
+                    self.delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                delegate?.itemsTabViewModelDidEncounter(error: error)
+                self.delegate?.itemsTabViewModelDidEncounter(error: error)
             }
         }
+    }
+
+    func showFilterOptions() {
+        router.presentSheet(for: .filterItems)
     }
 }
 

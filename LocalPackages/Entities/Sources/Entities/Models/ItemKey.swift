@@ -20,8 +20,30 @@
 
 import Foundation
 
-public struct ItemKey: Codable {
+public struct ItemKey: Codable, Equatable, Hashable, Sendable {
     /// Encrypted key encoded in base64
     public let key: String
     public let keyRotation: Int64
+
+    public init(key: String, keyRotation: Int64) {
+        self.key = key
+        self.keyRotation = keyRotation
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case key = "Key"
+        case keyRotation = "KeyRotation"
+    }
+
+    // custom decoder
+    public init(from decoder: Decoder) throws {
+        // keys that work with `JSONDecoder.KeyDecodingStrategy.decapitaliseFirstLetter`
+        enum DecodingKeys: String, CodingKey {
+            case key
+            case keyRotation
+        }
+        let container = try decoder.container(keyedBy: DecodingKeys.self)
+        key = try container.decode(String.self, forKey: .key)
+        keyRotation = try container.decode(Int64.self, forKey: .keyRotation)
+    }
 }

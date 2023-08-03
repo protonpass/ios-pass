@@ -18,10 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import CoreData
+import CryptoKit
 import Factory
 import LocalAuthentication
 import ProtonCore_Keymaker
+import ProtonCore_Login
+import ProtonCore_Services
 
 /// Contain tools shared between main iOS app and extensions
 final class SharedToolingContainer: SharedContainer, AutoRegistering {
@@ -58,9 +63,6 @@ extension SharedToolingContainer {
             .unique
     }
 
-    /// Should be made private once transitionned to `Factory`
-    /// All objects that want to log should create and hold a new instance of `Logger` with
-    /// `resolve(\SharedToolingContainer.logger)`
     var logManager: Factory<LogManagerProtocol> {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
@@ -83,8 +85,10 @@ extension SharedToolingContainer {
 // MARK: Data tools
 
 extension SharedToolingContainer {
-    var appData: Factory<AppData> {
-        self { AppData() }
+    var module: Factory<PassModule> {
+        self { .hostApp }
+            .onArg(PassModule.autoFillExtension) { .autoFillExtension }
+            .onArg(PassModule.keyboardExtension) { .keyboardExtension }
     }
 
     var appVersion: Factory<String> {
@@ -104,6 +108,14 @@ extension SharedToolingContainer {
 extension SharedToolingContainer {
     var preferences: Factory<Preferences> {
         self { Preferences() }
+    }
+
+    var theme: Factory<Theme> {
+        self { self.preferences().theme }
+    }
+
+    var currentDateProvider: Factory<CurrentDateProviderProtocol> {
+        self { CurrentDateProvider() }
     }
 }
 

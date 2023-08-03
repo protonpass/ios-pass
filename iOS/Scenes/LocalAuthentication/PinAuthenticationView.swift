@@ -28,6 +28,7 @@ struct PinAuthenticationView: View {
     @FocusState private var isFocused
     @State private var pinCode = ""
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let module = resolve(\SharedToolingContainer.module)
 
     init(viewModel: LocalAuthenticationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -46,7 +47,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            SecureField("", text: $pinCode)
+            SecureField("PIN code", text: $pinCode)
                 .labelsHidden()
                 .foregroundColor(PassColor.textNorm.toColor)
                 .font(.title.bold())
@@ -89,7 +90,9 @@ struct PinAuthenticationView: View {
             pinCode = ""
         }
         .onAppear {
-            if #available(iOS 16, *) {
+            // Delay keyboard appearance when in extension context because
+            // it takes longer for the view to be rendered
+            if module == .hostApp {
                 isFocused = true
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {

@@ -18,24 +18,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import Combine
 import Core
 import Entities
 import Foundation
 import ProtonCore_Login
 
-public protocol InviteRepositoryProtocol {
+public protocol InviteRepositoryProtocol: Sendable {
+    var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
+
     // MARK: - Invites
 
     func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool
+    func rejectInvite(with inviteToken: String) async throws -> Bool
+    func refreshInvites() async
+    func removeCachedInvite(containing inviteToken: String) async
 }
 
-public final class InviteRepository: InviteRepositoryProtocol {
+public actor InviteRepository: InviteRepositoryProtocol {
     public let remoteInviteDatasource: RemoteInviteDatasourceProtocol
     public let logger: Logger
+    public nonisolated let currentPendingInvites: CurrentValueSubject<[UserInvite], Never> = .init([])
+    private var refreshInviteTask: Task<Void, Never>?
 
     public init(remoteInviteDatasource: RemoteInviteDatasourceProtocol,
-                logManager: LogManager) {
+                logManager: LogManagerProtocol) {
         self.remoteInviteDatasource = remoteInviteDatasource
         logger = .init(manager: logManager)
     }
@@ -51,22 +59,55 @@ public extension InviteRepository {
             logger.trace("Got \(invites.count) pending invites")
             return invites
         } catch {
-            logger.debug("Failed to get pending invites for user. \(String(describing: error))")
+            logger.error(message: "Failed to get pending invites for user.", error: error)
             throw error
         }
     }
 
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool {
         logger.trace("Accepting invite \(inviteToken)")
-        do {
-            let request = AcceptInviteRequest(keys: keys)
-            let acceptStatus = try await remoteInviteDatasource.acceptInvite(inviteToken: inviteToken,
-                                                                             request: request)
-            logger.trace("Invite acceptance status \(acceptStatus)")
-            return acceptStatus
-        } catch {
-            logger.debug("Failed to accept invite \(inviteToken). \(String(describing: error))")
-            throw error
+        let request = AcceptInviteRequest(keys: keys)
+        let acceptStatus = try await remoteInviteDatasource.acceptInvite(inviteToken: inviteToken,
+                                                                         request: request)
+        logger.trace("Invite acceptance status \(acceptStatus)")
+        return acceptStatus
+    }
+
+    func rejectInvite(with inviteToken: String) async throws -> Bool {
+        logger.trace("Reject invite \(inviteToken)")
+        let rejectedStatus = try await remoteInviteDatasource.rejectInvite(inviteToken: inviteToken)
+        logger.trace("Invite rejection status \(rejectedStatus)")
+        return rejectedStatus
+    }
+
+    func refreshInvites() async {
+        refreshInviteTask?.cancel()
+        refreshInviteTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            self.logger.trace("Refreshing all user invitations")
+            do {
+                if Task.isCancelled {
+                    return
+                }
+                let invites = try await self.getPendingInvitesForUser()
+                if Task.isCancelled {
+                    return
+                }
+                if invites != self.currentPendingInvites.value {
+                    self.currentPendingInvites.send(invites)
+                }
+                self.logger.trace("Invites refreshed with \(invites)")
+            } catch {
+                self.logger.error(message: "Could not refresh all the user's invitations", error: error)
+            }
         }
+    }
+
+    func removeCachedInvite(containing inviteToken: String) async {
+        logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
+        let newInvites = currentPendingInvites.value.filter { $0.inviteToken != inviteToken }
+        currentPendingInvites.send(newInvites)
     }
 }
