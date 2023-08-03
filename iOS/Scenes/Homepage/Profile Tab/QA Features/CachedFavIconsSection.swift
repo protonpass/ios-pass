@@ -19,19 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Factory
 import SwiftUI
 import UIComponents
 
 struct CachedFavIconsSection: View {
-    let favIconRepository: FavIconRepositoryProtocol
-
     var body: some View {
-        NavigationLink(destination: {
-            let viewModel = CachedFavIconsViewModel(favIconRepository: favIconRepository)
-            CachedFavIconsView(viewModel: viewModel)
-        }, label: {
-            Text("Cached fav icons")
-        })
+        NavigationLink(destination: { CachedFavIconsView() },
+                       label: { Text("Cached fav icons") })
     }
 }
 
@@ -39,17 +34,16 @@ final class CachedFavIconsViewModel: ObservableObject {
     @Published private(set) var icons = [FavIcon]()
     @Published private(set) var error: Error?
 
-    let favIconRepository: FavIconRepositoryProtocol
+    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
 
-    init(favIconRepository: FavIconRepositoryProtocol) {
-        self.favIconRepository = favIconRepository
-    }
+    init() {}
 
     func loadIcons() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 self.error = nil
-                self.icons = try favIconRepository.getAllCachedIcons()
+                self.icons = try self.favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }
@@ -57,11 +51,12 @@ final class CachedFavIconsViewModel: ObservableObject {
     }
 
     func emptyCache() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 self.error = nil
-                try favIconRepository.emptyCache()
-                self.icons = try favIconRepository.getAllCachedIcons()
+                try self.favIconRepository.emptyCache()
+                self.icons = try self.favIconRepository.getAllCachedIcons()
             } catch {
                 self.error = error
             }
@@ -70,7 +65,7 @@ final class CachedFavIconsViewModel: ObservableObject {
 }
 
 struct CachedFavIconsView: View {
-    @StateObject var viewModel: CachedFavIconsViewModel
+    @StateObject private var viewModel = CachedFavIconsViewModel()
     var body: some View {
         Form {
             if let error = viewModel.error {

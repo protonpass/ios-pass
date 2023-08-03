@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 
 protocol SettingsViewModelDelegate: AnyObject {
@@ -34,7 +35,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToViewHostAppLogs()
     func settingsViewModelWantsToViewAutoFillExtensionLogs()
     func settingsViewModelWantsToClearLogs()
-    func settingsViewModelDidDisableFavIcons()
     func settingsViewModelDidFinishFullSync()
     func settingsViewModelDidEncounter(error: Error)
 }
@@ -43,10 +43,11 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     let isShownAsSheet: Bool
-    private let logger: Logger
-    private let preferences: Preferences
-    private let syncEventLoop: SyncEventLoopActionProtocol
-    let vaultsManager: VaultsManager
+    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
+    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     let supportedBrowsers: [Browser]
     @Published private(set) var selectedBrowser: Browser
@@ -56,7 +57,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         didSet {
             preferences.displayFavIcons = displayFavIcons
             if !displayFavIcons {
-                delegate?.settingsViewModelDidDisableFavIcons()
+                emptyFavIconCache()
             }
         }
     }
@@ -66,15 +67,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SettingsViewModelDelegate?
     private var cancellables = Set<AnyCancellable>()
 
-    init(isShownAsSheet: Bool,
-         logManager: LogManagerProtocol,
-         preferences: Preferences,
-         vaultsManager: VaultsManager,
-         syncEventLoop: SyncEventLoopActionProtocol) {
+    init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
-        logger = .init(manager: logManager)
-        self.preferences = preferences
-        self.syncEventLoop = syncEventLoop
 
         let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
             guard let appScheme = browser.appScheme,
@@ -101,7 +95,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         selectedClipboardExpiration = preferences.clipboardExpiration
         displayFavIcons = preferences.displayFavIcons
         shareClipboard = preferences.shareClipboard
-        self.vaultsManager = vaultsManager
 
         preferences
             .objectWillChange
@@ -170,6 +163,23 @@ extension SettingsViewModel {
             } catch {
                 self?.logger.error(error)
                 self?.delegate?.settingsViewModelDidEncounter(error: error)
+            }
+        }
+    }
+}
+
+// MARK: - Private APIs
+
+private extension SettingsViewModel {
+    func emptyFavIconCache() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                self.logger.trace("Fav icons are disabled. Removing all cached fav icons")
+                try self.favIconRepository.emptyCache()
+                self.logger.info("Removed all cached fav icons")
+            } catch {
+                self.logger.error(error)
             }
         }
     }

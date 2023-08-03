@@ -39,10 +39,7 @@ import UIKit
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
-    private lazy var logger: Logger = .init(manager: logManager)
     private var container: NSPersistentContainer
-    private lazy var credentialManager: CredentialManagerProtocol = CredentialManager(logManager: logManager)
-
     private var isUITest: Bool
 
     private var homepageCoordinator: HomepageCoordinator?
@@ -54,9 +51,13 @@ final class AppCoordinator {
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
-    private let appData = resolve(\SharedToolingContainer.appData)
+    private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+
+    // Use cases
+    private let checkAccessToPass = resolve(\UseCasesContainer.checkAccessToPass)
 
     init(window: UIWindow) {
         self.window = window
@@ -138,14 +139,15 @@ final class AppCoordinator {
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         homepageCoordinator = nil
-        animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [unowned self] in
+        animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
+            guard let self else { return }
             switch reason {
             case .expiredRefreshToken:
-                alertRefreshTokenExpired()
+                self.alertRefreshTokenExpired()
             case .failedBiometricAuthentication:
-                alertFailedBiometricAuthentication()
+                self.alertFailedBiometricAuthentication()
             case .sessionInvalidated:
-                alertSessionInvalidated()
+                self.alertSessionInvalidated()
             default:
                 break
             }
@@ -154,18 +156,18 @@ final class AppCoordinator {
 
     private func showHomeScene(userData: UserData, manualLogIn: Bool) {
         do {
-            let apiService = apiManager.apiService
             let symmetricKey = try appData.getSymmetricKey()
-            let homepageCoordinator = HomepageCoordinator(apiService: apiService,
-                                                          container: container,
-                                                          credentialManager: credentialManager,
-                                                          logManager: logManager,
-                                                          manualLogIn: manualLogIn,
-                                                          preferences: preferences,
-                                                          symmetricKey: symmetricKey,
-                                                          userData: userData,
-                                                          appData: appData,
-                                                          mainKeyProvider: mainKeyProvider)
+
+            SharedDataContainer.shared.reset()
+            SharedDataContainer.shared.register(container: container,
+                                                symmetricKey: symmetricKey,
+                                                userData: userData,
+                                                manualLogIn: manualLogIn)
+            SharedToolingContainer.shared.resetCache()
+            SharedRepositoryContainer.shared.reset()
+            SharedServiceContainer.shared.reset()
+
+            let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
             self.homepageCoordinator = homepageCoordinator
             welcomeCoordinator = nil
@@ -196,19 +198,20 @@ final class AppCoordinator {
             mainKeyProvider.wipeMainKey()
         }
         preferences.reset(isTests: isUITest)
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running
             do {
-                try await credentialManager.removeAllCredentials()
-                logger.info("Removed all credentials")
+                try await self.credentialManager.removeAllCredentials()
+                self.logger.info("Removed all credentials")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
 
             do {
                 // Delete existing persistent stores
-                let storeContainer = container.persistentStoreCoordinator
+                let storeContainer = self.container.persistentStoreCoordinator
                 for store in storeContainer.persistentStores {
                     if let url = store.url {
                         try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
@@ -216,25 +219,10 @@ final class AppCoordinator {
                 }
 
                 // Re-create persistent container
-                container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-                logger.info("Nuked local data")
+                self.container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
+                self.logger.info("Nuked local data")
             } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    /// Inform the BE that the users had logged in into Pass
-    /// so that welcome or instruction emails can be sent
-    private func checkAccessToPass() {
-        Task { [weak self] in
-            do {
-                self?.logger.trace("Checking access to Pass")
-                let endpoint = CheckAccessAndPlanEndpoint()
-                _ = try await self?.apiManager.apiService.exec(endpoint: endpoint)
-                self?.logger.info("Checked access to Pass")
-            } catch {
-                self?.logger.error(error)
+                self.logger.error(error)
             }
         }
     }

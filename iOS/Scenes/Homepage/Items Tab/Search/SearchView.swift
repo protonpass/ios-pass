@@ -52,6 +52,7 @@ struct SearchView: View {
                 viewModel.refreshResults()
             }
         }
+        .syncLayoutOnDisappear()
     }
 
     private var content: some View {
@@ -69,7 +70,6 @@ struct SearchView: View {
 
             case let .history(history):
                 SearchRecentResultsView(results: history,
-                                        favIconRepository: viewModel.favIconRepository,
                                         onSelect: { viewModel.viewDetail(of: $0) },
                                         onRemove: { viewModel.removeFromHistory($0) },
                                         onClearResults: viewModel.removeAllSearchHistory)
@@ -89,7 +89,6 @@ struct SearchView: View {
             case let .results(itemCount, results):
                 SearchResultsView(selectedType: $viewModel.selectedType,
                                   selectedSortType: $viewModel.selectedSortType,
-                                  favIconRepository: viewModel.favIconRepository,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                   itemCount: itemCount,
                                   results: results,

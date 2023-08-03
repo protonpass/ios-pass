@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import Factory
 import SwiftUI
 
 enum SearchViewState {
@@ -57,14 +58,13 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
 
     // Injected properties
-    private let itemRepository: ItemRepositoryProtocol
-    private let logger: Logger
-    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
-    private let shareRepository: ShareRepositoryProtocol
-    private let symmetricKey: SymmetricKey
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
     private(set) var vaultSelection: VaultSelection
-    let favIconRepository: FavIconRepositoryProtocol
-    let itemContextMenuHandler: ItemContextMenuHandler
+    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     // Self-intialized properties
     private var lastSearchQuery = ""
@@ -80,26 +80,9 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
 
-    init(favIconRepository: FavIconRepositoryProtocol,
-         itemContextMenuHandler: ItemContextMenuHandler,
-         itemRepository: ItemRepositoryProtocol,
-         logManager: LogManagerProtocol,
-         searchEntryDatasource: LocalSearchEntryDatasourceProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         vaultSelection: VaultSelection) {
-        self.favIconRepository = favIconRepository
-        self.itemContextMenuHandler = itemContextMenuHandler
-        self.itemRepository = itemRepository
-        logger = .init(manager: logManager)
-        self.searchEntryDatasource = searchEntryDatasource
-        self.shareRepository = shareRepository
-        self.symmetricKey = symmetricKey
+    init(vaultSelection: VaultSelection) {
         self.vaultSelection = vaultSelection
-
         setup()
-        checkFeatureFlags(with: featureFlagsRepository)
     }
 }
 
@@ -318,19 +301,6 @@ private extension SearchViewModel {
                 self?.filterAndSortResults()
             }
             .store(in: &cancellables)
-    }
-
-    func checkFeatureFlags(with featureFlagsRepository: FeatureFlagsRepositoryProtocol) {
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                let flags = try await featureFlagsRepository.getFlags()
-            } catch {
-                self.logger.error(error)
-            }
-        }
     }
 }
 

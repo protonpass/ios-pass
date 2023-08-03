@@ -21,6 +21,7 @@
 import Client
 import Core
 import Entities
+import Factory
 
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
@@ -31,27 +32,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     @Published private(set) var mailboxes: [Mailbox]?
     @Published private(set) var error: Error?
 
-    private let aliasRepository: AliasRepositoryProtocol
-
-    init(isShownAsSheet: Bool,
-         itemContent: ItemContent,
-         favIconRepository: FavIconRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         aliasRepository: AliasRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?,
-         logManager: LogManagerProtocol,
-         theme: Theme) {
-        self.aliasRepository = aliasRepository
-        super.init(isShownAsSheet: isShownAsSheet,
-                   itemContent: itemContent,
-                   favIconRepository: favIconRepository,
-                   itemRepository: itemRepository,
-                   upgradeChecker: upgradeChecker,
-                   vault: vault,
-                   logManager: logManager,
-                   theme: theme)
-    }
+    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     override func bindValues() {
         aliasEmail = itemContent.item.aliasEmail ?? ""
@@ -64,16 +45,17 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
     }
 
     func getAlias() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 let alias =
-                    try await aliasRepository.getAliasDetailsTask(shareId: itemContent.shareId,
-                                                                  itemId: itemContent.item.itemID).value
-                aliasEmail = alias.email
-                mailboxes = alias.mailboxes
-                logger.info("Get alias detail successfully \(itemContent.debugInformation)")
+                    try await self.aliasRepository.getAliasDetailsTask(shareId: self.itemContent.shareId,
+                                                                       itemId: self.itemContent.item.itemID).value
+                self.aliasEmail = alias.email
+                self.mailboxes = alias.mailboxes
+                self.logger.info("Get alias detail successfully \(self.itemContent.debugInformation)")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
                 self.error = error
             }
         }
