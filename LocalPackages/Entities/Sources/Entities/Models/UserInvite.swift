@@ -22,29 +22,56 @@ import Foundation
 
 // MARK: - User Invite
 
-public struct UserInvite: Decodable {
+public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable {
     public let inviteToken: String
     public let remindersSent: Int
     public let targetType: Int
     public let targetID, inviterEmail, invitedEmail: String
     /// Share keys encrypted for the address key of the invitee and signed with the user keys of the inviter
+    /// These are invite keys and not item keys these are the intermediate step
     public let keys: [ItemKey]
     public let vaultData: VaultData?
     public let createTime: Int
 
-    enum CodingKeys: String, CodingKey {
-        case inviteToken = "InviteToken"
-        case remindersSent = "RemindersSent"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case inviterEmail = "InviterEmail"
-        case invitedEmail = "InvitedEmail"
-        case keys = "Keys"
-        case vaultData = "VaultData"
-        case createTime = "CreateTime"
+    public var id: String {
+        inviteToken
     }
 
     public var inviteType: TargetType {
         .init(rawValue: Int64(targetType)) ?? .unknown
+    }
+
+    public init(inviteToken: String,
+                remindersSent: Int,
+                targetType: Int,
+                targetID: String,
+                inviterEmail: String,
+                invitedEmail: String,
+                keys: [ItemKey],
+                vaultData: VaultData?,
+                createTime: Int) {
+        self.inviteToken = inviteToken
+        self.remindersSent = remindersSent
+        self.targetType = targetType
+        self.targetID = targetID
+        self.inviterEmail = inviterEmail
+        self.invitedEmail = invitedEmail
+        self.keys = keys
+        self.vaultData = vaultData
+        self.createTime = createTime
+    }
+}
+
+public extension UserInvite {
+    static var mocked: UserInvite {
+        UserInvite(inviteToken: "12345789",
+                   remindersSent: 1,
+                   targetType: 1,
+                   targetID: "id",
+                   inviterEmail: "inviterEmail@test.com",
+                   invitedEmail: "invitedEmail@test.com",
+                   keys: [],
+                   vaultData: VaultData.mocked,
+                   createTime: 1)
     }
 }

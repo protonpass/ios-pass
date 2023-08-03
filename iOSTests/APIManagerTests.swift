@@ -85,6 +85,7 @@ final class APIManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         SharedToolingContainer.shared.setUpAPiMocks()
+        SharedDataContainer.shared.appData.reset()
         keychain = SharedToolingContainer.shared.keychain() as? KeychainMock
         mainKeyProvider = SharedToolingContainer.shared.mainKeyProvider() as? MainKeyProviderMock
     }

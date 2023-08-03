@@ -23,20 +23,19 @@ import CoreData
 import Entities
 import ProtonCore_Services
 
+// sourcery: AutoMockable
 public protocol PublicKeyRepositoryProtocol {
-    var logger: Logger { get }
-
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }
 
 public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
-    public let localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol
-    public let remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol
-    public let logger: Logger
+    private let localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol
+    private let remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol
+    private let logger: Logger
 
-    init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
-         remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,
-         logManager: LogManagerProtocol) {
+    public init(localPublicKeyDatasource: LocalPublicKeyDatasourceProtocol,
+                remotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol,
+                logManager: LogManagerProtocol) {
         self.localPublicKeyDatasource = localPublicKeyDatasource
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
         logger = .init(manager: logManager)

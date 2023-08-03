@@ -24,11 +24,11 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import Factory
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Login
-import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import StoreKit
@@ -41,162 +41,59 @@ protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorDidFailLocallyAuthenticating()
 }
 
-// swiftlint:disable line_length
 final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let aliasRepository: AliasRepositoryProtocol
-    private let apiService: APIService
-    private let clipboardManager: ClipboardManager
-    private let credentialManager: CredentialManagerProtocol
-    private let eventLoop: SyncEventLoop
-    private let favIconRepository: FavIconRepositoryProtocol
-    private let itemContextMenuHandler: ItemContextMenuHandler
-    private let itemRepository: ItemRepositoryProtocol
-    private let logger: Logger
-    private let logManager: LogManagerProtocol
-    private let manualLogIn: Bool
-    private let paymentsManager: PaymentsManager
-    private let preferences: Preferences
-    private let searchEntryDatasource: LocalSearchEntryDatasourceProtocol
-    private let shareRepository: ShareRepositoryProtocol
-    private let symmetricKey: SymmetricKey
-    private let telemetryEventRepository: TelemetryEventRepositoryProtocol
-    private let urlOpener: UrlOpener
-    private let userData: UserData
-    private let passPlanRepository: PassPlanRepositoryProtocol
-    private let upgradeChecker: UpgradeCheckerProtocol
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    private let vaultsManager: VaultsManager
+    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
+    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+    private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let paymentsManager = resolve(\ServiceContainer.paymentManager)
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
+    private let urlOpener = UrlOpener()
+    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
 
     // Lazily initialized properties
     private lazy var bannerManager: BannerManager = .init(container: rootViewController)
 
+    // Use cases
+    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
-    private var paymentsUI: PaymentsUI?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var wordProvider: WordProviderProtocol?
     private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
+    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
 
-    init(apiService: APIService,
-         container: NSPersistentContainer,
-         credentialManager: CredentialManagerProtocol,
-         logManager: LogManagerProtocol,
-         manualLogIn: Bool,
-         preferences: Preferences,
-         symmetricKey: SymmetricKey,
-         userData: UserData,
-         appData: AppData,
-         mainKeyProvider: MainKeyProvider) {
-        let itemRepository = ItemRepository(userData: userData,
-                                            symmetricKey: symmetricKey,
-                                            container: container,
-                                            apiService: apiService,
-                                            logManager: logManager)
-        let remoteAliasDatasource = RemoteAliasDatasource(apiService: apiService)
-        let remoteSyncEventsDatasource = RemoteSyncEventsDatasource(apiService: apiService)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    symmetricKey: symmetricKey,
-                                                    userData: userData)
-        let shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                            apiService: apiService,
-                                                            logManager: logManager)
-        let shareRepository = ShareRepository(symmetricKey: symmetricKey,
-                                              userData: userData,
-                                              container: container,
-                                              apiService: apiService,
-                                              logManager: logManager)
-
-        let passPlanRepository =
-            PassPlanRepository(localPassPlanDatasource: LocalPassPlanDatasource(container: container),
-                               remotePassPlanDatasource: RemotePassPlanDatasource(apiService: apiService),
-                               userId: userData.user.ID,
-                               logManager: logManager)
-
-        let vaultsManager = VaultsManager(itemRepository: itemRepository,
-                                          manualLogIn: manualLogIn,
-                                          logManager: logManager,
-                                          shareRepository: shareRepository,
-                                          symmetricKey: symmetricKey,
-                                          preferences: preferences)
-
-        aliasRepository = AliasRepository(remoteAliasDatasouce: remoteAliasDatasource)
-        self.apiService = apiService
-        clipboardManager = .init(preferences: preferences)
-        self.credentialManager = credentialManager
-        eventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                          userId: userData.user.ID,
-                          shareRepository: shareRepository,
-                          shareEventIDRepository: shareEventIDRepository,
-                          remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                          itemRepository: itemRepository,
-                          shareKeyRepository: shareKeyRepository,
-                          logManager: logManager)
-        favIconRepository = FavIconRepository(apiService: apiService,
-                                              containerUrl: URL.favIconsContainerURL(),
-                                              settings: preferences,
-                                              symmetricKey: symmetricKey)
-        itemContextMenuHandler = .init(clipboardManager: clipboardManager,
-                                       itemRepository: itemRepository,
-                                       logManager: logManager)
-        self.itemRepository = itemRepository
-        logger = .init(manager: logManager)
-        self.logManager = logManager
-        self.manualLogIn = manualLogIn
-        paymentsManager = PaymentsManager(apiService: apiService,
-                                          userDataProvider: appData,
-                                          mainKeyProvider: mainKeyProvider,
-                                          logger: logger,
-                                          preferences: preferences,
-                                          storage: kSharedUserDefaults)
-        self.preferences = preferences
-        searchEntryDatasource = LocalSearchEntryDatasource(container: container)
-        self.shareRepository = shareRepository
-        self.symmetricKey = symmetricKey
-        telemetryEventRepository =
-            TelemetryEventRepository(localTelemetryEventDatasource: LocalTelemetryEventDatasource(container: container),
-                                     remoteTelemetryEventDatasource: RemoteTelemetryEventDatasource(apiService: apiService),
-
-                                     remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: apiService),
-                                     passPlanRepository: passPlanRepository,
-                                     logManager: logManager,
-                                     scheduler: TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-                                                                   thresholdProvider: preferences),
-                                     userId: userData.user.ID)
-        urlOpener = .init(preferences: preferences)
-        self.userData = userData
-        self.passPlanRepository = passPlanRepository
-        upgradeChecker = UpgradeChecker(passPlanRepository: passPlanRepository,
-                                        counter: vaultsManager,
-                                        totpChecker: itemRepository)
-        featureFlagsRepository =
-            FeatureFlagsRepository(localFeatureFlagsDatasource: LocalFeatureFlagsDatasource(container: container),
-                                   remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasource(apiService: apiService),
-                                   userId: userData.user.ID,
-                                   logManager: logManager)
-        self.vaultsManager = vaultsManager
+    override init() {
         super.init()
+        setUpRouting()
         finalizeInitialization()
-        self.vaultsManager.refresh()
+        vaultsManager.refresh()
+        refreshInvitations()
         start()
         eventLoop.start()
         refreshPlan()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
-    }
-
-    override func coordinatorDidDismiss() {
-        NotificationCenter.default.post(name: .forceRefreshItemsTab, object: nil)
     }
 }
 
@@ -223,12 +120,22 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
 
         NotificationCenter.default
+            .publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.eventLoop.stop()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
                 self.logger.info("App goes back to foreground")
                 self.refresh()
+                self.refreshInvitations()
                 self.sendAllEventsIfApplicable()
+                self.eventLoop.start()
                 self.eventLoop.forceSync()
                 self.updateCredentials(forceRemoval: false)
                 self.refreshPlan()
@@ -237,39 +144,19 @@ private extension HomepageCoordinator {
     }
 
     func start() {
-        let itemsTabViewModel = ItemsTabViewModel(favIconRepository: favIconRepository,
-                                                  itemContextMenuHandler: itemContextMenuHandler,
-                                                  itemRepository: itemRepository,
-                                                  credentialManager: credentialManager,
-                                                  passPlanRepository: passPlanRepository,
-                                                  featureFlagsRepository: featureFlagsRepository,
-                                                  logManager: logManager,
-                                                  preferences: preferences,
-                                                  syncEventLoop: eventLoop,
-                                                  vaultsManager: vaultsManager)
+        let itemsTabViewModel = ItemsTabViewModel()
         itemsTabViewModel.delegate = self
 
-        let profileTabViewModel = ProfileTabViewModel(credentialManager: credentialManager,
-                                                      itemRepository: itemRepository,
-                                                      shareRepository: shareRepository,
-                                                      featureFlagsRepository: featureFlagsRepository,
-                                                      passPlanRepository: passPlanRepository,
-                                                      vaultsManager: vaultsManager,
-                                                      notificationService: SharedServiceContainer
-                                                          .shared
-                                                          .notificationService(logManager),
-                                                      childCoordinatorDelegate: self)
+        let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
 
-        let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
-            popTopViewController(animated: true)
+        let placeholderView = ItemDetailPlaceholderView { [weak self] in
+            self?.popTopViewController(animated: true)
         }
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
-                                          passPlanRepository: passPlanRepository,
-                                          logManager: logManager,
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
@@ -293,21 +180,11 @@ private extension HomepageCoordinator {
     }
 
     func refreshPlan() {
-        Task {
+        Task { [weak self] in
             do {
-                try await passPlanRepository.refreshPlan()
+                try await self?.passPlanRepository.refreshPlan()
             } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    func refreshFeatureFlags() {
-        Task {
-            do {
-                try await featureFlagsRepository.refreshFlags()
-            } catch {
-                logger.error(error)
+                self?.logger.error(error)
             }
         }
     }
@@ -327,28 +204,14 @@ private extension HomepageCoordinator {
     }
 
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
-        let coordinator = CreateEditItemCoordinator(aliasRepository: aliasRepository,
-                                                    itemRepository: itemRepository,
-                                                    upgradeChecker: upgradeChecker,
-                                                    logManager: logManager,
-                                                    preferences: preferences,
-                                                    vaultsManager: vaultsManager,
-                                                    userData: userData,
-                                                    createEditItemDelegates: self)
+        let coordinator = CreateEditItemCoordinator(createEditItemDelegates: self)
         coordinator.delegate = self
         createEditItemCoordinator = coordinator
         return coordinator
     }
 
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
-        let coordinator = ItemDetailCoordinator(aliasRepository: aliasRepository,
-                                                itemRepository: itemRepository,
-                                                favIconRepository: favIconRepository,
-                                                upgradeChecker: upgradeChecker,
-                                                logManager: logManager,
-                                                preferences: preferences,
-                                                vaultsManager: vaultsManager,
-                                                itemDetailViewModelDelegate: self)
+        let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
         coordinator.delegate = self
         coordinator.showDetail(for: itemContent, asSheet: asSheet)
         itemDetailCoordinator = coordinator
@@ -366,9 +229,7 @@ private extension HomepageCoordinator {
     }
 
     func presentItemTypeListView() {
-        let viewModel = ItemTypeListViewModel(featureFlagsRepository: featureFlagsRepository,
-                                              upgradeChecker: upgradeChecker,
-                                              logManager: logManager)
+        let viewModel = ItemTypeListViewModel()
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -396,8 +257,6 @@ private extension HomepageCoordinator {
                                      mode: MailboxSelectionViewModel.Mode,
                                      titleMode: MailboxSection.Mode) {
         let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
-                                                  upgradeChecker: upgradeChecker,
-                                                  logManager: logManager,
                                                   mode: mode,
                                                   titleMode: titleMode)
         viewModel.delegate = self
@@ -413,9 +272,7 @@ private extension HomepageCoordinator {
     }
 
     func presentSuffixSelectionView(selection: SuffixSelection) {
-        let viewModel = SuffixSelectionViewModel(suffixSelection: selection,
-                                                 upgradeChecker: upgradeChecker,
-                                                 logManager: logManager)
+        let viewModel = SuffixSelectionViewModel(suffixSelection: selection)
         viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -444,11 +301,7 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
-        let viewModel = CreateEditVaultViewModel(mode: mode,
-                                                 shareRepository: shareRepository,
-                                                 upgradeChecker: upgradeChecker,
-                                                 logManager: logManager,
-                                                 theme: preferences.theme)
+        let viewModel = CreateEditVaultViewModel(mode: mode)
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
@@ -490,42 +343,37 @@ private extension HomepageCoordinator {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        Task {
-            do {
-                try await telemetryEventRepository.addNewEvent(type: type)
-            } catch {
-                logger.error(error)
-            }
-        }
+        addTelemetryEvent(with: telemetryEventRepository, eventType: type)
     }
 
     func sendAllEventsIfApplicable() {
-        Task {
+        Task { [weak self] in
             do {
-                try await telemetryEventRepository.sendAllEventsIfApplicable()
+                try await self?.telemetryEventRepository.sendAllEventsIfApplicable()
             } catch {
-                logger.error(error)
+                self?.logger.error(error)
             }
         }
     }
 
     func updateCredentials(forceRemoval: Bool) {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                try await credentialManager.insertAllCredentials(itemRepository: itemRepository,
-                                                                 shareRepository: shareRepository,
-                                                                 passPlanRepository: passPlanRepository,
-                                                                 forceRemoval: forceRemoval)
-                logger.info("Updated all credentials.")
+                try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
+                                                                      shareRepository: self.shareRepository,
+                                                                      passPlanRepository: self.passPlanRepository,
+                                                                      forceRemoval: forceRemoval)
+                self.logger.info("Updated all credentials.")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
     }
 
     func startUpgradeFlow() {
-        dismissAllViewControllers(animated: true) { [unowned self] in
-            paymentsManager.upgradeSubscription { [weak self] result in
+        dismissAllViewControllers(animated: true) { [weak self] in
+            self?.paymentsManager.upgradeSubscription { [weak self] result in
                 switch result {
                 case let .success(inAppPurchasePlan):
                     if inAppPurchasePlan != nil {
@@ -551,13 +399,77 @@ private extension HomepageCoordinator {
     }
 }
 
+// MARK: - Navigation & Routing
+
+private extension HomepageCoordinator {
+    func setUpRouting() {
+        router
+            .newPresentationDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("plop")
+            }
+            .store(in: &cancellables)
+
+        router
+            .newSheetDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case .sharingFlow:
+                    self.presentSharingFlow()
+                case .manageShareVault:
+                    self.presentManageShareVault()
+                case .filterItems:
+                    self.presentItemFilterOptions()
+                case let .acceptRejectInvite(invite):
+                    self.presentAcceptRejectInvite(with: invite)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func presentSharingFlow() {
+        let userEmailView = UserEmailView()
+        present(userEmailView)
+    }
+
+    func presentManageShareVault() {
+        dismissTopMostViewController { [weak self] in
+            let manageShareVaultView = Text("Manage Share Vault Screen")
+            self?.present(manageShareVaultView)
+        }
+    }
+
+    func presentItemFilterOptions() {
+        let view = ItemTypeFilterOptionsView()
+        let viewController = UIHostingController(rootView: view)
+        let height = ItemTypeFilterOptionsView.rowHeight * CGFloat(ItemTypeFilterOption.allCases.count) + 70
+        viewController.setDetentType(.customAndLarge(height),
+                                     parentViewController: rootViewController)
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+
+    func presentAcceptRejectInvite(with invite: UserInvite) {
+        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
+
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.medium,
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+}
+
 // MARK: - Public APIs
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
-        let onboardingViewModel = OnboardingViewModel(credentialManager: credentialManager,
-                                                      bannerManager: bannerManager)
+        let onboardingViewModel = OnboardingViewModel(bannerManager: bannerManager)
         let onboardingView = OnboardingView(viewModel: onboardingViewModel)
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
@@ -582,8 +494,8 @@ extension HomepageCoordinator: PassPlanRepositoryDelegate {
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
         if !isCollapsed() {
-            let placeholderView = ItemDetailPlaceholderView(theme: preferences.theme) { [unowned self] in
-                popTopViewController(animated: true)
+            let placeholderView = ItemDetailPlaceholderView { [weak self] in
+                self?.popTopViewController(animated: true)
             }
             push(placeholderView)
         }
@@ -683,8 +595,8 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
 
 extension HomepageCoordinator: ItemTypeListViewModelDelegate {
     func itemTypeListViewModelDidSelect(type: ItemType) {
-        dismissTopMostViewController { [unowned self] in
-            presentCreateItemView(for: type)
+        dismissTopMostViewController { [weak self] in
+            self?.presentCreateItemView(for: type)
         }
     }
 
@@ -705,15 +617,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(favIconRepository: favIconRepository,
-                                        itemContextMenuHandler: itemContextMenuHandler,
-                                        itemRepository: itemRepository,
-                                        logManager: logManager,
-                                        searchEntryDatasource: searchEntryDatasource,
-                                        shareRepository: shareRepository,
-                                        featureFlagsRepository: featureFlagsRepository,
-                                        symmetricKey: symmetricKey,
-                                        vaultSelection: vaultSelection)
+        let viewModel = SearchViewModel(vaultSelection: vaultSelection)
         viewModel.delegate = self
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)
@@ -725,20 +629,20 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         presentCreateItemView(for: type.type)
     }
 
-    func itemsTabViewModelWantsToPresentVaultList(vaultsManager: VaultsManager) {
-        let viewModel = EditableVaultListViewModel(vaultsManager: vaultsManager,
-                                                   logManager: logManager)
+    func itemsTabViewModelWantsToPresentVaultList() {
+        let viewModel = EditableVaultListViewModel()
         viewModel.delegate = self
         let view = EditableVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
         // Num of vaults + all items + trash + create vault button
-        let customHeight = 66 * vaultsManager.getVaultCount() + 66 + 66 + 120
+        let rowHeight = 74
+        let customHeight = rowHeight * vaultsManager.getVaultCount() + rowHeight + rowHeight + 120
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -747,25 +651,26 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToShowTrialDetail() {
-        Task { @MainActor in
-            defer { hideLoadingHud() }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.hideLoadingHud() }
             do {
-                showLoadingHud()
+                self.showLoadingHud()
 
-                let plan = try await upgradeChecker.passPlanRepository.getPlan()
+                let plan = try await self.upgradeChecker.passPlanRepository.getPlan()
                 guard let trialEnd = plan.trialEnd else { return }
                 let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
                 let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)
 
-                hideLoadingHud()
+                self.hideLoadingHud()
 
                 let view = TrialDetailView(daysLeft: abs(daysLeft),
-                                           onUpgrade: startUpgradeFlow,
+                                           onUpgrade: { self.startUpgradeFlow() },
                                            onLearnMore: { self.urlOpener.open(urlString: ProtonLink.trialPeriod) })
-                present(view)
+                self.present(view)
             } catch {
-                logger.error(error)
-                bannerManager.displayTopErrorMessage(error)
+                self.logger.error(error)
+                self.bannerManager.displayTopErrorMessage(error)
             }
         }
     }
@@ -828,13 +733,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = AccountViewModel(isShownAsSheet: asSheet,
-                                         apiService: apiService,
-                                         paymentsManager: paymentsManager,
-                                         logManager: logManager,
-                                         theme: preferences.theme,
-                                         username: userData.user.email ?? "",
-                                         passPlanRepository: passPlanRepository)
+        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self
         let view = AccountView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
@@ -842,11 +741,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet,
-                                          logManager: logManager,
-                                          preferences: preferences,
-                                          vaultsManager: vaultsManager,
-                                          syncEventLoop: eventLoop)
+        let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
@@ -900,22 +795,12 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
                 self?.bannerManager.displayBottomSuccessMessage("Report successfully sent")
             }
         }
-        let view = BugReportView(planRepository: passPlanRepository,
-                                 onError: errorHandler,
-                                 onSuccess: successHandler)
+        let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
         present(view)
     }
 
     func profileTabViewModelWantsToQaFeatures() {
-        let viewModel = QAFeaturesViewModel(credentialManager: credentialManager,
-                                            favIconRepository: favIconRepository,
-                                            itemRepository: itemRepository,
-                                            shareRepository: shareRepository,
-                                            telemetryEventRepository: telemetryEventRepository,
-                                            preferences: preferences,
-                                            bannerManager: bannerManager,
-                                            logManager: logManager,
-                                            userData: userData)
+        let viewModel = QAFeaturesViewModel(bannerManager: bannerManager)
         let view = QAFeaturesView(viewModel: viewModel)
         present(view)
     }
@@ -934,12 +819,12 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 
     func accountViewModelWantsToSignOut() {
         eventLoop.stop()
-        try? favIconRepository.emptyCache()
         delegate?.homepageCoordinatorWantsToLogOut()
     }
 
     func accountViewModelWantsToDeleteAccount() {
-        let accountDeletion = AccountDeletionService(api: apiService)
+        let apiManager = resolve(\SharedToolingContainer.apiManager)
+        let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
         accountDeletion.initiateAccountDeletionProcess(over: topMostViewController,
@@ -1021,9 +906,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelWantsToEdit(primaryVault: Vault) {
         let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
-        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults,
-                                                  primaryVault: primaryVault,
-                                                  shareRepository: shareRepository)
+        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults, primaryVault: primaryVault)
         viewModel.delegate = self
         let view = EditPrimaryVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -1051,16 +934,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             await MainActor.run { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage("All logs cleared")
             }
-        }
-    }
-
-    func settingsViewModelDidDisableFavIcons() {
-        do {
-            logger.trace("Fav icons are disabled. Removing all cached fav icons")
-            try favIconRepository.emptyCache()
-            logger.info("Removed all cached fav icons")
-        } catch {
-            logger.error(error)
         }
     }
 
@@ -1097,9 +970,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                                                    delegate: VaultSelectorViewModelDelegate) {
         let vaultContents = vaultsManager.getAllVaultContents()
         let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
-                                               selectedVault: selectedVault,
-                                               upgradeChecker: upgradeChecker,
-                                               logManager: logManager)
+                                               selectedVault: selectedVault)
         viewModel.delegate = delegate
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -1114,7 +985,6 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate) {
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           preferences: preferences,
                                                            delegate: delegate)
         customCoordinator?.start()
     }
@@ -1133,8 +1003,8 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
 
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
         addNewEvent(type: .create(type))
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomInfoMessage(type.creationMessage)
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage(type.creationMessage)
         }
         vaultsManager.refresh()
         homepageTabDelegete?.homepageTabShouldChange(tab: .items)
@@ -1146,8 +1016,8 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         vaultsManager.refresh()
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
-        dismissTopMostViewController { [unowned self] in
-            bannerManager.displayBottomInfoMessage(type.updateMessage)
+        dismissTopMostViewController { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage(type.updateMessage)
         }
     }
 
@@ -1243,8 +1113,8 @@ extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
 
 extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            clipboardManager.copy(text: password, bannerMessage: "Password copied")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.clipboardManager.copy(text: password, bannerMessage: "Password copied")
         }
     }
 }
@@ -1334,8 +1204,8 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
         }
         refresh()
         addNewEvent(type: .update(item.type))
@@ -1346,9 +1216,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         guard !allVaults.isEmpty,
               let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
         let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
-                                               currentVault: .init(vaultContent: currentVault),
-                                               upgradeChecker: upgradeChecker,
-                                               logManager: logManager)
+                                               currentVault: .init(vaultContent: currentVault))
         viewModel.delegate = delegate
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
@@ -1358,7 +1226,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        present(viewController)
     }
 
     func itemDetailViewModelWantsToUpgrade() {
@@ -1367,30 +1235,30 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
         refresh()
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            let undoBlock: (PMBanner) -> Void = { [unowned self] banner in
+        dismissTopMostViewController(animated: true) { [weak self] in
+            let undoBlock: (PMBanner) -> Void = { [weak self] banner in
                 banner.dismiss()
-                itemContextMenuHandler.restore(item)
+                self?.itemContextMenuHandler.restore(item)
             }
-            bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                   dismissButtonTitle: "Undo",
-                                                   onDismiss: undoBlock)
+            self?.bannerManager.displayBottomInfoMessage(item.trashMessage,
+                                                         dismissButtonTitle: "Undo",
+                                                         onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
     }
 
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
         refresh()
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
         }
         addNewEvent(type: .update(item.type))
     }
 
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
         refresh()
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
         }
         addNewEvent(type: .delete(item.type))
     }
@@ -1465,15 +1333,15 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     }
 
     func createEditVaultViewModelDidCreateVault() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage("Vault created")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage("Vault created")
         }
         vaultsManager.refresh()
     }
 
     func createEditVaultViewModelDidEditVault() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomInfoMessage("Changes saved")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomInfoMessage("Changes saved")
         }
         vaultsManager.refresh()
     }
@@ -1495,8 +1363,8 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
     }
 
     func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
-        dismissTopMostViewController(animated: true) { [unowned self] in
-            bannerManager.displayBottomSuccessMessage("Primary vault updated")
+        dismissTopMostViewController(animated: true) { [weak self] in
+            self?.bannerManager.displayBottomSuccessMessage("Primary vault updated")
         }
         vaultsManager.refresh()
     }
@@ -1551,6 +1419,8 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+        refreshInvitations()
+
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
             refresh()
@@ -1564,5 +1434,3 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.error(error)
     }
 }
-
-// swiftlint:enable line_length

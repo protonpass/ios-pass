@@ -21,34 +21,25 @@
 import Foundation
 
 public struct ItemCount {
-    public let loginCount: Int
-    public let aliasCount: Int
-    public let creditCardCount: Int
-    public let noteCount: Int
+    public let total: Int
+    public let login: Int
+    public let alias: Int
+    public let creditCard: Int
+    public let note: Int
 
-    public var total: Int {
-        [loginCount, aliasCount, creditCardCount, noteCount].reduce(into: 0) { $0 += $1 }
-    }
+    public static var zero = ItemCount(total: 0,
+                                       login: 0,
+                                       alias: 0,
+                                       creditCard: 0,
+                                       note: 0)
+}
 
-    public static var zero = ItemCount(loginCount: 0,
-                                       aliasCount: 0,
-                                       creditCardCount: 0,
-                                       noteCount: 0)
-
-    public init(loginCount: Int,
-                aliasCount: Int,
-                creditCardCount: Int,
-                noteCount: Int) {
-        self.loginCount = loginCount
-        self.aliasCount = aliasCount
-        self.creditCardCount = creditCardCount
-        self.noteCount = noteCount
-    }
-
-    public init(items: [ItemTypeIdentifiable]) {
-        loginCount = items.filter { $0.type == .login }.count
-        aliasCount = items.filter { $0.type == .alias }.count
-        creditCardCount = items.filter { $0.type == .creditCard }.count
-        noteCount = items.filter { $0.type == .note }.count
+public extension ItemCount {
+    init(items: [ItemTypeIdentifiable]) {
+        total = items.count
+        login = items.filter { $0.type == .login }.count
+        alias = items.filter { $0.type == .alias }.count
+        creditCard = items.filter { $0.type == .creditCard }.count
+        note = items.filter { $0.type == .note }.count
     }
 }

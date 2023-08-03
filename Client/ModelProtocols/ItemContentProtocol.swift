@@ -22,7 +22,7 @@ import Core
 import CryptoKit
 
 // RawValue is used for telemetry, we need to know the item type of the actions
-public enum ItemContentType: Int, CaseIterable {
+public enum ItemContentType: Int, CaseIterable, Equatable {
     case login = 0
     case alias = 1
     case note = 2
@@ -294,18 +294,6 @@ extension ItemContent: ItemThumbnailable {
         case let .login(data):
             return data.urls.first
         default:
-            return nil
-        }
-    }
-}
-
-public extension ItemContent {
-    /// Get `TOTPData` of the current moment
-    func totpData() throws -> TOTPData? {
-        if case let .login(logInData) = contentData,
-           !logInData.totpUri.isEmpty {
-            return try .init(uri: logInData.totpUri)
-        } else {
             return nil
         }
     }

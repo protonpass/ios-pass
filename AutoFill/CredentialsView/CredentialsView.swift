@@ -108,8 +108,7 @@ private extension CredentialsView {
                     CredentialSearchResultView(results: results,
                                                selectedSortType: $viewModel.selectedSortType,
                                                sortAction: viewModel.presentSortTypeList,
-                                               selectItem: viewModel.select,
-                                               favIconRepository: viewModel.favIconRepository)
+                                               selectItem: viewModel.select)
                 }
             case .loading:
                 CredentialsSkeletonView()
@@ -222,9 +221,7 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item,
-                                             favIconRepository: viewModel.favIconRepository,
-                                             selectItem: viewModel.select)
+                    GenericCredentialItemRow(item: item, selectItem: viewModel.select)
                         .plainListRow()
                         .padding(.horizontal)
                 }

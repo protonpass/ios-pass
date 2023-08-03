@@ -24,6 +24,7 @@ import Foundation
 enum PPError: Error, CustomDebugStringConvertible {
     /// AutoFill extension
     case credentialProvider(CredentialProviderFailureReason)
+    case deallocatedSelf
     case failedToGetOrCreateSymmetricKey
     case itemNotFound(shareID: String, itemID: String)
     case vault(VaultFailureReason)
@@ -32,6 +33,8 @@ enum PPError: Error, CustomDebugStringConvertible {
         switch self {
         case let .credentialProvider(reason):
             return reason.debugDescription
+        case .deallocatedSelf:
+            return "Failed to access deallocated self"
         case .failedToGetOrCreateSymmetricKey:
             return "Failed to get or create symmetric key"
         case let .itemNotFound(shareID, itemID):

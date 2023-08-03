@@ -28,7 +28,6 @@ struct CredentialSearchResultView: View, Equatable {
     @Binding var selectedSortType: SortType
     let sortAction: () -> Void
     let selectItem: (TitledItemIdentifiable) -> Void
-    let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
         VStack(spacing: 0) {
@@ -132,9 +131,7 @@ private extension CredentialSearchResultView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item,
-                                             favIconRepository: favIconRepository,
-                                             selectItem: selectItem)
+                    GenericCredentialItemRow(item: item, selectItem: selectItem)
                         .plainListRow()
                         .padding(.horizontal)
                 }

@@ -21,8 +21,12 @@
 import AuthenticationServices
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
-    private lazy var coordinator: CredentialProviderCoordinator = .init(context: extensionContext,
-                                                                        rootViewController: self)
+    private lazy var coordinator: CredentialProviderCoordinator = .init(rootViewController: self)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        AutoFillDataContainer.shared.register(context: extensionContext)
+    }
 
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in

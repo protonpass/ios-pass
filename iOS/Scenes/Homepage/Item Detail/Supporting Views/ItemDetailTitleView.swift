@@ -26,13 +26,10 @@ import UIComponents
 struct ItemDetailTitleView: View {
     let itemContent: ItemContent
     let vault: Vault?
-    let favIconRepository: FavIconRepositoryProtocol
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemSquircleThumbnail(data: itemContent.thumbnailData(),
-                                  repository: favIconRepository,
-                                  size: .large)
+            ItemSquircleThumbnail(data: itemContent.thumbnailData(), size: .large)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(itemContent.name)

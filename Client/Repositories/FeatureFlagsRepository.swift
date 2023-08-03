@@ -20,6 +20,7 @@
 
 import Core
 
+// sourcery: AutoMockable
 public protocol FeatureFlagsRepositoryProtocol: AnyObject {
     /// Get from local, refresh if not exist
     func getFlags() async throws -> FeatureFlags
@@ -29,17 +30,17 @@ public protocol FeatureFlagsRepositoryProtocol: AnyObject {
 }
 
 public final class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
-    private let localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol
-    private let remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol
+    private let localDatasource: LocalFeatureFlagsDatasourceProtocol
+    private let remoteDatasource: RemoteFeatureFlagsDatasourceProtocol
     private let userId: String
     private let logger: Logger
 
-    public init(localFeatureFlagsDatasource: LocalFeatureFlagsDatasourceProtocol,
-                remoteFeatureFlagsDatasource: RemoteFeatureFlagsDatasourceProtocol,
+    public init(localDatasource: LocalFeatureFlagsDatasourceProtocol,
+                remoteDatasource: RemoteFeatureFlagsDatasourceProtocol,
                 userId: String,
                 logManager: LogManagerProtocol) {
-        self.localFeatureFlagsDatasource = localFeatureFlagsDatasource
-        self.remoteFeatureFlagsDatasource = remoteFeatureFlagsDatasource
+        self.localDatasource = localDatasource
+        self.remoteDatasource = remoteDatasource
         self.userId = userId
         logger = Logger(manager: logManager)
     }
@@ -48,7 +49,7 @@ public final class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
 public extension FeatureFlagsRepository {
     func getFlags() async throws -> FeatureFlags {
         logger.trace("Getting feature flags for user \(userId)")
-        if let localFlags = try await localFeatureFlagsDatasource.getFeatureFlags(userId: userId) {
+        if let localFlags = try await localDatasource.getFeatureFlags(userId: userId) {
             logger.trace("Found local feature flags for user \(userId)")
             return localFlags
         }
@@ -59,12 +60,12 @@ public extension FeatureFlagsRepository {
 
     func refreshFlags() async throws -> FeatureFlags {
         logger.trace("Getting remote credit card v1 flag for user \(userId)")
-        let allflags = try await remoteFeatureFlagsDatasource.getFlags()
+        let allflags = try await remoteDatasource.getFlags()
 
         logger.trace("Got remote flags for user \(userId). Upserting to local database.")
 
         let flags = filterPassFlags(from: allflags) // FeatureFlags(creditCardV1: creditCardV1)
-        try await localFeatureFlagsDatasource.upsertFlags(flags, userId: userId)
+        try await localDatasource.upsertFlags(flags, userId: userId)
 
         return flags
     }

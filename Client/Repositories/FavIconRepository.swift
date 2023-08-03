@@ -166,6 +166,18 @@ public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable
     public let settings: FavIconSettings
     public let symmetricKey: SymmetricKey
 
+    public init(datasource: RemoteFavIconDatasourceProtocol,
+                containerUrl: URL,
+                settings: FavIconSettings,
+                symmetricKey: SymmetricKey,
+                cacheExpirationDays: Int = 14) {
+        self.datasource = datasource
+        self.containerUrl = containerUrl
+        self.cacheExpirationDays = cacheExpirationDays
+        self.settings = settings
+        self.symmetricKey = symmetricKey
+    }
+
     public init(apiService: APIService,
                 containerUrl: URL,
                 settings: FavIconSettings,

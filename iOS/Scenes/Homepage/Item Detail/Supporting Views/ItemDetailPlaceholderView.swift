@@ -24,7 +24,6 @@ import SwiftUI
 import UIComponents
 
 struct ItemDetailPlaceholderView: View {
-    let theme: Theme
     let onGoBack: () -> Void
 
     var body: some View {

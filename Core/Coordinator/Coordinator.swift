@@ -81,16 +81,16 @@ public extension CoordinatorProtocol {
     }
 
     func dismissTopMostViewController(animated: Bool = true, completion: (() -> Void)? = nil) {
-        rootViewController.topMostViewController.dismiss(animated: animated) { [unowned self] in
+        rootViewController.topMostViewController.dismiss(animated: animated) { [weak self] in
             completion?()
-            coordinatorDidDismiss()
+            self?.coordinatorDidDismiss()
         }
     }
 
     func dismissAllViewControllers(animated: Bool = true, completion: (() -> Void)? = nil) {
-        rootViewController.dismiss(animated: animated) { [unowned self] in
+        rootViewController.dismiss(animated: animated) { [weak self] in
             completion?()
-            coordinatorDidDismiss()
+            self?.coordinatorDidDismiss()
         }
     }
 
@@ -255,8 +255,6 @@ open class Coordinator: CoordinatorProtocol {
             return splitViewController.isCollapsed
         }
     }
-
-    open func coordinatorDidDismiss() {}
 }
 
 public final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {

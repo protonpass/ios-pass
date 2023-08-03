@@ -20,7 +20,7 @@
 
 import Core
 import Factory
-import Foundation
+import ProtonCore_Services
 
 final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
@@ -28,6 +28,18 @@ final class UseCasesContainer: SharedContainer, AutoRegistering {
 
     func autoRegister() {
         manager.defaultScope = .shared
+    }
+}
+
+// MARK: - Computed properties
+
+private extension UseCasesContainer {
+    var apiService: APIService {
+        SharedToolingContainer.shared.apiManager().apiService
+    }
+
+    var logManager: LogManagerProtocol {
+        SharedToolingContainer.shared.logManager()
     }
 }
 
@@ -62,5 +74,99 @@ extension UseCasesContainer {
                                  .specificLogManager(.autoFillExtension),
                              keyboardLogManager: SharedToolingContainer.shared
                                  .specificLogManager(.keyboardExtension)) }
+    }
+}
+
+// MARK: - Sharing
+
+extension UseCasesContainer {
+    var getCurrentShareInviteInformations: Factory<GetCurrentShareInviteInformationsUseCase> {
+        self { GetCurrentShareInviteInformations(shareInviteService: ServiceContainer.shared.shareInviteService())
+        }
+    }
+
+    var setShareInviteVault: Factory<SetShareInviteVaultUseCase> {
+        self { SetShareInviteVault(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var setShareInviteUserEmailAndKeys: Factory<SetShareInviteUserEmailAndKeysUseCase> {
+        self { SetShareInviteUserEmailAndKeys(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var setShareInviteRole: Factory<SetShareInviteRoleUseCase> {
+        self { SetShareInviteRole(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+    }
+
+    var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
+        self { SendVaultShareInvite(passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                                    shareInviteRepository: SharedRepositoryContainer.shared
+                                        .shareInviteRepository(),
+                                    userData: SharedDataContainer.shared.userData()) }
+    }
+
+    var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
+        self { GetEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
+    }
+}
+
+// MARK: - Invites
+
+extension UseCasesContainer {
+    var getPendingUserInvitations: Factory<GetPendingUserInvitationsUseCase> {
+        self { GetPendingUserInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
+
+    var refreshInvitations: Factory<RefreshInvitationsUseCase> {
+        self { RefreshInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
+
+    var rejectInvitation: Factory<RejectInvitationUseCase> {
+        self { RejectInvitation(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
+
+    var acceptInvitation: Factory<AcceptInvitationUseCase> {
+        self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
+                                userData: SharedDataContainer.shared.userData(),
+                                getEmailPublicKey: self.getEmailPublicKey()) }
+    }
+
+    var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
+        self { DecodeShareVaultInformation(userData: SharedDataContainer.shared.userData(),
+                                           getEmailPublicKey: self.getEmailPublicKey()) }
+    }
+
+    var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
+        self { UpdateCachedInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
+    }
+}
+
+// MARK: - Flags
+
+extension UseCasesContainer {
+    var userSharingStatus: Factory<UserSharingStatusUseCase> {
+        self { UserSharingStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                 logManager: SharedToolingContainer.shared.logManager()) }
+    }
+}
+
+// MARK: - Vaults
+
+extension UseCasesContainer {
+    var getVaultItemCount: Factory<GetVaultItemCountUseCase> {
+        self { GetVaultItemCount(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+}
+
+// MARK: - User
+
+extension UseCasesContainer {
+    var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
+        self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
+    }
+
+    var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
+        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   logManager: self.logManager) }
     }
 }

@@ -24,8 +24,8 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public protocol ShareEventIDRepositoryProtocol {
-    var localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol { get }
-    var remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol { get }
+    var localDatasource: LocalShareEventIDDatasourceProtocol { get }
+    var remoteDatasource: RemoteShareEventIDDatasourceProtocol { get }
     var logger: Logger { get }
 
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
@@ -42,8 +42,8 @@ public extension ShareEventIDRepositoryProtocol {
         }
         logger.trace("Getting last event id of share \(shareId) of user \(userId)")
         if let localLastEventId =
-            try await localShareEventIDDatasource.getLastEventId(userId: userId,
-                                                                 shareId: shareId) {
+            try await localDatasource.getLastEventId(userId: userId,
+                                                     shareId: shareId) {
             logger.trace("Found local last event id of share \(shareId) of user \(userId)")
             return localLastEventId
         }
@@ -51,9 +51,9 @@ public extension ShareEventIDRepositoryProtocol {
     }
 
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
-        try await localShareEventIDDatasource.upsertLastEventId(userId: userId,
-                                                                shareId: shareId,
-                                                                lastEventId: lastEventId)
+        try await localDatasource.upsertLastEventId(userId: userId,
+                                                    shareId: shareId,
+                                                    lastEventId: lastEventId)
     }
 }
 
@@ -61,33 +61,33 @@ extension ShareEventIDRepositoryProtocol {
     func fetchLastEventIdFromRemoteAndSaveToLocal(userId: String, shareId: String) async throws -> String {
         logger.trace("Getting remote last event id of share \(shareId) of user \(userId)")
         let newLastEventId =
-            try await remoteShareEventIDDatasource.getLastEventId(shareId: shareId)
+            try await remoteDatasource.getLastEventId(shareId: shareId)
         logger.trace("Upserting remote last event id of share \(shareId) of user \(userId)")
-        try await localShareEventIDDatasource.upsertLastEventId(userId: userId,
-                                                                shareId: shareId,
-                                                                lastEventId: newLastEventId)
+        try await localDatasource.upsertLastEventId(userId: userId,
+                                                    shareId: shareId,
+                                                    lastEventId: newLastEventId)
         return newLastEventId
     }
 }
 
 public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
-    public let localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol
-    public let remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol
+    public let localDatasource: LocalShareEventIDDatasourceProtocol
+    public let remoteDatasource: RemoteShareEventIDDatasourceProtocol
     public let logger: Logger
 
-    public init(localShareEventIDDatasource: LocalShareEventIDDatasourceProtocol,
-                remoteShareEventIDDatasource: RemoteShareEventIDDatasourceProtocol,
+    public init(localDatasource: LocalShareEventIDDatasourceProtocol,
+                remoteDatasource: RemoteShareEventIDDatasourceProtocol,
                 logManager: LogManagerProtocol) {
-        self.localShareEventIDDatasource = localShareEventIDDatasource
-        self.remoteShareEventIDDatasource = remoteShareEventIDDatasource
+        self.localDatasource = localDatasource
+        self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
     }
 
     public init(container: NSPersistentContainer,
                 apiService: APIService,
                 logManager: LogManagerProtocol) {
-        localShareEventIDDatasource = LocalShareEventIDDatasource(container: container)
-        remoteShareEventIDDatasource = RemoteShareEventIDDatasource(apiService: apiService)
+        localDatasource = LocalShareEventIDDatasource(container: container)
+        remoteDatasource = RemoteShareEventIDDatasource(apiService: apiService)
         logger = .init(manager: logManager)
     }
 }

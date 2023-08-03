@@ -23,22 +23,28 @@ import Foundation
 public struct Vault: Identifiable, Hashable, Equatable {
     public let id: String
     public let shareId: String
+    public let addressId: String
     public let name: String
     public let description: String
     public let displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences
     public let isPrimary: Bool
+    public let isOwner: Bool
 
     public init(id: String,
                 shareId: String,
+                addressId: String,
                 name: String,
                 description: String,
                 displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences,
-                isPrimary: Bool) {
+                isPrimary: Bool,
+                isOwner: Bool) {
         self.id = id
         self.shareId = shareId
         self.name = name
         self.description = description
         self.displayPreferences = displayPreferences
         self.isPrimary = isPrimary
+        self.addressId = addressId
+        self.isOwner = isOwner
     }
 }

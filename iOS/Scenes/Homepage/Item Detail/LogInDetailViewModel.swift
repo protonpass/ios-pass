@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Factory
 import SwiftUI
 import UIComponents
 import UIKit
@@ -56,21 +57,14 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
-                  favIconRepository: FavIconRepositoryProtocol,
-                  itemRepository: ItemRepositoryProtocol,
                   upgradeChecker: UpgradeCheckerProtocol,
-                  vault: Vault?,
-                  logManager: LogManagerProtocol,
-                  theme: Theme) {
+                  vault: Vault?) {
+        let logManager = resolve(\SharedToolingContainer.logManager)
         totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
-                   favIconRepository: favIconRepository,
-                   itemRepository: itemRepository,
                    upgradeChecker: upgradeChecker,
-                   vault: vault,
-                   logManager: logManager,
-                   theme: theme)
+                   vault: vault)
         totpManager.attach(to: self, storeIn: &cancellables)
     }
 
@@ -99,27 +93,29 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, Obse
 
 private extension LogInDetailViewModel {
     func getAliasItem(username: String) {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                self.aliasItem = try await itemRepository.getAliasItem(email: username)
+                self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
             } catch {
-                logger.error(error)
-                delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }
 
     func checkTotpState(createTime: Int64) {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
+                if try await self.upgradeChecker.canShowTOTPToken(creationDate: self.itemContent.item.createTime) {
                     self.totpTokenState = .allowed
                 } else {
                     self.totpTokenState = .notAllowed
                 }
             } catch {
-                logger.error(error)
-                delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
         }
     }

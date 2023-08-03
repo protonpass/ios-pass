@@ -129,6 +129,8 @@ public extension CredentialManagerProtocol {
 
             let itemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
             if case let .login(data) = itemContent.contentData {
+                // A login item can have multiple associated URLs while the OS expects a single URL per item,
+                // so we need to make a separate entry for each URL in the credential database.
                 for url in data.urls {
                     credentials.append(.init(shareId: itemContent.shareId,
                                              itemId: itemContent.item.itemID,
@@ -167,35 +169,28 @@ public final class CredentialManager: CredentialManagerProtocol {
 
 extension CredentialManager: ItemRepositoryDelegate {
     public func itemRepositoryHasNewCredentials(_ credentials: [AutoFillCredential]) {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                logger.trace("Inserting \(credentials.count) new credentials")
-                try await insert(credentials: credentials)
-                logger.trace("Inserted \(credentials.count) new credentials")
+                self.logger.trace("Inserting \(credentials.count) new credentials")
+                try await self.insert(credentials: credentials)
+                self.logger.trace("Inserted \(credentials.count) new credentials")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
     }
 
     public func itemRepositoryDeletedCredentials(_ credentials: [AutoFillCredential]) {
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                logger.trace("Removing \(credentials.count) deleted credentials")
-                try await remove(credentials: credentials)
-                logger.info("Removed \(credentials.count) deleted credentials")
+                self.logger.trace("Removing \(credentials.count) deleted credentials")
+                try await self.remove(credentials: credentials)
+                self.logger.info("Removed \(credentials.count) deleted credentials")
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
-    }
-}
-
-private extension ASPasswordCredentialIdentity {
-    convenience init(_ credential: AutoFillCredential) throws {
-        try self.init(serviceIdentifier: .init(identifier: credential.url, type: .URL),
-                      user: credential.username,
-                      recordIdentifier: credential.ids.serializeBase64())
-        rank = Int(credential.lastUseTime)
     }
 }
