@@ -231,7 +231,7 @@ private extension ProfileTabViewModel {
                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
                 self.delegate?.profileTabViewModelWantsToShowSpinner()
                 if self.quickTypeBar {
-                    try await self.indexAllLoginItems()
+                    try await self.indexAllLoginItems(ignorePreferences: true)
                 } else {
                     try await self.unindexAllLoginItems()
                 }
