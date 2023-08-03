@@ -19,30 +19,34 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Entities
 import SwiftUI
+import UIComponents
 
 // MARK: - UI helpers
+
 extension Vault {
     var mainColor: Color {
         displayPreferences.color.color.color.toColor
     }
-    
+
     var backgroundColor: Color {
         mainColor.opacity(0.16)
     }
-    
+
     var bigImage: Image {
         displayPreferences.icon.icon.bigImage.toImage
     }
-    
+
     var smallImage: Image {
         displayPreferences.icon.icon.smallImage.toImage
     }
-}
 
+    var isAdmin: Bool {
+        shareRole == ShareRole.admin.rawValue
+    }
 
-extension UIImage {
-    var toImage: Image {
-        Image(uiImage: self)
+    var canEdit: Bool {
+        shareRole != ShareRole.read.rawValue
     }
 }

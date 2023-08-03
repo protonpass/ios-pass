@@ -54,6 +54,9 @@ public protocol ShareRepositoryProtocol {
 
     func deleteUserShare(userId: String, shareId: String) async throws -> Bool
 
+    @discardableResult
+    func deleteShare(shareId: String) async throws -> Bool
+
     // MARK: - Vault Functions
 
     /// Get all local vaults
@@ -163,14 +166,9 @@ public extension ShareRepository {
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
         logger.trace("Getting all users linked to shareId \(shareId)")
-        do {
-            let users = try await remoteDatasouce.getShareLinkedUsers(shareId: shareId)
-            logger.trace("Got \(users.count) remote user for \(shareId)")
-            return users
-        } catch {
-            logger.error(message: "Failed to get remote user for shareId \(shareId)", error: error)
-            throw error
-        }
+        let users = try await remoteDatasouce.getShareLinkedUsers(shareId: shareId)
+        logger.trace("Got \(users.count) remote user for \(shareId)")
+        return users
     }
 
     func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
@@ -216,6 +214,14 @@ public extension ShareRepository {
             logger.error(message: "Failed to delete user share \(logInfo)", error: error)
             throw error
         }
+    }
+
+    func deleteShare(shareId: String) async throws -> Bool {
+        let logInfo = "share \(shareId)"
+        logger.trace("Deleting share \(logInfo)")
+        let deleted = try await remoteDatasouce.deleteShare(shareId: shareId)
+        logger.trace("Deleted \(deleted) user share \(logInfo)")
+        return deleted
     }
 }
 

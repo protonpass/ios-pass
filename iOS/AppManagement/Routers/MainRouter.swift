@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Entities
 import SwiftUI
@@ -26,7 +27,9 @@ enum CoordinatorRouterDestination: Hashable {}
 
 enum CoordinatorSheetDestination: Equatable, Hashable {
     case sharingFlow
-    case manageShareVault
+    ///  The boolean helps to know if we should dismiss the previous sheet or not as the route if used in different
+    /// context
+    case manageShareVault(Vault, Bool)
     case filterItems
     case acceptRejectInvite(UserInvite)
 }
