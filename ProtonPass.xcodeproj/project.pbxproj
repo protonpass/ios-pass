@@ -767,6 +767,11 @@
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
+		5BA663EC2A7AA5090049EA68 /* GetFeatureFlagStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */; };
+		5BA663EE2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */; };
+		5BA663F02A7BB4860049EA68 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663EF2A7BB4860049EA68 /* UIImage+Extensions.swift */; };
+		5BA663F22A7BDC6D0049EA68 /* LeaveShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */; };
+		5BA663F42A7BDD9B0049EA68 /* DeleteShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F32A7BDD9B0049EA68 /* DeleteShareEndpoint.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1632,6 +1637,11 @@
 		5B8953B72DFDE8D24ACCC314 /* Pods-Core-CoreTests.debug-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core-CoreTests.debug-qa.xcconfig"; path = "Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests.debug-qa.xcconfig"; sourceTree = "<group>"; };
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
 		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
+		5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFeatureFlagStatus.swift; sourceTree = "<group>"; };
+		5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUsersLinkedToShare.swift; sourceTree = "<group>"; };
+		5BA663EF2A7BB4860049EA68 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveShare.swift; sourceTree = "<group>"; };
+		5BA663F32A7BDD9B0049EA68 /* DeleteShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteShareEndpoint.swift; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
@@ -1916,7 +1926,6 @@
 			isa = PBXGroup;
 			children = (
 				3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */,
-				353547C02880C45C0021C716 /* GetSharesEndpoint.swift */,
 				5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */,
 				5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */,
 				5B1F5CD02A5D912D00A6C3ED /* UpdateUserSharePermissionsEndpoint.swift */,
@@ -1925,6 +1934,7 @@
 				5B1F5CD62A5D936700A6C3ED /* InviteUserToShareEndpoint.swift */,
 				5B1F5CD82A5D965700A6C3ED /* SendInviteReminderToUserEndpoint.swift */,
 				5B1F5CDA2A5D966B00A6C3ED /* DeleteShareInviteEndpoint.swift */,
+				5BA663F32A7BDD9B0049EA68 /* DeleteShareEndpoint.swift */,
 			);
 			path = Shares;
 			sourceTree = "<group>";
@@ -2264,6 +2274,7 @@
 		355E803D28A3071700BE7C9B /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				353547C02880C45C0021C716 /* GetSharesEndpoint.swift */,
 				355CA56729F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift */,
 				355CA56529F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift */,
 				3593DCFE28A8322300C235D3 /* CreateItemRequest.swift */,
@@ -3165,6 +3176,7 @@
 				5B0C750C2A321DCD00272CE8 /* Color+Extensions.swift */,
 				356F7FCE2A3C4B64002D412E /* UIViewController+Extensions.swift */,
 				5B1453BE2A6EA9870048B022 /* Views+Extensions.swift */,
+				5BA663EF2A7BB4860049EA68 /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3257,6 +3269,8 @@
 				5B14539E2A69652D0048B022 /* SetShareInviteVault.swift */,
 				5B1453B62A6AB9F00048B022 /* UserSharingStatus.swift */,
 				5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */,
+				5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */,
+				5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */,
 			);
 			path = "Sharing+Invitations";
 			sourceTree = "<group>";
@@ -3377,6 +3391,7 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				5BA663EA2A7AA4CC0049EA68 /* FeatureFlags */,
 				5B1453AB2A696C5B0048B022 /* Vault */,
 				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
@@ -3462,6 +3477,14 @@
 				5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		5BA663EA2A7AA4CC0049EA68 /* FeatureFlags */ = {
+			isa = PBXGroup;
+			children = (
+				5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */,
+			);
+			path = FeatureFlags;
 			sourceTree = "<group>";
 		};
 		5BB2B6E02A4332D4005E831C /* UIElements */ = {
@@ -4941,6 +4964,7 @@
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
 				66CA927D29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift in Sources */,
 				35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */,
+				5BA663EC2A7AA5090049EA68 /* GetFeatureFlagStatus.swift in Sources */,
 				35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */,
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
@@ -5091,6 +5115,7 @@
 				3559BAA12A5B32550020E172 /* AppLockTime.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
+				5BA663EE2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				5B653AEB2A77DF0B00D6869A /* RefreshInvitations.swift in Sources */,
 				3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */,
@@ -5125,6 +5150,7 @@
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
 				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
+				5BA663F22A7BDC6D0049EA68 /* LeaveShare.swift in Sources */,
 				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
@@ -5213,6 +5239,7 @@
 				358A509028AD83A800F5285C /* GetPublicKeysEndpoint.swift in Sources */,
 				355A5B0E2A03D6A20089E0AC /* LocalPassPlanDatasource.swift in Sources */,
 				5B14536D2A60365E0048B022 /* ItemRevision.swift in Sources */,
+				5BA663F42A7BDD9B0049EA68 /* DeleteShareEndpoint.swift in Sources */,
 				5B1453772A60369A0048B022 /* SymmetricallyEncryptedShareKey.swift in Sources */,
 				35581819290AB8B300DD94DB /* ShareEventIDRepository.swift in Sources */,
 				35544409287CB55E0017FCAD /* CreateVaultEndpoint.swift in Sources */,
@@ -5479,6 +5506,7 @@
 				359EB88A2A20CF0D009588A9 /* RightIconLabelStyle.swift in Sources */,
 				35526B5D28D116350017BB53 /* PassIcon.swift in Sources */,
 				3562BCF729BDE77900564508 /* AnimatingGradient.swift in Sources */,
+				5BA663F02A7BB4860049EA68 /* UIImage+Extensions.swift in Sources */,
 				355E6DFC292FD56000C60796 /* Button+ConvenientInitializers.swift in Sources */,
 				3562BC2D2994FF2D003FCB13 /* TextEditorWithPlaceholder.swift in Sources */,
 				356F7FCF2A3C4B64002D412E /* UIViewController+Extensions.swift in Sources */,

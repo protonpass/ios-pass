@@ -430,8 +430,8 @@ private extension HomepageCoordinator {
                 switch destination {
                 case .sharingFlow:
                     self.presentSharingFlow()
-                case .manageShareVault:
-                    self.presentManageShareVault()
+                case let .manageShareVault(vault, dismissPrevious):
+                    self.presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
                 case .filterItems:
                     self.presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
@@ -446,13 +446,21 @@ private extension HomepageCoordinator {
         present(userEmailView)
     }
 
-    func presentManageShareVault() {
-        dismissTopMostViewController { [weak self] in
-            if self?.rootViewController.topMostViewController is UIHostingController<ManageSharedVaultView> {
-                return
+    func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
+        let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
+
+        if dismissPrevious {
+            dismissTopMostViewController { [weak self] in
+                guard let self else {
+                    return
+                }
+                if self.rootViewController.topMostViewController is UIHostingController<ManageSharedVaultView> {
+                    return
+                }
+                self.present(manageShareVaultView)
             }
-            let manageShareVaultView = ManageSharedVaultView()
-            self?.present(manageShareVaultView)
+        } else {
+            present(manageShareVaultView)
         }
     }
 

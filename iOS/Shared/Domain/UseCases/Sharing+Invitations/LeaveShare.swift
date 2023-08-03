@@ -1,6 +1,7 @@
 //
-// ShareRole.swift
-// Proton Pass - Created on 20/07/2023.
+//
+// LeaveShare.swift
+// Proton Pass - Created on 03/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,25 +18,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import Client
 
-public enum ShareRole: String, CaseIterable, Equatable {
-    /// Administrator
-    case admin = "1"
-    /// Full write permission. They can do anything an admin can do except manage membership and invite users.
-    case write = "2"
-    /// Read only. Can only read the contents of a share. They can update the last used time for themselves.
-    case read = "3"
+protocol LeaveShareUseCase: Sendable {
+    func execute(with shareId: String) async throws
+}
 
-    public var role: String {
-        switch self {
-        case .admin:
-            return "admin"
-        case .write:
-            return "edit"
-        case .read:
-            return "read"
-        }
+extension LeaveShareUseCase {
+    func callAsFunction(with shareId: String) async throws {
+        try await execute(with: shareId)
+    }
+}
+
+final class LeaveShare: LeaveShareUseCase {
+    private let repository: ShareRepositoryProtocol
+
+    init(repository: ShareRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    func execute(with shareId: String) async throws {
+        try await repository.deleteShare(shareId: shareId)
     }
 }

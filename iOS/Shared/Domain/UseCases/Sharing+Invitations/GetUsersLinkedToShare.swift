@@ -1,5 +1,6 @@
 //
-// Vault+Extensions.swift
+//
+// GetUsersLinkedToShare.swift
 // Proton Pass - Created on 02/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -17,36 +18,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Client
 import Entities
-import SwiftUI
-import UIComponents
 
-// MARK: - UI helpers
+protocol GetUsersLinkedToShareUseCase: Sendable {
+    func execute(with shareId: String) async throws -> [UserShareInfos]
+}
 
-extension Vault {
-    var mainColor: Color {
-        displayPreferences.color.color.color.toColor
+extension GetUsersLinkedToShareUseCase {
+    func callAsFunction(with shareId: String) async throws -> [UserShareInfos] {
+        try await execute(with: shareId)
+    }
+}
+
+final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
+    private let repository: ShareRepositoryProtocol
+
+    init(repository: ShareRepositoryProtocol) {
+        self.repository = repository
     }
 
-    var backgroundColor: Color {
-        mainColor.opacity(0.16)
-    }
-
-    var bigImage: Image {
-        displayPreferences.icon.icon.bigImage.toImage
-    }
-
-    var smallImage: Image {
-        displayPreferences.icon.icon.smallImage.toImage
-    }
-
-    var isAdmin: Bool {
-        shareRole == ShareRole.admin.rawValue
-    }
-
-    var canEdit: Bool {
-        shareRole != ShareRole.read.rawValue
+    func execute(with shareId: String) async throws -> [UserShareInfos] {
+        try await repository.getUsersLinked(to: shareId)
     }
 }

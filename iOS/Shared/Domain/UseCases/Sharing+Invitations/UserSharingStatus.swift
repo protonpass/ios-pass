@@ -36,23 +36,23 @@ extension UserSharingStatusUseCase {
 }
 
 final class UserSharingStatus: @unchecked Sendable, UserSharingStatusUseCase {
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    private let getFeatureFlagStatus: GetFeatureFlagStatusUseCase
     private let passPlanRepository: PassPlanRepositoryProtocol
     private let logger: Logger
 
-    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
+    init(getFeatureFlagStatus: GetFeatureFlagStatusUseCase,
          passPlanRepository: PassPlanRepositoryProtocol,
          logManager: LogManagerProtocol) {
-        self.featureFlagsRepository = featureFlagsRepository
+        self.getFeatureFlagStatus = getFeatureFlagStatus
         self.passPlanRepository = passPlanRepository
         logger = Logger(manager: logManager)
     }
 
     func execute() async -> Bool {
         do {
-            let flags = try await featureFlagsRepository.getFlags()
+            let isEnabled = try await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
             let plan = try await passPlanRepository.getPlan()
-            return flags.isFlagEnable(for: FeatureFlagType.passSharingV1) && !plan.isFreeUser
+            return isEnabled && !plan.isFreeUser
         } catch {
             logger.error(error)
             return false

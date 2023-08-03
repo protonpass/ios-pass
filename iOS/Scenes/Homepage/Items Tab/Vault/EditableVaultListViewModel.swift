@@ -47,6 +47,8 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
+    private let leaveShare = resolve(\UseCasesContainer.leaveShare)
+    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
     let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
@@ -101,12 +103,24 @@ extension EditableVaultListViewModel {
     }
 
     func share(vault: Vault) {
-        setShareInviteVault(with: vault, and: getVaultItemCount(for: vault))
+        setShareInviteVault(with: vault)
         numberOfAliasforSharedVault = getVaultItemCount(for: vault, and: .alias)
         if numberOfAliasforSharedVault > 0 {
             showingAliasAlert = true
         } else {
             router.presentSheet(for: .sharingFlow)
+        }
+    }
+
+    func leaveVault(vault: Vault) {
+        Task { @MainActor [weak self] in
+            do {
+                try await self?.leaveShare(with: vault.shareId)
+                self?.syncEventLoop.forceSync()
+            } catch {
+                self?.logger.error(error)
+                self?.delegate?.editableVaultListViewModelDidEncounter(error: error)
+            }
         }
     }
 
