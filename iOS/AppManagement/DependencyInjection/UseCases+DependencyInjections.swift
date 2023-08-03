@@ -100,6 +100,20 @@ extension UseCasesContainer {
     var leaveShare: Factory<LeaveShareUseCase> {
         self { LeaveShare(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
+
+    var getUsersLinkedToShare: Factory<GetUsersLinkedToShareUseCase> {
+        self { GetUsersLinkedToShare(repository: SharedRepositoryContainer.shared.shareRepository()) }
+    }
+
+    var getPendingInvitationsForShare: Factory<GetPendingInvitationsForShareUseCase> {
+        self { GetPendingInvitationsForShare(repository: SharedRepositoryContainer.shared.shareInviteRepository())
+        }
+    }
+
+    var getAllUsersForShare: Factory<GetAllUsersForShareUseCase> {
+        self { GetAllUsersForShare(getUsersLinkedToShare: self.getUsersLinkedToShare(),
+                                   getPendingInvitationsForShare: self.getPendingInvitationsForShare()) }
+    }
 }
 
 // MARK: - Invites
@@ -131,10 +145,6 @@ extension UseCasesContainer {
 
     var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
         self { UpdateCachedInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
-    }
-
-    var getUsersLinkedToShare: Factory<GetUsersLinkedToShareUseCase> {
-        self { GetUsersLinkedToShare(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
 }
 
