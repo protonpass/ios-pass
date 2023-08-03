@@ -58,6 +58,9 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
 
+    // Use cases
+    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var state = VaultManagerState.loading
@@ -193,6 +196,8 @@ extension VaultsManager {
                     try await self.loadContents(for: vaults)
                     self.logger.info("Not manual login, done getting local shares & items")
                 }
+
+                try await indexAllLoginItems()
             } catch {
                 self.state = .error(error)
             }

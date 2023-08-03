@@ -68,8 +68,7 @@ extension CredentialManager: CredentialManagerProtocol {
 
     public func removeAllCredentials() async throws {
         logger.trace("Removing all credentials.")
-        let state = await store.state()
-        guard state.isEnabled else {
+        guard await isAutoFillEnabled() else {
             logger.trace("AutoFill is not enabled. Skipped removing all credentials.")
             return
         }
