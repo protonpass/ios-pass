@@ -26,9 +26,9 @@ import UIComponents
 struct VaultButton: View {
     private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
     let vault: Vault
-    
+
     var body: some View {
-        Button { router.presentSheet(for: .manageShareVault) } label: {
+        Button { router.presentSheet(for: .manageShareVault(vault, false)) } label: {
             HStack {
                 Label(title: {
                     Text(vault.name)
