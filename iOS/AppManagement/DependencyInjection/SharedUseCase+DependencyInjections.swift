@@ -72,6 +72,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var addTelemetryEvent: Factory<AddTelemetryEventUseCase> {
-        self { AddTelemetryEvent(logManager: self.logManager) }
+        self { AddTelemetryEvent(repository: SharedRepositoryContainer.shared.telemetryEventRepository(),
+                                 logManager: self.logManager) }
     }
 }
