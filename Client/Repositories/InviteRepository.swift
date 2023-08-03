@@ -99,7 +99,7 @@ public extension InviteRepository {
                 if invites != self.currentPendingInvites.value {
                     self.currentPendingInvites.send(invites)
                 }
-                logger.trace("Invites refreshed with \(invites)")
+                self.logger.trace("Invites refreshed with \(invites)")
             } catch {
                 self.logger.error(message: "Could not refresh all the user's invitations", error: error)
             }

@@ -153,7 +153,7 @@ private extension CreateEditItemCoordinator {
                                      generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?) {
         assert(delegate != nil, "delegate is not set")
         guard let delegate else { return }
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
             guard let wordProvider = await delegate.createEditItemCoordinatorWantsWordProvider() else {
                 assertionFailure("wordProvider should not be null")
                 return
@@ -162,9 +162,9 @@ private extension CreateEditItemCoordinator {
                 GeneratePasswordCoordinator(generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
                                             mode: mode,
                                             wordProvider: wordProvider)
-            coordinator.delegate = createEditItemDelegates
+            coordinator.delegate = self?.createEditItemDelegates
             coordinator.start()
-            generatePasswordCoordinator = coordinator
+            self?.generatePasswordCoordinator = coordinator
         }
     }
 }
