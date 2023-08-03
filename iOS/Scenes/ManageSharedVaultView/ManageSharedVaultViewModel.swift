@@ -29,12 +29,13 @@ import ProtonCore_Networking
 final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     @Published private(set) var vault: Vault
     @Published private(set) var itemsNumber: Int?
-    @Published private(set) var users: [UserShareInfos] = []
+    @Published private(set) var users: [ShareUser] = []
     @Published private(set) var loading = false
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let getUsersLinkedToShare: GetUsersLinkedToShareUseCase = resolve(\UseCasesContainer
         .getUsersLinkedToShare)
+    private let getAllUsersForShare = resolve(\UseCasesContainer.getAllUsersForShare)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
 
     init(vault: Vault) {
@@ -42,7 +43,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func isLast(info: UserShareInfos) -> Bool {
+    func isLast(info: ShareUser) -> Bool {
         users.last == info
     }
 }
@@ -59,9 +60,14 @@ private extension ManageSharedVaultViewModel {
             defer { self.loading = false }
             do {
                 self.itemsNumber = self.getVaultItemCount(for: self.vault)
-                let user = try await self.getUsersLinkedToShare(with: vault.shareId)
-                print(user)
-                self.users = user
+                if vault.isAdmin {
+                    self.users = try await self.getAllUsersForShare(with: vault.shareId)
+                        .sorted { $0.email < $1.email }
+                } else {
+                    self.users = try await self.getUsersLinkedToShare(with: vault.shareId)
+                        .map(\.toShareUser)
+                        .sorted { $0.email < $1.email }
+                }
             } catch {
                 print(error)
             }

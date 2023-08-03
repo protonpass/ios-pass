@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
 import Factory
 import ProtonCore_UIFoundations
@@ -34,10 +35,12 @@ struct ManageSharedVaultView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             mainContainer
-            CapsuleTextButton(title: "Share with more people",
-                              titleColor: PassColor.textInvert,
-                              backgroundColor: PassColor.interactionNorm,
-                              action: { router.presentSheet(for: .sharingFlow) })
+            if viewModel.vault.isAdmin {
+                CapsuleTextButton(title: "Share with more people",
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: PassColor.interactionNorm,
+                                  action: { router.presentSheet(for: .sharingFlow) })
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
@@ -100,7 +103,6 @@ private extension ManageSharedVaultView {
     var userList: some View {
         List {
             ForEach(viewModel.users, id: \.self) { user in
-//                Text(user.userName)
                 VStack {
                     userCell(for: user)
                         .padding(16)
@@ -111,47 +113,120 @@ private extension ManageSharedVaultView {
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.white.opacity(0.04))
-//                .cornerRadius(viewModel.isLast(info: user) ? 10 : 0, corners: [.bottomLeft, .bottomRight])
-
-//                .padding(.top, 10)
-//                .cornerRadius(10)
-//                .padding(.top, -10)
             }
         }
         .listStyle(.plain)
         .cornerRadius(10)
-//        .listStyle(.inset)
-//        .background(PassColor.backgroundNorm.toColor)
-//        .colorMultiply(PassColor.backgroundNorm.toColor)
         .onAppear {
             // Set the default to clear
             UITableView.appearance().backgroundColor = .clear
         }
-//        .scrollContentBackground(.hidden)
-//        .listStyle(.plain)
     }
 
-    func userCell(for infos: UserShareInfos) -> some View {
+    func userCell(for infos: ShareUser) -> some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(infos.userEmail.initialsRemovingEmojis()),
+            SquircleThumbnail(data: .initials(infos.email.initialsRemovingEmojis()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
-                Text(infos.userEmail)
+                Text(infos.email)
                     .foregroundColor(PassColor.textNorm.toColor)
-                Text(infos.shareRole.role)
+                Text(infos.shareRole?.role ?? "pending")
                     .foregroundColor(PassColor.textWeak.toColor)
             }
 
             Spacer()
             if viewModel.vault.isAdmin {
-                Image(uiImage: IconProvider.threeDotsVertical)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                vaultTrailingView(viewModel.vault)
+//                Image(uiImage: IconProvider.threeDotsVertical)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 24, height: 24)
+//                    .foregroundColor(Color(uiColor: PassColor.textWeak))
             }
         }
+    }
+}
+
+private extension ManageSharedVaultView {
+    @ViewBuilder
+    private func vaultTrailingView(_ vault: Vault) -> some View {
+        Menu(content: {
+            if vault.isOwner {
+                Button(action: {
+//                    viewModel.edit(vault: vault)
+                }, label: {
+                    Label(title: {
+                        Text("Edit")
+                    }, icon: {
+                        Image(uiImage: IconProvider.pencil)
+                            .renderingMode(.template)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    })
+                })
+            }
+
+            if !vault.isPrimary, vault.isOwner {
+                Button(action: {
+//                    viewModel.share(vault: vault)
+                }, label: {
+                    Label(title: {
+                        Text("Share")
+                    }, icon: {
+                        IconProvider.userPlus
+                    })
+                })
+            }
+
+            if vault.members > 1 {
+                Button(action: {
+//                    viewModel.router.presentSheet(for: .manageShareVault(vault, false))
+                }, label: {
+                    Label(title: {
+                        Text(vault.isAdmin ? "Manage access" : "View members")
+                    }, icon: {
+                        IconProvider.users
+                    })
+                })
+            }
+
+            Divider()
+
+            if vault.isOwner {
+                Button(role: .destructive,
+                       action: {
+//                    viewModel.delete(vault: vault)
+
+                       },
+                       label: {
+                           Label(title: {
+                               Text("Delete vault")
+                           }, icon: {
+                               Image(uiImage: IconProvider.trash)
+                           })
+                       })
+            }
+
+            if !vault.isOwner {
+                Button(role: .destructive,
+                       action: {
+//                    viewModel.leaveVault(vault: vault)
+
+                       },
+                       label: {
+                           Label(title: {
+                               Text("Leave vault")
+                           }, icon: {
+                               Image(uiImage: IconProvider.circleSlash)
+                           })
+                       })
+            }
+        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 24, height: 24)
+            .foregroundColor(Color(uiColor: PassColor.textWeak))
+        })
     }
 }
 
@@ -184,30 +259,30 @@ private extension ManageSharedVaultView {
 //        clipShape(RoundedCorner(radius: radius, corners: corners))
 //    }
 // }
-
-struct CornerRadiusStyle: ViewModifier {
-    var radius: CGFloat
-    var corners: UIRectCorner
-
-    struct CornerRadiusShape: Shape {
-        var radius = CGFloat.infinity
-        var corners = UIRectCorner.allCorners
-
-        func path(in rect: CGRect) -> Path {
-            let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners,
-                                    cornerRadii: CGSize(width: radius, height: radius))
-            return Path(path.cgPath)
-        }
-    }
-
-    func body(content: Content) -> some View {
-        content
-            .clipShape(CornerRadiusShape(radius: radius, corners: corners))
-    }
-}
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
-    }
-}
+//
+// struct CornerRadiusStyle: ViewModifier {
+//    var radius: CGFloat
+//    var corners: UIRectCorner
+//
+//    struct CornerRadiusShape: Shape {
+//        var radius = CGFloat.infinity
+//        var corners = UIRectCorner.allCorners
+//
+//        func path(in rect: CGRect) -> Path {
+//            let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners,
+//                                    cornerRadii: CGSize(width: radius, height: radius))
+//            return Path(path.cgPath)
+//        }
+//    }
+//
+//    func body(content: Content) -> some View {
+//        content
+//            .clipShape(CornerRadiusShape(radius: radius, corners: corners))
+//    }
+// }
+//
+// extension View {
+//    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+//        ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
+//    }
+// }

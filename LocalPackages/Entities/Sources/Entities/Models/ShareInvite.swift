@@ -26,17 +26,6 @@ public struct ShareInvite: Codable {
     public let targetID: String
     public let remindersSent, createTime, modifyTime: Int
 
-    enum CodingKeys: String, CodingKey {
-        case inviteID = "InviteID"
-        case invitedEmail = "InvitedEmail"
-        case inviterEmail = "InviterEmail"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case remindersSent = "RemindersSent"
-        case createTime = "CreateTime"
-        case modifyTime = "ModifyTime"
-    }
-
     public var shareType: TargetType {
         .init(rawValue: Int64(targetType)) ?? .unknown
     }
