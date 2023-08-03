@@ -343,7 +343,7 @@ private extension HomepageCoordinator {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        addTelemetryEvent(with: telemetryEventRepository, eventType: type)
+        addTelemetryEvent(with: type)
     }
 
     func sendAllEventsIfApplicable() {
