@@ -478,6 +478,14 @@
 		3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */; };
 		3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20229C1F14D00805445 /* SearchResultChips.swift */; };
 		3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20629C20A7E00805445 /* SearchResultsView.swift */; };
+		35711D562A7A61B8003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
+		35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
+		35711D582A7A62DD003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
+		35711D5A2A7A76A9003B6845 /* CheckAccessToPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */; };
+		35711D5D2A7A7A01003B6845 /* RefreshFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */; };
+		35711D602A7A7D0C003B6845 /* AddTelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */; };
+		35711D622A7A7D0F003B6845 /* AddTelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */; };
+		35711D632A7A7D10003B6845 /* AddTelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59929BF173A008D4350 /* BannerManager.swift */; };
@@ -1394,6 +1402,10 @@
 		3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemContextMenus.swift"; sourceTree = "<group>"; };
 		3570D20229C1F14D00805445 /* SearchResultChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultChips.swift; sourceTree = "<group>"; };
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
+		35711D552A7A61B8003B6845 /* SaveAllLogs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAllLogs.swift; sourceTree = "<group>"; };
+		35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccessToPass.swift; sourceTree = "<group>"; };
+		35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshFeatureFlags.swift; sourceTree = "<group>"; };
+		35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTelemetryEvent.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59929BF173A008D4350 /* BannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerManager.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -2530,6 +2542,23 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		35711D5B2A7A79C8003B6845 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */,
+				35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		35711D5E2A7A7CEF003B6845 /* Telemetry */ = {
+			isa = PBXGroup;
+			children = (
+				35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */,
+			);
+			path = Telemetry;
+			sourceTree = "<group>";
+		};
 		3572E51729938A1200775FAC /* OTP */ = {
 			isa = PBXGroup;
 			children = (
@@ -3404,6 +3433,8 @@
 				35CEA8CC2A603FFE00343A4E /* Local Authentication */,
 				5B503FE32A4D6D7000E6681C /* Logs */,
 				5B503FE82A4D7ADA00E6681C /* Reports */,
+				35711D5E2A7A7CEF003B6845 /* Telemetry */,
+				35711D5B2A7A79C8003B6845 /* User */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -3414,6 +3445,7 @@
 				5B503FE42A4D6FD000E6681C /* ExtractLogsToFile.swift */,
 				5B503FE62A4D7AAD00E6681C /* ExtractLogsToData.swift */,
 				5B503FF12A4DC6DA00E6681C /* GetLogEntries.swift */,
+				35711D552A7A61B8003B6845 /* SaveAllLogs.swift */,
 			);
 			path = Logs;
 			sourceTree = "<group>";
@@ -4798,6 +4830,7 @@
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
+				35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
 				3559BA962A5AE4DB0020E172 /* PassModule.swift in Sources */,
 				5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */,
@@ -4822,6 +4855,7 @@
 				356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
+				35711D622A7A7D0F003B6845 /* AddTelemetryEvent.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */,
 				354B247B2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift in Sources */,
@@ -4907,8 +4941,10 @@
 				35612519298262A300EDA991 /* LoggerManager+Initializer.swift in Sources */,
 				35CEA8D92A606E3700343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				356125102982544400EDA991 /* KeyboardNotLoggedInView.swift in Sources */,
+				35711D582A7A62DD003B6845 /* SaveAllLogs.swift in Sources */,
 				3572E51D2993AC1700775FAC /* PPError.swift in Sources */,
 				3549AC9B2982F27900BA5CD6 /* ProtonPass.xcdatamodeld in Sources */,
+				35711D632A7A7D10003B6845 /* AddTelemetryEvent.swift in Sources */,
 				3559BAA92A5B32640020E172 /* ClipboardExpiration.swift in Sources */,
 				356125032982438300EDA991 /* KeyboardViewController.swift in Sources */,
 				3559BAA82A5B32640020E172 /* Theme.swift in Sources */,
@@ -4950,8 +4986,10 @@
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				35AC9A682A0C16FE00FBCEEC /* EditCustomFieldView.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
+				35711D602A7A7D0C003B6845 /* AddTelemetryEvent.swift in Sources */,
 				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
+				35711D5A2A7A76A9003B6845 /* CheckAccessToPass.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				5B1453DB2A726AD00048B022 /* InviteBannerViewStack.swift in Sources */,
@@ -4977,6 +5015,7 @@
 				5B14539F2A69652D0048B022 /* SetShareInviteVault.swift in Sources */,
 				5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemUiModel.swift in Sources */,
+				35711D562A7A61B8003B6845 /* SaveAllLogs.swift in Sources */,
 				3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */,
 				5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */,
 				35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */,
@@ -4991,6 +5030,7 @@
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */,
+				35711D5D2A7A7A01003B6845 /* RefreshFeatureFlags.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
 				3559BAA02A5B32550020E172 /* Preferences.swift in Sources */,

@@ -60,12 +60,13 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     }
 
     func loadLogs() {
-        Task { @MainActor in
-            defer { isLoading = false }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.isLoading = false }
             do {
-                isLoading = true
-                entries = try await getLogEntries(for: module)
-                isLoading = false
+                self.isLoading = true
+                self.entries = try await self.getLogEntries(for: self.module)
+                self.isLoading = false
             } catch {
                 self.error = error
             }
@@ -73,17 +74,19 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     }
 
     func shareLogs() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                delegate?.logsViewModelWantsToShowSpinner()
-                fileToDelete = try await extractLogsToFile(for: entries, in: module.exportLogFileName)
-                delegate?.logsViewModelWantsToHideSpinner()
+                self.delegate?.logsViewModelWantsToShowSpinner()
+                self.fileToDelete = try await self.extractLogsToFile(for: self.entries,
+                                                                     in: self.module.exportLogFileName)
+                self.delegate?.logsViewModelWantsToHideSpinner()
                 if let fileToDelete {
-                    delegate?.logsViewModelWantsToShareLogs(fileToDelete)
+                    self.delegate?.logsViewModelWantsToShareLogs(fileToDelete)
                 }
             } catch {
-                delegate?.logsViewModelWantsToHideSpinner()
-                delegate?.logsViewModelDidEncounter(error: error)
+                self.delegate?.logsViewModelWantsToHideSpinner()
+                self.delegate?.logsViewModelDidEncounter(error: error)
             }
         }
     }

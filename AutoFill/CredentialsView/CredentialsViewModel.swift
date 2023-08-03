@@ -97,7 +97,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let upgradeChecker: UpgradeCheckerProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
-    private let logger: Logger
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logManager = resolve(\SharedToolingContainer.logManager)
 
     let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
@@ -132,7 +133,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
             return URL(string: id)
         }
 
-        let logManager = resolve(\SharedToolingContainer.logManager)
         syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
                               userId: userId,
                               shareRepository: shareRepository,
@@ -141,7 +141,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                               itemRepository: itemRepository,
                               shareKeyRepository: shareKeyRepository,
                               logManager: logManager)
-        logger = .init(manager: logManager)
 
         setup()
     }
@@ -192,7 +191,7 @@ extension CredentialsViewModel {
             do {
                 self.logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await self.getItemTask(item: item).value
-                let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+                let oldContent = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
                 guard case let .login(oldData) = oldContent.contentData else {
                     throw PPError.credentialProvider(.notLogInItem)
                 }
@@ -249,7 +248,7 @@ extension CredentialsViewModel {
                 let (credential, itemContent) = try await self.getCredentialTask(for: item).value
                 self.delegate?.credentialsViewModelDidSelect(credential: credential,
                                                              itemContent: itemContent,
-                                                             serviceIdentifiers: serviceIdentifiers)
+                                                             serviceIdentifiers: self.serviceIdentifiers)
                 self.logger.info("Selected \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
@@ -269,11 +268,12 @@ extension CredentialsViewModel {
 
     func createLoginItem() {
         guard case .idle = state else { return }
-        Task { @MainActor in
-            let vaults = try await shareRepository.getVaults()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            let vaults = try await self.shareRepository.getVaults()
             guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
-            delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
-                                                                 url: urls.first)
+            self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
+                                                                      url: self.urls.first)
         }
     }
 
@@ -298,7 +298,7 @@ private extension CredentialsViewModel {
             let hashedTerm = term.sha256
             self.logger.trace("Searching for term \(hashedTerm)")
             self.state = .searching
-            let searchResults = results?.searchableItems.result(for: term) ?? []
+            let searchResults = self.results?.searchableItems.result(for: term) ?? []
             if Task.isCancelled {
                 return
             }
