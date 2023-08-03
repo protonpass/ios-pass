@@ -37,6 +37,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
     private let shareRepository: ShareRepositoryProtocol
     private let passPlanRepository: PassPlanRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
+    private let preferences: Preferences
     private let mapLoginItem: MapLoginItemUseCase
     private let logger: Logger
 
@@ -44,11 +45,13 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
          shareRepository: ShareRepositoryProtocol,
          passPlanRepository: PassPlanRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
+         preferences: Preferences,
          mapLoginItem: MapLoginItemUseCase,
          logManager: LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.passPlanRepository = passPlanRepository
+        self.preferences = preferences
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
         logger = .init(manager: logManager)
@@ -56,8 +59,14 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
 
     func execute() async throws {
         logger.trace("Indexing all login items")
+
+        guard preferences.quickTypeBar else {
+            logger.trace("Skipped indexing all login items. QuickType bar not enabled")
+            return
+        }
+
         guard await credentialManager.isAutoFillEnabled() else {
-            logger.trace("AutoFill not enabled, skipped indexing all login items")
+            logger.trace("Skipped indexing all login items. AutoFill not enabled")
             return
         }
 
