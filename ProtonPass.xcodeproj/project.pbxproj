@@ -607,6 +607,8 @@
 		35C281582A7BDCC70077030C /* MapLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281552A7BD6220077030C /* MapLoginItem.swift */; };
 		35C2815A2A7BED2B0077030C /* IndexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */; };
 		35C2815B2A7BF9DB0077030C /* IndexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */; };
+		35C2815D2A7BFCE40077030C /* UnindexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */; };
+		35C2815E2A7BFD400077030C /* UnindexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
 		35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */; };
 		35CEA8D02A60431400343A4E /* AuthenticateBiometrically.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */; };
@@ -1494,6 +1496,7 @@
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C281552A7BD6220077030C /* MapLoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLoginItem.swift; sourceTree = "<group>"; };
 		35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexAllLoginItems.swift; sourceTree = "<group>"; };
+		35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnindexAllLoginItems.swift; sourceTree = "<group>"; };
 		35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedShareTests.swift"; sourceTree = "<group>"; };
 		35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBiometryType.swift; sourceTree = "<group>"; };
 		35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateBiometrically.swift; sourceTree = "<group>"; };
@@ -2819,6 +2822,7 @@
 			children = (
 				35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */,
 				35C281552A7BD6220077030C /* MapLoginItem.swift */,
+				35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */,
 			);
 			path = AutoFill;
 			sourceTree = "<group>";
@@ -4855,6 +4859,7 @@
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				359DB2A62A700BF100549466 /* VaultContentUiModel.swift in Sources */,
 				35CEA8D22A60443600343A4E /* CheckBiometryType.swift in Sources */,
+				35C2815E2A7BFD400077030C /* UnindexAllLoginItems.swift in Sources */,
 				354B24732A77D1BD0060EDF7 /* UpdateCredentialRank.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3561C9F929E6E65600D6E518 /* VaultThumbnail.swift in Sources */,
@@ -5139,6 +5144,7 @@
 				5B1453A62A69662D0048B022 /* ShareInviteService.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
+				35C2815D2A7BFCE40077030C /* UnindexAllLoginItems.swift in Sources */,
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,

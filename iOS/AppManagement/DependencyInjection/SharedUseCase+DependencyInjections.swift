@@ -47,6 +47,10 @@ private extension SharedUseCasesContainer {
     var preferences: Preferences {
         SharedToolingContainer.shared.preferences()
     }
+
+    var credentialManager: CredentialManagerProtocol {
+        SharedServiceContainer.shared.credentialManager()
+    }
 }
 
 // MARK: Permission
@@ -97,9 +101,13 @@ extension SharedUseCasesContainer {
         self { IndexAllLoginItems(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                   passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
-                                  credentialManager: SharedServiceContainer.shared.credentialManager(),
+                                  credentialManager: self.credentialManager,
                                   preferences: self.preferences,
                                   mapLoginItem: self.mapLoginItem(),
                                   logManager: self.logManager) }
+    }
+
+    var unindexAllLoginItems: Factory<UnindexAllLoginItemsUseCase> {
+        self { UnindexAllLoginItems(manager: self.credentialManager) }
     }
 }
