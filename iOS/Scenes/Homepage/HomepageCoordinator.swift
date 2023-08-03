@@ -107,7 +107,6 @@ private extension HomepageCoordinator {
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
         passPlanRepository.delegate = self
-        (itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
@@ -137,7 +136,6 @@ private extension HomepageCoordinator {
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.start()
                 self.eventLoop.forceSync()
-                self.updateCredentials(forceRemoval: false)
                 self.refreshPlan()
             }
             .store(in: &cancellables)
@@ -356,21 +354,6 @@ private extension HomepageCoordinator {
         }
     }
 
-    func updateCredentials(forceRemoval: Bool) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
-                                                                      shareRepository: self.shareRepository,
-                                                                      passPlanRepository: self.passPlanRepository,
-                                                                      forceRemoval: forceRemoval)
-                self.logger.info("Updated all credentials.")
-            } catch {
-                self.logger.error(error)
-            }
-        }
-    }
-
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             self?.paymentsManager.upgradeSubscription { [weak self] result in
@@ -483,7 +466,6 @@ extension HomepageCoordinator {
 extension HomepageCoordinator: PassPlanRepositoryDelegate {
     func passPlanRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
-        updateCredentials(forceRemoval: true)
         homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
         profileTabViewModel?.refreshPlan()
     }
