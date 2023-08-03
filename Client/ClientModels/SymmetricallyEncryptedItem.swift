@@ -21,7 +21,7 @@
 import CryptoKit
 
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
-public struct SymmetricallyEncryptedItem: Equatable {
+public struct SymmetricallyEncryptedItem: Equatable, Sendable {
     /// ID of the share that the item belongs to
     public let shareId: String
 

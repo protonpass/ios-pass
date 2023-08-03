@@ -22,9 +22,9 @@ import AuthenticationServices
 import Core
 
 /// A proxy object for `ASPasswordCredentialIdentity` to interact with the credential database
-public struct AutoFillCredential {
+public struct AutoFillCredential: Sendable {
     /// A combination of `shareId` and `itemId` of an item to make up an unique ID
-    public struct IDs: CodableBase64, ItemIdentifiable {
+    public struct IDs: CodableBase64, ItemIdentifiable, Sendable {
         public let shareId: String
         public let itemId: String
     }
