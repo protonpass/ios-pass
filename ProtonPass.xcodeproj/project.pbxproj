@@ -603,11 +603,10 @@
 		35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35C2162729EA8B0B001720FF /* macOS-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */; };
-		35C281542A7BD38C0077030C /* IndexLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281532A7BD38C0077030C /* IndexLoginItem.swift */; };
 		35C281562A7BD6220077030C /* MapLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281552A7BD6220077030C /* MapLoginItem.swift */; };
-		35C281572A7BDCC50077030C /* IndexLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281532A7BD38C0077030C /* IndexLoginItem.swift */; };
 		35C281582A7BDCC70077030C /* MapLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281552A7BD6220077030C /* MapLoginItem.swift */; };
 		35C2815A2A7BED2B0077030C /* IndexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */; };
+		35C2815B2A7BF9DB0077030C /* IndexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
 		35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */; };
 		35CEA8D02A60431400343A4E /* AuthenticateBiometrically.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */; };
@@ -1493,7 +1492,6 @@
 		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162829EA911E001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		35C281532A7BD38C0077030C /* IndexLoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexLoginItem.swift; sourceTree = "<group>"; };
 		35C281552A7BD6220077030C /* MapLoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLoginItem.swift; sourceTree = "<group>"; };
 		35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexAllLoginItems.swift; sourceTree = "<group>"; };
 		35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedShareTests.swift"; sourceTree = "<group>"; };
@@ -2820,7 +2818,6 @@
 			isa = PBXGroup;
 			children = (
 				35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */,
-				35C281532A7BD38C0077030C /* IndexLoginItem.swift */,
 				35C281552A7BD6220077030C /* MapLoginItem.swift */,
 			);
 			path = AutoFill;
@@ -4749,6 +4746,7 @@
 				3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */,
 				35CEA8D82A606E3600343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				35C281582A7BDCC70077030C /* MapLoginItem.swift in Sources */,
+				35C2815B2A7BF9DB0077030C /* IndexAllLoginItems.swift in Sources */,
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
@@ -4854,7 +4852,6 @@
 				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
 				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
-				35C281572A7BDCC50077030C /* IndexLoginItem.swift in Sources */,
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				359DB2A62A700BF100549466 /* VaultContentUiModel.swift in Sources */,
 				35CEA8D22A60443600343A4E /* CheckBiometryType.swift in Sources */,
@@ -5086,7 +5083,6 @@
 				5B503FD82A4C82D700E6681C /* ReportRepository.swift in Sources */,
 				35CEA8DD2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */,
 				3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */,
-				35C281542A7BD38C0077030C /* IndexLoginItem.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
