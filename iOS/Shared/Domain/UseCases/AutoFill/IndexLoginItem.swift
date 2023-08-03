@@ -1,5 +1,5 @@
 //
-// IndexNewLoginItem.swift
+// IndexLoginItem.swift
 // Proton Pass - Created on 03/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -19,29 +19,36 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 
-/// Add newly created login item to the credential database
-protocol IndexNewLoginItemUseCase: Sendable {
+/// Add newly created/updated  login item to the credential database
+protocol IndexLoginItemUseCase: Sendable {
     func execute(for item: SymmetricallyEncryptedItem) async throws
 }
 
-extension IndexNewLoginItemUseCase {
+extension IndexLoginItemUseCase {
     func callAsFunction(for item: SymmetricallyEncryptedItem) async throws {
         try await execute(for: item)
     }
 }
 
-final class IndexNewLoginItem: Sendable, IndexNewLoginItemUseCase {
+final class IndexLoginItem: Sendable, IndexLoginItemUseCase {
     private let mapLoginItem: MapLoginItemUseCase
-    private let manager: CredentialManagerProtocol
+    private let credentialManager: CredentialManagerProtocol
+    private let logger: Logger
 
-    init(mapLoginItem: MapLoginItemUseCase, manager: CredentialManagerProtocol) {
+    init(mapLoginItem: MapLoginItemUseCase,
+         credentialManager: CredentialManagerProtocol,
+         logManager: LogManagerProtocol) {
         self.mapLoginItem = mapLoginItem
-        self.manager = manager
+        self.credentialManager = credentialManager
+        logger = .init(manager: logManager)
     }
 
     func execute(for item: SymmetricallyEncryptedItem) async throws {
+        logger.trace("Indexing \(item.debugInformation)")
         let credentials = try mapLoginItem(for: item)
-        try await manager.insert(credentials: credentials)
+        try await credentialManager.insert(credentials: credentials)
+        logger.trace("Indexed \(item.debugInformation)")
     }
 }
