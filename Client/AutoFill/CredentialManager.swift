@@ -21,7 +21,7 @@
 import AuthenticationServices
 import Core
 
-public protocol CredentialManagerProtocol {
+public protocol CredentialManagerProtocol: Sendable {
     /// Whether users had choosen Proton Pass as AutoFill Provider
     func isAutoFillEnabled() async -> Bool
 
@@ -41,9 +41,11 @@ public protocol CredentialManagerProtocol {
     func removeAllCredentials() async throws
 }
 
+extension ASCredentialIdentityStore: @unchecked Sendable {}
+
 public final class CredentialManager {
-    public var store: ASCredentialIdentityStore
-    public var logger: Logger
+    public let store: ASCredentialIdentityStore
+    public let logger: Logger
 
     public init(logManager: LogManagerProtocol,
                 store: ASCredentialIdentityStore = .shared) {
