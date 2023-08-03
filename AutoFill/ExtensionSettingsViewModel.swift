@@ -44,14 +44,14 @@ final class ExtensionSettingsViewModel: ObservableObject {
 
     @Published var isLocked: Bool
 
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     weak var delegate: ExtensionSettingsViewModelDelegate?
+
+    // Use cases
+    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     init() {
         quickTypeBar = preferences.quickTypeBar
@@ -76,32 +76,24 @@ extension ExtensionSettingsViewModel {
 
 private extension ExtensionSettingsViewModel {
     func populateOrRemoveCredentials() {
-        /*
-         guard quickTypeBar != preferences.quickTypeBar else { return }
-         Task { @MainActor [weak self] in
-             guard let self else { return }
-             defer { self.delegate?.extensionSettingsViewModelWantsToHideSpinner() }
-             do {
-                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
-                 self.delegate?.extensionSettingsViewModelWantsToShowSpinner()
-                 if self.quickTypeBar {
-                     try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
-                                                                           shareRepository: self.shareRepository,
-                                                                           passPlanRepository: self
-                                                                               .passPlanRepository,
-                                                                           forceRemoval: true)
-                     self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
-                 } else {
-                     try await self.credentialManager.removeAllCredentials()
-                     self.logger.info("Nuked credential database QuickTypeBar \(self.quickTypeBar)")
-                 }
-                 self.preferences.quickTypeBar = self.quickTypeBar
-             } catch {
-                 self.logger.error(error)
-                 self.quickTypeBar.toggle() // rollback to previous value
-                 self.delegate?.extensionSettingsViewModelDidEncounter(error: error)
-             }
-         }
-          */
+        guard quickTypeBar != preferences.quickTypeBar else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.delegate?.extensionSettingsViewModelWantsToHideSpinner() }
+            do {
+                self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
+                self.delegate?.extensionSettingsViewModelWantsToShowSpinner()
+                if self.quickTypeBar {
+                    try await self.indexAllLoginItems()
+                } else {
+                    try await self.unindexAllLoginItems()
+                }
+                self.preferences.quickTypeBar = self.quickTypeBar
+            } catch {
+                self.logger.error(error)
+                self.quickTypeBar.toggle() // rollback to previous value
+                self.delegate?.extensionSettingsViewModelDidEncounter(error: error)
+            }
+        }
     }
 }
