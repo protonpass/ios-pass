@@ -74,7 +74,8 @@ extension UseCasesContainer {
     }
 
     var setShareInviteVault: Factory<SetShareInviteVaultUseCase> {
-        self { SetShareInviteVault(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+        self { SetShareInviteVault(shareInviteService: ServiceContainer.shared.shareInviteService(),
+                                   getVaultItemCount: self.getVaultItemCount()) }
     }
 
     var setShareInviteUserEmailAndKeys: Factory<SetShareInviteUserEmailAndKeysUseCase> {
@@ -95,6 +96,10 @@ extension UseCasesContainer {
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
         self { GetEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
     }
+
+    var leaveShare: Factory<LeaveShareUseCase> {
+        self { LeaveShare(repository: SharedRepositoryContainer.shared.shareRepository()) }
+    }
 }
 
 // MARK: - Invites
@@ -105,7 +110,8 @@ extension UseCasesContainer {
     }
 
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
-        self { RefreshInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
+        self { RefreshInvitations(repository: RepositoryContainer.shared.inviteRepository(),
+                                  getFeatureFlagStatus: self.getFeatureFlagStatus()) }
     }
 
     var rejectInvitation: Factory<RejectInvitationUseCase> {
@@ -126,15 +132,26 @@ extension UseCasesContainer {
     var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
         self { UpdateCachedInvitations(repository: RepositoryContainer.shared.inviteRepository()) }
     }
+
+    var getUsersLinkedToShare: Factory<GetUsersLinkedToShareUseCase> {
+        self { GetUsersLinkedToShare(repository: SharedRepositoryContainer.shared.shareRepository()) }
+    }
 }
 
 // MARK: - Flags
 
 extension UseCasesContainer {
     var userSharingStatus: Factory<UserSharingStatusUseCase> {
-        self { UserSharingStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+        self { UserSharingStatus(getFeatureFlagStatus: self.getFeatureFlagStatus(),
                                  passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
                                  logManager: SharedToolingContainer.shared.logManager()) }
+    }
+
+    var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
+        self {
+            GetFeatureFlagStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 logManager: SharedToolingContainer.shared.logManager())
+        }
     }
 }
 
