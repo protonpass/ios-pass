@@ -31,8 +31,8 @@ public enum TelemetryEventSendResult {
 // MARK: - TelemetryEventRepositoryProtocol
 
 public protocol TelemetryEventRepositoryProtocol {
-    var localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol { get }
-    var remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol { get }
+    var localDatasource: LocalTelemetryEventDatasourceProtocol { get }
+    var remoteDatasource: RemoteTelemetryEventDatasourceProtocol { get }
     var remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol { get }
     var passPlanRepository: PassPlanRepositoryProtocol { get }
     var eventCount: Int { get }
@@ -48,10 +48,10 @@ public protocol TelemetryEventRepositoryProtocol {
 
 public extension TelemetryEventRepositoryProtocol {
     func addNewEvent(type: TelemetryEventType) async throws {
-        try await localTelemetryEventDatasource.insert(event: .init(uuid: UUID().uuidString,
-                                                                    time: Date.now.timeIntervalSince1970,
-                                                                    type: type),
-                                                       userId: userId)
+        try await localDatasource.insert(event: .init(uuid: UUID().uuidString,
+                                                      time: Date.now.timeIntervalSince1970,
+                                                      type: type),
+                                         userId: userId)
         logger.debug("Added new event")
     }
 
@@ -69,7 +69,7 @@ public extension TelemetryEventRepositoryProtocol {
 
         if !userSettings.telemetry {
             logger.info("Telemetry disabled, removing all local events.")
-            try await localTelemetryEventDatasource.removeAllEvents(userId: userId)
+            try await localDatasource.removeAllEvents(userId: userId)
             return .thresholdReachedButTelemetryOff
         }
 
@@ -77,14 +77,14 @@ public extension TelemetryEventRepositoryProtocol {
         let plan = try await passPlanRepository.refreshPlan()
 
         while true {
-            let events = try await localTelemetryEventDatasource.getOldestEvents(count: eventCount,
-                                                                                 userId: userId)
+            let events = try await localDatasource.getOldestEvents(count: eventCount,
+                                                                   userId: userId)
             if events.isEmpty {
                 break
             }
             let eventInfos = events.map { EventInfo(event: $0, userTier: plan.internalName) }
-            try await remoteTelemetryEventDatasource.send(events: eventInfos)
-            try await localTelemetryEventDatasource.remove(events: events, userId: userId)
+            try await remoteDatasource.send(events: eventInfos)
+            try await localDatasource.remove(events: events, userId: userId)
         }
 
         logger.info("Sent all events")
@@ -93,8 +93,8 @@ public extension TelemetryEventRepositoryProtocol {
 }
 
 public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
-    public let localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol
-    public let remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol
+    public let localDatasource: LocalTelemetryEventDatasourceProtocol
+    public let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
     public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
     public let passPlanRepository: PassPlanRepositoryProtocol
     public let eventCount: Int
@@ -102,16 +102,16 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let scheduler: TelemetrySchedulerProtocol
     public let userId: String
 
-    public init(localTelemetryEventDatasource: LocalTelemetryEventDatasourceProtocol,
-                remoteTelemetryEventDatasource: RemoteTelemetryEventDatasourceProtocol,
+    public init(localDatasource: LocalTelemetryEventDatasourceProtocol,
+                remoteDatasource: RemoteTelemetryEventDatasourceProtocol,
                 remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
                 passPlanRepository: PassPlanRepositoryProtocol,
                 logManager: LogManagerProtocol,
                 scheduler: TelemetrySchedulerProtocol,
                 userId: String,
                 eventCount: Int = 500) {
-        self.localTelemetryEventDatasource = localTelemetryEventDatasource
-        self.remoteTelemetryEventDatasource = remoteTelemetryEventDatasource
+        self.localDatasource = localDatasource
+        self.remoteDatasource = remoteDatasource
         self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
         self.passPlanRepository = passPlanRepository
         self.eventCount = eventCount

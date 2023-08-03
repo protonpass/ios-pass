@@ -25,7 +25,7 @@ import UIComponents
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: OnboardingViewModel
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let theme = resolve(\SharedToolingContainer.theme)
 
     var body: some View {
         VStack {
@@ -97,7 +97,7 @@ struct OnboardingView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .edgesIgnoringSafeArea(.all)
-        .theme(preferences.theme)
+        .theme(theme)
         .onReceiveBoolean(viewModel.$finished, perform: dismiss.callAsFunction)
     }
 }
