@@ -154,6 +154,10 @@ private extension VaultsManager {
         }
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
+
+        Task.detached(priority: .background) { [weak self] in
+            try await self?.indexAllLoginItems(ignorePreferences: false)
+        }
     }
 }
 
@@ -196,8 +200,6 @@ extension VaultsManager {
                     try await self.loadContents(for: vaults)
                     self.logger.info("Not manual login, done getting local shares & items")
                 }
-
-                try await indexAllLoginItems()
             } catch {
                 self.state = .error(error)
             }

@@ -23,12 +23,12 @@ import Core
 
 /// Empty credential database and reindex all existing login items
 protocol IndexAllLoginItemsUseCase: Sendable {
-    func execute() async throws
+    func execute(ignorePreferences: Bool) async throws
 }
 
 extension IndexAllLoginItemsUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(ignorePreferences: Bool) async throws {
+        try await execute(ignorePreferences: ignorePreferences)
     }
 }
 
@@ -57,10 +57,11 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
         logger = .init(manager: logManager)
     }
 
-    func execute() async throws {
+    func execute(ignorePreferences: Bool) async throws {
+        let start = Date()
         logger.trace("Indexing all login items")
 
-        guard preferences.quickTypeBar else {
+        guard preferences.quickTypeBar || ignorePreferences else {
             logger.trace("Skipped indexing all login items. QuickType bar not enabled")
             return
         }
@@ -86,6 +87,9 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
 
         let credentials = try items.flatMap(mapLoginItem.execute)
         try await credentialManager.insert(credentials: credentials)
-        logger.info("Indexed \(items.count) login items")
+
+        let time = Date().timeIntervalSince1970 - start.timeIntervalSince1970
+        let priority = Task.currentPriority.debugDescription
+        logger.info("Indexed \(items.count) login items in \(time) seconds with priority \(priority)")
     }
 }
