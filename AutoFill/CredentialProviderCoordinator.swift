@@ -278,9 +278,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         shareRepository = repositoryManager.shareRepository
         shareEventIDRepository = repositoryManager.shareEventIDRepository
 
-        let itemRepository = repositoryManager.itemRepository
-        (itemRepository as? ItemRepository)?.delegate = credentialManager as? ItemRepositoryDelegate
-        self.itemRepository = itemRepository
+        itemRepository = repositoryManager.itemRepository
         favIconRepository = FavIconRepository(apiService: apiService,
                                               containerUrl: URL.favIconsContainerURL(),
                                               settings: preferences,

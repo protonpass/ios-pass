@@ -221,32 +221,34 @@ private extension ProfileTabViewModel {
     func populateOrRemoveCredentials() {
         // When not enabled, iOS already deleted the credential database.
         // Atempting to populate this database will throw an error anyway so early exit here
-        guard autoFillEnabled else { return }
+        /*
+         guard autoFillEnabled else { return }
 
-        guard quickTypeBar != preferences.quickTypeBar else { return }
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            defer { self.delegate?.profileTabViewModelWantsToHideSpinner() }
-            do {
-                self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
-                self.delegate?.profileTabViewModelWantsToShowSpinner()
-                if self.quickTypeBar {
-                    try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
-                                                                          shareRepository: self.shareRepository,
-                                                                          passPlanRepository: self
-                                                                              .passPlanRepository,
-                                                                          forceRemoval: true)
-                    self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
-                } else {
-                    try await self.credentialManager.removeAllCredentials()
-                    self.logger.info("Nuked credential database QuickTypeBar \(self.quickTypeBar)")
-                }
-                self.preferences.quickTypeBar = self.quickTypeBar
-            } catch {
-                self.logger.error(error)
-                self.quickTypeBar.toggle() // rollback to previous value
-                self.delegate?.profileTabViewModelDidEncounter(error: error)
-            }
-        }
+         guard quickTypeBar != preferences.quickTypeBar else { return }
+         Task { @MainActor [weak self] in
+             guard let self else { return }
+             defer { self.delegate?.profileTabViewModelWantsToHideSpinner() }
+             do {
+                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
+                 self.delegate?.profileTabViewModelWantsToShowSpinner()
+                 if self.quickTypeBar {
+                     try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
+                                                                           shareRepository: self.shareRepository,
+                                                                           passPlanRepository: self
+                                                                               .passPlanRepository,
+                                                                           forceRemoval: true)
+                     self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
+                 } else {
+                     try await self.credentialManager.removeAllCredentials()
+                     self.logger.info("Nuked credential database QuickTypeBar \(self.quickTypeBar)")
+                 }
+                 self.preferences.quickTypeBar = self.quickTypeBar
+             } catch {
+                 self.logger.error(error)
+                 self.quickTypeBar.toggle() // rollback to previous value
+                 self.delegate?.profileTabViewModelDidEncounter(error: error)
+             }
+         }
+          */
     }
 }
