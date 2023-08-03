@@ -772,6 +772,8 @@
 		5BA663F02A7BB4860049EA68 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663EF2A7BB4860049EA68 /* UIImage+Extensions.swift */; };
 		5BA663F22A7BDC6D0049EA68 /* LeaveShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */; };
 		5BA663F42A7BDD9B0049EA68 /* DeleteShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F32A7BDD9B0049EA68 /* DeleteShareEndpoint.swift */; };
+		5BA663F62A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */; };
+		5BA663F82A7BF1F70049EA68 /* GetAllUsersForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1642,6 +1644,8 @@
 		5BA663EF2A7BB4860049EA68 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveShare.swift; sourceTree = "<group>"; };
 		5BA663F32A7BDD9B0049EA68 /* DeleteShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteShareEndpoint.swift; sourceTree = "<group>"; };
+		5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingInvitationsForShare.swift; sourceTree = "<group>"; };
+		5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAllUsersForShare.swift; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
@@ -3271,6 +3275,8 @@
 				5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */,
 				5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */,
 				5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */,
+				5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */,
+				5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */,
 			);
 			path = "Sharing+Invitations";
 			sourceTree = "<group>";
@@ -5145,6 +5151,7 @@
 				3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */,
 				5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */,
 				5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */,
+				5BA663F62A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift in Sources */,
 				3569B2A629B7C39F0070830B /* View+Theme.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
@@ -5160,6 +5167,7 @@
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
+				5BA663F82A7BF1F70049EA68 /* GetAllUsersForShare.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
