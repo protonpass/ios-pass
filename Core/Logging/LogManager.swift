@@ -78,8 +78,8 @@ public actor LogManager: LogManagerProtocol {
         if let logContents = try? String(contentsOf: url, encoding: .utf8) {
             currentSavedlogs = logContents.components(separatedBy: .newlines)
         }
-        Task {
-            await setUp()
+        Task { [weak self] in
+            await self?.setUp()
         }
     }
 

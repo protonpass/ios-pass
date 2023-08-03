@@ -161,9 +161,10 @@ extension HomepageTabBarController {
     }
 
     func refreshTabBarIcons() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                let plan = try await passPlanRepository.getPlan()
+                let plan = try await self.passPlanRepository.getPlan()
 
                 let image: UIImage
                 let selectedImage: UIImage
@@ -179,10 +180,10 @@ extension HomepageTabBarController {
                     selectedImage = PassIcon.tabProfileTrialSelected
                 }
 
-                profileTabViewController?.tabBarItem.image = image
-                profileTabViewController?.tabBarItem.selectedImage = selectedImage
+                self.profileTabViewController?.tabBarItem.image = image
+                self.profileTabViewController?.tabBarItem.selectedImage = selectedImage
             } catch {
-                logger.error(error)
+                self.logger.error(error)
             }
         }
     }
