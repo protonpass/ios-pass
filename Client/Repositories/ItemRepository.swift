@@ -28,11 +28,6 @@ import ProtonCore_Services
 
 private let kBatchPageSize = 99
 
-public protocol ItemRepositoryDelegate: AnyObject {
-    func itemRepositoryHasNewCredentials(_ credentials: [AutoFillCredential])
-    func itemRepositoryDeletedCredentials(_ credentials: [AutoFillCredential])
-}
-
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     var userData: UserData { get }
     var symmetricKey: SymmetricKey { get }
@@ -41,7 +36,6 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     var shareEventIDRepository: ShareEventIDRepositoryProtocol { get }
     var passKeyManager: PassKeyManagerProtocol { get }
     var logger: Logger { get }
-    var delegate: ItemRepositoryDelegate? { get }
 
     /// Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
@@ -170,11 +164,6 @@ public extension ItemRepositoryProtocol {
                                                         userId: userData.user.ID,
                                                         shareId: shareId)
         logger.trace("Refreshed last event ID for share \(shareId)")
-
-        logger.trace("Extracting new credentials from \(encryptedItems.count) remote items")
-        let newCredentials = try getCredentials(from: encryptedItems, state: .active)
-        delegate?.itemRepositoryHasNewCredentials(newCredentials)
-        logger.trace("Delegated \(newCredentials.count) new credentials")
     }
 
     func createItem(itemContent: ProtobufableItemContentProtocol,
@@ -187,10 +176,6 @@ public extension ItemRepositoryProtocol {
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision, shareId: shareId)
         try await localDatasoure.upsertItems([encryptedItem])
         logger.trace("Saved item \(createdItemRevision.itemID) to local database")
-
-        let newCredentials = try getCredentials(from: [encryptedItem], state: .active)
-        delegate?.itemRepositoryHasNewCredentials(newCredentials)
-        logger.trace("Delegated \(newCredentials.count) new credentials")
 
         return encryptedItem
     }
@@ -250,11 +235,6 @@ public extension ItemRepositoryProtocol {
                 logger.trace("Trashed \(batch.count) items for share \(shareId)")
             }
         }
-
-        logger.trace("Extracting deleted credentials from \(items.count) deleted items")
-        let deletedCredentials = try getCredentials(from: items, state: .active)
-        delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
-        logger.trace("Delegated \(deletedCredentials.count) deleted credentials")
     }
 
     func deleteAlias(email: String) async throws {
@@ -283,11 +263,6 @@ public extension ItemRepositoryProtocol {
                 logger.trace("Untrashed \(batch.count) items for share \(shareId)")
             }
         }
-
-        logger.trace("Extracting new credentials from \(items.count) untrashed items")
-        let newCredentials = try getCredentials(from: items, state: .trashed)
-        delegate?.itemRepositoryHasNewCredentials(newCredentials)
-        logger.trace("Delegated \(newCredentials.count) new credentials")
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws {
@@ -346,26 +321,6 @@ public extension ItemRepositoryProtocol {
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision, shareId: shareId)
         try await localDatasoure.upsertItems([encryptedItem])
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
-
-        if case let .login(oldData) = oldItemContentData?.contentData,
-           case let .login(newData) = newItemContent.contentData {
-            let ids = AutoFillCredential.IDs(shareId: shareId, itemId: itemId)
-            let deletedCredentials = oldData.urls.map { oldUrl in
-                AutoFillCredential(ids: ids,
-                                   username: oldData.username,
-                                   url: oldUrl,
-                                   lastUseTime: encryptedItem.item.lastUseTime ?? 0)
-            }
-            let newCredentials = newData.urls.map { newUrl in
-                AutoFillCredential(ids: ids,
-                                   username: newData.username,
-                                   url: newUrl,
-                                   lastUseTime: encryptedItem.item.lastUseTime ?? 0)
-            }
-            delegate?.itemRepositoryDeletedCredentials(deletedCredentials)
-            delegate?.itemRepositoryHasNewCredentials(newCredentials)
-            logger.trace("Delegated updated credential")
-        }
     }
 
     func upsertItems(_ items: [ItemRevision], shareId: String) async throws {
@@ -439,25 +394,6 @@ private extension ItemRepositoryProtocol {
                      isLogInItem: isLogInItem)
     }
 
-    func getCredentials(from encryptedItems: [SymmetricallyEncryptedItem],
-                        state: ItemState) throws -> [AutoFillCredential] {
-        let encryptedLogInItems = encryptedItems.filter { $0.item.itemState == state }
-        var credentials = [AutoFillCredential]()
-        for encryptedLogInItem in encryptedLogInItems {
-            let decryptedLogInItem = try encryptedLogInItem.getItemContent(symmetricKey: symmetricKey)
-            if case let .login(data) = decryptedLogInItem.contentData {
-                for url in data.urls {
-                    credentials.append(.init(ids: .init(shareId: decryptedLogInItem.shareId,
-                                                        itemId: decryptedLogInItem.item.itemID),
-                                             username: data.username,
-                                             url: url,
-                                             lastUseTime: encryptedLogInItem.item.lastUseTime ?? 0))
-                }
-            }
-        }
-        return credentials
-    }
-
     func createItemRequest(itemContent: ProtobufableItemContentProtocol,
                            shareId: String) async throws -> CreateItemRequest {
         let latestKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
@@ -502,7 +438,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
     public let shareEventIDRepository: ShareEventIDRepositoryProtocol
     public let passKeyManager: PassKeyManagerProtocol
     public let logger: Logger
-    public weak var delegate: ItemRepositoryDelegate?
 
     public init(userData: UserData,
                 symmetricKey: SymmetricKey,
