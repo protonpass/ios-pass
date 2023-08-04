@@ -46,6 +46,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     private let revokeInvitation = resolve(\UseCasesContainer.revokeInvitation)
     private let sendInviteReminder = resolve(\UseCasesContainer.sendInviteReminder)
     private let updateUserShareRole = resolve(\UseCasesContainer.updateUserShareRole)
+    private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
 
@@ -102,6 +103,26 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
             defer { self.loading = false }
             do {
                 try await self.revokeInvitation(with: self.vault.shareId, and: inviteId)
+                self.fetchShareInformation()
+            } catch {
+                print(error)
+                self.error = error
+            }
+        }
+    }
+
+    func revokeShareAccess(for user: ShareUser) {
+        guard let userShareId = user.shareID else {
+            return
+        }
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            self.loading = true
+            defer { self.loading = false }
+            do {
+                try await self.revokeUserShareAccess(with: userShareId, and: self.vault.shareId)
                 self.fetchShareInformation()
             } catch {
                 print(error)
