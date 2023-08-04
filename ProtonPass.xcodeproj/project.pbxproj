@@ -782,6 +782,9 @@
 		5BA663F42A7BDD9B0049EA68 /* DeleteShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F32A7BDD9B0049EA68 /* DeleteShareEndpoint.swift */; };
 		5BA663F62A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */; };
 		5BA663F82A7BF1F70049EA68 /* GetAllUsersForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */; };
+		5BA663FA2A7CFD8A0049EA68 /* RevokeInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */; };
+		5BA663FC2A7D00AB0049EA68 /* SendInviteReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */; };
+		5BA663FE2A7D04D50049EA68 /* UpdateUserShareRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1658,6 +1661,9 @@
 		5BA663F32A7BDD9B0049EA68 /* DeleteShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteShareEndpoint.swift; sourceTree = "<group>"; };
 		5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingInvitationsForShare.swift; sourceTree = "<group>"; };
 		5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAllUsersForShare.swift; sourceTree = "<group>"; };
+		5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeInvitation.swift; sourceTree = "<group>"; };
+		5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendInviteReminder.swift; sourceTree = "<group>"; };
+		5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserShareRole.swift; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
@@ -3306,6 +3312,9 @@
 				5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */,
 				5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */,
 				5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */,
+				5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */,
+				5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */,
+				5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */,
 			);
 			path = "Sharing+Invitations";
 			sourceTree = "<group>";
@@ -5049,6 +5058,7 @@
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
 				5BFFB50A2A5BFF2000C2D1F9 /* CheckCameraPermission.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
+				5BA663FC2A7D00AB0049EA68 /* SendInviteReminder.swift in Sources */,
 				355E92782A59D2D500C22703 /* Factory+Extensions.swift in Sources */,
 				5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
@@ -5144,6 +5154,7 @@
 				3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */,
 				356BC36729D7266800F03497 /* EditPrimaryVaultView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,
+				5BA663FE2A7D04D50049EA68 /* UpdateUserShareRole.swift in Sources */,
 				354E9AAB2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
 				3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */,
 				35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */,
@@ -5164,6 +5175,7 @@
 				5BA663EE2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				5B653AEB2A77DF0B00D6869A /* RefreshInvitations.swift in Sources */,
+				5BA663FA2A7CFD8A0049EA68 /* RevokeInvitation.swift in Sources */,
 				3571B59A29BF173A008D4350 /* BannerManager.swift in Sources */,
 				3565622429BA5C5900C43F72 /* SortTypeListView.swift in Sources */,
 				35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */,

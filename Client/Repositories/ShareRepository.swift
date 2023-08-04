@@ -47,6 +47,7 @@ public protocol ShareRepositoryProtocol {
 
     func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
 
+    @discardableResult
     func updateUserPermission(userId: String,
                               shareId: String,
                               shareRole: ShareRole?,
