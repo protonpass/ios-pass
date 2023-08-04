@@ -406,7 +406,7 @@ private extension HomepageCoordinator {
         router
             .newPresentationDestination
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { _ in
                 print("plop")
             }
             .store(in: &cancellables)

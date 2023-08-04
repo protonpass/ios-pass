@@ -24,7 +24,7 @@ import ProtonCore_Services
 
 // https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/put_pass-v1-share-%7Benc_shareID%7D-user-%7Benc_userShareID%7D
 public struct UpdateUserSharePermissionsEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
+    public typealias Body = UserSharePermissionRequest
     public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
@@ -42,7 +42,7 @@ public struct UpdateUserSharePermissionsEndpoint: Endpoint {
     }
 }
 
-public struct UserSharePermissionRequest {
+public struct UserSharePermissionRequest: Encodable {
     public let shareRoleID: String?
     public let expireTime: Int?
 

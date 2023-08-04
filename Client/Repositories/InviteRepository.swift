@@ -31,6 +31,7 @@ public protocol InviteRepositoryProtocol: Sendable {
 
     func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool
+
     @discardableResult
     func rejectInvite(with inviteToken: String) async throws -> Bool
     func refreshInvites() async

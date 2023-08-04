@@ -20,23 +20,36 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
+@preconcurrency import Client
+import Combine
 import Entities
 import Factory
 import Foundation
 import ProtonCore_Networking
 
 final class ManageSharedVaultViewModel: ObservableObject, Sendable {
-    @Published private(set) var vault: Vault
+    let vault: Vault
     @Published private(set) var itemsNumber: Int?
     @Published private(set) var users: [ShareUser] = []
+    @Published private(set) var fetching = false
     @Published private(set) var loading = false
+    @Published var userRole: ShareRole = .read
+    @Published var error: Error?
+
+    private var currentSelectedUser: ShareUser?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let getUsersLinkedToShare: GetUsersLinkedToShareUseCase = resolve(\UseCasesContainer
         .getUsersLinkedToShare)
     private let getAllUsersForShare = resolve(\UseCasesContainer.getAllUsersForShare)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
+    private let revokeInvitation = resolve(\UseCasesContainer.revokeInvitation)
+    private let sendInviteReminder = resolve(\UseCasesContainer.sendInviteReminder)
+    private let updateUserShareRole = resolve(\UseCasesContainer.updateUserShareRole)
+    private var fetchingTask: Task<Void, Never>?
+    private var updateShareTask: Task<Void, Never>?
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(vault: Vault) {
         self.vault = vault
@@ -46,12 +59,41 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     func isLast(info: ShareUser) -> Bool {
         users.last == info
     }
-}
 
-private extension ManageSharedVaultViewModel {
-    func setUp() {
-        setShareInviteVault(with: vault)
+    func fetchShareInformation(displayFetchingLoader: Bool = false) {
+        fetchingTask?.cancel()
+        fetchingTask = Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            if displayFetchingLoader {
+                self.fetching = true
+            }
+            defer { self.fetching = false }
+            do {
+                self.itemsNumber = self.getVaultItemCount(for: self.vault)
+                if Task.isCancelled {
+                    return
+                }
+                self.users = try await self.fetchVaultContent(for: vault)
+            } catch {
+                print(error)
+                self.error = error
+            }
+        }
+    }
 
+    func setCurrentRole(for user: ShareUser) {
+        currentSelectedUser = user
+        if userRole != user.shareRole {
+            userRole = user.shareRole ?? .read
+        }
+    }
+
+    func revokeInvite(for user: ShareUser) {
+        guard let inviteId = user.inviteID else {
+            return
+        }
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -59,18 +101,70 @@ private extension ManageSharedVaultViewModel {
             self.loading = true
             defer { self.loading = false }
             do {
-                self.itemsNumber = self.getVaultItemCount(for: self.vault)
-                if vault.isAdmin {
-                    self.users = try await self.getAllUsersForShare(with: vault.shareId)
-                        .sorted { $0.email < $1.email }
-                } else {
-                    self.users = try await self.getUsersLinkedToShare(with: vault.shareId)
-                        .map(\.toShareUser)
-                        .sorted { $0.email < $1.email }
-                }
+                try await self.revokeInvitation(with: self.vault.shareId, and: inviteId)
+                self.fetchShareInformation()
             } catch {
                 print(error)
+                self.error = error
             }
         }
+    }
+
+    func sendInviteReminder(for user: ShareUser) {
+        guard let inviteId = user.inviteID else {
+            return
+        }
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await self.sendInviteReminder(with: self.vault.shareId, and: inviteId)
+                self.fetchShareInformation()
+            } catch {
+                print(error)
+                self.error = error
+            }
+        }
+    }
+}
+
+private extension ManageSharedVaultViewModel {
+    func setUp() {
+        setShareInviteVault(with: vault)
+        $userRole
+            .sink { [weak self] role in
+                guard let self,
+                      let selectedUser = self.currentSelectedUser,
+                      let userSharedId = selectedUser.shareID,
+                      role != selectedUser.shareRole else {
+                    return
+                }
+                self.updateShareTask?.cancel()
+                self.updateShareTask = Task { @MainActor [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    self.loading = true
+                    defer { self.loading = false }
+                    do {
+                        try await updateUserShareRole(userShareId: userSharedId,
+                                                      shareId: vault.shareId,
+                                                      shareRole: role)
+                        self.fetchShareInformation()
+                    } catch {
+                        print(error)
+                        self.error = error
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func fetchVaultContent(for vault: Vault) async throws -> [ShareUser] {
+        vault.isAdmin ? try await getAllUsersForShare(with: vault.shareId)
+            .sorted { $0.email < $1.email } : try await getUsersLinkedToShare(with: vault.shareId)
+            .map(\.toShareUser)
+            .sorted { $0.email < $1.email }
     }
 }
