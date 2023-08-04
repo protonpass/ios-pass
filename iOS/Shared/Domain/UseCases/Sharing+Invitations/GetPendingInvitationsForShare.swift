@@ -20,7 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
+@preconcurrency import Client
 import Entities
 
 protocol GetPendingInvitationsForShareUseCase: Sendable {
