@@ -53,13 +53,13 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let completeAutoFill = resolve(\AutoFillUseCaseContainer.completeAutoFill)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
+    @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
