@@ -31,6 +31,8 @@ struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    @Environment(\.isPresented) private var isPresented
+
     @State private var sort: ShareRole = .admin
 
     var body: some View {
@@ -46,7 +48,9 @@ struct ManageSharedVaultView: View {
         .onAppear {
             viewModel.fetchShareInformation(displayFetchingLoader: true)
         }
-        .errorAlert(error: $viewModel.error)
+        .onChange(of: isPresented) { isPresented in
+           print("Sheet isPresented", isPresented)
+         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
@@ -69,9 +73,10 @@ private extension ManageSharedVaultView {
             } else {
                 userList
                     .background(PassColor.backgroundNorm.toColor)
+                    .showSpinner(viewModel.loading)
             }
         }
-        .showSpinner(viewModel.loading)
+        .errorAlert(error: $viewModel.error)
     }
 }
 
@@ -119,10 +124,10 @@ private extension ManageSharedVaultView {
         }
         .listStyle(.plain)
         .cornerRadius(10)
-//        .onAppear {
-//            // Set the default to clear
-//            UITableView.appearance().backgroundColor = .clear
-//        }
+        .onAppear {
+            // Set the default to clear
+            UITableView.appearance().backgroundColor = .clear
+        }
     }
 
     func userCell(for user: ShareUser) -> some View {
@@ -152,7 +157,7 @@ private extension ManageSharedVaultView {
     @ViewBuilder
     func vaultTrailingView(user: ShareUser) -> some View {
         Menu(content: {
-            if user.shareRole != nil {
+            if !user.isPending {
                 Picker(selection: $viewModel.userRole, label: Text("Sorting options")) {
                     ForEach(ShareRole.allCases, id: \.self) { role in
                         Text("\(attributedText(for: role.title))\n\(attributedSubText(for: role.description))")
@@ -162,7 +167,7 @@ private extension ManageSharedVaultView {
                 }
                 Divider()
             }
-            if user.shareRole == nil {
+            if user.isPending {
                 Button(action: {
                     viewModel.sendInviteReminder(for: user)
                 }, label: {
@@ -175,7 +180,7 @@ private extension ManageSharedVaultView {
                     })
                 })
             }
-            if viewModel.vault.isOwner, user.shareRole != nil {
+            if viewModel.vault.isOwner, !user.isPending {
                 Button(action: {}, label: {
                     Label(title: {
                         Text("Transfer ownership")
@@ -187,7 +192,13 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            Button(action: {}, label: {
+            Button(action: {
+                if user.isPending {
+                    viewModel.revokeInvite(for: user)
+                } else {
+                    viewModel.revokeShareAccess(for: user)
+                }
+            }, label: {
                 Label(title: {
                     Text("Remove access")
                 }, icon: {
@@ -213,41 +224,40 @@ private extension ManageSharedVaultView {
 //                .padding(.bottom, 2)
 //
 //            // test()
-////            VStack {
-////                Text(role.title)
-////                    .font(.body)
-////                    .foregroundColor(PassColor.textNorm.toColor)
-////                    .padding(.bottom, 2)
-////
-////                Text(role.description)
-////                    .font(.body)
-////                    .foregroundColor(PassColor.textWeak.toColor)
-////            }
+    ////            VStack {
+    ////                Text(role.title)
+    ////                    .font(.body)
+    ////                    .foregroundColor(PassColor.textNorm.toColor)
+    ////                    .padding(.bottom, 2)
+    ////
+    ////                Text(role.description)
+    ////                    .font(.body)
+    ////                    .foregroundColor(PassColor.textWeak.toColor)
+    ////            }
 //
-////            HStack(spacing: 16) {
-////                VStack(alignment: .leading, spacing: 2) {
-////                    Text(role.title)
-////                        .font(.body)
-////                        .foregroundColor(PassColor.textNorm.toColor)
-////                        .padding(.bottom, 2)
-////
-////                    Text(role.description)
-////                        .font(.body)
-////                        .foregroundColor(PassColor.textWeak.toColor)
-////                }
-////                Spacer()
-////
-////                Circle()
-////                    .strokeBorder(viewModel.selectedUserRole == role ? PassColor
-////                        .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
-////                        lineWidth: 2)
-////                    .overlay(butonDisplay(with: role))
-////                    .frame(width: 24, height: 24)
-////            }
+    ////            HStack(spacing: 16) {
+    ////                VStack(alignment: .leading, spacing: 2) {
+    ////                    Text(role.title)
+    ////                        .font(.body)
+    ////                        .foregroundColor(PassColor.textNorm.toColor)
+    ////                        .padding(.bottom, 2)
+    ////
+    ////                    Text(role.description)
+    ////                        .font(.body)
+    ////                        .foregroundColor(PassColor.textWeak.toColor)
+    ////                }
+    ////                Spacer()
+    ////
+    ////                Circle()
+    ////                    .strokeBorder(viewModel.selectedUserRole == role ? PassColor
+    ////                        .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
+    ////                        lineWidth: 2)
+    ////                    .overlay(butonDisplay(with: role))
+    ////                    .frame(width: 24, height: 24)
+    ////            }
 //        }
 //        .lineLimit(2)
 //    }
-
 
     func attributedText(for text: String) -> AttributedString {
         var result = AttributedString(text)

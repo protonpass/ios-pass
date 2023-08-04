@@ -785,6 +785,7 @@
 		5BA663FA2A7CFD8A0049EA68 /* RevokeInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */; };
 		5BA663FC2A7D00AB0049EA68 /* SendInviteReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */; };
 		5BA663FE2A7D04D50049EA68 /* UpdateUserShareRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */; };
+		5BA664002A7D0A520049EA68 /* RevokeUserShareAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FF2A7D0A520049EA68 /* RevokeUserShareAccess.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1664,6 +1665,7 @@
 		5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeInvitation.swift; sourceTree = "<group>"; };
 		5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendInviteReminder.swift; sourceTree = "<group>"; };
 		5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserShareRole.swift; sourceTree = "<group>"; };
+		5BA663FF2A7D0A520049EA68 /* RevokeUserShareAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeUserShareAccess.swift; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
@@ -3315,6 +3317,7 @@
 				5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */,
 				5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */,
 				5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */,
+				5BA663FF2A7D0A520049EA68 /* RevokeUserShareAccess.swift */,
 			);
 			path = "Sharing+Invitations";
 			sourceTree = "<group>";
@@ -5194,6 +5197,7 @@
 				354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
+				5BA664002A7D0A520049EA68 /* RevokeUserShareAccess.swift in Sources */,
 				5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */,
 				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
 				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,
