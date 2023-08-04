@@ -130,6 +130,10 @@ extension UseCasesContainer {
     var updateUserShareRole: Factory<UpdateUserShareRoleUseCase> {
         self { UpdateUserShareRole(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
+
+    var revokeUserShareAccess: Factory<RevokeUserShareAccessUseCase> {
+        self { RevokeUserShareAccess(repository: SharedRepositoryContainer.shared.shareRepository()) }
+    }
 }
 
 // MARK: - Invites

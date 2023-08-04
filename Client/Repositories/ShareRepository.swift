@@ -52,7 +52,7 @@ public protocol ShareRepositoryProtocol {
                               shareId: String,
                               shareRole: ShareRole?,
                               expireTime: Int?) async throws -> Bool
-
+    @discardableResult
     func deleteUserShare(userId: String, shareId: String) async throws -> Bool
 
     @discardableResult
