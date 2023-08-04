@@ -31,6 +31,7 @@ struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    @State private var sort: ShareRole = .admin
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -42,6 +43,10 @@ struct ManageSharedVaultView: View {
                                   action: { router.presentSheet(for: .sharingFlow) })
             }
         }
+        .onAppear {
+            viewModel.fetchShareInformation(displayFetchingLoader: true)
+        }
+        .errorAlert(error: $viewModel.error)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
@@ -55,7 +60,7 @@ private extension ManageSharedVaultView {
     var mainContainer: some View {
         VStack {
             headerVaultInformation
-            if viewModel.loading {
+            if viewModel.fetching {
                 VStack {
                     Spacer()
                     ProgressView()
@@ -66,10 +71,7 @@ private extension ManageSharedVaultView {
                     .background(PassColor.backgroundNorm.toColor)
             }
         }
-//        .animation(.default, value: viewModel.error)
-//        .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .userSharePermission))
-
-//        .ignoresSafeArea(.keyboard)
+        .showSpinner(viewModel.loading)
     }
 }
 
@@ -117,32 +119,30 @@ private extension ManageSharedVaultView {
         }
         .listStyle(.plain)
         .cornerRadius(10)
-        .onAppear {
-            // Set the default to clear
-            UITableView.appearance().backgroundColor = .clear
-        }
+//        .onAppear {
+//            // Set the default to clear
+//            UITableView.appearance().backgroundColor = .clear
+//        }
     }
 
-    func userCell(for infos: ShareUser) -> some View {
+    func userCell(for user: ShareUser) -> some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(infos.email.initialsRemovingEmojis()),
+            SquircleThumbnail(data: .initials(user.email.initialsRemovingEmojis()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
-                Text(infos.email)
+                Text(user.email)
                     .foregroundColor(PassColor.textNorm.toColor)
-                Text(infos.shareRole?.role ?? "pending")
+                Text(user.shareRole?.role ?? "pending")
                     .foregroundColor(PassColor.textWeak.toColor)
             }
 
             Spacer()
             if viewModel.vault.isAdmin {
-                vaultTrailingView(viewModel.vault)
-//                Image(uiImage: IconProvider.threeDotsVertical)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: 24, height: 24)
-//                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+                vaultTrailingView(user: user)
+                    .onTapGesture {
+                        viewModel.setCurrentRole(for: user)
+                    }
             }
         }
     }
@@ -150,83 +150,119 @@ private extension ManageSharedVaultView {
 
 private extension ManageSharedVaultView {
     @ViewBuilder
-    private func vaultTrailingView(_ vault: Vault) -> some View {
+    func vaultTrailingView(user: ShareUser) -> some View {
         Menu(content: {
-            if vault.isOwner {
+            if user.shareRole != nil {
+                Picker(selection: $viewModel.userRole, label: Text("Sorting options")) {
+                    ForEach(ShareRole.allCases, id: \.self) { role in
+                        Text("\(attributedText(for: role.title))\n\(attributedSubText(for: role.description))")
+                            .padding(.bottom, 2)
+                            .tag(role)
+                    }
+                }
+                Divider()
+            }
+            if user.shareRole == nil {
                 Button(action: {
-//                    viewModel.edit(vault: vault)
+                    viewModel.sendInviteReminder(for: user)
                 }, label: {
                     Label(title: {
-                        Text("Edit")
+                        Text("Resend invitation")
                     }, icon: {
-                        Image(uiImage: IconProvider.pencil)
+                        Image(uiImage: IconProvider.paperPlane)
+                            .renderingMode(.template)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    })
+                })
+            }
+            if viewModel.vault.isOwner, user.shareRole != nil {
+                Button(action: {}, label: {
+                    Label(title: {
+                        Text("Transfer ownership")
+                    }, icon: {
+                        Image(uiImage: IconProvider.shieldHalfFilled)
                             .renderingMode(.template)
                             .foregroundColor(Color(uiColor: PassColor.textWeak))
                     })
                 })
             }
 
-            if !vault.isPrimary, vault.isOwner {
-                Button(action: {
-//                    viewModel.share(vault: vault)
-                }, label: {
-                    Label(title: {
-                        Text("Share")
-                    }, icon: {
-                        IconProvider.userPlus
-                    })
+            Button(action: {}, label: {
+                Label(title: {
+                    Text("Remove access")
+                }, icon: {
+                    Image(uiImage: IconProvider.circleSlash)
+                        .renderingMode(.template)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
                 })
-            }
-
-            if vault.members > 1 {
-                Button(action: {
-//                    viewModel.router.presentSheet(for: .manageShareVault(vault, false))
-                }, label: {
-                    Label(title: {
-                        Text(vault.isAdmin ? "Manage access" : "View members")
-                    }, icon: {
-                        IconProvider.users
-                    })
-                })
-            }
-
-            Divider()
-
-            if vault.isOwner {
-                Button(role: .destructive,
-                       action: {
-//                    viewModel.delete(vault: vault)
-
-                       },
-                       label: {
-                           Label(title: {
-                               Text("Delete vault")
-                           }, icon: {
-                               Image(uiImage: IconProvider.trash)
-                           })
-                       })
-            }
-
-            if !vault.isOwner {
-                Button(role: .destructive,
-                       action: {
-//                    viewModel.leaveVault(vault: vault)
-
-                       },
-                       label: {
-                           Label(title: {
-                               Text("Leave vault")
-                           }, icon: {
-                               Image(uiImage: IconProvider.circleSlash)
-                           })
-                       })
-            }
+            })
         }, label: { Image(uiImage: IconProvider.threeDotsVertical)
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
             .foregroundColor(Color(uiColor: PassColor.textWeak))
         })
+    }
+
+//    func roleButton(for role: ShareRole) -> some View {
+//        Button {} label: {
+//            Text("\(role.title)\n\(attributedText(for: role.description))")
+//                .font(.body)
+//                .foregroundStyle(PassColor.textNorm.toColor, PassColor.textNorm.toColor)
+//                .foregroundColor(PassColor.textNorm.toColor)
+//                .padding(.bottom, 2)
+//
+//            // test()
+////            VStack {
+////                Text(role.title)
+////                    .font(.body)
+////                    .foregroundColor(PassColor.textNorm.toColor)
+////                    .padding(.bottom, 2)
+////
+////                Text(role.description)
+////                    .font(.body)
+////                    .foregroundColor(PassColor.textWeak.toColor)
+////            }
+//
+////            HStack(spacing: 16) {
+////                VStack(alignment: .leading, spacing: 2) {
+////                    Text(role.title)
+////                        .font(.body)
+////                        .foregroundColor(PassColor.textNorm.toColor)
+////                        .padding(.bottom, 2)
+////
+////                    Text(role.description)
+////                        .font(.body)
+////                        .foregroundColor(PassColor.textWeak.toColor)
+////                }
+////                Spacer()
+////
+////                Circle()
+////                    .strokeBorder(viewModel.selectedUserRole == role ? PassColor
+////                        .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
+////                        lineWidth: 2)
+////                    .overlay(butonDisplay(with: role))
+////                    .frame(width: 24, height: 24)
+////            }
+//        }
+//        .lineLimit(2)
+//    }
+
+
+    func attributedText(for text: String) -> AttributedString {
+        var result = AttributedString(text)
+        result.font = .body.bold()
+        result.foregroundColor = PassColor.textNorm
+        return result
+    }
+
+    func attributedSubText(for text: String) -> AttributedString {
+        var result = AttributedString(text)
+        result.font = .body
+        result.foregroundColor = PassColor.textWeak
+        result.underlineColor = PassColor.textWeak
+        result.strikethroughColor = PassColor.textWeak
+        return result
     }
 }
 
@@ -241,48 +277,3 @@ private extension ManageSharedVaultView {
         }
     }
 }
-
-//
-// struct RoundedCorner: Shape {
-//    var radius: CGFloat = .infinity
-//    var corners: UIRectCorner = .allCorners
-//
-//    func path(in rect: CGRect) -> Path {
-//        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners,
-//                                cornerRadii: CGSize(width: radius, height: radius))
-//        return Path(path.cgPath)
-//    }
-// }
-//
-// extension View {
-//    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-//        clipShape(RoundedCorner(radius: radius, corners: corners))
-//    }
-// }
-//
-// struct CornerRadiusStyle: ViewModifier {
-//    var radius: CGFloat
-//    var corners: UIRectCorner
-//
-//    struct CornerRadiusShape: Shape {
-//        var radius = CGFloat.infinity
-//        var corners = UIRectCorner.allCorners
-//
-//        func path(in rect: CGRect) -> Path {
-//            let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners,
-//                                    cornerRadii: CGSize(width: radius, height: radius))
-//            return Path(path.cgPath)
-//        }
-//    }
-//
-//    func body(content: Content) -> some View {
-//        content
-//            .clipShape(CornerRadiusShape(radius: radius, corners: corners))
-//    }
-// }
-//
-// extension View {
-//    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-//        ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
-//    }
-// }

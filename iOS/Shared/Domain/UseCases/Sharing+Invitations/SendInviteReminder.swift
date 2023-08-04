@@ -1,7 +1,7 @@
 //
 //
-// GetUsersLinkedToShare.swift
-// Proton Pass - Created on 02/08/2023.
+// SendInviteReminder.swift
+// Proton Pass - Created on 04/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,26 +21,25 @@
 //
 
 @preconcurrency import Client
-import Entities
 
-protocol GetUsersLinkedToShareUseCase: Sendable {
-    func execute(with shareId: String) async throws -> [UserShareInfos]
+protocol SendInviteReminderUseCase: Sendable {
+    func execute(with shareId: String, and inviteId: String) async throws
 }
 
-extension GetUsersLinkedToShareUseCase {
-    func callAsFunction(with shareId: String) async throws -> [UserShareInfos] {
-        try await execute(with: shareId)
+extension SendInviteReminderUseCase {
+    func callAsFunction(with shareId: String, and inviteId: String) async throws {
+        try await execute(with: shareId, and: inviteId)
     }
 }
 
-final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
-    private let repository: ShareRepositoryProtocol
+final class SendInviteReminder: SendInviteReminderUseCase {
+    private let shareInviteRepository: ShareInviteRepositoryProtocol
 
-    init(repository: ShareRepositoryProtocol) {
-        self.repository = repository
+    init(shareInviteRepository: ShareInviteRepositoryProtocol) {
+        self.shareInviteRepository = shareInviteRepository
     }
 
-    func execute(with shareId: String) async throws -> [UserShareInfos] {
-        try await repository.getUsersLinked(to: shareId)
+    func execute(with shareId: String, and inviteId: String) async throws {
+        try await shareInviteRepository.sendInviteReminder(shareId: shareId, inviteId: inviteId)
     }
 }
