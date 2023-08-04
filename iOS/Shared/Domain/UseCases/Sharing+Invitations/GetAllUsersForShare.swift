@@ -56,6 +56,10 @@ struct ShareUser: Equatable, Hashable {
     let inviteID: String?
     let shareID: String?
     let userName: String?
+
+    var isPending: Bool {
+        shareRole == nil
+    }
 }
 
 extension UserShareInfos {
