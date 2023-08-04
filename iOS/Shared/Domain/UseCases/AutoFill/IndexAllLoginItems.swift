@@ -21,7 +21,10 @@
 import Client
 import Core
 
-/// Empty credential database and reindex all existing login items
+/// Empty credential database and index all existing login items
+/// We only index if user enabled "QuickType bar" option but in case when
+/// user is enabling but not yet enabled "QuickType bar" option we need to bypass
+/// by ignoring what is currently set in preferences.
 protocol IndexAllLoginItemsUseCase: Sendable {
     func execute(ignorePreferences: Bool) async throws
 }
