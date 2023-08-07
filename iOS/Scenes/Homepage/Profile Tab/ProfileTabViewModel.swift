@@ -214,7 +214,7 @@ private extension ProfileTabViewModel {
     func updateAutoFillAvalability() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            self.autoFillEnabled = await self.credentialManager.isAutoFillEnabled()
+            self.autoFillEnabled = await self.credentialManager.isAutoFillEnabled
         }
     }
 
