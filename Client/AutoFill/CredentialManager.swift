@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 import Core
 
 public protocol CredentialManagerProtocol: Sendable {
@@ -27,8 +27,6 @@ public protocol CredentialManagerProtocol: Sendable {
     func insert(credentials: [AutoFillCredential]) async throws
     func removeAllCredentials() async throws
 }
-
-extension ASCredentialIdentityStore: @unchecked Sendable {}
 
 public final class CredentialManager {
     public let store: ASCredentialIdentityStore
