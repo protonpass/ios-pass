@@ -23,7 +23,8 @@ import Core
 
 public protocol CredentialManagerProtocol: Sendable {
     /// Whether users had choosen Proton Pass as AutoFill Provider
-    func isAutoFillEnabled() async -> Bool
+    var isAutoFillEnabled: Bool { get async }
+
     func insert(credentials: [AutoFillCredential]) async throws
     func removeAllCredentials() async throws
 }
@@ -40,8 +41,10 @@ public final class CredentialManager {
 }
 
 extension CredentialManager: CredentialManagerProtocol {
-    public func isAutoFillEnabled() async -> Bool {
-        await store.state().isEnabled
+    public var isAutoFillEnabled: Bool {
+        get async {
+            await store.state().isEnabled
+        }
     }
 
     public func insert(credentials: [AutoFillCredential]) async throws {
@@ -66,7 +69,7 @@ extension CredentialManager: CredentialManagerProtocol {
 
     public func removeAllCredentials() async throws {
         logger.trace("Removing all credentials.")
-        guard await isAutoFillEnabled() else {
+        guard await isAutoFillEnabled else {
             logger.trace("AutoFill is not enabled. Skipped removing all credentials.")
             return
         }
