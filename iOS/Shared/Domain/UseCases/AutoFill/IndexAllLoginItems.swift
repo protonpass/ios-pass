@@ -69,7 +69,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
             return
         }
 
-        guard await credentialManager.isAutoFillEnabled() else {
+        guard await credentialManager.isAutoFillEnabled else {
             logger.trace("Skipped indexing all login items. AutoFill not enabled")
             return
         }
