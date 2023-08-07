@@ -30,6 +30,8 @@ final class ShareTests: XCTestCase {
                                targetType: .random(in: 100...200),
                                targetID: .random(),
                                permission: .random(in: 100...200),
+                               shareRoleID: "1",
+                               targetMembers: 2,
                                primary: false,
                                owner: .random(),
                                content: .random(),
