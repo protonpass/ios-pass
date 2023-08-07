@@ -29,6 +29,8 @@ extension Share {
               targetType: .random(in: 0...10),
               targetID: .random(),
               permission: .random(in: 0...10),
+              shareRoleID: "1",
+              targetMembers: .random(in: 0...10),
               primary: .random(),
               owner: .random(),
               content: .random(),
