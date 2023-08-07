@@ -22,18 +22,25 @@
 @testable import Proton_Pass
 import Client
 import Core
-import ProtonCore_Login
 
-final class UserSharingStatusUseCaseMock: @unchecked Sendable, UserSharingStatusUseCase {
+final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     // MARK: - execute
+    var executeWithThrowableError: Error?
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
+    var invokedExecuteParameters: (flag: FeatureFlagType, Void)?
+    var invokedExecuteParametersList = [(flag: FeatureFlagType, Void)]()
     var stubbedExecuteResult: Bool!
 
-    func execute() async -> Bool {
+    func execute(with flag: FeatureFlagType) async throws -> Bool {
         invokedExecute = true
         invokedExecuteCount += 1
+        invokedExecuteParameters = (flag, ())
+        invokedExecuteParametersList.append((flag, ()))
+        if let error = executeWithThrowableError {
+            throw error
+        }
         closureExecute()
         return stubbedExecuteResult
     }

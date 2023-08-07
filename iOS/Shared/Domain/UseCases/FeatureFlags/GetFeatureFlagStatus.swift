@@ -23,6 +23,7 @@
 import Client
 import Core
 
+// sourcery: AutoMockable
 protocol GetFeatureFlagStatusUseCase: Sendable {
     func execute(with flag: FeatureFlagType) async throws -> Bool
 }

@@ -786,6 +786,9 @@
 		5BA663FC2A7D00AB0049EA68 /* SendInviteReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */; };
 		5BA663FE2A7D04D50049EA68 /* UpdateUserShareRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */; };
 		5BA664002A7D0A520049EA68 /* RevokeUserShareAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FF2A7D0A520049EA68 /* RevokeUserShareAccess.swift */; };
+		5BA664042A8133C00049EA68 /* GetCurrentShareInviteInformationsUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA664012A8133C00049EA68 /* GetCurrentShareInviteInformationsUseCaseMock.generated.swift */; };
+		5BA664052A8133C00049EA68 /* GetFeatureFlagStatusUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA664022A8133C00049EA68 /* GetFeatureFlagStatusUseCaseMock.generated.swift */; };
+		5BA664062A8133C00049EA68 /* SetShareInviteVaultUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA664032A8133C00049EA68 /* SetShareInviteVaultUseCaseMock.generated.swift */; };
 		5BB2B6E22A4332F5005E831C /* WrappedUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */; };
 		5BB2B6E52A43569B005E831C /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */; };
 		5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1666,6 +1669,9 @@
 		5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendInviteReminder.swift; sourceTree = "<group>"; };
 		5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserShareRole.swift; sourceTree = "<group>"; };
 		5BA663FF2A7D0A520049EA68 /* RevokeUserShareAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeUserShareAccess.swift; sourceTree = "<group>"; };
+		5BA664012A8133C00049EA68 /* GetCurrentShareInviteInformationsUseCaseMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCurrentShareInviteInformationsUseCaseMock.generated.swift; sourceTree = "<group>"; };
+		5BA664022A8133C00049EA68 /* GetFeatureFlagStatusUseCaseMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFeatureFlagStatusUseCaseMock.generated.swift; sourceTree = "<group>"; };
+		5BA664032A8133C00049EA68 /* SetShareInviteVaultUseCaseMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetShareInviteVaultUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		5BB2B6DD2A433292005E831C /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		5BB2B6E12A4332F5005E831C /* WrappedUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedUITextField.swift; sourceTree = "<group>"; };
 		5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Black.plist"; sourceTree = "<group>"; };
@@ -3726,6 +3732,9 @@
 		84E10EABA5BC087B06289733 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				5BA664012A8133C00049EA68 /* GetCurrentShareInviteInformationsUseCaseMock.generated.swift */,
+				5BA664022A8133C00049EA68 /* GetFeatureFlagStatusUseCaseMock.generated.swift */,
+				5BA664032A8133C00049EA68 /* SetShareInviteVaultUseCaseMock.generated.swift */,
 				C568872206CABDC15BF60087 /* ReportRepositoryProtocolMock.generated.swift */,
 				00B167957087F76ED9866A81 /* GetLogEntriesUseCaseMock.generated.swift */,
 				58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */,
@@ -4910,9 +4919,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BA664042A8133C00049EA68 /* GetCurrentShareInviteInformationsUseCaseMock.generated.swift in Sources */,
 				5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */,
 				6699002B29A76D86001033B6 /* APIManagerTests.swift in Sources */,
 				6699002E29A77197001033B6 /* KeychainMock.swift in Sources */,
+				5BA664052A8133C00049EA68 /* GetFeatureFlagStatusUseCaseMock.generated.swift in Sources */,
 				6699003029A771DB001033B6 /* MainKeyProviderMock.swift in Sources */,
 				5B503FF52A4E018500E6681C /* LogingManagerMock.swift in Sources */,
 				5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */,
@@ -4925,6 +4936,7 @@
 				355F05512A5C4807007DF053 /* KeychainMainkeyProviderMock.swift in Sources */,
 				EB5B5A7052FD60FFFEFC4E84 /* GetLogEntriesUseCaseMock.generated.swift in Sources */,
 				5B5040132A53114600E6681C /* ExtractLogsToFileTests.swift in Sources */,
+				5BA664062A8133C00049EA68 /* SetShareInviteVaultUseCaseMock.generated.swift in Sources */,
 				5A505CC575D99C2B28D00648 /* ExtractLogsToFileUseCaseMock.generated.swift in Sources */,
 				03533AC82F5409923B22B587 /* UserSharingStatusUseCaseMock.generated.swift in Sources */,
 				E0475AFB1A5D9E16038813DC /* FeatureFlagsRepositoryProtocolMock.generated.swift in Sources */,
