@@ -30,7 +30,7 @@ final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable, G
     var invokedExecuteCount = 0
     var stubbedExecuteResult: SharingInfos!
 
-    func execute() async -> SharingInfos {
+    func execute() -> SharingInfos {
         invokedExecute = true
         invokedExecuteCount += 1
         closureExecute()
