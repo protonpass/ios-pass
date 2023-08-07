@@ -31,7 +31,6 @@ struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
-    @Environment(\.isPresented) private var isPresented
 
     @State private var sort: ShareRole = .admin
 
@@ -48,9 +47,6 @@ struct ManageSharedVaultView: View {
         .onAppear {
             viewModel.fetchShareInformation(displayFetchingLoader: true)
         }
-        .onChange(of: isPresented) { isPresented in
-           print("Sheet isPresented", isPresented)
-         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
@@ -73,7 +69,6 @@ private extension ManageSharedVaultView {
             } else {
                 userList
                     .background(PassColor.backgroundNorm.toColor)
-                    .showSpinner(viewModel.loading)
             }
         }
         .errorAlert(error: $viewModel.error)
@@ -108,26 +103,33 @@ private extension ManageSharedVaultView {
 
 private extension ManageSharedVaultView {
     var userList: some View {
-        List {
-            ForEach(viewModel.users, id: \.self) { user in
-                VStack {
-                    userCell(for: user)
-                        .padding(16)
-                    if !viewModel.isLast(info: user) {
-                        Divider()
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.users, id: \.self) { user in
+                    VStack {
+                        userCell(for: user)
+                            .padding(16)
+                        if !viewModel.isLast(info: user) {
+                            Divider()
+                        }
                     }
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.white.opacity(0.04))
                 }
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.white.opacity(0.04))
             }
+            .background(.white.opacity(0.04))
+            .cornerRadius(16)
+            .roundedDetailSection()
         }
-        .listStyle(.plain)
-        .cornerRadius(10)
-        .onAppear {
-            // Set the default to clear
-            UITableView.appearance().backgroundColor = .clear
-        }
+        .overlay(Group {
+            if viewModel.loading {
+                ProgressView()
+                    .scaleEffect(2)
+            } else {
+                EmptyView()
+            }
+        })
     }
 
     func userCell(for user: ShareUser) -> some View {
@@ -158,13 +160,14 @@ private extension ManageSharedVaultView {
     func vaultTrailingView(user: ShareUser) -> some View {
         Menu(content: {
             if !user.isPending {
-                Picker(selection: $viewModel.userRole, label: Text("Sorting options")) {
+                Picker(selection: $viewModel.userRole, label: Text("Role options")) {
                     ForEach(ShareRole.allCases, id: \.self) { role in
                         Text("\(attributedText(for: role.title))\n\(attributedSubText(for: role.description))")
                             .padding(.bottom, 2)
                             .tag(role)
                     }
                 }
+                .pickerStyle(.segmented)
                 Divider()
             }
             if user.isPending {
@@ -214,50 +217,6 @@ private extension ManageSharedVaultView {
             .foregroundColor(Color(uiColor: PassColor.textWeak))
         })
     }
-
-//    func roleButton(for role: ShareRole) -> some View {
-//        Button {} label: {
-//            Text("\(role.title)\n\(attributedText(for: role.description))")
-//                .font(.body)
-//                .foregroundStyle(PassColor.textNorm.toColor, PassColor.textNorm.toColor)
-//                .foregroundColor(PassColor.textNorm.toColor)
-//                .padding(.bottom, 2)
-//
-//            // test()
-    ////            VStack {
-    ////                Text(role.title)
-    ////                    .font(.body)
-    ////                    .foregroundColor(PassColor.textNorm.toColor)
-    ////                    .padding(.bottom, 2)
-    ////
-    ////                Text(role.description)
-    ////                    .font(.body)
-    ////                    .foregroundColor(PassColor.textWeak.toColor)
-    ////            }
-//
-    ////            HStack(spacing: 16) {
-    ////                VStack(alignment: .leading, spacing: 2) {
-    ////                    Text(role.title)
-    ////                        .font(.body)
-    ////                        .foregroundColor(PassColor.textNorm.toColor)
-    ////                        .padding(.bottom, 2)
-    ////
-    ////                    Text(role.description)
-    ////                        .font(.body)
-    ////                        .foregroundColor(PassColor.textWeak.toColor)
-    ////                }
-    ////                Spacer()
-    ////
-    ////                Circle()
-    ////                    .strokeBorder(viewModel.selectedUserRole == role ? PassColor
-    ////                        .interactionNormMajor1.toColor : PassColor.textWeak.toColor,
-    ////                        lineWidth: 2)
-    ////                    .overlay(butonDisplay(with: role))
-    ////                    .frame(width: 24, height: 24)
-    ////            }
-//        }
-//        .lineLimit(2)
-//    }
 
     func attributedText(for text: String) -> AttributedString {
         var result = AttributedString(text)
