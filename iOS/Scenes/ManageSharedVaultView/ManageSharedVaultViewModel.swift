@@ -47,6 +47,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     private let sendInviteReminder = resolve(\UseCasesContainer.sendInviteReminder)
     private let updateUserShareRole = resolve(\UseCasesContainer.updateUserShareRole)
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
+
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
 
