@@ -107,7 +107,7 @@ public extension Share {
                               displayPreferences: vaultContent.display,
                               isPrimary: primary,
                               isOwner: owner,
-                              shareRole: shareRoleID,
+                              shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
                               members: Int(targetMembers))
             return .vault(vault)
         case .item:

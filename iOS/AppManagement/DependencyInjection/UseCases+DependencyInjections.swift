@@ -188,8 +188,7 @@ extension UseCasesContainer {
 
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
-            GetFeatureFlagStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 logManager: SharedToolingContainer.shared.logManager())
+            GetFeatureFlagStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository())
         }
     }
 }

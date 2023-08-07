@@ -1955,6 +1955,7 @@
 		353547BF2880C4470021C716 /* Shares */ = {
 			isa = PBXGroup;
 			children = (
+				353547C02880C45C0021C716 /* GetSharesEndpoint.swift */,
 				3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */,
 				5B1F5CCC2A5D8B2900A6C3ED /* GetShareLinkedUsersEndpoint.swift */,
 				5B1F5CCE2A5D90FD00A6C3ED /* GetShareInformationForUserEndpoint.swift */,
@@ -2304,7 +2305,6 @@
 		355E803D28A3071700BE7C9B /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				353547C02880C45C0021C716 /* GetSharesEndpoint.swift */,
 				355CA56729F1A85B000B8248 /* CreateAliasAndAnotherItemRequest.swift */,
 				355CA56529F1A7DA000B8248 /* CreateAliasAndAnotherItemEndpoint.swift */,
 				3593DCFE28A8322300C235D3 /* CreateItemRequest.swift */,
