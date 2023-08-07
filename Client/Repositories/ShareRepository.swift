@@ -249,7 +249,7 @@ public extension ShareRepository {
                          displayPreferences: vaultContent.display,
                          isPrimary: share.share.primary,
                          isOwner: share.share.owner,
-                         shareRole: share.share.shareRoleID,
+                         shareRole: ShareRole(rawValue: share.share.shareRoleID) ?? .read,
                          members: Int(share.share.targetMembers))
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")

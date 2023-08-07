@@ -43,10 +43,14 @@ extension Vault {
     }
 
     var isAdmin: Bool {
-        shareRole == ShareRole.admin.rawValue
+        shareRole == ShareRole.admin
     }
 
     var canEdit: Bool {
-        shareRole != ShareRole.read.rawValue
+        shareRole != ShareRole.read
+    }
+
+    var isShared: Bool {
+        members > 1
     }
 }

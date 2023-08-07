@@ -94,7 +94,7 @@ private extension ManageSharedVaultView {
             Text(viewModel.vault.name)
                 .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("\(viewModel.itemsNumber ?? 0) items")
+            Text("\(viewModel.itemsNumber) items")
                 .font(.title3)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
@@ -140,8 +140,18 @@ private extension ManageSharedVaultView {
             VStack(alignment: .leading, spacing: 4) {
                 Text(user.email)
                     .foregroundColor(PassColor.textNorm.toColor)
-                Text(user.shareRole?.role ?? "pending")
-                    .foregroundColor(PassColor.textWeak.toColor)
+                HStack {
+                    if viewModel.isCurrentUser(with: user) {
+                        Text("You")
+                            .font(.body)
+                            .foregroundColor(PassColor.textNorm.toColor)
+                            .padding(.vertical, 2)
+                            .padding(.horizontal, 8)
+                            .background(Capsule().fill(PassColor.interactionNorm.toColor))
+                    }
+                    Text(user.shareRole?.role ?? "pending")
+                        .foregroundColor(PassColor.textWeak.toColor)
+                }
             }
 
             Spacer()
@@ -167,7 +177,6 @@ private extension ManageSharedVaultView {
                             .tag(role)
                     }
                 }
-                .pickerStyle(.segmented)
                 Divider()
             }
             if user.isPending {
@@ -239,7 +248,7 @@ private extension ManageSharedVaultView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.arrowDown,
+            CircleButton(icon: IconProvider.chevronDown,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          action: dismiss.callAsFunction)

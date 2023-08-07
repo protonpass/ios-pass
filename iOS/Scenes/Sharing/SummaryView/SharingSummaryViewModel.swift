@@ -58,7 +58,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 }
                 _ = try await self.sendShareInvite(with: infos)
                 if let vault = self.infos?.vault {
-                    self.router.presentSheet(for: .manageShareVault(vault, true))
+                    self.router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: true))
                 }
             } catch {
                 self.error = error

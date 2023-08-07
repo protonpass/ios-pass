@@ -29,7 +29,7 @@ import ProtonCore_Networking
 
 final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     let vault: Vault
-    @Published private(set) var itemsNumber: Int?
+    @Published private(set) var itemsNumber = 0
     @Published private(set) var users: [ShareUser] = []
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
@@ -47,6 +47,8 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     private let sendInviteReminder = resolve(\UseCasesContainer.sendInviteReminder)
     private let updateUserShareRole = resolve(\UseCasesContainer.updateUserShareRole)
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
+    private let userData = resolve(\SharedDataContainer.userData)
+    private let logger = resolve(\SharedToolingContainer.logger)
 
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
@@ -60,6 +62,13 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
 
     func isLast(info: ShareUser) -> Bool {
         users.last == info
+    }
+
+    func isCurrentUser(with user: ShareUser) -> Bool {
+        guard let email = userData.user.email else {
+            return false
+        }
+        return user.email == email
     }
 
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
@@ -79,8 +88,8 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 }
                 self.users = try await self.fetchVaultContent(for: vault)
             } catch {
-                print(error)
                 self.error = error
+                self.logger.error(message: "Failed to fetch the current share informations", error: error)
             }
         }
     }
@@ -106,8 +115,8 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 try await self.revokeInvitation(with: self.vault.shareId, and: inviteId)
                 self.fetchShareInformation()
             } catch {
-                print(error)
                 self.error = error
+                self.logger.error(message: "Failed to revoke the invite \(inviteId)", error: error)
             }
         }
     }
@@ -126,8 +135,8 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 try await self.revokeUserShareAccess(with: userShareId, and: self.vault.shareId)
                 self.fetchShareInformation()
             } catch {
-                print(error)
                 self.error = error
+                self.logger.error(message: "Failed to revoke the share access \(userShareId)", error: error)
             }
         }
     }
@@ -144,8 +153,8 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 try await self.sendInviteReminder(with: self.vault.shareId, and: inviteId)
                 self.fetchShareInformation()
             } catch {
-                print(error)
                 self.error = error
+                self.logger.error(message: "Failed send invite reminder \(inviteId)", error: error)
             }
         }
     }
@@ -162,23 +171,7 @@ private extension ManageSharedVaultViewModel {
                       role != selectedUser.shareRole else {
                     return
                 }
-                self.updateShareTask?.cancel()
-                self.updateShareTask = Task { @MainActor [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    self.loading = true
-                    defer { self.loading = false }
-                    do {
-                        try await updateUserShareRole(userShareId: userSharedId,
-                                                      shareId: vault.shareId,
-                                                      shareRole: role)
-                        self.fetchShareInformation()
-                    } catch {
-                        print(error)
-                        self.error = error
-                    }
-                }
+                self.updateRole(userSharedId: userSharedId, role: role)
             }
             .store(in: &cancellables)
     }
@@ -188,5 +181,25 @@ private extension ManageSharedVaultViewModel {
             .sorted { $0.email < $1.email } : try await getUsersLinkedToShare(with: vault.shareId)
             .map(\.toShareUser)
             .sorted { $0.email < $1.email }
+    }
+
+    func updateRole(userSharedId: String, role: ShareRole) {
+        updateShareTask?.cancel()
+        updateShareTask = Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            self.loading = true
+            defer { self.loading = false }
+            do {
+                try await updateUserShareRole(userShareId: userSharedId,
+                                              shareId: vault.shareId,
+                                              shareRole: role)
+                self.fetchShareInformation()
+            } catch {
+                self.error = error
+                self.logger.error(message: "Failed update user role with \(role)", error: error)
+            }
+        }
     }
 }

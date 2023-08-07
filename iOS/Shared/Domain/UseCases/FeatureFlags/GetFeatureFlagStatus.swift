@@ -36,12 +36,9 @@ extension GetFeatureFlagStatusUseCase {
 
 final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    private let logger: Logger
 
-    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol,
-         logManager: LogManagerProtocol) {
+    init(featureFlagsRepository: FeatureFlagsRepositoryProtocol) {
         self.featureFlagsRepository = featureFlagsRepository
-        logger = Logger(manager: logManager)
     }
 
     func execute(with flag: FeatureFlagType) async throws -> Bool {

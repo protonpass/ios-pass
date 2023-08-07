@@ -29,7 +29,7 @@ enum CoordinatorSheetDestination: Equatable, Hashable {
     case sharingFlow
     ///  The boolean helps to know if we should dismiss the previous sheet or not as the route if used in different
     /// context
-    case manageShareVault(Vault, Bool)
+    case manageShareVault(Vault, dismissBeforeShowing: Bool)
     case filterItems
     case acceptRejectInvite(UserInvite)
 }
