@@ -28,7 +28,9 @@ protocol UpdateUserShareRoleUseCase: Sendable {
 }
 
 extension UpdateUserShareRoleUseCase {
-    func callAsFunction(userShareId: String, shareId: String, shareRole: ShareRole,
+    func callAsFunction(userShareId: String,
+                        shareId: String,
+                        shareRole: ShareRole,
                         expireTime: Int? = nil) async throws {
         try await execute(userShareId: userShareId, shareId: shareId, shareRole: shareRole, expireTime: expireTime)
     }
