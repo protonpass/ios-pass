@@ -41,6 +41,10 @@ private extension UseCasesContainer {
     var logManager: LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
+
+    var shareInviteService: ShareInviteServiceProtocol {
+        ServiceContainer.shared.shareInviteService()
+    }
 }
 
 // MARK: User report
@@ -81,21 +85,21 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var getCurrentShareInviteInformations: Factory<GetCurrentShareInviteInformationsUseCase> {
-        self { GetCurrentShareInviteInformations(shareInviteService: ServiceContainer.shared.shareInviteService())
+        self { GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
         }
     }
 
     var setShareInviteVault: Factory<SetShareInviteVaultUseCase> {
-        self { SetShareInviteVault(shareInviteService: ServiceContainer.shared.shareInviteService(),
+        self { SetShareInviteVault(shareInviteService: self.shareInviteService,
                                    getVaultItemCount: self.getVaultItemCount()) }
     }
 
     var setShareInviteUserEmailAndKeys: Factory<SetShareInviteUserEmailAndKeysUseCase> {
-        self { SetShareInviteUserEmailAndKeys(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+        self { SetShareInviteUserEmailAndKeys(shareInviteService: self.shareInviteService) }
     }
 
     var setShareInviteRole: Factory<SetShareInviteRoleUseCase> {
-        self { SetShareInviteRole(shareInviteService: ServiceContainer.shared.shareInviteService()) }
+        self { SetShareInviteRole(shareInviteService: self.shareInviteService) }
     }
 
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
