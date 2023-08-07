@@ -61,7 +61,7 @@ final class SendShareInviteTests: XCTestCase {
                           displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences(),
                           isPrimary: false,
                           isOwner: true,
-            shareRole: "1",
+                          shareRole: .read,
         members: 2)
         var infos = SharingInfos(vault: vault, email: "Test@test.com", role: .read, receiverPublicKeys: [PublicKey(value: "")], itemsNum: 100)
         do {
