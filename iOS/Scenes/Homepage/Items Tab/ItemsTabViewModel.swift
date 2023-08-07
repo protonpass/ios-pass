@@ -115,7 +115,7 @@ private extension ItemsTabViewModel {
                     case .autofill:
                         // We don't show the banner if AutoFill extension is enabled
                         // consider dismissed in this case
-                        if await self.credentialManager.isAutoFillEnabled() {
+                        if await self.credentialManager.isAutoFillEnabled {
                             dismissed = true
                         }
 
