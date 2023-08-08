@@ -90,13 +90,17 @@ struct PinAuthenticationView: View {
             pinCode = ""
         }
         .onAppear {
+            let notifyAuthProcessAndFocus: () -> Void = {
+                viewModel.onAuth()
+                isFocused = true
+            }
             // Delay keyboard appearance when in extension context because
             // it takes longer for the view to be rendered
             if module == .hostApp {
-                isFocused = true
+                notifyAuthProcessAndFocus()
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                    isFocused = true
+                    notifyAuthProcessAndFocus()
                 }
             }
         }
