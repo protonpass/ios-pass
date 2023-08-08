@@ -27,4 +27,15 @@ public enum ShareRole: String, CaseIterable, Equatable {
     case write = "2"
     /// Read only. Can only read the contents of a share. They can update the last used time for themselves.
     case read = "3"
+
+    public var role: String {
+        switch self {
+        case .admin:
+            return "admin"
+        case .write:
+            return "edit"
+        case .read:
+            return "read"
+        }
+    }
 }

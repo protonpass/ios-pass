@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public struct Vault: Identifiable, Hashable, Equatable {
@@ -29,6 +30,13 @@ public struct Vault: Identifiable, Hashable, Equatable {
     public let displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences
     public let isPrimary: Bool
     public let isOwner: Bool
+    /// Role given to the user when invited with sharing feature
+    public let shareRole: ShareRole
+
+    /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
+    public let members: Int
+
+    public let shared: Bool
 
     public init(id: String,
                 shareId: String,
@@ -37,7 +45,10 @@ public struct Vault: Identifiable, Hashable, Equatable {
                 description: String,
                 displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences,
                 isPrimary: Bool,
-                isOwner: Bool) {
+                isOwner: Bool,
+                shareRole: ShareRole,
+                members: Int,
+                shared: Bool) {
         self.id = id
         self.shareId = shareId
         self.name = name
@@ -46,5 +57,8 @@ public struct Vault: Identifiable, Hashable, Equatable {
         self.isPrimary = isPrimary
         self.addressId = addressId
         self.isOwner = isOwner
+        self.shareRole = shareRole
+        self.members = members
+        self.shared = shared
     }
 }
