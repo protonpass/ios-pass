@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import ProtonCore_UIFoundations
 import SwiftUI
@@ -28,6 +29,9 @@ struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
     @State private var itemToBePermanentlyDeleted: ItemTypeIdentifiable?
+
+    @available(iOS, deprecated: 16, message: "Fix iOS 15 alert not shown with dynamic binding")
+    @State private var itemToBePermanentlyDeletedTemp: ItemTypeIdentifiable?
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -47,6 +51,9 @@ struct ItemsTabView: View {
         .animation(.default, value: vaultsManager.state)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarHidden(true)
+        .onReceive(Just(itemToBePermanentlyDeleted)) { _ in
+            itemToBePermanentlyDeletedTemp = itemToBePermanentlyDeleted
+        }
     }
 
     @ViewBuilder
@@ -264,9 +271,11 @@ struct ItemsTabView: View {
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: permanentlyDeleteBinding,
                                                 onDelete: {
-                                                    if let itemToBePermanentlyDeleted {
+                                                    if let item =
+                                                        itemToBePermanentlyDeleted ??
+                                                        itemToBePermanentlyDeletedTemp {
                                                         viewModel.itemContextMenuHandler
-                                                            .deletePermanently(itemToBePermanentlyDeleted)
+                                                            .deletePermanently(item)
                                                     }
                                                 }))
     }
