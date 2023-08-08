@@ -26,7 +26,6 @@ import UIComponents
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
-    @State private var isMoreInfoSectionExpanded = false
     @Namespace private var bottomID
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
@@ -74,15 +73,15 @@ struct LogInDetailView: View {
                                             onSelectTotpToken: copyTOTPToken,
                                             onUpgrade: viewModel.upgrade)
 
-                        ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
+                        ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)
                             .padding(.top, 24)
                             .id(bottomID)
                     }
                     .padding()
                 }
-                .animation(.default, value: isShowingPassword)
-                .onChange(of: isMoreInfoSectionExpanded) { _ in
+                .animation(.default, value: viewModel.moreInfoSectionExpanded)
+                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }
             }
@@ -92,7 +91,7 @@ struct LogInDetailView: View {
                     .padding(.horizontal)
             }
         }
-        .animation(.default, value: isMoreInfoSectionExpanded)
+        .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
