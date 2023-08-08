@@ -26,7 +26,6 @@ import UIComponents
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
-    @State private var isMoreInfoSectionExpanded = false
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
@@ -60,15 +59,15 @@ struct AliasDetailView: View {
                                           vault: viewModel.vault)
                     }
 
-                    ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
+                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
                         .padding(.top, 24)
                         .id(bottomID)
                 }
                 .padding()
             }
-            .animation(.default, value: isMoreInfoSectionExpanded)
-            .onChange(of: isMoreInfoSectionExpanded) { _ in
+            .animation(.default, value: viewModel.moreInfoSectionExpanded)
+            .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }

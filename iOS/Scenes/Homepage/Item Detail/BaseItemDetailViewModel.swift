@@ -45,6 +45,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 
 class BaseItemDetailViewModel {
     @Published private(set) var isFreeUser = false
+    @Published var moreInfoSectionExpanded = false
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -72,7 +73,6 @@ class BaseItemDetailViewModel {
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
         self.vault = vault
-        let preferences = resolve(\SharedToolingContainer.preferences)
         bindValues()
         checkIfFreeUser()
     }
