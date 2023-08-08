@@ -71,22 +71,10 @@ struct AliasDetailView: View {
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .itemDetailSetUp(viewModel)
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
+                                                onDelete: viewModel.permanentlyDelete))
         .onFirstAppear(perform: viewModel.getAlias)
-        .toolbar {
-            ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
-                              itemContent: viewModel.itemContent,
-                              onGoBack: viewModel.goBack,
-                              onEdit: viewModel.edit,
-                              onMoveToAnotherVault: viewModel.moveToAnotherVault,
-                              onMoveToTrash: viewModel.moveToTrash,
-                              onRestore: viewModel.restore,
-                              onPermanentlyDelete: viewModel.permanentlyDelete)
-        }
     }
 
     private var aliasMailboxesSection: some View {

@@ -24,71 +24,65 @@ import SwiftUI
 import UIComponents
 
 struct ItemDetailToolbar: ToolbarContent {
-    @State private var isShowingAlert = false
-    let isShownAsSheet: Bool
-    let itemContent: ItemContent
-    let onGoBack: () -> Void
-    let onEdit: () -> Void
-    let onMoveToAnotherVault: () -> Void
-    let onMoveToTrash: () -> Void
-    let onRestore: () -> Void
-    let onPermanentlyDelete: () -> Void
+    let viewModel: BaseItemDetailViewModel
+
+    private var itemContentType: ItemContentType {
+        viewModel.itemContent.type
+    }
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
-                         iconColor: itemContent.type.normMajor2Color,
-                         backgroundColor: itemContent.type.normMinor1Color,
-                         action: onGoBack)
+            CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+                         iconColor: itemContentType.normMajor2Color,
+                         backgroundColor: itemContentType.normMinor1Color,
+                         action: viewModel.goBack)
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            switch itemContent.item.itemState {
+            switch viewModel.itemContent.item.itemState {
             case .active:
                 HStack {
                     CapsuleLabelButton(icon: IconProvider.pencil,
                                        title: "Edit",
                                        titleColor: PassColor.textInvert,
-                                       backgroundColor: itemContent.type.normMajor1Color,
-                                       action: onEdit)
+                                       backgroundColor: itemContentType.normMajor1Color,
+                                       action: viewModel.edit)
 
                     Menu(content: {
-                        Button(action: onMoveToAnotherVault,
+                        Button(action: viewModel.moveToAnotherVault,
                                label: { Label(title: { Text("Move to another vault") },
                                               icon: { Image(uiImage: IconProvider.folderArrowIn) }) })
 
                         Divider()
 
                         Button(role: .destructive,
-                               action: onMoveToTrash,
+                               action: viewModel.moveToTrash,
                                label: { Label(title: { Text("Move to trash") },
                                               icon: { Image(uiImage: IconProvider.trash) }) })
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: itemContent.type.normMajor2Color,
-                                     backgroundColor: itemContent.type.normMinor1Color)
+                                     iconColor: itemContentType.normMajor2Color,
+                                     backgroundColor: itemContentType.normMinor1Color)
                     })
                 }
 
             case .trashed:
                 Menu(content: {
-                    Button(action: onRestore,
+                    Button(action: viewModel.restore,
                            label: { Label(title: { Text("Restore") },
                                           icon: { Image(uiImage: IconProvider.clockRotateLeft) }) })
 
                     Divider()
 
                     Button(role: .destructive,
-                           action: { isShowingAlert.toggle() },
+                           action: { viewModel.showingDeleteAlert.toggle() },
                            label: { Label(title: { Text("Delete permanently") },
                                           icon: { Image(uiImage: IconProvider.trashCross) }) })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: itemContent.type.normMajor2Color,
-                                 backgroundColor: itemContent.type.normMinor1Color)
+                                 iconColor: itemContentType.normMajor2Color,
+                                 backgroundColor: itemContentType.normMinor1Color)
                 })
-                .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $isShowingAlert,
-                                                        onDelete: onPermanentlyDelete))
             }
         }
     }
