@@ -40,7 +40,7 @@ struct ItemDetailTitleView: View {
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                 if let vault {
-                    if !vault.isShared {
+                    if !vault.shared {
                         VaultLabel(vault: vault)
                     } else {
                         VaultButton(vault: vault)

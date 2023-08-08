@@ -62,7 +62,8 @@ final class SendShareInviteTests: XCTestCase {
                           isPrimary: false,
                           isOwner: true,
                           shareRole: .read,
-        members: 2)
+                          members: 2,
+                          shared: true)
         var infos = SharingInfos(vault: vault, email: "Test@test.com", role: .read, receiverPublicKeys: [PublicKey(value: "")], itemsNum: 100)
         do {
             _ = try await sut(with: infos)

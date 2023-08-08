@@ -34,6 +34,7 @@ final class ShareTests: XCTestCase {
                                targetMembers: 2,
                                primary: false,
                                owner: .random(),
+                               shared: true,
                                content: .random(),
                                contentKeyRotation: .random(in: 100...200),
                                contentFormatVersion: .random(in: 100...200),
