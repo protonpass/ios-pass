@@ -107,7 +107,6 @@ private extension HomepageCoordinator {
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
         passPlanRepository.delegate = self
-        (itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
@@ -137,7 +136,6 @@ private extension HomepageCoordinator {
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.start()
                 self.eventLoop.forceSync()
-                self.updateCredentials(forceRemoval: false)
                 self.refreshPlan()
             }
             .store(in: &cancellables)
@@ -343,7 +341,7 @@ private extension HomepageCoordinator {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        addTelemetryEvent(with: telemetryEventRepository, eventType: type)
+        addTelemetryEvent(with: type)
     }
 
     func sendAllEventsIfApplicable() {
@@ -352,21 +350,6 @@ private extension HomepageCoordinator {
                 try await self?.telemetryEventRepository.sendAllEventsIfApplicable()
             } catch {
                 self?.logger.error(error)
-            }
-        }
-    }
-
-    func updateCredentials(forceRemoval: Bool) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
-                                                                      shareRepository: self.shareRepository,
-                                                                      passPlanRepository: self.passPlanRepository,
-                                                                      forceRemoval: forceRemoval)
-                self.logger.info("Updated all credentials.")
-            } catch {
-                self.logger.error(error)
             }
         }
     }
@@ -483,7 +466,6 @@ extension HomepageCoordinator {
 extension HomepageCoordinator: PassPlanRepositoryDelegate {
     func passPlanRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
-        updateCredentials(forceRemoval: true)
         homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
         profileTabViewModel?.refreshPlan()
     }
