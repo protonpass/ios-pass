@@ -124,7 +124,6 @@
 		3549ACA1298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3549ACA0298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift */; };
 		3549ACA329830E8400BA5CD6 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3557441A295A064F00EA4AF0 /* ClipboardManager.swift */; };
 		354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354AD95F28CB5934000E645B /* EmptyTrashView.swift */; };
-		354B24732A77D1BD0060EDF7 /* UpdateCredentialRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */; };
 		354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */; };
 		354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */; };
 		354B247B2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */; };
@@ -603,6 +602,13 @@
 		35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35C2162729EA8B0B001720FF /* macOS-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */; };
+		35C281562A7BD6220077030C /* MapLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281552A7BD6220077030C /* MapLoginItem.swift */; };
+		35C281582A7BDCC70077030C /* MapLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281552A7BD6220077030C /* MapLoginItem.swift */; };
+		35C2815A2A7BED2B0077030C /* IndexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */; };
+		35C2815B2A7BF9DB0077030C /* IndexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */; };
+		35C2815D2A7BFCE40077030C /* UnindexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */; };
+		35C2815E2A7BFD400077030C /* UnindexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */; };
+		35C281602A7C15D60077030C /* Task+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C2815F2A7C15D60077030C /* Task+Extensions.swift */; };
 		35CAD6A229A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */; };
 		35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */; };
 		35CEA8D02A60431400343A4E /* AuthenticateBiometrically.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */; };
@@ -1107,7 +1113,6 @@
 		3549ACA0298306FC00BA5CD6 /* TOTPLogInItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPLogInItemDetailViewModel.swift; sourceTree = "<group>"; };
 		354A803C28D8B8D8003F49CF /* iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		354AD95F28CB5934000E645B /* EmptyTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTrashView.swift; sourceTree = "<group>"; };
-		354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCredentialRank.swift; sourceTree = "<group>"; };
 		354B24752A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillUseCase+DependencyInjections.swift"; sourceTree = "<group>"; };
 		354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyTotpTokenAndNotify.swift; sourceTree = "<group>"; };
 		354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillData+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1488,6 +1493,10 @@
 		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162829EA911E001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		35C281552A7BD6220077030C /* MapLoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLoginItem.swift; sourceTree = "<group>"; };
+		35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexAllLoginItems.swift; sourceTree = "<group>"; };
+		35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnindexAllLoginItems.swift; sourceTree = "<group>"; };
+		35C2815F2A7C15D60077030C /* Task+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extensions.swift"; sourceTree = "<group>"; };
 		35CAD6A129A78B0900CF3993 /* Array+SymmetricallyEncryptedShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SymmetricallyEncryptedShareTests.swift"; sourceTree = "<group>"; };
 		35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBiometryType.swift; sourceTree = "<group>"; };
 		35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateBiometrically.swift; sourceTree = "<group>"; };
@@ -2080,7 +2089,6 @@
 				354B247C2A77ED6B0060EDF7 /* CancelAutoFill.swift */,
 				354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
-				354B24712A77D1700060EDF7 /* UpdateCredentialRank.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -2808,6 +2816,16 @@
 			path = Regular;
 			sourceTree = "<group>";
 		};
+		35C281522A7BD2F40077030C /* AutoFill */ = {
+			isa = PBXGroup;
+			children = (
+				35C281592A7BED2B0077030C /* IndexAllLoginItems.swift */,
+				35C281552A7BD6220077030C /* MapLoginItem.swift */,
+				35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */,
+			);
+			path = AutoFill;
+			sourceTree = "<group>";
+		};
 		35CEA8CC2A603FFE00343A4E /* Local Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -3198,6 +3216,7 @@
 				5B50400E2A53072E00E6681C /* Array+Extensions.swift */,
 				5B3FE93A2A546AB400123E62 /* FileManager+Extensions.swift */,
 				5B1453B32A6A8D110048B022 /* Int+Extensions.swift */,
+				35C2815F2A7C15D60077030C /* Task+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3395,6 +3414,7 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				35C281522A7BD2F40077030C /* AutoFill */,
 				5B1453AB2A696C5B0048B022 /* Vault */,
 				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
@@ -4729,6 +4749,8 @@
 				3552A28B29EC89EF00ABDB6E /* ItemSquircleThumbnail.swift in Sources */,
 				3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */,
 				35CEA8D82A606E3600343A4E /* LocalAuthenticationMethod.swift in Sources */,
+				35C281582A7BDCC70077030C /* MapLoginItem.swift in Sources */,
+				35C2815B2A7BF9DB0077030C /* IndexAllLoginItems.swift in Sources */,
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
@@ -4837,7 +4859,7 @@
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				359DB2A62A700BF100549466 /* VaultContentUiModel.swift in Sources */,
 				35CEA8D22A60443600343A4E /* CheckBiometryType.swift in Sources */,
-				354B24732A77D1BD0060EDF7 /* UpdateCredentialRank.swift in Sources */,
+				35C2815E2A7BFD400077030C /* UnindexAllLoginItems.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3561C9F929E6E65600D6E518 /* VaultThumbnail.swift in Sources */,
 				354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */,
@@ -5019,6 +5041,7 @@
 				356B830E29C339110084488A /* SortTypeButton.swift in Sources */,
 				35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
+				35C281562A7BD6220077030C /* MapLoginItem.swift in Sources */,
 				66CA928129F971CF00F2FC59 /* PaymentsConstants.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
@@ -5120,6 +5143,7 @@
 				5B1453A62A69662D0048B022 /* ShareInviteService.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
+				35C2815D2A7BFCE40077030C /* UnindexAllLoginItems.swift in Sources */,
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
@@ -5151,6 +5175,7 @@
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
+				35C2815A2A7BED2B0077030C /* IndexAllLoginItems.swift in Sources */,
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
@@ -5392,6 +5417,7 @@
 				3565FD53298D3D6500E2A0EE /* Array+Chunked.swift in Sources */,
 				354513E728E4CE700020A93A /* CodableBase64.swift in Sources */,
 				35635176299C10040059A97A /* IdentifiableObject.swift in Sources */,
+				35C281602A7C15D60077030C /* Task+Extensions.swift in Sources */,
 				35498F8628DC5D0500AF1D8F /* Collection+ParallelMap.swift in Sources */,
 				35283E4A292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift in Sources */,
 				3572E51929938A3C00775FAC /* TOTPManager.swift in Sources */,

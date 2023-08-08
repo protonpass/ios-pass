@@ -53,3 +53,5 @@ public extension SymmetricKey {
         return try ChaChaPoly.open(sealedBox, using: self)
     }
 }
+
+extension SymmetricKey: @unchecked Sendable {}
