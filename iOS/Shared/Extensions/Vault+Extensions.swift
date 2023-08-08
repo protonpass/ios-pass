@@ -1,6 +1,6 @@
 //
-// ShareRole.swift
-// Proton Pass - Created on 20/07/2023.
+// Vault+Extensions.swift
+// Proton Pass - Created on 02/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,24 +18,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Client
+import Entities
+import SwiftUI
+import UIComponents
 
-public enum ShareRole: String, CaseIterable, Equatable {
-    /// Administrator
-    case admin = "1"
-    /// Full write permission. They can do anything an admin can do except manage membership and invite users.
-    case write = "2"
-    /// Read only. Can only read the contents of a share. They can update the last used time for themselves.
-    case read = "3"
+// MARK: - UI helpers
 
-    public var role: String {
-        switch self {
-        case .admin:
-            return "admin"
-        case .write:
-            return "edit"
-        case .read:
-            return "read"
-        }
+extension Vault {
+    var mainColor: Color {
+        displayPreferences.color.color.color.toColor
+    }
+
+    var backgroundColor: Color {
+        mainColor.opacity(0.16)
+    }
+
+    var bigImage: Image {
+        displayPreferences.icon.icon.bigImage.toImage
+    }
+
+    var smallImage: Image {
+        displayPreferences.icon.icon.smallImage.toImage
+    }
+
+    var isAdmin: Bool {
+        shareRole == ShareRole.admin
+    }
+
+    var canEdit: Bool {
+        shareRole != ShareRole.read
+    }
+
+    var isShared: Bool {
+        members > 1
     }
 }

@@ -389,7 +389,7 @@ private extension HomepageCoordinator {
         router
             .newPresentationDestination
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { _ in
                 print("plop")
             }
             .store(in: &cancellables)
@@ -402,8 +402,8 @@ private extension HomepageCoordinator {
                 switch destination {
                 case .sharingFlow:
                     self.presentSharingFlow()
-                case .manageShareVault:
-                    self.presentManageShareVault()
+                case let .manageShareVault(vault, dismissPrevious):
+                    self.presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
                 case .filterItems:
                     self.presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
@@ -418,10 +418,21 @@ private extension HomepageCoordinator {
         present(userEmailView)
     }
 
-    func presentManageShareVault() {
-        dismissTopMostViewController { [weak self] in
-            let manageShareVaultView = Text("Manage Share Vault Screen")
-            self?.present(manageShareVaultView)
+    func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
+        let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
+
+        if dismissPrevious {
+            dismissTopMostViewController { [weak self] in
+                guard let self else {
+                    return
+                }
+                if self.rootViewController.topMostViewController is UIHostingController<ManageSharedVaultView> {
+                    return
+                }
+                self.present(manageShareVaultView)
+            }
+        } else {
+            present(manageShareVaultView)
         }
     }
 
