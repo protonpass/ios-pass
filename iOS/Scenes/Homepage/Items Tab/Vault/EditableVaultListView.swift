@@ -158,7 +158,7 @@ struct EditableVaultListView: View {
                 })
             }
 
-            if vault.isShared {
+            if vault.shared {
                 Button(action: {
                     viewModel.router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: false))
                 }, label: {
