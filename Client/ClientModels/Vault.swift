@@ -36,6 +36,8 @@ public struct Vault: Identifiable, Hashable, Equatable {
     /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
     public let members: Int
 
+    public let shared: Bool
+
     public init(id: String,
                 shareId: String,
                 addressId: String,
@@ -45,7 +47,8 @@ public struct Vault: Identifiable, Hashable, Equatable {
                 isPrimary: Bool,
                 isOwner: Bool,
                 shareRole: ShareRole,
-                members: Int) {
+                members: Int,
+                shared: Bool) {
         self.id = id
         self.shareId = shareId
         self.name = name
@@ -56,5 +59,6 @@ public struct Vault: Identifiable, Hashable, Equatable {
         self.isOwner = isOwner
         self.shareRole = shareRole
         self.members = members
+        self.shared = shared
     }
 }

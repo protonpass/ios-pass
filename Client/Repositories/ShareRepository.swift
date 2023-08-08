@@ -250,7 +250,8 @@ public extension ShareRepository {
                          isPrimary: share.share.primary,
                          isOwner: share.share.owner,
                          shareRole: ShareRole(rawValue: share.share.shareRoleID) ?? .read,
-                         members: Int(share.share.targetMembers))
+                         members: Int(share.share.targetMembers),
+                         shared: share.share.shared)
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults

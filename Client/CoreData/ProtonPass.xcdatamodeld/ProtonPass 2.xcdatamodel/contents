@@ -73,6 +73,7 @@
         <attribute name="owner" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="permission" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="primary" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="shared" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String" defaultValueString=""/>
         <attribute name="shareRoleID" optional="YES" attributeType="String"/>
         <attribute name="symmetricallyEncryptedContent" optional="YES" attributeType="String"/>
