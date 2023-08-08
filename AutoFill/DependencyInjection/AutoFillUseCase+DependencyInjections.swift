@@ -52,11 +52,6 @@ private extension AutoFillUseCaseContainer {
 }
 
 extension AutoFillUseCaseContainer {
-    var updateCredentialRank: Factory<UpdateCredentialRankUseCase> {
-        self { UpdateCredentialRank(credentialManager: self.credentialManager,
-                                    logManager: self.logManager) }
-    }
-
     var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(preferences: self.preferences,
                                       logManager: self.logManager,
@@ -73,6 +68,6 @@ extension AutoFillUseCaseContainer {
                                 logManager: self.logManager,
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
-                                updateCredentialRank: self.updateCredentialRank()) }
+                                indexAllLoginItems: SharedUseCasesContainer.shared.indexAllLoginItems()) }
     }
 }

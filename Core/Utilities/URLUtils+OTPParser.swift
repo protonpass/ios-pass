@@ -29,7 +29,6 @@ public extension URLUtils.OTPParser {
         case invalidUrl(String)
         case invalidScheme(String?)
         case invalidHost(String?)
-        case tooManyPaths
         case missingSecret
 
         public static func == (lhs: Self, rhs: Self) -> Bool {
@@ -38,8 +37,7 @@ public extension URLUtils.OTPParser {
                 return lScheme == rScheme
             case let (.invalidHost(lHost), .invalidHost(rHost)):
                 return lHost == rHost
-            case (.missingSecret, .missingSecret),
-                 (.tooManyPaths, .tooManyPaths):
+            case (.missingSecret, .missingSecret):
                 return true
             default:
                 return false
@@ -60,10 +58,6 @@ public extension URLUtils.OTPParser {
         }
 
         let paths = url.pathComponents.filter { $0 != "/" }
-
-        if paths.count > 1 {
-            throw Error.tooManyPaths
-        }
 
         guard let secret = url["secret"] else {
             throw Error.missingSecret
