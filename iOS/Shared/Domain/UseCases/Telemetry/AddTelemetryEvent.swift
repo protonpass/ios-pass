@@ -22,28 +22,30 @@ import Client
 import Core
 
 protocol AddTelemetryEventUseCase: Sendable {
-    func execute(with repository: TelemetryEventRepositoryProtocol, eventType: TelemetryEventType)
+    func execute(with eventType: TelemetryEventType)
 }
 
 extension AddTelemetryEventUseCase {
-    func callAsFunction(with repository: TelemetryEventRepositoryProtocol,
-                        eventType: TelemetryEventType) {
-        execute(with: repository, eventType: eventType)
+    func callAsFunction(with eventType: TelemetryEventType) {
+        execute(with: eventType)
     }
 }
 
 final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
+    private let repository: TelemetryEventRepositoryProtocol
     private let logger: Logger
 
-    init(logManager: LogManagerProtocol) {
+    init(repository: TelemetryEventRepositoryProtocol,
+         logManager: LogManagerProtocol) {
+        self.repository = repository
         logger = .init(manager: logManager)
     }
 
-    func execute(with repository: TelemetryEventRepositoryProtocol, eventType: TelemetryEventType) {
+    func execute(with eventType: TelemetryEventType) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await repository.addNewEvent(type: eventType)
+                try await self.repository.addNewEvent(type: eventType)
             } catch {
                 self.logger.error(error)
             }

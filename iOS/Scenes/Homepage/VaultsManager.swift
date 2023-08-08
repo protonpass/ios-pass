@@ -58,6 +58,9 @@ final class VaultsManager: ObservableObject, DeinitPrintable {
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
 
+    // Use cases
+    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var state = VaultManagerState.loading
@@ -151,6 +154,10 @@ private extension VaultsManager {
         }
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
+
+        Task.detached(priority: .background) { [weak self] in
+            try await self?.indexAllLoginItems(ignorePreferences: false)
+        }
     }
 }
 
