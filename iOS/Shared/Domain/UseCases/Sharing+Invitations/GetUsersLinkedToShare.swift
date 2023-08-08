@@ -1,6 +1,7 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
-// DO NOT EDIT
-// Proton Pass.
+//
+//
+// GetUsersLinkedToShare.swift
+// Proton Pass - Created on 02/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,23 +18,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
+//
 
-@testable import Proton_Pass
-import Client
+@preconcurrency import Client
 import Entities
 
-final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable, GetCurrentShareInviteInformationsUseCase {
-    // MARK: - execute
-    var closureExecute: () -> () = {}
-    var invokedExecute = false
-    var invokedExecuteCount = 0
-    var stubbedExecuteResult: SharingInfos!
+protocol GetUsersLinkedToShareUseCase: Sendable {
+    func execute(with shareId: String) async throws -> [UserShareInfos]
+}
 
-    func execute() -> SharingInfos {
-        invokedExecute = true
-        invokedExecuteCount += 1
-        closureExecute()
-        return stubbedExecuteResult
+extension GetUsersLinkedToShareUseCase {
+    func callAsFunction(with shareId: String) async throws -> [UserShareInfos] {
+        try await execute(with: shareId)
+    }
+}
+
+final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
+    private let repository: ShareRepositoryProtocol
+
+    init(repository: ShareRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    func execute(with shareId: String) async throws -> [UserShareInfos] {
+        try await repository.getUsersLinked(to: shareId)
     }
 }

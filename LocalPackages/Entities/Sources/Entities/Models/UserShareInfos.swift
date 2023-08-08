@@ -20,25 +20,16 @@
 
 // MARK: - User share informations & permissions
 
-public struct UserShareInfos: Codable {
-    public let shareID, userName, userEmail: String
+public struct UserShareInfos: Codable, Hashable {
+    public let shareID: String
+    public let userName: String
+    public let userEmail: String
     public let targetType: Int
     public let targetID: String
     public let permission: Int
     public let shareRoleID: String
-    public let expireTime, createTime: String
-
-    enum CodingKeys: String, CodingKey {
-        case shareID = "ShareID"
-        case userName = "UserName"
-        case userEmail = "UserEmail"
-        case targetType = "TargetType"
-        case targetID = "TargetID"
-        case permission = "Permission"
-        case shareRoleID = "ShareRoleID"
-        case expireTime = "ExpireTime"
-        case createTime = "CreateTime"
-    }
+    public let expireTime: Int?
+    public let createTime: Int?
 
     public var shareRole: ShareRole {
         .init(rawValue: shareRoleID) ?? .read

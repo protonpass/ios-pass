@@ -34,13 +34,20 @@ extension RefreshInvitationsUseCase {
 
 final class RefreshInvitations: RefreshInvitationsUseCase {
     private let repository: InviteRepositoryProtocol
+    private let getFeatureFlagStatus: GetFeatureFlagStatusUseCase
 
-    init(repository: InviteRepositoryProtocol) {
+    init(repository: InviteRepositoryProtocol,
+         getFeatureFlagStatus: GetFeatureFlagStatusUseCase) {
         self.repository = repository
+        self.getFeatureFlagStatus = getFeatureFlagStatus
     }
 
     func execute() {
         Task { [weak self] in
+            guard let status = try? await self?.getFeatureFlagStatus(with: FeatureFlagType.passSharingV1),
+                  status else {
+                return
+            }
             await self?.repository.refreshInvites()
         }
     }
