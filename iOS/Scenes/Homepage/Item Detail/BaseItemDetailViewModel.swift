@@ -46,6 +46,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 class BaseItemDetailViewModel {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
+    @Published var showingDeleteAlert = false
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)

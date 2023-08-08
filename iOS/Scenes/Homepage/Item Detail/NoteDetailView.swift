@@ -44,7 +44,6 @@ struct NoteDetailView: View {
 
     @ViewBuilder
     private var realBody: some View {
-        let tintColor = Color(uiColor: ItemContentType.note.normMajor2Color)
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
@@ -93,22 +92,8 @@ struct NoteDetailView: View {
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accentColor(tintColor) // Remove when iOS 15 is dropped
-        .tint(tintColor)
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .background(Color(uiColor: PassColor.backgroundNorm))
-        .toolbar {
-            ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
-                              itemContent: viewModel.itemContent,
-                              onGoBack: viewModel.goBack,
-                              onEdit: viewModel.edit,
-                              onMoveToAnotherVault: viewModel.moveToAnotherVault,
-                              onMoveToTrash: viewModel.moveToTrash,
-                              onRestore: viewModel.restore,
-                              onPermanentlyDelete: viewModel.permanentlyDelete)
-        }
+        .itemDetailSetUp(viewModel)
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
+                                                onDelete: viewModel.permanentlyDelete))
     }
 }
