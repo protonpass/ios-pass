@@ -45,7 +45,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let bannerManager: BannerManager
     private let container: NSPersistentContainer
@@ -54,8 +53,13 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let completeAutoFill = resolve(\AutoFillUseCaseContainer.completeAutoFill)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+
+    // Lazily injected because some use cases are dependent on repositories
+    // which are not registered when the user is not logged in
+    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
+    @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
+    @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -223,7 +227,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 do {
                     self.logger.trace("Authenticaion failed. Removing all credentials")
                     self.appData.userData = nil
-                    try await self.credentialManager.removeAllCredentials()
+                    try await self.unindexAllLoginItems()
                     self.logger.info("Removed all credentials after authentication failure")
                 } catch {
                     self.logger.error(error)
@@ -275,9 +279,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         shareRepository = repositoryManager.shareRepository
         shareEventIDRepository = repositoryManager.shareEventIDRepository
 
-        let itemRepository = repositoryManager.itemRepository
-        (itemRepository as? ItemRepository)?.delegate = credentialManager as? ItemRepositoryDelegate
-        self.itemRepository = itemRepository
+        itemRepository = repositoryManager.itemRepository
         favIconRepository = FavIconRepository(apiService: apiService,
                                               containerUrl: URL.favIconsContainerURL(),
                                               settings: preferences,
@@ -290,9 +292,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        if let telemetryEventRepository {
-            addTelemetryEvent(with: telemetryEventRepository, eventType: type)
-        }
+        addTelemetryEvent(with: type)
     }
 
     func sendAllEventsIfApplicable() {
@@ -652,7 +652,15 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
                                               type: ItemContentType) {
         switch type {
         case .login:
-            credentialsViewModel?.select(item: item)
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    try await self.indexAllLoginItems(ignorePreferences: false)
+                    self.credentialsViewModel?.select(item: item)
+                } catch {
+                    self.logger.error(error)
+                }
+            }
         default:
             handleCreatedItem(type)
         }
