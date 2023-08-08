@@ -192,7 +192,7 @@ private extension ManageSharedVaultViewModel {
             self.loading = true
             defer { self.loading = false }
             do {
-                try await updateUserShareRole(userShareId: userSharedId,
+                try await self.updateUserShareRole(userShareId: userSharedId,
                                               shareId: vault.shareId,
                                               shareRole: role)
                 self.fetchShareInformation()
