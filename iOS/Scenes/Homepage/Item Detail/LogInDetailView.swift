@@ -92,21 +92,9 @@ struct LogInDetailView: View {
             }
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .background(Color(uiColor: PassColor.backgroundNorm))
-        .toolbar {
-            ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
-                              itemContent: viewModel.itemContent,
-                              onGoBack: viewModel.goBack,
-                              onEdit: viewModel.edit,
-                              onMoveToAnotherVault: viewModel.moveToAnotherVault,
-                              onMoveToTrash: viewModel.moveToTrash,
-                              onRestore: viewModel.restore,
-                              onPermanentlyDelete: viewModel.permanentlyDelete)
-        }
+        .itemDetailSetUp(viewModel)
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
+                                                onDelete: viewModel.permanentlyDelete))
     }
 
     private var usernamePassword2FaSection: some View {
