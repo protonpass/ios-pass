@@ -47,6 +47,16 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var invites: [UserInvite] = []
 
+    @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
+        didSet {
+            if itemToBePermanentlyDeleted != nil {
+                showingPermanentDeletionAlert = true
+            }
+        }
+    }
+
+    @Published var showingPermanentDeletionAlert = false
+
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
@@ -194,6 +204,11 @@ extension ItemsTabViewModel {
 
     func showFilterOptions() {
         router.presentSheet(for: .filterItems)
+    }
+
+    func permanentlyDelete() {
+        guard let itemToBePermanentlyDeleted else { return }
+        itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
     }
 }
 
