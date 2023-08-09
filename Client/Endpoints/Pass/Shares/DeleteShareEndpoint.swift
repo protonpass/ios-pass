@@ -21,7 +21,6 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
-/// https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/delete_pass-v1-share-%7Benc_shareID%7D
 public struct DeleteShareEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = CodeOnlyResponse
