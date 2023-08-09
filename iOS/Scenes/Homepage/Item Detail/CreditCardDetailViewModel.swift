@@ -21,7 +21,7 @@
 import Core
 import SwiftUI
 
-final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
+final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var cardholderName = ""

@@ -26,7 +26,6 @@ import UIComponents
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
-    @State private var isMoreInfoSectionExpanded = false
     @Namespace private var bottomID
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
@@ -74,15 +73,15 @@ struct LogInDetailView: View {
                                             onSelectTotpToken: copyTOTPToken,
                                             onUpgrade: viewModel.upgrade)
 
-                        ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
+                        ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)
                             .padding(.top, 24)
                             .id(bottomID)
                     }
                     .padding()
                 }
-                .animation(.default, value: isShowingPassword)
-                .onChange(of: isMoreInfoSectionExpanded) { _ in
+                .animation(.default, value: viewModel.moreInfoSectionExpanded)
+                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                     withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
                 }
             }
@@ -92,22 +91,8 @@ struct LogInDetailView: View {
                     .padding(.horizontal)
             }
         }
-        .animation(.default, value: isMoreInfoSectionExpanded)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .background(Color(uiColor: PassColor.backgroundNorm))
-        .toolbar {
-            ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
-                              itemContent: viewModel.itemContent,
-                              onGoBack: viewModel.goBack,
-                              onEdit: viewModel.edit,
-                              onMoveToAnotherVault: viewModel.moveToAnotherVault,
-                              onMoveToTrash: viewModel.moveToTrash,
-                              onRestore: viewModel.restore,
-                              onPermanentlyDelete: viewModel.permanentlyDelete)
-        }
+        .animation(.default, value: viewModel.moreInfoSectionExpanded)
+        .itemDetailSetUp(viewModel)
     }
 
     private var usernamePassword2FaSection: some View {
