@@ -36,7 +36,7 @@ enum TOTPTokenState {
     case notAllowed
 }
 
-final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
+final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var name = ""

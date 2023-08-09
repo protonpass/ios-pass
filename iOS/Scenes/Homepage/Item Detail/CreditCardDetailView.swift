@@ -76,8 +76,6 @@ private extension CreditCardDetailView {
             }
         }
         .itemDetailSetUp(viewModel)
-        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
-                                                onDelete: viewModel.permanentlyDelete))
     }
 }
 
