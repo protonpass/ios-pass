@@ -23,7 +23,7 @@ import Core
 import Entities
 import Factory
 
-final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
+final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var aliasEmail = ""

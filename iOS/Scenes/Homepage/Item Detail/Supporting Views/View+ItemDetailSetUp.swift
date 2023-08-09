@@ -24,7 +24,7 @@ import UIComponents
 /// Set up common UI appearance for item detail pages
 /// e.g. navigation bar, background color, toolbar, delete item alert...
 struct ItemDetailSetUpModifier: ViewModifier {
-    let viewModel: BaseItemDetailViewModel
+    @ObservedObject var viewModel: BaseItemDetailViewModel
 
     private var tintColor: UIColor {
         viewModel.itemContent.type.normMajor2Color
@@ -40,6 +40,8 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .navigationBarHidden(false)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
+            .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
+                                                    onDelete: viewModel.permanentlyDelete))
     }
 }
 

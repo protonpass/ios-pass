@@ -93,8 +93,6 @@ struct LogInDetailView: View {
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
         .itemDetailSetUp(viewModel)
-        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
-                                                onDelete: viewModel.permanentlyDelete))
     }
 
     private var usernamePassword2FaSection: some View {
