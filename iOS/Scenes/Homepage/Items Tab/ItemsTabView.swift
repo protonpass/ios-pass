@@ -27,7 +27,6 @@ import UIComponents
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
-    @State private var itemToBePermanentlyDeleted: ItemTypeIdentifiable?
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -236,14 +235,6 @@ struct ItemsTabView: View {
 
     @ViewBuilder
     private func itemRow(for item: ItemUiModel) -> some View {
-        let permanentlyDeleteBinding = Binding<Bool>(get: {
-            itemToBePermanentlyDeleted != nil
-        }, set: { newValue in
-            if !newValue {
-                itemToBePermanentlyDeleted = nil
-            }
-        })
-
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         Button(action: {
             viewModel.viewDetail(of: item)
@@ -253,22 +244,17 @@ struct ItemsTabView: View {
                            description: item.description)
                 .itemContextMenu(item: item,
                                  isTrashed: isTrashed,
-                                 onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
+                                 onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
                                  handler: viewModel.itemContextMenuHandler)
         })
         .padding(.horizontal, 16)
         .frame(height: 64)
-        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
+        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                                     item: item,
                                     isTrashed: isTrashed,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
-        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: permanentlyDeleteBinding,
-                                                onDelete: {
-                                                    if let itemToBePermanentlyDeleted {
-                                                        viewModel.itemContextMenuHandler
-                                                            .deletePermanently(itemToBePermanentlyDeleted)
-                                                    }
-                                                }))
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
+                                                onDelete: viewModel.permanentlyDelete))
     }
 }
 
