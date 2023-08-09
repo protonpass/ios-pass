@@ -22,6 +22,7 @@ import Factory
 import SwiftUI
 import UIComponents
 
+// Localized
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: OnboardingViewModel
@@ -54,6 +55,7 @@ struct OnboardingView: View {
                     Text(viewModel.state.title)
                         .font(.headline)
                         .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                         .fixedSize(horizontal: false, vertical: true)
@@ -102,6 +104,7 @@ struct OnboardingView: View {
     }
 }
 
+// Localized
 struct OnboardingAutoFillView: View {
     var body: some View {
         HStack(spacing: 16) {
@@ -141,6 +144,7 @@ struct OnboardingAutoFillView: View {
     }
 }
 
+// Localized
 struct OnboardingAutoFillEnabledView: View {
     var body: some View {
         VStack {
@@ -155,6 +159,7 @@ struct OnboardingAutoFillEnabledView: View {
     }
 }
 
+// Localized
 private struct OnboardingBiometricAuthenticationView: View {
     let enabled: Bool
     var body: some View {
@@ -171,6 +176,7 @@ private struct OnboardingBiometricAuthenticationView: View {
     }
 }
 
+// Localized
 private struct OnboardingAliasesView: View {
     var body: some View {
         GeometryReader { proxy in
