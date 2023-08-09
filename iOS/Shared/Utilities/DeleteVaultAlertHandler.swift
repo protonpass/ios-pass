@@ -46,10 +46,10 @@ final class DeleteVaultAlertHandler: DeinitPrintable {
                                       // swiftlint:disable:next line_length
                                       message: "This will permanently delete the vault \"\(vault.name)\" and all its contents. Enter the vault name to confirm deletion.",
                                       preferredStyle: .alert)
-        alert.addTextField { [weak self] textField in
+        alert.addTextField { [vault] textField in
             textField.placeholder = "Vault name"
-            let action = UIAction { [weak self] _ in
-                alert.actions.first?.isEnabled = textField.text == self?.vault.name
+            let action = UIAction { [vault] _ in
+                alert.actions.first?.isEnabled = textField.text == vault.name
             }
             textField.addAction(action, for: .editingChanged)
         }
