@@ -43,7 +43,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelDidEncounter(error: Error)
 }
 
-class BaseItemDetailViewModel {
+class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
