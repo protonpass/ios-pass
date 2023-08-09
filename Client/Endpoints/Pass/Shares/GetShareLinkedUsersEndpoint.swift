@@ -28,7 +28,6 @@ public struct GetShareLinkedUsersResponse: Decodable {
     let shares: [UserShareInfos]
 }
 
-// Matching: https://protonmail.gitlab-pages.protontech.ch/Slim-API/pass/#tag/Share/operation/get_pass-v1-share-%7Benc_shareID%7D-user
 public struct GetShareLinkedUsersEndpoint: Endpoint {
     public typealias Body = EmptyRequest
     public typealias Response = GetShareLinkedUsersResponse
