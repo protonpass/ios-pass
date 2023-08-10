@@ -175,12 +175,12 @@ struct EditableVaultListView: View {
             Button(role: .destructive,
                    action: { vault.isOwner ? viewModel.delete(vault: vault) : viewModel.leaveVault(vault: vault) },
                    label: {
-                Label(title: {
-                    vault.isOwner ?  Text("Delete vault") : Text("Leave vault")
-                }, icon: {
-                    Image(uiImage: IconProvider.trash)
-                })
-            })
+                       Label(title: {
+                           vault.isOwner ? Text("Delete vault") : Text("Leave vault")
+                       }, icon: {
+                           Image(uiImage: IconProvider.trash)
+                       })
+                   })
         }, label: threeDotsIcon)
     }
 
