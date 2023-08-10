@@ -289,12 +289,17 @@ extension BaseCreateEditItemViewModel {
         guard case let .edit(itemContent) = mode else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            guard let updatedItem =
-                try await self.itemRepository.getItem(shareId: itemContent.shareId,
-                                                      itemId: itemContent.item.itemID) else {
-                return
+            do {
+                guard let updatedItem =
+                    try await self.itemRepository.getItem(shareId: itemContent.shareId,
+                                                          itemId: itemContent.item.itemID) else {
+                    return
+                }
+                self.isObsolete = itemContent.item.revision != updatedItem.item.revision
+            } catch {
+                self.logger.error(error)
+                self.delegate?.createEditItemViewModelDidEncounter(error: error)
             }
-            self.isObsolete = itemContent.item.revision != updatedItem.item.revision
         }
     }
 
