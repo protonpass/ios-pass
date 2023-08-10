@@ -121,13 +121,33 @@ Here's how you can contribute:
 
 1. **Fork the Repository**: Start by forking this repository to your own GitHub account.
 
-2. **Make and Test Your Changes**: Create a new branch from `main` in your forked repository, make the necessary changes, ensure that all tests are passing, and commit your changes.
+2. **Make Your Changes**: Create a new branch from `main` in your forked repository and make the necessary changes.
 
-3. **Submit a PR**: Once your changes are ready for review, you can submit a PR on this repository. Our team will review your PR, provide feedback, and collaborate with you if any adjustments are needed.
+3. **Test Your Changes**: Ensure that all tests, swiftlint check and swiftformat check are passing.
 
-4. **Collaborate**: Feel free to engage in discussions and address any feedback or questions related to your PR. Collaboration is key to delivering high-quality contributions.
+To do a swiftlint check, run this command:
 
-5. **Finalization**: Once the PR is approved and meets our criteria, it will be merged into our internal Gitlab repository. Subsequently, your PR will be closed, and your changes will be incorporated when we periodically synchronize updates to GitHub.
+```bash
+> swiftlint
+```
+
+To do a swiftformat check, run this command:
+
+```bash
+> swiftformat --lint .
+```
+
+To let swiftformat format your code, run this command:
+
+```bash
+> swiftformat .
+```
+
+4. **Submit a PR**: Once your changes are ready for review, you can submit a PR on this repository. Our team will review your PR, provide feedback, and collaborate with you if any adjustments are needed.
+
+5. **Collaborate**: Feel free to engage in discussions and address any feedback or questions related to your PR. Collaboration is key to delivering high-quality contributions.
+
+6. **Finalization**: Once the PR is approved and meets our criteria, it will be merged into our internal Gitlab repository. Subsequently, your PR will be closed, and your changes will be incorporated when we periodically synchronize updates to GitHub.
 
 
 # License
