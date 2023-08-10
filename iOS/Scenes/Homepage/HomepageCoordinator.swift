@@ -428,7 +428,7 @@ private extension HomepageCoordinator {
                 }
                 if let host = self.rootViewController
                     .topMostViewController as? UIHostingController<ManageSharedVaultView> {
-                    /// Updating shared data without
+                    /// Updating share data circumventing the onAppear not being called after a sheet presentation
                     host.rootView.viewModel.fetchShareInformation()
                     return
                 }
