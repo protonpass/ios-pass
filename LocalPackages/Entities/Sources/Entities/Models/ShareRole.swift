@@ -31,11 +31,11 @@ public enum ShareRole: String, CaseIterable, Equatable {
     public var role: String {
         switch self {
         case .admin:
-            return NSLocalizedString("admin", bundle: Bundle.module, comment: "admin role")
+            return String(localized: "admin", bundle: Bundle.module)
         case .write:
-            return NSLocalizedString("edit", bundle: Bundle.module, comment: "edit role")
+            return String(localized: "edit", bundle: Bundle.module)
         case .read:
-            return NSLocalizedString("read", bundle: Bundle.module, comment: "read role")
+            return String(localized: "read", bundle: Bundle.module)
         }
     }
 }
