@@ -146,7 +146,7 @@ struct EditableVaultListView: View {
                 })
             }
 
-            if !vault.isPrimary, vault.isOwner, viewModel.isAllowedToShare {
+            if !vault.isPrimary, vault.isOwner, viewModel.isAllowedToShare, !vault.shared {
                 Button(action: {
                     viewModel.share(vault: vault)
                 }, label: {
@@ -172,29 +172,15 @@ struct EditableVaultListView: View {
 
             Divider()
 
-            if vault.isOwner {
-                Button(role: .destructive,
-                       action: { viewModel.delete(vault: vault) },
-                       label: {
-                           Label(title: {
-                               Text("Delete vault")
-                           }, icon: {
-                               Image(uiImage: IconProvider.trash)
-                           })
+            Button(role: .destructive,
+                   action: { vault.isOwner ? viewModel.delete(vault: vault) : viewModel.leaveVault(vault: vault) },
+                   label: {
+                       Label(title: {
+                           vault.isOwner ? Text("Delete vault") : Text("Leave vault")
+                       }, icon: {
+                           Image(uiImage: IconProvider.trash)
                        })
-            }
-
-            if !vault.isOwner {
-                Button(role: .destructive,
-                       action: { viewModel.leaveVault(vault: vault) },
-                       label: {
-                           Label(title: {
-                               Text("Leave vault")
-                           }, icon: {
-                               Image(uiImage: IconProvider.circleSlash)
-                           })
-                       })
-            }
+                   })
         }, label: threeDotsIcon)
     }
 

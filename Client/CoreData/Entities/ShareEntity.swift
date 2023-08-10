@@ -92,5 +92,6 @@ extension ShareEntity {
         userID = userId
         shareRoleID = share.shareRoleID
         targetMembers = share.targetMembers
+        shared = share.shared
     }
 }

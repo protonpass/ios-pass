@@ -49,6 +49,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
@@ -114,6 +115,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
             do {
                 try await self.revokeInvitation(with: self.vault.shareId, and: inviteId)
                 self.fetchShareInformation()
+                self.syncEventLoop.forceSync()
             } catch {
                 self.error = error
                 self.logger.error(message: "Failed to revoke the invite \(inviteId)", error: error)
@@ -134,6 +136,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
             do {
                 try await self.revokeUserShareAccess(with: userShareId, and: self.vault.shareId)
                 self.fetchShareInformation()
+                self.syncEventLoop.forceSync()
             } catch {
                 self.error = error
                 self.logger.error(message: "Failed to revoke the share access \(userShareId)", error: error)
