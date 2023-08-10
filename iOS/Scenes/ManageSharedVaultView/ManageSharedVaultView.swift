@@ -122,6 +122,7 @@ private extension ManageSharedVaultView {
             .cornerRadius(16)
             .roundedDetailSection()
         }
+        .animation(.default, value: viewModel.users.count)
         .overlay(Group {
             if viewModel.loading {
                 ProgressView()
