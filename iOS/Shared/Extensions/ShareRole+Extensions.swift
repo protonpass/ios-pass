@@ -21,6 +21,17 @@
 import Entities
 
 extension ShareRole {
+    var role: String {
+        switch self {
+        case .admin:
+            return String(localized: "admin")
+        case .write:
+            return String(localized: "edit")
+        case .read:
+            return String(localized: "read")
+        }
+    }
+
     var title: String {
         switch self {
         case .read:
