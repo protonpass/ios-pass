@@ -100,13 +100,20 @@ class BaseItemDetailViewModel: ObservableObject {
     func refresh() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            guard let updatedItemContent =
-                try await self.itemRepository.getItemContent(shareId: self.itemContent.shareId,
-                                                             itemId: self.itemContent.item.itemID) else {
-                return
+            do {
+                let shareId = self.itemContent.shareId
+                let itemId = self.itemContent.item.itemID
+                guard let updatedItemContent =
+                    try await self.itemRepository.getItemContent(shareId: shareId,
+                                                                 itemId: itemId) else {
+                    return
+                }
+                self.itemContent = updatedItemContent
+                self.bindValues()
+            } catch {
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
-            self.itemContent = updatedItemContent
-            self.bindValues()
         }
     }
 
