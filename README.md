@@ -13,7 +13,9 @@ This repository contains the source code for the Proton Pass iOS application.
 	* [Dependency injection](#dependency-injection) 
 	* [SwiftLint](#swiftlint)
 	* [SwiftFormat](#swiftformat)
-    * [Sourcery](#sourcery)   
+    * [Sourcery](#sourcery)
+* [Contributing](#contributing)
+* [License](#license)
 
 # Installation
 
@@ -108,6 +110,45 @@ sourcery
 ```
 
 You should now see the new mocks appear in the `Generated` subfolder of iOSTests target
+
+# Contributing
+
+We value and welcome contributions from the community to help make this project better.
+
+Please note that while we encourage contributions, we have a specific process in place for handling pull requests (PR) and merging changes. To ensure a smooth workflow, we manage contributions internally on our GitLab repository rather than directly on GitHub.
+
+Here's how you can contribute:
+
+1. **Fork the Repository**: Start by forking this repository to your own GitHub account.
+
+2. **Make Your Changes**: Create a new branch from `main` in your forked repository and make the necessary changes.
+
+3. **Test Your Changes**: Ensure that all tests, swiftlint check and swiftformat check are passing.
+
+To do a swiftlint check, run this command:
+
+```bash
+> swiftlint
+```
+
+To do a swiftformat check, run this command:
+
+```bash
+> swiftformat --lint .
+```
+
+To let swiftformat format your code, run this command:
+
+```bash
+> swiftformat .
+```
+
+4. **Submit a PR**: Once your changes are ready for review, you can submit a PR on this repository. Our team will review your PR, provide feedback, and collaborate with you if any adjustments are needed.
+
+5. **Collaborate**: Feel free to engage in discussions and address any feedback or questions related to your PR. Collaboration is key to delivering high-quality contributions.
+
+6. **Finalization**: Once the PR is approved and meets our criteria, it will be merged into our internal Gitlab repository. Subsequently, your PR will be closed, and your changes will be incorporated when we periodically synchronize updates to GitHub.
+
 
 # License
 The code and data files in this distribution are licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See <https://www.gnu.org/licenses/> for a copy of this license.
