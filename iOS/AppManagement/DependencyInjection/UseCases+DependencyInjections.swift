@@ -106,7 +106,8 @@ extension UseCasesContainer {
         self { SendVaultShareInvite(passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
-                                    userData: SharedDataContainer.shared.userData()) }
+                                    userData: SharedDataContainer.shared.userData(),
+                                    syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
