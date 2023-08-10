@@ -40,12 +40,12 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
-    private let syncEventLoop: SyncEventLoop
+    private let syncEventLoop: SyncEventLoopProtocol
 
     init(passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
-         syncEventLoop: SyncEventLoop) {
+         syncEventLoop: SyncEventLoopProtocol) {
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userData = userData
