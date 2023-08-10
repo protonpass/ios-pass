@@ -660,6 +660,7 @@
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */; };
 		43D8E83DEA8EF33F5E68C83E /* Pods_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A8977220EAD2E5C505F8CF /* Pods_Core_CoreTests.framework */; };
+		5179844D85D43BF233B6DA2B /* SyncEventLoopProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */; };
 		5A505CC575D99C2B28D00648 /* ExtractLogsToFileUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */; };
 		5B0C74E02A2E083C00272CE8 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74DF2A2E083C00272CE8 /* OneTimePassword */; };
 		5B0C74E42A2E088000272CE8 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74E32A2E088000272CE8 /* OneTimePassword */; };
@@ -1761,6 +1762,7 @@
 		D817C441253549DC8F078A3F /* Pods-Client-ClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		D8E8D5E563338181886BC10D /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC4C15957574DF9317C4FE1 /* Pods-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release.xcconfig"; sourceTree = "<group>"; };
+		E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = SyncEventLoopProtocolMock.generated.swift; path = SyncEventLoopProtocolMock.generated.swift; sourceTree = "<group>"; };
 		E7BD2DA60D08ED39E3B852A9 /* Pods-Core.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-qa.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-qa.xcconfig"; sourceTree = "<group>"; };
 		F0E45B73A4034D9D3A3A8122 /* Pods-Client-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		F9115095D848F6FA4752B676 /* Pods-UIComponents.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-tf.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-tf.xcconfig"; sourceTree = "<group>"; };
@@ -3770,6 +3772,7 @@
 				B1591514FAFE9C76A530FCD5 /* ShareInviteRepositoryProtocolMock.generated.swift */,
 				B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */,
 				7412105340D89D3D20B0B89A /* PublicKeyRepositoryProtocolMock.generated.swift */,
+				E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
@@ -4972,6 +4975,7 @@
 				233B8DF9F3C2171097E3F584 /* ShareInviteRepositoryProtocolMock.generated.swift in Sources */,
 				38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */,
 				259F729CCBEEEE2AFB240FB5 /* PublicKeyRepositoryProtocolMock.generated.swift in Sources */,
+				5179844D85D43BF233B6DA2B /* SyncEventLoopProtocolMock.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
