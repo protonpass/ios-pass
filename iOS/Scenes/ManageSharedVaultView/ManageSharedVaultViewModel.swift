@@ -50,7 +50,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    
+
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
 
