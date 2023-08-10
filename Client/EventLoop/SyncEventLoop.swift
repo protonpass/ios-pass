@@ -71,8 +71,15 @@ public enum SyncEventLoopSkipReason {
 
 private let kThresholdRange = 5...15
 
+// sourcery: AutoMockable
+public protocol SyncEventLoopProtocol {
+    func start()
+    func forceSync()
+    func stop()
+}
+
 /// A background event loop that keeps data up to date by synching after a random number of seconds
-public final class SyncEventLoop: DeinitPrintable {
+public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params
