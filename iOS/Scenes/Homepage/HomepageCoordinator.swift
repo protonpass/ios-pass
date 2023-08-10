@@ -426,7 +426,10 @@ private extension HomepageCoordinator {
                 guard let self else {
                     return
                 }
-                if self.rootViewController.topMostViewController is UIHostingController<ManageSharedVaultView> {
+                if let host = self.rootViewController
+                    .topMostViewController as? UIHostingController<ManageSharedVaultView> {
+                    /// Updating shared data without
+                    host.rootView.viewModel.fetchShareInformation()
                     return
                 }
                 self.present(manageShareVaultView)

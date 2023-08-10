@@ -72,12 +72,12 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
                                          vaultKey: sharedKey)
 
         let result = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
-                                                          keys: [signedKeys],
-                                                          email: email,
-                                                          targetType: .vault,
-                                                          shareRole: role)
+                                                                keys: [signedKeys],
+                                                                email: email,
+                                                                targetType: .vault,
+                                                                shareRole: role)
         syncEventLoop.forceSync()
-        
+
         return result
     }
 }
