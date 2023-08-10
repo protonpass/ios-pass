@@ -1,22 +1,35 @@
+/* Onboarding: Enable Proton Pass AutoFill in iOS Settings */
 "Open **Settings** app" = "Ouvrir **Réglages**";
 "Tap **Passwords**" = "Tapper **Mots de passe**";
 "Tap **Password Options**" = "Tapper **Options des mots de passe**";
 "Turn on **Autofill Passwords**" = "Activer **Préremplir les mots de passe**";
 "Select **Proton Pass**" = "Choisir **Proton Pass**";
 "Enjoy the magic of AutoFill" = "Profiter de la magie du remplissage automatique";
+
+/* Onboarding: Titles of the steps */
 "Log in to apps instantly" = "Se connecter instantanément aux applications";
 "Protect your most sensitive data" = "Protéger vos données les plus sensibles";
 "Face ID enabled" = "Face ID activé";
 "Touch ID enabled" = "Touch ID activé";
+
+/* Onboarding: Descriptions of the steps */
 "Control what lands in your inbox" = "Contrôler ce qui atterrit dans votre boîte de réception";
 "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours" = "Activer le remplissage automatique pour laisser Proton Pass remplir les informations de connexion pour vous ⏤ 10 secondes qui vous feront gagner des heures";
 "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details" = "Lorsque vous vous connectez à un site ou à un service, appuyez sur l'icône Proton Pass pour remplir automatiquement vos informations de connexion";
 "Set Proton Pass to unlock with your face or fingerprint so only you have access" = "Configurer Proton Pass pour qu'il se déverrouille avec votre visage ou votre empreinte digitale afin que vous seul y ayez accès";
 "Now you can unlock Proton Pass only when you need it⏤quickly and securely" = "Vous pouvez désormais déverrouiller Proton Pass uniquement lorsque vous en avez besoin⏤rapidement et en toute sécurité";
 "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." = "Arrêter de partager votre véritable adresse e-mail. Au lieu de cela, le cacher avec des alias de messagerie ⏤ une exclusivité Proton Pass.";
+
+/* Onboarding: Buttons title of the steps */
 "Go to Settings" = "Ouvrir Réglages";
 "Enable Touch ID" = "Activer Touch ID";
 "Enable Face ID" = "Activer Face ID";
 "Start using Proton Pass" = "Commencer à utiliser Proton Pass";
 "Next" = "Suivant";
 "Not now" = "Pas maintenant";
+
+/* Sharing: Short description for share permission */
+"admin" = "admin";
+"edit" = "modifier";
+"read" = "lire";
+"pending" = "en attente";

@@ -147,7 +147,7 @@ private extension ManageSharedVaultView {
                             .padding(.horizontal, 8)
                             .background(Capsule().fill(PassColor.interactionNorm.toColor))
                     }
-                    Text(user.shareRole?.role ?? "pending")
+                    Text(user.permission)
                         .foregroundColor(PassColor.textWeak.toColor)
                 }
             }
