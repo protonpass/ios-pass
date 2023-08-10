@@ -60,6 +60,13 @@ struct ShareUser: Equatable, Hashable {
     var isPending: Bool {
         shareRole == nil
     }
+
+    var permission: String {
+        if let shareRole {
+            return shareRole.description
+        }
+        return String(localized: "pending")
+    }
 }
 
 extension UserShareInfos {
