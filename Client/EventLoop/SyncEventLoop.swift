@@ -252,6 +252,12 @@ private extension SyncEventLoop {
             return false
         }
 
+        var hasNewShareEvents = false
+        if remoteShares != localShares.map(\.share) {
+            hasNewShareEvents = true
+            try await shareRepository.upsertShares(remoteShares)
+        }
+
         let hasNewEvents = try await withThrowingTaskGroup(of: Bool.self,
                                                            returning: Bool.self) { taskGroup in
             taskGroup.addTask { [weak self] in
@@ -269,7 +275,7 @@ private extension SyncEventLoop {
             return try await taskGroup.contains { $0 }
         }
 
-        return hasNewEvents
+        return hasNewEvents || hasNewShareEvents
     }
 
     /// Return `true` if new events found
