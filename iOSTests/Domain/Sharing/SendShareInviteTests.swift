@@ -29,15 +29,18 @@ final class SendShareInviteTests: XCTestCase {
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
-    
+    var syncEventLoop: SyncEventLoopProtocolMock!
+
     override func setUp() {
         super.setUp()
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
+        syncEventLoop = SyncEventLoopProtocolMock()
         sut = SendVaultShareInvite(passKeyManager: passKeyManager,
                               shareInviteRepository: shareInviteRepository,
-                              userData: UserData.mock)
+                                   userData: UserData.mock,
+                                   syncEventLoop: syncEventLoop)
     }
 
     func testSendShareInvite_ShouldBeNotBeValid_missingInfos() async throws {
