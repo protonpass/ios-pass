@@ -122,10 +122,15 @@ extension ProfileTabViewModel {
     func refreshPlan() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            // First get local plan to optimistically display it
-            // and then try to refresh the plan to have it updated
-            self.plan = try await self.passPlanRepository.getPlan()
-            self.plan = try await self.passPlanRepository.refreshPlan()
+            do {
+                // First get local plan to optimistically display it
+                // and then try to refresh the plan to have it updated
+                self.plan = try await self.passPlanRepository.getPlan()
+                self.plan = try await self.passPlanRepository.refreshPlan()
+            } catch {
+                self.logger.error(error)
+                self.delegate?.profileTabViewModelDidEncounter(error: error)
+            }
         }
     }
 
