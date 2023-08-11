@@ -26,7 +26,7 @@ import Factory
 import ProtonCore_Login
 import SwiftUI
 
-final class SuffixSelection: ObservableObject {
+final class SuffixSelection: ObservableObject, Equatable, Hashable {
     @Published var selectedSuffix: Suffix?
     let suffixes: [Suffix]
 
@@ -36,9 +36,18 @@ final class SuffixSelection: ObservableObject {
         self.suffixes = suffixes
         selectedSuffix = suffixes.first
     }
+
+    static func == (lhs: SuffixSelection, rhs: SuffixSelection) -> Bool {
+        lhs.selectedSuffix == rhs.selectedSuffix && lhs.suffixes == rhs.suffixes
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(selectedSuffix)
+        hasher.combine(suffixes)
+    }
 }
 
-final class MailboxSelection: ObservableObject {
+final class MailboxSelection: ObservableObject, Equatable, Hashable {
     @Published var selectedMailboxes: [Mailbox]
     let mailboxes: [Mailbox]
 
@@ -54,13 +63,22 @@ final class MailboxSelection: ObservableObject {
             selectedMailboxes = []
         }
     }
+
+    static func == (lhs: MailboxSelection, rhs: MailboxSelection) -> Bool {
+        lhs.selectedMailboxes == rhs.selectedMailboxes && lhs.mailboxes == rhs.mailboxes
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(selectedMailboxes)
+        hasher.combine(mailboxes)
+    }
 }
 
-protocol CreateEditAliasViewModelDelegate: AnyObject {
-    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
-                                                        titleMode: MailboxSection.Mode)
-    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
-}
+// protocol CreateEditAliasViewModelDelegate: AnyObject {
+////    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
+////                                                        titleMode: MailboxSection.Mode)
+////    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
+// }
 
 // MARK: - Initialization
 
@@ -117,8 +135,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var suffixSelection: SuffixSelection?
     private(set) var mailboxSelection: MailboxSelection?
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
+//    weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
     override var isSaveable: Bool {
         switch mode {
@@ -259,14 +278,12 @@ extension CreateEditAliasViewModel {
 
     func showMailboxSelection() {
         guard let mailboxSelection else { return }
-        createEditAliasViewModelDelegate?
-            .createEditAliasViewModelWantsToSelectMailboxes(mailboxSelection,
-                                                            titleMode: mode.isEditMode ? .edit : .create)
+        router.present(for: .mailboxView(mailboxSelection, mode.isEditMode ? .edit : .create))
     }
 
     func showSuffixSelection() {
         guard let suffixSelection else { return }
-        createEditAliasViewModelDelegate?.createEditAliasViewModelWantsToSelectSuffix(suffixSelection)
+        router.present(for: .suffixView(suffixSelection))
     }
 }
 

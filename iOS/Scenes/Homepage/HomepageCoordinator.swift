@@ -224,6 +224,7 @@ private extension HomepageCoordinator {
 private extension HomepageCoordinator {
     // MARK: - Router setup
 
+    // swiftlint:disable:next cyclomatic_complexity
     func setUpRouting() {
         router
             .newPresentationDestination
@@ -251,6 +252,28 @@ private extension HomepageCoordinator {
                     self.presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
                     self.presentAcceptRejectInvite(with: invite)
+                case .upgradeFlow:
+                    self.startUpgradeFlow()
+                case let .vaultCreateEdit(vault: vault):
+                    self.createEditVaultView(vault: vault)
+                case let .logView(module: module):
+                    self.presentLogsView(for: module)
+                case let .suffixView(suffixSelection):
+                    self.presentSuffixSelectionView(selection: suffixSelection)
+                case let .mailboxView(mailboxSelection, mode):
+                    self.presentMailboxSelectionView(selection: mailboxSelection,
+                                                     mode: .createAliasLite,
+                                                     titleMode: mode)
+                }
+            }
+            .store(in: &cancellables)
+
+        router
+            .globalElementDisplay
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
                 case let .globalLoading(shouldShow):
                     if shouldShow {
                         self.showLoadingHud()
@@ -259,8 +282,6 @@ private extension HomepageCoordinator {
                     }
                 case let .displayErrorBanner(errorLocalized: errorLocalized):
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
-                case .upgradeFlow:
-                    startUpgradeFlow()
                 }
             }
             .store(in: &cancellables)
@@ -271,6 +292,14 @@ private extension HomepageCoordinator {
     func presentSharingFlow() {
         let userEmailView = UserEmailView()
         present(userEmailView)
+    }
+
+    func createEditVaultView(vault: Vault?) {
+        if let vault {
+            presentCreateEditVaultView(mode: .edit(vault))
+        } else {
+            presentCreateEditVaultView(mode: .create)
+        }
     }
 
     func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
@@ -881,14 +910,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         present(viewController)
     }
 
-    func settingsViewModelWantsToViewHostAppLogs() {
-        presentLogsView(for: .hostApp)
-    }
-
-    func settingsViewModelWantsToViewAutoFillExtensionLogs() {
-        presentLogsView(for: .autoFillExtension)
-    }
-
     func settingsViewModelWantsToClearLogs() {
         Task {
             let modules = PassModule.allCases.map(LogManager.init)
@@ -976,7 +997,6 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
                                                       delegate: AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
-        viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
@@ -996,32 +1016,32 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - CreateEditAliasViewModelDelegate
 
-extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
-    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
-                                                        titleMode: MailboxSection.Mode) {
-        presentMailboxSelectionView(selection: mailboxSelection,
-                                    mode: .createEditAlias,
-                                    titleMode: titleMode)
-    }
-
-    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        presentSuffixSelectionView(selection: suffixSelection)
-    }
-}
+// extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
+////    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
+////                                                        titleMode: MailboxSection.Mode) {
+////        presentMailboxSelectionView(selection: mailboxSelection,
+////                                    mode: .createEditAlias,
+////                                    titleMode: titleMode)
+////    }
+//
+////    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+////        presentSuffixSelectionView(selection: suffixSelection)
+////    }
+// }
 
 // MARK: - CreateAliasLiteViewModelDelegate
 
-extension HomepageCoordinator: CreateAliasLiteViewModelDelegate {
-    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        presentMailboxSelectionView(selection: mailboxSelection,
-                                    mode: .createAliasLite,
-                                    titleMode: .create)
-    }
-
-    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        presentSuffixSelectionView(selection: suffixSelection)
-    }
-}
+// extension HomepageCoordinator {
+//    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
+//        presentMailboxSelectionView(selection: mailboxSelection,
+//                                    mode: .createAliasLite,
+//                                    titleMode: .create)
+//    }
+//
+//    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
+//        presentSuffixSelectionView(selection: suffixSelection)
+//    }
+// }
 
 // MARK: - GeneratePasswordViewModelDelegate
 
@@ -1036,14 +1056,6 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
 // MARK: - EditableVaultListViewModelDelegate
 
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
-    func editableVaultListViewModelWantsToCreateNewVault() {
-        presentCreateEditVaultView(mode: .create)
-    }
-
-    func editableVaultListViewModelWantsToEdit(vault: Vault) {
-        presentCreateEditVaultView(mode: .edit(vault))
-    }
-
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate) {
         let handler = DeleteVaultAlertHandler(rootViewController: topMostViewController,
