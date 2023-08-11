@@ -96,6 +96,7 @@ struct CreateEditLoginView: View {
                     .padding()
                     .animation(.default, value: viewModel.customFieldUiModels.count)
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
+                    .showSpinner(viewModel.loading)
                 }
                 .onChange(of: focusedField) { focusedField in
                     let id: Namespace.ID?

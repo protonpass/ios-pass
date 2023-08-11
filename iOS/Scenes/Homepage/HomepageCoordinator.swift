@@ -78,7 +78,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: HomepageCoordinatorDelegate?
     weak var homepageTabDelegete: HomepageTabDelegete?
@@ -187,20 +187,6 @@ private extension HomepageCoordinator {
         }
     }
 
-    func present(_ view: some View, animated: Bool = true, dismissible: Bool = true) {
-        present(UIHostingController(rootView: view),
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
-                animated: animated,
-                dismissible: dismissible)
-    }
-
-    func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
-        present(viewController,
-                userInterfaceStyle: preferences.theme.userInterfaceStyle,
-                animated: animated,
-                dismissible: dismissible)
-    }
-
     func makeCreateEditItemCoordinator() -> CreateEditItemCoordinator {
         let coordinator = CreateEditItemCoordinator(createEditItemDelegates: self)
         coordinator.delegate = self
@@ -208,6 +194,149 @@ private extension HomepageCoordinator {
         return coordinator
     }
 
+    func refresh() {
+        vaultsManager.refresh()
+        searchViewModel?.refreshResults()
+        itemDetailCoordinator?.refresh()
+        createEditItemCoordinator?.refresh()
+    }
+
+    func addNewEvent(type: TelemetryEventType) {
+        addTelemetryEvent(with: type)
+    }
+
+    func sendAllEventsIfApplicable() {
+        Task { [weak self] in
+            do {
+                try await self?.telemetryEventRepository.sendAllEventsIfApplicable()
+            } catch {
+                self?.logger.error(error)
+            }
+        }
+    }
+
+    func startUpgradeFlow() {
+        dismissAllViewControllers(animated: true) { [weak self] in
+            self?.paymentsManager.upgradeSubscription { [weak self] result in
+                switch result {
+                case let .success(inAppPurchasePlan):
+                    if inAppPurchasePlan != nil {
+                        self?.refreshPlan()
+                    } else {
+                        self?.logger.debug("Payment is done but no plan is purchased")
+                    }
+                case let .failure(error):
+                    self?.bannerManager.displayTopErrorMessage(error)
+                }
+            }
+        }
+    }
+
+    func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
+        preferences.createdItemsCount += 1
+        // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
+        if !ProcessInfo.processInfo.isiOSAppOnMac,
+           preferences.createdItemsCount >= 10,
+           let windowScene = rootViewController.view.window?.windowScene {
+            SKStoreReviewController.requestReview(in: windowScene)
+        }
+    }
+}
+
+// MARK: - Navigation & Routing & View presentation
+
+private extension HomepageCoordinator {
+    // MARK: - Router setup
+    func setUpRouting() {
+        router
+            .newPresentationDestination
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                print("plop")
+            }
+            .store(in: &cancellables)
+
+        router
+            .newSheetDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case .sharingFlow:
+                    self.presentSharingFlow()
+                case let .manageShareVault(vault, dismissPrevious):
+                    self.presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
+                case .filterItems:
+                    self.presentItemFilterOptions()
+                case let .acceptRejectInvite(invite):
+                    self.presentAcceptRejectInvite(with: invite)
+                case .showGlobalLoading:
+                    self.showLoadingHud()
+                case .hideGlobalLoading:
+                    self.hideLoadingHud()
+                case let .displayErrorBanner(errorLocalized: errorLocalized):
+                    self.bannerManager.displayTopErrorMessage(errorLocalized)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    // MARK: - UI view presenting functions
+    
+    func presentSharingFlow() {
+        let userEmailView = UserEmailView()
+        present(userEmailView)
+    }
+
+    func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
+        let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
+
+        if dismissPrevious {
+            dismissTopMostViewController { [weak self] in
+                guard let self else {
+                    return
+                }
+                if let host = self.rootViewController
+                    .topMostViewController as? UIHostingController<ManageSharedVaultView> {
+                    /// Updating share data circumventing the onAppear not being called after a sheet presentation
+                    host.rootView.viewModel.fetchShareInformation()
+                    return
+                }
+                self.present(manageShareVaultView)
+            }
+        } else {
+            present(manageShareVaultView)
+        }
+    }
+
+    func presentItemFilterOptions() {
+        let view = ItemTypeFilterOptionsView()
+        let viewController = UIHostingController(rootView: view)
+        let height = ItemTypeFilterOptionsView.rowHeight * CGFloat(ItemTypeFilterOption.allCases.count) + 70
+        viewController.setDetentType(.customAndLarge(height),
+                                     parentViewController: rootViewController)
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+
+    func presentAcceptRejectInvite(with invite: UserInvite) {
+        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
+
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.medium,
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
+    }
+    
+    func presentLogsView(for module: PassModule) {
+        let viewModel = LogsViewModel(module: module)
+        viewModel.delegate = self
+        let view = LogsView(viewModel: viewModel)
+        present(view)
+    }
+    
     func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
         coordinator.delegate = self
@@ -304,14 +433,8 @@ private extension HomepageCoordinator {
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
     }
-
-    func refresh() {
-        vaultsManager.refresh()
-        searchViewModel?.refreshResults()
-        itemDetailCoordinator?.refresh()
-        createEditItemCoordinator?.refresh()
-    }
-
+    
+    // MARK: - UI Helper presentation functions
     func shouldShowAsSheet() -> Bool {
         !UIDevice.current.isIpad || (UIDevice.current.isIpad && isCollapsed())
     }
@@ -332,133 +455,21 @@ private extension HomepageCoordinator {
             popTopViewController(animated: true)
         }
     }
-
-    func presentLogsView(for module: PassModule) {
-        let viewModel = LogsViewModel(module: module)
-        viewModel.delegate = self
-        let view = LogsView(viewModel: viewModel)
-        present(view)
+    
+    func present(_ view: some View, animated: Bool = true, dismissible: Bool = true) {
+        present(UIHostingController(rootView: view),
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                animated: animated,
+                dismissible: dismissible)
     }
 
-    func addNewEvent(type: TelemetryEventType) {
-        addTelemetryEvent(with: type)
+    func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = true) {
+        present(viewController,
+                userInterfaceStyle: preferences.theme.userInterfaceStyle,
+                animated: animated,
+                dismissible: dismissible)
     }
 
-    func sendAllEventsIfApplicable() {
-        Task { [weak self] in
-            do {
-                try await self?.telemetryEventRepository.sendAllEventsIfApplicable()
-            } catch {
-                self?.logger.error(error)
-            }
-        }
-    }
-
-    func startUpgradeFlow() {
-        dismissAllViewControllers(animated: true) { [weak self] in
-            self?.paymentsManager.upgradeSubscription { [weak self] result in
-                switch result {
-                case let .success(inAppPurchasePlan):
-                    if inAppPurchasePlan != nil {
-                        self?.refreshPlan()
-                    } else {
-                        self?.logger.debug("Payment is done but no plan is purchased")
-                    }
-                case let .failure(error):
-                    self?.bannerManager.displayTopErrorMessage(error)
-                }
-            }
-        }
-    }
-
-    func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
-        preferences.createdItemsCount += 1
-        // Only ask for reviews when not in macOS because macOS doesn't respect 3 times per year limit
-        if !ProcessInfo.processInfo.isiOSAppOnMac,
-           preferences.createdItemsCount >= 10,
-           let windowScene = rootViewController.view.window?.windowScene {
-            SKStoreReviewController.requestReview(in: windowScene)
-        }
-    }
-}
-
-// MARK: - Navigation & Routing
-
-private extension HomepageCoordinator {
-    func setUpRouting() {
-        router
-            .newPresentationDestination
-            .receive(on: DispatchQueue.main)
-            .sink { _ in
-                print("plop")
-            }
-            .store(in: &cancellables)
-
-        router
-            .newSheetDestination
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] destination in
-                guard let self else { return }
-                switch destination {
-                case .sharingFlow:
-                    self.presentSharingFlow()
-                case let .manageShareVault(vault, dismissPrevious):
-                    self.presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
-                case .filterItems:
-                    self.presentItemFilterOptions()
-                case let .acceptRejectInvite(invite):
-                    self.presentAcceptRejectInvite(with: invite)
-                }
-            }
-            .store(in: &cancellables)
-    }
-
-    func presentSharingFlow() {
-        let userEmailView = UserEmailView()
-        present(userEmailView)
-    }
-
-    func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
-        let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
-
-        if dismissPrevious {
-            dismissTopMostViewController { [weak self] in
-                guard let self else {
-                    return
-                }
-                if let host = self.rootViewController
-                    .topMostViewController as? UIHostingController<ManageSharedVaultView> {
-                    /// Updating share data circumventing the onAppear not being called after a sheet presentation
-                    host.rootView.viewModel.fetchShareInformation()
-                    return
-                }
-                self.present(manageShareVaultView)
-            }
-        } else {
-            present(manageShareVaultView)
-        }
-    }
-
-    func presentItemFilterOptions() {
-        let view = ItemTypeFilterOptionsView()
-        let viewController = UIHostingController(rootView: view)
-        let height = ItemTypeFilterOptionsView.rowHeight * CGFloat(ItemTypeFilterOption.allCases.count) + 70
-        viewController.setDetentType(.customAndLarge(height),
-                                     parentViewController: rootViewController)
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func presentAcceptRejectInvite(with invite: UserInvite) {
-        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
-
-        let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.medium,
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
 }
 
 // MARK: - Public APIs
@@ -604,14 +615,6 @@ extension HomepageCoordinator: ItemTypeListViewModelDelegate {
 // MARK: - ItemsTabViewModelDelegate
 
 extension HomepageCoordinator: ItemsTabViewModelDelegate {
-    func itemsTabViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func itemsTabViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
         let viewModel = SearchViewModel(vaultSelection: vaultSelection)
         viewModel.delegate = self
@@ -715,14 +718,6 @@ extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func profileTabViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func profileTabViewModelWantsToUpgrade() {
         startUpgradeFlow()
     }
@@ -852,14 +847,6 @@ extension HomepageCoordinator: AccountViewModelDelegate {
 // MARK: - SettingsViewModelDelegate
 
 extension HomepageCoordinator: SettingsViewModelDelegate {
-    func settingsViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func settingsViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func settingsViewModelWantsToGoBack() {
         adaptivelyDismissCurrentDetailView()
     }
@@ -954,14 +941,6 @@ extension HomepageCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func createEditItemViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
         let vaultContents = vaultsManager.getAllVaultContents()
@@ -1118,13 +1097,13 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
 // MARK: - EditableVaultListViewModelDelegate
 
 extension HomepageCoordinator: EditableVaultListViewModelDelegate {
-    func editableVaultListViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func editableVaultListViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
+//    func editableVaultListViewModelWantsToShowSpinner() {
+//        showLoadingHud()
+//    }
+//
+//    func editableVaultListViewModelWantsToHideSpinner() {
+//        hideLoadingHud()
+//    }
 
     func editableVaultListViewModelWantsToCreateNewVault() {
         presentCreateEditVaultView(mode: .create)
@@ -1165,14 +1144,6 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
 // MARK: - ItemDetailViewModelDelegate
 
 extension HomepageCoordinator: ItemDetailViewModelDelegate {
-    func itemDetailViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func itemDetailViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool) {
         if isShownAsSheet {
             dismissTopMostViewController()
@@ -1267,14 +1238,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 // MARK: - ItemContextMenuHandlerDelegate
 
 extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
-    func itemContextMenuHandlerWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func itemContextMenuHandlerWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent) {
         presentEditItemView(for: itemContent)
     }
@@ -1316,14 +1279,6 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 // MARK: - CreateEditVaultViewModelDelegate
 
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
-    func createEditVaultViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func createEditVaultViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func createEditVaultViewModelWantsToUpgrade() {
         startUpgradeFlow()
     }
@@ -1350,14 +1305,6 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 // MARK: - EditPrimaryVaultViewModelDelegate
 
 extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
-    func editPrimaryVaultViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func editPrimaryVaultViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
             self?.bannerManager.displayBottomSuccessMessage("Primary vault updated")
@@ -1373,14 +1320,6 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
 // MARK: - LogsViewModelDelegate
 
 extension HomepageCoordinator: LogsViewModelDelegate {
-    func logsViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func logsViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func logsViewModelWantsToShareLogs(_ url: URL) {
         let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         if UIDevice.current.isIpad {

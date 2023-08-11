@@ -32,6 +32,9 @@ enum CoordinatorSheetDestination: Equatable, Hashable {
     case manageShareVault(Vault, dismissBeforeShowing: Bool)
     case filterItems
     case acceptRejectInvite(UserInvite)
+    case showGlobalLoading
+    case hideGlobalLoading
+    case displayErrorBanner(errorLocalized: String)
 }
 
 final class MainUIKitSwiftUIRouter {

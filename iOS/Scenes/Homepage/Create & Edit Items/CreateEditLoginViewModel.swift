@@ -50,6 +50,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @Published var isShowingNoCameraPermissionView = false
     @Published var isShowingCodeScanner = false
+    @Published private(set) var loading = false
 
     /// Proton account email address
     let emailAddress: String
@@ -223,11 +224,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         } else {
             Task { @MainActor [weak self] in
                 guard let self else { return }
+                defer { self.loading = false }
                 do {
-                    self.delegate?.createEditItemViewModelWantsToShowLoadingHud()
+                    self.loading = true
                     let aliasOptions = try await self.aliasRepository
                         .getAliasOptions(shareId: self.selectedVault.shareId)
-                    self.delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     if let firstSuffix = aliasOptions.suffixes.first,
                        let firstMailbox = aliasOptions.mailboxes.first {
                         var prefix = PrefixUtils.generatePrefix(fromTitle: title)
@@ -242,7 +243,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.generateAlias()
                     }
                 } catch {
-                    self.delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     self.delegate?.createEditItemViewModelDidEncounter(error: error)
                 }
             }
