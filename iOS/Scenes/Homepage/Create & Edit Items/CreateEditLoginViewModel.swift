@@ -139,7 +139,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     } catch {
                         self.logger.error(error)
                         self.router
-                            .present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                            .display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
                     }
                 }
             }
@@ -156,7 +156,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     self.canAddOrEdit2FAURI = try await self.upgradeChecker.canHaveMoreLoginsWith2FA()
                 } catch {
                     self.logger.error(error)
-                    self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                    self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 }
             }
         }
@@ -245,7 +245,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.generateAlias()
                     }
                 } catch {
-                    self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                    self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 }
             }
         }
@@ -289,7 +289,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 totpUri = scanResult
             }
         case let .failure(error):
-            router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+            router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
         }
     }
 
