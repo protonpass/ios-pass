@@ -44,6 +44,11 @@
 "Can create, edit, delete and export items in this vault" = "Can create, edit, delete and export items in this vault";
 "Can grant and revoke access to this vault" = "Can grant and revoke access to this vault";
 
+/* Sharing: Enter invitee email address page */
+"Share with" = "Share with";
+"This user will receive an invitation to join your ‘%@’ vault" = "This user will receive an invitation to join your ‘%@’ vault";
+"Email address" = "Email address";
+
 /* Sharing: Set permissions page title & description */
 "Set permissions" = "Set permissions";
 "Select the level of access this user will gain when they join your ‘%@’ vault" = "Select the level of access this user will gain when they join your ‘%@’ vault";
