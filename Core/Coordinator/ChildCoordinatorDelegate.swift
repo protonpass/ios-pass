@@ -30,7 +30,6 @@ public protocol ChildCoordinatorDelegate: AnyObject {
                                               presentationOption: ChildCoordinatorPresentationOption)
     func childCoordinatorWantsToDismissTopViewController()
     func childCoordinatorDidFailLocalAuthentication()
-    func childCoordinatorDidEncounter(error: Error)
 }
 
 public extension ChildCoordinatorDelegate {

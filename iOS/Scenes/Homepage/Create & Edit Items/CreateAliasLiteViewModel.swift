@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Entities
+import Factory
 import SwiftUI
 
 protocol AliasCreationLiteInfoDelegate: AnyObject {
@@ -39,7 +40,6 @@ struct AliasCreationLiteInfo {
 protocol CreateAliasLiteViewModelDelegate: AnyObject {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
-    func createAliasLiteViewModelWantsToUpgrade()
 }
 
 final class CreateAliasLiteViewModel: ObservableObject {
@@ -50,6 +50,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     let suffixSelection: SuffixSelection
     let mailboxSelection: MailboxSelection
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
     weak var delegate: CreateAliasLiteViewModelDelegate?
@@ -116,6 +117,6 @@ extension CreateAliasLiteViewModel {
     }
 
     func upgrade() {
-        delegate?.createAliasLiteViewModelWantsToUpgrade()
+        router.presentSheet(for: .upgradeFlow)
     }
 }
