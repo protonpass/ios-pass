@@ -27,8 +27,6 @@ import UIKit
 let kItemDetailSectionPadding: CGFloat = 16
 
 protocol ItemDetailViewModelDelegate: AnyObject {
-    func itemDetailViewModelWantsToShowSpinner()
-    func itemDetailViewModelWantsToHideSpinner()
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
@@ -47,6 +45,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -132,10 +131,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func moveToTrash() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.presentSheet(for: .hideGlobalLoading) }
             do {
                 self.logger.trace("Trashing \(self.itemContent.debugInformation)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.presentSheet(for: .showGlobalLoading)
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
                 try await self.itemRepository.trashItems([encryptedItem])
@@ -151,10 +150,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func restore() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.presentSheet(for: .hideGlobalLoading) }
             do {
                 self.logger.trace("Restoring \(self.itemContent.debugInformation)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.presentSheet(for: .showGlobalLoading)
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -171,10 +170,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func permanentlyDelete() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.presentSheet(for: .hideGlobalLoading) }
             do {
                 self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.presentSheet(for: .showGlobalLoading)
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -224,10 +223,10 @@ private extension BaseItemDetailViewModel {
     func doMove(to vault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.presentSheet(for: .hideGlobalLoading) }
             do {
                 self.logger.trace("Moving \(self.itemContent.debugInformation) to share \(vault.shareId)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.presentSheet(for: .showGlobalLoading)
                 try await self.itemRepository.move(item: self.itemContent, toShareId: vault.shareId)
                 self.logger.trace("Moved \(self.itemContent.debugInformation) to share \(vault.shareId)")
                 self.delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)

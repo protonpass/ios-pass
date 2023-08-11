@@ -55,7 +55,6 @@ struct EditableVaultListView: View {
                 .padding(.horizontal)
             }
             .animation(.default, value: viewModel.vaultsManager.state)
-
             HStack {
                 CapsuleTextButton(title: "Create vault",
                                   titleColor: PassColor.interactionNormMajor2,
@@ -67,6 +66,7 @@ struct EditableVaultListView: View {
             .padding([.bottom, .horizontal])
         }
         .background(Color(uiColor: PassColor.backgroundWeak))
+        .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
         .alert("Aliases won’t be shared",
                isPresented: $viewModel.showingAliasAlert,

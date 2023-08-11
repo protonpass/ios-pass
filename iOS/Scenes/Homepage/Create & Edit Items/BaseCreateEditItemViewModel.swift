@@ -25,8 +25,6 @@ import Factory
 import ProtonCore_Login
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToShowLoadingHud()
-    func createEditItemViewModelWantsToHideLoadingHud()
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)

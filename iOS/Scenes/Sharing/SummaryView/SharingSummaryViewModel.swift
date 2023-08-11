@@ -30,7 +30,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
     @Published private(set) var infos: SharingInfos?
     @Published private(set) var sendingInvite = false
     @Published var error: Error?
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var lastTask: Task<Void, Never>?
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
