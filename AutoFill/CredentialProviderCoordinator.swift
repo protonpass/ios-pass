@@ -102,6 +102,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         makeSymmetricKeyAndRepositories()
         sendAllEventsIfApplicable()
         AppearanceSettings.apply()
+        setUpRouting()
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -317,12 +318,28 @@ private extension CredentialProviderCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
+                case .upgradeFlow:
+                    self.startUpgradeFlow()
+                case let .suffixView(suffixSelection):
+                    self.createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
+                case let .mailboxView(mailboxSelection, _):
+                    self.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
+
+        router
+            .globalElementDisplay
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
                 case let .displayErrorBanner(errorLocalized: errorLocalized):
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
-                case .upgradeFlow:
-                    startUpgradeFlow()
                 default:
-                    EmptyView()
+                    break
                 }
             }
             .store(in: &cancellables)
@@ -709,7 +726,7 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
                                                       delegate: AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
-        viewModel.delegate = self
+//        viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
@@ -727,7 +744,7 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - CreateAliasLiteViewModelDelegate
 
-extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
+extension CredentialProviderCoordinator { //: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
         guard let rootViewController else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,

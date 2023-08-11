@@ -24,8 +24,8 @@ import Core
 import Factory
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
-    func editableVaultListViewModelWantsToCreateNewVault()
-    func editableVaultListViewModelWantsToEdit(vault: Vault)
+//    func editableVaultListViewModelWantsToCreateNewVault()
+//    func editableVaultListViewModelWantsToEdit(vault: Vault)
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate)
     func editableVaultListViewModelDidDelete(vault: Vault)
@@ -40,7 +40,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     @Published var showingAliasAlert = false
     @Published private(set) var isAllowedToShare = false
-    @Published var loading = false
+    @Published private(set) var loading = false
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
@@ -83,7 +83,7 @@ private extension EditableVaultListViewModel {
                 self.delegate?.editableVaultListViewModelDidDelete(vault: vault)
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -93,11 +93,11 @@ private extension EditableVaultListViewModel {
 
 extension EditableVaultListViewModel {
     func createNewVault() {
-        delegate?.editableVaultListViewModelWantsToCreateNewVault()
+        router.present(for: .vaultCreateEdit(vault: nil))
     }
 
     func edit(vault: Vault) {
-        delegate?.editableVaultListViewModelWantsToEdit(vault: vault)
+        router.present(for: .vaultCreateEdit(vault: vault))
     }
 
     func share(vault: Vault) {
@@ -117,7 +117,7 @@ extension EditableVaultListViewModel {
                 self?.syncEventLoop.forceSync()
             } catch {
                 self?.logger.error(error)
-                self?.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self?.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -144,7 +144,7 @@ extension EditableVaultListViewModel {
                 self.logger.info("Restored all trashed items")
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -161,7 +161,7 @@ extension EditableVaultListViewModel {
                 self.logger.info("Emptied all trashed items")
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

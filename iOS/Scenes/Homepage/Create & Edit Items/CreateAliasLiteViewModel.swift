@@ -37,10 +37,10 @@ struct AliasCreationLiteInfo {
     var aliasAddress: String { prefix + suffix.suffix }
 }
 
-protocol CreateAliasLiteViewModelDelegate: AnyObject {
-    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
-    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
-}
+// protocol CreateAliasLiteViewModelDelegate: AnyObject {
+//    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
+//    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
+// }
 
 final class CreateAliasLiteViewModel: ObservableObject {
     @Published var prefix = ""
@@ -53,7 +53,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
-    weak var delegate: CreateAliasLiteViewModelDelegate?
+//    weak var delegate: CreateAliasLiteViewModelDelegate?
 
     var suffix: String {
         suffixSelection.selectedSuffix?.suffix ?? ""
@@ -109,11 +109,11 @@ extension CreateAliasLiteViewModel {
     }
 
     func showMailboxSelection() {
-        delegate?.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+        router.present(for: .mailboxView(mailboxSelection, .create))
     }
 
     func showSuffixSelection() {
-        delegate?.createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
+        router.present(for: .suffixView(suffixSelection))
     }
 
     func upgrade() {
