@@ -57,10 +57,10 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 }
                 _ = try await self.sendShareInvite(with: infos)
                 if let vault = self.infos?.vault {
-                    self.router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: true))
+                    self.router.present(for: .manageShareVault(vault, dismissBeforeShowing: true))
                 }
             } catch {
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

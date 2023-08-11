@@ -24,14 +24,11 @@ import Core
 import Factory
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
-//    func editableVaultListViewModelWantsToShowSpinner()
-//    func editableVaultListViewModelWantsToHideSpinner()
     func editableVaultListViewModelWantsToCreateNewVault()
     func editableVaultListViewModelWantsToEdit(vault: Vault)
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate)
     func editableVaultListViewModelDidDelete(vault: Vault)
-    func editableVaultListViewModelDidEncounter(error: Error)
     func editableVaultListViewModelDidRestoreAllTrashedItems()
     func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
 }
@@ -86,7 +83,7 @@ private extension EditableVaultListViewModel {
                 self.delegate?.editableVaultListViewModelDidDelete(vault: vault)
             } catch {
                 self.logger.error(error)
-                self.delegate?.editableVaultListViewModelDidEncounter(error: error)
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -109,7 +106,7 @@ extension EditableVaultListViewModel {
         if numberOfAliasforSharedVault > 0 {
             showingAliasAlert = true
         } else {
-            router.presentSheet(for: .sharingFlow)
+            router.present(for: .sharingFlow)
         }
     }
 
@@ -120,7 +117,7 @@ extension EditableVaultListViewModel {
                 self?.syncEventLoop.forceSync()
             } catch {
                 self?.logger.error(error)
-                self?.delegate?.editableVaultListViewModelDidEncounter(error: error)
+                self?.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -147,7 +144,7 @@ extension EditableVaultListViewModel {
                 self.logger.info("Restored all trashed items")
             } catch {
                 self.logger.error(error)
-                self.delegate?.editableVaultListViewModelDidEncounter(error: error)
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -164,7 +161,7 @@ extension EditableVaultListViewModel {
                 self.logger.info("Emptied all trashed items")
             } catch {
                 self.logger.error(error)
-                self.delegate?.editableVaultListViewModelDidEncounter(error: error)
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
