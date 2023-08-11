@@ -35,22 +35,22 @@ extension ShareRole {
     var title: String {
         switch self {
         case .read:
-            return "Can View"
+            return String(localized: "Can View")
         case .write:
-            return "Can Edit"
+            return String(localized: "Can Edit")
         case .admin:
-            return "Can Manage"
+            return String(localized: "Can Manage")
         }
     }
 
     var description: String {
         switch self {
         case .read:
-            return "Can view items in this vault"
+            return String(localized: "Can view items in this vault")
         case .write:
-            return "Can create, edit, delete and export items in this vault"
+            return String(localized: "Can create, edit, delete and export items in this vault")
         case .admin:
-            return "Can grant and revoke access to this vault"
+            return String(localized: "Can grant and revoke access to this vault")
         }
     }
 

@@ -33,3 +33,18 @@
 "edit" = "edit";
 "read" = "read";
 "pending" = "pending";
+
+/* Sharing: Title for roles */
+"Can View" = "Can View";
+"Can Edit" = "Can Edit";
+"Can Manage" = "Can Manage";
+
+/* Sharing: Descriptions for role */
+"Can view items in this vault" = "Can view items in this vault";
+"Can create, edit, delete and export items in this vault" = "Can create, edit, delete and export items in this vault";
+"Can grant and revoke access to this vault" = "Can grant and revoke access to this vault";
+
+/* Sharing: Set permissions page title & description */
+"Set permissions" = "Set permissions";
+"Select the level of access this user will gain when they join your ‘%@’ vault" = "Select the level of access this user will gain when they join your ‘%@’ vault";
+"Continue" = "Continue";
