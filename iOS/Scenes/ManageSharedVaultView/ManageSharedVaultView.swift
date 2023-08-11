@@ -30,7 +30,7 @@ import UIComponents
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: ManageSharedVaultViewModel
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     @State private var sort: ShareRole = .admin
 

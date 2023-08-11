@@ -26,8 +26,6 @@ import ProtonCore_Services
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowSpinner()
-    func profileTabViewModelWantsToHideSpinner()
     func profileTabViewModelWantsToUpgrade()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
@@ -78,6 +76,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
             preferences.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         }
     }
+
+    @Published private(set) var loading = false
 
     @Published private(set) var plan: PassPlan?
 
@@ -231,10 +231,10 @@ private extension ProfileTabViewModel {
         guard quickTypeBar != preferences.quickTypeBar else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.profileTabViewModelWantsToHideSpinner() }
+            defer { self.loading = false }
             do {
                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
-                self.delegate?.profileTabViewModelWantsToShowSpinner()
+                self.loading = true
                 if self.quickTypeBar {
                     try await self.indexAllLoginItems(ignorePreferences: true)
                 } else {

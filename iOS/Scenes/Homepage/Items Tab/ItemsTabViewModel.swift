@@ -26,8 +26,8 @@ import Factory
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
-    func itemsTabViewModelWantsToShowSpinner()
-    func itemsTabViewModelWantsToHideSpinner()
+//    func itemsTabViewModelWantsToShowSpinner()
+//    func itemsTabViewModelWantsToHideSpinner()
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
@@ -66,7 +66,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemsTabViewModelDelegate?
     private var inviteRefreshTask: Task<Void, Never>?

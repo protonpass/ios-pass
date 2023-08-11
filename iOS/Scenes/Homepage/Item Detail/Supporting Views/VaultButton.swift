@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct VaultButton: View {
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let vault: Vault
 
     var body: some View {

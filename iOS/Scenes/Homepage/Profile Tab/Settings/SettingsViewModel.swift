@@ -25,8 +25,6 @@ import Factory
 import SwiftUI
 
 protocol SettingsViewModelDelegate: AnyObject {
-    func settingsViewModelWantsToShowSpinner()
-    func settingsViewModelWantsToHideSpinner()
     func settingsViewModelWantsToGoBack()
     func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
     func settingsViewModelWantsToEditTheme()
@@ -61,6 +59,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
             }
         }
     }
+
+    @Published private(set) var loading = false
 
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
@@ -151,11 +151,11 @@ extension SettingsViewModel {
 
     func forceSync() {
         Task { @MainActor [weak self] in
-            defer { self?.delegate?.settingsViewModelWantsToHideSpinner() }
+            defer { self?.loading = false }
             do {
                 self?.syncEventLoop.stop()
                 self?.logger.info("Doing full sync")
-                self?.delegate?.settingsViewModelWantsToShowSpinner()
+                self?.loading = true
                 try await self?.vaultsManager.fullSync()
                 self?.logger.info("Done full sync")
                 self?.syncEventLoop.start()
