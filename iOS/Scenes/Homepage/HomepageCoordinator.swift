@@ -228,7 +228,12 @@ private extension HomepageCoordinator {
         router
             .newPresentationDestination
             .receive(on: DispatchQueue.main)
-            .sink { _ in
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .urlPage(urlString: url):
+                    self.urlOpener.open(urlString: url)
+                }
             }
             .store(in: &cancellables)
 
@@ -732,18 +737,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         print(#function)
     }
 
-    func profileTabViewModelWantsToShowPrivacyPolicy() {
-        urlOpener.open(urlString: ProtonLink.privacyPolicy)
-    }
-
-    func profileTabViewModelWantsToShowTermsOfService() {
-        urlOpener.open(urlString: ProtonLink.termsOfService)
-    }
-
-    func profileTabViewModelWantsToShowImportInstructions() {
-        urlOpener.open(urlString: ProtonLink.howToImport)
-    }
-
     func profileTabViewModelWantsToShowFeedback() {
         let view = FeedbackChannelsView { [weak self] selectedChannel in
             switch selectedChannel {
@@ -1064,10 +1057,6 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
         vaultsManager.refresh()
     }
 
-    func editableVaultListViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error)
-    }
-
     func editableVaultListViewModelDidRestoreAllTrashedItems() {
         bannerManager.displayBottomSuccessMessage("All items restored")
         refresh()
@@ -1102,10 +1091,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         showFullScreen(text: text,
                        theme: preferences.theme,
                        userInterfaceStyle: preferences.theme.userInterfaceStyle)
-    }
-
-    func itemDetailViewModelWantsToOpen(urlString: String) {
-        urlOpener.open(urlString: urlString)
     }
 
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {

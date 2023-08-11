@@ -30,7 +30,7 @@ struct InviteBannerView: View {
     static let height: CGFloat = 160
 
     var body: some View {
-        Button { router.presentSheet(for: .acceptRejectInvite(invite)) } label: {
+        Button { router.present(for: .acceptRejectInvite(invite)) } label: {
             HStack(alignment: .center, spacing: 16) {
                 VStack {
                     Text("Shared vault invitation")

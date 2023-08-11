@@ -138,7 +138,7 @@ private extension ItemsTabViewModel {
                 self.banners = banners
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -194,13 +194,13 @@ extension ItemsTabViewModel {
                     self.delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
 
     func showFilterOptions() {
-        router.presentSheet(for: .filterItems)
+        router.present(for: .filterItems)
     }
 
     func permanentlyDelete() {

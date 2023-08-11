@@ -152,7 +152,7 @@ private extension BaseCreateEditItemViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -169,7 +169,7 @@ private extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -182,7 +182,7 @@ private extension BaseCreateEditItemViewModel {
                 self.canAddMoreCustomFields = !isFreeUser
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -248,7 +248,7 @@ extension BaseCreateEditItemViewModel {
     }
 
     func upgrade() {
-        router.presentSheet(for: .upgradeFlow)
+        router.present(for: .upgradeFlow)
     }
 
     func save() {
@@ -275,7 +275,7 @@ extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -295,7 +295,7 @@ extension BaseCreateEditItemViewModel {
                 self.isObsolete = itemContent.item.revision != updatedItem.item.revision
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -317,7 +317,7 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     }
 
     func vaultSelectorViewModelDidEncounter(error: Error) {
-        router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+        router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
     }
 }
 
