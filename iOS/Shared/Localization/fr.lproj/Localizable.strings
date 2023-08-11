@@ -44,6 +44,11 @@
 "Can create, edit, delete and export items in this vault" = "Permet de créer, modifier, supprimer et exporter des éléments dans ce coffre-fort";
 "Can grant and revoke access to this vault" = "Permet d'accorder et de révoquer l'accès à ce coffre-fort";
 
+/* Sharing: Enter invitee email address page */
+"Share with" = "Partager avec";
+"This user will receive an invitation to join your ‘%@’ vault" = "Cet utilisateur recevra une invitation à rejoindre votre coffre-fort ‘%@’";
+"Email address" = "Adresse e-mail";
+
 /* Sharing: Set permissions page title & description */
 "Set permissions" = "Définir les autorisations";
 "Select the level of access this user will gain when they join your ‘%@’ vault" = "Sélectionnez le niveau d'accès dont bénéficiera cet utilisateur en rejoignant votre coffre-fort \'%@\'";
