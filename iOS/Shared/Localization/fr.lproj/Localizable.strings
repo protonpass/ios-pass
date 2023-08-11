@@ -33,3 +33,18 @@
 "edit" = "modifier";
 "read" = "lire";
 "pending" = "en attente";
+
+/* Sharing: Title for roles */
+"Can View" = "Consulter";
+"Can Edit" = "Modifier";
+"Can Manage" = "Gérer";
+
+/* Sharing: Descriptions for role */
+"Can view items in this vault" = "Permet de consulter les éléments de ce coffre-fort";
+"Can create, edit, delete and export items in this vault" = "Permet de créer, modifier, supprimer et exporter des éléments dans ce coffre-fort";
+"Can grant and revoke access to this vault" = "Permet d'accorder et de révoquer l'accès à ce coffre-fort";
+
+/* Sharing: Set permissions page title & description */
+"Set permissions" = "Définir les autorisations";
+"Select the level of access this user will gain when they join your ‘%@’ vault" = "Sélectionnez le niveau d'accès dont bénéficiera cet utilisateur en rejoignant votre coffre-fort \'%@\'";
+"Continue" = "Continuer";
