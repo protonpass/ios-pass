@@ -108,7 +108,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.bindValues()
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -128,10 +128,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func moveToTrash() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Trashing \(self.itemContent.debugInformation)")
-                self.router.present(for: .globalLoading(shouldShow: true))
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
                 try await self.itemRepository.trashItems([encryptedItem])
@@ -139,7 +139,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Trashed \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -147,10 +147,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func restore() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Restoring \(self.itemContent.debugInformation)")
-                self.router.present(for: .globalLoading(shouldShow: true))
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -159,7 +159,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Restored \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -167,10 +167,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func permanentlyDelete() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
-                self.router.present(for: .globalLoading(shouldShow: true))
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -179,7 +179,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -199,7 +199,7 @@ private extension BaseItemDetailViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -220,16 +220,16 @@ private extension BaseItemDetailViewModel {
     func doMove(to vault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Moving \(self.itemContent.debugInformation) to share \(vault.shareId)")
-                self.router.present(for: .globalLoading(shouldShow: true))
+                self.router.display(element: .globalLoading(shouldShow: true))
                 try await self.itemRepository.move(item: self.itemContent, toShareId: vault.shareId)
                 self.logger.trace("Moved \(self.itemContent.debugInformation) to share \(vault.shareId)")
                 self.delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -247,6 +247,6 @@ extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
     }
 
     func moveVaultListViewModelDidEncounter(error: Error) {
-        router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+        router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
     }
 }

@@ -138,7 +138,7 @@ private extension ItemsTabViewModel {
                 self.banners = banners
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -194,7 +194,7 @@ extension ItemsTabViewModel {
                     self.delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
