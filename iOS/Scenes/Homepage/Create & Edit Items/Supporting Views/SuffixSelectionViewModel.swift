@@ -23,21 +23,16 @@ import Combine
 import Core
 import Factory
 
-protocol SuffixSelectionViewModelDelegate: AnyObject {
-    func suffixSelectionViewModelWantsToUpgrade()
-    func suffixSelectionViewModelDidEncounter(error: Error)
-}
-
 final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var shouldUpgrade = false
 
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
     let suffixSelection: SuffixSelection
     private var cancellables = Set<AnyCancellable>()
-
-    weak var delegate: SuffixSelectionViewModelDelegate?
 
     init(suffixSelection: SuffixSelection) {
         self.suffixSelection = suffixSelection
@@ -45,6 +40,6 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
     }
 
     func upgrade() {
-        delegate?.suffixSelectionViewModelWantsToUpgrade()
+        router.presentSheet(for: .upgradeFlow)
     }
 }

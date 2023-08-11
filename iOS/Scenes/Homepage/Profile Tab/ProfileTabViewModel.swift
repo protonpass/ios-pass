@@ -26,7 +26,6 @@ import ProtonCore_Services
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToUpgrade()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
@@ -35,7 +34,6 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowImportInstructions()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
-    func profileTabViewModelDidEncounter(error: Error)
 }
 
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
@@ -51,6 +49,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -78,7 +77,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published private(set) var loading = false
-
     @Published private(set) var plan: PassPlan?
 
     private var cancellables = Set<AnyCancellable>()
@@ -116,7 +114,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
 extension ProfileTabViewModel {
     func upgrade() {
-        delegate?.profileTabViewModelWantsToUpgrade()
+        router.presentSheet(for: .upgradeFlow)
     }
 
     func refreshPlan() {
@@ -129,7 +127,7 @@ extension ProfileTabViewModel {
                 self.plan = try await self.passPlanRepository.refreshPlan()
             } catch {
                 self.logger.error(error)
-                self.delegate?.profileTabViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -200,7 +198,7 @@ private extension ProfileTabViewModel {
             } catch {
                 // Fallback to `none`, not much we can do except displaying the error
                 logger.error(error)
-                delegate?.profileTabViewModelDidEncounter(error: error)
+                router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 localAuthenticationMethod = .none
             }
         case .pin:
@@ -244,7 +242,7 @@ private extension ProfileTabViewModel {
             } catch {
                 self.logger.error(error)
                 self.quickTypeBar.toggle() // rollback to previous value
-                self.delegate?.profileTabViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

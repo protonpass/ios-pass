@@ -34,7 +34,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToViewAutoFillExtensionLogs()
     func settingsViewModelWantsToClearLogs()
     func settingsViewModelDidFinishFullSync()
-    func settingsViewModelDidEncounter(error: Error)
 }
 
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
@@ -45,6 +44,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     let supportedBrowsers: [Browser]
@@ -162,7 +163,7 @@ extension SettingsViewModel {
                 self?.delegate?.settingsViewModelDidFinishFullSync()
             } catch {
                 self?.logger.error(error)
-                self?.delegate?.settingsViewModelDidEncounter(error: error)
+                self?.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

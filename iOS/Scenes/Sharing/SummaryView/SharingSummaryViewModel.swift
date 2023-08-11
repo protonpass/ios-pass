@@ -29,7 +29,6 @@ import Foundation
 final class SharingSummaryViewModel: ObservableObject, Sendable {
     @Published private(set) var infos: SharingInfos?
     @Published private(set) var sendingInvite = false
-    @Published var error: Error?
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var lastTask: Task<Void, Never>?
@@ -61,7 +60,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                     self.router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: true))
                 }
             } catch {
-                self.error = error
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
