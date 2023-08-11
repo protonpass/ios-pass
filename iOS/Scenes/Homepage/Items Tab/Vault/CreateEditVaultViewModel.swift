@@ -40,10 +40,8 @@ enum VaultMode {
 }
 
 protocol CreateEditVaultViewModelDelegate: AnyObject {
-    func createEditVaultViewModelWantsToUpgrade()
     func createEditVaultViewModelDidCreateVault()
     func createEditVaultViewModelDidEditVault()
-    func createEditVaultViewModelDidEncounter(error: Error)
 }
 
 final class CreateEditVaultViewModel: ObservableObject {
@@ -57,6 +55,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -100,7 +99,7 @@ private extension CreateEditVaultViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -125,7 +124,7 @@ private extension CreateEditVaultViewModel {
                 self.logger.info("Edited vault \(oldVault.id)")
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -142,7 +141,7 @@ private extension CreateEditVaultViewModel {
                 self.logger.info("Created vault")
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -161,7 +160,7 @@ extension CreateEditVaultViewModel {
     }
 
     func upgrade() {
-        delegate?.createEditVaultViewModelWantsToUpgrade()
+        router.presentSheet(for: .upgradeFlow)
     }
 }
 

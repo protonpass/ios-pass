@@ -44,7 +44,6 @@ protocol SearchViewModelDelegate: AnyObject {
     func searchViewModelWantsToViewDetail(of itemContent: ItemContent)
     func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                    delegate: SortTypeListViewModelDelegate)
-    func searchViewModelWantsDidEncounter(error: Error)
 }
 
 final class SearchViewModel: ObservableObject, DeinitPrintable {
@@ -63,10 +62,12 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    // Self-intialized properties
     private(set) var vaultSelection: VaultSelection
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
-    // Self-intialized properties
     private var lastSearchQuery = ""
     private var lastTask: Task<Void, Never>?
     private var filteringTask: Task<Void, Never>?
@@ -242,7 +243,7 @@ extension SearchViewModel {
                     self?.delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
             } catch {
-                self?.delegate?.searchViewModelWantsDidEncounter(error: error)
+                self?.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -253,7 +254,7 @@ extension SearchViewModel {
                 try await self?.searchEntryDatasource.remove(item: item)
                 try await self?.refreshSearchHistory()
             } catch {
-                self?.delegate?.searchViewModelWantsDidEncounter(error: error)
+                self?.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -264,7 +265,7 @@ extension SearchViewModel {
                 try await self?.searchEntryDatasource.removeAllEntries()
                 try await self?.refreshSearchHistory()
             } catch {
-                self?.delegate?.searchViewModelWantsDidEncounter(error: error)
+                self?.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

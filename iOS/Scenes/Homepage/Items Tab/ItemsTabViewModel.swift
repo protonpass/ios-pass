@@ -26,8 +26,6 @@ import Factory
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
-//    func itemsTabViewModelWantsToShowSpinner()
-//    func itemsTabViewModelWantsToHideSpinner()
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
@@ -35,7 +33,6 @@ protocol ItemsTabViewModelDelegate: AnyObject {
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
-    func itemsTabViewModelDidEncounter(error: Error)
 }
 
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
@@ -141,7 +138,7 @@ private extension ItemsTabViewModel {
                 self.banners = banners
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemsTabViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -197,7 +194,7 @@ extension ItemsTabViewModel {
                     self.delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                self.delegate?.itemsTabViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

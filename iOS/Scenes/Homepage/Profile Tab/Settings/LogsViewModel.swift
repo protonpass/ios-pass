@@ -24,7 +24,6 @@ import SwiftUI
 
 protocol LogsViewModelDelegate: AnyObject {
     func logsViewModelWantsToShareLogs(_ url: URL)
-    func logsViewModelDidEncounter(error: Error)
 }
 
 final class LogsViewModel: DeinitPrintable, ObservableObject {
@@ -51,6 +50,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
 
     private let getLogEntries = resolve(\UseCasesContainer.getLogEntries)
     private let extractLogsToFile = resolve(\UseCasesContainer.extractLogsToFile)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init(module: PassModule) {
         self.module = module
@@ -83,7 +83,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
                     self.delegate?.logsViewModelWantsToShareLogs(fileToDelete)
                 }
             } catch {
-                self.delegate?.logsViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
