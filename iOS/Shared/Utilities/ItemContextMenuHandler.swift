@@ -61,9 +61,9 @@ extension ItemContextMenuHandler {
     func trash(_ item: ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.router.present(for: .globalLoading(shouldShow: true))
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.trashItems([encryptedItem])
 
@@ -87,9 +87,9 @@ extension ItemContextMenuHandler {
     func restore(_ item: ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.router.present(for: .globalLoading(shouldShow: true))
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.untrashItems([encryptedItem])
                 self.clipboardManager.bannerManager?.displayBottomSuccessMessage(item.type.restoreMessage)
@@ -104,9 +104,9 @@ extension ItemContextMenuHandler {
     func deletePermanently(_ item: ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.router.present(for: .globalLoading(shouldShow: true))
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.deleteMessage)

@@ -124,7 +124,7 @@ extension ProfileTabViewModel {
                 self.plan = try await self.passPlanRepository.refreshPlan()
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -195,7 +195,7 @@ private extension ProfileTabViewModel {
             } catch {
                 // Fallback to `none`, not much we can do except displaying the error
                 logger.error(error)
-                router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 localAuthenticationMethod = .none
             }
         case .pin:
@@ -239,7 +239,7 @@ private extension ProfileTabViewModel {
             } catch {
                 self.logger.error(error)
                 self.quickTypeBar.toggle() // rollback to previous value
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

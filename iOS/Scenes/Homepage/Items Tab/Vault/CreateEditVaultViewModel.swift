@@ -99,7 +99,7 @@ private extension CreateEditVaultViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -124,7 +124,7 @@ private extension CreateEditVaultViewModel {
                 self.logger.info("Edited vault \(oldVault.id)")
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -141,7 +141,7 @@ private extension CreateEditVaultViewModel {
                 self.logger.info("Created vault")
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
