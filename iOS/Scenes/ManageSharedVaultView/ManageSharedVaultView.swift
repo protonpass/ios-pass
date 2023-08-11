@@ -41,7 +41,7 @@ struct ManageSharedVaultView: View {
                 CapsuleTextButton(title: "Share with more people",
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
-                                  action: { router.presentSheet(for: .sharingFlow) })
+                                  action: { router.present(for: .sharingFlow) })
             }
         }
         .onAppear {

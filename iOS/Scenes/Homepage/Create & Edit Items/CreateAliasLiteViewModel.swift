@@ -117,6 +117,6 @@ extension CreateAliasLiteViewModel {
     }
 
     func upgrade() {
-        router.presentSheet(for: .upgradeFlow)
+        router.present(for: .upgradeFlow)
     }
 }

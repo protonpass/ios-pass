@@ -29,9 +29,6 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
-    func profileTabViewModelWantsToShowPrivacyPolicy()
-    func profileTabViewModelWantsToShowTermsOfService()
-    func profileTabViewModelWantsToShowImportInstructions()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
 }
@@ -114,7 +111,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
 extension ProfileTabViewModel {
     func upgrade() {
-        router.presentSheet(for: .upgradeFlow)
+        router.present(for: .upgradeFlow)
     }
 
     func refreshPlan() {
@@ -127,7 +124,7 @@ extension ProfileTabViewModel {
                 self.plan = try await self.passPlanRepository.refreshPlan()
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -157,15 +154,15 @@ extension ProfileTabViewModel {
     }
 
     func showPrivacyPolicy() {
-        delegate?.profileTabViewModelWantsToShowPrivacyPolicy()
+        router.navigate(to: .urlPage(urlString: ProtonLink.privacyPolicy))
     }
 
     func showTermsOfService() {
-        delegate?.profileTabViewModelWantsToShowTermsOfService()
+        router.navigate(to: .urlPage(urlString: ProtonLink.termsOfService))
     }
 
     func showImportInstructions() {
-        delegate?.profileTabViewModelWantsToShowImportInstructions()
+        router.navigate(to: .urlPage(urlString: ProtonLink.howToImport))
     }
 
     func showFeedback() {
@@ -198,7 +195,7 @@ private extension ProfileTabViewModel {
             } catch {
                 // Fallback to `none`, not much we can do except displaying the error
                 logger.error(error)
-                router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 localAuthenticationMethod = .none
             }
         case .pin:
@@ -242,7 +239,7 @@ private extension ProfileTabViewModel {
             } catch {
                 self.logger.error(error)
                 self.quickTypeBar.toggle() // rollback to previous value
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

@@ -69,7 +69,7 @@ private extension SecuritySettingsCoordinator {
                                                      presentationOption: .none)
         } catch {
             logger.error(error)
-            router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+            router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
         }
     }
 
@@ -146,7 +146,7 @@ private extension SecuritySettingsCoordinator {
                         succesHandler()
                     }
                 } catch {
-                    self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                    self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 }
             }
         } else {

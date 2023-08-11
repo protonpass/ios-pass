@@ -163,7 +163,7 @@ extension SettingsViewModel {
                 self?.delegate?.settingsViewModelDidFinishFullSync()
             } catch {
                 self?.logger.error(error)
-                self?.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self?.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
