@@ -60,7 +60,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                     self.router.present(for: .manageShareVault(vault, dismissBeforeShowing: true))
                 }
             } catch {
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

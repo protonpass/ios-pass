@@ -60,7 +60,7 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
                     self.delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
                 }
             } catch {
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

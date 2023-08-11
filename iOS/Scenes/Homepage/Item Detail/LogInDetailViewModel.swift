@@ -101,7 +101,7 @@ private extension LogInDetailViewModel {
                 self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -117,7 +117,7 @@ private extension LogInDetailViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -152,7 +152,7 @@ extension LogInDetailViewModel {
             let itemContent = try aliasItem.getItemContent(symmetricKey: symmetricKey)
             logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
         } catch {
-            router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+            router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
         }
     }
 

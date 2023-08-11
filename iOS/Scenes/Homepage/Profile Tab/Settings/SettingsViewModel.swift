@@ -30,8 +30,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToEditTheme()
     func settingsViewModelWantsToEditClipboardExpiration()
     func settingsViewModelWantsToEdit(primaryVault: Vault)
-    func settingsViewModelWantsToViewHostAppLogs()
-    func settingsViewModelWantsToViewAutoFillExtensionLogs()
     func settingsViewModelWantsToClearLogs()
     func settingsViewModelDidFinishFullSync()
 }
@@ -139,11 +137,11 @@ extension SettingsViewModel {
     }
 
     func viewHostAppLogs() {
-        delegate?.settingsViewModelWantsToViewHostAppLogs()
+        router.present(for: .logView(module: .hostApp))
     }
 
     func viewAutoFillExensionLogs() {
-        delegate?.settingsViewModelWantsToViewAutoFillExtensionLogs()
+        router.present(for: .logView(module: .autoFillExtension))
     }
 
     func clearLogs() {
@@ -163,7 +161,7 @@ extension SettingsViewModel {
                 self?.delegate?.settingsViewModelDidFinishFullSync()
             } catch {
                 self?.logger.error(error)
-                self?.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self?.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
