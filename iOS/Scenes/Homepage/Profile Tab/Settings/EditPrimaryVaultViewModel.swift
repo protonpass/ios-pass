@@ -24,7 +24,6 @@ import Factory
 
 protocol EditPrimaryVaultViewModelDelegate: AnyObject {
     func editPrimaryVaultViewModelDidUpdatePrimaryVault()
-    func editPrimaryVaultViewModelDidEncounter(error: Error)
 }
 
 final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
@@ -35,6 +34,7 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var primaryVault: Vault
 
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: EditPrimaryVaultViewModelDelegate?
 
@@ -60,7 +60,7 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
                     self.delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
                 }
             } catch {
-                self.delegate?.editPrimaryVaultViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }

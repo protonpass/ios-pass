@@ -50,7 +50,9 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     var isAlias: Bool { aliasItem != nil }
 
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
+
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
     var coloredPasswordTexts: [Text] { PasswordUtils.generateColoredPasswords(password) }
@@ -99,7 +101,7 @@ private extension LogInDetailViewModel {
                 self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -115,7 +117,7 @@ private extension LogInDetailViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -150,7 +152,7 @@ extension LogInDetailViewModel {
             let itemContent = try aliasItem.getItemContent(symmetricKey: symmetricKey)
             logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
         } catch {
-            delegate?.itemDetailViewModelDidEncounter(error: error)
+            router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
         }
     }
 

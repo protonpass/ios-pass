@@ -30,11 +30,9 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate)
-    func createEditItemViewModelWantsToUpgrade()
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
-    func createEditItemViewModelDidEncounter(error: Error)
 }
 
 enum ItemMode {
@@ -78,6 +76,7 @@ class BaseCreateEditItemViewModel {
     let upgradeChecker: UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -153,7 +152,7 @@ private extension BaseCreateEditItemViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -170,7 +169,7 @@ private extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -183,7 +182,7 @@ private extension BaseCreateEditItemViewModel {
                 self.canAddMoreCustomFields = !isFreeUser
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -249,7 +248,7 @@ extension BaseCreateEditItemViewModel {
     }
 
     func upgrade() {
-        delegate?.createEditItemViewModelWantsToUpgrade()
+        router.presentSheet(for: .upgradeFlow)
     }
 
     func save() {
@@ -276,7 +275,7 @@ extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -296,7 +295,7 @@ extension BaseCreateEditItemViewModel {
                 self.isObsolete = itemContent.item.revision != updatedItem.item.revision
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -318,7 +317,7 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     }
 
     func vaultSelectorViewModelDidEncounter(error: Error) {
-        delegate?.createEditItemViewModelDidEncounter(error: error)
+        router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
     }
 }
 

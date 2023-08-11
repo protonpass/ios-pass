@@ -21,6 +21,7 @@
 // swiftlint:disable file_length
 import AuthenticationServices
 import Client
+import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -46,10 +47,12 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let bannerManager: BannerManager
     private let container: NSPersistentContainer
     private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
+    private var cancellables = Set<AnyCancellable>()
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
@@ -303,6 +306,26 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 self?.logger.error(error)
             }
         }
+    }
+}
+
+private extension CredentialProviderCoordinator {
+    func setUpRouting() {
+        router
+            .newSheetDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .displayErrorBanner(errorLocalized: errorLocalized):
+                    self.bannerManager.displayTopErrorMessage(errorLocalized)
+                case .upgradeFlow:
+                    startUpgradeFlow()
+                default:
+                    EmptyView()
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -710,7 +733,6 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
                                                   mode: .createAliasLite,
                                                   titleMode: .create)
-        viewModel.delegate = self
         let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
@@ -725,7 +747,6 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
         guard let rootViewController else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
-        viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
@@ -742,31 +763,7 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     }
 }
 
-// MARK: - MailboxSelectionViewModelDelegate
-
-extension CredentialProviderCoordinator: MailboxSelectionViewModelDelegate {
-    func mailboxSelectionViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
-    func mailboxSelectionViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - SuffixSelectionViewModelDelegate
-
-extension CredentialProviderCoordinator: SuffixSelectionViewModelDelegate {
-    func suffixSelectionViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
-    func suffixSelectionViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - ExtensionSettingsViewModelDelegate
+// MARK: ExtensionSettingsViewModelDelegate
 
 extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     func extensionSettingsViewModelWantsToShowSpinner() {

@@ -29,6 +29,7 @@ final class SecuritySettingsCoordinator {
     private let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private var authenticatingPolicy: LAPolicy { preferences.localAuthenticationPolicy }
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ChildCoordinatorDelegate?
 
@@ -68,7 +69,7 @@ private extension SecuritySettingsCoordinator {
                                                      presentationOption: .none)
         } catch {
             logger.error(error)
-            delegate?.childCoordinatorDidEncounter(error: error)
+            router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
         }
     }
 
@@ -145,7 +146,7 @@ private extension SecuritySettingsCoordinator {
                         succesHandler()
                     }
                 } catch {
-                    self.delegate?.childCoordinatorDidEncounter(error: error)
+                    self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 }
             }
         } else {

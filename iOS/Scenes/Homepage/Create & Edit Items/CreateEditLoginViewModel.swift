@@ -56,6 +56,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     let emailAddress: String
 
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
@@ -137,7 +138,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.isAlias = self.aliasItem != nil
                     } catch {
                         self.logger.error(error)
-                        self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                        self.router
+                            .presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
                     }
                 }
             }
@@ -154,7 +156,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     self.canAddOrEdit2FAURI = try await self.upgradeChecker.canHaveMoreLoginsWith2FA()
                 } catch {
                     self.logger.error(error)
-                    self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                    self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 }
             }
         }
@@ -243,7 +245,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.generateAlias()
                     }
                 } catch {
-                    self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                    self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
                 }
             }
         }
@@ -287,7 +289,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 totpUri = scanResult
             }
         case let .failure(error):
-            delegate?.createEditItemViewModelDidEncounter(error: error)
+            router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
         }
     }
 
