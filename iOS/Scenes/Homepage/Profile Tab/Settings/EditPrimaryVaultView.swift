@@ -47,6 +47,7 @@ struct EditPrimaryVaultView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .disabled(viewModel.isLoading)
+            .showSpinner(viewModel.isLoading)
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

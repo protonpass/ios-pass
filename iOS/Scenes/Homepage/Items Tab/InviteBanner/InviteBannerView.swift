@@ -24,7 +24,7 @@ import SwiftUI
 import UIComponents
 
 struct InviteBannerView: View {
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let invite: UserInvite
 
     static let height: CGFloat = 160

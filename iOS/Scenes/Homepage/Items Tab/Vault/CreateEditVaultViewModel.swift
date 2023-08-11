@@ -40,8 +40,6 @@ enum VaultMode {
 }
 
 protocol CreateEditVaultViewModelDelegate: AnyObject {
-    func createEditVaultViewModelWantsToShowSpinner()
-    func createEditVaultViewModelWantsToHideSpinner()
     func createEditVaultViewModelWantsToUpgrade()
     func createEditVaultViewModelDidCreateVault()
     func createEditVaultViewModelDidEditVault()
@@ -53,6 +51,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     @Published var selectedColor: VaultColor
     @Published var selectedIcon: VaultIcon
     @Published var title: String
+    @Published private(set) var loading = false
 
     private let mode: VaultMode
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -116,10 +115,10 @@ private extension CreateEditVaultViewModel {
     func editVault(_ oldVault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.createEditVaultViewModelWantsToHideSpinner() }
+            defer { self.loading = false }
             do {
                 self.logger.trace("Editing vault \(oldVault.id)")
-                self.delegate?.createEditVaultViewModelWantsToShowSpinner()
+                self.loading = true
                 try await self.shareRepository.edit(oldVault: oldVault,
                                                     newVault: self.generateVaultProtobuf())
                 self.delegate?.createEditVaultViewModelDidEditVault()
@@ -134,10 +133,10 @@ private extension CreateEditVaultViewModel {
     func createVault() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.createEditVaultViewModelWantsToHideSpinner() }
+            defer { self.loading = false }
             do {
                 self.logger.trace("Creating vault")
-                self.delegate?.createEditVaultViewModelWantsToShowSpinner()
+                self.loading = true
                 try await self.shareRepository.createVault(self.generateVaultProtobuf())
                 self.delegate?.createEditVaultViewModelDidCreateVault()
                 self.logger.info("Created vault")
