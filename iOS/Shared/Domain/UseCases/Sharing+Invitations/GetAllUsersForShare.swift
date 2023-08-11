@@ -63,7 +63,7 @@ struct ShareUser: Equatable, Hashable {
 
     var permission: String {
         if let shareRole {
-            return shareRole.description
+            return shareRole.role
         }
         return String(localized: "pending")
     }
@@ -88,33 +88,3 @@ extension ShareInvite {
                   userName: nil)
     }
 }
-
-// public struct UserShareInfos: Codable, Hashable {
-//    public let shareID: String
-//    public let userName: String
-//    public let userEmail: String
-//    public let targetType: Int
-//    public let targetID: String
-//    public let permission: Int
-//    public let shareRoleID: String
-//    public let expireTime: Int?
-//    public let createTime: Int?
-//
-//    public var shareRole: ShareRole {
-//        .init(rawValue: shareRoleID) ?? .read
-//    }
-// }
-//
-//
-// public struct ShareInvite: Codable {
-//    public let inviteID,
-//    public let invitedEmail: String
-//    public let inviterEmail: String
-//    public let targetType: Int
-//    public let targetID: String
-//    public let remindersSent, createTime, modifyTime: Int
-//
-//    public var shareType: TargetType {
-//        .init(rawValue: Int64(targetType)) ?? .unknown
-//    }
-// }
