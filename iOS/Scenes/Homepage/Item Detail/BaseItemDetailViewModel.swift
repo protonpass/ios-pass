@@ -31,7 +31,6 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
-    func itemDetailViewModelWantsToOpen(urlString: String)
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
@@ -109,7 +108,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.bindValues()
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -129,10 +128,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func moveToTrash() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.presentSheet(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Trashing \(self.itemContent.debugInformation)")
-                self.router.presentSheet(for: .globalLoading(shouldShow: true))
+                self.router.present(for: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
                 try await self.itemRepository.trashItems([encryptedItem])
@@ -140,7 +139,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Trashed \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -148,10 +147,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func restore() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.presentSheet(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Restoring \(self.itemContent.debugInformation)")
-                self.router.presentSheet(for: .globalLoading(shouldShow: true))
+                self.router.present(for: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -160,7 +159,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Restored \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -168,10 +167,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func permanentlyDelete() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.presentSheet(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
-                self.router.presentSheet(for: .globalLoading(shouldShow: true))
+                self.router.present(for: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -180,13 +179,13 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
 
     func upgrade() {
-        router.presentSheet(for: .upgradeFlow)
+        router.present(for: .upgradeFlow)
     }
 }
 
@@ -200,7 +199,7 @@ private extension BaseItemDetailViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -221,16 +220,16 @@ private extension BaseItemDetailViewModel {
     func doMove(to vault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.presentSheet(for: .globalLoading(shouldShow: false)) }
+            defer { self.router.present(for: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Moving \(self.itemContent.debugInformation) to share \(vault.shareId)")
-                self.router.presentSheet(for: .globalLoading(shouldShow: true))
+                self.router.present(for: .globalLoading(shouldShow: true))
                 try await self.itemRepository.move(item: self.itemContent, toShareId: vault.shareId)
                 self.logger.trace("Moved \(self.itemContent.debugInformation) to share \(vault.shareId)")
                 self.delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
             } catch {
                 self.logger.error(error)
-                self.router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
             }
         }
     }
@@ -240,7 +239,7 @@ private extension BaseItemDetailViewModel {
 
 extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
     func moveVaultListViewModelWantsToUpgrade() {
-        router.presentSheet(for: .upgradeFlow)
+        router.present(for: .upgradeFlow)
     }
 
     func moveVaultListViewModelDidPick(vault: Vault) {
@@ -248,6 +247,6 @@ extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
     }
 
     func moveVaultListViewModelDidEncounter(error: Error) {
-        router.presentSheet(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
+        router.present(for: .displayErrorBanner(errorLocalized: error.localizedDescription))
     }
 }

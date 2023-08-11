@@ -40,6 +40,6 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
     }
 
     func upgrade() {
-        router.presentSheet(for: .upgradeFlow)
+        router.present(for: .upgradeFlow)
     }
 }

@@ -72,7 +72,7 @@ struct EditableVaultListView: View {
                isPresented: $viewModel.showingAliasAlert,
                actions: {
                    Button(action: {
-                              viewModel.router.presentSheet(for: .sharingFlow)
+                              viewModel.router.present(for: .sharingFlow)
                           },
                           label: {
                               Text("OK")
@@ -160,7 +160,7 @@ struct EditableVaultListView: View {
 
             if vault.shared {
                 Button(action: {
-                    viewModel.router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: false))
+                    viewModel.router.present(for: .manageShareVault(vault, dismissBeforeShowing: false))
                 }, label: {
                     Label(title: {
                         Text(vault.isAdmin ? "Manage access" : "View members")

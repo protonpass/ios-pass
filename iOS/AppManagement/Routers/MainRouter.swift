@@ -23,7 +23,9 @@ import Combine
 import Entities
 import SwiftUI
 
-enum CoordinatorRouterDestination: Hashable {}
+enum CoordinatorRouterDestination: Hashable {
+    case urlPage(urlString: String)
+}
 
 enum CoordinatorSheetDestination: Equatable, Hashable {
     case sharingFlow
@@ -45,7 +47,7 @@ final class MainUIKitSwiftUIRouter {
         newPresentationDestination.send(destination)
     }
 
-    func presentSheet(for destination: CoordinatorSheetDestination) {
+    func present(for destination: CoordinatorSheetDestination) {
         newSheetDestination.send(destination)
     }
 }
