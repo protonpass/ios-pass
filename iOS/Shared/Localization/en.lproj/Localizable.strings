@@ -60,6 +60,7 @@
 "Vault" = "Vault";
 "User" = "User";
 "Permissions" = "Permissions";
+"Empty" = "Empty";
 "%@ vault" = "%@ vault";
 "You are about to invite %@ into your %@. They will gain access to %@ and they will be able to %@ in this vault." = "You are about to invite %@ into your %@. They will gain access to %@ and they will be able to %@ in this vault.";
 "only view items" = "only view items";

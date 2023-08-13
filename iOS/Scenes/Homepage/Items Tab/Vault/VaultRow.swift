@@ -21,6 +21,7 @@
 import SwiftUI
 import UIComponents
 
+// Localized
 struct VaultRow<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
     let title: String
@@ -40,7 +41,7 @@ struct VaultRow<Thumbnail: View>: View {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    Text("\(itemCount) items")
+                    Text(String(localizedFormat: "%d item(s)", itemCount))
                         .font(.callout)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }
