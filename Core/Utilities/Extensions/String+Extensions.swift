@@ -121,6 +121,10 @@ public extension String {
             return formatted
         }
     }
+
+    init(localizedFormat: String, _ arguments: CVarArg...) {
+        self.init(format: String(localized: .init(stringLiteral: localizedFormat)), arguments)
+    }
 }
 
 // MARK: Computed Extensions
