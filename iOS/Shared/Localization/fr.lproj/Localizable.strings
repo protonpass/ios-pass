@@ -60,6 +60,7 @@
 "Vault" = "Coffre-fort";
 "User" = "Utilisateur";
 "Permissions" = "Autorisations";
+"Empty" = "Vide";
 "%@ vault" = "coffre-fort %@";
 "You are about to invite %@ into your %@. They will gain access to %@ and they will be able to %@ in this vault." = "Vous êtes sur le point d'inviter %@ dans votre %@. Ils auront accès à %@ et pourront %@ dans ce coffre-fort.";
 "only view items" = "voir uniquement des éléments";

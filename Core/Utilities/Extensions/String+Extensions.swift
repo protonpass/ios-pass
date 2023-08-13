@@ -122,8 +122,9 @@ public extension String {
         }
     }
 
-    init(localizedFormat: String, _ arguments: CVarArg...) {
-        self.init(format: String(localized: .init(stringLiteral: localizedFormat)), arguments)
+    // swiftlint:disable:next function_default_parameter_at_end
+    init(localizedFormat: String, locale: Locale? = nil, _ arguments: CVarArg...) {
+        self.init(format: String(localized: .init(stringLiteral: localizedFormat)), locale: locale, arguments)
     }
 }
 
