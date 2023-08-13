@@ -28,28 +28,40 @@
 "Next" = "Next";
 "Not now" = "Not now";
 
-/* Sharing: Short description for share permission */
+/* Vault sharing: Short description for share permission */
 "admin" = "admin";
 "edit" = "edit";
 "read" = "read";
 "pending" = "pending";
 
-/* Sharing: Title for roles */
+/* Vault sharing: Title for roles */
 "Can View" = "Can View";
 "Can Edit" = "Can Edit";
 "Can Manage" = "Can Manage";
 
-/* Sharing: Descriptions for role */
+/* Vault sharing: Descriptions for role */
 "Can view items in this vault" = "Can view items in this vault";
 "Can create, edit, delete and export items in this vault" = "Can create, edit, delete and export items in this vault";
 "Can grant and revoke access to this vault" = "Can grant and revoke access to this vault";
 
-/* Sharing: Enter invitee email address page */
+/* Vault sharing: Enter invitee email address page */
 "Share with" = "Share with";
 "This user will receive an invitation to join your ‘%@’ vault" = "This user will receive an invitation to join your ‘%@’ vault";
 "Email address" = "Email address";
 
-/* Sharing: Set permissions page title & description */
+/* Vault sharing: Set permissions page title & description */
 "Set permissions" = "Set permissions";
 "Select the level of access this user will gain when they join your ‘%@’ vault" = "Select the level of access this user will gain when they join your ‘%@’ vault";
 "Continue" = "Continue";
+
+/* Vault sharing: Summary page before making the share request */
+"Share Vault" = "Share Vault";
+"Summary" = "Summary";
+"Vault" = "Vault";
+"User" = "User";
+"Permissions" = "Permissions";
+"%@ vault" = "%@ vault";
+"You are about to invite %@ into your %@. They will gain access to %@ and they will be able to %@ in this vault." = "You are about to invite %@ into your %@. They will gain access to %@ and they will be able to %@ in this vault.";
+"only view items" = "only view items";
+"create, edit, delete and export items" = "create, edit, delete and export items";
+"grant and revoke access" = "grant and revoke access";
