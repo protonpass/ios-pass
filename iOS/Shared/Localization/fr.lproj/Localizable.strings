@@ -28,28 +28,40 @@
 "Next" = "Suivant";
 "Not now" = "Pas maintenant";
 
-/* Sharing: Short description for share permission */
+/* Vault sharing: Short description for share permission */
 "admin" = "admin";
 "edit" = "modifier";
 "read" = "lire";
 "pending" = "en attente";
 
-/* Sharing: Title for roles */
+/* Vault sharing: Title for roles */
 "Can View" = "Consulter";
 "Can Edit" = "Modifier";
 "Can Manage" = "Gérer";
 
-/* Sharing: Descriptions for role */
+/* Vault sharing: Descriptions for role */
 "Can view items in this vault" = "Permet de consulter les éléments de ce coffre-fort";
 "Can create, edit, delete and export items in this vault" = "Permet de créer, modifier, supprimer et exporter des éléments dans ce coffre-fort";
 "Can grant and revoke access to this vault" = "Permet d'accorder et de révoquer l'accès à ce coffre-fort";
 
-/* Sharing: Enter invitee email address page */
+/* Vault sharing: Enter invitee email address page */
 "Share with" = "Partager avec";
 "This user will receive an invitation to join your ‘%@’ vault" = "Cet utilisateur recevra une invitation à rejoindre votre coffre-fort ‘%@’";
 "Email address" = "Adresse e-mail";
 
-/* Sharing: Set permissions page title & description */
+/* Vault sharing: Set permissions page title & description */
 "Set permissions" = "Définir les autorisations";
 "Select the level of access this user will gain when they join your ‘%@’ vault" = "Sélectionnez le niveau d'accès dont bénéficiera cet utilisateur en rejoignant votre coffre-fort \'%@\'";
 "Continue" = "Continuer";
+
+/* Vault sharing: Summary page before making the share request */
+"Share Vault" = "Partager le coffre-fort";
+"Summary" = "Résumé";
+"Vault" = "Coffre-fort";
+"User" = "Utilisateur";
+"Permissions" = "Autorisations";
+"%@ vault" = "coffre-fort %@";
+"You are about to invite %@ into your %@. They will gain access to %@ and they will be able to %@ in this vault." = "Vous êtes sur le point d'inviter %@ dans votre %@. Ils auront accès à %@ et pourront %@ dans ce coffre-fort.";
+"only view items" = "voir uniquement des éléments";
+"create, edit, delete and export items" = "créer, modifier, supprimer et exporter des éléments";
+"grant and revoke access" = "accorder et révoquer l'accès";

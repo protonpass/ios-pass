@@ -26,6 +26,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct SharingSummaryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = SharingSummaryViewModel()
@@ -51,21 +52,22 @@ struct SharingSummaryView: View {
 }
 
 private extension SharingSummaryView {
+    @ViewBuilder
     var headerView: some View {
+        let email = attributedText(for: viewModel.infos?.email ?? "")
+        let vaultName = attributedText(for: String(localized: "\(viewModel.infos?.vault?.name ?? "") vault"))
+        let itemCount = attributedText(for: String(localizedFormat: "%d item(s)",
+                                                   viewModel.infos?.itemsNum ?? 0))
+        let permission = attributedText(for: viewModel.infos?.role?.summary ?? "")
         VStack(alignment: .leading, spacing: 11) {
             Text("Summary")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("""
-            You are about to invite \(attributedText(for: viewModel.infos?
-                    .email ?? "")) into your \(attributedText(for: viewModel.infos?.vault?.name ?? "")) vault.
-            They will gain access to \(attributedText(for: viewModel.infos?.itemsNum?
-                    .toString ?? "0")) items and they will be able to \(attributedText(for: viewModel.infos?.role?
-                    .summary ?? ""))
-            """)
-            .font(.body)
-            .foregroundColor(PassColor.textWeak.toColor)
+            // swiftlint:disable:next line_length
+            Text("You are about to invite \(email) into your \(vaultName). They will gain access to \(itemCount) and they will be able to \(permission) in this vault.")
+                .font(.body)
+                .foregroundColor(PassColor.textWeak.toColor)
         }
     }
 
@@ -124,7 +126,7 @@ private extension SharingSummaryView {
 private extension SharingSummaryView {
     var permissionInfo: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Permission")
+            Text("Permissions")
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
@@ -159,7 +161,7 @@ private extension SharingSummaryView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: "Share Vault",
+            DisablableCapsuleTextButton(title: String(localized: "Share Vault"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,
