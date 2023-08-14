@@ -24,8 +24,6 @@ import Core
 import Factory
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
-//    func editableVaultListViewModelWantsToCreateNewVault()
-//    func editableVaultListViewModelWantsToEdit(vault: Vault)
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate)
     func editableVaultListViewModelDidDelete(vault: Vault)
