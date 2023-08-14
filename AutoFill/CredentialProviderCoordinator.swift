@@ -726,7 +726,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
                                                       delegate: AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
-//        viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
@@ -744,7 +743,7 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
 // MARK: - CreateAliasLiteViewModelDelegate
 
-extension CredentialProviderCoordinator { //: CreateAliasLiteViewModelDelegate {
+extension CredentialProviderCoordinator {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
         guard let rootViewController else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
@@ -775,9 +774,9 @@ extension CredentialProviderCoordinator { //: CreateAliasLiteViewModelDelegate {
         present(viewController)
     }
 
-    func createAliasLiteViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
+//    func createAliasLiteViewModelWantsToUpgrade() {
+//        startUpgradeFlow()
+//    }
 }
 
 // MARK: ExtensionSettingsViewModelDelegate
