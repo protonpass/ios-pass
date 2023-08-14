@@ -35,8 +35,6 @@ typealias CreateEditItemDelegates =
     GeneratePasswordCoordinatorDelegate &
     CreateEditItemViewModelDelegate &
     CreateEditLoginViewModelDelegate
-// &
-//    CreateEditAliasViewModelDelegate
 
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -124,7 +122,6 @@ private extension CreateEditItemCoordinator {
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: vaultsManager.getAllVaults())
         viewModel.delegate = createEditItemDelegates
-//        viewModel.createEditAliasViewModelDelegate = createEditItemDelegates
         let view = CreateEditAliasView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel

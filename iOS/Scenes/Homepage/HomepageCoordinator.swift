@@ -1014,35 +1014,6 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     }
 }
 
-// MARK: - CreateEditAliasViewModelDelegate
-
-// extension HomepageCoordinator: CreateEditAliasViewModelDelegate {
-////    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
-////                                                        titleMode: MailboxSection.Mode) {
-////        presentMailboxSelectionView(selection: mailboxSelection,
-////                                    mode: .createEditAlias,
-////                                    titleMode: titleMode)
-////    }
-//
-////    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-////        presentSuffixSelectionView(selection: suffixSelection)
-////    }
-// }
-
-// MARK: - CreateAliasLiteViewModelDelegate
-
-// extension HomepageCoordinator {
-//    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-//        presentMailboxSelectionView(selection: mailboxSelection,
-//                                    mode: .createAliasLite,
-//                                    titleMode: .create)
-//    }
-//
-//    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-//        presentSuffixSelectionView(selection: suffixSelection)
-//    }
-// }
-
 // MARK: - GeneratePasswordViewModelDelegate
 
 extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
