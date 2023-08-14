@@ -74,12 +74,6 @@ final class MailboxSelection: ObservableObject, Equatable, Hashable {
     }
 }
 
-// protocol CreateEditAliasViewModelDelegate: AnyObject {
-////    func createEditAliasViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection,
-////                                                        titleMode: MailboxSection.Mode)
-////    func createEditAliasViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
-// }
-
 // MARK: - Initialization
 
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -136,8 +130,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var mailboxSelection: MailboxSelection?
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
-//    weak var createEditAliasViewModelDelegate: CreateEditAliasViewModelDelegate?
 
     override var isSaveable: Bool {
         switch mode {
