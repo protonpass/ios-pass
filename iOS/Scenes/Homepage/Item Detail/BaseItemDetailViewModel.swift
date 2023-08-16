@@ -43,8 +43,10 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelDidEncounter(error: Error)
 }
 
-class BaseItemDetailViewModel {
+class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
+    @Published var moreInfoSectionExpanded = false
+    @Published var showingDeleteAlert = false
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -72,7 +74,6 @@ class BaseItemDetailViewModel {
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
         self.vault = vault
-        let preferences = resolve(\SharedToolingContainer.preferences)
         bindValues()
         checkIfFreeUser()
     }
@@ -99,13 +100,20 @@ class BaseItemDetailViewModel {
     func refresh() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            guard let updatedItemContent =
-                try await self.itemRepository.getItemContent(shareId: self.itemContent.shareId,
-                                                             itemId: self.itemContent.item.itemID) else {
-                return
+            do {
+                let shareId = self.itemContent.shareId
+                let itemId = self.itemContent.item.itemID
+                guard let updatedItemContent =
+                    try await self.itemRepository.getItemContent(shareId: shareId,
+                                                                 itemId: itemId) else {
+                    return
+                }
+                self.itemContent = updatedItemContent
+                self.bindValues()
+            } catch {
+                self.logger.error(error)
+                self.delegate?.itemDetailViewModelDidEncounter(error: error)
             }
-            self.itemContent = updatedItemContent
-            self.bindValues()
         }
     }
 

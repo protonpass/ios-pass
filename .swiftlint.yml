@@ -122,6 +122,7 @@ opt_in_rules:
   - vertical_whitespace_opening_braces
   - xct_specific_matcher
   - yoda_condition
+  - unhandled_throwing_task
   
 ##############
 #Specific analyzer rules#
