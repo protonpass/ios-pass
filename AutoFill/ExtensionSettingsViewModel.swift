@@ -44,14 +44,14 @@ final class ExtensionSettingsViewModel: ObservableObject {
 
     @Published var isLocked: Bool
 
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     weak var delegate: ExtensionSettingsViewModelDelegate?
+
+    // Use cases
+    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     init() {
         quickTypeBar = preferences.quickTypeBar
@@ -84,15 +84,9 @@ private extension ExtensionSettingsViewModel {
                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
                 self.delegate?.extensionSettingsViewModelWantsToShowSpinner()
                 if self.quickTypeBar {
-                    try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
-                                                                          shareRepository: self.shareRepository,
-                                                                          passPlanRepository: self
-                                                                              .passPlanRepository,
-                                                                          forceRemoval: true)
-                    self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
+                    try await self.indexAllLoginItems(ignorePreferences: true)
                 } else {
-                    try await self.credentialManager.removeAllCredentials()
-                    self.logger.info("Nuked credential database QuickTypeBar \(self.quickTypeBar)")
+                    try await self.unindexAllLoginItems()
                 }
                 self.preferences.quickTypeBar = self.quickTypeBar
             } catch {

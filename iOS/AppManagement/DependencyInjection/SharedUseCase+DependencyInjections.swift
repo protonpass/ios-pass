@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import CryptoKit
 import Factory
 import LocalAuthentication
 
@@ -37,6 +38,18 @@ final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
 private extension SharedUseCasesContainer {
     var logManager: LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
+    }
+
+    var symmetricKey: SymmetricKey {
+        SharedDataContainer.shared.symmetricKey()
+    }
+
+    var preferences: Preferences {
+        SharedToolingContainer.shared.preferences()
+    }
+
+    var credentialManager: CredentialManagerProtocol {
+        SharedServiceContainer.shared.credentialManager()
     }
 }
 
@@ -72,6 +85,29 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var addTelemetryEvent: Factory<AddTelemetryEventUseCase> {
-        self { AddTelemetryEvent(logManager: self.logManager) }
+        self { AddTelemetryEvent(repository: SharedRepositoryContainer.shared.telemetryEventRepository(),
+                                 logManager: self.logManager) }
+    }
+}
+
+// MARK: AutoFill
+
+extension SharedUseCasesContainer {
+    var mapLoginItem: Factory<MapLoginItemUseCase> {
+        self { MapLoginItem(key: self.symmetricKey) }
+    }
+
+    var indexAllLoginItems: Factory<IndexAllLoginItemsUseCase> {
+        self { IndexAllLoginItems(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                  shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                  passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                  credentialManager: self.credentialManager,
+                                  preferences: self.preferences,
+                                  mapLoginItem: self.mapLoginItem(),
+                                  logManager: self.logManager) }
+    }
+
+    var unindexAllLoginItems: Factory<UnindexAllLoginItemsUseCase> {
+        self { UnindexAllLoginItems(manager: self.credentialManager) }
     }
 }

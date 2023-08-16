@@ -21,7 +21,7 @@
 import Client
 import Core
 
-final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable, ObservableObject {
+final class NoteDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     @Published private(set) var name = ""

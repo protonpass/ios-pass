@@ -66,7 +66,7 @@ private extension UIViewController {
                 return [customDetent(height)]
             }
         case let .customAndLarge(height):
-            if height > screenHeight {
+            if height >= screenHeight * 0.8 {
                 return [.large()]
             } else {
                 return [customDetent(height), .large()]

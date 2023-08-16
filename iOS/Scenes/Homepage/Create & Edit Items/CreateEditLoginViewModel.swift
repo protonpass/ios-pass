@@ -131,8 +131,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
                 Task { @MainActor [weak self] in
                     guard let self else { return }
-                    self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
-                    self.isAlias = self.aliasItem != nil
+                    do {
+                        self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
+                        self.isAlias = self.aliasItem != nil
+                    } catch {
+                        self.logger.error(error)
+                        self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                    }
                 }
             }
 
@@ -144,7 +149,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
             Task { @MainActor [weak self] in
                 guard let self else { return }
-                self.canAddOrEdit2FAURI = try await self.upgradeChecker.canHaveMoreLoginsWith2FA()
+                do {
+                    self.canAddOrEdit2FAURI = try await self.upgradeChecker.canHaveMoreLoginsWith2FA()
+                } catch {
+                    self.logger.error(error)
+                    self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                }
             }
         }
     }

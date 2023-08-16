@@ -71,8 +71,15 @@ public enum SyncEventLoopSkipReason {
 
 private let kThresholdRange = 5...15
 
+// sourcery: AutoMockable
+public protocol SyncEventLoopProtocol {
+    func start()
+    func forceSync()
+    func stop()
+}
+
 /// A background event loop that keeps data up to date by synching after a random number of seconds
-public final class SyncEventLoop: DeinitPrintable {
+public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Self-intialized params
@@ -252,6 +259,12 @@ private extension SyncEventLoop {
             return false
         }
 
+        var hasNewShareEvents = false
+        if remoteShares != localShares.map(\.share) {
+            hasNewShareEvents = true
+            try await shareRepository.upsertShares(remoteShares)
+        }
+
         let hasNewEvents = try await withThrowingTaskGroup(of: Bool.self,
                                                            returning: Bool.self) { taskGroup in
             taskGroup.addTask { [weak self] in
@@ -269,7 +282,7 @@ private extension SyncEventLoop {
             return try await taskGroup.contains { $0 }
         }
 
-        return hasNewEvents
+        return hasNewEvents || hasNewShareEvents
     }
 
     /// Return `true` if new events found

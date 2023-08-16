@@ -24,20 +24,20 @@ import XCTest
 
 final class UserSharingStatusTests: XCTestCase {
     var sut: UserSharingStatusUseCase!
-    var featureFlagsRepository: FeatureFlagsRepositoryProtocolMock!
+    var getFeatureFlagStatus: GetFeatureFlagStatusUseCaseMock!
     var passPlanRepository: PassPlanRepositoryProtocolMock!
-    
+
     override func setUp() {
         super.setUp()
-        featureFlagsRepository = FeatureFlagsRepositoryProtocolMock()
+        getFeatureFlagStatus = GetFeatureFlagStatusUseCaseMock()
         passPlanRepository = PassPlanRepositoryProtocolMock()
-        sut = UserSharingStatus(featureFlagsRepository: featureFlagsRepository,
+        sut = UserSharingStatus(getFeatureFlagStatus: getFeatureFlagStatus,
                                 passPlanRepository: passPlanRepository,
                                 logManager: LogManagerMock())
     }
 
     func testUserSharingStatus_ShouldBeValid() async throws {
-        featureFlagsRepository.stubbedGetFlagsResult = FeatureFlags(flags: [FeatureFlag(name: FeatureFlagType.passSharingV1.rawValue, enabled: true, variant: nil)])
+        getFeatureFlagStatus.stubbedExecuteResult = true
         passPlanRepository.stubbedGetPlanResult = PassPlan(type: "plus",
                                                            internalName: "",
                                                            displayName: "",
@@ -51,7 +51,7 @@ final class UserSharingStatusTests: XCTestCase {
     }
     
     func testUserSharingStatus_ShouldNotBeValid_BecauseOfFreeStatus() async throws {
-        featureFlagsRepository.stubbedGetFlagsResult = FeatureFlags(flags: [FeatureFlag(name: FeatureFlagType.passSharingV1.rawValue, enabled: true, variant: nil)])
+        getFeatureFlagStatus.stubbedExecuteResult = false
         passPlanRepository.stubbedGetPlanResult = PassPlan(type: "free",
                                                            internalName: "",
                                                            displayName: "",
@@ -65,7 +65,7 @@ final class UserSharingStatusTests: XCTestCase {
     }
     
     func testUserSharingStatus_ShouldNotBeValid_BecauseOfFeatureFlag() async throws {
-        featureFlagsRepository.stubbedGetFlagsResult = FeatureFlags(flags: [])
+        getFeatureFlagStatus.stubbedExecuteResult = false
         passPlanRepository.stubbedGetPlanResult = PassPlan(type: "plus",
                                                            internalName: "",
                                                            displayName: "",

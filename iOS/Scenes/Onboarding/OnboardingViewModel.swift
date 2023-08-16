@@ -129,7 +129,7 @@ private extension OnboardingViewModel {
     func checkAutoFillStatus() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            let autoFillEnabled = await self.credentialManager.isAutoFillEnabled()
+            let autoFillEnabled = await self.credentialManager.isAutoFillEnabled
             if case .autoFill = self.state, autoFillEnabled {
                 self.state = .autoFillEnabled
             }
