@@ -25,7 +25,7 @@ import UIComponents
 
 struct ItemDetailMoreInfoSection: View {
     @Binding var isExpanded: Bool
-    let uiModel: ItemDetailMoreInfoSectionUIModel
+    private let uiModel: ItemDetailMoreInfoSectionUIModel
 
     init(isExpanded: Binding<Bool>,
          itemContent: ItemContent) {
@@ -108,7 +108,7 @@ struct ItemDetailMoreInfoSection: View {
     }
 }
 
-final class ItemDetailMoreInfoSectionUIModel {
+private struct ItemDetailMoreInfoSectionUIModel {
     let lastAutoFilledDate: String?
     let modificationCount: String
     let modificationDate: String

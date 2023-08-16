@@ -47,6 +47,9 @@ extension ShareEntity {
     @NSManaged var targetType: Int64
     @NSManaged var vaultID: String
     @NSManaged var userID: String
+    @NSManaged var shareRoleID: String
+    @NSManaged var targetMembers: Int64
+    @NSManaged var shared: Bool
 }
 
 extension ShareEntity {
@@ -58,8 +61,11 @@ extension ShareEntity {
                            targetType: targetType,
                            targetID: targetID,
                            permission: permission,
+                           shareRoleID: shareRoleID,
+                           targetMembers: targetMembers,
                            primary: primary,
                            owner: owner,
+                           shared: shared,
                            content: content,
                            contentKeyRotation: contentKeyRotation,
                            contentFormatVersion: contentFormatVersion,
@@ -84,5 +90,8 @@ extension ShareEntity {
         vaultID = share.vaultID
         addressID = share.addressID
         userID = userId
+        shareRoleID = share.shareRoleID
+        targetMembers = share.targetMembers
+        shared = share.shared
     }
 }

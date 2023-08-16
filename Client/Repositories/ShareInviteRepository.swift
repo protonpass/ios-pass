@@ -33,8 +33,10 @@ public protocol ShareInviteRepositoryProtocol {
                     targetType: TargetType,
                     shareRole: ShareRole) async throws -> Bool
 
+    @discardableResult
     func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
 
+    @discardableResult
     func deleteInvite(shareId: String, inviteId: String) async throws -> Bool
 }
 

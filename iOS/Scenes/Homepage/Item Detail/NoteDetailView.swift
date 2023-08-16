@@ -26,7 +26,6 @@ import UIComponents
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
     @Namespace private var bottomID
-    @State private var isMoreInfoSectionExpanded = false
 
     init(viewModel: NoteDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,7 +44,6 @@ struct NoteDetailView: View {
 
     @ViewBuilder
     private var realBody: some View {
-        let tintColor = Color(uiColor: ItemContentType.note.normMajor2Color)
         ScrollViewReader { value in
             ScrollView {
                 VStack(spacing: 0) {
@@ -82,34 +80,18 @@ struct NoteDetailView: View {
                             .isEditable(false)
                     }
 
-                    ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
+                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
                         .padding(.top)
                         .id(bottomID)
                 }
                 .padding()
             }
-            .animation(.default, value: isMoreInfoSectionExpanded)
-            .onChange(of: isMoreInfoSectionExpanded) { _ in
+            .animation(.default, value: viewModel.moreInfoSectionExpanded)
+            .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accentColor(tintColor) // Remove when iOS 15 is dropped
-        .tint(tintColor)
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .background(Color(uiColor: PassColor.backgroundNorm))
-        .toolbar {
-            ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
-                              itemContent: viewModel.itemContent,
-                              onGoBack: viewModel.goBack,
-                              onEdit: viewModel.edit,
-                              onMoveToAnotherVault: viewModel.moveToAnotherVault,
-                              onMoveToTrash: viewModel.moveToTrash,
-                              onRestore: viewModel.restore,
-                              onPermanentlyDelete: viewModel.permanentlyDelete)
-        }
+        .itemDetailSetUp(viewModel)
     }
 }

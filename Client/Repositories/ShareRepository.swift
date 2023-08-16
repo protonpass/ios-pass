@@ -47,12 +47,16 @@ public protocol ShareRepositoryProtocol {
 
     func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
 
+    @discardableResult
     func updateUserPermission(userId: String,
                               shareId: String,
                               shareRole: ShareRole?,
                               expireTime: Int?) async throws -> Bool
-
+    @discardableResult
     func deleteUserShare(userId: String, shareId: String) async throws -> Bool
+
+    @discardableResult
+    func deleteShare(shareId: String) async throws -> Bool
 
     // MARK: - Vault Functions
 
@@ -163,14 +167,9 @@ public extension ShareRepository {
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
         logger.trace("Getting all users linked to shareId \(shareId)")
-        do {
-            let users = try await remoteDatasouce.getShareLinkedUsers(shareId: shareId)
-            logger.trace("Got \(users.count) remote user for \(shareId)")
-            return users
-        } catch {
-            logger.error(message: "Failed to get remote user for shareId \(shareId)", error: error)
-            throw error
-        }
+        let users = try await remoteDatasouce.getShareLinkedUsers(shareId: shareId)
+        logger.trace("Got \(users.count) remote user for \(shareId)")
+        return users
     }
 
     func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
@@ -217,6 +216,14 @@ public extension ShareRepository {
             throw error
         }
     }
+
+    func deleteShare(shareId: String) async throws -> Bool {
+        let logInfo = "share \(shareId)"
+        logger.trace("Deleting share \(logInfo)")
+        let deleted = try await remoteDatasouce.deleteShare(shareId: shareId)
+        logger.trace("Deleted \(deleted) user share \(logInfo)")
+        return deleted
+    }
 }
 
 // MARK: - Vaults
@@ -241,7 +248,10 @@ public extension ShareRepository {
                          description: vaultContent.description_p,
                          displayPreferences: vaultContent.display,
                          isPrimary: share.share.primary,
-                         isOwner: share.share.owner)
+                         isOwner: share.share.owner,
+                         shareRole: ShareRole(rawValue: share.share.shareRoleID) ?? .read,
+                         members: Int(share.share.targetMembers),
+                         shared: share.share.shared)
         }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults

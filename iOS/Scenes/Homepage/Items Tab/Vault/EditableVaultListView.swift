@@ -132,19 +132,21 @@ struct EditableVaultListView: View {
     @ViewBuilder
     private func vaultTrailingView(_ vault: Vault) -> some View {
         Menu(content: {
-            Button(action: {
-                viewModel.edit(vault: vault)
-            }, label: {
-                Label(title: {
-                    Text("Edit")
-                }, icon: {
-                    Image(uiImage: IconProvider.pencil)
-                        .renderingMode(.template)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+            if vault.isOwner {
+                Button(action: {
+                    viewModel.edit(vault: vault)
+                }, label: {
+                    Label(title: {
+                        Text("Edit")
+                    }, icon: {
+                        Image(uiImage: IconProvider.pencil)
+                            .renderingMode(.template)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    })
                 })
-            })
+            }
 
-            if !vault.isPrimary, vault.isOwner, viewModel.isAllowedToShare {
+            if !vault.isPrimary, vault.isOwner, viewModel.isAllowedToShare, !vault.shared {
                 Button(action: {
                     viewModel.share(vault: vault)
                 }, label: {
@@ -156,13 +158,25 @@ struct EditableVaultListView: View {
                 })
             }
 
+            if vault.shared {
+                Button(action: {
+                    viewModel.router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: false))
+                }, label: {
+                    Label(title: {
+                        Text(vault.isAdmin ? "Manage access" : "View members")
+                    }, icon: {
+                        IconProvider.users
+                    })
+                })
+            }
+
             Divider()
 
             Button(role: .destructive,
-                   action: { viewModel.delete(vault: vault) },
+                   action: { vault.isOwner ? viewModel.delete(vault: vault) : viewModel.leaveVault(vault: vault) },
                    label: {
                        Label(title: {
-                           Text("Delete vault")
+                           vault.isOwner ? Text("Delete vault") : Text("Leave vault")
                        }, icon: {
                            Image(uiImage: IconProvider.trash)
                        })

@@ -25,22 +25,40 @@ import SwiftUI
 import UIComponents
 
 struct SearchResultsView: View, Equatable {
-    @State private var itemToBePermanentlyDeleted: ItemTypeIdentifiable?
+    @StateObject private var viewModel: SearchResultsViewModel
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
-    let itemContextMenuHandler: ItemContextMenuHandler
-    let itemCount: ItemCount
-    let results: any SearchResults
-    let isTrash: Bool
     let safeAreaInsets: EdgeInsets
     let onScroll: () -> Void
     let onSelectItem: (ItemSearchResult) -> Void
     let onSelectSortType: () -> Void
 
+    init(selectedType: Binding<ItemContentType?>,
+         selectedSortType: Binding<SortType>,
+         itemContextMenuHandler: ItemContextMenuHandler,
+         itemCount: ItemCount,
+         results: any SearchResults,
+         isTrash: Bool,
+         safeAreaInsets: EdgeInsets,
+         onScroll: @escaping () -> Void,
+         onSelectItem: @escaping (ItemSearchResult) -> Void,
+         onSelectSortType: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(itemContextMenuHandler: itemContextMenuHandler,
+                                               itemCount: itemCount,
+                                               results: results,
+                                               isTrash: isTrash))
+        _selectedType = selectedType
+        _selectedSortType = selectedSortType
+        self.safeAreaInsets = safeAreaInsets
+        self.onScroll = onScroll
+        self.onSelectItem = onSelectItem
+        self.onSelectSortType = onSelectSortType
+    }
+
     var body: some View {
         VStack(spacing: 0) {
-            SearchResultChips(selectedType: $selectedType, itemCount: itemCount)
+            SearchResultChips(selectedType: $selectedType, itemCount: viewModel.itemCount)
             topBarSearchInformations
             searchListItems
         }
@@ -65,48 +83,35 @@ struct SearchResultsView: View, Equatable {
 
     @ViewBuilder
     private func itemRow(for item: ItemSearchResult) -> some View {
-        let permanentlyDeleteBinding = Binding<Bool>(get: {
-            itemToBePermanentlyDeleted != nil
-        }, set: { newValue in
-            if !newValue {
-                itemToBePermanentlyDeleted = nil
-            }
-        })
-
         Button(action: {
             onSelectItem(item)
         }, label: {
             ItemSearchResultView(result: item)
                 .itemContextMenu(item: item,
-                                 isTrashed: isTrash,
-                                 onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
-                                 handler: itemContextMenuHandler)
+                                 isTrashed: viewModel.isTrash,
+                                 onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
+                                 handler: viewModel.itemContextMenuHandler)
         })
         .plainListRow()
         .padding(.horizontal)
         .padding(.vertical, 12)
-        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
+        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                                     item: item,
-                                    isTrashed: isTrash,
-                                    itemContextMenuHandler: itemContextMenuHandler))
-        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: permanentlyDeleteBinding,
-                                                onDelete: {
-                                                    if let itemToBePermanentlyDeleted {
-                                                        itemContextMenuHandler
-                                                            .deletePermanently(itemToBePermanentlyDeleted)
-                                                    }
-                                                }))
+                                    isTrashed: viewModel.isTrash,
+                                    itemContextMenuHandler: viewModel.itemContextMenuHandler))
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
+                                                onDelete: viewModel.permanentlyDelete))
     }
 
     static func == (lhs: SearchResultsView, rhs: SearchResultsView) -> Bool {
-        lhs.results.hashValue == rhs.results.hashValue
+        lhs.viewModel.results.hashValue == rhs.viewModel.results.hashValue
     }
 }
 
 private extension SearchResultsView {
     var topBarSearchInformations: some View {
         HStack {
-            Text("\(results.numberOfItems)")
+            Text("\(viewModel.results.numberOfItems)")
                 .font(.callout)
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
@@ -129,13 +134,13 @@ private extension SearchResultsView {
             List {
                 EmptyView()
                     .id(uuid)
-                mainItemList(for: results)
+                mainItemList(for: viewModel.results)
                 Spacer()
                     .plainListRow()
                     .frame(height: safeAreaInsets.bottom)
             }
             .listStyle(.plain)
-            .animation(.default, value: results.hashValue)
+            .animation(.default, value: viewModel.results.hashValue)
             .gesture(DragGesture().onChanged { _ in onScroll() })
             .onChange(of: selectedType) { _ in
                 proxy.scrollTo(uuid)

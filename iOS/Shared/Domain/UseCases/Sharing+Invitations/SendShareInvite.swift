@@ -40,13 +40,16 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
+    private let syncEventLoop: SyncEventLoopProtocol
 
     init(passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
-         userData: UserData) {
+         userData: UserData,
+         syncEventLoop: SyncEventLoopProtocol) {
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userData = userData
+        self.syncEventLoop = syncEventLoop
     }
 
     func execute(with infos: SharingInfos) async throws -> Bool {
@@ -68,11 +71,14 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
                                          userData: userData,
                                          vaultKey: sharedKey)
 
-        return try await shareInviteRepository.sendInvite(shareId: vault.shareId,
-                                                          keys: [signedKeys],
-                                                          email: email,
-                                                          targetType: .vault,
-                                                          shareRole: role)
+        let result = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
+                                                                keys: [signedKeys],
+                                                                email: email,
+                                                                targetType: .vault,
+                                                                shareRole: role)
+        syncEventLoop.forceSync()
+
+        return result
     }
 }
 

@@ -29,7 +29,7 @@ public enum ShareContent {
     case item // Not handled yet
 }
 
-public struct Share: Decodable, Swift.Hashable {
+public struct Share: Decodable, Swift.Hashable, Equatable {
     /// ID of the share
     public let shareID: String
 
@@ -48,11 +48,19 @@ public struct Share: Decodable, Swift.Hashable {
     /// Permissions for this share
     public let permission: Int64
 
+    /// Role given to the user when invited with sharing feature
+    public let shareRoleID: String
+
+    /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
+    public let targetMembers: Int64
+
     /// Whether this vault is primary for this user
     public let primary: Bool
 
     /// Whether the user is owner of this vault
     public let owner: Bool
+
+    public let shared: Bool
 
     /// Base64 encoded encrypted content of the share. Can be null for item shares
     public let content: String?
@@ -100,7 +108,10 @@ public extension Share {
                               description: vaultContent.description_p,
                               displayPreferences: vaultContent.display,
                               isPrimary: primary,
-                              isOwner: owner)
+                              isOwner: owner,
+                              shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
+                              members: Int(targetMembers),
+                              shared: shared)
             return .vault(vault)
         case .item:
             return .item
@@ -114,8 +125,11 @@ public extension Share {
               targetType: targetType,
               targetID: targetID,
               permission: permission,
+              shareRoleID: shareRoleID,
+              targetMembers: targetMembers,
               primary: isPrimary,
               owner: owner,
+              shared: shared,
               content: content,
               contentKeyRotation: contentKeyRotation,
               contentFormatVersion: contentFormatVersion,

@@ -29,19 +29,22 @@ final class SendShareInviteTests: XCTestCase {
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
-    
+    var syncEventLoop: SyncEventLoopProtocolMock!
+
     override func setUp() {
         super.setUp()
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
+        syncEventLoop = SyncEventLoopProtocolMock()
         sut = SendVaultShareInvite(passKeyManager: passKeyManager,
                               shareInviteRepository: shareInviteRepository,
-                              userData: UserData.mock)
+                                   userData: UserData.mock,
+                                   syncEventLoop: syncEventLoop)
     }
 
     func testSendShareInvite_ShouldBeNotBeValid_missingInfos() async throws {
-        var infos = SharingInfos(vault: nil, email: nil, role: nil, receiverPublicKeys: nil, itemsNum: nil)
+        let infos = SharingInfos(vault: nil, email: nil, role: nil, receiverPublicKeys: nil, itemsNum: nil)
         do {
             _ = try await sut(with: infos)
             XCTFail("Error needs to be thrown")
@@ -60,7 +63,10 @@ final class SendShareInviteTests: XCTestCase {
                           description: "",
                           displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences(),
                           isPrimary: false,
-                          isOwner: true)
+                          isOwner: true,
+                          shareRole: .read,
+                          members: 2,
+                          shared: true)
         var infos = SharingInfos(vault: vault, email: "Test@test.com", role: .read, receiverPublicKeys: [PublicKey(value: "")], itemsNum: 100)
         do {
             _ = try await sut(with: infos)

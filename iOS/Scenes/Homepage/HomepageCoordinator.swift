@@ -107,7 +107,6 @@ private extension HomepageCoordinator {
         clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
         passPlanRepository.delegate = self
-        (itemRepository as? ItemRepository)?.delegate = credentialManager as? CredentialManager
         urlOpener.rootViewController = rootViewController
 
         preferences.objectWillChange
@@ -137,7 +136,6 @@ private extension HomepageCoordinator {
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.start()
                 self.eventLoop.forceSync()
-                self.updateCredentials(forceRemoval: false)
                 self.refreshPlan()
             }
             .store(in: &cancellables)
@@ -343,7 +341,7 @@ private extension HomepageCoordinator {
     }
 
     func addNewEvent(type: TelemetryEventType) {
-        addTelemetryEvent(with: telemetryEventRepository, eventType: type)
+        addTelemetryEvent(with: type)
     }
 
     func sendAllEventsIfApplicable() {
@@ -352,21 +350,6 @@ private extension HomepageCoordinator {
                 try await self?.telemetryEventRepository.sendAllEventsIfApplicable()
             } catch {
                 self?.logger.error(error)
-            }
-        }
-    }
-
-    func updateCredentials(forceRemoval: Bool) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
-                                                                      shareRepository: self.shareRepository,
-                                                                      passPlanRepository: self.passPlanRepository,
-                                                                      forceRemoval: forceRemoval)
-                self.logger.info("Updated all credentials.")
-            } catch {
-                self.logger.error(error)
             }
         }
     }
@@ -406,7 +389,7 @@ private extension HomepageCoordinator {
         router
             .newPresentationDestination
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { _ in
                 print("plop")
             }
             .store(in: &cancellables)
@@ -419,8 +402,8 @@ private extension HomepageCoordinator {
                 switch destination {
                 case .sharingFlow:
                     self.presentSharingFlow()
-                case .manageShareVault:
-                    self.presentManageShareVault()
+                case let .manageShareVault(vault, dismissPrevious):
+                    self.presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
                 case .filterItems:
                     self.presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
@@ -435,10 +418,24 @@ private extension HomepageCoordinator {
         present(userEmailView)
     }
 
-    func presentManageShareVault() {
-        dismissTopMostViewController { [weak self] in
-            let manageShareVaultView = Text("Manage Share Vault Screen")
-            self?.present(manageShareVaultView)
+    func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
+        let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
+
+        if dismissPrevious {
+            dismissTopMostViewController { [weak self] in
+                guard let self else {
+                    return
+                }
+                if let host = self.rootViewController
+                    .topMostViewController as? UIHostingController<ManageSharedVaultView> {
+                    /// Updating share data circumventing the onAppear not being called after a sheet presentation
+                    host.rootView.viewModel.fetchShareInformation()
+                    return
+                }
+                self.present(manageShareVaultView)
+            }
+        } else {
+            present(manageShareVaultView)
         }
     }
 
@@ -483,7 +480,6 @@ extension HomepageCoordinator {
 extension HomepageCoordinator: PassPlanRepositoryDelegate {
     func passPlanRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
-        updateCredentials(forceRemoval: true)
         homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
         profileTabViewModel?.refreshPlan()
     }
