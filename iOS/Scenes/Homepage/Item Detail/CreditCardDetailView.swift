@@ -28,7 +28,6 @@ struct CreditCardDetailView: View {
     @State private var isShowingCardNumber = false
     @State private var isShowingVerificationNumber = false
     @State private var isShowingPIN = false
-    @State private var isMoreInfoSectionExpanded = false
     @Namespace private var bottomID
 
     private var tintColor: UIColor { viewModel.itemContent.type.normColor }
@@ -65,33 +64,18 @@ private extension CreditCardDetailView {
                             .padding(.top, 8)
                     }
 
-                    ItemDetailMoreInfoSection(isExpanded: $isMoreInfoSectionExpanded,
+                    ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent)
                         .padding(.top, 24)
                         .id(bottomID)
                 }
                 .padding()
-                .onChange(of: isMoreInfoSectionExpanded) { _ in
+                .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                     withAnimation { proxy.scrollTo(bottomID, anchor: .bottom) }
                 }
             }
         }
-        .animation(.default, value: isMoreInfoSectionExpanded)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarHidden(false)
-        .background(PassColor.backgroundNorm.toColor)
-        .toolbar {
-            ItemDetailToolbar(isShownAsSheet: viewModel.isShownAsSheet,
-                              itemContent: viewModel.itemContent,
-                              onGoBack: viewModel.goBack,
-                              onEdit: viewModel.edit,
-                              onMoveToAnotherVault: viewModel.moveToAnotherVault,
-                              onMoveToTrash: viewModel.moveToTrash,
-                              onRestore: viewModel.restore,
-                              onPermanentlyDelete: viewModel.permanentlyDelete)
-        }
+        .itemDetailSetUp(viewModel)
     }
 }
 

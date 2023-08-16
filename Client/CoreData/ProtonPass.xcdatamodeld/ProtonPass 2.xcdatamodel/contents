@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22A400" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="FeatureFlagsEntity" representedClassName="FeatureFlagsEntity" syncable="YES">
         <attribute name="flagsData" optional="YES" attributeType="Binary"/>
         <attribute name="userID" attributeType="String"/>
@@ -73,9 +73,12 @@
         <attribute name="owner" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="permission" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="primary" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="shared" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String" defaultValueString=""/>
+        <attribute name="shareRoleID" optional="YES" attributeType="String"/>
         <attribute name="symmetricallyEncryptedContent" optional="YES" attributeType="String"/>
         <attribute name="targetID" attributeType="String" defaultValueString=""/>
+        <attribute name="targetMembers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <attribute name="vaultID" attributeType="String"/>

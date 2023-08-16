@@ -44,8 +44,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
@@ -58,6 +56,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
@@ -122,10 +122,15 @@ extension ProfileTabViewModel {
     func refreshPlan() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            // First get local plan to optimistically display it
-            // and then try to refresh the plan to have it updated
-            self.plan = try await self.passPlanRepository.getPlan()
-            self.plan = try await self.passPlanRepository.refreshPlan()
+            do {
+                // First get local plan to optimistically display it
+                // and then try to refresh the plan to have it updated
+                self.plan = try await self.passPlanRepository.getPlan()
+                self.plan = try await self.passPlanRepository.refreshPlan()
+            } catch {
+                self.logger.error(error)
+                self.delegate?.profileTabViewModelDidEncounter(error: error)
+            }
         }
     }
 
@@ -214,7 +219,7 @@ private extension ProfileTabViewModel {
     func updateAutoFillAvalability() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            self.autoFillEnabled = await self.credentialManager.isAutoFillEnabled()
+            self.autoFillEnabled = await self.credentialManager.isAutoFillEnabled
         }
     }
 
@@ -231,15 +236,9 @@ private extension ProfileTabViewModel {
                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
                 self.delegate?.profileTabViewModelWantsToShowSpinner()
                 if self.quickTypeBar {
-                    try await self.credentialManager.insertAllCredentials(itemRepository: self.itemRepository,
-                                                                          shareRepository: self.shareRepository,
-                                                                          passPlanRepository: self
-                                                                              .passPlanRepository,
-                                                                          forceRemoval: true)
-                    self.logger.info("Populated credential database QuickTypeBar \(self.quickTypeBar)")
+                    try await self.indexAllLoginItems(ignorePreferences: true)
                 } else {
-                    try await self.credentialManager.removeAllCredentials()
-                    self.logger.info("Nuked credential database QuickTypeBar \(self.quickTypeBar)")
+                    try await self.unindexAllLoginItems()
                 }
                 self.preferences.quickTypeBar = self.quickTypeBar
             } catch {

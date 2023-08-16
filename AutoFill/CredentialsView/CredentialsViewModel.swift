@@ -270,10 +270,15 @@ extension CredentialsViewModel {
         guard case .idle = state else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            let vaults = try await self.shareRepository.getVaults()
-            guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
-            self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
-                                                                      url: self.urls.first)
+            do {
+                let vaults = try await self.shareRepository.getVaults()
+                guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
+                self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
+                                                                          url: self.urls.first)
+            } catch {
+                self.logger.error(error)
+                self.delegate?.credentialsViewModelDidFail(error)
+            }
         }
     }
 

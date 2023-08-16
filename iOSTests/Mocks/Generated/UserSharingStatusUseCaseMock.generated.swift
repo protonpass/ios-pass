@@ -21,6 +21,7 @@
 
 @testable import Proton_Pass
 import Client
+import Core
 import ProtonCore_Login
 
 final class UserSharingStatusUseCaseMock: @unchecked Sendable, UserSharingStatusUseCase {

@@ -41,6 +41,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     let mode: Mode
+    let onAuth: () -> Void
 
     @Published private(set) var state: LocalAuthenticationState = .noAttempts
     /// Only applicable for biometric authentication
@@ -56,15 +57,15 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
     init(mode: Mode,
          delayed: Bool,
-         onAuth: () -> Void,
+         onAuth: @escaping () -> Void,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
         self.mode = mode
         self.delayed = delayed
+        self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
         updateStateBasedOnFailedAttemptCount()
-        onAuth()
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)

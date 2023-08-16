@@ -66,6 +66,7 @@ struct BiometricAuthenticationView: View {
                     // Otherwise let the users know how many attempts are remaining
                     // and let them retry explicitly
                     DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
+                        viewModel.onAuth()
                         viewModel.biometricallyAuthenticate()
                     }
                 }

@@ -57,23 +57,23 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let logManager: LogManagerProtocol
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
-    private let updateCredentialRank: UpdateCredentialRankUseCase
+    private let indexAllLoginItems: IndexAllLoginItemsUseCase
 
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
          clipboardManager: ClipboardManager,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
-         updateCredentialRank: UpdateCredentialRankUseCase) {
+         indexAllLoginItems: IndexAllLoginItemsUseCase) {
         self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
-        self.updateCredentialRank = updateCredentialRank
+        self.indexAllLoginItems = indexAllLoginItems
     }
 
     /*
-     Complete the autofill process by updating item's rank & item's `lastUseTime`
+     Complete the autofill process by updating item's `lastUseTime` and reindex all login items
      While these processes can eventually fails, we don't really do anything when errors happen but only log them.
      Because they all happen in the completion block of the `completeRequest` of `ASCredentialProviderExtensionContext`
      and at this moment the autofill process is done and the extension is already closed, we have no way to tell users about the errors anyway
@@ -86,7 +86,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                  serviceIdentifiers: [ASCredentialServiceIdentifier],
                  telemetryEventRepository: TelemetryEventRepositoryProtocol?) {
         context.completeRequest(withSelectedCredential: credential) { _ in
-            Task { [weak self] in
+            Task(priority: .high) { [weak self] in
                 guard let self else { return }
                 do {
                     if quickTypeBar {
@@ -122,17 +122,12 @@ private extension CompleteAutoFill {
                                          clipboardManager: clipboardManager,
                                          upgradeChecker: upgradeChecker)
 
-        let lastUseTime = Date().timeIntervalSince1970
-
-        logger.trace("Updating rank \(itemContent.debugInformation)")
-        try await updateCredentialRank(itemContent: itemContent,
-                                       serviceIdentifiers: serviceIdentifiers,
-                                       lastUseTime: lastUseTime)
-        logger.info("Updated rank \(itemContent.debugInformation)")
-
         logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
-        try await itemRepository.update(item: itemContent, lastUseTime: lastUseTime)
+        try await itemRepository.update(item: itemContent,
+                                        lastUseTime: Date().timeIntervalSince1970)
         logger.info("Updated lastUseTime \(itemContent.debugInformation)")
+
+        try await indexAllLoginItems(ignorePreferences: false)
     }
 }
 
