@@ -126,16 +126,17 @@ public extension String {
     init(localizedFormat: String, locale: Locale? = nil, _ arguments: CVarArg...) {
         self.init(format: String(localized: .init(stringLiteral: localizedFormat)), locale: locale, arguments)
     }
-    
-    /// How to use
+
+    // How to use
     // "hello".localized
     // "hello %@! you are %d years old".localized("Mike", 25)
     var localized: String {
-      return String(localized: .init(stringLiteral: self))
+        String(localized: .init(stringLiteral: self))
     }
-    
+
+    // swiftlint:disable:next function_default_parameter_at_end
     func localized(locale: Locale? = nil, _ args: CVarArg...) -> String {
-        return String(localizedFormat: self, locale: locale, args)
+        String(localizedFormat: self, locale: locale, args)
     }
 }
 
