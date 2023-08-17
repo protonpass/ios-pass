@@ -41,7 +41,7 @@ struct VaultRow<Thumbnail: View>: View {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    Text(String(localizedFormat: "%d item(s)", itemCount))
+                    Text("%d item(s)".localized(itemCount))
                         .font(.callout)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }

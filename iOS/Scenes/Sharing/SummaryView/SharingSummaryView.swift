@@ -55,9 +55,8 @@ private extension SharingSummaryView {
     @ViewBuilder
     var headerView: some View {
         let email = attributedText(for: viewModel.infos?.email ?? "")
-        let vaultName = attributedText(for: String(localized: "\(viewModel.infos?.vault?.name ?? "") vault"))
-        let itemCount = attributedText(for: String(localizedFormat: "%d item(s)",
-                                                   viewModel.infos?.itemsNum ?? 0))
+        let vaultName = attributedText(for: "%@ vault".localized(viewModel.infos?.vault?.name ?? ""))
+        let itemCount = attributedText(for: "%d item(s)".localized(viewModel.infos?.itemsNum ?? 0))
         let permission = attributedText(for: viewModel.infos?.role?.summary ?? "")
         VStack(alignment: .leading, spacing: 11) {
             Text("Summary")
@@ -161,7 +160,7 @@ private extension SharingSummaryView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: String(localized: "Share Vault"),
+            DisablableCapsuleTextButton(title: "Share Vault".localized,
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,

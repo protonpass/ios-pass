@@ -32,17 +32,17 @@ enum OnboardingViewState {
     var title: String {
         switch self {
         case .autoFill:
-            return String(localized: "Enjoy the magic of AutoFill")
+            return "Enjoy the magic of AutoFill".localized
         case .autoFillEnabled:
-            return String(localized: "Log in to apps instantly")
+            return "Log in to apps instantly".localized
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            return String(localized: "Protect your most sensitive data")
+            return "Protect your most sensitive data".localized
         case .faceIDEnabled:
-            return String(localized: "Face ID enabled")
+            return "Face ID enabled".localized
         case .touchIDEnabled:
-            return String(localized: "Touch ID enabled")
+            return "Touch ID enabled".localized
         case .aliases:
-            return String(localized: "Control what lands in your inbox")
+            return "Control what lands in your inbox".localized
         }
     }
 
@@ -50,39 +50,41 @@ enum OnboardingViewState {
         switch self {
         case .autoFill:
             // swiftlint:disable:next line_length
-            return String(localized: "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours")
+            return "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours"
+                .localized
         case .autoFillEnabled:
             // swiftlint:disable:next line_length
-            return String(localized: "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details")
+            return "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details"
+                .localized
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            return String(localized: "Set Proton Pass to unlock with your face or fingerprint so only you have access")
+            return "Set Proton Pass to unlock with your face or fingerprint so only you have access".localized
         case .faceIDEnabled, .touchIDEnabled:
-            return String(localized: "Now you can unlock Proton Pass only when you need it⏤quickly and securely")
+            return "Now you can unlock Proton Pass only when you need it⏤quickly and securely".localized
         case .aliases:
-            // swiftlint:disable:next line_length
-            return String(localized: "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive.")
+            return "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive."
+                .localized
         }
     }
 
     var primaryButtonTitle: String {
         switch self {
         case .autoFill:
-            return String(localized: "Go to Settings")
+            return "Go to Settings".localized
         case .biometricAuthenticationTouchID:
-            return String(localized: "Enable Touch ID")
+            return "Enable Touch ID".localized
         case .biometricAuthenticationFaceID:
-            return String(localized: "Enable Face ID")
+            return "Enable Face ID".localized
         case .aliases:
-            return String(localized: "Start using Proton Pass")
+            return "Start using Proton Pass".localized
         case .autoFillEnabled, .faceIDEnabled, .touchIDEnabled:
-            return String(localized: "Next")
+            return "Next".localized
         }
     }
 
     var secondaryButtonTitle: String? {
         switch self {
         case .autoFill, .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            return String(localized: "Not now")
+            return "Not now".localized
         case .aliases, .autoFillEnabled, .faceIDEnabled, .touchIDEnabled:
             return nil
         }
