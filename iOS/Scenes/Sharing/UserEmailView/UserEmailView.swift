@@ -112,7 +112,7 @@ private extension UserEmailView {
             if viewModel.isChecking {
                 ProgressView()
             } else {
-                DisablableCapsuleTextButton(title: String(localized: "Continue"),
+                DisablableCapsuleTextButton(title: "Continue".localized,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,

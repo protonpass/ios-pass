@@ -65,7 +65,7 @@ struct ShareUser: Equatable, Hashable {
         if let shareRole {
             return shareRole.role
         }
-        return String(localized: "pending")
+        return "pending".localized
     }
 }
 
