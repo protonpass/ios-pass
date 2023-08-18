@@ -78,7 +78,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     init() {
         setUp()
-        refreshBanners()
     }
 }
 
@@ -87,11 +86,14 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
-
+        refreshBanners()
         getPendingUserInvitations()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
-                self?.invites = invites
+                guard !invites.isEmpty else {
+                    return
+                }
+                self?.banners.append(invites.toInfoBanners)
             }
             .store(in: &cancellables)
 
@@ -109,7 +111,13 @@ private extension ItemsTabViewModel {
             do {
                 var banners: [InfoBanner] = []
                 for banner in InfoBanner.allCases {
+                    if case let .invite = banner {
+                        break
+                    }
                     var dismissed = self.preferences.dismissedBannerIds.contains { $0 == banner.id }
+                    if dismissed {
+                        break
+                    }
 
                     switch banner {
                     case .trial:
@@ -138,7 +146,7 @@ private extension ItemsTabViewModel {
                     }
                 }
 
-                self.banners = banners
+                self.banners.append(contentsOf: banners)
             } catch {
                 self.logger.error(error)
                 self.delegate?.itemsTabViewModelDidEncounter(error: error)
@@ -159,6 +167,9 @@ extension ItemsTabViewModel {
     }
 
     func dismiss(banner: InfoBanner) {
+        if case .invite = banner {
+            return
+        }
         banners.removeAll(where: { $0 == banner })
         preferences.dismissedBannerIds.append(banner.id)
     }
@@ -169,6 +180,10 @@ extension ItemsTabViewModel {
             delegate?.itemsTabViewModelWantsToShowTrialDetail()
         case .autofill:
             UIApplication.shared.openPasswordSettings()
+        case let .invite(invites: invites):
+            if let firstInvite = invites.first {
+                router.presentSheet(for: .acceptRejectInvite(firstInvite))
+            }
         default:
             break
         }
@@ -225,5 +240,11 @@ extension ItemsTabViewModel: SortTypeListViewModelDelegate {
 extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
         stopRefreshing()
+    }
+}
+
+extension [UserInvite] {
+    var toInfoBanners: InfoBanner {
+        .invite(invites: self)
     }
 }
