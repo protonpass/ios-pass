@@ -39,7 +39,7 @@ struct ExtensionSettingsView: View {
                         .tint(Color(uiColor: PassColor.interactionNorm))
                     }
                     .roundedEditableSection()
-                    Text("Quickly pick a login item from suggestions above the keyboard.")
+                    Text("Quickly pick a login item from suggestions above the keyboard")
                         .sectionTitleText()
                         .frame(maxWidth: .infinity, alignment: .leading)
 

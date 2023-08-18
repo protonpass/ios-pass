@@ -99,3 +99,12 @@
 "PINs not matched" = "Les codes PIN ne correspondent pas";
 "PIN code set" = "Le code PIN est défini";
 "Change PIN code" = "Modifier le code PIN";
+
+/* Profile tab: AutoFill settings */
+"AutoFill" = "Remplissage automatique";
+"AutoFill disabled" = "Remplissage automatique désactivé";
+"Open Settings" = "Ouvrir Réglages";
+"AutoFill on apps and websites by enabling Proton Pass AutoFill" = "Remplisser automatiquement sur les applications et les sites Web en activant Proton Pass remplissage automatique";
+"QuickType bar suggestions" = "Suggestions de barre QuickType";
+"Quickly pick a login item from suggestions above the keyboard" = "Choisir rapidement un élément d'identifiant parmi les suggestions au-dessus du clavier";
+"Copy 2FA code" = "Copier le code 2FA";
