@@ -90,3 +90,12 @@
 "Never" = "Never";
 "Use system passcode when Face ID fails" = "Use system passcode when Face ID fails";
 "Use system passcode when Touch ID fails" = "Use system passcode when Touch ID fails";
+"Set PIN code" = "Set PIN code";
+"Unlock the app with this code" = "Unlock the app with this code";
+"Enter PIN code" = "Choose a PIN code";
+"Repeat PIN code" = "Repeat PIN code";
+"Type your PIN again to confirm" = "Type your PIN again to confirm";
+"PIN must contain only numeric characters (0-9)" = "PIN must contain only numeric characters (0-9)";
+"PINs not matched" = "PINs not matched";
+"PIN code set" = "PIN code set";
+"Change PIN code" = "Change PIN code";
