@@ -66,3 +66,27 @@
 "only view items" = "only view items";
 "create, edit, delete and export items" = "create, edit, delete and export items";
 "grant and revoke access" = "grant and revoke access";
+
+/* Profile tab */
+"Profile" = "Profile";
+"Items" = "Items";
+
+/* Profile tab: security section */
+"Security" = "Security";
+"Unlock with" = "Unlock with";
+"No unlock" = "None";
+"PIN Code" = "PIN Code";
+"Face ID" = "Face ID";
+"Touch ID" = "Touch ID";
+"Please authenticate" = "Please authenticate";
+"Automatic lock" = "Automatic lock";
+"Immediately" = "Immediately";
+"After 1 minute" = "After 1 minute";
+"After 2 minutes" = "After 2 minutes";
+"After 5 minutes" = "After 5 minutes";
+"After 10 minutes" = "After 10 minutes";
+"After 1 hour" = "After 1 hour";
+"After 4 hour" = "After 4 hour";
+"Never" = "Never";
+"Use system passcode when Face ID fails" = "Use system passcode when Face ID fails";
+"Use system passcode when Touch ID fails" = "Use system passcode when Touch ID fails";
