@@ -66,3 +66,27 @@
 "only view items" = "voir uniquement des éléments";
 "create, edit, delete and export items" = "créer, modifier, supprimer et exporter des éléments";
 "grant and revoke access" = "accorder et révoquer l'accès";
+
+/* Profile tab */
+"Profile" = "Profil";
+"Items" = "Eléments";
+
+/* Profile tab: security section */
+"Security" = "Sécurité";
+"Unlock with" = "Déverrouiller avec";
+"No unlock" = "Aucun verrouillage";
+"PIN Code" = "Code PIN";
+"Face ID" = "Face ID";
+"Touch ID" = "Touch ID";
+"Please authenticate" = "Veuillez vous authentifier";
+"Automatic lock" = "Verrouillage automatique";
+"Immediately" = "Immédiatement";
+"After 1 minute" = "Après 1 minute";
+"After 2 minutes" = "Après 2 minutes";
+"After 5 minutes" = "Après 5 minutes";
+"After 10 minutes" = "Après 10 minutes";
+"After 1 hour" = "Après 1 heure";
+"After 4 hours" = "Après 4 heures";
+"Never" = "Jamais";
+"Use system passcode when Face ID fails" = "Utiliser le code d'accès du système en cas d'échec de Face ID";
+"Use system passcode when Touch ID fails" = "Utiliser le code d'accès du système en cas d'échec de Touch ID";

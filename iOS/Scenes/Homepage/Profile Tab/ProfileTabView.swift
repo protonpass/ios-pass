@@ -140,12 +140,12 @@ struct ProfileTabView: View {
                 case .none:
                     EmptyView()
 
-                case .biometric:
+                case let .biometric(type):
                     PassDivider()
 
                     OptionRow(height: .tall) {
                         Toggle(isOn: $viewModel.fallbackToPasscode) {
-                            Text("Use system passcode when \(viewModel.localAuthenticationMethod.title) fails")
+                            Text(type.fallbackToPasscodeMessage)
                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
                         .tint(Color(uiColor: PassColor.interactionNorm))
