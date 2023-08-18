@@ -24,6 +24,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 
@@ -253,7 +254,7 @@ struct ProfileTabView: View {
 
             PassSectionDivider()
 
-            TextOptionRow(title: "Settings", action: viewModel.showSettingsMenu)
+            TextOptionRow(title: "Settings".localized, action: viewModel.showSettingsMenu)
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -265,9 +266,9 @@ struct ProfileTabView: View {
              TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
              PassSectionDivider()
              */
-            TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
+            TextOptionRow(title: "Privacy policy".localized, action: viewModel.showPrivacyPolicy)
             PassSectionDivider()
-            TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
+            TextOptionRow(title: "Terms of service".localized, action: viewModel.showTermsOfService)
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -280,9 +281,10 @@ struct ProfileTabView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
-                TextOptionRow(title: "How to import to Proton Pass", action: viewModel.showImportInstructions)
+                TextOptionRow(title: "How to import to Proton Pass".localized,
+                              action: viewModel.showImportInstructions)
                 PassSectionDivider()
-                TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
+                TextOptionRow(title: "Feedback".localized, action: viewModel.showFeedback)
             }
             .roundedEditableSection()
         }
