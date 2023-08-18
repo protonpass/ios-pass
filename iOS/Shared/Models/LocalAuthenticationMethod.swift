@@ -46,19 +46,19 @@ enum LocalAuthenticationMethodUiModel {
     var title: String {
         switch self {
         case .none:
-            return "None"
+            return "No unlock".localized
         case let .biometric(type):
             switch type {
             case .faceID:
-                return "Face ID"
+                return "Face ID".localized
             case .touchID:
-                return "Touch ID"
+                return "Touch ID".localized
             default:
                 assertionFailure("Not usable biometric type")
                 return ""
             }
         case .pin:
-            return "PIN Code"
+            return "PIN Code".localized
         }
     }
 
@@ -88,6 +88,18 @@ extension LABiometryType {
             return true
         default:
             return false
+        }
+    }
+
+    var fallbackToPasscodeMessage: String {
+        switch self {
+        case .faceID:
+            return "Use system passcode when Face ID fails".localized
+        case .touchID:
+            return "Use system passcode when Touch ID fails".localized
+        default:
+            assertionFailure("Not applicable")
+            return ""
         }
     }
 }
