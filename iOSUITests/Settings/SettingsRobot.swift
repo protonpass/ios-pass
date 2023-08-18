@@ -33,13 +33,13 @@ final class SettingsRobot: CoreElements {
     final class Verify: CoreElements {
         @discardableResult
         public func telemetryItemIsDisplayed() -> SettingsRobot {
-            staticText(telemetryLabelText).wait().checkExists()
+            staticText(telemetryLabelText).waitUntilExists().checkExists()
             return SettingsRobot()
         }
     }
 
     func tapSettingsButton() -> SettingsRobot {
-        button(settingsLabelText).wait().tap()
+        button(settingsLabelText).waitUntilExists().tap()
         return self
     }
 }
