@@ -190,7 +190,7 @@ struct ProfileTabView: View {
             }
             .roundedEditableSection()
 
-            Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
+            Text("AutoFill on apps and websites by enabling Proton Pass AutoFill")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, kItemDetailSectionPadding / 2)
