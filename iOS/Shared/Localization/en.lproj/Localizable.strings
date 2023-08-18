@@ -108,3 +108,17 @@
 "QuickType bar suggestions" = "QuickType bar suggestions";
 "Quickly pick a login item from suggestions above the keyboard" = "Quickly pick a login item from suggestions above the keyboard";
 "Copy 2FA code" = "Copy 2FA code";
+
+/* Profile tab: Other sections */
+"Account" = "Account";
+"Settings" = "Settings";
+"Privacy policy" = "Privacy policy";
+"Terms of service" = "Terms of service";
+"Help center" = "Help center";
+"How to import to Proton Pass" = "How to import to Proton Pass";
+"Feedback" = "Feedback";
+
+/* Feedback channels */
+"Report a problem" = "Report a problem";
+"Write us on Reddit" = "Write us on Reddit";
+"Vote for new features" = "Vote for new features";
