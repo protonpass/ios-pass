@@ -25,7 +25,7 @@ import ProtonCore_CoreTranslation
 import XCTest
 
 private let title = "Don't give spam a chance"
-private let getStartedTxt = "Get started"
+private let startUsingTxt = "Start using Proton Pass"
 
 public final class GetStartedRobot: CoreElements {
     public let verify = Verify()
@@ -33,13 +33,13 @@ public final class GetStartedRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func isGetStartedShown(timeout: TimeInterval = 10.0) -> GetStartedRobot {
-            staticText(title).wait(time: timeout).checkExists()
+            staticText(title).waitUntilExists(time: timeout).checkExists()
             return GetStartedRobot()
         }
     }
 
     public func getStartedTap<T: CoreElements>(robot _: T.Type) -> T {
-        button(getStartedTxt).wait().tap()
+        button(startUsingTxt).waitUntilExists().tap()
         return T()
     }
 }

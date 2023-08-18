@@ -21,8 +21,9 @@
 
 import fusion
 import ProtonCore_Doh
-import ProtonCore_Log
+import ProtonCore_Environment
 import ProtonCore_ObfuscatedConstants
+import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
 import XCTest
 
@@ -58,5 +59,23 @@ class LoginBaseTestCase: ProtonCoreBaseTestCase {
     override func setUp() {
         beforeSetUp(bundleIdentifier: "me.proton.pass.ios.iOSUITests")
         super.setUp()
+    }
+
+    // MARK: - Helpers
+
+    func createAccount(_ randomUsername: String, _ randomPassword: String) {
+        let quarkCommandTimeout = 30.0
+
+        let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
+        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
+        QuarkCommands.create(account: .freeNoAddressNoKeys(username: randomUsername, password: randomPassword),
+                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+            quarkCommandResult = result
+            expectQuarkCommandToFinish.fulfill()
+        }
+        wait(for: [expectQuarkCommandToFinish], timeout: quarkCommandTimeout)
+        if case .failure(let error) = quarkCommandResult {
+            XCTFail("Username account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
+        }
     }
 }

@@ -160,12 +160,22 @@ open class UIElement {
         return element.isSelected
     }
 
-    public func childsCount() -> Int {
-        return locatedElement!.children(matching: XCUIElement.ElementType.any).count
+    public func childrenCount() -> Int {
+        return uiElement()!.children(matching: XCUIElement.ElementType.any).count
     }
 
-    public func childsCountByType(_ type: XCUIElement.ElementType) -> Int {
-        return locatedElement!.children(matching: type).count
+    public func childrenCountByType(_ type: XCUIElement.ElementType) -> Int {
+        return uiElement()!.children(matching: type).count
+    }
+
+    public func childrenCountByPredicate(_ predicate: NSPredicate, _ type: XCUIElement.ElementType? = nil) -> Int {
+        let elementType = type ?? .any
+        return uiElement()!.children(matching: elementType).matching(predicate).count
+    }
+
+    public func descendantsCountByPredicate(_ predicate: NSPredicate, _ type: XCUIElement.ElementType? = nil) -> Int {
+        let elementType = type ?? .any
+        return uiElement()!.descendants(matching: elementType).matching(predicate).count
     }
 
     /// Matchers
@@ -270,7 +280,13 @@ open class UIElement {
 
     @discardableResult
     public func forceTap() -> UIElement {
-        uiElement()!.coordinate(withNormalizedOffset: .zero).tap()
+        tapOnCoordinate(withOffset: .zero)
+    }
+
+    @discardableResult
+    public func tapOnCoordinate(withOffset offset: CGVector) -> UIElement {
+        let element = uiElement()!
+        element.coordinate(withNormalizedOffset: offset).tap()
         return self
     }
 
@@ -409,7 +425,7 @@ open class UIElement {
         return self
     }
 
-    /// Allow actions on childs / descendants
+    /// Allow actions on children / descendants
     public func onChild(_ childElement: UIElement) -> UIElement {
         self.childElement = childElement
         return self
@@ -446,6 +462,7 @@ open class UIElement {
 
     @discardableResult
     public func checkDoesNotExist(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
+        shouldWaitForExistance = false
         XCTAssertFalse(
             uiElement()!.exists,
             "Expected element \(uiElement().debugDescription) to not exist but it exists.",
@@ -564,42 +581,85 @@ open class UIElement {
         return self
     }
 
-    /// Waits
+    @available(*, deprecated, renamed: "waitUntilExists", message: "`wait` has been renamed to `waitUntilExists`.")
     @discardableResult
-    public func wait(time: TimeInterval = 10.0) -> UIElement {
+    public func wait(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        waitUntilExists(time: time, file: file, line: line)
+    }
+
+    @discardableResult
+    public func waitUntilExists(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
         shouldWaitForExistance = false
-        Wait(time: time).forElement(uiElement()!)
+        Wait(time: time).forElement(uiElement()!, file, line)
         return self
     }
 
     @discardableResult
-    public func waitForDisabled(time: TimeInterval = 10.0) -> UIElement {
-        Wait(time: time).forElementToBeDisabled(uiElement()!)
+    public func waitForDisabled(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        Wait(time: time).forElementToBeDisabled(uiElement()!, file, line)
         return self
     }
 
     @discardableResult
-    public func waitForHittable(time: TimeInterval = 10.0) -> UIElement {
-        Wait(time: time).forElementToBeHittable(uiElement()!)
+    public func waitForHittable(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        Wait(time: time).forElementToBeHittable(uiElement()!, file, line)
         return self
     }
 
     @discardableResult
-    public func waitForEnabled(time: TimeInterval = 10.0) -> UIElement {
-        Wait(time: time).forElementToBeEnabled(uiElement()!)
+    public func waitForNotHittable(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        Wait(time: time).forElementToBeNotHittable(uiElement()!, file, line)
         return self
     }
 
     @discardableResult
-    public func waitForFocused(time: TimeInterval = 10.0) -> UIElement {
-        Wait(time: time).forHavingKeyboardFocus(uiElement()!)
+    public func waitForEnabled(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        Wait(time: time).forElementToBeEnabled(uiElement()!, file, line)
         return self
     }
 
     @discardableResult
-    public func waitUntilGone(time: TimeInterval = 10.0) -> UIElement {
+    public func waitForFocused(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        Wait(time: time).forHavingKeyboardFocus(uiElement()!, file, line)
+        return self
+    }
+
+    @discardableResult
+    public func waitUntilGone(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
         shouldWaitForExistance = false
-        Wait(time: time).forElementToDisappear(uiElement()!)
+        Wait(time: time).forElementToDisappear(uiElement()!, file, line)
         return self
     }
 
