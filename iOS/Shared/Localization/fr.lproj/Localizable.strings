@@ -122,3 +122,14 @@
 "Report a problem" = "Signaler un problème";
 "Write us on Reddit" = "Nous écrire sur Reddit";
 "Vote for new features" = "Voter pour de nouvelles fonctionnalités";
+
+/* Account page */
+"Username" = "Nom d'utilisateur";
+"Subscription plan" = "Abonnement";
+"Manage subscription" = "Gérer l'abonnement";
+"Sign out" = "Se déconnecter";
+"Delete account" = "Supprimer le compte";
+"This will permanently delete your Proton account and all of its data, including email, calendars and data stored in Drive. You will not be able to reactivate this account." = "Cela supprimera définitivement votre compte Proton et toutes ses données, y compris les e-mails, les calendriers et les données stockées dans Drive. Vous ne pourrez pas réactiver ce compte.";
+"You will be signed out" = "Vous serez déconnecté";
+"Yes, sign me out" = "Oui, me déconnecter";
+"Cancel" = "Annuler";
