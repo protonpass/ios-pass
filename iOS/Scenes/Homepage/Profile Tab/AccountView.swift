@@ -42,7 +42,7 @@ struct AccountView: View {
         ScrollView {
             VStack {
                 VStack(spacing: 0) {
-                    OptionRow(title: "Username",
+                    OptionRow(title: "Username".localized,
                               height: .tall,
                               content: {
                                   Text(viewModel.username)
@@ -52,7 +52,7 @@ struct AccountView: View {
                     if let plan = viewModel.plan {
                         PassSectionDivider()
 
-                        OptionRow(title: "Subscription plan",
+                        OptionRow(title: "Subscription plan".localized,
                                   height: .tall,
                                   content: {
                                       Text(plan.displayName)
