@@ -129,7 +129,7 @@ struct SettingsView: View {
 
             VStack(spacing: 0) {
                 OptionRow(action: viewModel.editClipboardExpiration,
-                          title: "Clear clipboard",
+                          title: "Clear clipboard".localized,
                           height: .tall,
                           content: {
                               Text(viewModel.selectedClipboardExpiration.description)

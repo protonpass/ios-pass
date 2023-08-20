@@ -142,3 +142,9 @@
 "Dark" = "Dark";
 "Match system" = "Match system";
 "Show website thumbnails" = "Show website thumbnails";
+"Clipboard" = "Clipboard";
+"Clear clipboard" = "Clear clipboard";
+"After 15 seconds" = "After 15 seconds";
+"After 60 seconds" = "After 60 seconds";
+"After 120 seconds" = "After 120 seconds";
+"Share clipboard between devices" = "Share clipboard between devices";
