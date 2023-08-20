@@ -21,6 +21,7 @@
 import SwiftUI
 import UIComponents
 
+// Localized
 struct EditPrimaryVaultView: View {
     @StateObject var viewModel: EditPrimaryVaultViewModel
 
