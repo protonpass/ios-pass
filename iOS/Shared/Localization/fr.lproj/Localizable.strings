@@ -163,3 +163,16 @@
 "Force synchronization" = "Forcer la synchronisation";
 "Force synchronization done" = "Forcer la synchronisation effectuée";
 "Download all your items again to make sure you are in sync" = "Télécharger à nouveau tous vos éléments pour vous assurer que vous êtes synchronisé";
+
+/* List of available item types */
+"Create" = "Créer";
+"Login" = "Identifiant";
+"Add login details for an app or site" = "Ajouter des informations d'identifiant pour une application ou un site";
+"Alias" = "Alias";
+"Get an email alias to use on new apps" = "Créer un alias d'adresse e-mail que vous utiliserez dans les nouvelles applications";
+"Note" = "Note";
+"Jot down a PIN, code, or note to self" = "Noter un code PIN, tout autre code ou une note à votre attention";
+"Credit card" = "Carte de crédit";
+"Securely store your payment information" = "Stocker vos informations de paiement de façon sécurisée";
+"Password" = "Mot de passe";
+"Generate a secure password" = "Générer un mot de passe sécurisé";
