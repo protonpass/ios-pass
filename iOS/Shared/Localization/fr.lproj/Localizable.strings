@@ -142,3 +142,9 @@
 "Dark" = "Sombre";
 "Match system" = "Correspondre au système";
 "Show website thumbnails" = "Afficher les vignettes du site Web";
+"Clipboard" = "Presse-papiers";
+"Clear clipboard" = "Vider le presse-papiers";
+"After 15 seconds" = "Après 15 secondes";
+"After 60 seconds" = "Après 60 secondes";
+"After 120 seconds" = "Après 120 secondes";
+"Share clipboard between devices" = "Partager le presse-papiers entre les appareils";
