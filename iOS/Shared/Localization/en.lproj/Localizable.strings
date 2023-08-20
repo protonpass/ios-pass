@@ -163,3 +163,16 @@
 "Force synchronization" = "Force synchronization";
 "Force synchronization done" = "Force synchronization done";
 "Download all your items again to make sure you are in sync" = "Download all your items again to make sure you are in sync";
+
+/* List of available item types */
+"Create" = "Create";
+"Login" = "Login";
+"Add login details for an app or site" = "Add login details for an app or site";
+"Alias" = "Alias";
+"Get an email alias to use on new apps" = "Get an email alias to use on new apps";
+"Note" = "Note";
+"Jot down a PIN, code, or note to self" = "Jot down a PIN, code, or note to self";
+"Credit card" = "Credit card";
+"Securely store your payment information" = "Securely store your payment information";
+"Password" = "Password";
+"Generate a secure password" = "Generate a secure password";

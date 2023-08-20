@@ -117,30 +117,30 @@ extension ItemType {
     var title: String {
         switch self {
         case .login:
-            return "Login"
+            return "Login".localized
         case .alias:
-            return "Alias"
+            return "Alias".localized
         case .note:
-            return "Note"
+            return "Note".localized
         case .creditCard:
-            return "Credit card"
+            return "Credit card".localized
         case .password:
-            return "Password"
+            return "Password".localized
         }
     }
 
     var description: String {
         switch self {
         case .login:
-            return "Add login details for an app or site"
+            return "Add login details for an app or site".localized
         case .alias:
-            return "Get an email alias to use on new apps"
+            return "Get an email alias to use on new apps".localized
         case .creditCard:
-            return "Securely store your payment information"
+            return "Securely store your payment information".localized
         case .note:
-            return "Jot down a PIN, code, or note to self"
+            return "Jot down a PIN, code, or note to self".localized
         case .password:
-            return "Generate a secure password"
+            return "Generate a secure password".localized
         }
     }
 }
