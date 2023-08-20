@@ -22,6 +22,7 @@ import Core
 import SwiftUI
 import UIComponents
 
+// Localized
 struct EditDefaultBrowserView: View {
     @Environment(\.dismiss) private var dismiss
     let supportedBrowsers: [Browser]
