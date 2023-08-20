@@ -915,7 +915,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
-                self?.bannerManager.displayBottomSuccessMessage("All logs cleared")
+                self?.bannerManager.displayBottomSuccessMessage("All logs cleared".localized)
             }
         }
     }

@@ -152,3 +152,10 @@
 "Primary vault" = "Primary vault";
 "You can not delete a primary vault" = "You can not delete a primary vault";
 "Primary vault updated" = "Primary vault updated";
+"Logs" = "Logs";
+"Application logs" = "Application logs";
+"AutoFill extension logs" = "AutoFill extension logs";
+"No logs" = "No logs";
+"Clear all logs" = "Clear all logs";
+"All logs cleared" = "All logs cleared";
+"Share" = "Share";

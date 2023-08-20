@@ -152,3 +152,10 @@
 "Primary vault" = "Coffre-fort principal";
 "You can not delete a primary vault" = "Vous ne pouvez supprimer le coffre-fort principal";
 "Primary vault updated" = "Coffre-fort principal mis à jour";
+"Logs" = "Journaux";
+"Application logs" = "Journaux de l'application";
+"AutoFill extension logs" = "Journaux de l'extension de remplissage automatique";
+"No logs" = "Aucun journal";
+"Clear all logs" = "Effacer tous les journaux";
+"All logs cleared" = "Tous les journaux effacés";
+"Share" = "Partager";
