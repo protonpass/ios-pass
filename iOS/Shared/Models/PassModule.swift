@@ -28,9 +28,9 @@ extension PassModule {
     var logTitle: String {
         switch self {
         case .hostApp:
-            return "Application logs"
+            return "Application logs".localized
         case .autoFillExtension:
-            return "AutoFill extension logs"
+            return "AutoFill extension logs".localized
         case .keyboardExtension:
             return "Keyboard extension logs"
         }
