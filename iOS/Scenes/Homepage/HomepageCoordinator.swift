@@ -1193,7 +1193,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
     func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage("Primary vault updated")
+            self?.bannerManager.displayBottomSuccessMessage("Primary vault updated".localized)
         }
         vaultsManager.refresh()
     }
