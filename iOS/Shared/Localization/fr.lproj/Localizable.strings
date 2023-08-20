@@ -133,3 +133,12 @@
 "You will be signed out" = "Vous serez déconnecté";
 "Yes, sign me out" = "Oui, me déconnecter";
 "Cancel" = "Annuler";
+
+/* Settings page */
+"Default browser" = "Navigateur par défaut";
+"This preference will fallback to Safari if the browser of choice is uninstalled" = "Cette préférence reviendra à Safari si le navigateur de votre choix est désinstallé";
+"Theme" = "Thème";
+"Light" = "Claire";
+"Dark" = "Sombre";
+"Match system" = "Correspondre au système";
+"Show website thumbnails" = "Afficher les vignettes du site Web";

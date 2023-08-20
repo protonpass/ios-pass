@@ -93,7 +93,7 @@ struct SettingsView: View {
             }
 
             OptionRow(action: viewModel.editTheme,
-                      title: "Theme",
+                      title: "Theme".localized,
                       height: .tall,
                       content: {
                           Label(title: {
