@@ -922,7 +922,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelDidFinishFullSync() {
         refresh()
-        bannerManager.displayBottomSuccessMessage("Force synchronization done")
+        bannerManager.displayBottomSuccessMessage("Force synchronization done".localized)
     }
 }
 

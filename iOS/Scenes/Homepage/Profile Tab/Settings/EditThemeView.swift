@@ -22,6 +22,7 @@ import Core
 import SwiftUI
 import UIComponents
 
+// Localized
 struct EditThemeView: View {
     @Environment(\.dismiss) private var dismiss
     let preferences: Preferences
