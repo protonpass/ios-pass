@@ -148,3 +148,7 @@
 "After 60 seconds" = "Après 60 secondes";
 "After 120 seconds" = "Après 120 secondes";
 "Share clipboard between devices" = "Partager le presse-papiers entre les appareils";
+"Vaults" = "Coffre-forts";
+"Primary vault" = "Coffre-fort principal";
+"You can not delete a primary vault" = "Vous ne pouvez supprimer le coffre-fort principal";
+"Primary vault updated" = "Coffre-fort principal mis à jour";

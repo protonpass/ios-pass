@@ -159,7 +159,7 @@ struct SettingsView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
-                      title: "Primary vault",
+                      title: "Primary vault".localized,
                       height: .tall,
                       content: { Text(vault.name).foregroundColor(Color(uiColor: PassColor.textNorm)) },
                       leading: { VaultThumbnail(vault: vault) },

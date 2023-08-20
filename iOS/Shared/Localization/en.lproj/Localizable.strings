@@ -148,3 +148,7 @@
 "After 60 seconds" = "After 60 seconds";
 "After 120 seconds" = "After 120 seconds";
 "Share clipboard between devices" = "Share clipboard between devices";
+"Vaults" = "Vaults";
+"Primary vault" = "Primary vault";
+"You can not delete a primary vault" = "You can not delete a primary vault";
+"Primary vault updated" = "Primary vault updated";
