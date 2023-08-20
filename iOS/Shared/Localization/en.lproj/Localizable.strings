@@ -133,3 +133,12 @@
 "You will be signed out" = "You will be signed out";
 "Yes, sign me out" = "Yes, sign me out";
 "Cancel" = "Cancel";
+
+/* Settings page */
+"Default browser" = "Default browser";
+"This preference will fallback to Safari if the browser of choice is uninstalled" = "This preference will fallback to Safari if the browser of choice is uninstalled";
+"Theme" = "Theme";
+"Light" = "Light";
+"Dark" = "Dark";
+"Match system" = "Match system";
+"Show website thumbnails" = "Show website thumbnails";
