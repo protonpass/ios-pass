@@ -24,7 +24,7 @@ import UIComponents
 
 enum InfoBanner: CaseIterable, Equatable, Hashable {
     static var allCases: [InfoBanner] {
-        [.trial, .autofill, .aliases, .invite(invites: [])]
+        [.trial, .autofill, .aliases]
     }
 
     // Order of cases matter cause it affects the UI
