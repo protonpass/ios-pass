@@ -1,10 +1,10 @@
 //
-//  MainRobot.swift
-//  iOSUITests - Created on 12/23/22.
+//  ProfileRobot.swift
+//  Proton Pass - Created on 12/23/22.
 //
-//  Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023. Proton Technologies AG
 //
-//  This file is part of Proton Technologies AG and ProtonCore.
+// This file is part of Proton Pass.
 //
 //  ProtonCore is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,10 +21,7 @@
 
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
-import ProtonCore_TestingToolkit
-import XCTest
 
-private let telemetryLabelText = "Telemetry"
 private let settingsLabelText = "Settings"
 private let accountLabelText = "Account"
 
@@ -32,12 +29,8 @@ final class ProfileRobot: CoreElements {
     let verify = Verify()
 
     final class Verify: CoreElements {
-        @discardableResult
-        public func telemetryItemIsDisplayed() -> SettingsRobot {
-            staticText(telemetryLabelText).waitUntilExists().checkExists()
-            return SettingsRobot()
-        }
     }
+
     func tapSettingsButton() -> SettingsRobot {
         button(settingsLabelText).waitUntilExists().tap()
         return SettingsRobot()
