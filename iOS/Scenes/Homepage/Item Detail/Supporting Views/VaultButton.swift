@@ -44,7 +44,7 @@ struct VaultButton: View {
                     .font(.body)
                     .foregroundColor(PassColor.textNorm.toColor)
                 Text("\(vault.members)")
-                    .font(.body)
+                    .font(.footnote)
                     .foregroundColor(PassColor.textNorm.toColor)
             }
             .padding(.horizontal, 8)
