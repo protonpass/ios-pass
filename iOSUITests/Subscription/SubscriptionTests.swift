@@ -21,11 +21,7 @@
 
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
-import ProtonCore_Doh
-import ProtonCore_Environment
-import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
-import XCTest
 
 class SubscriptionTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
