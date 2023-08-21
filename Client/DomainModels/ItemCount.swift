@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ItemCount {
+public struct ItemCount: Hashable, Equatable {
     public let total: Int
     public let login: Int
     public let alias: Int
