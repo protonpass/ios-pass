@@ -63,9 +63,17 @@ struct NoteDetailView: View {
                         .isEditable(false)
                         .foregroundColor(PassColor.textNorm)
 
-                    if let vault = viewModel.vault {
-                        VaultLabel(vault: vault)
-                            .padding(.top, 4)
+                    HStack {
+                        if let vault = viewModel.vault {
+                            if !vault.shared {
+                                VaultLabel(vault: vault)
+                                    .padding(.top, 4)
+                            } else {
+                                VaultButton(vault: vault)
+                                    .padding(.top, 4)
+                            }
+                        }
+                        Spacer()
                     }
 
                     Spacer(minLength: 16)
