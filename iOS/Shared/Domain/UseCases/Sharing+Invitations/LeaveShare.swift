@@ -32,19 +32,23 @@ extension LeaveShareUseCase {
     }
 }
 
-final class LeaveShare: LeaveShareUseCase {
+final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
     private let repository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
+    private let vaultManager: VaultsManagerProtocol
 
     init(repository: ShareRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol) {
+         itemRepository: ItemRepositoryProtocol,
+         vaultManager: VaultsManagerProtocol) {
         self.repository = repository
         self.itemRepository = itemRepository
+        self.vaultManager = vaultManager
     }
 
     func execute(with shareId: String) async throws {
         try await repository.deleteShare(shareId: shareId)
         try await repository.deleteShareLocally(shareId: shareId)
         try await itemRepository.deleteAllItemsLocally(shareId: shareId)
+        vaultManager.refresh()
     }
 }
