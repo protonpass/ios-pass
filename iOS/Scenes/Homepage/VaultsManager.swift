@@ -48,7 +48,12 @@ enum VaultSelection {
     }
 }
 
-final class VaultsManager: ObservableObject, DeinitPrintable {
+protocol VaultsManagerProtocol {
+    func refresh()
+    func fullSync() async throws
+}
+
+final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {
     deinit { print(deinitMessage) }
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
