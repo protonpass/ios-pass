@@ -31,7 +31,7 @@ public struct DeleteShareEndpoint: Endpoint {
 
     public init(for shareId: String) {
         debugDescription = "Delete the current share"
-        path = "/pass/v1/share/\(shareId)/"
+        path = "/pass/v1/share/\(shareId)"
         method = .delete
     }
 }

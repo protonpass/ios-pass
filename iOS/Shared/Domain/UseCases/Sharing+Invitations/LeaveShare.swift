@@ -34,12 +34,17 @@ extension LeaveShareUseCase {
 
 final class LeaveShare: LeaveShareUseCase {
     private let repository: ShareRepositoryProtocol
-
-    init(repository: ShareRepositoryProtocol) {
+    private let itemRepository: ItemRepositoryProtocol
+    
+    init(repository: ShareRepositoryProtocol,
+         itemRepository: ItemRepositoryProtocol) {
         self.repository = repository
+        self.itemRepository = itemRepository
     }
 
     func execute(with shareId: String) async throws {
         try await repository.deleteShare(shareId: shareId)
+        try await repository.deleteShareLocally(shareId: shareId)
+        try await itemRepository.deleteAllItemsLocally(shareId: shareId)
     }
 }
