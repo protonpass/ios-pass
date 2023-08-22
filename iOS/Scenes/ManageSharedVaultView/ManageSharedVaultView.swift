@@ -29,7 +29,7 @@ import UIComponents
 
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: ManageSharedVaultViewModel
+    @ObservedObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
 
     @State private var sort: ShareRole = .admin
@@ -54,6 +54,10 @@ struct ManageSharedVaultView: View {
         .toolbar { toolbarContent }
         .showSpinner(viewModel.loading)
         .navigationModifier()
+    }
+
+    func refresh() {
+        viewModel.fetchShareInformation()
     }
 }
 
