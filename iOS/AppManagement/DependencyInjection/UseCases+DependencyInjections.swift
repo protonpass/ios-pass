@@ -115,7 +115,8 @@ extension UseCasesContainer {
     }
 
     var leaveShare: Factory<LeaveShareUseCase> {
-        self { LeaveShare(repository: SharedRepositoryContainer.shared.shareRepository()) }
+        self { LeaveShare(repository: SharedRepositoryContainer.shared.shareRepository(),
+                          itemRepository: SharedRepositoryContainer.shared.itemRepository()) }
     }
 
     var getUsersLinkedToShare: Factory<GetUsersLinkedToShareUseCase> {
