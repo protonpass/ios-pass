@@ -35,7 +35,7 @@ extension LeaveShareUseCase {
 final class LeaveShare: LeaveShareUseCase {
     private let repository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
-    
+
     init(repository: ShareRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol) {
         self.repository = repository
