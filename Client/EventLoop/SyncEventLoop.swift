@@ -260,6 +260,8 @@ private extension SyncEventLoop {
         }
 
         var hasNewShareEvents = false
+        // This is used to respond to sahring modification that are not tied to events in the BE
+        // making changes not visible to the user.
         if remoteShares != localShares.map(\.share) {
             hasNewShareEvents = true
             try await shareRepository.upsertShares(remoteShares)
