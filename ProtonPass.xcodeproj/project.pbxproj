@@ -848,6 +848,11 @@
 		EAAEB05BFBCBEB08162111D3 /* Pods_Client_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26B3098DA5BEED9ECD640EB8 /* Pods_Client_iOSTests.framework */; };
 		EB5B5A7052FD60FFFEFC4E84 /* GetLogEntriesUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B167957087F76ED9866A81 /* GetLogEntriesUseCaseMock.generated.swift */; };
 		F53DC9E901354CB27344B8B0 /* Pods_AutoFill.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE32F98A2102F4FD59442842 /* Pods_AutoFill.framework */; };
+		FAA718FF2A8E1F7C002B951E /* ProfileRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA718FE2A8E1F7C002B951E /* ProfileRobot.swift */; };
+		FAA719012A8E21E3002B951E /* AccountRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA719002A8E21E3002B951E /* AccountRobot.swift */; };
+		FAD3ABA52A862A880004053E /* Proton Pass - Password Manager.storekit in Resources */ = {isa = PBXBuildFile; fileRef = FAD3ABA42A862A880004053E /* Proton Pass - Password Manager.storekit */; };
+		FAD3ABA62A862A880004053E /* Proton Pass - Password Manager.storekit in Resources */ = {isa = PBXBuildFile; fileRef = FAD3ABA42A862A880004053E /* Proton Pass - Password Manager.storekit */; };
+		FAEC58C42A85218E0022E223 /* SubscriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEC58C32A85218E0022E223 /* SubscriptionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1762,11 +1767,15 @@
 		D817C441253549DC8F078A3F /* Pods-Client-ClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-ClientTests.release.xcconfig"; path = "Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		D8E8D5E563338181886BC10D /* Pods_UIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC4C15957574DF9317C4FE1 /* Pods-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release.xcconfig"; sourceTree = "<group>"; };
-		E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = SyncEventLoopProtocolMock.generated.swift; path = SyncEventLoopProtocolMock.generated.swift; sourceTree = "<group>"; };
+		E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = SyncEventLoopProtocolMock.generated.swift; sourceTree = "<group>"; };
 		E7BD2DA60D08ED39E3B852A9 /* Pods-Core.release-qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Core.release-qa.xcconfig"; path = "Target Support Files/Pods-Core/Pods-Core.release-qa.xcconfig"; sourceTree = "<group>"; };
 		F0E45B73A4034D9D3A3A8122 /* Pods-Client-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		F9115095D848F6FA4752B676 /* Pods-UIComponents.release-tf.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIComponents.release-tf.xcconfig"; path = "Target Support Files/Pods-UIComponents/Pods-UIComponents.release-tf.xcconfig"; sourceTree = "<group>"; };
 		F989294EBEA6FB4F66EBE431 /* Pods-iOS.release-beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release-beta.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release-beta.xcconfig"; sourceTree = "<group>"; };
+		FAA718FE2A8E1F7C002B951E /* ProfileRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRobot.swift; sourceTree = "<group>"; };
+		FAA719002A8E21E3002B951E /* AccountRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRobot.swift; sourceTree = "<group>"; };
+		FAD3ABA42A862A880004053E /* Proton Pass - Password Manager.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Proton Pass - Password Manager.storekit"; sourceTree = "<group>"; };
+		FAEC58C32A85218E0022E223 /* SubscriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3711,6 +3720,7 @@
 				75283BF22946E21D006658A6 /* Home */,
 				75283BE52946E21C006658A6 /* Login&Signup */,
 				75283BEF2946E21D006658A6 /* Settings */,
+				FAEC58C22A8521630022E223 /* Subscription */,
 				75283BE32946E21C006658A6 /* Utils */,
 			);
 			path = iOSUITests;
@@ -3741,6 +3751,8 @@
 			children = (
 				75283BF02946E21D006658A6 /* SettingsTests.swift */,
 				75283BF12946E21D006658A6 /* SettingsRobot.swift */,
+				FAA718FE2A8E1F7C002B951E /* ProfileRobot.swift */,
+				FAA719002A8E21E3002B951E /* AccountRobot.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3837,6 +3849,15 @@
 				BD2F3F13BEF95DDF749B3B48 /* Pods-macOS.release-beta.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FAEC58C22A8521630022E223 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				FAEC58C32A85218E0022E223 /* SubscriptionTests.swift */,
+				FAD3ABA42A862A880004053E /* Proton Pass - Password Manager.storekit */,
+			);
+			path = Subscription;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3967,8 +3988,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35E5064C286F819F00A3F6EA /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
-				5BB2B6F02A4479F3005E831C /* SwiftFormat */,
 				970C365F2964D24D394D134F /* [CP] Check Pods Manifest.lock */,
+				5BB2B6F02A4479F3005E831C /* SwiftFormat */,
 				35E50637286F819F00A3F6EA /* Sources */,
 				35E50638286F819F00A3F6EA /* Frameworks */,
 				35E50639286F819F00A3F6EA /* Resources */,
@@ -4297,6 +4318,7 @@
 				5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
 				3569AE422A6983440026B780 /* Pass-Constant-Scientist.plist in Resources */,
+				FAD3ABA52A862A880004053E /* Proton Pass - Password Manager.storekit in Resources */,
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4358,6 +4380,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAD3ABA62A862A880004053E /* Proton Pass - Password Manager.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4372,13 +4395,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Client-iOSTests/Pods-Client-iOSTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4393,13 +4412,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4436,13 +4451,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Client-ClientTests/Pods-Client-ClientTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4457,13 +4468,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Core-CoreTests/Pods-Core-CoreTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4629,13 +4636,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iOSUITests/Pods-iOSUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iOSUITests/Pods-iOSUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5654,8 +5657,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				75283BFE2946E21D006658A6 /* LoginWelcomeTests.swift in Sources */,
+				FAEC58C42A85218E0022E223 /* SubscriptionTests.swift in Sources */,
 				75283BF52946E21D006658A6 /* MainRobot.swift in Sources */,
+				FAA719012A8E21E3002B951E /* AccountRobot.swift in Sources */,
 				75283BF82946E21D006658A6 /* LoginSignupTests.swift in Sources */,
+				FAA718FF2A8E1F7C002B951E /* ProfileRobot.swift in Sources */,
 				75283BFA2946E21D006658A6 /* LoginBaseTestCase.swift in Sources */,
 				752A68E72954945900DCC65E /* OnboardingRobot.swift in Sources */,
 				7513C54729A5F963006F7160 /* FaceIDRobot.swift in Sources */,

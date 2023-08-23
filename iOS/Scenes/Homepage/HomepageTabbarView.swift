@@ -124,6 +124,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
         let profileTabViewController = UIHostingController(rootView: profileTabView)
         profileTabViewController.tabBarItem.image = IconProvider.user
         profileTabViewController.tabBarItem.accessibilityHint = "Profile tab"
+        profileTabViewController.tabBarItem.accessibilityIdentifier = "HomepageTabBarController_profileTabView"
         self.profileTabViewController = profileTabViewController
 
         viewControllers = [itemsTabViewController, dummyViewController, profileTabViewController]
