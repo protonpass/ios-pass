@@ -33,13 +33,13 @@ public final class AutoFillRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func isAutoFillSetupShown(timeout: TimeInterval = 10.0) -> AutoFillRobot {
-            staticText(title).wait(time: timeout).checkExists()
+            staticText(title).waitUntilExists(time: timeout).checkExists()
             return AutoFillRobot()
         }
     }
 
     public func notNowTap<T: CoreElements>(robot _: T.Type) -> T {
-        button(notNowTxt).wait().tap()
+        button(notNowTxt).waitUntilExists().tap()
         return T()
     }
 }

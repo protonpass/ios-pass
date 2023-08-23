@@ -332,13 +332,13 @@ public final class PaymentsUIRobot: CoreElements {
         
         private func isButtonExist(name: String) -> Bool {
             let button = XCUIApplication().buttons[name]
-            Wait(time: 2).forElement(button)
+            Wait(time: 10).forElement(button)
             return button.exists
         }
         
         private func systemButtonTap(name: String) {
             let button = springboard.buttons[name]
-            Wait(time: 4).forElement(button)
+            Wait(time: 10).forElement(button)
             button.tap()
         }
         
