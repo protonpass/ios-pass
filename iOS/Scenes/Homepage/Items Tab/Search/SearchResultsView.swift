@@ -25,7 +25,7 @@ import SwiftUI
 import UIComponents
 
 struct SearchResultsView: View, Equatable {
-    @StateObject private var viewModel: SearchResultsViewModel
+    @ObservedObject private var viewModel: SearchResultsViewModel
     @Binding var selectedType: ItemContentType?
     @Binding var selectedSortType: SortType
     private let uuid = UUID()
