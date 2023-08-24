@@ -207,6 +207,18 @@
 "Confirm" = "Confirm";
 "Undo" = "Undo";
 
+/* Messages when items are created */
+"Login created" = "Login created";
+"Alias created" = "Alias created";
+"Credit card created" = "Credit card created";
+"Note created" = "Note created";
+
+/* Message when items are edited */
+"Login updated" = "Login updated";
+"Alias updated" = "Alias updated";
+"Credit card updated" = "Credit card updated";
+"Note updated" = "Note updated";
+
 /* Messages when items are moved to trash */
 "Login moved to trash" = "Login moved to trash";
 "Alias \"%@\" will stop forwarding emails to your mailbox" = "Alias \"%@\" will stop forwarding emails to your mailbox";
