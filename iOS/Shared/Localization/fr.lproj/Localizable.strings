@@ -190,3 +190,25 @@
 "Send logs" = "Envoyer des journaux";
 "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." = "Un journal est un type de fichier qui nous montre les actions que vous avez entreprises et qui ont conduit à une erreur. Nous ne les utiliserons que pour aider nos ingénieurs à corriger des bugs.";
 "Report successfully sent" = "Rapport envoyé avec succès";
+
+/* Item detail pages */
+"Edit" = "Modifier";
+"Move to another vault" = "Déplacer vers un autre coffre-fort";
+"Move to trash" = "Déplacer dans la corbeille";
+"Restore" = "Restaurer";
+"Delete permanently" = "Supprimer définitivement";
+"Delete permanently?" = "Supprimer définitivement ?";
+"You are going to delete the item irreversibly, are you sure?" = "Vous allez supprimer l’élément de manière irréversible, en êtes-vous sûr ?";
+"Delete" = "Supprimer";
+"More info" = "Plus d'informations";
+"Auto-filled:" = "Remplissage automatique :";
+"Modified:" = "Modification :";
+"Created:" = "Création :";
+"Confirm" = "Confirmer";
+"Undo" = "Annuler";
+
+/* Messages when items moved to trash */
+"Login moved to trash" = "L’identifiant a été déplacé dans la corbeille";
+"Alias \"%@\" will stop forwarding emails to your mailbox" = "L'alias \"%@\" cessera de transférer les messages vers votre messagerie";
+"Credit card moved to trash" = "La carte de crédit a été déplacée dans la corbeille";
+"Note moved to trash" = "La note a été déplacée dans la corbeille";
