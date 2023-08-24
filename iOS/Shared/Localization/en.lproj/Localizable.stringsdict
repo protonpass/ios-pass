@@ -20,5 +20,21 @@
 			<string>%d items</string>
 		</dict>
 	</dict>
+	<key>%d time(s)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Once</string>
+			<key>other</key>
+			<string>%d times</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
