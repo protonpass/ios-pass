@@ -69,10 +69,10 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func copyAliasEmail() {
-        copyToClipboard(text: aliasEmail, message: "Alias copied")
+        copyToClipboard(text: aliasEmail, message: "Alias copied".localized)
     }
 
     func copyMailboxEmail(_ email: String) {
-        copyToClipboard(text: email, message: "Mailbox copied")
+        copyToClipboard(text: email, message: "Mailbox copied".localized)
     }
 }
