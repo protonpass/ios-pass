@@ -207,6 +207,18 @@
 "Confirm" = "Confirmer";
 "Undo" = "Annuler";
 
+/* Messages when items are created */
+"Login created" = "L'identifiant a été créé";
+"Alias created" = "L'alias a été créé";
+"Credit card created" = "La carte de crédit a été créée";
+"Note created" = "La note a été créée";
+
+/* Message when items are edited */
+"Login updated" = "L'identifiant a été mis à jour";
+"Alias updated" = "L'alias a été mis à jour";
+"Credit card updated" = "La carte de crédit a été mise à jour";
+"Note updated" = "La note a été mise à jour";
+
 /* Messages when items moved to trash */
 "Login moved to trash" = "L'identifiant a été déplacé dans la corbeille";
 "Alias \"%@\" will stop forwarding emails to your mailbox" = "L'alias \"%@\" cessera de transférer les messages vers votre messagerie";
