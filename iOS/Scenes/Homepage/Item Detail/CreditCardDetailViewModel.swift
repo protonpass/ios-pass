@@ -63,16 +63,16 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
 extension CreditCardDetailViewModel {
     func copyCardholderName() {
         guard !cardholderName.isEmpty else { return }
-        copyToClipboard(text: cardholderName, message: "Cardholder name copied")
+        copyToClipboard(text: cardholderName, message: "Cardholder name copied".localized)
     }
 
     func copyCardNumber() {
         guard !cardNumber.isEmpty else { return }
-        copyToClipboard(text: cardNumber, message: "Card number copied")
+        copyToClipboard(text: cardNumber, message: "Card number copied".localized)
     }
 
     func copyVerificationNumber() {
         guard !verificationNumber.isEmpty else { return }
-        copyToClipboard(text: verificationNumber, message: "Verification number copied")
+        copyToClipboard(text: verificationNumber, message: "Verification number copied".localized)
     }
 }
