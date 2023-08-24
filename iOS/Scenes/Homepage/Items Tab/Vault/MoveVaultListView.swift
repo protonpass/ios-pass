@@ -22,6 +22,7 @@ import Client
 import SwiftUI
 import UIComponents
 
+// Localized
 struct MoveVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: MoveVaultListViewModel
@@ -46,13 +47,13 @@ struct MoveVaultListView: View {
             }
 
             HStack(spacing: 16) {
-                CapsuleTextButton(title: "Cancel",
+                CapsuleTextButton(title: "Cancel".localized,
                                   titleColor: PassColor.textWeak,
                                   backgroundColor: PassColor.textDisabled,
                                   height: 44,
                                   action: dismiss.callAsFunction)
 
-                DisablableCapsuleTextButton(title: "Confirm",
+                DisablableCapsuleTextButton(title: "Confirm".localized,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,

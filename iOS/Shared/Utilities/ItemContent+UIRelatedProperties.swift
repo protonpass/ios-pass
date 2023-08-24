@@ -200,10 +200,10 @@ extension ItemContentType {
 extension ItemTypeIdentifiable {
     var trashMessage: String {
         switch type {
-        case .login: return "Login moved to trash"
-        case .alias: return "Alias \"\(aliasEmail ?? "")\" will stop forwarding emails to your inbox(es)"
-        case .creditCard: return "Credit card moved to trash"
-        case .note: return "Note moved to trash"
+        case .login: return "Login moved to trash".localized
+        case .alias: return "Alias \"%@\" will stop forwarding emails to your mailbox".localized(aliasEmail ?? "")
+        case .creditCard: return "Credit card moved to trash".localized
+        case .note: return "Note moved to trash".localized
         }
     }
 }

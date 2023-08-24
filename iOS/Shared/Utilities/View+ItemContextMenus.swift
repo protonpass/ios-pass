@@ -144,7 +144,7 @@ struct PermenentlyDeleteItemModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .alert("Permanently delete?",
+            .alert("Delete permanently?",
                    isPresented: $isShowingAlert,
                    actions: {
                        Button(role: .destructive, action: onDelete, label: { Text("Delete") })

@@ -1110,7 +1110,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                 self?.itemContextMenuHandler.restore(item)
             }
             self?.bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                         dismissButtonTitle: "Undo",
+                                                         dismissButtonTitle: "Undo".localized,
                                                          onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
