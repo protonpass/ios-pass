@@ -256,3 +256,9 @@
 "View" = "View";
 "View and edit details for this alias on the separate alias page." = "View and edit details for this alias on the separate alias page.";
 "Invalid TOTP URI" = "Invalid TOTP URI";
+
+/* Alias item detail page */
+"Alias address" = "Alias address";
+"Forwarding to" = "Forwarding to";
+"Alias copied" = "Alias copied";
+"Mailbox copied" = "Mailbox copied";
