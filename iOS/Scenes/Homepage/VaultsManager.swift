@@ -160,8 +160,12 @@ private extension VaultsManager {
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
 
-        Task.detached(priority: .background) { [weak self] in
-            try await self?.indexAllLoginItems(ignorePreferences: false)
+        if manualLogIn {
+            try await indexAllLoginItems(ignorePreferences: false)
+        } else {
+            Task.detached(priority: .background) { [weak self] in
+                try await self?.indexAllLoginItems(ignorePreferences: false)
+            }
         }
     }
 }
