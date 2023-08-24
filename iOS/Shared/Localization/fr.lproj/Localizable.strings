@@ -201,6 +201,7 @@
 "You are going to delete the item irreversibly, are you sure?" = "Vous allez supprimer l’élément de manière irréversible, en êtes-vous sûr ?";
 "Delete" = "Supprimer";
 "More info" = "Plus d'informations";
+"Last time, %@" = "La dernière fois, %@";
 "Auto-filled:" = "Remplissage automatique :";
 "Modified:" = "Modification :";
 "Created:" = "Création :";
