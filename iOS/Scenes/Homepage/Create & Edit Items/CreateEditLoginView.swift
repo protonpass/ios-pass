@@ -303,7 +303,7 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username or email")
+                Text("Username or email address")
                     .sectionTitleText()
                 TextField("Add username or email", text: $viewModel.username)
                     .textInputAutocapitalization(.never)

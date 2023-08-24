@@ -144,7 +144,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.password,
-                                               bannerMessage: "Password copied")
+                                               bannerMessage: "Password copied".localized)
                     self.logger.info("Copied Password \(item.debugInformation)")
                 }
             } catch {
