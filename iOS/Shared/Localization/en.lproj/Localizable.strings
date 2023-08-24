@@ -70,6 +70,7 @@
 /* Profile tab */
 "Profile" = "Profile";
 "Items" = "Items";
+"Version %@" = "Version %@";
 
 /* Profile tab: security section */
 "Security" = "Security";
