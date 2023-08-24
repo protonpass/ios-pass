@@ -275,3 +275,24 @@
 
 /* Note item detail page */
 "Empty note" = "Note vide";
+
+/* Password generator */
+"Generate password" = "Générer un mot de passe";
+"Type" = "Type";
+"Random Password" = "Mot de passe aléatoire";
+"Memorable Password" = "Mot de passe facile à mémoriser";
+"Capitalise" = "Majuscules";
+"Advanced options" = "Options avancées";
+"Copy and close" = "Copier et fermer";
+"Word separator" = "Séparateur de mots";
+"Hyphens" = "Tirets";
+"Spaces" = "Espaces";
+"Periods" = "Points";
+"Commas" = "Virgules";
+"Underscores" = "Tirets bas";
+"Numbers" = "Chiffres";
+"Numbers and Symbols" = "Chiffres et symboles";
+"Include numbers" = "Ajouter des chiffres";
+"%d characters" = "%d caractères";
+"Special characters" = "Caractères spéciaux";
+"Capital letters" = "Lettres majuscules";
