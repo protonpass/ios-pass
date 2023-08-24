@@ -262,3 +262,13 @@
 "Forwarding to" = "Forwarding to";
 "Alias copied" = "Alias copied";
 "Mailbox copied" = "Mailbox copied";
+
+/* Credit card item detail page */
+"Cardholder name" = "Cardholder name";
+"Card number" = "Card number";
+"Verification number" = "Verification number";
+"Expires on" = "Expires on";
+"PIN number" = "PIN number";
+"Cardholder name copied" = "Cardholder name copied";
+"Card number copied" = "Card number copied";
+"Verification number copied" = "Verification number copied";
