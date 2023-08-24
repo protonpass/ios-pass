@@ -159,13 +159,13 @@ extension ItemContentType {
     var creationMessage: String {
         switch self {
         case .login:
-            return "Login created"
+            return "Login created".localized
         case .alias:
-            return "Alias created"
+            return "Alias created".localized
         case .creditCard:
-            return "Credit card created"
+            return "Credit card created".localized
         case .note:
-            return "Note created"
+            return "Note created".localized
         }
     }
 
@@ -189,10 +189,10 @@ extension ItemContentType {
 
     var updateMessage: String {
         switch self {
-        case .login: return "Login updated"
-        case .alias: return "Alias updated"
-        case .creditCard: return "Credit card updated"
-        case .note: return "Note updated"
+        case .login: return "Login updated".localized
+        case .alias: return "Alias updated".localized
+        case .creditCard: return "Credit card updated".localized
+        case .note: return "Note updated".localized
         }
     }
 }
