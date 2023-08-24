@@ -237,3 +237,22 @@
 "Alias permanently deleted" = "Alias permanently deleted";
 "Credit card permanently deleted" = "Credit card permanently deleted";
 "Note permanently deleted" = "Note permanently deleted";
+
+/* Login item detail page */
+"Username or email address" = "Username or email address";
+"Website" = "Website";
+"2FA token (TOTP)" = "2FA token (TOTP)";
+"Reveal" = "Reveal";
+"Conceal" = "Conceal";
+"Copy" = "Copy";
+"Show large" = "Show large";
+"Password copied" = "Password copied";
+"TOTP copied" = "TOTP copied";
+"Open" = "Open";
+"Username copied" = "Username copied";
+"Website copied" = "Website copied";
+"Hidden text copied" = "Hidden text copied";
+"View alias" = "View alias";
+"View" = "View";
+"View and edit details for this alias on the separate alias page." = "View and edit details for this alias on the separate alias page.";
+"Invalid TOTP URI" = "Invalid TOTP URI";
