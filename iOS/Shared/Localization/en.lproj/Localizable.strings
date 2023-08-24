@@ -207,8 +207,20 @@
 "Confirm" = "Confirm";
 "Undo" = "Undo";
 
-/* Messages when items moved to trash */
+/* Messages when items are moved to trash */
 "Login moved to trash" = "Login moved to trash";
 "Alias \"%@\" will stop forwarding emails to your mailbox" = "Alias \"%@\" will stop forwarding emails to your mailbox";
 "Credit card moved to trash" = "Credit card moved to trash";
 "Note moved to trash" = "Note moved to trash";
+
+/* Messages when items are restored */
+"Login restored" = "Login restored";
+"Alias restored" = "Alias restored";
+"Credit card restored" = "Credit card restored";
+"Note restored" = "Note restored";
+
+/* Messages when items are permanently deleted */
+"Login permanently deleted" = "Login permanently deleted";
+"Alias permanently deleted" = "Alias permanently deleted";
+"Credit card permanently deleted" = "Credit card permanently deleted";
+"Note permanently deleted" = "Note permanently deleted";

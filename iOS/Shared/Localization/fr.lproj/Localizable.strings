@@ -208,7 +208,19 @@
 "Undo" = "Annuler";
 
 /* Messages when items moved to trash */
-"Login moved to trash" = "L’identifiant a été déplacé dans la corbeille";
+"Login moved to trash" = "L'identifiant a été déplacé dans la corbeille";
 "Alias \"%@\" will stop forwarding emails to your mailbox" = "L'alias \"%@\" cessera de transférer les messages vers votre messagerie";
 "Credit card moved to trash" = "La carte de crédit a été déplacée dans la corbeille";
 "Note moved to trash" = "La note a été déplacée dans la corbeille";
+
+/* Messages when items are restored */
+"Login restored" = "L'identifiant a été restauré";
+"Alias restored" = "L'alias a été restauré";
+"Credit card restored" = "La carte de crédit a été restaurée";
+"Note restored" = "La note a été restaurée";
+
+/* Messages when items are permanently deleted */
+"Login permanently deleted" = "L'identifiant a été définitivement supprimé";
+"Alias permanently deleted" = "L'alias a été définitivement supprimé";
+"Credit card permanently deleted" = "La carte de crédit a été définitivement supprimée";
+"Note permanently deleted" = "La note a été définitivement supprimée";

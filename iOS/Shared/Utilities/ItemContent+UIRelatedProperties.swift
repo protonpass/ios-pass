@@ -171,19 +171,19 @@ extension ItemContentType {
 
     var restoreMessage: String {
         switch self {
-        case .login: return "Login restored"
-        case .alias: return "Alias restored"
-        case .creditCard: return "Credit card restored"
-        case .note: return "Note restored"
+        case .login: return "Login restored".localized
+        case .alias: return "Alias restored".localized
+        case .creditCard: return "Credit card restored".localized
+        case .note: return "Note restored".localized
         }
     }
 
     var deleteMessage: String {
         switch self {
-        case .login: return "Login permanently deleted"
-        case .alias: return "Alias permanently deleted"
-        case .creditCard: return "Credit card permanently deleted"
-        case .note: return "Note permanently deleted"
+        case .login: return "Login permanently deleted".localized
+        case .alias: return "Alias permanently deleted".localized
+        case .creditCard: return "Credit card permanently deleted".localized
+        case .note: return "Note permanently deleted".localized
         }
     }
 
