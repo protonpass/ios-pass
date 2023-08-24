@@ -176,3 +176,16 @@
 "Securely store your payment information" = "Stocker vos informations de paiement de façon sécurisée";
 "Password" = "Mot de passe";
 "Generate a secure password" = "Générer un mot de passe sécurisé";
+
+/* Report problems page */
+"I want to report a problem with..." = "Je souhaite signaler un problème avec...";
+"Autosave" = "Sauvegarde automatique";
+"Aliases" = "Alias";
+"Syncing" = "Synchronisation";
+"Feature request" = "Demande de fonctionnalité";
+"Other" = "Autre";
+"What went wrong?" = "Qu'est-ce qui s'est mal passé ?";
+"Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." = "Veuillez décrire le problème de manière aussi détaillée que possible. S'il y a eu un message d'erreur, dites-nous ce qu'il dit.";
+"Send logs" = "Envoyer des journaux";
+"A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." = "Un journal est un type de fichier qui nous montre les actions que vous avez entreprises et qui ont conduit à une erreur. Nous ne les utiliserons que pour aider nos ingénieurs à corriger des bugs.";
+"Report successfully sent" = "Rapport envoyé avec succès";

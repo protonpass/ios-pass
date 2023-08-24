@@ -795,7 +795,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         }
         let successHandler: () -> Void = { [weak self] in
             self?.dismissTopMostViewController { [weak self] in
-                self?.bannerManager.displayBottomSuccessMessage("Report successfully sent")
+                self?.bannerManager.displayBottomSuccessMessage("Report successfully sent".localized)
             }
         }
         let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
