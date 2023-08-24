@@ -23,6 +23,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
     @State private var isShowingPassword = false
@@ -130,11 +131,11 @@ struct LogInDetailView: View {
                                   color: iconTintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username or email")
+                Text("Username or email address")
                     .sectionTitleText()
 
                 if viewModel.username.isEmpty {
-                    Text("No username")
+                    Text("Empty")
                         .placeholderText()
                 } else {
                     Text(viewModel.username)
@@ -178,7 +179,7 @@ struct LogInDetailView: View {
                     .sectionTitleText()
 
                 if viewModel.password.isEmpty {
-                    Text("Empty password")
+                    Text("Empty")
                         .placeholderText()
                 } else {
                     if isShowingPassword {
@@ -302,7 +303,7 @@ struct LogInDetailView: View {
                             })
 
                             Button(action: {
-                                viewModel.copyToClipboard(text: url, message: "Website copied")
+                                viewModel.copyToClipboard(text: url, message: "Website copied".localized)
                             }, label: {
                                 Text("Copy")
                             })
@@ -319,9 +320,11 @@ struct LogInDetailView: View {
 
     private var viewAliasCard: some View {
         Group {
-            Text("View and edit details for this alias on the separate alias page. ")
+            Text("View and edit details for this alias on the separate alias page.")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                Text(" ")
+                .font(.callout) +
                 Text("View")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
@@ -336,11 +339,10 @@ struct LogInDetailView: View {
 
 private extension LogInDetailView {
     func copyTOTPToken(_ token: String) {
-        viewModel.copyToClipboard(text: token,
-                                  message: "Two Factor Authentication code copied")
+        viewModel.copyToClipboard(text: token, message: "TOTP copied".localized)
     }
 
     func copyHiddenText(_ text: String) {
-        viewModel.copyToClipboard(text: text, message: "Hidden text copied")
+        viewModel.copyToClipboard(text: text, message: "Hidden text copied".localized)
     }
 }

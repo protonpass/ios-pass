@@ -1019,7 +1019,7 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
 extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.clipboardManager.copy(text: password, bannerMessage: "Password copied")
+            self?.clipboardManager.copy(text: password, bannerMessage: "Password copied".localized)
         }
     }
 }
@@ -1071,9 +1071,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     }
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text,
-                       theme: preferences.theme,
-                       userInterfaceStyle: preferences.theme.userInterfaceStyle)
+        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {

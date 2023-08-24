@@ -127,17 +127,17 @@ private extension LogInDetailViewModel {
 
 extension LogInDetailViewModel {
     func copyUsername() {
-        copyToClipboard(text: username, message: "Username copied")
+        copyToClipboard(text: username, message: "Username copied".localized)
     }
 
     func copyPassword() {
         guard !password.isEmpty else { return }
-        copyToClipboard(text: password, message: "Password copied")
+        copyToClipboard(text: password, message: "Password copied".localized)
     }
 
     func copyTotpCode() {
         if let code = totpManager.totpData?.code {
-            copyToClipboard(text: code, message: "Two Factor Authentication code copied")
+            copyToClipboard(text: code, message: "TOTP copied".localized)
         }
     }
 

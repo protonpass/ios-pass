@@ -237,3 +237,22 @@
 "Alias permanently deleted" = "L'alias a été définitivement supprimé";
 "Credit card permanently deleted" = "La carte de crédit a été définitivement supprimée";
 "Note permanently deleted" = "La note a été définitivement supprimée";
+
+/* Login item detail page */
+"Username or email address" = "Nom d'utilisateur ou adresse e-mail";
+"Website" = "Site internet";
+"2FA token (TOTP)" = "Jeton A2F (TOTP/mot de passe à usage unique basé sur le temps)";
+"Reveal" = "Afficher";
+"Conceal" = "Masquer";
+"Copy" = "Copier";
+"Show large" = "Afficher en grand";
+"Password copied" = "Le mot de passe a été copié";
+"TOTP copied" = "Le mot de passe à usage unique basé sur le temps (TOTP) a été copié";
+"Open" = "Ouvrir";
+"Username copied" = "Le nom d'utilisateur a été copié";
+"Website copied" = "Le site internet a été copié";
+"Hidden text copied" = "Texte masqué a été copié";
+"View alias" = "Afficher l'alias";
+"View" = "Afficher";
+"View and edit details for this alias on the separate alias page." = "Afficher et modifier les détails de cet alias sur la page d'alias distincte.";
+"Invalid TOTP URI" = "URI TOTP invalide";
