@@ -272,3 +272,6 @@
 "Cardholder name copied" = "Cardholder name copied";
 "Card number copied" = "Card number copied";
 "Verification number copied" = "Verification number copied";
+
+/* Note item detail page */
+"Empty note" = "Empty note";
