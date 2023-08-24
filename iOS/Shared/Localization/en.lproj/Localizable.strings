@@ -176,3 +176,16 @@
 "Securely store your payment information" = "Securely store your payment information";
 "Password" = "Password";
 "Generate a secure password" = "Generate a secure password";
+
+/* Report problems page */
+"I want to report a problem with..." = "I want to report a problem with...";
+"Autosave" = "Autosave";
+"Aliases" = "Aliases";
+"Syncing" = "Syncing";
+"Feature request" = "Feature request";
+"Other" = "Other";
+"What went wrong?" = "What went wrong?";
+"Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." = "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said.";
+"Send logs" = "Send logs";
+"A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." = "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.";
+"Report successfully sent" = "Report successfully sent";
