@@ -190,3 +190,25 @@
 "Send logs" = "Send logs";
 "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." = "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.";
 "Report successfully sent" = "Report successfully sent";
+
+/* Item detail pages */
+"Edit" = "Edit";
+"Move to another vault" = "Move to another vault";
+"Move to trash" = "Move to trash";
+"Restore" = "Restore";
+"Delete permanently" = "Delete permanently";
+"Delete permanently?" = "Delete permanently?";
+"You are going to delete the item irreversibly, are you sure?" = "You are going to delete the item irreversibly, are you sure?";
+"Delete" = "Delete";
+"More info" = "More info";
+"Auto-filled:" = "Auto-filled:";
+"Modified:" = "Modified:";
+"Created:" = "Created:";
+"Confirm" = "Confirm";
+"Undo" = "Undo";
+
+/* Messages when items moved to trash */
+"Login moved to trash" = "Login moved to trash";
+"Alias \"%@\" will stop forwarding emails to your mailbox" = "Alias \"%@\" will stop forwarding emails to your mailbox";
+"Credit card moved to trash" = "Credit card moved to trash";
+"Note moved to trash" = "Note moved to trash";
