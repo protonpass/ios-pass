@@ -272,3 +272,6 @@
 "Cardholder name copied" = "Nom du titulaire de la carte a été copié";
 "Card number copied" = "Numéro de la carte a été copié";
 "Verification number copied" = "Numéro de vérification a été copié";
+
+/* Note item detail page */
+"Empty note" = "Note vide";
