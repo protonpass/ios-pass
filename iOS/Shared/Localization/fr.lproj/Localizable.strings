@@ -306,6 +306,10 @@
 "Add note" = "Ajouter une note";
 "Add more" = "Ajouter";
 "Upgrade to add custom fields" = "Changer d'abonnement pour ajouter des champs personnalisés";
+"Discard changes?" = "Annuler les modifications ?";
+"You have unsaved changes, are you sure you want to discard them?" = "Des modifications n'ont pas été enregistrées. Voulez-vous vraiment les annuler ?";
+"Discard" = "Annuler";
+"Keep Editing" = "Continuer à modifier";
 
 /* Login item create/edit page */
 "Add username or email address" = "Ajouter un nom d'utilisateur ou une adresse e-mail";
