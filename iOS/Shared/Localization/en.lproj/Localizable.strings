@@ -375,3 +375,9 @@
 "Last 60 days" = "Last 60 days";
 "Last 90 days" = "Last 90 days";
 "More than 90 days" = "More than 90 days";
+
+/* Context menu options for items */
+"Copy username" = "Copy username";
+"Copy password" = "Copy password";
+"Copy alias address" = "Copy alias address";
+"Alias address copied" = "Alias address copied";

@@ -46,10 +46,10 @@ enum ItemContextMenu {
         case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
             return [
                 .init(options: [
-                    .init(title: "Copy username",
+                    .init(title: "Copy username".localized,
                           icon: IconProvider.user,
                           action: onCopyUsername),
-                    .init(title: "Copy password",
+                    .init(title: "Copy password".localized,
                           icon: IconProvider.key,
                           action: onCopyPassword)
                 ]),
@@ -59,7 +59,7 @@ enum ItemContextMenu {
 
         case let .alias(onCopyAlias, onEdit, onTrash):
             return [
-                .init(options: [.init(title: "Copy alias address",
+                .init(options: [.init(title: "Copy alias address".localized,
                                       icon: IconProvider.alias,
                                       action: onCopyAlias)]),
                 .init(options: [.editOption(action: onEdit)]),
@@ -80,10 +80,10 @@ enum ItemContextMenu {
 
         case let .trashedItem(onRestore, onPermanentlyDelete):
             return [
-                .init(options: [.init(title: "Restore",
+                .init(options: [.init(title: "Restore".localized,
                                       icon: IconProvider.clockRotateLeft,
                                       action: onRestore)]),
-                .init(options: [.init(title: "Delete permanently",
+                .init(options: [.init(title: "Delete permanently".localized,
                                       icon: IconProvider.trashCross,
                                       action: onPermanentlyDelete,
                                       isDestructive: true)])
@@ -100,11 +100,11 @@ struct ItemContextMenuOption: Identifiable {
     var isDestructive = false
 
     static func editOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Edit", icon: IconProvider.pencil, action: action)
+        .init(title: "Edit".localized, icon: IconProvider.pencil, action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Move to trash",
+        .init(title: "Move to trash".localized,
               icon: IconProvider.trash,
               action: action,
               isDestructive: true)
