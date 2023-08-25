@@ -368,7 +368,7 @@ struct CreateEditLoginView: View {
                    Button(role: .cancel, label: { Text("Cancel") })
                },
                message: {
-                   Text("The alias will be deleted permanently.")
+                   Text("The alias will be deleted permanently")
                })
     }
 
