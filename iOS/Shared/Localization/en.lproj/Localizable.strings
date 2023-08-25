@@ -347,3 +347,14 @@
 /* Credit card item create/edit page */
 "Full name" = "Full name";
 "MM / YYYY" = "MM / YYYY";
+
+/* Search page */
+"Find an alias, login, or note" = "Find an alias, login, or note";
+"Search in all vaults..." = "Search in all vaults...";
+"Search in all vaults" = "Search in all vaults";
+"Search in %@..." = "Search in %@...";
+"Search in Trash..." = "Search in Trash...";
+"Couldn't find « %@ »" = "Couldn't find « %@ »";
+"Couldn't find « %@ » in %@" = "Couldn't find « %@ » in %@";
+"Couldn't find « %@ » in Trash" = "Couldn't find « %@ » in Trash";
+"Try searching using different spelling or keywords" = "Try searching using different spelling or keywords";
