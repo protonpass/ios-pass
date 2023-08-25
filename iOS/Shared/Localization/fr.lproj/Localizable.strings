@@ -1,3 +1,6 @@
+/* Slogan */
+"Secure password manager and more" = "Gestionnaire de mots de passe sécurisé et plus encore";
+
 /* Onboarding: Enable Proton Pass AutoFill in iOS Settings */
 "Open **Settings** app" = "Ouvrir **Réglages**";
 "Tap **Passwords**" = "Tapper **Mots de passe**";
@@ -422,3 +425,4 @@
 "Just autofill" = "Remplir seulement";
 "Your plan only allows to use items in your primary vault for autofill purposes." = "Votre abonnement vous permet d'utiliser uniquement les éléments de votre coffre-fort principal pour la fonction de remplissage automatique.";
 "Upgrade now" = "Changer d'abonnement";
+"Please log in in order to use Proton Pass AutoFill extension" = "Veuillez vous connecter pour utiliser l'extension de remplissage automatique Proton Pass";
