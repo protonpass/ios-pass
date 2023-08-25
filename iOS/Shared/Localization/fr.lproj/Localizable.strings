@@ -328,3 +328,16 @@
 "Delete alias?" = "Supprimer l'alias ?";
 "Yes, delete alias" = "Oui, supprimer l'alias";
 "The alias will be deleted permanently" = "L'alias sera supprimé définitivement";
+
+/* Alias item create/edit page */
+"You are about to create" = "Vous êtes sur le point de créer";
+"Forward to" = "Transférer vers";
+"Forwarding to" = "Transfert vers";
+"Prefix" = "Préfixe";
+"Add a prefix" = "Ajouter un préfixe";
+"Suffix" = "Suffixe";
+"Close" = "Fermer";
+"Prefix can not be empty" = "Le préfixe ne peut être vide";
+"Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)" = "Le préfixe doit contenir uniquement des caractères alphanumériques minuscules (a-z, 0-9), des points (.), des traits d'union (-) et des traits de soulignement (_)";
+"Prefix can not contain 2 consecutive dots (..)" = "Le préfixe ne peut contenir 2 points consécutifs (..)";
+"Alias can not contain 2 consecutive dots (..)" = "L'alias ne peut contenir 2 points consécutifs (..)";

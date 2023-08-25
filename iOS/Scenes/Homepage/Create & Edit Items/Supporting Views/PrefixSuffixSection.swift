@@ -32,6 +32,7 @@ enum PrefixUtils {
     }
 }
 
+// Localized
 struct PrefixSuffixSection<Field: Hashable>: View {
     @Binding var prefix: String
     @Binding var prefixManuallyEdited: Bool
@@ -52,6 +53,8 @@ struct PrefixSuffixSection<Field: Hashable>: View {
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedEditableSection()
+        .accentColor(PassColor.interactionNorm.toColor)
+        .tint(PassColor.interactionNorm.toColor)
     }
 
     private var prefixRow: some View {

@@ -22,6 +22,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct MailboxSection: View {
     @ObservedObject var mailboxSelection: MailboxSelection
     let mode: Mode
@@ -32,9 +33,9 @@ struct MailboxSection: View {
         var title: String {
             switch self {
             case .create:
-                return "Forward to"
+                return "Forward to".localized
             case .edit:
-                return "Forwarding to"
+                return "Forwarding to".localized
             }
         }
     }
