@@ -341,3 +341,9 @@
 "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)" = "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)";
 "Prefix can not contain 2 consecutive dots (..)" = "Prefix can not contain 2 consecutive dots (..)";
 "Alias can not contain 2 consecutive dots (..)" = "Alias can not contain 2 consecutive dots (..)";
+"Alias of login item \"%@\"" = "Alias of login item \"%@\"";
+"Create & AutoFill" = "Create & AutoFill";
+
+/* Credit card item create/edit page */
+"Full name" = "Full name";
+"MM / YYYY" = "MM / YYYY";

@@ -22,6 +22,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct CreateEditNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditNoteViewModel
@@ -54,7 +55,7 @@ struct CreateEditNoteView: View {
                         TextEditorWithPlaceholder(text: $viewModel.title,
                                                   focusedField: $focusedField,
                                                   field: .title,
-                                                  placeholder: "Untitled",
+                                                  placeholder: "Untitled".localized,
                                                   font: .title,
                                                   fontWeight: .bold,
                                                   onSubmit: { focusedField = .content })
@@ -65,7 +66,7 @@ struct CreateEditNoteView: View {
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   focusedField: $focusedField,
                                                   field: .content,
-                                                  placeholder: "Note")
+                                                  placeholder: "Note".localized)
                     }
                     .padding()
                 }
