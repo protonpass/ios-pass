@@ -26,15 +26,15 @@ public enum SortType: Int, CaseIterable, Equatable {
     public var title: String {
         switch self {
         case .mostRecent:
-            return "Most recent"
+            return "Most recent".localized
         case .alphabeticalAsc:
-            return "Title (A-Z)"
+            return "Title (A-Z)".localized
         case .alphabeticalDesc:
-            return "Title (Z-A)"
+            return "Title (Z-A)".localized
         case .newestToOldest:
-            return "Newest to oldest"
+            return "Newest to oldest".localized
         case .oldestToNewest:
-            return "Oldest to newest"
+            return "Oldest to newest".localized
         }
     }
 
