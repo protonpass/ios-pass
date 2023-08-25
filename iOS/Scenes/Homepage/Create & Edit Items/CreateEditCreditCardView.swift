@@ -22,6 +22,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct CreateEditCreditCardView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditCreditCardViewModel
@@ -231,7 +232,7 @@ private extension CreateEditCreditCardView {
             ItemDetailSectionIcon(icon: IconProvider.grid3)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("PIN")
+                Text("PIN Code")
                     .sectionTitleText()
 
                 SensitiveTextField(text: $viewModel.pin,
@@ -265,7 +266,7 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Expires on")
                     .sectionTitleText()
-                MonthYearTextField(placeholder: "MM / YYYY",
+                MonthYearTextField(placeholder: "MM / YYYY".localized,
                                    tintColor: tintColor,
                                    month: $viewModel.month,
                                    year: $viewModel.year)
