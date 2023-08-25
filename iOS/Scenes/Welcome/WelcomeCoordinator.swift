@@ -52,7 +52,7 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     private func makeWelcomeViewController() -> UIViewController {
         let welcomeViewController =
-            WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more")),
+            WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more".localized)),
                                   delegate: self,
                                   username: nil,
                                   signupAvailable: true)
