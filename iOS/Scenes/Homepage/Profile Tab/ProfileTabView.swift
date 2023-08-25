@@ -322,7 +322,7 @@ private extension PassPlan {
             return nil
 
         case .trial:
-            return .init(title: "Free trial",
+            return .init(title: "Free trial".localized,
                          icon: PassIcon.badgeTrial,
                          iconWidth: 12,
                          tintColor: PassColor.interactionNormMajor2)

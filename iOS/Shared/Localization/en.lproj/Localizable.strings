@@ -75,6 +75,7 @@
 "Items" = "Items";
 "Version %@" = "Version %@";
 "Upgrade" = "Upgrade";
+"Free trial" = "Free trial";
 
 /* Profile tab: security section */
 "Security" = "Security";
