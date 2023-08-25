@@ -104,9 +104,7 @@ private extension ItemsTabViewModel {
         inviteRefreshTask = Task { @MainActor [weak self] in
             guard let self else { return }
             if let invites, !invites.isEmpty {
-                if case .invite = self.banners.first {
-                    self.banners.removeFirst()
-                }
+                self.banners.removeAll()
                 self.banners.append(invites.toInfoBanners)
             }
             if banners.isEmpty {
