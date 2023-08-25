@@ -57,7 +57,7 @@ struct CreateLoginButton: View {
     let onCreate: () -> Void
 
     var body: some View {
-        CapsuleTextButton(title: "Create login",
+        CapsuleTextButton(title: "Create login".localized,
                           titleColor: PassColor.loginInteractionNormMajor2,
                           backgroundColor: PassColor.loginInteractionNormMinor1,
                           height: 52,

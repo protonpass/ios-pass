@@ -23,6 +23,7 @@ import Core
 import SwiftUI
 import UIComponents
 
+// Localized
 struct CredentialSearchResultView: View, Equatable {
     let results: [ItemSearchResult]
     @Binding var selectedSortType: SortType
