@@ -41,9 +41,9 @@ enum SheetDestination: Equatable, Hashable {
     case mailboxView(MailboxSelection, MailboxSection.Mode)
 }
 
-enum UIElementDisplay: Equatable, Hashable {
+enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
-    case displayErrorBanner(errorLocalized: String)
+    case displayErrorBanner(Error)
 }
 
 final class MainUIKitSwiftUIRouter {

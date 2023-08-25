@@ -152,7 +152,7 @@ private extension BaseCreateEditItemViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -169,7 +169,7 @@ private extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -182,7 +182,7 @@ private extension BaseCreateEditItemViewModel {
                 self.canAddMoreCustomFields = !isFreeUser
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -275,7 +275,7 @@ extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -295,7 +295,7 @@ extension BaseCreateEditItemViewModel {
                 self.isObsolete = itemContent.item.revision != updatedItem.item.revision
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -317,7 +317,7 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     }
 
     func vaultSelectorViewModelDidEncounter(error: Error) {
-        router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
