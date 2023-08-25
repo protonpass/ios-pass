@@ -407,3 +407,18 @@
 "Create vault" = "Créer un coffre-fort";
 "Vault created" = "Le coffre-fort a été créé";
 "Vault updated" = "Le coffre-fort a été mis à jour";
+
+/* AutoFill extension */
+"Create login" = "Créer un identifiant";
+"Search in primary vault" = "Rechercher le coffre-fort principal";
+"Search in all vaults" = "Rechercher dans tous les coffres-forts";
+"Suggestions for %@" = "Suggestions pour %@";
+"No suggestions" = "Aucune suggestion";
+"Other items" = "Autres éléments";
+"Results" = "Résultats";
+"Associate URL?" = "Associer l'URL ?";
+"Would you want to associate « %@ » with « %@ »?" = "Souhaitez-vous associer « %@ » à « %@ » ?";
+"Associate and autofill" = "Associer et remplir";
+"Just autofill" = "Remplir seulement";
+"Your plan only allows to use items in your primary vault for autofill purposes." = "Votre abonnement vous permet d'utiliser uniquement les éléments de votre coffre-fort principal pour la fonction de remplissage automatique.";
+"Upgrade now" = "Changer d'abonnement";
