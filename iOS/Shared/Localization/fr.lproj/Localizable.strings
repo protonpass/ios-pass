@@ -449,3 +449,11 @@
 "Remove access" = "Supprimer l'accès";
 "Share with more people" = "Partager avec plus de personnes";
 "You" = "Vous";
+
+/* Empty vault page */
+"Your vault is empty" = "Votre coffre-fort est vide";
+"Let's get started by creating your first item" = "Commencez par créer votre premier élément";
+"Create a login" = "Créer un identifiant";
+"Create a Hide My Email alias" = "Créer un alias « Hide My Email »";
+"Create a credit card" = "Créer une carte de crédit";
+"Create a note" = "Créer une note";
