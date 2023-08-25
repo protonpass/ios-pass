@@ -407,3 +407,18 @@
 "Create vault" = "Create vault";
 "Vault created" = "Vault created";
 "Vault updated" = "Vault updated";
+
+/* AutoFill extension */
+"Create login" = "Create login";
+"Search in primary vault" = "Search in primary vault";
+"Search in all vaults" = "Search in all vaults";
+"Suggestions for %@" = "Suggestions for %@";
+"No suggestions" = "No suggestions";
+"Other items" = "Other items";
+"Results" = "Results";
+"Associate URL?" = "Associate URL?";
+"Would you want to associate « %@ » with « %@ »?" = "Would you want to associate « %@ » with « %@ »?";
+"Associate and autofill" = "Associate and autofill";
+"Just autofill" = "Just autofill";
+"Your plan only allows to use items in your primary vault for autofill purposes." = "Your plan only allows to use items in your primary vault for autofill purposes.";
+"Upgrade now" = "Upgrade now";
