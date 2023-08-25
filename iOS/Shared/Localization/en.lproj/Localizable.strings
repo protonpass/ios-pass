@@ -443,3 +443,9 @@
 "Invitation from" = "Invitation from";
 "Join shared vault" = "Join shared vault";
 "Reject invitation" = "Reject invitation";
+
+/* Vault sharing: manage members */
+"Transfer ownership" = "Transfer ownership";
+"Remove access" = "Remove access";
+"Share with more people" = "Share with more people";
+"You" = "You";
