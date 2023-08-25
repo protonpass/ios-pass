@@ -170,7 +170,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
               autofill else {
             return super.saveButtonTitle()
         }
-        return "Create & AutoFill"
+        return "Create & AutoFill".localized
     }
 
     override func generateItemContent() -> ItemContentProtobuf {
@@ -197,7 +197,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func generateAliasItemContent() -> ItemContentProtobuf? {
         guard isAlias, aliasCreationLiteInfo != nil else { return nil }
         return .init(name: title,
-                     note: "Alias of login item \"\(title)\"",
+                     note: "Alias of login item \"%@\"".localized(title),
                      itemUuid: UUID().uuidString,
                      data: .alias,
                      customFields: [])
