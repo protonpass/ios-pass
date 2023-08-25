@@ -130,9 +130,9 @@ class BaseCreateEditItemViewModel {
     func saveButtonTitle() -> String {
         switch mode {
         case .create:
-            return "Create"
+            return "Create".localized
         case .edit:
-            return "Save"
+            return "Save".localized
         }
     }
 

@@ -298,8 +298,23 @@
 "Capital letters" = "Capital letters";
 
 /* Item create/edit page */
+"Save" = "Save";
+"Select a vault" = "Select a vault";
 "Title" = "Title";
 "Untitled" = "Untitled";
 "Add note" = "Add note";
 "Add more" = "Add more";
 "Upgrade to add custom fields" = "Upgrade to add custom fields";
+
+/* Login item create/edit page */
+"Add username or email address" = "Add username or email address";
+"Add password" = "Add password";
+"2FA secret (TOTP)" = "2FA secret (TOTP)";
+"Add 2FA secret" = "Add 2FA secret";
+"Hide my email" = "Hide my email";
+"Use %@" = "Use %@";
+"Paste from clipboard" = "Paste from clipboard";
+"Open camera" = "Open camera";
+"Add" = "Add";
+"Edit alias" = "Edit alias";
+"Remove alias" = "Remove alias";
