@@ -24,6 +24,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct SearchResultsView: View, Equatable {
     @ObservedObject private var viewModel: SearchResultsViewModel
     @Binding var selectedType: ItemContentType?
@@ -115,7 +116,9 @@ private extension SearchResultsView {
                 .font(.callout)
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" result(s)")
+                Text(" ")
+                .font(.callout) +
+                Text("%d search result(s)".localized(viewModel.results.numberOfItems))
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
 

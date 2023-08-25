@@ -120,13 +120,13 @@ extension ItemContentType {
     var chipTitle: String {
         switch self {
         case .login:
-            return "Login"
+            return "Login".localized
         case .alias:
-            return "Alias"
+            return "Alias".localized
         case .note:
-            return "Note"
+            return "Note".localized
         case .creditCard:
-            return "Credit card"
+            return "Credit card".localized
         }
     }
 
