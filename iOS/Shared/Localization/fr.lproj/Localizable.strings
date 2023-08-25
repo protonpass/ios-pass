@@ -375,3 +375,9 @@
 "Last 60 days" = "Les 60 derniers jours";
 "Last 90 days" = "Les 90 derniers jours";
 "More than 90 days" = "Plus de 90 jours";
+
+/* Context menu options for items */
+"Copy username" = "Copier le nom d'utilisateur";
+"Copy password" = "Copier le mot de passe";
+"Copy alias address" = "Copier l'adresse e-mail";
+"Alias address copied" = "L'adresse e-mail a été copiée";
