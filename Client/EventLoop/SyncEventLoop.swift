@@ -260,9 +260,17 @@ private extension SyncEventLoop {
         }
 
         var hasNewShareEvents = false
+        // This is used to respond to sahring modification that are not tied to events in the BE
+        // making changes not visible to the user.
         if remoteShares != localShares.map(\.share) {
             hasNewShareEvents = true
             try await shareRepository.upsertShares(remoteShares)
+            if remoteShares.count < localShares.count {
+                let leftShares = localShares.filter {
+                    !remoteShares.map(\.shareID).contains($0.share.shareID)
+                }.map(\.share)
+                try await delete(shares: leftShares)
+            }
         }
 
         let hasNewEvents = try await withThrowingTaskGroup(of: Bool.self,
@@ -283,6 +291,26 @@ private extension SyncEventLoop {
         }
 
         return hasNewEvents || hasNewShareEvents
+    }
+
+    func delete(shares: [Share]) async throws {
+        await withThrowingTaskGroup(of: Void.self) { taskGroup in
+            for share in shares {
+                taskGroup.addTask { [weak self] in
+                    guard let self else { return }
+                    let shareId = share.shareID
+
+                    if Task.isCancelled {
+                        return
+                    }
+                    try await self.shareRepository.deleteShareLocally(shareId: shareId)
+                    if Task.isCancelled {
+                        return
+                    }
+                    try await self.itemRepository.deleteAllItemsLocally(shareId: shareId)
+                }
+            }
+        }
     }
 
     /// Return `true` if new events found
