@@ -280,7 +280,7 @@ private extension HomepageCoordinator {
                     } else {
                         self.hideLoadingHud()
                     }
-                case let .displayErrorBanner(errorLocalized: errorLocalized):
+                case let .displayErrorBanner(errorLocalized):
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
                 }
             }
