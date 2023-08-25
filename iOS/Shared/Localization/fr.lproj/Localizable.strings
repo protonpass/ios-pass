@@ -386,3 +386,24 @@
 "Copy password" = "Copier le mot de passe";
 "Copy alias address" = "Copier l'adresse e-mail";
 "Alias address copied" = "L'adresse e-mail a été copiée";
+
+/* Vault list */
+"All vaults" = "Tous les coffres-forts";
+"Trash" = "Corbeille";
+"Manage access" = "Gérer l'accès";
+"View members" = "Voir les membres";
+"Delete vault" = "Supprimer le coffre-fort";
+"Delete vault?" = "Supprimer le coffre-fort ?";
+"This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." = "Ceci supprimera définitivement le coffre-fort « %@ » et tout son contenu. Saisissez le nom du coffre-fort pour confirmer la suppression.";
+"Vault name" = "Nom du coffre-fort";
+"Vault « %@ » deleted" = "Le coffre-fort « %@ » a été supprimé";
+"Leave vault" = "Quitter le coffre-fort";
+"Restore all items" = "Restaurer tous les éléments";
+"Empty trash" = "Vider la corbeille";
+"All items restored" = "Tous les éléments ont été restaurés";
+"All items permanently deleted" = "Tous les éléments sont supprimés définitivement";
+"All items in trash will be permanently deleted" = "Tous les éléments dans la corbeille seront supprimés définitivement";
+"Aliases won't be shared" = "Les alias ne seront pas partagés";
+"Create vault" = "Créer un coffre-fort";
+"Vault created" = "Le coffre-fort a été créé";
+"Vault updated" = "Le coffre-fort a été mis à jour";

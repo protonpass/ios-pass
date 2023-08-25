@@ -1036,17 +1036,17 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
     }
 
     func editableVaultListViewModelDidDelete(vault: Vault) {
-        bannerManager.displayBottomInfoMessage("Vault \"\(vault.name)\" deleted")
+        bannerManager.displayBottomInfoMessage("Vault « %@ » deleted".localized(vault.name))
         vaultsManager.refresh()
     }
 
     func editableVaultListViewModelDidRestoreAllTrashedItems() {
-        bannerManager.displayBottomSuccessMessage("All items restored")
+        bannerManager.displayBottomSuccessMessage("All items restored".localized)
         refresh()
     }
 
     func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
-        bannerManager.displayBottomInfoMessage("All items permanently deleted")
+        bannerManager.displayBottomInfoMessage("All items permanently deleted".localized)
         refresh()
     }
 }
@@ -1173,14 +1173,14 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     func createEditVaultViewModelDidCreateVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage("Vault created")
+            self?.bannerManager.displayBottomSuccessMessage("Vault created".localized)
         }
         vaultsManager.refresh()
     }
 
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomInfoMessage("Changes saved")
+            self?.bannerManager.displayBottomInfoMessage("Vault updated".localized)
         }
         vaultsManager.refresh()
     }
