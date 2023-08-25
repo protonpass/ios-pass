@@ -449,3 +449,11 @@
 "Remove access" = "Remove access";
 "Share with more people" = "Share with more people";
 "You" = "You";
+
+/* Empty vault page */
+"Your vault is empty" = "Your vault is empty";
+"Let's get started by creating your first item" = "Let's get started by creating your first item";
+"Create a login" = "Create a login";
+"Create a Hide My Email alias" = "Create a Hide My Email alias";
+"Create a credit card" = "Create a credit card";
+"Create a note" = "Create a note";
