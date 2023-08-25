@@ -426,3 +426,15 @@
 "Your plan only allows to use items in your primary vault for autofill purposes." = "Votre abonnement vous permet d'utiliser uniquement les éléments de votre coffre-fort principal pour la fonction de remplissage automatique.";
 "Upgrade now" = "Changer d'abonnement";
 "Please log in in order to use Proton Pass AutoFill extension" = "Veuillez vous connecter pour utiliser l'extension de remplissage automatique Proton Pass";
+
+/* Info banners */
+"Enjoy your free trial" = "Profitez de votre essai gratuit";
+"Check out all the exclusive features that are available to you for a limited time" = "Découvrez toutes les fonctionnalités exclusives qui vous sont proposées pour une durée limitée";
+"Learn more" = "En savoir plus";
+"Enjoy the magic of AutoFill" = "Profitez du confort du remplissage automatique";
+"One tap and⏤presto!⏤your username and password are filled in instantly" = "Il vous suffit d'appuyer pour que votre nom d'utilisateur et votre mot de passe soient immédiatement renseignés";
+"Turn on AutoFill" = "Activer le remplissage automatique";
+"Use email aliases" = "Utilisez des alias";
+"Protect your inbox against spams and phishings" = "Protégez votre boîte de réception contre les spams et le phishing";
+"Shared vault invitation" = "Invitation au coffre-fort partagé";
+"You've been invited to a vault. Tap here to see the invitation." = "Vous avez été invité dans un coffre-fort. Appuyez ici pour voir l'invitation.";
