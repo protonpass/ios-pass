@@ -81,7 +81,7 @@ private extension EditableVaultListViewModel {
                 self.delegate?.editableVaultListViewModelDidDelete(vault: vault)
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -115,7 +115,7 @@ extension EditableVaultListViewModel {
                 self?.syncEventLoop.forceSync()
             } catch {
                 self?.logger.error(error)
-                self?.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self?.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -142,7 +142,7 @@ extension EditableVaultListViewModel {
                 self.logger.info("Restored all trashed items")
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -159,7 +159,7 @@ extension EditableVaultListViewModel {
                 self.logger.info("Emptied all trashed items")
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }

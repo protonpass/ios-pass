@@ -58,7 +58,7 @@ final class ItemTypeListViewModel: ObservableObject {
                 self.limitation = try await self.upgradeChecker.aliasLimitation()
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }

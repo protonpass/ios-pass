@@ -243,7 +243,7 @@ extension SearchViewModel {
                     self?.delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
             } catch {
-                self?.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self?.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -254,7 +254,7 @@ extension SearchViewModel {
                 try await self?.searchEntryDatasource.remove(item: item)
                 try await self?.refreshSearchHistory()
             } catch {
-                self?.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self?.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -265,7 +265,7 @@ extension SearchViewModel {
                 try await self?.searchEntryDatasource.removeAllEntries()
                 try await self?.refreshSearchHistory()
             } catch {
-                self?.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self?.router.display(element: .displayErrorBanner(error))
             }
         }
     }

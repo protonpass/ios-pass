@@ -108,7 +108,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.bindValues()
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -139,7 +139,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Trashed \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -159,7 +159,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Restored \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -179,7 +179,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -199,7 +199,7 @@ private extension BaseItemDetailViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -229,7 +229,7 @@ private extension BaseItemDetailViewModel {
                 self.delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
             } catch {
                 self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -247,6 +247,6 @@ extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
     }
 
     func moveVaultListViewModelDidEncounter(error: Error) {
-        router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+        router.display(element: .displayErrorBanner(error))
     }
 }
