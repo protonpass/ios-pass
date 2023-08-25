@@ -68,5 +68,21 @@
 			<string>results</string>
 		</dict>
 	</dict>
+	<key>not shared %d alias(es)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>This vault contains one alias. Alias sharing is currently not supported and they won’t be shared.</string>
+			<key>other</key>
+			<string>This vault contains %d aliases. Alias sharing is currently not supported and they won’t be shared.</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

@@ -386,3 +386,24 @@
 "Copy password" = "Copy password";
 "Copy alias address" = "Copy alias address";
 "Alias address copied" = "Alias address copied";
+
+/* Vault list */
+"All vaults" = "All vaults";
+"Trash" = "Trash";
+"Manage access" = "Manage access";
+"View members" = "View members";
+"Delete vault" = "Delete vault";
+"Delete vault?" = "Delete vault?";
+"This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." = "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion.";
+"Vault name" = "Vault name";
+"Vault « %@ » deleted" = "Vault « %@ » deleted";
+"Leave vault" = "Leave vault";
+"Restore all items" = "Restore all items";
+"Empty trash" = "Empty trash";
+"All items restored" = "All items restored";
+"All items permanently deleted" = "All items permanently deleted";
+"All items in trash will be permanently deleted" = "All items in trash will be permanently deleted";
+"Aliases won't be shared" = "Aliases won’t be shared";
+"Create vault" = "Create vault";
+"Vault created" = "Vault created";
+"Vault updated" = "Vault updated";

@@ -24,6 +24,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: EditableVaultListViewModel
@@ -56,7 +57,7 @@ struct EditableVaultListView: View {
             }
             .animation(.default, value: viewModel.vaultsManager.state)
             HStack {
-                CapsuleTextButton(title: "Create vault",
+                CapsuleTextButton(title: "Create vault".localized,
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   action: viewModel.createNewVault)
@@ -68,7 +69,7 @@ struct EditableVaultListView: View {
         .background(Color(uiColor: PassColor.backgroundWeak))
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .alert("Aliases won’t be shared",
+        .alert("Aliases won't be shared",
                isPresented: $viewModel.showingAliasAlert,
                actions: {
                    Button(action: {
@@ -79,10 +80,7 @@ struct EditableVaultListView: View {
                           })
                },
                message: {
-                   Text("""
-                   This vault contains \(viewModel.numberOfAliasforSharedVault) Aliases.
-                   Alias sharing is currently not supported and they won’t be shared.
-                   """)
+                   Text("not shared %d alias(es)".localized(viewModel.numberOfAliasforSharedVault))
                })
     }
 
@@ -228,11 +226,11 @@ extension VaultSelection {
     var title: String {
         switch self {
         case .all:
-            return "All vaults"
+            return "All vaults".localized
         case let .precise(vault):
             return vault.name
         case .trash:
-            return "Trash"
+            return "Trash".localized
         }
     }
 
