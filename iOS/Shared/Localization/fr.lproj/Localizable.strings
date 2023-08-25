@@ -438,3 +438,8 @@
 "Protect your inbox against spams and phishings" = "Protégez votre boîte de réception contre les spams et le phishing";
 "Shared vault invitation" = "Invitation au coffre-fort partagé";
 "You've been invited to a vault. Tap here to see the invitation." = "Vous avez été invité dans un coffre-fort. Appuyez ici pour voir l'invitation.";
+
+/* Vault sharing: accept/reject invitations */
+"Invitation from" = "Invitation de";
+"Join shared vault" = "Rejoindre le coffre-fort partagé";
+"Reject invitation" = "Rejeter l'invitation";
