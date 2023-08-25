@@ -22,6 +22,7 @@ import Factory
 import SwiftUI
 import UIComponents
 
+// Localized
 struct ItemTypeFilterOptionsView: View {
     static let rowHeight = OptionRowHeight.compact.value
     @Environment(\.dismiss) private var dismiss

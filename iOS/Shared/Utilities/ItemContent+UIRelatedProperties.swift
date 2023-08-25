@@ -133,13 +133,13 @@ extension ItemContentType {
     var filterTitle: String {
         switch self {
         case .login:
-            return "Logins"
+            return "Logins".localized
         case .alias:
-            return "Aliases"
+            return "Aliases".localized
         case .note:
-            return "Notes"
+            return "Notes".localized
         case .creditCard:
-            return "Credit cards"
+            return "Credit cards".localized
         }
     }
 
