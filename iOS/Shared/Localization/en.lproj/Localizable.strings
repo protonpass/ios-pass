@@ -306,6 +306,10 @@
 "Add note" = "Add note";
 "Add more" = "Add more";
 "Upgrade to add custom fields" = "Upgrade to add custom fields";
+"Discard changes?" = "Discard changes?";
+"You have unsaved changes, are you sure you want to discard them?" = "You have unsaved changes, are you sure you want to discard them?";
+"Discard" = "Discard";
+"Keep Editing" = "Keep Editing";
 
 /* Login item create/edit page */
 "Add username or email address" = "Add username or email address";
