@@ -26,6 +26,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
@@ -69,8 +70,8 @@ struct CredentialsView: View {
                },
                message: {
                    if let information = viewModel.notMatchedItemInformation {
-                       // swiftlint:disable:next line_length
-                       Text("Would you want to associate \"\(information.url)\" with \"\(information.item.itemTitle)\"?")
+                       Text("Would you want to associate « %@ » with « %@ »?"
+                           .localized(information.url, information.item.itemTitle))
                    }
                })
     }
@@ -135,7 +136,7 @@ private extension CredentialsView {
     func itemList(results: CredentialsFetchResult) -> some View {
         ScrollViewReader { proxy in
             List {
-                let matchedItemsHeaderTitle = "Suggestions for \(viewModel.urls.first?.host ?? "")"
+                let matchedItemsHeaderTitle = "Suggestions for %@".localized(viewModel.urls.first?.host ?? "")
                 if results.matchedItems.isEmpty {
                     Section(content: {
                         Text("No suggestions")
