@@ -1,5 +1,5 @@
 //
-//  MainRobot.swift
+//  ProfileRobot.swift
 //  Proton Pass - Created on 12/23/22.
 //
 // Copyright (c) 2023. Proton Technologies AG
@@ -22,22 +22,22 @@
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
 
-private let telemetryLabelText = "Telemetry"
 private let settingsLabelText = "Settings"
+private let accountLabelText = "Account"
 
-final class SettingsRobot: CoreElements {
+final class ProfileRobot: CoreElements {
     let verify = Verify()
 
     final class Verify: CoreElements {
-        @discardableResult
-        public func telemetryItemIsDisplayed() -> SettingsRobot {
-            staticText(telemetryLabelText).waitUntilExists().checkExists()
-            return SettingsRobot()
-        }
     }
 
     func tapSettingsButton() -> SettingsRobot {
         button(settingsLabelText).waitUntilExists().tap()
-        return self
+        return SettingsRobot()
+    }
+
+    func tapAccountButton() -> AccountRobot {
+        staticText(accountLabelText).waitUntilExists().tap()
+        return AccountRobot()
     }
 }

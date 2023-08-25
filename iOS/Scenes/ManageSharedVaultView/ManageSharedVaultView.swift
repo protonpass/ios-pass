@@ -29,7 +29,7 @@ import UIComponents
 
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: ManageSharedVaultViewModel
+    @ObservedObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     @State private var sort: ShareRole = .admin
@@ -52,7 +52,12 @@ struct ManageSharedVaultView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
+        .showSpinner(viewModel.loading)
         .navigationModifier()
+    }
+
+    func refresh() {
+        viewModel.fetchShareInformation()
     }
 }
 
@@ -123,14 +128,6 @@ private extension ManageSharedVaultView {
             .roundedDetailSection()
         }
         .animation(.default, value: viewModel.users.count)
-        .overlay(Group {
-            if viewModel.loading {
-                ProgressView()
-                    .scaleEffect(2)
-            } else {
-                EmptyView()
-            }
-        })
     }
 
     func userCell(for user: ShareUser) -> some View {
@@ -171,14 +168,22 @@ private extension ManageSharedVaultView {
     func vaultTrailingView(user: ShareUser) -> some View {
         Menu(content: {
             if !user.isPending {
-                Picker(selection: $viewModel.userRole, label: Text("Role options")) {
-                    ForEach(ShareRole.allCases, id: \.self) { role in
-                        Text("\(attributedText(for: role.title))\n\(attributedSubText(for: role.description))")
-                            .padding(.bottom, 2)
-                            .tag(role)
-                    }
+                ForEach(ShareRole.allCases, id: \.self) { role in
+                    Label(title: {
+                        Button(action: {
+                            if viewModel.userRole != role {
+                                viewModel.userRole = role
+                            }
+                        }, label: {
+                            Text(role.title)
+                            Text(role.description)
+                        })
+                    }, icon: {
+                        if viewModel.userRole == role {
+                            Image(systemName: "checkmark")
+                        }
+                    })
                 }
-                Divider()
             }
             if user.isPending {
                 Button(action: {
