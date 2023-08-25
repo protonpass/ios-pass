@@ -48,7 +48,12 @@ enum VaultSelection {
     }
 }
 
-final class VaultsManager: ObservableObject, DeinitPrintable {
+protocol VaultsManagerProtocol {
+    func refresh()
+    func fullSync() async throws
+}
+
+final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {
     deinit { print(deinitMessage) }
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -155,8 +160,12 @@ private extension VaultsManager {
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
 
-        Task.detached(priority: .background) { [weak self] in
-            try await self?.indexAllLoginItems(ignorePreferences: false)
+        if manualLogIn {
+            try await indexAllLoginItems(ignorePreferences: false)
+        } else {
+            Task.detached(priority: .background) { [weak self] in
+                try await self?.indexAllLoginItems(ignorePreferences: false)
+            }
         }
     }
 }

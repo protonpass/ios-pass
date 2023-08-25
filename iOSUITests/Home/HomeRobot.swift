@@ -26,6 +26,7 @@ import XCTest
 
 private let emptyViewText = "Create your first item\n by clicking the button below"
 private let burgerMenuButtonIdentifier = "Button.BurgerMenu"
+private let profileTab = "HomepageTabBarController_profileTabView"
 
 public final class HomeRobot: CoreElements {
     public let verify = Verify()
@@ -33,20 +34,25 @@ public final class HomeRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func emptyVaultViewIsShown(timeout: TimeInterval = 10.0) -> HomeRobot {
-            staticText(emptyViewText).wait(time: timeout).checkExists()
+            staticText(emptyViewText).waitUntilExists(time: timeout).checkExists()
             return HomeRobot()
         }
     }
 
     func tapBurgerMenuButton<T: CoreElements>(robot _: T.Type) -> T {
-        Wait().wait(timeInterval: 10)
-        button(burgerMenuButtonIdentifier).wait().tap()
+        button(burgerMenuButtonIdentifier).waitUntilExists().tap()
         return T()
+    }
+
+
+    func tapProfile() -> ProfileRobot {
+        button(profileTab).waitUntilExists().tap()
+        return ProfileRobot()
     }
 }
 
 extension Wait {
-    func wait(timeInterval: TimeInterval) {
+    func waitUntilExists(timeInterval: TimeInterval) {
         let testCase = XCTestCase()
         let waitExpectation = testCase.expectation(description: "Waiting")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeInterval) {

@@ -33,14 +33,13 @@ public final class OnboardingRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func isOnboardingViewShown(timeout: TimeInterval = 10.0) -> HomeRobot {
-            staticText(title).wait(time: timeout).checkExists()
+            staticText(title).waitUntilExists(time: timeout).checkExists()
             return HomeRobot()
         }
     }
 
     func tapBurgerMenuButton<T: CoreElements>(robot _: T.Type) -> T {
-        Wait().wait(timeInterval: 10)
-        button(burgerMenuButtonIdentifier).wait().tap()
+        button(burgerMenuButtonIdentifier).waitUntilExists().tap()
         return T()
     }
 }

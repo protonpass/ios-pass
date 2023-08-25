@@ -162,7 +162,6 @@ private extension SearchViewModel {
             guard let self else {
                 return
             }
-            self.selectedType = nil
             let hashedQuery = query.sha256
             self.logger.trace("Searching for \"\(hashedQuery)\"")
             if Task.isCancelled {
@@ -325,8 +324,9 @@ extension SearchViewState: Equatable {
         case let (.noResults(lhsQuery), .noResults(rhsQuery)):
             return lhsQuery == rhsQuery
 
-        case let (.results(_, lhsResults), .results(_, rhsResults)):
-            return lhsResults.hashValue == rhsResults.hashValue
+        case let (.results(lhsItemCount, lhsResults), .results(rhsItemCount, rhsResults)):
+            return lhsResults.hashValue == rhsResults.hashValue &&
+                lhsItemCount == rhsItemCount
 
         case let (.error(lhsError), .error(rhsError)):
             return lhsError.localizedDescription == rhsError.localizedDescription
