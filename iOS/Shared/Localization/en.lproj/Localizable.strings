@@ -1,3 +1,6 @@
+/* Slogan */
+"Secure password manager and more" = "Secure password manager and more";
+
 /* Onboarding: Enable Proton Pass AutoFill in iOS Settings */
 "Open **Settings** app" = "Open **Settings** app";
 "Tap **Passwords**" = "Tap **Passwords**";
@@ -422,3 +425,4 @@
 "Just autofill" = "Just autofill";
 "Your plan only allows to use items in your primary vault for autofill purposes." = "Your plan only allows to use items in your primary vault for autofill purposes.";
 "Upgrade now" = "Upgrade now";
+"Please log in in order to use Proton Pass AutoFill extension" = "Please log in in order to use Proton Pass AutoFill extension";
