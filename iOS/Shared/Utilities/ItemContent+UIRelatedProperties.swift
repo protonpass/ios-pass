@@ -146,13 +146,13 @@ extension ItemContentType {
     var createItemTitle: String {
         switch self {
         case .login:
-            return "Create a login"
+            return "Create a login".localized
         case .alias:
-            return "Create a Hide My Email alias"
+            return "Create a Hide My Email alias".localized
         case .creditCard:
-            return "Create a credit card"
+            return "Create a credit card".localized
         case .note:
-            return "Create a note"
+            return "Create a note".localized
         }
     }
 
