@@ -73,7 +73,7 @@ extension ItemContextMenuHandler {
                 }
 
                 self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.trashMessage,
-                                                                              dismissButtonTitle: "Undo",
+                                                                              dismissButtonTitle: "Undo".localized,
                                                                               onDismiss: undoBlock)
 
                 self.delegate?.itemContextMenuHandlerDidTrash(item: item)
@@ -126,7 +126,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.username,
-                                               bannerMessage: "Username copied")
+                                               bannerMessage: "Username copied".localized)
                     self.logger.info("Copied username \(item.debugInformation)")
                 }
             } catch {
@@ -162,7 +162,7 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 if let aliasEmail = encryptedItem.item.aliasEmail {
                     self.clipboardManager.copy(text: aliasEmail,
-                                               bannerMessage: "Alias address copied")
+                                               bannerMessage: "Alias address copied".localized)
                     self.logger.info("Copied alias address \(item.debugInformation)")
                 }
             } catch {
