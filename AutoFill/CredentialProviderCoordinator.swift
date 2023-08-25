@@ -336,7 +336,7 @@ private extension CredentialProviderCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .displayErrorBanner(errorLocalized: errorLocalized):
+                case let .displayErrorBanner(errorLocalized):
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
                 default:
                     break

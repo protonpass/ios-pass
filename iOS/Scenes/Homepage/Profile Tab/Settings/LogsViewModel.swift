@@ -83,7 +83,7 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
                     self.delegate?.logsViewModelWantsToShareLogs(fileToDelete)
                 }
             } catch {
-                self.router.display(element: .displayErrorBanner(errorLocalized: error.localizedDescription))
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
