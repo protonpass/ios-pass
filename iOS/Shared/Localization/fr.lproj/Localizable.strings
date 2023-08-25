@@ -443,3 +443,9 @@
 "Invitation from" = "Invitation de";
 "Join shared vault" = "Rejoindre le coffre-fort partagé";
 "Reject invitation" = "Rejeter l'invitation";
+
+/* Vault sharing: manage members */
+"Transfer ownership" = "Transfert de propriété";
+"Remove access" = "Supprimer l'accès";
+"Share with more people" = "Partager avec plus de personnes";
+"You" = "Vous";
