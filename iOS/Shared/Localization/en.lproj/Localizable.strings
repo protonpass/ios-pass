@@ -359,3 +359,19 @@
 "Couldn't find « %@ » in Trash" = "Couldn't find « %@ » in Trash";
 "Try searching using different spelling or keywords" = "Try searching using different spelling or keywords";
 "All" = "All";
+
+/* Items filtering */
+"Sort by" = "Sort by";
+"Most recent" = "Most recent";
+"Title (A-Z)" = "Title (A-Z)";
+"Title (Z-A)" = "Title (Z-A)";
+"Newest to oldest" = "Newest to oldest";
+"Oldest to newest" = "Oldest to newest";
+"Today" = "Today";
+"Yesterday" = "Yesterday";
+"Last week" = "Last week";
+"Last two weeks" = "Last two weeks";
+"Last 30 days" = "Last 30 days";
+"Last 60 days" = "Last 60 days";
+"Last 90 days" = "Last 90 days";
+"More than 90 days" = "More than 90 days";
