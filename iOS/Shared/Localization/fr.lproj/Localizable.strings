@@ -359,3 +359,19 @@
 "Couldn't find « %@ » in Trash" = "Aucun résultat n'a été trouvé pour « %@ » dans la corbeille";
 "Try searching using different spelling or keywords" = "Essayez d'effectuer une recherche en utilisant une orthographe ou des mots-clés différents";
 "All" = "Tous";
+
+/* Items sorting/filtering */
+"Sort by" = "Trier par";
+"Most recent" = "Le plus récent";
+"Title (A-Z)" = "Titre (A-Z)";
+"Title (Z-A)" = "Titre (Z-A)";
+"Newest to oldest" = "Du plus récent au plus ancien";
+"Oldest to newest" = "Du plus ancien au plus récent";
+"Today" = "Aujourd'hui";
+"Yesterday" = "Hier";
+"Last week" = "La semaine dernière";
+"Last two weeks" = "Les 2 dernières semaines";
+"Last 30 days" = "Les 30 derniers jours";
+"Last 60 days" = "Les 60 derniers jours";
+"Last 90 days" = "Les 90 derniers jours";
+"More than 90 days" = "Plus de 90 jours";
