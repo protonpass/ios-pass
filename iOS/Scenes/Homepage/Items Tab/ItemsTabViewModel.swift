@@ -103,7 +103,7 @@ private extension ItemsTabViewModel {
         inviteRefreshTask?.cancel()
         inviteRefreshTask = Task { @MainActor [weak self] in
             guard let self else { return }
-            if let invites {
+            if let invites, !invites.isEmpty {
                 if case .invite = self.banners.first {
                     self.banners.removeFirst()
                 }
@@ -166,7 +166,7 @@ extension ItemsTabViewModel {
     }
 
     func dismiss(banner: InfoBanner) {
-        if case .invite = banner {
+        if banner.isInvite {
             return
         }
         banners.removeAll(where: { $0 == banner })
@@ -242,8 +242,8 @@ extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
     }
 }
 
-extension [UserInvite] {
+private extension [UserInvite] {
     var toInfoBanners: InfoBanner {
-        .invite(invites: self)
+        .invite(self)
     }
 }

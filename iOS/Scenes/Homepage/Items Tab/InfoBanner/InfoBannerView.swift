@@ -41,10 +41,9 @@ struct InfoBannerView: View {
         .background(banner.detail.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture {
-            guard banner.isInvite else {
-                return
+            if banner.isInvite {
+                action()
             }
-            action()
         }
     }
 }
@@ -68,7 +67,7 @@ private extension InfoBannerView {
                 }
                 Spacer()
             }
-            .foregroundColor(banner.detail.forgroundColor)
+            .foregroundColor(banner.detail.foregroundColor)
 
             Spacer()
 
