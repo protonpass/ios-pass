@@ -438,3 +438,8 @@
 "Protect your inbox against spams and phishings" = "Protect your inbox against spams and phishings";
 "Shared vault invitation" = "Shared vault invitation";
 "You've been invited to a vault. Tap here to see the invitation." = "You've been invited to a vault. Tap here to see the invitation.";
+
+/* Vault sharing: accept/reject invitations */
+"Invitation from" = "Invitation from";
+"Join shared vault" = "Join shared vault";
+"Reject invitation" = "Reject invitation";

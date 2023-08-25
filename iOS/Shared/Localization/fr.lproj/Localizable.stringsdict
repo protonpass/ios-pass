@@ -84,5 +84,21 @@
 			<string>Ce coffre-fort contient %d alias. Partage d&apos;alias n&apos;est pas actuellement supporté, les alias ne seront pas partagés.</string>
 		</dict>
 	</dict>
+	<key>%d member(s)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d membre</string>
+			<key>other</key>
+			<string>%d membres</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
