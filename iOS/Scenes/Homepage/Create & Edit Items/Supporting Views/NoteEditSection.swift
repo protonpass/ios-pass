@@ -22,6 +22,7 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
+// Localized
 struct NoteEditSection<Field: Hashable>: View {
     @Binding var note: String
     let focusedField: FocusState<Field?>.Binding
