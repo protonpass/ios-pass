@@ -266,13 +266,10 @@ private extension SyncEventLoop {
             hasNewShareEvents = true
             try await shareRepository.upsertShares(remoteShares)
             if remoteShares.count < localShares.count {
-                let leftShares = localShares.compactMap { element -> Share? in
-                    guard !remoteShares.map(\.shareID).contains(element.share.shareID) else {
-                        return nil
-                    }
-                    return element.share
-                }
-                _ = try await delete(shares: leftShares)
+                let leftShares = localShares.filter {
+                    !remoteShares.map(\.shareID).contains($0.share.shareID)
+                }.map(\.share)
+                try await delete(shares: leftShares)
             }
         }
 
@@ -296,30 +293,23 @@ private extension SyncEventLoop {
         return hasNewEvents || hasNewShareEvents
     }
 
-    func delete(shares: [Share]) async throws -> Bool {
-        // Compare local shares against remote shares
-        try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
+    func delete(shares: [Share]) async throws {
+        await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in shares {
-                // Task group returning `true` if new events found, `false` other wise
                 taskGroup.addTask { [weak self] in
-                    guard let self else { return false }
+                    guard let self else { return }
                     let shareId = share.shareID
 
-                    // Confirmed that the vault is really deleted
-                    // safe to delete it locally
                     if Task.isCancelled {
-                        return false
+                        return
                     }
                     try await self.shareRepository.deleteShareLocally(shareId: shareId)
                     if Task.isCancelled {
-                        return false
+                        return
                     }
                     try await self.itemRepository.deleteAllItemsLocally(shareId: shareId)
-                    return true
                 }
             }
-
-            return try await taskGroup.contains { $0 }
         }
     }
 
