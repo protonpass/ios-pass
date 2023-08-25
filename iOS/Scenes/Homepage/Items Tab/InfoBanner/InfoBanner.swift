@@ -27,15 +27,14 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         [.trial, .autofill, .aliases]
     }
 
-    // Order of cases matter cause it affects the UI
-    case trial, autofill, aliases, invite(invites: [UserInvite])
+    case trial, autofill, aliases, invite([UserInvite])
 
     var id: String {
         switch self {
         case .trial:
             return "trial"
         case .autofill:
-            return "trial"
+            return "autofill"
         case .aliases:
             return "aliases"
         case .invite:
@@ -52,7 +51,7 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                          icon: nil,
                          ctaTitle: "Learn more",
                          backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
-                         forgroundColor: PassColor.textInvert.toColor)
+                         foregroundColor: PassColor.textInvert.toColor)
         // swiftlint:enable line_length
         case .autofill:
             return .init(title: "Enjoy the magic of AutoFill",
@@ -60,7 +59,7 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                          icon: PassIcon.infoBannerAutoFill,
                          ctaTitle: "Turn on AutoFill",
                          backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
-                         forgroundColor: PassColor.textInvert.toColor)
+                         foregroundColor: PassColor.textInvert.toColor)
 
         case .aliases:
             return .init(title: "Use email aliases",
@@ -68,14 +67,14 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                          icon: PassIcon.infoBannerAliases,
                          ctaTitle: nil,
                          backgroundColor: PassColor.signalSuccess.toColor,
-                         forgroundColor: PassColor.textInvert.toColor)
+                         foregroundColor: PassColor.textInvert.toColor)
         case .invite:
             return .init(title: "Shared vault invitation",
                          description: "You’ve been invited to a vault. Tap here to see the invitation.",
                          icon: PassIcon.inviteBannerIcon,
                          ctaTitle: nil,
                          backgroundColor: PassColor.backgroundMedium.toColor,
-                         forgroundColor: PassColor.textNorm.toColor)
+                         foregroundColor: PassColor.textNorm.toColor)
         }
     }
 
@@ -92,5 +91,5 @@ struct InfoBannerDetail {
     /// Call-to-action button title
     let ctaTitle: String?
     let backgroundColor: Color
-    let forgroundColor: Color
+    let foregroundColor: Color
 }
