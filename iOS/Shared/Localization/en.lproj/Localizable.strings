@@ -71,6 +71,7 @@
 "Profile" = "Profile";
 "Items" = "Items";
 "Version %@" = "Version %@";
+"Upgrade" = "Upgrade";
 
 /* Profile tab: security section */
 "Security" = "Security";
@@ -311,6 +312,7 @@
 "Add password" = "Add password";
 "2FA secret (TOTP)" = "2FA secret (TOTP)";
 "Add 2FA secret" = "Add 2FA secret";
+"2FA limit reached" = "2FA limit reached";
 "Hide my email" = "Hide my email";
 "Use %@" = "Use %@";
 "Paste from clipboard" = "Paste from clipboard";
@@ -318,3 +320,7 @@
 "Add" = "Add";
 "Edit alias" = "Edit alias";
 "Remove alias" = "Remove alias";
+"Delete alias" = "Delete alias";
+"Delete alias?" = "Delete alias?";
+"Yes, delete alias" = "Yes, delete alias";
+"The alias will be deleted permanently" = "The alias will be deleted permanently";

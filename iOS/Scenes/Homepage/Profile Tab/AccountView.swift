@@ -141,7 +141,7 @@ struct AccountView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             if let plan = viewModel.plan, plan.planType != .plus {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
-                                   title: "Upgrade",
+                                   title: "Upgrade".localized,
                                    titleColor: ColorProvider.TextInverted,
                                    backgroundColor: PassColor.interactionNormMajor2,
                                    action: viewModel.upgradeSubscription)

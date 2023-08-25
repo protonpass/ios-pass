@@ -71,6 +71,7 @@
 "Profile" = "Profil";
 "Items" = "Eléments";
 "Version %@" = "Version %@";
+"Upgrade" = "Changer d'abonnement";
 
 /* Profile tab: security section */
 "Security" = "Sécurité";
@@ -304,17 +305,22 @@
 "Untitled" = "Sans titre";
 "Add note" = "Ajouter une note";
 "Add more" = "Ajouter";
-"Upgrade to add custom fields" = "Vous abonner pour ajouter des champs personnalisés";
+"Upgrade to add custom fields" = "Changer d'abonnement pour ajouter des champs personnalisés";
 
 /* Login item create/edit page */
 "Add username or email address" = "Ajouter un nom d'utilisateur ou une adresse e-mail";
 "Add password" = "Ajouter un mot de passe";
 "2FA secret (TOTP)" = "Clé secrète A2F (TOTP)";
 "Add 2FA secret" = "Ajouter une clé secrète A2F";
+"2FA limit reached" = "La limite de l'A2F est atteinte";
 "Hide my email" = "Hide-my-email";
 "Use %@" = "Utiliser %@";
 "Paste from clipboard" = "Coller depuis le presse-papiers";
 "Open camera" = "Ouvrir la caméra";
 "Add" = "Ajouter";
 "Edit alias" = "Modifier l'alias";
-"Remove alias" = "Supprimer l'alias";
+"Remove alias" = "Retirer l'alias";
+"Delete alias" = "Supprimer l'alias";
+"Delete alias?" = "Supprimer l'alias ?";
+"Yes, delete alias" = "Oui, supprimer l'alias";
+"The alias will be deleted permanently" = "L'alias sera supprimé définitivement";
