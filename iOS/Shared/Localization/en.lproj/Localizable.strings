@@ -375,6 +375,11 @@
 "Last 60 days" = "Last 60 days";
 "Last 90 days" = "Last 90 days";
 "More than 90 days" = "More than 90 days";
+"Filter by" = "Filter by";
+"Logins" = "Logins";
+"Aliases" = "Aliases";
+"Notes" = "Notes";
+"Credit cards" = "Credit cards";
 
 /* Context menu options for items */
 "Copy username" = "Copy username";
