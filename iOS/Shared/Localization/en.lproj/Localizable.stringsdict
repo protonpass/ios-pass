@@ -52,5 +52,21 @@
 			<string>%d words</string>
 		</dict>
 	</dict>
+	<key>%d search result(s)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>result</string>
+			<key>other</key>
+			<string>results</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
