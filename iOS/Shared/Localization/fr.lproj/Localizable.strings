@@ -296,3 +296,10 @@
 "%d characters" = "%d caractères";
 "Special characters" = "Caractères spéciaux";
 "Capital letters" = "Lettres majuscules";
+
+/* Item create/edit page */
+"Title" = "Titre";
+"Untitled" = "Sans titre";
+"Add note" = "Ajoutez une note";
+"Add more" = "Ajouter";
+"Upgrade to add custom fields" = "Vous abonner pour ajouter des champs personnalisés";
