@@ -45,8 +45,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var banners: [InfoBanner] = []
-    @Published private(set) var invites: [UserInvite] = []
-
     @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
         didSet {
             if itemToBePermanentlyDeleted != nil {
@@ -78,7 +76,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     init() {
         setUp()
-        refreshBanners()
     }
 }
 
@@ -87,11 +84,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
-
         getPendingUserInvitations()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
-                self?.invites = invites
+                self?.refreshBanners(invites)
             }
             .store(in: &cancellables)
 
@@ -103,46 +99,55 @@ private extension ItemsTabViewModel {
             .store(in: &cancellables)
     }
 
-    func refreshBanners() {
-        Task { @MainActor [weak self] in
+    func refreshBanners(_ invites: [UserInvite]? = nil) {
+        inviteRefreshTask?.cancel()
+        inviteRefreshTask = Task { @MainActor [weak self] in
             guard let self else { return }
-            do {
-                var banners: [InfoBanner] = []
-                for banner in InfoBanner.allCases {
-                    var dismissed = self.preferences.dismissedBannerIds.contains { $0 == banner.id }
+            self.banners.removeAll()
+            if let invites, !invites.isEmpty {
+                self.banners.append(invites.toInfoBanners)
+            }
+            if banners.isEmpty {
+                await fillLocalBanners()
+            }
+        }
+    }
 
-                    switch banner {
+    @MainActor
+    func fillLocalBanners() async {
+        do {
+            for banner in InfoBanner.allCases {
+                if preferences.dismissedBannerIds.contains(where: { $0 == banner.id }) {
+                    break
+                }
+
+                switch banner {
+                case .trial:
+                    // If not in trial, consider dismissed
+                    let plan = try await passPlanRepository.getPlan()
+                    switch plan.planType {
                     case .trial:
-                        // If not in trial, consider dismissed
-                        let plan = try await self.passPlanRepository.getPlan()
-                        switch plan.planType {
-                        case .trial:
-                            break
-                        default:
-                            dismissed = true
-                        }
-
-                    case .autofill:
-                        // We don't show the banner if AutoFill extension is enabled
-                        // consider dismissed in this case
-                        if await self.credentialManager.isAutoFillEnabled {
-                            dismissed = true
-                        }
-
+                        break
                     default:
                         break
                     }
 
-                    if !dismissed {
-                        banners.append(banner)
+                case .autofill:
+                    // We don't show the banner if AutoFill extension is enabled
+                    // consider dismissed in this case
+                    if await credentialManager.isAutoFillEnabled {
+                        // dismissed = true
+                        break
                     }
-                }
 
-                self.banners = banners
-            } catch {
-                self.logger.error(error)
-                self.delegate?.itemsTabViewModelDidEncounter(error: error)
+                default:
+                    break
+                }
+                banners.append(banner)
             }
+        } catch {
+            logger.error(error)
+            delegate?.itemsTabViewModelDidEncounter(error: error)
         }
     }
 }
@@ -159,6 +164,9 @@ extension ItemsTabViewModel {
     }
 
     func dismiss(banner: InfoBanner) {
+        if banner.isInvite {
+            return
+        }
         banners.removeAll(where: { $0 == banner })
         preferences.dismissedBannerIds.append(banner.id)
     }
@@ -169,6 +177,10 @@ extension ItemsTabViewModel {
             delegate?.itemsTabViewModelWantsToShowTrialDetail()
         case .autofill:
             UIApplication.shared.openPasswordSettings()
+        case let .invite(invites: invites):
+            if let firstInvite = invites.first {
+                router.presentSheet(for: .acceptRejectInvite(firstInvite))
+            }
         default:
             break
         }
@@ -225,5 +237,11 @@ extension ItemsTabViewModel: SortTypeListViewModelDelegate {
 extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
         stopRefreshing()
+    }
+}
+
+private extension [UserInvite] {
+    var toInfoBanners: InfoBanner {
+        .invite(self)
     }
 }

@@ -11,7 +11,7 @@ def pmtest_path
 end
 
 def pmtest_commit
-  "1ba256d5"
+  "04b8a422"
 end
 
 def crypto_variant
@@ -135,7 +135,7 @@ target "iOSUITests" do
   pod "ProtonCore-TestingToolkit/UITests/Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UITests/PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
-  pod "fusion", :git => "git@gitlab.protontech.ch:tpe/apple-fusion.git", :commit => "1ba256d5"
+  pod "fusion", :git => pmtest_path, :commit => pmtest_commit
 end
 
 
