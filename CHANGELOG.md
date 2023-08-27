@@ -1,3 +1,7 @@
+## Version 1.2.2
+- Resolved an issue where search highlights were occasionally failing to appear
+- Fixed no autofill suggestions after logging in
+
 ## Version 1.2.1
 ### Improvements
 - Improved TOTP URI parsing
