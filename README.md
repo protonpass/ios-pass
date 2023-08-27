@@ -14,6 +14,7 @@ This repository contains the source code for the Proton Pass iOS application.
 	* [SwiftLint](#swiftlint)
 	* [SwiftFormat](#swiftformat)
     * [Sourcery](#sourcery)
+* [Changelog](#changelog)
 * [Contributing](#contributing)
 * [License](#license)
 
@@ -110,6 +111,10 @@ sourcery
 ```
 
 You should now see the new mocks appear in the `Generated` subfolder of iOSTests target
+
+# Changelog
+For a detailed list of changes in each version of the project, please refer to the [CHANGELOG](CHANGELOG.md) file.
+
 
 # Contributing
 
