@@ -33,11 +33,18 @@ struct InfoBannerView: View {
             informationDisplayView
                 .padding(.horizontal, 25)
                 .padding(.vertical, 5)
-            closeButtonView
+            if !banner.isInvite {
+                closeButtonView
+            }
         }
         .frame(height: Self.height)
-        .background(Color(uiColor: banner.detail.backgroundColor))
+        .background(banner.detail.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .onTapGesture {
+            if banner.isInvite {
+                action()
+            }
+        }
     }
 }
 
@@ -60,7 +67,7 @@ private extension InfoBannerView {
                 }
                 Spacer()
             }
-            .foregroundColor(PassColor.textInvert.toColor)
+            .foregroundColor(banner.detail.foregroundColor)
 
             Spacer()
 

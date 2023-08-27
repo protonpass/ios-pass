@@ -25,7 +25,7 @@ import ProtonCore_CoreTranslation
 import XCTest
 
 private let title = "Protect your most sensitive data"
-private let noThanksTxt = "No thanks"
+private let notNowTxt = "Not now"
 
 public final class FaceIDRobot: CoreElements {
     public let verify = Verify()
@@ -33,13 +33,13 @@ public final class FaceIDRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func isFaceIDSetupShown(timeout: TimeInterval = 10.0) -> FaceIDRobot {
-            staticText(title).wait(time: timeout).checkExists()
+            staticText(title).waitUntilExists(time: timeout).checkExists()
             return FaceIDRobot()
         }
     }
 
     public func noThanks<T: CoreElements>(robot _: T.Type) -> T {
-        button(noThanksTxt).wait().tap()
+        button(notNowTxt).waitUntilExists().tap()
         return T()
     }
 }
