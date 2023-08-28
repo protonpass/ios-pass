@@ -495,3 +495,6 @@
 /* Local authentication */
 "This is your last attempt. You will be logged out after failing to authenticate again." = "C'est votre dernière tentative. Vous serez déconnecté après avoir échoué à vous authentifier à nouveau.";
 "Try again" = "Essayer à nouveau";
+"Unlock" = "Déverrouiller";
+"Enter your PIN code" = "Entrez votre code PIN";
+"Incorrect PIN code." = "Code PIN incorrect.";
