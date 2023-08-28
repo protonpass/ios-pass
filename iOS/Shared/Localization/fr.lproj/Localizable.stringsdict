@@ -100,5 +100,21 @@
 			<string>%d membres</string>
 		</dict>
 	</dict>
+	<key>%d trial day(s) left</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Il vous reste un jour d&apos;essai gratuit</string>
+			<key>other</key>
+			<string>Il vous reste %d jours d&apos;essai gratuit</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
