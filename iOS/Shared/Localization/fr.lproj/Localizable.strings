@@ -491,3 +491,7 @@
 "Integrated 2FA authenticator" = "Authentification à deux facteurs (A2F) intégrée";
 "Custom fields" = "Champs personnalisés";
 "Upgrade to keep these features" = "Changer d'abonnement pour garder ces fonctionnalités";
+
+/* Local authentication */
+"This is your last attempt. You will be logged out after failing to authenticate again." = "C'est votre dernière tentative. Vous serez déconnecté après avoir échoué à vous authentifier à nouveau.";
+"Try again" = "Essayer à nouveau";
