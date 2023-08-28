@@ -1,6 +1,6 @@
 //
-// SuffixSelectionViewModel.swift
-// Proton Pass - Created on 03/05/2023.
+// Router+DependencyInjections.swift
+// Proton Pass - Created on 19/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,28 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Combine
-import Core
 import Factory
+import Foundation
 
-final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
+final class RouterContainer: SharedContainer, AutoRegistering {
+    static let shared = RouterContainer()
+    let manager = ContainerManager()
 
-    @Published private(set) var shouldUpgrade = false
-
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
-    let suffixSelection: SuffixSelection
-    private var cancellables = Set<AnyCancellable>()
-
-    init(suffixSelection: SuffixSelection) {
-        self.suffixSelection = suffixSelection
-        suffixSelection.attach(to: self, storeIn: &cancellables)
+    func autoRegister() {
+        manager.defaultScope = .singleton
     }
+}
 
-    func upgrade() {
-        router.present(for: .upgradeFlow)
+// MARK: Main Router
+
+extension RouterContainer {
+    var mainNavViewRouter: Factory<MainNavViewRouter> {
+        self { MainNavViewRouter() }
     }
 }

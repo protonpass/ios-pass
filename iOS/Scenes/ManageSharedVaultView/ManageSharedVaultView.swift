@@ -30,7 +30,7 @@ import UIComponents
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ManageSharedVaultViewModel
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     @State private var sort: ShareRole = .admin
 
@@ -41,7 +41,7 @@ struct ManageSharedVaultView: View {
                 CapsuleTextButton(title: "Share with more people",
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
-                                  action: { router.presentSheet(for: .sharingFlow) })
+                                  action: { router.present(for: .sharingFlow) })
             }
         }
         .onAppear {

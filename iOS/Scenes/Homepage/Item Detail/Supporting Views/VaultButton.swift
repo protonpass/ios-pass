@@ -24,11 +24,11 @@ import SwiftUI
 import UIComponents
 
 struct VaultButton: View {
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let vault: Vault
 
     var body: some View {
-        Button { router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: false)) } label: {
+        Button { router.present(for: .manageShareVault(vault, dismissBeforeShowing: false)) } label: {
             HStack {
                 Label(title: {
                     Text(vault.name)

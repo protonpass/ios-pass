@@ -25,18 +25,14 @@ import Factory
 import ProtonCore_Login
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToShowLoadingHud()
-    func createEditItemViewModelWantsToHideLoadingHud()
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate)
-    func createEditItemViewModelWantsToUpgrade()
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
-    func createEditItemViewModelDidEncounter(error: Error)
 }
 
 enum ItemMode {
@@ -80,6 +76,7 @@ class BaseCreateEditItemViewModel {
     let upgradeChecker: UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -155,7 +152,7 @@ private extension BaseCreateEditItemViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -172,7 +169,7 @@ private extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -185,7 +182,7 @@ private extension BaseCreateEditItemViewModel {
                 self.canAddMoreCustomFields = !isFreeUser
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -251,7 +248,7 @@ extension BaseCreateEditItemViewModel {
     }
 
     func upgrade() {
-        delegate?.createEditItemViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 
     func save() {
@@ -278,7 +275,7 @@ extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -298,7 +295,7 @@ extension BaseCreateEditItemViewModel {
                 self.isObsolete = itemContent.item.revision != updatedItem.item.revision
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -320,7 +317,7 @@ extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
     }
 
     func vaultSelectorViewModelDidEncounter(error: Error) {
-        delegate?.createEditItemViewModelDidEncounter(error: error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 

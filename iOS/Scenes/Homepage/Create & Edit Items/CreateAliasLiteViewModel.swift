@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Entities
+import Factory
 import SwiftUI
 
 protocol AliasCreationLiteInfoDelegate: AnyObject {
@@ -36,12 +37,6 @@ struct AliasCreationLiteInfo {
     var aliasAddress: String { prefix + suffix.suffix }
 }
 
-protocol CreateAliasLiteViewModelDelegate: AnyObject {
-    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection)
-    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection)
-    func createAliasLiteViewModelWantsToUpgrade()
-}
-
 final class CreateAliasLiteViewModel: ObservableObject {
     @Published var prefix = ""
     @Published private(set) var canCreateAlias: Bool
@@ -50,9 +45,9 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     let suffixSelection: SuffixSelection
     let mailboxSelection: MailboxSelection
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
-    weak var delegate: CreateAliasLiteViewModelDelegate?
 
     var suffix: String {
         suffixSelection.selectedSuffix?.suffix ?? ""
@@ -108,14 +103,14 @@ extension CreateAliasLiteViewModel {
     }
 
     func showMailboxSelection() {
-        delegate?.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+        router.present(for: .mailboxView(mailboxSelection, .create))
     }
 
     func showSuffixSelection() {
-        delegate?.createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
+        router.present(for: .suffixView(suffixSelection))
     }
 
     func upgrade() {
-        delegate?.createAliasLiteViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 }
