@@ -21,36 +21,47 @@
 import Entities
 
 extension ShareRole {
+    var role: String {
+        switch self {
+        case .admin:
+            return "admin".localized
+        case .write:
+            return "edit".localized
+        case .read:
+            return "read".localized
+        }
+    }
+
     var title: String {
         switch self {
         case .read:
-            return "Can View"
+            return "Can View".localized
         case .write:
-            return "Can Edit"
+            return "Can Edit".localized
         case .admin:
-            return "Can Manage"
+            return "Can Manage".localized
         }
     }
 
     var description: String {
         switch self {
         case .read:
-            return "Can view items in this vault"
+            return "Can view items in this vault".localized
         case .write:
-            return "Can create, edit, delete and export items in this vault"
+            return "Can create, edit, delete and export items in this vault".localized
         case .admin:
-            return "Can grant and revoke access to this vault"
+            return "Can grant and revoke access to this vault".localized
         }
     }
 
     var summary: String {
         switch self {
         case .read:
-            return "only view items in this vault."
+            return "only view items".localized
         case .write:
-            return "create, edit, delete and export items in this vault."
+            return "create, edit, delete and export items".localized
         case .admin:
-            return "grant and revoke access to this vault."
+            return "grant and revoke access".localized
         }
     }
 }

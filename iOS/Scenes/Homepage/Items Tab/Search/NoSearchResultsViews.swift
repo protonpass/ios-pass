@@ -26,7 +26,7 @@ struct NoSearchResultsInAllVaultView: View {
 
     var body: some View {
         VStack {
-            Text("Couldn't find \"\(query)\"")
+            Text("Couldn't find « %@ »".localized(query))
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -47,7 +47,7 @@ struct NoSearchResultsInPreciseVaultView: View {
 
     var body: some View {
         VStack {
-            Text("Couldn't find \"\(query)\" in \(vaultName)")
+            Text("Couldn't find « %@ » in %@".localized(query, vaultName))
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -75,7 +75,7 @@ struct NoSearchResultsInTrashView: View {
 
     var body: some View {
         VStack {
-            Text("Couldn't find \"\(query)\" in trash")
+            Text("Couldn't find « %@ » in Trash".localized(query))
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -91,7 +91,7 @@ struct NoSearchResultsInTrashView: View {
 
 private struct TrySearchAgainText: View {
     var body: some View {
-        Text("Try searching using different spelling or keywords.")
+        Text("Try searching using different spelling or keywords")
             .font(.callout)
             .foregroundColor(Color(uiColor: PassColor.textWeak))
             .multilineTextAlignment(.center)

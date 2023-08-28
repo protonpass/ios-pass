@@ -54,7 +54,7 @@ struct CreateEditNoteView: View {
                         TextEditorWithPlaceholder(text: $viewModel.title,
                                                   focusedField: $focusedField,
                                                   field: .title,
-                                                  placeholder: "Untitled",
+                                                  placeholder: "Untitled".localized,
                                                   font: .title,
                                                   fontWeight: .bold,
                                                   onSubmit: { focusedField = .content })
@@ -65,7 +65,7 @@ struct CreateEditNoteView: View {
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   focusedField: $focusedField,
                                                   field: .content,
-                                                  placeholder: "Note")
+                                                  placeholder: "Note".localized)
                     }
                     .padding()
                 }

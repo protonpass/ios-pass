@@ -62,9 +62,9 @@ final class CreateEditVaultViewModel: ObservableObject {
     var saveButtonTitle: String {
         switch mode {
         case .create:
-            return "Create vault"
+            return "Create vault".localized
         case .edit:
-            return "Save"
+            return "Save".localized
         }
     }
 

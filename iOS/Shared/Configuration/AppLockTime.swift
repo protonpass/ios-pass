@@ -33,21 +33,21 @@ public enum AppLockTime: Int, Codable, CustomStringConvertible, CaseIterable {
     public var description: String {
         switch self {
         case .immediately:
-            return "Immediately"
+            return "Immediately".localized
         case .oneMinute:
-            return "After 1 minute"
+            return "After 1 minute".localized
         case .twoMinutes:
-            return "After 2 minutes"
+            return "After 2 minutes".localized
         case .fiveMinutes:
-            return "After 5 minutes"
+            return "After 5 minutes".localized
         case .tenMinutes:
-            return "After 10 minutes"
+            return "After 10 minutes".localized
         case .oneHour:
-            return "After 1 hour"
+            return "After 1 hour".localized
         case .fourHours:
-            return "After 4 hours"
+            return "After 4 hours".localized
         case .never:
-            return "Never"
+            return "Never".localized
         }
     }
 

@@ -29,13 +29,13 @@ public enum ClipboardExpiration: Int, Codable, CustomStringConvertible, CaseIter
     public var description: String {
         switch self {
         case .fifteenSeconds:
-            return "After 15 seconds"
+            return "After 15 seconds".localized
         case .oneMinute:
-            return "After 60 seconds"
+            return "After 60 seconds".localized
         case .twoMinutes:
-            return "After 120 seconds"
+            return "After 120 seconds".localized
         case .never:
-            return "Never"
+            return "Never".localized
         }
     }
 

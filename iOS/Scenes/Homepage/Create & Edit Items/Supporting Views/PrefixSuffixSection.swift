@@ -52,6 +52,8 @@ struct PrefixSuffixSection<Field: Hashable>: View {
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedEditableSection()
+        .accentColor(PassColor.interactionNorm.toColor)
+        .tint(PassColor.interactionNorm.toColor)
     }
 
     private var prefixRow: some View {

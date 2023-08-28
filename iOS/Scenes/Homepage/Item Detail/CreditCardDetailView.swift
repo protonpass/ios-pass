@@ -107,7 +107,7 @@ private extension CreditCardDetailView {
                     .sectionTitleText()
 
                 UpsellableDetailText(text: viewModel.cardholderName,
-                                     placeholder: "Empty cardholder name",
+                                     placeholder: "Empty".localized,
                                      shouldUpgrade: false,
                                      upgradeTextColor: tintColor,
                                      onUpgrade: viewModel.upgrade)
@@ -145,7 +145,7 @@ private extension CreditCardDetailView {
                 UpsellableDetailText(text: isShowingCardNumber ?
                     viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber
                     .toMaskedCreditCardNumber(),
-                    placeholder: "Empty credit card number",
+                    placeholder: "Empty".localized,
                     shouldUpgrade: viewModel.isFreeUser,
                     upgradeTextColor: tintColor,
                     onUpgrade: viewModel.upgrade)
@@ -197,7 +197,7 @@ private extension CreditCardDetailView {
                 UpsellableDetailText(text: isShowingVerificationNumber ?
                     viewModel.verificationNumber :
                     String(repeating: "•", count: viewModel.verificationNumber.count),
-                    placeholder: "Empty verification number",
+                    placeholder: "Empty".localized,
                     shouldUpgrade: false,
                     upgradeTextColor: tintColor,
                     onUpgrade: viewModel.upgrade)
@@ -243,7 +243,7 @@ private extension CreditCardDetailView {
             ItemDetailSectionIcon(icon: IconProvider.grid3, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("PIN")
+                Text("PIN number")
                     .sectionTitleText()
 
                 UpsellableDetailText(text: isShowingPIN ?
