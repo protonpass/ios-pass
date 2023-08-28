@@ -24,7 +24,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct SearchResultsView: View, Equatable {
     @ObservedObject private var viewModel: SearchResultsViewModel
     @Binding var selectedType: ItemContentType?

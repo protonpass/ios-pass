@@ -25,7 +25,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct FullScreenView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var mode: Mode = .text
