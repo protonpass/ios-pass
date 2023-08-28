@@ -471,6 +471,10 @@
 "Create a credit card" = "Créer une carte de crédit";
 "Create a note" = "Créer une note";
 
+/* Empty trash page */
+"Trash empty" = "La corbeille est vide";
+"Items moved to trash appear here" = "Les éléments déplacés dans la corbeille apparaissent ici";
+
 /* No camera permission page */
 "Camera permission required for this feature to be available" = "L'autorisation de l'appareil photo est nécessaire pour que cette fonction soit disponible";
 "Please allow camera access in Settings" = "Veuillez autoriser l'accès à l'appareil photo dans Réglages";
