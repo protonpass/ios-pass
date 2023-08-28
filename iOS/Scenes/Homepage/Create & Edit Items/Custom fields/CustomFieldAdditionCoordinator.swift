@@ -64,18 +64,18 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
 
 private extension CustomFieldAdditionCoordinator {
     func makeAlert(for type: CustomFieldType) -> UIAlertController {
-        let alert = UIAlertController(title: "Enter field title",
-                                      message: "Custom field \"\(type.title)\"",
+        let alert = UIAlertController(title: "Custom field title".localized,
+                                      message: "Enter a title for your custom field".localized,
                                       preferredStyle: .alert)
         alert.addTextField { textField in
-            textField.placeholder = "Field title"
+            textField.placeholder = "Title of the custom field".localized
             let action = UIAction { _ in
                 alert.actions.first?.isEnabled = textField.text?.isEmpty == false
             }
             textField.addAction(action, for: .editingChanged)
         }
 
-        let addAction = UIAlertAction(title: "Add field", style: .default) { [type, delegate] _ in
+        let addAction = UIAlertAction(title: "Add".localized, style: .default) { [type, delegate] _ in
             delegate.customFieldAdded(.init(title: alert.textFields?.first?.text ?? "",
                                             type: type,
                                             content: ""))
@@ -83,7 +83,7 @@ private extension CustomFieldAdditionCoordinator {
         addAction.isEnabled = false
         alert.addAction(addAction)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel)
         alert.addAction(cancelAction)
         return alert
     }
