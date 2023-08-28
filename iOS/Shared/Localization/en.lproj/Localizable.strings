@@ -479,3 +479,11 @@
 /* No camera permission page */
 "Camera permission required for this feature to be available" = "Camera permission required for this feature to be available";
 "Please allow camera access in Settings" = "Please allow camera access in Settings";
+
+/* Trial page */
+"For next-level password management:" = "For next-level password management:";
+"20 vaults" = "20 vaults";
+"Unlimited email aliases" = "Unlimited email aliases";
+"Integrated 2FA authenticator" = "Integrated 2FA authenticator";
+"Custom fields" = "Custom fields";
+"Upgrade to keep these features" = "Upgrade to keep these features";
