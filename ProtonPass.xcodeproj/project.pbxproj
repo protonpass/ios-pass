@@ -89,10 +89,10 @@
 		354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361562941D419000CAE12 /* OnboardingViewModel.swift */; };
 		354361592941DA0C000CAE12 /* OnboardingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361582941DA0C000CAE12 /* OnboardingViewState.swift */; };
 		3543615C2941E1A8000CAE12 /* UIApplication+OpenSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3543615B2941E1A8000CAE12 /* UIApplication+OpenSettings.swift */; };
-		3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; };
-		3544BCBA28E1E42B00EFE130 /* Client.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; };
-		3544BCBD28E1E42C00EFE130 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3544BCB928E1E42B00EFE130 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; platformFilter = ios; };
+		3544BCBA28E1E42B00EFE130 /* Client.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50661286F870500A3F6EA /* Client.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; platformFilter = ios; };
+		3544BCBD28E1E42C00EFE130 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E50684286F87A600A3F6EA /* Core.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */; };
 		3544F5E128E2341900834CA4 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3544F5DA28E2339400834CA4 /* AuthenticationServices.framework */; };
 		3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */; };
@@ -107,6 +107,7 @@
 		3545DA84288D8B5F006D0D3D /* GeneratePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */; };
 		3545DA86288D8C7A006D0D3D /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		3545DA88288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */; };
+		3546327B2A9CEFBC00321691 /* AutoFillInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3546327A2A9CEFBC00321691 /* AutoFillInstructionsView.swift */; };
 		35464B62289B0380008E65C4 /* ShareKey+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35464B61289B0380008E65C4 /* ShareKey+Test.swift */; };
 		35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */; };
 		35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
@@ -631,8 +632,8 @@
 		35CEA8E72A607D3200343A4E /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
 		35CEA8EB2A61D54E00343A4E /* ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8EA2A61D54E00343A4E /* ChildCoordinatorDelegate.swift */; };
 		35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */; };
-		35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; };
-		35D56D572942354A00C2D0E2 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; platformFilter = ios; };
+		35D56D572942354A00C2D0E2 /* UIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35E506AA286F920300A3F6EA /* UIComponents.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */; };
 		35E152C42A38866900E47E57 /* CreateEditCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E152C32A38866900E47E57 /* CreateEditCreditCardViewModel.swift */; };
 		35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35E50636286F819F00A3F6EA /* Assets.xcassets */; };
@@ -1131,6 +1132,7 @@
 		3545DA83288D8B5F006D0D3D /* GeneratePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordView.swift; sourceTree = "<group>"; };
 		3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordViewModel.swift; sourceTree = "<group>"; };
 		3545DA87288D92BA006D0D3D /* ProtonSwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonSwitchToggleStyle.swift; sourceTree = "<group>"; };
+		3546327A2A9CEFBC00321691 /* AutoFillInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillInstructionsView.swift; sourceTree = "<group>"; };
 		35464B61289B0380008E65C4 /* ShareKey+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareKey+Test.swift"; sourceTree = "<group>"; };
 		3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginViewModel.swift; sourceTree = "<group>"; };
 		35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasViewModel.swift; sourceTree = "<group>"; };
@@ -2551,6 +2553,7 @@
 			children = (
 				35533BBE29D618A200EC58DE /* AccountView.swift */,
 				35533BC029D618B800EC58DE /* AccountViewModel.swift */,
+				3546327A2A9CEFBC00321691 /* AutoFillInstructionsView.swift */,
 				3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */,
 				355895B229D79565001E2207 /* FeedbackChannelsView.swift */,
 				35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */,
@@ -5195,6 +5198,7 @@
 				5B503FE52A4D6FD000E6681C /* ExtractLogsToFile.swift in Sources */,
 				359DB2A92A70435800549466 /* Service+DependencyInjections.swift in Sources */,
 				35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */,
+				3546327B2A9CEFBC00321691 /* AutoFillInstructionsView.swift in Sources */,
 				5B503FD82A4C82D700E6681C /* ReportRepository.swift in Sources */,
 				35CEA8DD2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */,
 				3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */,
@@ -5752,6 +5756,7 @@
 		};
 		35D56D592942354A00C2D0E2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 35E506A9286F920300A3F6EA /* UIComponents */;
 			targetProxy = 35D56D582942354A00C2D0E2 /* PBXContainerItemProxy */;
 		};
@@ -5767,6 +5772,7 @@
 		};
 		35E50673286F870500A3F6EA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 35E50660286F870500A3F6EA /* Client */;
 			targetProxy = 35E50672286F870500A3F6EA /* PBXContainerItemProxy */;
 		};
@@ -5782,6 +5788,7 @@
 		};
 		35E50696286F87A700A3F6EA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 35E50683286F87A600A3F6EA /* Core */;
 			targetProxy = 35E50695286F87A700A3F6EA /* PBXContainerItemProxy */;
 		};
@@ -5903,6 +5910,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -5980,6 +5988,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass AutoFill Distribution";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -6229,7 +6238,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6444,6 +6453,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass AutoFill Distribution";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -7190,7 +7200,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7405,6 +7415,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Proton Pass AutoFill Distribution";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -7856,7 +7867,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -8154,7 +8165,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

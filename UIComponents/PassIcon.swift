@@ -24,6 +24,10 @@ import UIKit
 public enum PassIcon {}
 
 public extension PassIcon {
+    static var autoFillOnWebPreview = UIImage(named: "AutoFillOnWebPreview")!
+    static var enableAutoFillStep4 = UIImage(named: "EnableAutoFillStep4")!
+    static var enableAutoFillStep5 = UIImage(named: "EnableAutoFillStep5")!
+
     static var badgePaid = UIImage(named: "BadgePaid")!
     static var badgeTrial = UIImage(named: "BadgeTrial")!
 
