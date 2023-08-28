@@ -81,7 +81,7 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             if !ProcessInfo.processInfo.isiOSAppOnMac {
                 OptionRow(action: viewModel.editDefaultBrowser,
-                          title: "Default browser",
+                          title: "Default browser".localized,
                           height: .tall,
                           content: {
                               Text(viewModel.selectedBrowser.description)
@@ -93,7 +93,7 @@ struct SettingsView: View {
             }
 
             OptionRow(action: viewModel.editTheme,
-                      title: "Theme",
+                      title: "Theme".localized,
                       height: .tall,
                       content: {
                           Label(title: {
@@ -129,7 +129,7 @@ struct SettingsView: View {
 
             VStack(spacing: 0) {
                 OptionRow(action: viewModel.editClipboardExpiration,
-                          title: "Clear clipboard",
+                          title: "Clear clipboard".localized,
                           height: .tall,
                           content: {
                               Text(viewModel.selectedClipboardExpiration.description)
@@ -159,7 +159,7 @@ struct SettingsView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
-                      title: "Primary vault",
+                      title: "Primary vault".localized,
                       height: .tall,
                       content: { Text(vault.name).foregroundColor(Color(uiColor: PassColor.textNorm)) },
                       leading: { VaultThumbnail(vault: vault) },

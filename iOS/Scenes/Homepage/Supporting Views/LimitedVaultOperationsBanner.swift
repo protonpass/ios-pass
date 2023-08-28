@@ -34,7 +34,7 @@ struct LimitedVaultOperationsBanner: View {
     }
 
     private var texts: some View {
-        Text("To interact with other vaults, you need to upgrade your account.")
+        Text("To interact with your other vaults, you need to upgrade your account.")
             .foregroundColor(Color(uiColor: PassColor.textNorm)) +
             Text(" ") +
             Text("Upgrade now")

@@ -226,7 +226,7 @@ struct CreateEditLoginView: View {
                         focusedField = nil
                     }
                 }, label: {
-                    Text("Use \(viewModel.emailAddress)")
+                    Text("Use %@".localized(viewModel.emailAddress))
                         .minimumScaleFactor(0.5)
                 })
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -236,26 +236,28 @@ struct CreateEditLoginView: View {
     }
 
     private var totpTextFieldToolbar: some View {
-        HStack {
-            Button(action: viewModel.pasteTotpUriFromClipboard) {
-                HStack {
-                    toolbarIcon(uiImage: IconProvider.squares)
-                    Text("Paste from clipboard")
+        ScrollView(.horizontal) {
+            HStack {
+                Button(action: viewModel.pasteTotpUriFromClipboard) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.squares)
+                        Text("Paste from clipboard")
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity, alignment: .center)
 
-            PassDivider()
+                PassDivider()
 
-            Button(action: viewModel.openCodeScanner) {
-                HStack {
-                    toolbarIcon(uiImage: IconProvider.camera)
-                    Text("Open camera")
+                Button(action: viewModel.openCodeScanner) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.camera)
+                        Text("Open camera")
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
             }
-            .frame(maxWidth: .infinity, alignment: .center)
+            .animationsDisabled() // Disable animation when switching between toolbars
         }
-        .animationsDisabled() // Disable animation when switching between toolbars
     }
 
     private var passwordTextFieldToolbar: some View {
@@ -303,9 +305,9 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username or email")
+                Text("Username or email address")
                     .sectionTitleText()
-                TextField("Add username or email", text: $viewModel.username)
+                TextField("Add username or email address", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
@@ -333,9 +335,10 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username or email")
+                Text("Username or email address")
                     .sectionTitleText()
                 Text(viewModel.username)
+                    .foregroundColor(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -364,7 +367,7 @@ struct CreateEditLoginView: View {
                    Button(role: .cancel, label: { Text("Cancel") })
                },
                message: {
-                   Text("The alias will be deleted permanently.")
+                   Text("The alias will be deleted permanently")
                })
     }
 
@@ -373,9 +376,10 @@ struct CreateEditLoginView: View {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username or email")
+                Text("Username or email address")
                     .sectionTitleText()
                 Text(viewModel.username)
+                    .foregroundColor(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -408,7 +412,7 @@ struct CreateEditLoginView: View {
                     .sectionTitleText()
 
                 SensitiveTextField(text: $viewModel.password,
-                                   placeholder: "Add password",
+                                   placeholder: "Add password".localized,
                                    focusedField: $focusedField,
                                    field: Field.password,
                                    onSubmit: { focusedField = .totp })
@@ -456,7 +460,7 @@ struct CreateEditLoginView: View {
                     .sectionTitleText()
 
                 SensitiveTextField(text: $viewModel.totpUri,
-                                   placeholder: "Add 2FA secret",
+                                   placeholder: "Add 2FA secret".localized,
                                    focusedField: $focusedField,
                                    field: .totp,
                                    onSubmit: { focusedField = .websites })

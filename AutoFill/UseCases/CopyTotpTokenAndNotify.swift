@@ -83,7 +83,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
         logger.trace("Copied TOTP token \(itemContent.debugInformation)")
 
         let content = UNMutableNotificationContent()
-        content.title = "Two Factor Authentication code copied"
+        content.title = "TOTP copied".localized
         content.subtitle = itemContent.name
         content.body = """
         "\(totpData.code)" is copied to clipboard.
