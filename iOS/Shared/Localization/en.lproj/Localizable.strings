@@ -375,6 +375,8 @@
 "Couldn't find « %@ » in Trash" = "Couldn't find « %@ » in Trash";
 "Try searching using different spelling or keywords" = "Try searching using different spelling or keywords";
 "All" = "All";
+"Recent searches" = "Recent searches";
+"Clear" = "Clear";
 
 /* Items filtering */
 "Sort by" = "Sort by";
