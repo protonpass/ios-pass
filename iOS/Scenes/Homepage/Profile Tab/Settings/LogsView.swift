@@ -54,6 +54,7 @@ struct LogsView: View {
                     }
                 } else {
                     logs
+                        .showSpinner(viewModel.sharingLogs)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
