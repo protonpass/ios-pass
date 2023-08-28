@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -38,16 +39,22 @@ struct TrialDetailView: View {
 
                 Text("Enjoy your free trial")
                     .font(.title.bold())
+                    .multilineTextAlignment(.center)
 
                 Text("For next-level password management:")
                     .padding(.bottom)
+                    .multilineTextAlignment(.center)
 
                 VStack {
-                    perk(title: "Multiple vaults", icon: PassIcon.trialVaults)
+                    perk(title: "20 vaults".localized, icon: PassIcon.trialVaults)
                     PassDivider()
-                    perk(title: "Integrated 2FA authenticator", icon: PassIcon.trial2FA)
+                    perk(title: "Unlimited email aliases".localized,
+                         icon: IconProvider.alias,
+                         iconTintColor: PassColor.aliasInteractionNorm)
                     PassDivider()
-                    perk(title: "Custom fields", icon: PassIcon.trialCustomFields)
+                    perk(title: "Integrated 2FA authenticator".localized, icon: PassIcon.trial2FA)
+                    PassDivider()
+                    perk(title: "Custom fields".localized, icon: PassIcon.trialCustomFields)
                 }
                 .padding()
                 .background(Color(uiColor: PassColor.inputBackgroundNorm))
@@ -70,7 +77,7 @@ struct TrialDetailView: View {
                     endPoint: .trailing))
                 .clipShape(Capsule())
 
-                Text("\(daysLeft) day(s) left in your trial period")
+                Text("%d trial day(s) left".localized(daysLeft))
                     .font(.callout)
                     .padding(.top)
 
@@ -97,14 +104,17 @@ struct TrialDetailView: View {
         .navigationViewStyle(.stack)
     }
 
-    private func perk(title: String, icon: UIImage) -> some View {
+    private func perk(title: String, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {
         Label(title: {
             Text(title)
+                .minimumScaleFactor(0.75)
         }, icon: {
             Image(uiImage: icon)
+                .renderingMode(iconTintColor != nil ? .template : .original)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 32)
+                .foregroundColor(iconTintColor?.toColor)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
     }

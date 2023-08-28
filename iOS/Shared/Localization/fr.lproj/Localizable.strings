@@ -479,3 +479,11 @@
 /* No camera permission page */
 "Camera permission required for this feature to be available" = "L'autorisation de l'appareil photo est nécessaire pour que cette fonction soit disponible";
 "Please allow camera access in Settings" = "Veuillez autoriser l'accès à l'appareil photo dans Réglages";
+
+/* Trial page */
+"For next-level password management:" = "Tout ce qu'il vous faut pour gérer vos mots de passe de façon optimale :";
+"20 vaults" = "20 coffres-forts";
+"Unlimited email aliases" = "Nombre illimité d'alias";
+"Integrated 2FA authenticator" = "Authentification à deux facteurs (A2F) intégrée";
+"Custom fields" = "Champs personnalisés";
+"Upgrade to keep these features" = "Changer d'abonnement pour garder ces fonctionnalités";
