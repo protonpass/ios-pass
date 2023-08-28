@@ -63,7 +63,9 @@ struct ProfileTabView: View {
                 .padding(.top)
                 .animation(.default, value: viewModel.automaticallyCopyTotpCode)
                 .animation(.default, value: viewModel.localAuthenticationMethod)
+                .showSpinner(viewModel.loading)
             }
+
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)

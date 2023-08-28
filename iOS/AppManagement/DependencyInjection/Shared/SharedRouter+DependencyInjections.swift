@@ -1,6 +1,6 @@
 //
-// Router+DependencyInjections.swift
-// Proton Pass - Created on 19/07/2023.
+// SharedRouter+DependencyInjections.swift
+// Proton Pass - Created on 11/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,23 +21,19 @@
 import Factory
 import Foundation
 
-final class RouterContainer: SharedContainer, AutoRegistering {
-    static let shared = RouterContainer()
+final class SharedRouterContainer: SharedContainer, AutoRegistering {
+    static let shared = SharedRouterContainer()
     let manager = ContainerManager()
 
     func autoRegister() {
-        manager.defaultScope = .shared
+        manager.defaultScope = .singleton
     }
 }
 
 // MARK: Main Router
 
-extension RouterContainer {
+extension SharedRouterContainer {
     var mainUIKitSwiftUIRouter: Factory<MainUIKitSwiftUIRouter> {
         self { MainUIKitSwiftUIRouter() }
-    }
-
-    var mainNavViewRouter: Factory<MainNavViewRouter> {
-        self { MainNavViewRouter() }
     }
 }

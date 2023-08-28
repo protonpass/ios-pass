@@ -40,7 +40,6 @@ struct SharingSummaryView: View {
                 Spacer()
             }
         }
-        .errorAlert(error: $viewModel.error)
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)

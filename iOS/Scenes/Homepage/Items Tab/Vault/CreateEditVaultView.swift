@@ -37,6 +37,7 @@ struct CreateEditVaultView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 colorsAndIcons
             }
+            .showSpinner(viewModel.loading)
             .animation(.default, value: viewModel.canCreateOrEdit)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(kItemDetailSectionPadding)

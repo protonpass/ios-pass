@@ -25,18 +25,13 @@ import Factory
 import SwiftUI
 
 protocol SettingsViewModelDelegate: AnyObject {
-    func settingsViewModelWantsToShowSpinner()
-    func settingsViewModelWantsToHideSpinner()
     func settingsViewModelWantsToGoBack()
     func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
     func settingsViewModelWantsToEditTheme()
     func settingsViewModelWantsToEditClipboardExpiration()
     func settingsViewModelWantsToEdit(primaryVault: Vault)
-    func settingsViewModelWantsToViewHostAppLogs()
-    func settingsViewModelWantsToViewAutoFillExtensionLogs()
     func settingsViewModelWantsToClearLogs()
     func settingsViewModelDidFinishFullSync()
-    func settingsViewModelDidEncounter(error: Error)
 }
 
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
@@ -47,6 +42,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     let supportedBrowsers: [Browser]
@@ -61,6 +58,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
             }
         }
     }
+
+    @Published private(set) var loading = false
 
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
@@ -138,11 +137,11 @@ extension SettingsViewModel {
     }
 
     func viewHostAppLogs() {
-        delegate?.settingsViewModelWantsToViewHostAppLogs()
+        router.present(for: .logView(module: .hostApp))
     }
 
     func viewAutoFillExensionLogs() {
-        delegate?.settingsViewModelWantsToViewAutoFillExtensionLogs()
+        router.present(for: .logView(module: .autoFillExtension))
     }
 
     func clearLogs() {
@@ -151,18 +150,18 @@ extension SettingsViewModel {
 
     func forceSync() {
         Task { @MainActor [weak self] in
-            defer { self?.delegate?.settingsViewModelWantsToHideSpinner() }
+            defer { self?.loading = false }
             do {
                 self?.syncEventLoop.stop()
                 self?.logger.info("Doing full sync")
-                self?.delegate?.settingsViewModelWantsToShowSpinner()
+                self?.loading = true
                 try await self?.vaultsManager.fullSync()
                 self?.logger.info("Done full sync")
                 self?.syncEventLoop.start()
                 self?.delegate?.settingsViewModelDidFinishFullSync()
             } catch {
                 self?.logger.error(error)
-                self?.delegate?.settingsViewModelDidEncounter(error: error)
+                self?.router.display(element: .displayErrorBanner(error))
             }
         }
     }

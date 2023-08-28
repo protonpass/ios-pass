@@ -41,13 +41,13 @@ extension ItemContentType {
 
 protocol ItemTypeListViewModelDelegate: AnyObject {
     func itemTypeListViewModelDidSelect(type: ItemType)
-    func itemTypeListViewModelDidEncounter(error: Error)
 }
 
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemTypeListViewModelDelegate?
 
@@ -58,7 +58,7 @@ final class ItemTypeListViewModel: ObservableObject {
                 self.limitation = try await self.upgradeChecker.aliasLimitation()
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemTypeListViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
