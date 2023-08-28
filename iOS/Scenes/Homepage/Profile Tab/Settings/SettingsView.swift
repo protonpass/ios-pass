@@ -79,16 +79,18 @@ struct SettingsView: View {
 
     private var untitledSection: some View {
         VStack(spacing: 0) {
-            OptionRow(action: viewModel.editDefaultBrowser,
-                      title: "Default browser",
-                      height: .tall,
-                      content: {
-                          Text(viewModel.selectedBrowser.description)
-                              .foregroundColor(Color(uiColor: PassColor.textNorm))
-                      },
-                      trailing: { ChevronRight() })
+            if !ProcessInfo.processInfo.isiOSAppOnMac {
+                OptionRow(action: viewModel.editDefaultBrowser,
+                          title: "Default browser",
+                          height: .tall,
+                          content: {
+                              Text(viewModel.selectedBrowser.description)
+                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                          },
+                          trailing: { ChevronRight() })
 
-            PassSectionDivider()
+                PassSectionDivider()
+            }
 
             OptionRow(action: viewModel.editTheme,
                       title: "Theme",
