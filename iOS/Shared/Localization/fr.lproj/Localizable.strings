@@ -426,6 +426,7 @@
 "Vault created" = "Le coffre-fort a été créé";
 "Vault updated" = "Le coffre-fort a été mis à jour";
 "You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription." = "Vous avez atteint le nombre maximum de coffres-forts que vous pouvez créer. Changez d'abonnement pour créer un nombre illimité de coffres-forts.";
+"To interact with your other vaults, you need to upgrade your account." = "Pour interagir avec vos autres coffres-forts, vous devez changer d'abonnement.";
 
 /* AutoFill extension */
 "Create login" = "Créer un identifiant";
