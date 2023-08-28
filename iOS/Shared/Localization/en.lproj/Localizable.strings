@@ -471,6 +471,10 @@
 "Create a credit card" = "Create a credit card";
 "Create a note" = "Create a note";
 
+/* Empty trash page */
+"Trash empty" = "Trash empty";
+"Items moved to trash appear here" = "Deleted items will be moved here first";
+
 /* No camera permission page */
 "Camera permission required for this feature to be available" = "Camera permission required for this feature to be available";
 "Please allow camera access in Settings" = "Please allow camera access in Settings";
