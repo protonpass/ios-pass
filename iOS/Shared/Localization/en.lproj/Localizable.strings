@@ -358,6 +358,7 @@
 "Alias can not contain 2 consecutive dots (..)" = "Alias can not contain 2 consecutive dots (..)";
 "Alias of login item \"%@\"" = "Alias of login item \"%@\"";
 "Create & AutoFill" = "Create & AutoFill";
+"You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription." = "You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription.";
 
 /* Credit card item create/edit page */
 "Full name" = "Full name";

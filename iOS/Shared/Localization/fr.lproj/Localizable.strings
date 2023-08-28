@@ -358,6 +358,7 @@
 "Alias can not contain 2 consecutive dots (..)" = "L'alias ne peut contenir 2 points consécutifs (..)";
 "Alias of login item \"%@\"" = "L'alias de l'élément d'identifiant \"%@\"";
 "Create & AutoFill" = "Créer & remplir";
+"You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription." = "Vous avez atteint le nombre maximum d'alias que vous pouvez créer. Changez d'abonnement pour créer un nombre illimité d'alias.";
 
 /* Credit card item create/edit page */
 "Full name" = "Nom complet";
