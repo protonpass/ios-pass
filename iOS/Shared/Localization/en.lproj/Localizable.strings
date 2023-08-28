@@ -315,10 +315,21 @@
 "Discard" = "Discard";
 "Keep Editing" = "Keep Editing";
 
+/* Custom fields */
+"Text" = "Text";
+"2FA secret (TOTP)" = "2FA secret (TOTP)";
+"Hidden" = "Hidden";
+"Custom field title" = "Custom field title";
+"Enter a title for your custom field" = "Enter a title for your custom field";
+"Title of the custom field" = "Title of the custom field";
+"Edit title" = "Edit title";
+"Remove field" = "Remove field";
+"Enter new title for « %@ »" = "Enter new title for « %@ »";
+"New title" = "New title";
+
 /* Login item create/edit page */
 "Add username or email address" = "Add username or email address";
 "Add password" = "Add password";
-"2FA secret (TOTP)" = "2FA secret (TOTP)";
 "Add 2FA secret" = "Add 2FA secret";
 "2FA limit reached" = "2FA limit reached";
 "Hide my email" = "Hide my email";

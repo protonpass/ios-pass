@@ -57,24 +57,24 @@ final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {
     }
 
     func start() {
-        let alert = UIAlertController(title: "Edit field title",
-                                      message: "Enter new title for \"\(uiModel.customField.title)\"",
+        let alert = UIAlertController(title: "Edit title".localized,
+                                      message: "Enter new title for « %@ »".localized(uiModel.customField.title),
                                       preferredStyle: .alert)
         alert.addTextField { textField in
-            textField.placeholder = "New field title"
+            textField.placeholder = "New title".localized
             let action = UIAction { _ in
                 alert.actions.first?.isEnabled = textField.text?.isEmpty == false
             }
             textField.addAction(action, for: .editingChanged)
         }
 
-        let saveAction = UIAlertAction(title: "Save", style: .default) { [uiModel, delegate] _ in
+        let saveAction = UIAlertAction(title: "Save".localized, style: .default) { [uiModel, delegate] _ in
             delegate.customFieldEdited(uiModel, newTitle: alert.textFields?.first?.text ?? "")
         }
         saveAction.isEnabled = false
         alert.addAction(saveAction)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel)
         alert.addAction(cancelAction)
         rootViewController.topMostViewController.present(alert, animated: true)
     }
