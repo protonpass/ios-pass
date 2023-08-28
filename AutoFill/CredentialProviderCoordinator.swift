@@ -336,8 +336,8 @@ private extension CredentialProviderCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .displayErrorBanner(errorLocalized):
-                    self.bannerManager.displayTopErrorMessage(errorLocalized)
+                case let .displayErrorBanner(error):
+                    self.bannerManager.displayTopErrorMessage(error)
                 default:
                     break
                 }
@@ -773,10 +773,6 @@ extension CredentialProviderCoordinator {
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
-
-//    func createAliasLiteViewModelWantsToUpgrade() {
-//        startUpgradeFlow()
-//    }
 }
 
 // MARK: ExtensionSettingsViewModelDelegate
