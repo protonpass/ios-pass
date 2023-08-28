@@ -315,10 +315,21 @@
 "Discard" = "Annuler";
 "Keep Editing" = "Continuer à modifier";
 
+/* Custom fields */
+"Text" = "Texte";
+"2FA secret (TOTP)" = "Clé secrète A2F (TOTP)";
+"Hidden" = "Masqué";
+"Custom field title" = "Titre du champ personnalisé";
+"Enter a title for your custom field" = "Saisissez un titre pour votre champ personnalisé";
+"Title of the custom field" = "Titre du champ personnalisé";
+"Edit title" = "Modifier le titre";
+"Remove field" = "Supprimer le champ";
+"Enter new title for « %@ »" = "Saisissez un nouveau titre pour « %@ »";
+"New title" = "Nouveau titre";
+
 /* Login item create/edit page */
 "Add username or email address" = "Ajouter un nom d'utilisateur ou une adresse e-mail";
 "Add password" = "Ajouter un mot de passe";
-"2FA secret (TOTP)" = "Clé secrète A2F (TOTP)";
 "Add 2FA secret" = "Ajouter une clé secrète A2F";
 "2FA limit reached" = "La limite de l'A2F est atteinte";
 "Hide my email" = "Hide-my-email";
