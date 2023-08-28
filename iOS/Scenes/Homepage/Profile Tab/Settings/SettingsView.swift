@@ -81,7 +81,7 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             if !ProcessInfo.processInfo.isiOSAppOnMac {
                 OptionRow(action: viewModel.editDefaultBrowser,
-                          title: "Default browser",
+                          title: "Default browser".localized,
                           height: .tall,
                           content: {
                               Text(viewModel.selectedBrowser.description)
