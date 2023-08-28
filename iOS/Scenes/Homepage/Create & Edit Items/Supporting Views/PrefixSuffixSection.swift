@@ -32,7 +32,6 @@ enum PrefixUtils {
     }
 }
 
-// Localized
 struct PrefixSuffixSection<Field: Hashable>: View {
     @Binding var prefix: String
     @Binding var prefixManuallyEdited: Bool

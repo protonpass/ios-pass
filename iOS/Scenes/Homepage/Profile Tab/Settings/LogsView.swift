@@ -22,7 +22,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct LogsView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: LogsViewModel

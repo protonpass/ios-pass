@@ -23,7 +23,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID

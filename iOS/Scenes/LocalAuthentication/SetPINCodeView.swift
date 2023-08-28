@@ -24,7 +24,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool

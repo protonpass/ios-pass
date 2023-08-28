@@ -22,7 +22,6 @@ import Core
 import SwiftUI
 import UIComponents
 
-// Localized
 struct EditAppLockTimeView: View {
     let selectedAppLockTime: AppLockTime
     let onSelect: (AppLockTime) -> Void

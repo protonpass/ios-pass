@@ -23,7 +23,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct CreditCardDetailView: View {
     @StateObject private var viewModel: CreditCardDetailViewModel
     @State private var isShowingCardNumber = false

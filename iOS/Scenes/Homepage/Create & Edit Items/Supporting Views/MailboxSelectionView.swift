@@ -24,7 +24,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct MailboxSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: MailboxSelectionViewModel

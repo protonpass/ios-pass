@@ -23,7 +23,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct NoteDetailView: View {
     @StateObject private var viewModel: NoteDetailViewModel
     @Namespace private var bottomID

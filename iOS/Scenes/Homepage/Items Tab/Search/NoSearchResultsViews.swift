@@ -21,7 +21,6 @@
 import SwiftUI
 import UIComponents
 
-// Localized
 struct NoSearchResultsInAllVaultView: View {
     let query: String
 

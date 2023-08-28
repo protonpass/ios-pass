@@ -25,7 +25,6 @@ import Entities
 import SwiftUI
 import UIComponents
 
-// Localized
 struct AcceptRejectInviteView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: AcceptRejectInviteViewModel

@@ -21,7 +21,6 @@
 import SwiftUI
 import UIComponents
 
-// Localized
 struct VaultSelectorView: View {
     @Environment(\.dismiss) private var dismiss
     let viewModel: VaultSelectorViewModel
