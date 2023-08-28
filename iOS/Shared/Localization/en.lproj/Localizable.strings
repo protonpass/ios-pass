@@ -470,3 +470,7 @@
 "Create a Hide My Email alias" = "Create a Hide My Email alias";
 "Create a credit card" = "Create a credit card";
 "Create a note" = "Create a note";
+
+/* No camera permission page */
+"Camera permission required for this feature to be available" = "Camera permission required for this feature to be available";
+"Please allow camera access in Settings" = "Please allow camera access in Settings";

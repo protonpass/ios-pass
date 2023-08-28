@@ -470,3 +470,7 @@
 "Create a Hide My Email alias" = "Créer un alias « Hide My Email »";
 "Create a credit card" = "Créer une carte de crédit";
 "Create a note" = "Créer une note";
+
+/* No camera permission page */
+"Camera permission required for this feature to be available" = "L'autorisation de l'appareil photo est nécessaire pour que cette fonction soit disponible";
+"Please allow camera access in Settings" = "Veuillez autoriser l'accès à l'appareil photo dans Réglages";
