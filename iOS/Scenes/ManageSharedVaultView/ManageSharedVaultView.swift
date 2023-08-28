@@ -27,7 +27,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ManageSharedVaultViewModel

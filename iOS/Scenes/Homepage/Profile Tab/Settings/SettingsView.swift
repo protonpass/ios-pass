@@ -23,7 +23,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel
 

@@ -22,7 +22,6 @@ import Factory
 import SwiftUI
 import UIComponents
 
-// Localized
 struct LocalAuthenticationMethodsView: View {
     @Environment(\.dismiss) private var dismiss
     private let selectedMethod: LocalAuthenticationMethod

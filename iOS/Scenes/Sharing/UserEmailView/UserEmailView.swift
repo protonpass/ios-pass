@@ -25,7 +25,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = UserEmailViewModel()

@@ -26,7 +26,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct SharingSummaryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = SharingSummaryViewModel()

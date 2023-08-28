@@ -22,7 +22,6 @@ import Factory
 import SwiftUI
 import UIComponents
 
-// Localized
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: OnboardingViewModel
