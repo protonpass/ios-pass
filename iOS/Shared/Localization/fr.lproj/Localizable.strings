@@ -375,6 +375,8 @@
 "Couldn't find « %@ » in Trash" = "Aucun résultat n'a été trouvé pour « %@ » dans la corbeille";
 "Try searching using different spelling or keywords" = "Essayez d'effectuer une recherche en utilisant une orthographe ou des mots-clés différents";
 "All" = "Tous";
+"Recent searches" = "Recherches récentes";
+"Clear" = "Effacer";
 
 /* Items sorting/filtering */
 "Sort by" = "Trier par";
