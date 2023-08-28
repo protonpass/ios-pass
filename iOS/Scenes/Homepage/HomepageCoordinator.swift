@@ -746,6 +746,10 @@ extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
+    func profileTabViewModelWantsToShowEnableAutoFillInstructions() {
+        showView(view: AutoFillInstructionsView(), asSheet: true)
+    }
+
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet)
