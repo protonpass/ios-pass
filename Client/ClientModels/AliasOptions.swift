@@ -27,7 +27,7 @@ public struct AliasOptions: Decodable {
     public let canCreateAlias: Bool
 }
 
-public struct Suffix: Decodable {
+public struct Suffix: Decodable, Hashable {
     public let suffix: String
     public let domain: String
     public let signedSuffix: String
