@@ -182,7 +182,7 @@ private extension SecuritySettingsCoordinator {
             guard let self else { return }
             self.preferences.localAuthenticationMethod = .pin
             self.preferences.pinCode = pinCode
-            self.delegate?.childCoordinatorWantsToDisplayBanner(bannerOption: .success("PIN code set"),
+            self.delegate?.childCoordinatorWantsToDisplayBanner(bannerOption: .success("PIN code set".localized),
                                                                 presentationOption: .dismissTopViewController)
         }
         delegate?.childCoordinatorWantsToPresent(view: view,

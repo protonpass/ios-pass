@@ -28,11 +28,11 @@ public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable {
     public var description: String {
         switch self {
         case .light:
-            return "Light"
+            return "Light".localized
         case .dark:
-            return "Dark"
+            return "Dark".localized
         case .matchSystem:
-            return "Match system"
+            return "Match system".localized
         }
     }
 

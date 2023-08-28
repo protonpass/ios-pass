@@ -38,7 +38,7 @@ struct ManageSharedVaultView: View {
         ZStack(alignment: .bottom) {
             mainContainer
             if viewModel.vault.isAdmin {
-                CapsuleTextButton(title: "Share with more people",
+                CapsuleTextButton(title: "Share with more people".localized,
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
                                   action: { router.present(for: .sharingFlow) })
@@ -99,7 +99,7 @@ private extension ManageSharedVaultView {
             Text(viewModel.vault.name)
                 .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("\(viewModel.itemsNumber) items")
+            Text("%d item(s)".localized(viewModel.itemsNumber))
                 .font(.title3)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
@@ -147,7 +147,7 @@ private extension ManageSharedVaultView {
                             .padding(.horizontal, 8)
                             .background(Capsule().fill(PassColor.interactionNorm.toColor))
                     }
-                    Text(user.shareRole?.role ?? "pending")
+                    Text(user.permission)
                         .foregroundColor(PassColor.textWeak.toColor)
                 }
             }

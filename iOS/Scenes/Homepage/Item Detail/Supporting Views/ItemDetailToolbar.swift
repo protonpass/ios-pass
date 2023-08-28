@@ -43,7 +43,7 @@ struct ItemDetailToolbar: ToolbarContent {
             case .active:
                 HStack {
                     CapsuleLabelButton(icon: IconProvider.pencil,
-                                       title: "Edit",
+                                       title: "Edit".localized,
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: itemContentType.normMajor1Color,
                                        action: viewModel.edit)

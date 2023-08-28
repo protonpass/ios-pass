@@ -29,6 +29,7 @@
 		3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36228E325900053A606 /* CredentialsViewModel.swift */; };
 		3520F36828E327420053A606 /* ItemUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CF28DA4E7400194F24 /* ItemUiModel.swift */; };
 		3520F36928E32DCF0053A606 /* ProtonPass.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3593DD0E28A83F7A00C235D3 /* ProtonPass.xcdatamodeld */; };
+		35271EF32A883843000F543E /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 35271EF52A883843000F543E /* Localizable.stringsdict */; };
 		35283E4A292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */; };
 		35283E4C29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */; };
 		35283E4E2927A9A9002F5B84 /* View+ItemDetailModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */; };
@@ -110,6 +111,8 @@
 		35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */; };
 		35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */; };
 		3547A01A2A83DC5600C9DAF1 /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547A0192A83DC5600C9DAF1 /* SearchResultsViewModel.swift */; };
+		3547A0232A840F3500C9DAF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3547A0262A840F3500C9DAF1 /* Localizable.strings */; };
+		3547A0242A840F3500C9DAF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3547A0262A840F3500C9DAF1 /* Localizable.strings */; };
 		3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */; };
 		3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */; };
 		3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */; };
@@ -518,8 +521,6 @@
 		357602AA29F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */; };
 		357602AC29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */; };
 		357602AE29F6FDA0003062A2 /* TelemetryEventRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */; };
-		357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */; };
-		357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */; };
 		357D9FD028A9816900F012BB /* LocalShareDatasourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */; };
 		357E13FD2A1BB7A9001B5791 /* PassPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FC2A1BB7A9001B5791 /* PassPlanTests.swift */; };
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
@@ -1054,6 +1055,8 @@
 		351E9E3A289C54D700BB47EB /* Collection+RandomWithCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RandomWithCount.swift"; sourceTree = "<group>"; };
 		3520F36028E31AF20053A606 /* NotLoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedInView.swift; sourceTree = "<group>"; };
 		3520F36228E325900053A606 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
+		35271EF62A883847000F543E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		35271EF72A883859000F543E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		35283E49292786AD002F5B84 /* String+IsValidWithAllowedCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidWithAllowedCharacters.swift"; sourceTree = "<group>"; };
 		35283E4B29278716002F5B84 /* String+IsValidWithAllowedCharactersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidWithAllowedCharactersTests.swift"; sourceTree = "<group>"; };
 		35283E4D2927A9A9002F5B84 /* View+ItemDetailModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailModifiers.swift"; sourceTree = "<group>"; };
@@ -1132,6 +1135,8 @@
 		3547696F289D6BCB00581E2E /* CreateEditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginViewModel.swift; sourceTree = "<group>"; };
 		35476971289D7E6000581E2E /* CreateEditAliasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasViewModel.swift; sourceTree = "<group>"; };
 		3547A0192A83DC5600C9DAF1 /* SearchResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewModel.swift; sourceTree = "<group>"; };
+		3547A0252A840F3500C9DAF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3547A0272A840F4300C9DAF1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3547ABEB2877753800EE85E1 /* CreateEditLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditLoginView.swift; sourceTree = "<group>"; };
 		3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAliasView.swift; sourceTree = "<group>"; };
 		3547ABEF287777FB00EE85E1 /* CreateEditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteView.swift; sourceTree = "<group>"; };
@@ -1452,8 +1457,6 @@
 		357602A929F6F502003062A2 /* LocalTelemetryEventDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTelemetryEventDatasourceTests.swift; sourceTree = "<group>"; };
 		357602AB29F6FCBB003062A2 /* RemoteTelemetryEventDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTelemetryEventDatasource.swift; sourceTree = "<group>"; };
 		357602AD29F6FDA0003062A2 /* TelemetryEventRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventRepository.swift; sourceTree = "<group>"; };
-		357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillView.swift; sourceTree = "<group>"; };
-		357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnOnAutoFillViewModel.swift; sourceTree = "<group>"; };
 		357D9FCF28A9816900F012BB /* LocalShareDatasourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalShareDatasourceTests.swift; sourceTree = "<group>"; };
 		357E13FC2A1BB7A9001B5791 /* PassPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPlanTests.swift; sourceTree = "<group>"; };
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
@@ -2124,6 +2127,15 @@
 			path = AutoFill;
 			sourceTree = "<group>";
 		};
+		3547A01F2A840F1A00C9DAF1 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				3547A0262A840F3500C9DAF1 /* Localizable.strings */,
+				35271EF52A883843000F543E /* Localizable.stringsdict */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		354A803D28D8B8D8003F49CF /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -2176,8 +2188,6 @@
 				354361542941D251000CAE12 /* OnboardingView.swift */,
 				354361562941D419000CAE12 /* OnboardingViewModel.swift */,
 				354361582941DA0C000CAE12 /* OnboardingViewState.swift */,
-				357D7BC629438B5900AAC594 /* TurnOnAutoFillView.swift */,
-				357D7BC829438DA100AAC594 /* TurnOnAutoFillViewModel.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -3626,6 +3636,7 @@
 				3559BA9A2A5B31900020E172 /* Configuration */,
 				5B503FE02A4D6D0700E6681C /* Data */,
 				5B503FE12A4D6D2700E6681C /* Domain */,
+				3547A01F2A840F1A00C9DAF1 /* Localization */,
 				3542E2CE28DA4E6000194F24 /* Models */,
 				66CA927B29F9713900F2FC59 /* Payments */,
 				5B8256D12A4B25B300BCEE6D /* Protocols */,
@@ -4249,6 +4260,7 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
@@ -4284,6 +4296,7 @@
 				3554DAB7293A910700595FC7 /* Icons.xcassets in Resources */,
 				5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */,
 				3569AE432A69842F0026B780 /* Pass-Constant-Scientist.plist in Resources */,
+				3547A0242A840F3500C9DAF1 /* Localizable.strings in Resources */,
 				3544F5E728E2341900834CA4 /* MainInterface.storyboard in Resources */,
 				3560845029DDE2C7001F7487 /* Colors.xcassets in Resources */,
 				5BB2B6F12A457F4C005E831C /* Pass-Constant-Black.plist in Resources */,
@@ -4321,9 +4334,11 @@
 			files = (
 				66E960D529F046C6004D96AF /* PassLaunchScreen.storyboard in Resources */,
 				35526B5E28D117820017BB53 /* Icons.xcassets in Resources */,
+				35271EF32A883843000F543E /* Localizable.stringsdict in Resources */,
 				35E50648286F819F00A3F6EA /* Assets.xcassets in Resources */,
 				5BB2B6EB2A44540D005E831C /* Pass-Constant-Black.plist in Resources */,
 				3560845129DDE2C9001F7487 /* Colors.xcassets in Resources */,
+				3547A0232A840F3500C9DAF1 /* Localizable.strings in Resources */,
 				3569AE422A6983440026B780 /* Pass-Constant-Scientist.plist in Resources */,
 				FAD3ABA52A862A880004053E /* Proton Pass - Password Manager.storekit in Resources */,
 				5BB2B6ED2A445422005E831C /* Pass-Constant-Prod.plist in Resources */,
@@ -5108,7 +5123,6 @@
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
 				3559BA9D2A5B32550020E172 /* Browser.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
-				357D7BC729438B5900AAC594 /* TurnOnAutoFillView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
@@ -5271,7 +5285,6 @@
 				3569B2A629B7C39F0070830B /* View+Theme.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
-				357D7BC929438DA100AAC594 /* TurnOnAutoFillViewModel.swift in Sources */,
 				35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */,
 				5BA663F22A7BDC6D0049EA68 /* LeaveShare.swift in Sources */,
 				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
@@ -5785,12 +5798,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		35271EF52A883843000F543E /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				35271EF62A883847000F543E /* en */,
+				35271EF72A883859000F543E /* fr */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
 		3544F5E528E2341900834CA4 /* MainInterface.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				3544F5E628E2341900834CA4 /* Base */,
 			);
 			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		3547A0262A840F3500C9DAF1 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3547A0252A840F3500C9DAF1 /* en */,
+				3547A0272A840F4300C9DAF1 /* fr */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -6112,6 +6143,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -7072,6 +7104,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -7731,6 +7764,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -8035,6 +8069,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";

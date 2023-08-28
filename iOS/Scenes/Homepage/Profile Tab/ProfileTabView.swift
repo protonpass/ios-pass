@@ -80,7 +80,7 @@ struct ProfileTabView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             if let plan = viewModel.plan, plan.planType != .plus {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
-                                   title: "Upgrade",
+                                   title: "Upgrade".localized,
                                    titleColor: PassColor.interactionNorm,
                                    backgroundColor: PassColor.interactionNormMinor2,
                                    action: viewModel.upgrade)
@@ -140,12 +140,12 @@ struct ProfileTabView: View {
                 case .none:
                     EmptyView()
 
-                case .biometric:
+                case let .biometric(type):
                     PassDivider()
 
                     OptionRow(height: .tall) {
                         Toggle(isOn: $viewModel.fallbackToPasscode) {
-                            Text("Use system passcode when \(viewModel.localAuthenticationMethod.title) fails")
+                            Text(type.fallbackToPasscodeMessage)
                                 .foregroundColor(Color(uiColor: PassColor.textNorm))
                         }
                         .tint(Color(uiColor: PassColor.interactionNorm))
@@ -190,7 +190,7 @@ struct ProfileTabView: View {
             }
             .roundedEditableSection()
 
-            Text("AutoFill on apps and websites by enabling Proton Pass AutoFill.")
+            Text("AutoFill on apps and websites by enabling Proton Pass AutoFill")
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, kItemDetailSectionPadding / 2)
@@ -253,7 +253,7 @@ struct ProfileTabView: View {
 
             PassSectionDivider()
 
-            TextOptionRow(title: "Settings", action: viewModel.showSettingsMenu)
+            TextOptionRow(title: "Settings".localized, action: viewModel.showSettingsMenu)
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -265,9 +265,9 @@ struct ProfileTabView: View {
              TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
              PassSectionDivider()
              */
-            TextOptionRow(title: "Privacy policy", action: viewModel.showPrivacyPolicy)
+            TextOptionRow(title: "Privacy policy".localized, action: viewModel.showPrivacyPolicy)
             PassSectionDivider()
-            TextOptionRow(title: "Terms of service", action: viewModel.showTermsOfService)
+            TextOptionRow(title: "Terms of service".localized, action: viewModel.showTermsOfService)
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -280,9 +280,10 @@ struct ProfileTabView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
-                TextOptionRow(title: "How to import to Proton Pass", action: viewModel.showImportInstructions)
+                TextOptionRow(title: "How to import to Proton Pass".localized,
+                              action: viewModel.showImportInstructions)
                 PassSectionDivider()
-                TextOptionRow(title: "Feedback", action: viewModel.showFeedback)
+                TextOptionRow(title: "Feedback".localized, action: viewModel.showFeedback)
             }
             .roundedEditableSection()
         }
@@ -320,7 +321,7 @@ private extension PassPlan {
             return nil
 
         case .trial:
-            return .init(title: "Free trial",
+            return .init(title: "Free trial".localized,
                          icon: PassIcon.badgeTrial,
                          iconWidth: 12,
                          tintColor: PassColor.interactionNormMajor2)

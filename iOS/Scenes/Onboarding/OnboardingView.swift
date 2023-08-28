@@ -54,6 +54,7 @@ struct OnboardingView: View {
                     Text(viewModel.state.title)
                         .font(.headline)
                         .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                         .fixedSize(horizontal: false, vertical: true)

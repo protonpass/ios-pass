@@ -120,79 +120,79 @@ extension ItemContentType {
     var chipTitle: String {
         switch self {
         case .login:
-            return "Login"
+            return "Login".localized
         case .alias:
-            return "Alias"
+            return "Alias".localized
         case .note:
-            return "Note"
+            return "Note".localized
         case .creditCard:
-            return "Credit card"
+            return "Credit card".localized
         }
     }
 
     var filterTitle: String {
         switch self {
         case .login:
-            return "Logins"
+            return "Logins".localized
         case .alias:
-            return "Aliases"
+            return "Aliases".localized
         case .note:
-            return "Notes"
+            return "Notes".localized
         case .creditCard:
-            return "Credit cards"
+            return "Credit cards".localized
         }
     }
 
     var createItemTitle: String {
         switch self {
         case .login:
-            return "Create a login"
+            return "Create a login".localized
         case .alias:
-            return "Create a Hide My Email alias"
+            return "Create a Hide My Email alias".localized
         case .creditCard:
-            return "Create a credit card"
+            return "Create a credit card".localized
         case .note:
-            return "Create a note"
+            return "Create a note".localized
         }
     }
 
     var creationMessage: String {
         switch self {
         case .login:
-            return "Login created"
+            return "Login created".localized
         case .alias:
-            return "Alias created"
+            return "Alias created".localized
         case .creditCard:
-            return "Credit card created"
+            return "Credit card created".localized
         case .note:
-            return "Note created"
+            return "Note created".localized
         }
     }
 
     var restoreMessage: String {
         switch self {
-        case .login: return "Login restored"
-        case .alias: return "Alias restored"
-        case .creditCard: return "Credit card restored"
-        case .note: return "Note restored"
+        case .login: return "Login restored".localized
+        case .alias: return "Alias restored".localized
+        case .creditCard: return "Credit card restored".localized
+        case .note: return "Note restored".localized
         }
     }
 
     var deleteMessage: String {
         switch self {
-        case .login: return "Login permanently deleted"
-        case .alias: return "Alias permanently deleted"
-        case .creditCard: return "Credit card permanently deleted"
-        case .note: return "Note permanently deleted"
+        case .login: return "Login permanently deleted".localized
+        case .alias: return "Alias permanently deleted".localized
+        case .creditCard: return "Credit card permanently deleted".localized
+        case .note: return "Note permanently deleted".localized
         }
     }
 
     var updateMessage: String {
         switch self {
-        case .login: return "Login updated"
-        case .alias: return "Alias updated"
-        case .creditCard: return "Credit card updated"
-        case .note: return "Note updated"
+        case .login: return "Login updated".localized
+        case .alias: return "Alias updated".localized
+        case .creditCard: return "Credit card updated".localized
+        case .note: return "Note updated".localized
         }
     }
 }
@@ -200,10 +200,10 @@ extension ItemContentType {
 extension ItemTypeIdentifiable {
     var trashMessage: String {
         switch type {
-        case .login: return "Login moved to trash"
-        case .alias: return "Alias \"\(aliasEmail ?? "")\" will stop forwarding emails to your inbox(es)"
-        case .creditCard: return "Credit card moved to trash"
-        case .note: return "Note moved to trash"
+        case .login: return "Login moved to trash".localized
+        case .alias: return "Alias \"%@\" will stop forwarding emails to your mailbox".localized(aliasEmail ?? "")
+        case .creditCard: return "Credit card moved to trash".localized
+        case .note: return "Note moved to trash".localized
         }
     }
 }
