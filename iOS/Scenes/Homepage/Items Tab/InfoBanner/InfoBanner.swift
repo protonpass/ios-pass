@@ -18,14 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
+import SwiftUI
 import UIComponents
-import UIKit
 
-enum InfoBanner: String, CaseIterable {
-    // Order of cases matter cause it affects the UI
-    case trial, autofill, aliases
+enum InfoBanner: CaseIterable, Equatable, Hashable {
+    static var allCases: [InfoBanner] {
+        [.trial, .autofill, .aliases]
+    }
 
-    var id: String { rawValue }
+    case trial, autofill, aliases, invite([UserInvite])
+
+    var id: String {
+        switch self {
+        case .trial:
+            return "trial"
+        case .autofill:
+            return "autofill"
+        case .aliases:
+            return "aliases"
+        case .invite:
+            return "invite"
+        }
+    }
 
     var detail: InfoBannerDetail {
         switch self {
@@ -35,22 +50,37 @@ enum InfoBanner: String, CaseIterable {
                          description: "Check out all the exclusive features that are available to you for a limited time.",
                          icon: nil,
                          ctaTitle: "Learn more",
-                         backgroundColor: PassColor.noteInteractionNormMajor1)
+                         backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
+                         foregroundColor: PassColor.textInvert.toColor)
         // swiftlint:enable line_length
         case .autofill:
             return .init(title: "Enjoy the magic of AutoFill",
                          description: "One tap and⏤presto!⏤your username and password are filled in instantly.",
                          icon: PassIcon.infoBannerAutoFill,
                          ctaTitle: "Turn on AutoFill",
-                         backgroundColor: PassColor.aliasInteractionNormMajor1)
+                         backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
+                         foregroundColor: PassColor.textInvert.toColor)
 
         case .aliases:
             return .init(title: "Use email aliases",
                          description: "Protect your inbox against spams and phishings.",
                          icon: PassIcon.infoBannerAliases,
                          ctaTitle: nil,
-                         backgroundColor: PassColor.signalSuccess)
+                         backgroundColor: PassColor.signalSuccess.toColor,
+                         foregroundColor: PassColor.textInvert.toColor)
+        case .invite:
+            return .init(title: "Shared vault invitation",
+                         description: "You’ve been invited to a vault. Tap here to see the invitation.",
+                         icon: PassIcon.inviteBannerIcon,
+                         ctaTitle: nil,
+                         backgroundColor: PassColor.backgroundMedium.toColor,
+                         foregroundColor: PassColor.textNorm.toColor)
         }
+    }
+
+    var isInvite: Bool {
+        if case .invite = self { return true }
+        return false
     }
 }
 
@@ -60,5 +90,6 @@ struct InfoBannerDetail {
     let icon: UIImage?
     /// Call-to-action button title
     let ctaTitle: String?
-    let backgroundColor: UIColor
+    let backgroundColor: Color
+    let foregroundColor: Color
 }

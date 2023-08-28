@@ -731,8 +731,6 @@
 		5B1453D32A7123C00048B022 /* CheckEmailPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */; };
 		5B1453D62A7162DC0048B022 /* SyncLayoutOnDisappear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */; };
 		5B1453D82A7263700048B022 /* GetPendingUserInvitations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */; };
-		5B1453DB2A726AD00048B022 /* InviteBannerViewStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */; };
-		5B1453DD2A727E0F0048B022 /* InviteBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */; };
 		5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */; };
 		5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */; };
 		5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */; };
@@ -1633,8 +1631,6 @@
 		5B1453D22A7123C00048B022 /* CheckEmailPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckEmailPublicKey.swift; sourceTree = "<group>"; };
 		5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncLayoutOnDisappear.swift; sourceTree = "<group>"; };
 		5B1453D72A7263700048B022 /* GetPendingUserInvitations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingUserInvitations.swift; sourceTree = "<group>"; };
-		5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteBannerViewStack.swift; sourceTree = "<group>"; };
-		5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteBannerView.swift; sourceTree = "<group>"; };
 		5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteView.swift; sourceTree = "<group>"; };
 		5B1453E02A727EFF0048B022 /* AcceptRejectInviteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectInviteViewModel.swift; sourceTree = "<group>"; };
 		5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareRole+Extensions.swift"; sourceTree = "<group>"; };
@@ -2523,7 +2519,6 @@
 		3569B2A229B7888B0070830B /* Items Tab */ = {
 			isa = PBXGroup;
 			children = (
-				5B1453D92A726A8F0048B022 /* InviteBanner */,
 				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
 				354B24832A7820120060EDF7 /* ItemTypeFilterButton.swift */,
@@ -3401,15 +3396,6 @@
 				5B1453D52A7162DC0048B022 /* SyncLayoutOnDisappear.swift */,
 			);
 			path = ViewModifiers;
-			sourceTree = "<group>";
-		};
-		5B1453D92A726A8F0048B022 /* InviteBanner */ = {
-			isa = PBXGroup;
-			children = (
-				5B1453DA2A726AD00048B022 /* InviteBannerViewStack.swift */,
-				5B1453DC2A727E0F0048B022 /* InviteBannerView.swift */,
-			);
-			path = InviteBanner;
 			sourceTree = "<group>";
 		};
 		5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */ = {
@@ -5074,7 +5060,6 @@
 				35711D5A2A7A76A9003B6845 /* CheckAccessToPass.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
-				5B1453DB2A726AD00048B022 /* InviteBannerViewStack.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
 				5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */,
 				353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */,
@@ -5293,7 +5278,6 @@
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
 				354B24842A7820120060EDF7 /* ItemTypeFilterButton.swift in Sources */,
-				5B1453DD2A727E0F0048B022 /* InviteBannerView.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
