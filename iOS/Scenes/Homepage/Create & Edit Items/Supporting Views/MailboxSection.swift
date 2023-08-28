@@ -22,7 +22,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct MailboxSection: View {
     @ObservedObject var mailboxSelection: MailboxSelection
     let mode: Mode

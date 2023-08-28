@@ -21,7 +21,6 @@
 import SwiftUI
 import UIComponents
 
-// Localized
 struct EmptySearchView: View {
     var body: some View {
         VStack(spacing: 40) {

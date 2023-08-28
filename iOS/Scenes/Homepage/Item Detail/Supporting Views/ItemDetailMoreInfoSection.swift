@@ -23,7 +23,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct ItemDetailMoreInfoSection: View {
     @Binding var isExpanded: Bool
     private let uiModel: ItemDetailMoreInfoSectionUIModel
