@@ -89,11 +89,11 @@ extension FeedbackChannel {
     var description: String {
         switch self {
         case .bugReport:
-            return "Report a problem"
+            return "Report a problem".localized
         case .reddit:
-            return "Write us on Reddit"
+            return "Write us on Reddit".localized
         case .uservoice:
-            return "Vote for new features"
+            return "Vote for new features".localized
         }
     }
 

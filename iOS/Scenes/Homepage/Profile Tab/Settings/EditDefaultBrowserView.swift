@@ -43,7 +43,7 @@ struct EditDefaultBrowserView: View {
                         PassDivider()
                     }
 
-                    Text("This preference will fallback to Safari if the browser of choice is uninstalled.")
+                    Text("This preference will fallback to Safari if the browser of choice is uninstalled")
                         .sectionTitleText()
                         .padding(.vertical)
                 }

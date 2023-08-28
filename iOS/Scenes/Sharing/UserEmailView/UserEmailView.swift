@@ -53,7 +53,7 @@ struct UserEmailView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(kItemDetailSectionPadding)
         .navigationBarTitleDisplayMode(.inline)
-        .background(Color(uiColor: PassColor.backgroundNorm))
+        .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .ignoresSafeArea(.keyboard)
         .navigationModifier()
@@ -68,7 +68,7 @@ private extension UserEmailView {
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
 
-            Text("This user will receive an invitation to join your ‘\(viewModel.vaultName)’ vault.")
+            Text("This user will receive an invitation to join your ‘\(viewModel.vaultName)’ vault")
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
@@ -78,7 +78,7 @@ private extension UserEmailView {
 private extension UserEmailView {
     var emailTextField: some View {
         VStack(alignment: .leading) {
-            TextField("Proton email address", text: $viewModel.email)
+            TextField("Email address", text: $viewModel.email)
                 .font(.title)
                 .autocorrectionDisabled()
                 .keyboardType(.emailAddress)
@@ -111,7 +111,7 @@ private extension UserEmailView {
             if viewModel.isChecking {
                 ProgressView()
             } else {
-                DisablableCapsuleTextButton(title: "Continue",
+                DisablableCapsuleTextButton(title: "Continue".localized,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,
