@@ -49,7 +49,7 @@ struct BiometricAuthenticationView: View {
                         .padding(.top)
 
                 case let .remainingAttempts(count):
-                    Text("\(count) remaining attempt(s)")
+                    Text("%d remaining attempt(s)".localized(count))
                         .foregroundColor(PassColor.textNorm.toColor)
                     retryButton
                         .padding(.top)

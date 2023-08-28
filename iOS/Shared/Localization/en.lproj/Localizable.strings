@@ -491,3 +491,7 @@
 "Integrated 2FA authenticator" = "Integrated 2FA authenticator";
 "Custom fields" = "Custom fields";
 "Upgrade to keep these features" = "Upgrade to keep these features";
+
+/* Local authentication */
+"This is your last attempt. You will be logged out after failing to authenticate again." = "This is your last attempt. You will be logged out after failing to authenticate again.";
+"Try again" = "Try again";
