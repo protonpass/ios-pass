@@ -116,5 +116,21 @@
 			<string>Il vous reste %d jours d&apos;essai gratuit</string>
 		</dict>
 	</dict>
+	<key>%d remaining attempt(s)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Une tentative restante</string>
+			<key>other</key>
+			<string>%d tentatives restantes</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
