@@ -26,7 +26,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
     private let router = resolve(\RouterContainer.mainNavViewRouter)

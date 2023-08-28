@@ -24,7 +24,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
 

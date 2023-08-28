@@ -21,7 +21,6 @@
 import SwiftUI
 import UIComponents
 
-// Localized
 struct VaultRow<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
     let title: String

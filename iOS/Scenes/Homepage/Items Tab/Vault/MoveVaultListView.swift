@@ -22,7 +22,6 @@ import Client
 import SwiftUI
 import UIComponents
 
-// Localized
 struct MoveVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: MoveVaultListViewModel

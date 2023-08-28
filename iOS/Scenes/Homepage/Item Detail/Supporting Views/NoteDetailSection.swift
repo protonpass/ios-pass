@@ -25,7 +25,6 @@ import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
-// Localized
 /// Note section of item detail pages
 struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
