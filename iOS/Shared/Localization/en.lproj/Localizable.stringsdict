@@ -116,5 +116,21 @@
 			<string>%d days left in your trial period</string>
 		</dict>
 	</dict>
+	<key>%d remaining attempt(s)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>One remaining attempt</string>
+			<key>other</key>
+			<string>%d remaining attempts</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
