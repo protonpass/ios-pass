@@ -30,6 +30,7 @@ struct NoCredentialsView: View {
         NavigationView {
             ZStack {
                 Text("You currently have no login items")
+                    .multilineTextAlignment(.center)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .padding()
 
