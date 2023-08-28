@@ -47,7 +47,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            SecureField("PIN code", text: $pinCode)
+            SecureField("PIN Code", text: $pinCode)
                 .labelsHidden()
                 .foregroundColor(PassColor.textNorm.toColor)
                 .font(.title.bold())
@@ -61,7 +61,10 @@ struct PinAuthenticationView: View {
             case .noAttempts:
                 EmptyView()
             case let .remainingAttempts(count):
-                Text("Incorrect PIN. \(count) remaining attempts")
+                Text("Incorrect PIN code.")
+                    .foregroundColor(PassColor.signalDanger.toColor) +
+                    Text(" ") +
+                    Text("%d remaining attempt(s)".localized(count))
                     .foregroundColor(PassColor.signalDanger.toColor)
             case .lastAttempt:
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")
@@ -71,7 +74,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            DisablableCapsuleTextButton(title: "Unlock",
+            DisablableCapsuleTextButton(title: "Unlock".localized,
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textInvert,
                                         backgroundColor: PassColor.interactionNormMajor1,
