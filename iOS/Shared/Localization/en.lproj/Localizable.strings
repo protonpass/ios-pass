@@ -439,6 +439,7 @@
 "Your plan only allows to use items in your primary vault for autofill purposes." = "Your plan only allows to use items in your primary vault for autofill purposes.";
 "Upgrade now" = "Upgrade now";
 "Please log in in order to use Proton Pass AutoFill extension" = "Please log in in order to use Proton Pass AutoFill extension";
+"You currently have no login items" = "You currently have no login items";
 
 /* Info banners */
 "Enjoy your free trial" = "Enjoy your free trial";

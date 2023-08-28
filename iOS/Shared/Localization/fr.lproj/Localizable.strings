@@ -439,6 +439,7 @@
 "Your plan only allows to use items in your primary vault for autofill purposes." = "Votre abonnement vous permet d'utiliser uniquement les éléments de votre coffre-fort principal pour la fonction de remplissage automatique.";
 "Upgrade now" = "Changer d'abonnement";
 "Please log in in order to use Proton Pass AutoFill extension" = "Veuillez vous connecter pour utiliser l'extension de remplissage automatique Proton Pass";
+"You currently have no login items" = "Vous n'avez actuellement aucun élément d'identifiant";
 
 /* Info banners */
 "Enjoy your free trial" = "Profitez de votre essai gratuit";
