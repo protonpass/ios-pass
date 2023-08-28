@@ -425,6 +425,7 @@
 "Create vault" = "Create vault";
 "Vault created" = "Vault created";
 "Vault updated" = "Vault updated";
+"You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription." = "You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription.";
 
 /* AutoFill extension */
 "Create login" = "Create login";

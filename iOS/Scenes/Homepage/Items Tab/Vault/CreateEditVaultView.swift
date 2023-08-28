@@ -83,7 +83,7 @@ struct CreateEditVaultView: View {
 
     private var vaultsLimitMessage: some View {
         // swiftlint:disable:next line_length
-        Text("You have reached the limit of vaults you can create. Create unlimited number of vaults when you upgrade your subscription.")
+        Text("You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription.")
             .padding()
             .foregroundColor(Color(uiColor: PassColor.textNorm))
             .background(Color(uiColor: PassColor.interactionNormMinor1))
