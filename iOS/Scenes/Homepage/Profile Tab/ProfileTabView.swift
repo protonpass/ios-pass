@@ -181,10 +181,18 @@ struct ProfileTabView: View {
 
                     Spacer()
 
-                    Button(action: UIApplication.shared.openPasswordSettings) {
-                        Label("Open Settings", systemImage: "arrow.up.right.square")
-                            .font(.callout.weight(.semibold))
-                            .foregroundColor(Color(uiColor: PassColor.interactionNormMajor2))
+                    if ProcessInfo.processInfo.isiOSAppOnMac {
+                        Button(action: viewModel.showEnableAutoFillOnMacInstructions) {
+                            Label("Show me how", systemImage: "arrow.up.right.square")
+                                .font(.callout.weight(.semibold))
+                                .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                        }
+                    } else {
+                        Button(action: UIApplication.shared.openPasswordSettings) {
+                            Label("Open Settings", systemImage: "arrow.up.right.square")
+                                .font(.callout.weight(.semibold))
+                                .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                        }
                     }
                 }
             }

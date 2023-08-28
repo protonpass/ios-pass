@@ -26,6 +26,7 @@ import ProtonCore_Services
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
+    func profileTabViewModelWantsToShowEnableAutoFillInstructions()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
@@ -139,6 +140,10 @@ extension ProfileTabViewModel {
 
     func editPINCode() {
         securitySettingsCoordinator.editPINCode()
+    }
+
+    func showEnableAutoFillOnMacInstructions() {
+        delegate?.profileTabViewModelWantsToShowEnableAutoFillInstructions()
     }
 
     func showAccountMenu() {

@@ -25,6 +25,10 @@ final class PassIconTests: XCTestCase {
     func testGetIconss() {
         let expectation = expectation(description: "Should be able to get icons")
 
+        _ = PassIcon.autoFillOnWebPreview
+        _ = PassIcon.enableAutoFillStep4
+        _ = PassIcon.enableAutoFillStep5
+
         _ = PassIcon.badgePaid
         _ = PassIcon.badgeTrial
 
