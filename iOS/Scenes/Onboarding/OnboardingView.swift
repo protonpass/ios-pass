@@ -103,7 +103,6 @@ struct OnboardingView: View {
     }
 }
 
-// Localized
 struct OnboardingAutoFillView: View {
     var body: some View {
         HStack(spacing: 16) {
@@ -143,7 +142,6 @@ struct OnboardingAutoFillView: View {
     }
 }
 
-// Localized
 struct OnboardingAutoFillEnabledView: View {
     var body: some View {
         VStack {
@@ -158,7 +156,6 @@ struct OnboardingAutoFillEnabledView: View {
     }
 }
 
-// Localized
 private struct OnboardingBiometricAuthenticationView: View {
     let enabled: Bool
     var body: some View {
@@ -175,7 +172,6 @@ private struct OnboardingBiometricAuthenticationView: View {
     }
 }
 
-// Localized
 private struct OnboardingAliasesView: View {
     var body: some View {
         GeometryReader { proxy in
