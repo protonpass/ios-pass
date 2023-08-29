@@ -264,6 +264,8 @@ private extension HomepageCoordinator {
                     self.presentMailboxSelectionView(selection: mailboxSelection,
                                                      mode: .createAliasLite,
                                                      titleMode: mode)
+                case .autoFillInstructions:
+                    self.present(AutoFillInstructionsView())
                 }
             }
             .store(in: &cancellables)
