@@ -30,7 +30,7 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     }
 
     enum ValidationError: Error {
-        case invalidCharacters, notMatched
+        case notMatched
     }
 
     @Published private(set) var state: SetPINCodeViewModel.State = .definition
@@ -73,21 +73,13 @@ extension SetPINCodeViewModel {
     func action() {
         switch state {
         case .definition:
-            if definedPIN.isValid(allowedCharacters: .decimalDigits) {
-                state = .confirmation
-            } else {
-                error = .invalidCharacters
-            }
+            state = .confirmation
 
         case .confirmation:
-            if confirmedPIN.isValid(allowedCharacters: .decimalDigits) {
-                if confirmedPIN == definedPIN {
-                    onSet(definedPIN)
-                } else {
-                    error = .notMatched
-                }
+            if confirmedPIN == definedPIN {
+                onSet(definedPIN)
             } else {
-                error = .invalidCharacters
+                error = .notMatched
             }
         }
     }
@@ -142,8 +134,6 @@ extension SetPINCodeViewModel.State {
 extension SetPINCodeViewModel.ValidationError {
     var description: String {
         switch self {
-        case .invalidCharacters:
-            return "PIN must contain only numeric characters (0-9)".localized
         case .notMatched:
             return "PINs not matched".localized
         }
