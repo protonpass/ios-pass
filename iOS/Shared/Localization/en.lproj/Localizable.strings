@@ -108,11 +108,8 @@
 "Show me how" = "Show me how";
 "Enable AutoFill" = "Enable AutoFill";
 "Follow these simple steps to get the best experience:" = "Follow these simple steps to get the best experience:";
-"Open System Settings" = "Open System Settings";
-"Select Passwords" = "Select Passwords";
-"Select Password Options" = "Select Password Options";
-"Turn on AutoFill Passwords" = "Turn on AutoFill Passwords";
-"Allow filling from Proton Pass" = "Allow filling from Proton Pass";
+"Open System Settings → Passwords → Password Options" = "Open System Settings → Passwords → Password Options";
+"Turn on AutoFill Passwords and allow filling from Proton Pass" = "Turn on AutoFill Passwords and allow filling from Proton Pass";
 "Restart Proton Pass" = "Restart Proton Pass";
 
 /* Profile tab: AutoFill settings */
