@@ -165,8 +165,9 @@ private extension ManageSharedVaultView {
 private extension ManageSharedVaultView {
     @ViewBuilder
     func vaultTrailingView(user: ShareUser) -> some View {
+        let isOwnerAndCurrentUser = viewModel.isOwnerAndCurrentUser(with: user)
         Menu(content: {
-            if !user.isPending {
+            if !isOwnerAndCurrentUser, !user.isPending {
                 ForEach(ShareRole.allCases, id: \.self) { role in
                     Label(title: {
                         Button(action: {
@@ -184,6 +185,7 @@ private extension ManageSharedVaultView {
                     })
                 }
             }
+
             if user.isPending {
                 Button(action: {
                     viewModel.sendInviteReminder(for: user)
@@ -197,6 +199,7 @@ private extension ManageSharedVaultView {
                     })
                 })
             }
+
             if viewModel.vault.isOwner, !user.isPending {
                 Button(action: {}, label: {
                     Label(title: {
@@ -209,21 +212,23 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            Button(action: {
-                if user.isPending {
-                    viewModel.revokeInvite(for: user)
-                } else {
-                    viewModel.revokeShareAccess(for: user)
-                }
-            }, label: {
-                Label(title: {
-                    Text("Remove access")
-                }, icon: {
-                    Image(uiImage: IconProvider.circleSlash)
-                        .renderingMode(.template)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+            if !isOwnerAndCurrentUser {
+                Button(action: {
+                    if user.isPending {
+                        viewModel.revokeInvite(for: user)
+                    } else {
+                        viewModel.revokeShareAccess(for: user)
+                    }
+                }, label: {
+                    Label(title: {
+                        Text("Remove access")
+                    }, icon: {
+                        Image(uiImage: IconProvider.circleSlash)
+                            .renderingMode(.template)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    })
                 })
-            })
+            }
         }, label: { Image(uiImage: IconProvider.threeDotsVertical)
             .resizable()
             .scaledToFit()
