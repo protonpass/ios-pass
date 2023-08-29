@@ -36,6 +36,7 @@ struct EditPrimaryVaultView: View {
                                       VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
                                                title: vault.vault.name,
                                                itemCount: vault.itemCount,
+                                               isShared: vault.vault.shared,
                                                isSelected: vault.vault.shareId == viewModel.primaryVault.shareId,
                                                height: 44)
                                   })
