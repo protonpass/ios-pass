@@ -93,6 +93,7 @@ private extension SharingSummaryView {
                          },
                          title: vault.name,
                          itemCount: viewModel.infos?.itemsNum ?? 0,
+                         isShared: vault.shared,
                          isSelected: false,
                          height: 60)
             }
