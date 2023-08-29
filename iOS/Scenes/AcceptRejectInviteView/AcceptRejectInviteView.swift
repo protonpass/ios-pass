@@ -47,7 +47,6 @@ struct AcceptRejectInviteView: View {
             }
             .frame(width: geometry.size.width)
         }
-        .errorAlert(error: $viewModel.error)
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
         .background(PassColor.backgroundWeak.toColor)

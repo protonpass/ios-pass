@@ -30,7 +30,6 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var vaultInfos: VaultProtobuf?
     @Published private(set) var executingAction = false
     @Published private(set) var shouldCloseSheet = false
-    @Published var error: Error?
 
     private let rejectInvitation = resolve(\UseCasesContainer.rejectInvitation)
     private let acceptInvitation = resolve(\UseCasesContainer.acceptInvitation)
@@ -39,6 +38,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
     init(invite: UserInvite) {
@@ -62,7 +62,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 self.shouldCloseSheet = true
             } catch {
                 self.logger.error(message: "Could not reject invitation \(userInvite)", error: error)
-                self.error = error
+                self.display(error: error)
             }
         }
     }
@@ -80,7 +80,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 self.syncEventLoop.forceSync()
             } catch {
                 self.logger.error(message: "Could not accept invitation \(userInvite)", error: error)
-                self.error = error
+                self.display(error: error)
                 self.executingAction = false
             }
         }
@@ -111,8 +111,12 @@ private extension AcceptRejectInviteViewModel {
                 self.vaultInfos = try await self.decodeShareVaultInformation(with: self.userInvite)
             } catch {
                 self.logger.error(message: "Could not decode vault content from invitation", error: error)
-                self.error = error
+                self.display(error: error)
             }
         }
+    }
+
+    func display(error: Error) {
+        router.display(element: .displayErrorBanner(error))
     }
 }
