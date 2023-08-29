@@ -101,7 +101,6 @@
 "Enter PIN code" = "Saisissez le code PIN";
 "Repeat PIN code" = "Confirmez le code PIN";
 "Type your PIN again to confirm" = "Saisissez le code PIN pour confirmer";
-"PIN must contain only numeric characters (0-9)" = "Le code PIN ne doit contenir que des caractères numériques (0-9)";
 "PINs not matched" = "Les codes PIN ne correspondent pas";
 "PIN code set" = "Le code PIN est défini";
 "Change PIN code" = "Modifier le code PIN";
