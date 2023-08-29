@@ -34,7 +34,6 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published var userRole: ShareRole = .read
-    @Published var error: Error?
 
     private var currentSelectedUser: ShareUser?
 
@@ -50,6 +49,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
@@ -89,7 +89,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 }
                 self.users = try await self.fetchVaultContent(for: vault)
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed to fetch the current share informations", error: error)
             }
         }
@@ -117,7 +117,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 self.fetchShareInformation()
                 self.syncEventLoop.forceSync()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed to revoke the invite \(inviteId)", error: error)
             }
         }
@@ -138,7 +138,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 self.fetchShareInformation()
                 self.syncEventLoop.forceSync()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed to revoke the share access \(userShareId)", error: error)
             }
         }
@@ -156,7 +156,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 try await self.sendInviteReminder(with: self.vault.shareId, and: inviteId)
                 self.fetchShareInformation()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed send invite reminder \(inviteId)", error: error)
             }
         }
@@ -200,9 +200,13 @@ private extension ManageSharedVaultViewModel {
                                                    shareRole: role)
                 self.fetchShareInformation()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed update user role with \(role)", error: error)
             }
         }
+    }
+
+    func display(error: Error) {
+        router.display(element: .displayErrorBanner(error))
     }
 }
