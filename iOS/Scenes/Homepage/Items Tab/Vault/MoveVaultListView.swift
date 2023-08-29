@@ -75,6 +75,7 @@ struct MoveVaultListView: View {
             VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
                      title: vault.vault.name,
                      itemCount: vault.itemCount,
+                     isShared: vault.vault.shared,
                      isSelected: viewModel.selectedVault == vault)
         })
         .buttonStyle(.plain)
