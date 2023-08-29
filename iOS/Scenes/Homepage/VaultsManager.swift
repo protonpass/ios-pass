@@ -46,6 +46,13 @@ enum VaultSelection {
             return "Search in Trash...".localized
         }
     }
+
+    var shared: Bool {
+        if case let .precise(vault) = self {
+            return vault.shared
+        }
+        return false
+    }
 }
 
 protocol VaultsManagerProtocol {
