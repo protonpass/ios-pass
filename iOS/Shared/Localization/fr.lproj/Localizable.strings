@@ -108,11 +108,8 @@
 "Show me how" = "Me montrer comment";
 "Enable AutoFill" = "Activer le remplissage automatique";
 "Follow these simple steps to get the best experience:" = "Suivez ces étapes simples pour obtenir la meilleure expérience :";
-"Open System Settings" = "Ouvrir Réglages Systèmes";
-"Select Passwords" = "Sélectionner Mots de passe";
-"Select Password Options" = "Sélectionner Options des mots de passe";
-"Turn on AutoFill Passwords" = "Activer Préremplir les mots de passe";
-"Allow filling from Proton Pass" = "Autoriser le remplissage par Proton Pass";
+"Open System Settings → Passwords → Password Options" = "Ouvrir Réglages Systèmes → Mots de passe → Options des mots de passe";
+"Turn on AutoFill Passwords and allow filling from Proton Pass" = "Activer Préremplir les mots de passe et autoriser le remplissage par Proton Pass";
 "Restart Proton Pass" = "Redémarrer Proton Pass";
 
 /* Profile tab: AutoFill settings */
