@@ -26,7 +26,6 @@ import ProtonCore_Services
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowEnableAutoFillInstructions()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
@@ -143,7 +142,7 @@ extension ProfileTabViewModel {
     }
 
     func showEnableAutoFillOnMacInstructions() {
-        delegate?.profileTabViewModelWantsToShowEnableAutoFillInstructions()
+        router.present(for: .autoFillInstructions)
     }
 
     func showAccountMenu() {
