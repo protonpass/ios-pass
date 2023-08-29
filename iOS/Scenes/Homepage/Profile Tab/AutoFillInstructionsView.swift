@@ -56,7 +56,7 @@ private extension AutoFillInstructionsView {
                 step(number: 1, title: "Open System Settings → Passwords → Password Options".localized)
                 step(number: 2,
                      title: "Turn on AutoFill Passwords and allow filling from Proton Pass".localized,
-                     images: [PassIcon.enableAutoFillStep4, PassIcon.enableAutoFillStep5])
+                     images: [PassIcon.enableAutoFillStep2a, PassIcon.enableAutoFillStep2b])
                 step(number: 3, title: "Restart Proton Pass".localized)
             }
 

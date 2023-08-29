@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "EnableAutoFillStep5Light.png",
+      "filename" : "EnableAutoFillStep2bLight.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,12 +12,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "EnableAutoFillStep5Dark.png",
+      "filename" : "EnableAutoFillStep2bDark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "EnableAutoFillStep5Light@2x.png",
+      "filename" : "EnableAutoFillStep2bLight@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,7 +28,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "EnableAutoFillStep5Dark@2x.png",
+      "filename" : "EnableAutoFillStep2bDark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
