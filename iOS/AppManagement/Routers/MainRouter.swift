@@ -39,6 +39,7 @@ enum SheetDestination: Equatable, Hashable {
     case logView(module: PassModule)
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
+    case autoFillInstructions
 }
 
 enum UIElementDisplay {

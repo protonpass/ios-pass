@@ -141,6 +141,10 @@ extension ProfileTabViewModel {
         securitySettingsCoordinator.editPINCode()
     }
 
+    func showEnableAutoFillOnMacInstructions() {
+        router.present(for: .autoFillInstructions)
+    }
+
     func showAccountMenu() {
         delegate?.profileTabViewModelWantsToShowAccountMenu()
     }
