@@ -76,7 +76,6 @@ private extension ManageSharedVaultView {
                     .background(PassColor.backgroundNorm.toColor)
             }
         }
-        .errorAlert(error: $viewModel.error)
     }
 }
 
