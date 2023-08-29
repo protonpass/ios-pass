@@ -99,6 +99,7 @@ struct EditableVaultListView: View {
                          },
                          title: selection.title,
                          itemCount: vaultsManager.getItemCount(for: selection),
+                         isShared: selection.shared,
                          isSelected: vaultsManager.isSelected(selection),
                          height: 74)
             })
