@@ -101,7 +101,6 @@
 "Enter PIN code" = "Choose a PIN code";
 "Repeat PIN code" = "Repeat PIN code";
 "Type your PIN again to confirm" = "Type your PIN again to confirm";
-"PIN must contain only numeric characters (0-9)" = "PIN must contain only numeric characters (0-9)";
 "PINs not matched" = "PINs not matched";
 "PIN code set" = "PIN code set";
 "Change PIN code" = "Change PIN code";
