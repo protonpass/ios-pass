@@ -115,32 +115,25 @@ private extension ItemsTabViewModel {
         do {
             for banner in InfoBanner.allCases {
                 if preferences.dismissedBannerIds.contains(where: { $0 == banner.id }) {
-                    break
+                    continue
                 }
 
+                var shouldShow = true
                 switch banner {
                 case .trial:
-                    // If not in trial, consider dismissed
                     let plan = try await passPlanRepository.getPlan()
-                    switch plan.planType {
-                    case .trial:
-                        break
-                    default:
-                        break
-                    }
+                    shouldShow = plan.isInTrial
 
                 case .autofill:
-                    // We don't show the banner if AutoFill extension is enabled
-                    // consider dismissed in this case
-                    if await credentialManager.isAutoFillEnabled {
-                        // dismissed = true
-                        break
-                    }
+                    shouldShow = await !credentialManager.isAutoFillEnabled
 
                 default:
                     break
                 }
-                banners.append(banner)
+
+                if shouldShow {
+                    banners.append(banner)
+                }
             }
         } catch {
             logger.error(error)
