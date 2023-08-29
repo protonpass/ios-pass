@@ -53,16 +53,11 @@ private extension AutoFillInstructionsView {
                 .padding(.vertical, 8)
 
             Group {
-                step(number: 1, title: "Open System Settings".localized)
-                step(number: 2, title: "Select Passwords".localized)
-                step(number: 3, title: "Select Password Options".localized)
-                step(number: 4,
-                     title: "Turn on AutoFill Passwords".localized,
-                     image: PassIcon.enableAutoFillStep4)
-                step(number: 5,
-                     title: "Allow filling from Proton Pass".localized,
-                     image: PassIcon.enableAutoFillStep5)
-                step(number: 6, title: "Restart Proton Pass".localized)
+                step(number: 1, title: "Open System Settings → Passwords → Password Options".localized)
+                step(number: 2,
+                     title: "Turn on AutoFill Passwords and allow filling from Proton Pass".localized,
+                     images: [PassIcon.enableAutoFillStep4, PassIcon.enableAutoFillStep5])
+                step(number: 3, title: "Restart Proton Pass".localized)
             }
 
             Spacer()
@@ -84,16 +79,20 @@ private extension AutoFillInstructionsView {
         }
     }
 
-    func step(number: Int, title: String, image: UIImage? = nil) -> some View {
+    func step(number: Int, title: String, images: [UIImage]? = nil) -> some View {
         Label(title: {
             VStack(alignment: .leading) {
                 Text(title)
                     .foregroundColor(PassColor.textNorm.toColor)
                     .fontWeight(.bold)
-                if let image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
+                if let images {
+                    ForEach(0..<images.count, id: \.self) { index in
+                        if let image = images[safeIndex: index] {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                        }
+                    }
                 }
             }
         }, icon: {
