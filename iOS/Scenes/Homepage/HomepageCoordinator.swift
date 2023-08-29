@@ -264,6 +264,8 @@ private extension HomepageCoordinator {
                     self.presentMailboxSelectionView(selection: mailboxSelection,
                                                      mode: .createAliasLite,
                                                      titleMode: mode)
+                case .autoFillInstructions:
+                    self.present(AutoFillInstructionsView())
                 }
             }
             .store(in: &cancellables)
@@ -746,10 +748,6 @@ extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowEnableAutoFillInstructions() {
-        showView(view: AutoFillInstructionsView(), asSheet: true)
-    }
-
     func profileTabViewModelWantsToShowAccountMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountViewModel(isShownAsSheet: asSheet)
