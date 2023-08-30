@@ -46,6 +46,7 @@ struct SearchBar: View {
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                         .autocorrectionDisabled()
                         .focused(isFocused)
+                        .minimumScaleFactor(0.75)
 
                     Button(action: {
                         query = ""
