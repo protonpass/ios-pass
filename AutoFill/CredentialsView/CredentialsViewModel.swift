@@ -27,17 +27,13 @@ import Factory
 import SwiftUI
 
 protocol CredentialsViewModelDelegate: AnyObject {
-    func credentialsViewModelWantsToShowLoadingHud()
-    func credentialsViewModelWantsToHideLoadingHud()
     func credentialsViewModelWantsToCancel()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
-    func credentialsViewModelWantsToUpgrade()
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        itemContent: ItemContent,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier])
-    func credentialsViewModelDidFail(_ error: Error)
 }
 
 enum CredentialsViewState: Equatable {
@@ -99,6 +95,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
     private let logManager = resolve(\SharedToolingContainer.logManager)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
@@ -186,8 +183,8 @@ extension CredentialsViewModel {
             guard let self else {
                 return
             }
-            defer { self.delegate?.credentialsViewModelWantsToHideLoadingHud() }
-            self.delegate?.credentialsViewModelWantsToShowLoadingHud()
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
+            self.router.display(element: .globalLoading(shouldShow: true))
             do {
                 self.logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await self.getItemTask(item: item).value
@@ -263,7 +260,7 @@ extension CredentialsViewModel {
 
     func handleAuthenticationFailure() {
         logger.error("Failed to locally authenticate. Logging out.")
-        delegate?.credentialsViewModelDidFail(PPError.credentialProvider(.failedToAuthenticate))
+        display(error: PPError.credentialProvider(.failedToAuthenticate))
     }
 
     func createLoginItem() {
@@ -277,13 +274,13 @@ extension CredentialsViewModel {
                                                                           url: self.urls.first)
             } catch {
                 self.logger.error(error)
-                self.delegate?.credentialsViewModelDidFail(error)
+                self.display(error: error)
             }
         }
     }
 
     func upgrade() {
-        delegate?.credentialsViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 }
 
@@ -353,6 +350,10 @@ private extension CredentialsViewModel {
                 self?.notMatchedItemInformation = nil
             }
             .store(in: &cancellables)
+    }
+
+    func display(error: Error) {
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
