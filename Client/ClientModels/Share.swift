@@ -82,6 +82,10 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     }
 }
 
+extension Share: Identifiable {
+    public var id: String { shareID }
+}
+
 public extension Share {
     func getShareContent(key: DecryptedShareKey) throws -> ShareContent {
         guard let contentData = try content?.base64Decode() else {
