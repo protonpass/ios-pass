@@ -120,7 +120,7 @@ class BaseCreateEditItemViewModel {
     var isSaveable: Bool { false }
 
     /// To be overridden by subclasses
-    var interpretor: ScanInterpreting { ScanInterpreter(type: .document) }
+    var interpretor: ScanInterpreting { ScanInterpreter() }
 
     func bindValues() {}
 
