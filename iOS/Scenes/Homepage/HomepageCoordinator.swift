@@ -78,7 +78,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
-    // MARK: -Navigation Router
+    // MARK: - Navigation Router
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: HomepageCoordinatorDelegate?
