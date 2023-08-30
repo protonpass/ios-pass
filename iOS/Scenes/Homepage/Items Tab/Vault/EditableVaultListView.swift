@@ -109,8 +109,7 @@ struct EditableVaultListView: View {
 
             switch selection {
             case .all:
-                // Gimmick view to take up space
-                threeDotsIcon().opacity(0)
+                EmptyView()
             case let .precise(vault):
                 vaultTrailingView(vault)
             case .trash:
