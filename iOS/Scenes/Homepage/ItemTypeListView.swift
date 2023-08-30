@@ -65,10 +65,10 @@ struct ItemTypeListView: View {
                            },
                            title: type.title,
                            description: type.description,
-                           descriptionMinScaleFactor: 0.9,
+                           descriptionLineLimit: 2,
                            secondaryTitle: secondaryTitle(for: type),
                            secondaryTitleColor: secondaryTitleColor(for: type))
-                .frame(height: 66)
+                .frame(height: 72)
         })
         .buttonStyle(.plain)
     }
