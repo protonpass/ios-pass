@@ -79,7 +79,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         scanResponsePublisher
             .receive(on: DispatchQueue.main)
             .sink { _ in } receiveValue: { [weak self] result in
-                guard let self else { return }
+                guard let self, let result else { return }
                 if let cardResult = result as? CardDetails {
                     if cardResult.type != .unknown {
                         self.title = cardResult.type.rawValue

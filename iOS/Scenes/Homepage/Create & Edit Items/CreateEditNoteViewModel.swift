@@ -39,6 +39,29 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
 
+        scanResponsePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { _ in } receiveValue: { [weak self] result in
+                guard let self, let result else { return }
+                if let document = result as? ScannedDocument {
+                    for (index, page) in document.scannedPages.enumerated() {
+                        note += page.text.reduce(into: "") { partialResult, next in
+                            partialResult = partialResult + "\n" + next
+                        }
+
+                        if index != document.scannedPages.count - 1 {
+                            // Add an empty line between pages
+                            note += "\n"
+                        }
+                    }
+                    let texts = document.scannedPages.flatMap(\.text)
+                    note += texts.reduce(into: "") { $0 += $1 }
+                } else {
+                    assertionFailure("Expecting ScannedDocument as result")
+                }
+            }
+            .store(in: &cancellables)
+
         Publishers
             .CombineLatest($title, $note)
             .dropFirst(mode.isEditMode ? 1 : 3)
@@ -57,6 +80,8 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     }
 
     override func itemContentType() -> ItemContentType { .note }
+
+    override var interpretor: ScanInterpreting { ScanInterpreter() }
 
     override func generateItemContent() -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
