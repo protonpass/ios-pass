@@ -76,6 +76,32 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             }
             .store(in: &cancellables)
 
+        scanResponsePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { _ in } receiveValue: { [weak self] result in
+                guard let self else { return }
+                if let cardResult = result as? CardDetails {
+                    if cardResult.type != .unknown {
+                        self.title = cardResult.type.rawValue
+                    }
+                    self.cardholderName = cardResult.name ?? ""
+                    self.cardNumber = cardResult.number ?? ""
+                    self.verificationNumber = cardResult.cvvNumber ?? ""
+
+                    // expiryDate format "MM/YY"
+                    if let expiryDate = cardResult.expiryDate {
+                        let dateComponents = expiryDate.components(separatedBy: "/")
+                        if dateComponents.count == 2 {
+                            self.month = Int(dateComponents.first ?? "")
+                            self.year = Int(dateComponents.last ?? "")
+                        }
+                    }
+                } else {
+                    assertionFailure("Expecting CardDetails as result")
+                }
+            }
+            .store(in: &cancellables)
+
         Publishers
             .CombineLatest($title, $cardholderName)
             .combineLatest($cardNumber)
@@ -89,6 +115,10 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                 self?.didEditSomething = true
             })
             .store(in: &cancellables)
+    }
+
+    override var interpretor: ScanInterpreting {
+        ScanInterpreter(type: .card)
     }
 
     override func generateItemContent() -> ItemContentProtobuf {
