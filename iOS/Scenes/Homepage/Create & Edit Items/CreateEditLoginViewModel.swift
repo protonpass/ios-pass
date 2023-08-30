@@ -32,7 +32,6 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
                                                       delegate: AliasCreationLiteInfoDelegate)
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
-    func createEditLoginViewModelWantsToOpenSettings()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -294,7 +293,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func openSettings() {
-        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToOpenSettings()
+        router.navigate(to: .openSettings)
     }
 
     func validateURLs() -> Bool {
