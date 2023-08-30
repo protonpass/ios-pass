@@ -728,7 +728,7 @@ extension CredentialProviderCoordinator {
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
-    
+
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
         guard let rootViewController else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
