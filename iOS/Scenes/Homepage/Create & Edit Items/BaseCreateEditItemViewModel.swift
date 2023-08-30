@@ -71,6 +71,10 @@ class BaseCreateEditItemViewModel {
 
     @Published var isObsolete = false
 
+    // Scanning
+    @Published var isShowingScanner = false
+    let scanResponsePublisher: PassthroughSubject<ScanResponse?, Error> = .init()
+
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: UpgradeCheckerProtocol
@@ -114,6 +118,9 @@ class BaseCreateEditItemViewModel {
 
     /// To be overridden by subclasses
     var isSaveable: Bool { false }
+
+    /// To be overridden by subclasses
+    var interpretor: ScanInterpreting { ScanInterpreter(type: .document) }
 
     func bindValues() {}
 
@@ -249,6 +256,10 @@ extension BaseCreateEditItemViewModel {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+
+    func openScanner() {
+        isShowingScanner = true
     }
 
     func save() {

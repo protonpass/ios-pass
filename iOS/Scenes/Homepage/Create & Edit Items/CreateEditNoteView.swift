@@ -97,6 +97,7 @@ struct CreateEditNoteView: View {
                                           }
                                       },
                                       onUpgrade: { /* Not applicable */ },
+                                      onScan: viewModel.openScanner,
                                       onSave: viewModel.save)
             }
         }
