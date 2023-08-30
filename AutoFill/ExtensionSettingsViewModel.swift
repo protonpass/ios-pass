@@ -24,11 +24,8 @@ import Factory
 import UserNotifications
 
 protocol ExtensionSettingsViewModelDelegate: AnyObject {
-    func extensionSettingsViewModelWantsToShowSpinner()
-    func extensionSettingsViewModelWantsToHideSpinner()
     func extensionSettingsViewModelWantsToDismiss()
     func extensionSettingsViewModelWantsToLogOut()
-    func extensionSettingsViewModelDidEncounter(error: Error)
 }
 
 final class ExtensionSettingsViewModel: ObservableObject {
@@ -47,6 +44,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     weak var delegate: ExtensionSettingsViewModelDelegate?
 
     // Use cases
@@ -79,10 +77,10 @@ private extension ExtensionSettingsViewModel {
         guard quickTypeBar != preferences.quickTypeBar else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.extensionSettingsViewModelWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
-                self.delegate?.extensionSettingsViewModelWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 if self.quickTypeBar {
                     try await self.indexAllLoginItems(ignorePreferences: true)
                 } else {
@@ -92,7 +90,7 @@ private extension ExtensionSettingsViewModel {
             } catch {
                 self.logger.error(error)
                 self.quickTypeBar.toggle() // rollback to previous value
-                self.delegate?.extensionSettingsViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }

@@ -336,10 +336,14 @@ private extension CredentialProviderCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
+                case let .globalLoading(shouldShow):
+                    if shouldShow {
+                        self.showLoadingHud()
+                    } else {
+                        self.hideLoadingHud()
+                    }
                 case let .displayErrorBanner(error):
                     self.bannerManager.displayTopErrorMessage(error)
-                default:
-                    break
                 }
             }
             .store(in: &cancellables)
@@ -537,14 +541,6 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CredentialsViewModelDelegate
 
 extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
-    func credentialsViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func credentialsViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
     func credentialsViewModelWantsToCancel() {
         cancelAutoFill(reason: .userCanceled)
     }
@@ -615,10 +611,6 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         }
     }
 
-    func credentialsViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        itemContent: ItemContent,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -630,23 +622,11 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                  upgradeChecker: upgradeChecker,
                  serviceIdentifiers: serviceIdentifiers)
     }
-
-    func credentialsViewModelDidFail(_ error: Error) {
-        handle(error: error)
-    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
 
 extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func createEditItemViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
         guard let vaultListUiModels, let rootViewController else { return }
@@ -684,10 +664,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType) {
         switch type {
@@ -712,10 +688,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     // Not applicable
     func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {}
-
-    func createEditItemViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error.localizedDescription)
-    }
 }
 
 // MARK: - CreateEditLoginViewModelDelegate
@@ -736,9 +708,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
     }
-
-    // Not applicable
-    func createEditLoginViewModelWantsToOpenSettings() {}
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate
@@ -759,7 +728,7 @@ extension CredentialProviderCoordinator {
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
-
+    
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
         guard let rootViewController else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
@@ -778,14 +747,6 @@ extension CredentialProviderCoordinator {
 // MARK: ExtensionSettingsViewModelDelegate
 
 extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
-    func extensionSettingsViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func extensionSettingsViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func extensionSettingsViewModelWantsToDismiss() {
         context.completeExtensionConfigurationRequest()
     }
@@ -793,10 +754,6 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     func extensionSettingsViewModelWantsToLogOut() {
         appData.userData = nil
         context.completeExtensionConfigurationRequest()
-    }
-
-    func extensionSettingsViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error)
     }
 }
 
