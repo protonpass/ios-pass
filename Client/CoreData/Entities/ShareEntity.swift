@@ -67,9 +67,9 @@ extension ShareEntity {
                            owner: owner,
                            shared: shared,
                            content: content,
-                           contentKeyRotation: contentKeyRotation,
-                           contentFormatVersion: contentFormatVersion,
-                           expireTime: expireTime,
+                           contentKeyRotation: contentKeyRotation == -1 ? nil : contentKeyRotation,
+                           contentFormatVersion: contentFormatVersion == -1 ? nil : contentFormatVersion,
+                           expireTime: expireTime == -1 ? nil : expireTime,
                            createTime: createTime))
     }
 

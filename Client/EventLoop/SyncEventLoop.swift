@@ -324,16 +324,26 @@ private extension SyncEventLoop {
         }
 
         var hasNewShareEvents = false
-        // This is used to respond to sahring modification that are not tied to events in the BE
+        // This is used to respond to sharing modifications that are not tied to events in the BE
         // making changes not visible to the user.
-        if remoteShares != localShares.map(\.share) {
+        if !remoteShares.isStrictlyEqual(to: localShares.map(\.share)) {
             hasNewShareEvents = true
+
+            // Update local shares
+            let remainingLocalShares = localShares
+                .filter { remoteShares.map(\.shareID).contains($0.share.shareID) }
+            for share in remainingLocalShares {
+                // A work around for a Core Data bug that fails the updates of booleans & numbers
+                // We delete local shares instead of simply upserting and re-insert remote shares later on
+                try await shareRepository.deleteShareLocally(shareId: share.share.shareID)
+            }
             try await shareRepository.upsertShares(remoteShares)
-            if remoteShares.count < localShares.count {
-                let leftShares = localShares.filter {
-                    !remoteShares.map(\.shareID).contains($0.share.shareID)
-                }.map(\.share)
-                try await delete(shares: leftShares)
+
+            // Delete local shares if applicable
+            let deletedLocalShares = localShares
+                .filter { !remoteShares.map(\.shareID).contains($0.share.shareID) }
+            if !deletedLocalShares.isEmpty {
+                try await delete(shares: deletedLocalShares.map(\.share))
             }
         }
 
