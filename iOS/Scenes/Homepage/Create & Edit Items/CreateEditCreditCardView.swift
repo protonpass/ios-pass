@@ -104,8 +104,12 @@ private extension CreateEditCreditCardView {
                                       }
                                   },
                                   onUpgrade: viewModel.upgrade,
+                                  onScan: viewModel.openScanner,
                                   onSave: viewModel.save)
         }
+        .scannerSheet(isPresented: $viewModel.isShowingScanner,
+                      interpreter: viewModel.interpretor,
+                      resultStream: viewModel.scanResponsePublisher)
     }
 
     var upsellBanner: some View {
