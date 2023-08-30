@@ -134,9 +134,14 @@ private extension ManageSharedVaultView {
             SquircleThumbnail(data: .initials(user.email.initialsRemovingEmojis()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
-            VStack(alignment: .leading, spacing: 4) {
+
+            VStack(spacing: 4) {
                 Text(user.email)
                     .foregroundColor(PassColor.textNorm.toColor)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.75)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
                 HStack {
                     if viewModel.isCurrentUser(with: user) {
                         Text("You")
@@ -146,17 +151,18 @@ private extension ManageSharedVaultView {
                             .padding(.horizontal, 8)
                             .background(Capsule().fill(PassColor.interactionNorm.toColor))
                     }
+
                     Text(user.permission)
                         .foregroundColor(PassColor.textWeak.toColor)
-                }
-            }
 
-            Spacer()
-            if viewModel.vault.isAdmin {
-                vaultTrailingView(user: user)
-                    .onTapGesture {
-                        viewModel.setCurrentRole(for: user)
+                    Spacer()
+                    if viewModel.vault.isAdmin {
+                        vaultTrailingView(user: user)
+                            .onTapGesture {
+                                viewModel.setCurrentRole(for: user)
+                            }
                     }
+                }
             }
         }
     }
