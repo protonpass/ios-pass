@@ -72,6 +72,10 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
         return user.email == email
     }
 
+    func isOwnerAndCurrentUser(with user: ShareUser) -> Bool {
+        vault.isOwner && isCurrentUser(with: user)
+    }
+
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
         fetchingTask?.cancel()
         fetchingTask = Task { @MainActor [weak self] in
