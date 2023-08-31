@@ -32,7 +32,7 @@ enum LogManagerError: Error {
     case failedToSerializeLogEntry
 }
 
-public struct LogManagerConfig {
+public struct LogManagerConfig: Sendable {
     let maxLogLines: Int
     let dumpThreshold: Int
     let timerInterval: Double
