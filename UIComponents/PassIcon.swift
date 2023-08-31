@@ -61,6 +61,7 @@ public extension PassIcon {
     static var passCreditCardTwoStripes = UIImage(named: "PassCreditCardTwoStripes")!
     static var passIcon = UIImage(named: "PassIcon")!
     static var passTextLogo = UIImage(named: "PassTextLogo")!
+    static var scanner = UIImage(named: "Scanner")!
     static var shieldCheck = UIImage(named: "ShieldCheck")!
     static var swirls = UIImage(named: "Swirls")!
 
