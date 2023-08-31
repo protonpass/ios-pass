@@ -30,7 +30,7 @@ public extension Array where Element: Identifiable, Element: Equatable {
     /// Compare 2 arrays of `Identifiable` & `Equatable` objects
     /// Return `true` if the 2 arrays contain the same set of objects regardless of their order
     /// Return `false` otherwise
-    func isStrictlyEqual(to anotherArray: [Element]) -> Bool {
+    func isLooselyEqual(to anotherArray: [Element]) -> Bool {
         guard Set(map(\.id)) == Set(anotherArray.map(\.id)) else {
             return false
         }
