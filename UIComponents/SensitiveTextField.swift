@@ -27,6 +27,8 @@ public struct SensitiveTextField<Field: Hashable>: View {
     let placeholder: String
     let focusedField: FocusState<Field>.Binding
     let field: Field
+    let font: UIFont
+    let fontWeight: UIFont.Weight
     let onSubmit: (() -> Void)?
 
     private var isFocused: Bool { focusedField.wrappedValue == field }
@@ -36,11 +38,15 @@ public struct SensitiveTextField<Field: Hashable>: View {
                 placeholder: String,
                 focusedField: FocusState<Field>.Binding,
                 field: Field,
+                font: UIFont = .body,
+                fontWeight: UIFont.Weight = .regular,
                 onSubmit: (() -> Void)? = nil) {
         _text = text
         self.placeholder = placeholder
         self.focusedField = focusedField
         self.field = field
+        self.font = font
+        self.fontWeight = fontWeight
         self.onSubmit = onSubmit
     }
 
@@ -50,6 +56,8 @@ public struct SensitiveTextField<Field: Hashable>: View {
                                       focusedField: focusedField,
                                       field: field,
                                       placeholder: placeholder,
+                                      font: font,
+                                      fontWeight: fontWeight,
                                       onSubmit: onSubmit)
                 .frame(maxHeight: shouldShowTextEditor ? .infinity : 0)
                 .opacity(shouldShowTextEditor ? 1 : 0)
