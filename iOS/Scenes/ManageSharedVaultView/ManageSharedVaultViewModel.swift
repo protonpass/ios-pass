@@ -33,6 +33,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     @Published private(set) var users: [ShareUser] = []
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
+    @Published private(set) var expandedEmails: [String] = []
     @Published var userRole: ShareRole = .read
 
     private var currentSelectedUser: ShareUser?
@@ -163,6 +164,16 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 self.display(error: error)
                 self.logger.error(message: "Failed send invite reminder \(inviteId)", error: error)
             }
+        }
+    }
+
+    func isExpanded(email: String) -> Bool {
+        expandedEmails.contains(email)
+    }
+
+    func expand(email: String) {
+        if !expandedEmails.contains(email) {
+            expandedEmails.append(email)
         }
     }
 }

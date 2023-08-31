@@ -137,6 +137,11 @@ private extension ManageSharedVaultView {
             VStack(alignment: .leading, spacing: 4) {
                 Text(user.email)
                     .foregroundColor(PassColor.textNorm.toColor)
+                    .lineLimit(viewModel.isExpanded(email: user.email) ? nil : 1)
+                    .onTapGesture {
+                        viewModel.expand(email: user.email)
+                    }
+                    .animation(.default, value: viewModel.expandedEmails)
                 HStack {
                     if viewModel.isCurrentUser(with: user) {
                         Text("You")
