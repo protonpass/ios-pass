@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DocScanner
 import Factory
 import ProtonCore_Login
 
@@ -73,7 +74,7 @@ class BaseCreateEditItemViewModel {
 
     // Scanning
     @Published var isShowingScanner = false
-    let scanResponsePublisher: PassthroughSubject<ScanResponse?, Error> = .init()
+    let scanResponsePublisher: PassthroughSubject<ScanResult?, Error> = .init()
 
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
