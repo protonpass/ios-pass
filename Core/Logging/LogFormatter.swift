@@ -25,7 +25,7 @@ public enum LogFormat: Sendable {
     case html(LogFormatStyle)
 }
 
-public struct LogFormatStyle {
+public struct LogFormatStyle: Sendable {
     public typealias HexColor = String
 
     /// Colors in hex format with `#` prefix for `subsystem` strings.
