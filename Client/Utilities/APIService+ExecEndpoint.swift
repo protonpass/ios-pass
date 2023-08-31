@@ -139,8 +139,7 @@ private enum NetworkDebugger {
         case let .failure(error):
             print("Failure:")
             dump(error)
-            if let responseError = error as? ResponseError,
-               let underError = responseError.underlyingError as? SessionResponseError,
+            if let underError = error.underlyingError as? SessionResponseError,
                case let .responseBodyIsNotADecodableObject(body, _) = underError,
                let body,
                let rawString = String(data: body, encoding: .utf8) {
