@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DocScanner
 import Factory
 import ProtonCore_Login
 
@@ -71,6 +72,10 @@ class BaseCreateEditItemViewModel {
 
     @Published var isObsolete = false
 
+    // Scanning
+    @Published var isShowingScanner = false
+    let scanResponsePublisher: PassthroughSubject<ScanResult?, Error> = .init()
+
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: UpgradeCheckerProtocol
@@ -114,6 +119,9 @@ class BaseCreateEditItemViewModel {
 
     /// To be overridden by subclasses
     var isSaveable: Bool { false }
+
+    /// To be overridden by subclasses
+    var interpretor: ScanInterpreting { ScanInterpreter() }
 
     func bindValues() {}
 
@@ -249,6 +257,10 @@ extension BaseCreateEditItemViewModel {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+
+    func openScanner() {
+        isShowingScanner = true
     }
 
     func save() {
