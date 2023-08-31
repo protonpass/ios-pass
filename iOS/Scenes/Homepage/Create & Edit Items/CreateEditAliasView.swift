@@ -177,6 +177,7 @@ struct CreateEditAliasView: View {
                                       }
                                   },
                                   onUpgrade: viewModel.upgrade,
+                                  onScan: viewModel.openScanner,
                                   onSave: viewModel.save)
         }
     }

@@ -558,6 +558,7 @@
 		358C68282A68131E006E720F /* Preferences+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */; };
 		358C68292A681379006E720F /* Preferences+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */; };
 		358C682A2A68137A006E720F /* Preferences+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */; };
+		3590A3392A9F9C2600622F45 /* View+ScannerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+ScannerSheet.swift */; };
 		3593DCE728A790F800C235D3 /* LocalDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCE628A790F800C235D3 /* LocalDatasource.swift */; };
 		3593DCEB28A79CD300C235D3 /* CreateVaultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCEA28A79CD300C235D3 /* CreateVaultRequest.swift */; };
 		3593DCF128A7AA1200C235D3 /* GetShareEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */; };
@@ -587,6 +588,8 @@
 		35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
 		35AABE1F28B027C000CEDDE6 /* UpdateItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1E28B027C000CEDDE6 /* UpdateItemRequest.swift */; };
 		35AABE2128B0288B00CEDDE6 /* UpdateItemEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE2028B0288B00CEDDE6 /* UpdateItemEndpoint.swift */; };
+		35ABE12A2AA08275001E20F9 /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 35ABE1292AA08275001E20F9 /* DocScanner */; };
+		35ABE12C2AA082BB001E20F9 /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 35ABE12B2AA082BB001E20F9 /* DocScanner */; };
 		35AC9A542A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A532A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift */; };
 		35AC9A562A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A552A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift */; };
 		35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A582A0BD12600FBCEEC /* CustomFieldTypesView.swift */; };
@@ -1489,6 +1492,7 @@
 		358C42A728D48DFB00ADE305 /* DiscardChangesAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscardChangesAlertModifier.swift; sourceTree = "<group>"; };
 		358C68252A68067B006E720F /* SetPINCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeViewModel.swift; sourceTree = "<group>"; };
 		358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preferences+LocalAuthentication.swift"; sourceTree = "<group>"; };
+		3590A3382A9F9C2600622F45 /* View+ScannerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ScannerSheet.swift"; sourceTree = "<group>"; };
 		3593DCE628A790F800C235D3 /* LocalDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatasource.swift; sourceTree = "<group>"; };
 		3593DCEA28A79CD300C235D3 /* CreateVaultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVaultRequest.swift; sourceTree = "<group>"; };
 		3593DCF028A7AA1200C235D3 /* GetShareEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetShareEndpoint.swift; sourceTree = "<group>"; };
@@ -1793,6 +1797,7 @@
 				5B0C74FF2A2F617900272CE8 /* Factory in Frameworks */,
 				356A34CA2978642800969BA2 /* CodeScanner in Frameworks */,
 				F53DC9E901354CB27344B8B0 /* Pods_AutoFill.framework in Frameworks */,
+				35ABE12C2AA082BB001E20F9 /* DocScanner in Frameworks */,
 				5B1453792A6038FE0048B022 /* Entities in Frameworks */,
 				354513D728E4C70E0020A93A /* Client.framework in Frameworks */,
 				354513DB28E4C71F0020A93A /* UIComponents.framework in Frameworks */,
@@ -1839,6 +1844,7 @@
 				5B1453672A6033F60048B022 /* Entities in Frameworks */,
 				3544BCBC28E1E42C00EFE130 /* Core.framework in Frameworks */,
 				35D56D562942354A00C2D0E2 /* UIComponents.framework in Frameworks */,
+				35ABE12A2AA08275001E20F9 /* DocScanner in Frameworks */,
 				5B0C74F82A2F4B1200272CE8 /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2100,6 +2106,7 @@
 				35A5EEE12958CDBC00A09623 /* UrlOpener.swift */,
 				3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */,
 				356750D429D31E9200247648 /* View+ItemSwipeModifier.swift */,
+				3590A3382A9F9C2600622F45 /* View+ScannerSheet.swift */,
 				3569B2A529B7C39F0070830B /* View+Theme.swift */,
 			);
 			path = Utilities;
@@ -3933,6 +3940,7 @@
 				356A34C92978642800969BA2 /* CodeScanner */,
 				5B0C74FE2A2F617900272CE8 /* Factory */,
 				5B1453782A6038FE0048B022 /* Entities */,
+				35ABE12B2AA082BB001E20F9 /* DocScanner */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -4035,6 +4043,7 @@
 				5B0C74DF2A2E083C00272CE8 /* OneTimePassword */,
 				5B0C74F72A2F4B1200272CE8 /* Factory */,
 				5B1453662A6033F60048B022 /* Entities */,
+				35ABE1292AA08275001E20F9 /* DocScanner */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -4270,6 +4279,7 @@
 				356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 				5B0C74DE2A2E083C00272CE8 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
 				5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */,
+				35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */,
 			);
 			productRefGroup = 35E5063C286F819F00A3F6EA /* Products */;
 			projectDirPath = "";
@@ -5140,6 +5150,7 @@
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				35CEA8D72A60675900343A4E /* LocalAuthenticationMethod.swift in Sources */,
+				3590A3392A9F9C2600622F45 /* View+ScannerSheet.swift in Sources */,
 				5B503FEA2A4D7AFE00E6681C /* SendUserFeedBack.swift in Sources */,
 				5B1453B72A6AB9F00048B022 /* UserSharingStatus.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
@@ -8668,6 +8679,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/protonpass/DocScanner";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		5B0C74DE2A2E083C00272CE8 /* XCRemoteSwiftPackageReference "OneTimePassword" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mattrubin/OneTimePassword.git";
@@ -8696,6 +8715,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		35ABE1292AA08275001E20F9 /* DocScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */;
+			productName = DocScanner;
+		};
+		35ABE12B2AA082BB001E20F9 /* DocScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */;
+			productName = DocScanner;
 		};
 		35CEA8E32A60769E00343A4E /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;

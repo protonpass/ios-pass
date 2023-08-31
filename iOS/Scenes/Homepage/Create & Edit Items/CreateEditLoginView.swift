@@ -152,6 +152,7 @@ struct CreateEditLoginView: View {
                                           }
                                       },
                                       onUpgrade: { /* Not applicable */ },
+                                      onScan: viewModel.openScanner,
                                       onSave: {
                                           if viewModel.validateURLs() {
                                               viewModel.save()
