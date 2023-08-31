@@ -81,22 +81,8 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .receive(on: DispatchQueue.main)
             .sink { _ in } receiveValue: { [weak self] result in
                 guard let self, let result else { return }
-                if let cardResult = result as? CardDetails {
-                    if cardResult.type != .unknown {
-                        self.title = cardResult.type.rawValue
-                    }
-                    self.cardholderName = cardResult.name ?? ""
-                    self.cardNumber = cardResult.number ?? ""
-                    self.verificationNumber = cardResult.cvvNumber ?? ""
-
-                    // expiryDate format "MM/YY"
-                    if let expiryDate = cardResult.expiryDate {
-                        let dateComponents = expiryDate.components(separatedBy: "/")
-                        if dateComponents.count == 2 {
-                            self.month = Int(dateComponents.first ?? "")
-                            self.year = Int(dateComponents.last ?? "")
-                        }
-                    }
+                if let cardDetails = result as? CardDetails {
+                    self.parse(cardDetails: cardDetails)
                 } else {
                     assertionFailure("Expecting CardDetails as result")
                 }
@@ -158,5 +144,23 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 private extension CreateEditCreditCardViewModel {
     func transformAndLimit(newNumber: String) -> String {
         newNumber.spacesRemoved.prefix(19).toString.toCreditCardNumber()
+    }
+
+    func parse(cardDetails: CardDetails) {
+        if cardDetails.type != .unknown {
+            title = cardDetails.type.rawValue
+        }
+        cardholderName = cardDetails.name ?? ""
+        cardNumber = cardDetails.number ?? ""
+        verificationNumber = cardDetails.cvvNumber ?? ""
+
+        // expiryDate format "MM/YY"
+        if let expiryDate = cardDetails.expiryDate {
+            let dateComponents = expiryDate.components(separatedBy: "/")
+            if dateComponents.count == 2 {
+                month = Int(dateComponents.first ?? "")
+                year = Int(dateComponents.last ?? "")
+            }
+        }
     }
 }
