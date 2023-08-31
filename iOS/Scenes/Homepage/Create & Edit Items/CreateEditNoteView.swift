@@ -97,6 +97,7 @@ struct CreateEditNoteView: View {
                                           }
                                       },
                                       onUpgrade: { /* Not applicable */ },
+                                      onScan: viewModel.openScanner,
                                       onSave: viewModel.save)
             }
         }
@@ -106,6 +107,9 @@ struct CreateEditNoteView: View {
         .tint(Color(uiColor: viewModel.itemContentType().normMajor1Color))
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .scannerSheet(isPresented: $viewModel.isShowingScanner,
+                      interpreter: viewModel.interpretor,
+                      resultStream: viewModel.scanResponsePublisher)
         .onFirstAppear {
             if #available(iOS 16, *) {
                 focusedField = .title
