@@ -159,7 +159,15 @@ private extension CreateEditCreditCardViewModel {
             let dateComponents = expiryDate.components(separatedBy: "/")
             if dateComponents.count == 2 {
                 month = Int(dateComponents.first ?? "")
-                year = Int(dateComponents.last ?? "")
+
+                if let year = Int(dateComponents.last ?? "") {
+                    if year < 100 {
+                        // 2-digit year, assume that it's after the year of 2000
+                        self.year = 2_000 + year
+                    } else {
+                        self.year = year
+                    }
+                }
             }
         }
     }
