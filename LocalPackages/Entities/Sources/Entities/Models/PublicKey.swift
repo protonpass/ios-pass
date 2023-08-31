@@ -21,7 +21,7 @@
 import Foundation
 
 /// Public key of an address
-public struct PublicKey: Decodable {
+public struct PublicKey: Decodable, Sendable {
     public let value: String
 
     public init(value: String) {
