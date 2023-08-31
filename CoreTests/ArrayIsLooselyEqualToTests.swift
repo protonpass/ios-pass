@@ -1,5 +1,5 @@
 //
-// ArrayIsStrictlyEqualToTests.swift
+// ArrayIsLooselyEqualToTests.swift
 // Proton Pass - Created on 30/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,21 +21,21 @@
 @testable import Core
 import XCTest
 
-final class ArrayIsStrictlyEqualToTests: XCTestCase {
+final class ArrayIsLooselyEqualToTests: XCTestCase {
     private struct Person: Identifiable, Equatable {
         var id = UUID().uuidString
         var name = String.random()
     }
 
-    func testIsStrictylyEqualTo() {
+    func testIsLooselyEqualTo() {
         let alice = Person()
         let bob = Person()
         let charlie = Person()
 
-        XCTAssertTrue([alice, bob, charlie].isStrictlyEqual(to: [bob, charlie, alice]))
-        XCTAssertTrue([alice, charlie, bob].isStrictlyEqual(to: [charlie, alice, bob]))
-        XCTAssertTrue([alice, bob, charlie].isStrictlyEqual(to: [alice, bob, charlie]))
-        XCTAssertFalse([alice, bob, charlie].isStrictlyEqual(to: [alice, bob]))
-        XCTAssertFalse([bob, charlie].isStrictlyEqual(to: [alice, bob, charlie]))
+        XCTAssertTrue([alice, bob, charlie].isLooselyEqual(to: [bob, charlie, alice]))
+        XCTAssertTrue([alice, charlie, bob].isLooselyEqual(to: [charlie, alice, bob]))
+        XCTAssertTrue([alice, bob, charlie].isLooselyEqual(to: [alice, bob, charlie]))
+        XCTAssertFalse([alice, bob, charlie].isLooselyEqual(to: [alice, bob]))
+        XCTAssertFalse([bob, charlie].isLooselyEqual(to: [alice, bob, charlie]))
     }
 }

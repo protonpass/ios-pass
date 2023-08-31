@@ -326,7 +326,7 @@ private extension SyncEventLoop {
         var hasNewShareEvents = false
         // This is used to respond to sharing modifications that are not tied to events in the BE
         // making changes not visible to the user.
-        if !remoteShares.isStrictlyEqual(to: localShares.map(\.share)) {
+        if !remoteShares.isLooselyEqual(to: localShares.map(\.share)) {
             hasNewShareEvents = true
 
             // Update local shares
