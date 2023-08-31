@@ -45,16 +45,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
             .sink { _ in } receiveValue: { [weak self] result in
                 guard let self, let result else { return }
                 if let document = result as? ScannedDocument {
-                    for (index, page) in document.scannedPages.enumerated() {
-                        note += page.text.reduce(into: "") { partialResult, next in
-                            partialResult = partialResult + "\n" + next
-                        }
-
-                        if index != document.scannedPages.count - 1 {
-                            // Add an empty line between pages
-                            note += "\n\n"
-                        }
-                    }
+                    self.transformIntoNote(document: document)
                 } else {
                     assertionFailure("Expecting ScannedDocument as result")
                 }
@@ -88,5 +79,20 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.note,
                             customFields: [])
+    }
+}
+
+private extension CreateEditNoteViewModel {
+    func transformIntoNote(document: ScannedDocument) {
+        for (index, page) in document.scannedPages.enumerated() {
+            note += page.text.reduce(into: "") { partialResult, next in
+                partialResult = partialResult + "\n" + next
+            }
+
+            if index != document.scannedPages.count - 1 {
+                // Add an empty line between pages
+                note += "\n\n"
+            }
+        }
     }
 }
