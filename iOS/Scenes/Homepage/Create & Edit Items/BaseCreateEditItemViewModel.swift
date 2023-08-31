@@ -308,16 +308,8 @@ extension BaseCreateEditItemViewModel {
 // MARK: - VaultSelectorViewModelDelegate
 
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
-    func vaultSelectorViewModelWantsToUpgrade() {
-        upgrade()
-    }
-
     func vaultSelectorViewModelDidSelect(vault: Vault) {
         selectedVault = vault
-    }
-
-    func vaultSelectorViewModelDidEncounter(error: Error) {
-        router.display(element: .displayErrorBanner(error))
     }
 }
 

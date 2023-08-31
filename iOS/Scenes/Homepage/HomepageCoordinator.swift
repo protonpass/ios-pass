@@ -78,6 +78,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
+    // MARK: - Navigation Router
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: HomepageCoordinatorDelegate?
@@ -234,6 +236,8 @@ private extension HomepageCoordinator {
                 switch destination {
                 case let .urlPage(urlString: url):
                     self.urlOpener.open(urlString: url)
+                case .openSettings:
+                    UIApplication.shared.openAppSettings()
                 }
             }
             .store(in: &cancellables)
@@ -1009,10 +1013,6 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         let coordinator = makeCreateEditItemCoordinator()
         coordinator.presentGeneratePasswordForLoginItem(delegate: delegate)
-    }
-
-    func createEditLoginViewModelWantsToOpenSettings() {
-        UIApplication.shared.openAppSettings()
     }
 }
 

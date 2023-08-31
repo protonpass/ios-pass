@@ -25,6 +25,7 @@ import SwiftUI
 
 enum RouterDestination: Hashable {
     case urlPage(urlString: String)
+    case openSettings
 }
 
 enum SheetDestination: Equatable, Hashable {
