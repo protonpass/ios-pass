@@ -22,7 +22,7 @@ import Core
 import CryptoKit
 
 // RawValue is used for telemetry, we need to know the item type of the actions
-public enum ItemContentType: Int, CaseIterable, Equatable {
+public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
     case login = 0
     case alias = 1
     case note = 2
@@ -40,7 +40,7 @@ extension ItemContentType: CustomDebugStringConvertible {
     }
 }
 
-public enum ItemContentData {
+public enum ItemContentData: Sendable {
     case alias
     case login(LogInItemData)
     case note
@@ -60,7 +60,7 @@ public enum ItemContentData {
     }
 }
 
-public struct LogInItemData {
+public struct LogInItemData: Sendable {
     public let username: String
     public let password: String
     public let totpUri: String
@@ -74,7 +74,7 @@ public struct LogInItemData {
     }
 }
 
-public struct CreditCardData {
+public struct CreditCardData: Sendable {
     public let cardholderName: String
     public let type: ProtonPassItemV1_CardType
     public let number: String
@@ -102,11 +102,11 @@ public struct CreditCardData {
     }
 }
 
-public enum CustomFieldType: CaseIterable, Equatable {
+public enum CustomFieldType: CaseIterable, Equatable, Sendable {
     case text, totp, hidden
 }
 
-public struct CustomField: Equatable, Hashable {
+public struct CustomField: Equatable, Hashable, Sendable {
     public let title: String
     public let type: CustomFieldType
     public var content: String
@@ -247,7 +247,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     }
 }
 
-public struct ItemContent: ItemContentProtocol {
+public struct ItemContent: ItemContentProtocol, Sendable {
     public let shareId: String
     public let itemUuid: String
     public let item: ItemRevision

@@ -306,8 +306,6 @@ public extension ItemRepositoryProtocol {
                     shareId: String) async throws {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
-        let symmetricallyEncryptedOldItem = try await localDatasoure.getItem(shareId: shareId, itemId: itemId)
-        let oldItemContentData = try symmetricallyEncryptedOldItem?.getItemContent(symmetricKey: symmetricKey)
         let latestItemKey = try await passKeyManager.getLatestItemKey(shareId: shareId,
                                                                       itemId: itemId)
         let request = try UpdateItemRequest(oldRevision: oldItem,

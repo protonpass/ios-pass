@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum ItemState: Int64, CaseIterable {
+public enum ItemState: Int64, CaseIterable, Sendable {
     case active = 1
     case trashed = 2
 

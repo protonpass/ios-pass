@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public struct Vault: Identifiable, Hashable, Equatable {
+public struct Vault: Identifiable, Hashable, Equatable, Sendable {
     public let id: String
     public let shareId: String
     public let addressId: String
