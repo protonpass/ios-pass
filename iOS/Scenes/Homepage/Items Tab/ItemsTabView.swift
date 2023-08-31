@@ -120,6 +120,8 @@ struct ItemsTabView: View {
                         .scaledToFit()
                         .frame(width: 20, height: 20)
                     Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                 }
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal)
