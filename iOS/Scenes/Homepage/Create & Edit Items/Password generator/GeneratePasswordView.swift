@@ -34,7 +34,7 @@ struct GeneratePasswordView: View {
         NavigationView {
             VStack {
                 Text(viewModel.texts)
-                    .font(.title3)
+                    .font(.title3.monospaced())
                     .minimumScaleFactor(0.5)
                     .frame(maxHeight: .infinity, alignment: .center)
                     .animationsDisabled()
