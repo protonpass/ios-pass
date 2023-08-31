@@ -58,7 +58,6 @@ extension AuthCredential: Codable {
         case sessionID
         case accessToken
         case refreshToken
-        case expiration
         case userID
         case userName
         case privateKey
@@ -71,7 +70,6 @@ extension AuthCredential: Codable {
         try container.encode(sessionID, forKey: .sessionID)
         try container.encode(accessToken, forKey: .accessToken)
         try container.encode(refreshToken, forKey: .refreshToken)
-        try container.encode(expiration, forKey: .expiration)
         try container.encode(userID, forKey: .userID)
         try container.encode(userName, forKey: .userName)
         try container.encode(privateKey, forKey: .privateKey)
@@ -84,16 +82,15 @@ extension AuthCredential: Codable {
         let sessionID = try container.decode(String.self, forKey: .sessionID)
         let accessToken = try container.decode(String.self, forKey: .accessToken)
         let refreshToken = try container.decode(String.self, forKey: .refreshToken)
-        let expiration = try container.decode(Date.self, forKey: .expiration)
         let userID = try container.decode(String.self, forKey: .userID)
         let userName = try container.decode(String.self, forKey: .userName)
         let privateKey = try container.decodeIfPresent(String.self, forKey: .privateKey)
         let passwordKeySalt = try container.decodeIfPresent(String.self, forKey: .passwordKeySalt)
         let mailboxpassword = try container.decodeIfPresent(String.self, forKey: .mailboxpassword) ?? ""
+
         self.init(sessionID: sessionID,
                   accessToken: accessToken,
                   refreshToken: refreshToken,
-                  expiration: expiration,
                   userName: userName,
                   userID: userID,
                   privateKey: privateKey,
@@ -107,7 +104,6 @@ public extension UserData {
         let credential = AuthCredential(sessionID: "",
                                         accessToken: "",
                                         refreshToken: "",
-                                        expiration: .init(),
                                         userName: "",
                                         userID: "",
                                         privateKey: nil,
