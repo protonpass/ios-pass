@@ -21,13 +21,13 @@
 import Entities
 import Foundation
 
-public struct AliasOptions: Decodable {
+public struct AliasOptions: Decodable, Sendable {
     public let suffixes: [Suffix]
     public let mailboxes: [Mailbox]
     public let canCreateAlias: Bool
 }
 
-public struct Suffix: Decodable, Hashable {
+public struct Suffix: Decodable, Hashable, Sendable {
     public let suffix: String
     public let domain: String
     public let signedSuffix: String

@@ -20,7 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
+import Client
 
 protocol LeaveShareUseCase: Sendable {
     func execute(with shareId: String) async throws

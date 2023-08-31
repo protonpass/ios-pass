@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct SearchEntry: Hashable {
+public struct SearchEntry: Hashable, Sendable {
     public let itemID: String
     public let shareID: String
     public let time: Int64
