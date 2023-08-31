@@ -183,6 +183,7 @@ struct LogInDetailView: View {
                 } else {
                     if isShowingPassword {
                         Text(viewModel.coloredPasswordTexts)
+                            .font(.body.monospaced())
                     } else {
                         Text(String(repeating: "•", count: 20))
                             .sectionContentText()

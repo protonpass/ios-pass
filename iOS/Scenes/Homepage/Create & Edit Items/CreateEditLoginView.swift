@@ -415,6 +415,8 @@ struct CreateEditLoginView: View {
                                    placeholder: "Add password".localized,
                                    focusedField: $focusedField,
                                    field: Field.password,
+                                   font: .monospacedSystemFont(ofSize: UIFont.body.pointSize,
+                                                               weight: .regular),
                                    onSubmit: { focusedField = .totp })
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
