@@ -23,9 +23,7 @@ import Core
 import Factory
 
 protocol VaultSelectorViewModelDelegate: AnyObject {
-    func vaultSelectorViewModelWantsToUpgrade()
     func vaultSelectorViewModelDidSelect(vault: Vault)
-    func vaultSelectorViewModelDidEncounter(error: Error)
 }
 
 final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
@@ -33,6 +31,7 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let allVaults: [VaultListUiModel]
 
     @Published private(set) var selectedVault: Vault
@@ -54,7 +53,7 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.vaultSelectorViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -64,6 +63,6 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     }
 
     func upgrade() {
-        delegate?.vaultSelectorViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 }
