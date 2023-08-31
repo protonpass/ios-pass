@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@preconcurrency import LocalAuthentication
+import LocalAuthentication
 
 /// Get supported local authentication  methods
 protocol GetLocalAuthenticationMethodsUseCase: Sendable {
