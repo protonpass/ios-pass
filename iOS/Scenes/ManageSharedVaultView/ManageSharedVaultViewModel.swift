@@ -20,14 +20,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
+import Client
 import Combine
 import Entities
 import Factory
 import Foundation
 import ProtonCore_Networking
 
-final class ManageSharedVaultViewModel: ObservableObject, Sendable {
+final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     let vault: Vault
     @Published private(set) var itemsNumber = 0
     @Published private(set) var users: [ShareUser] = []

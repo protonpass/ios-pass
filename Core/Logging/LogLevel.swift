@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum LogLevel: String, Codable {
+public enum LogLevel: String, Codable, Sendable {
     case fatal = "FATAL"
     case error = "ERROR"
     case warning = "WARNING"

@@ -59,7 +59,7 @@ public enum SortType: Int, CaseIterable, Equatable {
     }
 }
 
-public protocol DateSortable: Hashable {
+public protocol DateSortable: Hashable, Sendable {
     var dateForSorting: Date { get }
 }
 
@@ -177,7 +177,7 @@ public extension Array where Element: DateSortable {
 // MARK: - Alphabetical
 
 // swiftlint:disable identifier_name
-public enum AlphabetLetter: Int, CaseIterable {
+public enum AlphabetLetter: Int, CaseIterable, Sendable {
     case sharp = 0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z
 
     public var character: String {
@@ -224,16 +224,16 @@ public enum AlphabetLetter: Int, CaseIterable {
 
 // swiftlint:enable identifier_name
 
-public struct AlphabetBucket<T: AlphabeticalSortable>: Hashable {
+public struct AlphabetBucket<T: AlphabeticalSortable>: Hashable, Sendable {
     public let letter: AlphabetLetter
     public let items: [T]
 }
 
-public protocol AlphabeticalSortable: Hashable {
+public protocol AlphabeticalSortable: Hashable, Sendable {
     var alphabeticalSortableString: String { get }
 }
 
-public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults {
+public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults, Sendable {
     public var numberOfItems: Int
 
     public let buckets: [AlphabetBucket<T>]
@@ -369,7 +369,7 @@ public extension Array where Element: AlphabeticalSortable {
 
 // MARK: - Month year
 
-public struct MonthYear: Hashable {
+public struct MonthYear: Hashable, Sendable {
     public let month: Int
     public let year: Int
 
@@ -405,7 +405,7 @@ extension MonthYear: Comparable {
     }
 }
 
-public struct MonthYearBucket<T: DateSortable>: Hashable {
+public struct MonthYearBucket<T: DateSortable>: Hashable, Sendable {
     public let monthYear: MonthYear
     public let items: [T]
 }
@@ -480,6 +480,6 @@ public extension Array where Element: DateSortable {
     }
 }
 
-public protocol SearchResults: Hashable, Equatable {
+public protocol SearchResults: Hashable, Equatable, Sendable {
     var numberOfItems: Int { get }
 }
