@@ -52,11 +52,9 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
                         if index != document.scannedPages.count - 1 {
                             // Add an empty line between pages
-                            note += "\n"
+                            note += "\n\n"
                         }
                     }
-                    let texts = document.scannedPages.flatMap(\.text)
-                    note += texts.reduce(into: "") { $0 += $1 }
                 } else {
                     assertionFailure("Expecting ScannedDocument as result")
                 }
