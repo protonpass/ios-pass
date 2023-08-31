@@ -20,12 +20,13 @@
 
 import Combine
 import Core
+import DocScanner
 import SwiftUI
 
 extension View {
     func scannerSheet(isPresented: Binding<Bool>,
                       interpreter: ScanInterpreting,
-                      resultStream: PassthroughSubject<ScanResponse?, Error>) -> some View {
+                      resultStream: PassthroughSubject<ScanResult?, Error>) -> some View {
         sheet(isPresented: isPresented) {
             DocScanner(with: interpreter, resultStream: resultStream)
         }

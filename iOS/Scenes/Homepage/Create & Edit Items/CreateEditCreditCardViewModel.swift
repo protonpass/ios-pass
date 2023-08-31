@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DocScanner
 import SwiftUI
 
 final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
