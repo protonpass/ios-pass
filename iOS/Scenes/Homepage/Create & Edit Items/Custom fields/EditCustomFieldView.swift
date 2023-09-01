@@ -59,10 +59,13 @@ struct EditCustomFieldView<Field: Hashable>: View {
                                                   placeholder: placeholder)
 
                     case .totp:
+                        let font: UIFont = uiModel.customField.content.isEmpty ?
+                            .body : .monospacedSystemFont(ofSize: UIFont.body.pointSize, weight: .regular)
                         SensitiveTextField(text: $uiModel.customField.content,
                                            placeholder: placeholder,
                                            focusedField: focusedField,
-                                           field: field)
+                                           field: field,
+                                           font: font)
                             .foregroundColor(PassColor.textNorm.toColor)
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
