@@ -160,7 +160,9 @@ public extension ShareRepository {
 
     func upsertShares(_ shares: [Share]) async throws {
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
-        let encryptedShares = try await shares.parallelMap { try await symmetricallyEncrypt($0) }
+        let encryptedShares = try await shares
+            .parallelMap { try await symmetricallyEncryptNullable($0) }
+            .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
@@ -345,5 +347,24 @@ private extension ShareRepository {
                                                 associatedData: .vaultContent)
         let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)
+    }
+
+    /// Symmetrically encrypt but return `nil` when encounting inactive user key instead of throwing
+    /// We don't want to throw errors and stop the whole decryption process when we find an inactive user key
+    func symmetricallyEncryptNullable(_ share: Share) async throws -> SymmetricallyEncryptedShare? {
+        do {
+            return try await symmetricallyEncrypt(share)
+        } catch {
+            if let clientError = error as? PPClientError,
+               case let .crypto(reason) = clientError,
+               case .inactiveUserKey = reason {
+                // We can’t decrypt old vaults because of password reset
+                // just log and move on instead of throwing
+                logger.warning(reason.debugDescription)
+                return nil
+            } else {
+                throw error
+            }
+        }
     }
 }
