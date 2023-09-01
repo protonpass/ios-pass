@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum LogLevel: String, Codable, Sendable {
+public enum LogLevel: String, Codable, CaseIterable, Sendable {
     case fatal = "FATAL"
     case error = "ERROR"
     case warning = "WARNING"
@@ -43,7 +43,7 @@ public enum LogLevel: String, Codable, Sendable {
         }
     }
 
-    var descriptionWithEmoji: String {
+    public var descriptionWithEmoji: String {
         "\(emoji) \(rawValue)"
     }
 }
