@@ -335,15 +335,21 @@ private extension SyncEventLoop {
                         if Task.isCancelled {
                             return false
                         }
-                        _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
-                        if Task.isCancelled {
-                            return false
+
+                        do {
+                            _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
+                            try await self.shareRepository.upsertShares([remoteShare])
+                            try await self.itemRepository.refreshItems(shareId: shareId)
+                        } catch {
+                            if let clientError = error as? PPClientError,
+                               case let .crypto(reason) = clientError,
+                               case .inactiveUserKey = reason {
+                                // Ignore the case where user key is inactive
+                                self.logger.warning(reason.debugDescription)
+                            } else {
+                                throw error
+                            }
                         }
-                        try await self.shareRepository.upsertShares([remoteShare])
-                        if Task.isCancelled {
-                            return false
-                        }
-                        try await self.itemRepository.refreshItems(shareId: shareId)
                     }
                     return hasNewEvents
                 }
