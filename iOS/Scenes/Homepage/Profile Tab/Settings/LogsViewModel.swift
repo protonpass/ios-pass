@@ -38,8 +38,17 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     @Published private(set) var entries = [LogEntry]()
     @Published private(set) var error: Error?
     @Published private(set) var sharingLogs = false
+    @Published var logLevel: LogLevel?
 
-    var formattedEntries: [String] { entries.map(logFormatter.format(entry:)) }
+    var formattedEntries: [String] {
+        let takenEntries: [LogEntry]
+        if let logLevel {
+            takenEntries = entries.filter { $0.level == logLevel }
+        } else {
+            takenEntries = entries
+        }
+        return takenEntries.map(logFormatter.format(entry:))
+    }
 
     private var fileToDelete: URL?
 

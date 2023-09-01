@@ -268,10 +268,8 @@ extension APIManager: APIServiceLoggingDelegate {
     func accessTokenRefreshDidFail(for sessionID: String,
                                    sessionType: APISessionTypeForLogging,
                                    error: APIServiceAccessTokenRefreshErrorForLogging) {
-        logger.info("""
-        Access token refresh did fail for \(sessionType) session \(sessionID)
-        with error \(error.localizedDescription)
-        """)
+        logger.error(message: "Access token refresh did fail for \(sessionType) session \(sessionID)",
+                     error: error)
     }
 }
 
