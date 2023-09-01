@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -53,7 +54,7 @@ struct LogsView: View {
                         }
                     }
                 } else {
-                    logs
+                    content
                         .showSpinner(viewModel.sharingLogs)
                 }
             }
@@ -70,17 +71,23 @@ struct LogsView: View {
                      action: dismiss.callAsFunction)
     }
 
-    private var logs: some View {
+    private var content: some View {
         ScrollViewReader { value in
-            List {
-                ForEach(viewModel.formattedEntries, id: \.self) { entry in
-                    Text(entry)
-                        .font(.caption)
-                        .id(entry)
-                        .listRowBackground(Color.clear)
+            VStack {
+                if Bundle.main.isQaBuild {
+                    filterButton
+                        .padding(.horizontal)
+                }
+
+                if viewModel.formattedEntries.isEmpty {
+                    Spacer()
+                    noFilteredLogsMessage
+                    Spacer()
+                } else {
+                    logs
                 }
             }
-            .listStyle(.plain)
+            .frame(maxHeight: .infinity)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     dismissButton
@@ -105,5 +112,54 @@ struct LogsView: View {
                 }
             }
         }
+    }
+}
+
+private extension LogsView {
+    var filterButton: some View {
+        Menu(content: {
+            Button(action: {
+                viewModel.logLevel = nil
+            }, label: {
+                Text("All")
+            })
+
+            ForEach(LogLevel.allCases, id: \.self) { level in
+                Button(action: {
+                    viewModel.logLevel = level
+                }, label: {
+                    Text(level.descriptionWithEmoji)
+                })
+            }
+        }, label: {
+            if let level = viewModel.logLevel {
+                Text("Log level (\(level.descriptionWithEmoji))")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.callout.weight(.medium))
+            } else {
+                Text("Log level (All)")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.callout.weight(.medium))
+            }
+        })
+        .animationsDisabled()
+        .buttonStyle(.plain)
+        .foregroundColor(PassColor.interactionNormMajor2.toColor)
+    }
+
+    var noFilteredLogsMessage: some View {
+        Text("No logs for \(viewModel.logLevel?.descriptionWithEmoji ?? "")")
+    }
+
+    var logs: some View {
+        List {
+            ForEach(viewModel.formattedEntries, id: \.self) { entry in
+                Text(entry)
+                    .font(.caption)
+                    .id(entry)
+                    .listRowBackground(Color.clear)
+            }
+        }
+        .listStyle(.plain)
     }
 }
