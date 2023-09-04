@@ -46,12 +46,13 @@ final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsUseCase 
             }
         } catch {
             // We only want to throw unexpected errors
-            // If biometry is not available for whatever reason, we just ignore it
+            // If biometry is not available or passcode is not set for whatever reason, we just ignore it
             if let laError = error as? LAError {
                 switch laError.code {
                 case .biometryLockout,
                      .biometryNotAvailable,
-                     .biometryNotEnrolled:
+                     .biometryNotEnrolled,
+                     .passcodeNotSet:
                     return [.none, .pin]
                 default:
                     throw error
