@@ -90,7 +90,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         setUpRouting()
         finalizeInitialization()
         vaultsManager.refresh()
-        refreshInvitations()
         start()
         eventLoop.start()
         refreshPlan()
@@ -134,7 +133,6 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 self.logger.info("App goes back to foreground")
                 self.refresh()
-                self.refreshInvitations()
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.start()
                 self.eventLoop.forceSync()
@@ -1232,8 +1230,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
-        refreshInvitations()
-
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
             refresh()
