@@ -50,24 +50,27 @@ struct InfoBannerView: View {
 
 private extension InfoBannerView {
     var informationDisplayView: some View {
-        HStack(alignment: .center, spacing: 10) {
+        HStack(alignment: .center, spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
-                Spacer()
                 Text(banner.detail.title)
+                    .minimumScaleFactor(0.75)
                     .font(.body.weight(.bold))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.3)
+                    .lineLimit(2)
+                    .frame(maxHeight: .infinity)
 
                 Text(banner.detail.description)
-                    .minimumScaleFactor(0.4)
+                    .minimumScaleFactor(0.75)
                     .font(.caption)
+                    .frame(maxHeight: banner.detail.ctaTitle != nil ? nil : .infinity, alignment: .topLeading)
 
                 if let ctaTitle = banner.detail.ctaTitle {
                     ctaButtonView(ctaTitle: ctaTitle)
+                } else {
+                    Spacer()
                 }
-                Spacer()
             }
             .foregroundColor(banner.detail.foregroundColor)
+            .padding(.vertical, 16)
 
             Spacer()
 
@@ -99,7 +102,7 @@ private extension InfoBannerView {
         Button(action: action) {
             Label {
                 Text(ctaTitle)
-                    .minimumScaleFactor(0.2)
+                    .minimumScaleFactor(0.75)
                     .font(.caption2.weight(.semibold))
             } icon: {
                 Image(systemName: "chevron.right")
