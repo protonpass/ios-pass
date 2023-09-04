@@ -525,6 +525,18 @@ extension CredentialsViewModel: SyncEventLoopDelegate {
         // Silently fail & not show error to users
         logger.error(error)
     }
+
+    func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
+        logger.trace("Began executing additional task \(label)")
+    }
+
+    func syncEventLoopDidFinishAdditionalTask(label: String) {
+        logger.info("Finished executing additional task \(label)")
+    }
+
+    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
+        logger.error(message: "Failed to execute additional task \(label)", error: error)
+    }
 }
 
 extension PassPlan.PlanType {
