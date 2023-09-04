@@ -55,12 +55,29 @@ public protocol SyncEventLoopDelegate: AnyObject {
     /// - Parameters:
     ///   - error: Occured error
     func syncEventLoopDidFailLoop(error: Error)
+
+    /// Called when an additional task is started to be executed
+    /// - Parameters:
+    ///  - label: the uniquely identifiable label of the failed task
+    func syncEventLoopDidBeginExecutingAdditionalTask(label: String)
+
+    /// Called when an additional task is executed successfully
+    /// - Parameters:
+    func syncEventLoopDidFinishAdditionalTask(label: String)
+
+    /// Called when an additional task is failed
+    /// - Parameters:
+    ///  - label: the uniquely identifiable label of the failed task.
+    ///  - error: the underlying error
+    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error)
 }
 
 public protocol SyncEventLoopActionProtocol {
     func start()
     func stop()
     func forceSync()
+    func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
+    func removeAdditionalTask(label: String)
 }
 
 public enum SyncEventLoopSkipReason {
@@ -78,6 +95,25 @@ public protocol SyncEventLoopProtocol {
     func stop()
 }
 
+public extension SyncEventLoop {
+    struct AdditionalTask {
+        /// Uniquely identiable label between tasks, each task should have a unique label
+        /// This is to help the event loop adding/removing tasks
+        let label: String
+        /// The execution block of the task
+        let task: () async throws -> Void
+
+        public init(label: String, task: @escaping () async throws -> Void) {
+            self.label = label
+            self.task = task
+        }
+
+        public func callAsFunction() async throws {
+            try await task()
+        }
+    }
+}
+
 /// A background event loop that keeps data up to date by synching after a random number of seconds
 public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -89,6 +125,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     private var timer: Timer?
     private var secondCount = 0
     private var threshold = kThresholdRange.randomElement() ?? 5
+    private var additionalTasks: [AdditionalTask] = []
     private var ongoingTask: Task<Void, Error>?
 
     // Injected params
@@ -160,6 +197,18 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
         ongoingTask?.cancel()
         delegate?.syncEventLoopDidStopLooping()
     }
+
+    public func addAdditionalTask(_ task: AdditionalTask) {
+        guard !additionalTasks.contains(where: { $0.label == task.label }) else {
+            assertionFailure("Existing task with label \(task.label)")
+            return
+        }
+        additionalTasks.append(task)
+    }
+
+    public func removeAdditionalTask(label: String) {
+        additionalTasks.removeAll(where: { $0.label == label })
+    }
 }
 
 /*
@@ -221,7 +270,22 @@ private extension SyncEventLoop {
                     if Task.isCancelled {
                         return
                     }
+
                     let hasNewEvents = try await self.sync()
+
+                    // Execute additional tasks and record failures in a different delegate callback
+                    // So up to this point, the event loop is considered successful
+                    for task in additionalTasks {
+                        do {
+                            self.delegate?.syncEventLoopDidBeginExecutingAdditionalTask(label: task.label)
+                            try await task()
+                            self.delegate?.syncEventLoopDidFinishAdditionalTask(label: task.label)
+                        } catch {
+                            self.delegate?.syncEventLoopDidFailedAdditionalTask(label: task.label,
+                                                                                error: error)
+                        }
+                    }
+
                     self.delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
                     self.backOffManager.recordSuccess()
                 } catch {

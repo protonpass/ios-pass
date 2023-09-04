@@ -36,6 +36,8 @@ import SwiftUI
 import UIComponents
 import UIKit
 
+private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
+
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
     func homepageCoordinatorDidFailLocallyAuthenticating()
@@ -90,7 +92,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         setUpRouting()
         finalizeInitialization()
         vaultsManager.refresh()
-        refreshInvitations()
         start()
         eventLoop.start()
         refreshPlan()
@@ -110,6 +111,9 @@ private extension HomepageCoordinator {
         itemContextMenuHandler.delegate = self
         passPlanRepository.delegate = self
         urlOpener.rootViewController = rootViewController
+
+        eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
+                                          task: refreshInvitations.callAsFunction))
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
@@ -134,7 +138,6 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 self.logger.info("App goes back to foreground")
                 self.refresh()
-                self.refreshInvitations()
                 self.sendAllEventsIfApplicable()
                 self.eventLoop.start()
                 self.eventLoop.forceSync()
@@ -1232,8 +1235,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
-        refreshInvitations()
-
         if hasNewEvents {
             logger.info("Has new events. Refreshing items")
             refresh()
@@ -1245,5 +1246,17 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     func syncEventLoopDidFailLoop(error: Error) {
         // Silently fail & not show error to users
         logger.error(error)
+    }
+
+    func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
+        logger.trace("Began executing additional task \(label)")
+    }
+
+    func syncEventLoopDidFinishAdditionalTask(label: String) {
+        logger.info("Finished executing additional task \(label)")
+    }
+
+    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
+        logger.error(message: "Failed to execute additional task \(label)", error: error)
     }
 }
