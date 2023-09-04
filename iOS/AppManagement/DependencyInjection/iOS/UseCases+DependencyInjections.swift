@@ -151,7 +151,8 @@ extension UseCasesContainer {
     }
 
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
-        self { RefreshInvitations(repository: RepositoryContainer.shared.inviteRepository(),
+        self { RefreshInvitations(inviteRepository: RepositoryContainer.shared.inviteRepository(),
+                                  passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
                                   getFeatureFlagStatus: self.getFeatureFlagStatus()) }
     }
 
