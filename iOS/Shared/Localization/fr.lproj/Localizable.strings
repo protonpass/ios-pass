@@ -345,9 +345,6 @@
 "Edit alias" = "Modifier l'alias";
 "Remove alias" = "Retirer l'alias";
 "Delete alias" = "Supprimer l'alias";
-"Delete alias?" = "Supprimer l'alias ?";
-"Yes, delete alias" = "Oui, supprimer l'alias";
-"The alias will be deleted permanently" = "L'alias sera supprimé définitivement";
 
 /* Alias item create/edit page */
 "You are about to create" = "Vous êtes sur le point de créer";

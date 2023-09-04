@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable type_body_length
 import CodeScanner
 import Core
 import ProtonCore_UIFoundations
@@ -167,9 +166,11 @@ struct CreateEditLoginView: View {
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
     }
+}
 
+private extension CreateEditLoginView {
     @ToolbarContentBuilder
-    private var keyboardToolbar: some ToolbarContent {
+    var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             if #available(iOS 16, *) {
                 switch focusedField {
@@ -205,7 +206,7 @@ struct CreateEditLoginView: View {
         }
     }
 
-    private var usernameTextFieldToolbar: some View {
+    var usernameTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
                 Button(action: viewModel.generateAlias) {
@@ -236,7 +237,7 @@ struct CreateEditLoginView: View {
         }
     }
 
-    private var totpTextFieldToolbar: some View {
+    var totpTextFieldToolbar: some View {
         ScrollView(.horizontal) {
             HStack {
                 Button(action: viewModel.pasteTotpUriFromClipboard) {
@@ -261,7 +262,7 @@ struct CreateEditLoginView: View {
         }
     }
 
-    private var passwordTextFieldToolbar: some View {
+    var passwordTextFieldToolbar: some View {
         Button(action: viewModel.generatePassword) {
             HStack {
                 toolbarIcon(uiImage: IconProvider.arrowsRotate)
@@ -271,20 +272,18 @@ struct CreateEditLoginView: View {
         .animationsDisabled()
     }
 
-    private func toolbarIcon(uiImage: UIImage) -> some View {
+    func toolbarIcon(uiImage: UIImage) -> some View {
         Image(uiImage: uiImage)
             .resizable()
             .frame(width: 18, height: 18)
     }
+}
 
-    private var usernamePasswordTOTPSection: some View {
+private extension CreateEditLoginView {
+    var usernamePasswordTOTPSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
             if viewModel.isAlias {
-                if viewModel.aliasCreationLiteInfo != nil {
-                    pendingAliasRow
-                } else {
-                    createdAliasRow
-                }
+                pendingAliasRow
             } else {
                 usernameRow
             }
@@ -301,7 +300,7 @@ struct CreateEditLoginView: View {
         .roundedEditableSection()
     }
 
-    private var usernameRow: some View {
+    var usernameRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.user)
 
@@ -331,48 +330,7 @@ struct CreateEditLoginView: View {
         .id(usernameID)
     }
 
-    private var createdAliasRow: some View {
-        HStack {
-            ItemDetailSectionIcon(icon: IconProvider.alias)
-
-            VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Username or email address")
-                    .sectionTitleText()
-                Text(viewModel.username)
-                    .foregroundColor(PassColor.textNorm.toColor)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Menu(content: {
-                Button(role: .destructive,
-                       action: { isShowingDeleteAliasAlert.toggle() },
-                       label: {
-                           Label(title: { Text("Delete alias") },
-                                 icon: { Image(uiImage: IconProvider.trash) })
-                       })
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: viewModel.itemContentType().normMajor1Color,
-                             backgroundColor: viewModel.itemContentType().normMinor1Color)
-            })
-        }
-        .padding(.horizontal, kItemDetailSectionPadding)
-        .animation(.default, value: viewModel.username.isEmpty)
-        .alert("Delete alias?",
-               isPresented: $isShowingDeleteAliasAlert,
-               actions: {
-                   Button(role: .destructive,
-                          action: viewModel.removeAlias,
-                          label: { Text("Yes, delete alias") })
-
-                   Button(role: .cancel, label: { Text("Cancel") })
-               },
-               message: {
-                   Text("The alias will be deleted permanently")
-               })
-    }
-
-    private var pendingAliasRow: some View {
+    var pendingAliasRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.alias)
 
@@ -389,10 +347,10 @@ struct CreateEditLoginView: View {
                     Label(title: { Text("Edit alias") }, icon: { Image(uiImage: IconProvider.pencil) })
                 }
 
-                Button(role: .destructive,
-                       action: viewModel.removeAlias,
+                Button(action: viewModel.removeAlias,
                        label: {
-                           Label(title: { Text("Remove alias") }, icon: { Image(uiImage: IconProvider.trash) })
+                           Label(title: { Text("Remove alias") },
+                                 icon: { Image(uiImage: IconProvider.crossCircle) })
                        })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
@@ -404,7 +362,7 @@ struct CreateEditLoginView: View {
         .animation(.default, value: viewModel.username.isEmpty)
     }
 
-    private var passwordRow: some View {
+    var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.key)
 
@@ -439,7 +397,7 @@ struct CreateEditLoginView: View {
         .id(passwordID)
     }
 
-    private var totpNotAllowedRow: some View {
+    var totpNotAllowedRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 
@@ -453,7 +411,7 @@ struct CreateEditLoginView: View {
         .padding(.horizontal, kItemDetailSectionPadding)
     }
 
-    private var totpAllowedRow: some View {
+    var totpAllowedRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.lock)
 
@@ -584,5 +542,3 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
-
-// swiftlint:enable type_body_length
