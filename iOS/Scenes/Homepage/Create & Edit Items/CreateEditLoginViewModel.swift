@@ -38,7 +38,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     deinit { print(deinitMessage) }
 
     @Published private(set) var canAddOrEdit2FAURI = true
-    @Published private(set) var isAlias = false // `Username` is an alias or a custom one
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -61,7 +60,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private var aliasItem: SymmetricallyEncryptedItem?
 
     private var aliasOptions: AliasOptions?
-    private(set) var aliasCreationLiteInfo: AliasCreationLiteInfo?
+    @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
+    var isAlias: Bool { aliasCreationLiteInfo != nil }
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
@@ -110,7 +110,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 if self.aliasOptions != nil {
                     self.aliasOptions = nil
                     self.aliasCreationLiteInfo = nil
-                    self.isAlias = false
                     self.username = ""
                 }
             }
@@ -129,18 +128,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     urls = data.urls.map { .init(value: $0) }
                 }
                 note = itemContent.note
-
-                Task { @MainActor [weak self] in
-                    guard let self else { return }
-                    do {
-                        self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
-                        self.isAlias = self.aliasItem != nil
-                    } catch {
-                        self.logger.error(error)
-                        self.router
-                            .display(element: .displayErrorBanner(error))
-                    }
-                }
             }
 
         case let .create(_, type):
@@ -186,7 +173,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
-        guard isAlias, let aliasCreationLiteInfo else { return nil }
+        guard let aliasCreationLiteInfo else { return nil }
 
         return .init(prefix: aliasCreationLiteInfo.prefix,
                      suffix: aliasCreationLiteInfo.suffix,
@@ -194,7 +181,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func generateAliasItemContent() -> ItemContentProtobuf? {
-        guard isAlias, aliasCreationLiteInfo != nil else { return nil }
+        guard isAlias else { return nil }
         return .init(name: title,
                      note: "Alias of login item \"%@\"".localized(title),
                      itemUuid: UUID().uuidString,
@@ -203,13 +190,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func additionalEdit() async throws {
-        // Remove alias item if necessary
-        if let aliasEmail = aliasItem?.item.aliasEmail, !isAlias {
-            try await itemRepository.deleteAlias(email: aliasEmail)
-        }
         // Create new alias item if applicable
-        else if let aliasCreationInfo = generateAliasCreationInfo(),
-                let aliasItemContent = generateAliasItemContent() {
+        if let aliasCreationInfo = generateAliasCreationInfo(),
+           let aliasItemContent = generateAliasItemContent() {
             try await itemRepository.createAlias(info: aliasCreationInfo,
                                                  itemContent: aliasItemContent,
                                                  shareId: selectedVault.shareId)
@@ -276,7 +259,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func removeAlias() {
         aliasCreationLiteInfo = nil
         username = ""
-        isAlias = false
     }
 
     func handleScanResult(_ result: Result<String, Error>, customField: CustomFieldUiModel? = nil) {
@@ -322,6 +304,5 @@ extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info
         username = info.aliasAddress
-        isAlias = true
     }
 }
