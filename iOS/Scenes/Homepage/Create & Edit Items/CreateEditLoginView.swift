@@ -416,7 +416,7 @@ struct CreateEditLoginView: View {
                                    placeholder: "Add password".localized,
                                    focusedField: $focusedField,
                                    field: Field.password,
-                                   font: monospacedFont(for: viewModel.password),
+                                   font: .body.monospacedFont(for: viewModel.password),
                                    onSubmit: { focusedField = .totp })
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -465,7 +465,7 @@ struct CreateEditLoginView: View {
                                    placeholder: "Add 2FA secret".localized,
                                    focusedField: $focusedField,
                                    field: .totp,
-                                   font: monospacedFont(for: viewModel.totpUri),
+                                   font: .body.monospacedFont(for: viewModel.totpUri),
                                    onSubmit: { focusedField = .websites })
                     .keyboardType(.URL)
                     .textInputAutocapitalization(.never)
@@ -499,10 +499,6 @@ struct CreateEditLoginView: View {
                 }
             }
         }
-    }
-
-    private func monospacedFont(for text: String) -> UIFont {
-        text.isEmpty ? .body : .monospacedSystemFont(ofSize: UIFont.body.pointSize, weight: .regular)
     }
 }
 
