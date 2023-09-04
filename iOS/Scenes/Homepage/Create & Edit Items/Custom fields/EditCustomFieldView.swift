@@ -62,7 +62,8 @@ struct EditCustomFieldView<Field: Hashable>: View {
                         SensitiveTextField(text: $uiModel.customField.content,
                                            placeholder: placeholder,
                                            focusedField: focusedField,
-                                           field: field)
+                                           field: field,
+                                           font: .body.monospacedFont(for: uiModel.customField.content))
                             .foregroundColor(PassColor.textNorm.toColor)
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
