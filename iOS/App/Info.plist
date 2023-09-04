@@ -21,6 +21,7 @@
 		<string>googlechrome</string>
 		<string>ddgQuickLink</string>
 		<string>firefox</string>
+		<string>firefox-focus</string>
 		<string>brave</string>
 		<string>microsoft-edge</string>
 	</array>
