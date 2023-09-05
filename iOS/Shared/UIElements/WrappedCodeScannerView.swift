@@ -20,10 +20,10 @@
 
 import CodeScanner
 import Core
+import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 public struct WrappedCodeScannerView: View {
     @Environment(\.dismiss) private var dismiss

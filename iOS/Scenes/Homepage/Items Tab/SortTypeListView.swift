@@ -20,8 +20,8 @@
 
 import Client
 import Core
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 protocol SortTypeListViewModelDelegate: AnyObject {
     func sortTypeListViewDidSelect(_ sortType: SortType)

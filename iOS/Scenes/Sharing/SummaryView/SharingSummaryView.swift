@@ -21,10 +21,10 @@
 //
 
 import Core
+import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct SharingSummaryView: View {
     @Environment(\.dismiss) private var dismiss

@@ -20,9 +20,10 @@
 
 import Client
 import Core
+import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
-import UIComponents
+import UIKit
 
 enum ItemType: CaseIterable {
     case login, alias, creditCard, note, password

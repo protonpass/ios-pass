@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreUIFoundations
+import UIKit
 
 final class BannerManager {
     weak var container: UIViewController!

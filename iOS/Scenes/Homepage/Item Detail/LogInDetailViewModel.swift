@@ -21,9 +21,9 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 import UIKit
 
 protocol LogInDetailViewModelDelegate: AnyObject {

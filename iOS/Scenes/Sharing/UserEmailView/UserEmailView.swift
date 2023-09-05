@@ -20,10 +20,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct UserEmailView: View {
     @Environment(\.dismiss) private var dismiss

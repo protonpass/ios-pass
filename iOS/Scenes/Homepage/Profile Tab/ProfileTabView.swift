@@ -20,9 +20,9 @@
 
 import Client
 import Core
+import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel

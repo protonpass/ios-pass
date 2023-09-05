@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 
 struct TelemetryEventsSection: View {
     var body: some View {

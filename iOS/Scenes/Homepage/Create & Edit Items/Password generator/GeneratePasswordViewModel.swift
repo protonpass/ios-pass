@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 protocol GeneratePasswordViewModelDelegate: AnyObject {
     func generatePasswordViewModelDidConfirm(password: String)
