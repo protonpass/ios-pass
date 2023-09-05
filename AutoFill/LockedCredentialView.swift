@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 /// When autofilling from QuickType bar but local authentication is turned on
 struct LockedCredentialView: View {

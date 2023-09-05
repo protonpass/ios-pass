@@ -54,8 +54,8 @@ private extension AppDelegate {
                 options.debug = true
             }
             options.enableAppHangTracking = true
-            options.enableFileIOTracking = true
-            options.enableCoreDataTracking = true
+            options.enableFileIOTracing = true
+            options.enableCoreDataTracing = true
             options.attachViewHierarchy = true // EXPERIMENTAL
         }
     }

@@ -18,9 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct MailboxSection: View {
     @ObservedObject var mailboxSelection: MailboxSelection

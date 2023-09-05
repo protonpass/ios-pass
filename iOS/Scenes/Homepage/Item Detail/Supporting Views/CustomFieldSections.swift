@@ -20,10 +20,10 @@
 
 import Client
 import Core
+import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct CustomFieldSections: View {
     let itemContentType: ItemContentType

@@ -20,10 +20,10 @@
 
 import Combine
 import Core
+import DesignSystem
 import Factory
 import ProtonCoreKeymaker
 import SwiftUI
-import UIComponents
 
 struct LocalAuthenticationModifier: ViewModifier {
     @State private var authenticated: Bool

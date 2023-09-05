@@ -20,9 +20,9 @@
 
 import Client
 import Core
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 
 protocol CustomFieldAdditionDelegate: AnyObject {
     func customFieldAdded(_ customField: CustomField)

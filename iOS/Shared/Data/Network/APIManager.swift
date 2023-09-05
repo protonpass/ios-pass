@@ -23,11 +23,11 @@ import Combine
 import Core
 import CryptoKit
 import Factory
+import Foundation
 import ProtonCoreAuthentication
 import ProtonCoreChallenge
 import ProtonCoreCryptoGoInterface
 import ProtonCoreEnvironment
-import ProtonCoreFeatureSwitch
 import ProtonCoreForceUpgrade
 import ProtonCoreFoundations
 import ProtonCoreHumanVerification
@@ -36,6 +36,7 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreServices
+import UIKit
 
 protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
@@ -136,20 +137,10 @@ final class APIManager: APIManagerProtocol {
     }
 
     private func setUpCore() {
-        FeatureFactory.shared.enable(&.observability)
-        // Core unauth session feature flag
-        FeatureFactory.shared.enable(&.unauthSession)
-
-        FeatureFactory.shared.enable(&.externalSignup)
-        #if DEBUG
-        FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
-        #endif
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 
     private func fetchUnauthSessionIfNeeded() {
-        guard FeatureFactory.shared.isEnabled(.unauthSession) else { return }
-
         apiService.acquireSessionIfNeeded { result in
             switch result {
             case .success:

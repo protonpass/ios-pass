@@ -23,6 +23,7 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import DesignSystem
 import Factory
 import MBProgressHUD
 import ProtonCoreAuthentication
@@ -33,7 +34,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUtilities
 import SwiftUI
-import UIComponents
 import UIKit
 
 final class AppCoordinator {

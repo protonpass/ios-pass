@@ -23,6 +23,7 @@ import Combine
 import Core
 import CryptoKit
 import Factory
+import Foundation
 import ProtonCoreLogin
 
 enum VaultManagerState {
