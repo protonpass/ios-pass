@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
+import Foundation
 
 enum LogEntryFactory {
     static func createMock(timestamp: TimeInterval = 0,

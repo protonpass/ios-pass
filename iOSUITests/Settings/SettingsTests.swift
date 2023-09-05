@@ -20,8 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import fusion
-import ProtonCoreObfuscatedConstants
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUITestsLogin
 import XCTest
 
 class SettingsTests: LoginBaseTestCase {

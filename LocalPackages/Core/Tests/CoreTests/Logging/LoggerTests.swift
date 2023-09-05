@@ -54,7 +54,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateFatalLogEntry()")
-        XCTAssertEqual(entry.line, 47)
+        XCTAssertEqual(entry.line, 49)
         XCTAssertEqual(entry.column, 30)
     }
 
@@ -69,7 +69,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateErrorLogEntry()")
-        XCTAssertEqual(entry.line, 62)
+        XCTAssertEqual(entry.line, 64)
         XCTAssertEqual(entry.column, 30)
     }
 
@@ -84,7 +84,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateWarningLogEntry()")
-        XCTAssertEqual(entry.line, 77)
+        XCTAssertEqual(entry.line, 79)
         XCTAssertEqual(entry.column, 32)
     }
 
@@ -99,7 +99,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateInfoLogEntry()")
-        XCTAssertEqual(entry.line, 92)
+        XCTAssertEqual(entry.line, 94)
         XCTAssertEqual(entry.column, 29)
     }
 
@@ -114,7 +114,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateDebugLogEntry()")
-        XCTAssertEqual(entry.line, 107)
+        XCTAssertEqual(entry.line, 109)
         XCTAssertEqual(entry.column, 30)
     }
 
@@ -129,7 +129,7 @@ final class LoggerTests: XCTestCase {
         XCTAssertEqual(entry.message, message)
         XCTAssertEqual(entry.file, Self.fileName)
         XCTAssertEqual(entry.function, "testGenerateTraceLogEntry()")
-        XCTAssertEqual(entry.line, 122)
+        XCTAssertEqual(entry.line, 124)
         XCTAssertEqual(entry.column, 30)
     }
 }

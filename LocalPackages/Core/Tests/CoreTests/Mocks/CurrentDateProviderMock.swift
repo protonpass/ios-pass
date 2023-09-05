@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCoreTestingToolkit
+import Foundation
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class CurrentDateProviderMock: CurrentDateProviderProtocol {
     @FuncStub(CurrentDateProviderMock.getCurrentDate, initialReturn: .now) var currentDateStub
