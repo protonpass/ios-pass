@@ -21,8 +21,8 @@
 import Core
 import CoreData
 import Entities
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public protocol AliasRepositoryProtocol {
     var remoteDatasouce: RemoteAliasDatasourceProtocol { get }

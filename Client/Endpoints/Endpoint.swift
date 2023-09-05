@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_KeyManager
-import ProtonCore_Networking
+import ProtonCoreKeyManager
+import ProtonCoreNetworking
 
 /// For endpoints that have no body like GET ones
 public struct EmptyRequest: Encodable {}

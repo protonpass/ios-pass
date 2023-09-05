@@ -21,8 +21,8 @@
 import Core
 import CryptoKit
 import Entities
-import ProtonCore_DataModel
-import ProtonCore_Login
+import ProtonCoreDataModel
+import ProtonCoreLogin
 
 public struct ItemRevisionsPaginated: Decodable {
     public let total: Int

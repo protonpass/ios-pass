@@ -20,7 +20,7 @@
 
 import Core
 import CryptoKit
-import ProtonCore_Services
+import ProtonCoreServices
 
 public struct FavIcon: Hashable {
     public let domain: String

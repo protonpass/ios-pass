@@ -20,7 +20,7 @@
 
 import Core
 import Foundation
-import ProtonCore_Login
+import ProtonCoreLogin
 
 public struct BugReportRequest {
     public let os: String // iOS, MacOS

@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
-import ProtonCore_Login
+import ProtonCoreLogin
 
 public struct UpdateVaultRequest {
     /// Vault content protocol buffer data encrypted with the vault key

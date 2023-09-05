@@ -22,10 +22,10 @@
 import Foundation
 
 import fusion
-import ProtonCore_Doh
-import ProtonCore_Environment
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreDoh
+import ProtonCoreEnvironment
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class ExternalAccountsTests: LoginBaseTestCase {

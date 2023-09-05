@@ -20,7 +20,7 @@
 
 import CodeScanner
 import Core
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import SwiftUI
 import UIComponents
 

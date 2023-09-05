@@ -21,7 +21,7 @@
 import Combine
 import Core
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 import Reachability
 
 public protocol SyncEventLoopPullToRefreshDelegate: AnyObject {

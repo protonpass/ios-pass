@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
-import ProtonCore_Crypto
-import ProtonCore_Login
+import ProtonCoreCrypto
+import ProtonCoreLogin
 
 public struct CreateVaultRequest {
     /// AddressID that should be displayed as the owner

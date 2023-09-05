@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import fusion
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class LoginWelcomeTests: LoginBaseTestCase {

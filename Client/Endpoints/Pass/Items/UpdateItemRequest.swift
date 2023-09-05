@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
-import ProtonCore_KeyManager
+import ProtonCoreKeyManager
 
 public struct UpdateItemRequest {
     /// RotationID used to encrypt the item contents

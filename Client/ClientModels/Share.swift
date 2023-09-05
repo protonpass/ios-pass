@@ -21,8 +21,8 @@
 import Core
 import CryptoKit
 import Entities
-import ProtonCore_Crypto
-import ProtonCore_Login
+import ProtonCoreCrypto
+import ProtonCoreLogin
 
 public enum ShareContent {
     case vault(Vault)

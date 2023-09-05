@@ -20,7 +20,7 @@
 
 import Foundation
 import fusion
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 fileprivate let manageSubscriptionButton = "Manage subscription"
 fileprivate let deleteAccountButton = "Delete account"

@@ -21,8 +21,8 @@
 import Core
 import CoreData
 import CryptoKit
-import ProtonCore_Login
-import ProtonCore_Services
+import ProtonCoreLogin
+import ProtonCoreServices
 
 public final class RepositoryManager: DeinitPrintable {
     deinit { print(deinitMessage) }

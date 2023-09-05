@@ -20,8 +20,8 @@
 
 import Core
 import CryptoKit
-import ProtonCore_Login
-import ProtonCore_Networking
+import ProtonCoreLogin
+import ProtonCoreNetworking
 
 private extension LockedKeychainStorage {
     /// Conveniently initialize with injected `keychain`, `mainKeyProvider` & `logManager`

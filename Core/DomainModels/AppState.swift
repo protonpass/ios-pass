@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Login
+import ProtonCoreLogin
 
 public enum LogOutReason {
     case noSessionDataAtAll

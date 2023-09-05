@@ -18,9 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
-import ProtonCore_Login
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreLogin
+import ProtonCoreNetworking
 
 extension UserData: Codable {
     private enum CodingKeys: String, CodingKey {

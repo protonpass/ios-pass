@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 /**
  Property wrapper has 2 mechanism:

@@ -20,9 +20,9 @@
 
 import Core
 import Factory
-import ProtonCore_Payments
-import ProtonCore_PaymentsUI
-import ProtonCore_Services
+import ProtonCorePayments
+import ProtonCorePaymentsUI
+import ProtonCoreServices
 
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>

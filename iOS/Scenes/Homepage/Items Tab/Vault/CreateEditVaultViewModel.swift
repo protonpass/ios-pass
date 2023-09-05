@@ -21,7 +21,7 @@
 import Client
 import Core
 import Factory
-import ProtonCore_Login
+import ProtonCoreLogin
 
 enum VaultColorIcon {
     case color(VaultColor)
