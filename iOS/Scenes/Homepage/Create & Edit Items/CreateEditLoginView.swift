@@ -185,23 +185,6 @@ private extension CreateEditLoginView {
                 default:
                     EmptyView()
                 }
-            } else {
-                // Embed in a ZStack otherwise toolbars are rendered
-                // randomly in iOS 15
-                ZStack {
-                    switch focusedField {
-                    case .username:
-                        usernameTextFieldToolbar
-                    case .totp:
-                        totpTextFieldToolbar
-                    case let .custom(model) where model?.customField.type == .totp:
-                        totpTextFieldToolbar
-                    case .password:
-                        passwordTextFieldToolbar
-                    default:
-                        Button("") {}
-                    }
-                }
             }
         }
     }
@@ -279,10 +262,63 @@ private extension CreateEditLoginView {
     }
 }
 
+// iOS 15 work around
+// All the views and functions in this extension can be removed once we drop iOS 15
+private extension CreateEditLoginView {
+    @ViewBuilder
+    func capsuleButton(icon: UIImage?, title: String, action: @escaping () -> Void) -> some View {
+        if let icon {
+            CapsuleLabelButton(icon: icon,
+                               title: title,
+                               titleColor: PassColor.interactionNormMajor2,
+                               backgroundColor: PassColor.interactionNormMinor1,
+                               maxWidth: nil,
+                               action: action)
+        } else {
+            CapsuleTextButton(title: title,
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              maxWidth: nil,
+                              action: action)
+        }
+    }
+
+    var hideMyEmailButton: some View {
+        capsuleButton(icon: IconProvider.alias, title: "Hide my email", action: viewModel.generateAlias)
+    }
+
+    var useCurrentEmailButton: some View {
+        capsuleButton(icon: nil, title: "Use %@".localized(viewModel.emailAddress)) {
+            viewModel.useRealEmailAddress()
+            if viewModel.password.isEmpty {
+                focusedField = .password
+            } else {
+                focusedField = nil
+            }
+        }
+    }
+
+    var generatePasswordButton: some View {
+        capsuleButton(icon: IconProvider.arrowsRotate,
+                      title: "Generate password",
+                      action: viewModel.generatePassword)
+    }
+
+    var pasteFromClipboardButton: some View {
+        capsuleButton(icon: IconProvider.squares,
+                      title: "Paste from clipboard",
+                      action: viewModel.pasteTotpUriFromClipboard)
+    }
+
+    var openCameraButton: some View {
+        capsuleButton(icon: IconProvider.camera, title: "Open camera", action: viewModel.openCodeScanner)
+    }
+}
+
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: kItemDetailSectionPadding) {
-            if viewModel.isAlias {
+            if !viewModel.username.isEmpty, viewModel.isAlias {
                 pendingAliasRow
             } else {
                 usernameRow
@@ -314,6 +350,13 @@ private extension CreateEditLoginView {
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
+
+                if #unavailable(iOS 16) {
+                    if focusedField == .username {
+                        hideMyEmailButton
+                        useCurrentEmailButton
+                    }
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -327,6 +370,7 @@ private extension CreateEditLoginView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.username.isEmpty)
+        .animation(.default, value: focusedField)
         .id(usernameID)
     }
 
@@ -380,6 +424,12 @@ private extension CreateEditLoginView {
                     .autocorrectionDisabled()
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .submitLabel(.done)
+
+                if #unavailable(iOS 16) {
+                    if focusedField == .password {
+                        generatePasswordButton
+                    }
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -394,6 +444,7 @@ private extension CreateEditLoginView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.password.isEmpty)
+        .animation(.default, value: focusedField)
         .id(passwordID)
     }
 
@@ -429,6 +480,13 @@ private extension CreateEditLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                if #unavailable(iOS 16) {
+                    if focusedField == .totp {
+                        pasteFromClipboardButton
+                        openCameraButton
+                    }
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -442,6 +500,7 @@ private extension CreateEditLoginView {
             }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
+        .animation(.default, value: focusedField)
         .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
             NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
         }
