@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import fusion
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import XCTest
+import ProtonCoreTestingToolkitUITestsLogin
 
 final class LoginWelcomeTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()

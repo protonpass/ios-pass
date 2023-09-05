@@ -20,7 +20,7 @@
 
 import Core
 import ProtonCoreKeymaker
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class MainKeyProviderMock: MainKeyProvider {
     @PropertyStub(\MainKeyProviderMock.mainKey, initialGet: nil) var mainKeyStub

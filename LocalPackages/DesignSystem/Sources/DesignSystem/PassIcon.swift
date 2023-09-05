@@ -23,120 +23,126 @@ import UIKit
 
 public enum PassIcon {}
 
+private extension PassIcon {
+    static func icon(named: String) -> UIImage {
+        UIImage(named: named, in: .module, with: nil)!
+    }
+}
+
 public extension PassIcon {
-    static var autoFillOnWebPreview = UIImage(named: "AutoFillOnWebPreview")!
-    static var enableAutoFillStep2a = UIImage(named: "EnableAutoFillStep2a")!
-    static var enableAutoFillStep2b = UIImage(named: "EnableAutoFillStep2b")!
+    static var autoFillOnWebPreview = Self.icon(named: "AutoFillOnWebPreview")
+    static var enableAutoFillStep2a = Self.icon(named: "EnableAutoFillStep2a")
+    static var enableAutoFillStep2b = Self.icon(named: "EnableAutoFillStep2b")
 
-    static var badgePaid = UIImage(named: "BadgePaid")!
-    static var badgeTrial = UIImage(named: "BadgeTrial")!
+    static var badgePaid = Self.icon(named: "BadgePaid")
+    static var badgeTrial = Self.icon(named: "BadgeTrial")
 
-    static var brandPass = UIImage(named: "BrandPass")!
-    static var brandReddit = UIImage(named: "BrandReddit")!
-    static var brandTwitter = UIImage(named: "BrandTwitter")!
-    static var magnifyingGlass = UIImage(named: "MagnifyingGlass")!
+    static var brandPass = Self.icon(named: "BrandPass")
+    static var brandReddit = Self.icon(named: "BrandReddit")
+    static var brandTwitter = Self.icon(named: "BrandTwitter")
+    static var magnifyingGlass = Self.icon(named: "MagnifyingGlass")
 
-    static var coverScreenBackground = UIImage(named: "CoverScreenBackground")!
-    static var coverScreenLogo = UIImage(named: "CoverScreenLogo")!
+    static var coverScreenBackground = Self.icon(named: "CoverScreenBackground")
+    static var coverScreenLogo = Self.icon(named: "CoverScreenLogo")
 
-    static var infoBannerAliases = UIImage(named: "InfoBannerAliases")!
-    static var infoBannerAutoFill = UIImage(named: "InfoBannerAutoFill")!
-    static var infoBannerPass = UIImage(named: "InfoBannerPass")!
+    static var infoBannerAliases = Self.icon(named: "InfoBannerAliases")
+    static var infoBannerAutoFill = Self.icon(named: "InfoBannerAutoFill")
+    static var infoBannerPass = Self.icon(named: "InfoBannerPass")
 
-    static var inviteBannerIcon = UIImage(named: "InviteBannerIcon")!
+    static var inviteBannerIcon = Self.icon(named: "InviteBannerIcon")
 
-    static var onboardAliases = UIImage(named: "OnboardAliases")!
-    static var onboardAuthentication = UIImage(named: "OnboardAuthentication")!
-    static var onboardAuthenticationBackground = UIImage(named: "OnboardAuthenticationBackground")!
-    static var onboardAuthenticationEnabled = UIImage(named: "OnboardAuthenticationEnabled")!
-    static var onboardAutoFillGradient = UIImage(named: "OnboardAutoFillGradient")!
-    static var onboardAutoFillEnabled = UIImage(named: "OnboardAutoFillEnabled")!
-    static var onboardAutoFillStep1 = UIImage(named: "OnboardAutoFillStep1")!
-    static var onboardAutoFillStep2 = UIImage(named: "OnboardAutoFillStep2")!
-    static var onboardAutoFillStep3 = UIImage(named: "OnboardAutoFillStep3")!
-    static var onboardAutoFillStep4 = UIImage(named: "OnboardAutoFillStep4")!
-    static var onboardAutoFillStep5 = UIImage(named: "OnboardAutoFillStep5")!
+    static var onboardAliases = Self.icon(named: "OnboardAliases")
+    static var onboardAuthentication = Self.icon(named: "OnboardAuthentication")
+    static var onboardAuthenticationBackground = Self.icon(named: "OnboardAuthenticationBackground")
+    static var onboardAuthenticationEnabled = Self.icon(named: "OnboardAuthenticationEnabled")
+    static var onboardAutoFillGradient = Self.icon(named: "OnboardAutoFillGradient")
+    static var onboardAutoFillEnabled = Self.icon(named: "OnboardAutoFillEnabled")
+    static var onboardAutoFillStep1 = Self.icon(named: "OnboardAutoFillStep1")
+    static var onboardAutoFillStep2 = Self.icon(named: "OnboardAutoFillStep2")
+    static var onboardAutoFillStep3 = Self.icon(named: "OnboardAutoFillStep3")
+    static var onboardAutoFillStep4 = Self.icon(named: "OnboardAutoFillStep4")
+    static var onboardAutoFillStep5 = Self.icon(named: "OnboardAutoFillStep5")
 
-    static var passCreditCardOneStripe = UIImage(named: "PassCreditCardOneStripe")!
-    static var passCreditCardTwoStripes = UIImage(named: "PassCreditCardTwoStripes")!
-    static var passIcon = UIImage(named: "PassIcon")!
-    static var passTextLogo = UIImage(named: "PassTextLogo")!
-    static var scanner = UIImage(named: "Scanner")!
-    static var shieldCheck = UIImage(named: "ShieldCheck")!
-    static var swirls = UIImage(named: "Swirls")!
+    static var passCreditCardOneStripe = Self.icon(named: "PassCreditCardOneStripe")
+    static var passCreditCardTwoStripes = Self.icon(named: "PassCreditCardTwoStripes")
+    static var passIcon = Self.icon(named: "PassIcon")
+    static var passTextLogo = Self.icon(named: "PassTextLogo")
+    static var scanner = Self.icon(named: "Scanner")
+    static var shieldCheck = Self.icon(named: "ShieldCheck")
+    static var swirls = Self.icon(named: "Swirls")
 
-    static var tabProfilePaidSelected = UIImage(named: "TabProfilePaidSelected")!
-    static var tabProfilePaidUnselected = UIImage(named: "TabProfilePaidUnselected")!
-    static var tabProfileTrialSelected = UIImage(named: "TabProfileTrialSelected")!
-    static var tabProfileTrialUnselected = UIImage(named: "TabProfileTrialUnselected")!
+    static var tabProfilePaidSelected = Self.icon(named: "TabProfilePaidSelected")
+    static var tabProfilePaidUnselected = Self.icon(named: "TabProfilePaidUnselected")
+    static var tabProfileTrialSelected = Self.icon(named: "TabProfileTrialSelected")
+    static var tabProfileTrialUnselected = Self.icon(named: "TabProfileTrialUnselected")
 
-    static var trash = UIImage(named: "Trash")!
+    static var trash = Self.icon(named: "Trash")
 
-    static var trial2FA = UIImage(named: "Trial2FA")!
-    static var trialCustomFields = UIImage(named: "TrialCustomFields")!
-    static var trialDetail = UIImage(named: "TrialDetail")!
-    static var trialVaults = UIImage(named: "TrialVaults")!
+    static var trial2FA = Self.icon(named: "Trial2FA")
+    static var trialCustomFields = Self.icon(named: "TrialCustomFields")
+    static var trialDetail = Self.icon(named: "TrialDetail")
+    static var trialVaults = Self.icon(named: "TrialVaults")
 
-    static var vaultIcon1Big = UIImage(named: "VaultIcon1Big")!
-    static var vaultIcon1Small = UIImage(named: "VaultIcon1Small")!
-    static var vaultIcon2Big = UIImage(named: "VaultIcon2Big")!
-    static var vaultIcon2Small = UIImage(named: "VaultIcon2Small")!
-    static var vaultIcon3Big = UIImage(named: "VaultIcon3Big")!
-    static var vaultIcon3Small = UIImage(named: "VaultIcon3Small")!
-    static var vaultIcon4Big = UIImage(named: "VaultIcon4Big")!
-    static var vaultIcon4Small = UIImage(named: "VaultIcon4Small")!
-    static var vaultIcon5Big = UIImage(named: "VaultIcon5Big")!
-    static var vaultIcon5Small = UIImage(named: "VaultIcon5Small")!
-    static var vaultIcon6Big = UIImage(named: "VaultIcon6Big")!
-    static var vaultIcon6Small = UIImage(named: "VaultIcon6Small")!
-    static var vaultIcon7Big = UIImage(named: "VaultIcon7Big")!
-    static var vaultIcon7Small = UIImage(named: "VaultIcon7Small")!
-    static var vaultIcon8Big = UIImage(named: "VaultIcon8Big")!
-    static var vaultIcon8Small = UIImage(named: "VaultIcon8Small")!
-    static var vaultIcon9Big = UIImage(named: "VaultIcon9Big")!
-    static var vaultIcon9Small = UIImage(named: "VaultIcon9Small")!
-    static var vaultIcon10Big = UIImage(named: "VaultIcon10Big")!
-    static var vaultIcon10Small = UIImage(named: "VaultIcon10Small")!
-    static var vaultIcon11Big = UIImage(named: "VaultIcon11Big")!
-    static var vaultIcon11Small = UIImage(named: "VaultIcon11Small")!
-    static var vaultIcon12Big = UIImage(named: "VaultIcon12Big")!
-    static var vaultIcon12Small = UIImage(named: "VaultIcon12Small")!
-    static var vaultIcon13Big = UIImage(named: "VaultIcon13Big")!
-    static var vaultIcon13Small = UIImage(named: "VaultIcon13Small")!
-    static var vaultIcon14Big = UIImage(named: "VaultIcon14Big")!
-    static var vaultIcon14Small = UIImage(named: "VaultIcon14Small")!
-    static var vaultIcon15Big = UIImage(named: "VaultIcon15Big")!
-    static var vaultIcon15Small = UIImage(named: "VaultIcon15Small")!
-    static var vaultIcon16Big = UIImage(named: "VaultIcon16Big")!
-    static var vaultIcon16Small = UIImage(named: "VaultIcon16Small")!
-    static var vaultIcon17Big = UIImage(named: "VaultIcon17Big")!
-    static var vaultIcon17Small = UIImage(named: "VaultIcon17Small")!
-    static var vaultIcon18Big = UIImage(named: "VaultIcon18Big")!
-    static var vaultIcon18Small = UIImage(named: "VaultIcon18Small")!
-    static var vaultIcon19Big = UIImage(named: "VaultIcon19Big")!
-    static var vaultIcon19Small = UIImage(named: "VaultIcon19Small")!
-    static var vaultIcon20Big = UIImage(named: "VaultIcon20Big")!
-    static var vaultIcon20Small = UIImage(named: "VaultIcon20Small")!
-    static var vaultIcon21Big = UIImage(named: "VaultIcon21Big")!
-    static var vaultIcon21Small = UIImage(named: "VaultIcon21Small")!
-    static var vaultIcon22Big = UIImage(named: "VaultIcon22Big")!
-    static var vaultIcon22Small = UIImage(named: "VaultIcon22Small")!
-    static var vaultIcon23Big = UIImage(named: "VaultIcon23Big")!
-    static var vaultIcon23Small = UIImage(named: "VaultIcon23Small")!
-    static var vaultIcon24Big = UIImage(named: "VaultIcon24Big")!
-    static var vaultIcon24Small = UIImage(named: "VaultIcon24Small")!
-    static var vaultIcon25Big = UIImage(named: "VaultIcon25Big")!
-    static var vaultIcon25Small = UIImage(named: "VaultIcon25Small")!
-    static var vaultIcon26Big = UIImage(named: "VaultIcon26Big")!
-    static var vaultIcon26Small = UIImage(named: "VaultIcon26Small")!
-    static var vaultIcon27Big = UIImage(named: "VaultIcon27Big")!
-    static var vaultIcon27Small = UIImage(named: "VaultIcon27Small")!
-    static var vaultIcon28Big = UIImage(named: "VaultIcon28Big")!
-    static var vaultIcon28Small = UIImage(named: "VaultIcon28Small")!
-    static var vaultIcon29Big = UIImage(named: "VaultIcon29Big")!
-    static var vaultIcon29Small = UIImage(named: "VaultIcon29Small")!
-    static var vaultIcon30Big = UIImage(named: "VaultIcon30Big")!
-    static var vaultIcon30Small = UIImage(named: "VaultIcon30Small")!
+    static var vaultIcon1Big = Self.icon(named: "VaultIcon1Big")
+    static var vaultIcon1Small = Self.icon(named: "VaultIcon1Small")
+    static var vaultIcon2Big = Self.icon(named: "VaultIcon2Big")
+    static var vaultIcon2Small = Self.icon(named: "VaultIcon2Small")
+    static var vaultIcon3Big = Self.icon(named: "VaultIcon3Big")
+    static var vaultIcon3Small = Self.icon(named: "VaultIcon3Small")
+    static var vaultIcon4Big = Self.icon(named: "VaultIcon4Big")
+    static var vaultIcon4Small = Self.icon(named: "VaultIcon4Small")
+    static var vaultIcon5Big = Self.icon(named: "VaultIcon5Big")
+    static var vaultIcon5Small = Self.icon(named: "VaultIcon5Small")
+    static var vaultIcon6Big = Self.icon(named: "VaultIcon6Big")
+    static var vaultIcon6Small = Self.icon(named: "VaultIcon6Small")
+    static var vaultIcon7Big = Self.icon(named: "VaultIcon7Big")
+    static var vaultIcon7Small = Self.icon(named: "VaultIcon7Small")
+    static var vaultIcon8Big = Self.icon(named: "VaultIcon8Big")
+    static var vaultIcon8Small = Self.icon(named: "VaultIcon8Small")
+    static var vaultIcon9Big = Self.icon(named: "VaultIcon9Big")
+    static var vaultIcon9Small = Self.icon(named: "VaultIcon9Small")
+    static var vaultIcon10Big = Self.icon(named: "VaultIcon10Big")
+    static var vaultIcon10Small = Self.icon(named: "VaultIcon10Small")
+    static var vaultIcon11Big = Self.icon(named: "VaultIcon11Big")
+    static var vaultIcon11Small = Self.icon(named: "VaultIcon11Small")
+    static var vaultIcon12Big = Self.icon(named: "VaultIcon12Big")
+    static var vaultIcon12Small = Self.icon(named: "VaultIcon12Small")
+    static var vaultIcon13Big = Self.icon(named: "VaultIcon13Big")
+    static var vaultIcon13Small = Self.icon(named: "VaultIcon13Small")
+    static var vaultIcon14Big = Self.icon(named: "VaultIcon14Big")
+    static var vaultIcon14Small = Self.icon(named: "VaultIcon14Small")
+    static var vaultIcon15Big = Self.icon(named: "VaultIcon15Big")
+    static var vaultIcon15Small = Self.icon(named: "VaultIcon15Small")
+    static var vaultIcon16Big = Self.icon(named: "VaultIcon16Big")
+    static var vaultIcon16Small = Self.icon(named: "VaultIcon16Small")
+    static var vaultIcon17Big = Self.icon(named: "VaultIcon17Big")
+    static var vaultIcon17Small = Self.icon(named: "VaultIcon17Small")
+    static var vaultIcon18Big = Self.icon(named: "VaultIcon18Big")
+    static var vaultIcon18Small = Self.icon(named: "VaultIcon18Small")
+    static var vaultIcon19Big = Self.icon(named: "VaultIcon19Big")
+    static var vaultIcon19Small = Self.icon(named: "VaultIcon19Small")
+    static var vaultIcon20Big = Self.icon(named: "VaultIcon20Big")
+    static var vaultIcon20Small = Self.icon(named: "VaultIcon20Small")
+    static var vaultIcon21Big = Self.icon(named: "VaultIcon21Big")
+    static var vaultIcon21Small = Self.icon(named: "VaultIcon21Small")
+    static var vaultIcon22Big = Self.icon(named: "VaultIcon22Big")
+    static var vaultIcon22Small = Self.icon(named: "VaultIcon22Small")
+    static var vaultIcon23Big = Self.icon(named: "VaultIcon23Big")
+    static var vaultIcon23Small = Self.icon(named: "VaultIcon23Small")
+    static var vaultIcon24Big = Self.icon(named: "VaultIcon24Big")
+    static var vaultIcon24Small = Self.icon(named: "VaultIcon24Small")
+    static var vaultIcon25Big = Self.icon(named: "VaultIcon25Big")
+    static var vaultIcon25Small = Self.icon(named: "VaultIcon25Small")
+    static var vaultIcon26Big = Self.icon(named: "VaultIcon26Big")
+    static var vaultIcon26Small = Self.icon(named: "VaultIcon26Small")
+    static var vaultIcon27Big = Self.icon(named: "VaultIcon27Big")
+    static var vaultIcon27Small = Self.icon(named: "VaultIcon27Small")
+    static var vaultIcon28Big = Self.icon(named: "VaultIcon28Big")
+    static var vaultIcon28Small = Self.icon(named: "VaultIcon28Small")
+    static var vaultIcon29Big = Self.icon(named: "VaultIcon29Big")
+    static var vaultIcon29Small = Self.icon(named: "VaultIcon29Small")
+    static var vaultIcon30Big = Self.icon(named: "VaultIcon30Big")
+    static var vaultIcon30Small = Self.icon(named: "VaultIcon30Small")
 }
 
 // swiftlint:enable force_unwrapping
