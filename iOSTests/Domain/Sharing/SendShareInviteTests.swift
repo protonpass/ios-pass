@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import ProtonCore_Login
+import ProtonCoreLogin
 import Entities
 @testable import Proton_Pass
 @testable import Client

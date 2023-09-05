@@ -22,7 +22,7 @@
 import Core
 import Entities
 import Foundation
-import ProtonCore_Login
+import ProtonCoreLogin
 
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }

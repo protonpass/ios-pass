@@ -19,9 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_ObfuscatedConstants
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreObfuscatedConstants
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkit
 import XCTest
 
 class LoginSignupTests: LoginBaseTestCase {

@@ -20,7 +20,7 @@
 
 import Client
 import Entities
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import SwiftUI
 import UIComponents
 

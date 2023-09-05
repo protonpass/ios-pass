@@ -20,8 +20,8 @@
 
 import Core
 import Factory
-import ProtonCore_CryptoGoImplementation
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoImplementation
+import ProtonCoreCryptoGoInterface
 import Sentry
 import UIKit
 

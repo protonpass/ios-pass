@@ -21,7 +21,7 @@
 import Combine
 import Core
 import Factory
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 import SwiftUI
 import UIComponents
 

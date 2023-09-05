@@ -20,7 +20,7 @@
 
 import Entities
 import Foundation
-import ProtonCore_Services
+import ProtonCoreServices
 
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser() async throws -> [UserInvite]

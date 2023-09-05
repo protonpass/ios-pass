@@ -27,10 +27,10 @@ import CryptoKit
 import Entities
 import Factory
 import MBProgressHUD
-import ProtonCore_AccountDeletion
-import ProtonCore_Login
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreAccountDeletion
+import ProtonCoreLogin
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import StoreKit
 import SwiftUI
 import UIComponents
