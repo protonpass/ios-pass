@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 public struct GetLatestItemKeyResponse: Decodable {
     public let code: Int

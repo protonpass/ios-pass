@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 /// Read/write from keychain with lock mechanism provided by `MainKeyProvider`
 @propertyWrapper

@@ -22,7 +22,7 @@
 // swiftlint:disable prefixed_toplevel_constant
 
 import fusion
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 
 private let showLoginButtonLabelText = "Show login"

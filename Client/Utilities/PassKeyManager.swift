@@ -20,7 +20,7 @@
 
 import Core
 import CryptoKit
-import ProtonCore_Login
+import ProtonCoreLogin
 
 public struct DecryptedShareKey: Hashable {
     public let shareId: String

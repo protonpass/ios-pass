@@ -21,7 +21,7 @@
 
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreCoreTranslation
 import XCTest
 
 private let emptyViewText = "Create your first item\n by clicking the button below"

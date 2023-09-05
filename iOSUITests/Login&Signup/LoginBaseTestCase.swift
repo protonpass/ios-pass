@@ -20,11 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import fusion
-import ProtonCore_Doh
-import ProtonCore_Environment
-import ProtonCore_ObfuscatedConstants
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreDoh
+import ProtonCoreEnvironment
+import ProtonCoreObfuscatedConstants
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkit
 import XCTest
 
 class LoginBaseTestCase: ProtonCoreBaseTestCase {

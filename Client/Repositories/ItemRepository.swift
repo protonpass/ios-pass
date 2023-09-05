@@ -22,9 +22,9 @@ import Core
 import CoreData
 import CryptoKit
 import Entities
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 private let kBatchPageSize = 99
 
