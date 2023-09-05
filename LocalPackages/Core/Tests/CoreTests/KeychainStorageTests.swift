@@ -20,7 +20,69 @@
 
 @testable import Core
 import Combine
+import ProtonCoreKeymaker
 import XCTest
+
+final class KeychainMainkeyProviderMock: KeychainProtocol, MainKeyProvider {
+    var dict: [String: Data] = [:]
+
+    func data(forKey key: String) -> Data? {
+        dict[key]
+    }
+
+    func string(forKey key: String) -> String? {
+        fatalError("Not applicable")
+    }
+
+    func set(_ data: Data, forKey key: String) {
+        dict[key] = data
+    }
+
+    func set(_ string: String, forKey key: String) {
+        fatalError("Not applicable")
+    }
+
+    func remove(forKey key: String) {
+        dict[key] = nil
+    }
+
+    var mainKey: MainKey? = Array(repeating: .zero, count: 32)
+
+    func wipeMainKey() {
+        mainKey = nil
+    }
+}
+
+actor LogManagerMock: LogManagerProtocol {
+    var shouldLog: Bool = true
+    var logEntries: [LogEntry] = []
+
+    var logFunction: ((LogEntry) -> Void)?
+    var getLogEntriesFunction: (() async throws -> [LogEntry])?
+
+    func log(entry: LogEntry) {
+        logFunction?(entry)
+        if shouldLog {
+            logEntries.append(entry)
+        }
+    }
+
+    func getLogEntries() async throws -> [LogEntry] {
+        logEntries
+    }
+
+    func removeAllLogs() {
+        logEntries.removeAll()
+    }
+
+    func saveAllLogs() {
+        // Do nothing in the mock implementation
+    }
+
+    func toggleLogging(shouldLog: Bool) {
+        self.shouldLog = shouldLog
+    }
+}
 
 final class ObservableKeychainStorageMock: ObservableObject {
     @KeychainStorage(key: .random(),

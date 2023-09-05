@@ -24,7 +24,7 @@ import Factory
 import ProtonCoreKeymaker
 import ProtonCoreLogin
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import XCTest
 
 

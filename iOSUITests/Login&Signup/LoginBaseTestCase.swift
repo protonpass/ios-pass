@@ -22,13 +22,13 @@
 import fusion
 import ProtonCoreDoh
 import ProtonCoreEnvironment
-import ProtonCoreObfuscatedConstants
+//import ProtonCoreObfuscatedConstants
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
 class LoginBaseTestCase: ProtonCoreBaseTestCase {
-    let testData = TestData()
     var doh: DoHInterface {
         if let customDomain = dynamicDomain.map({ "\($0)" }) {
             return CustomServerConfigDoH(

@@ -23,94 +23,101 @@ import UIKit
 
 public enum PassColor {}
 
-public extension PassColor {
-    static var inputBackgroundNorm = UIColor(named: "InputBackgroundNorm")!
-    static var inputBorderNorm = UIColor(named: "InputBorderNorm")!
+private extension PassColor {
+    static func color(named: String) -> UIColor {
+        UIColor(named: named, in: .module, compatibleWith: nil)!
+    }
+}
 
-    static var interactionNorm = UIColor(named: "InteractionNorm")!
-    static var interactionNormMajor1 = UIColor(named: "InteractionNormMajor1")!
-    static var interactionNormMajor2 = UIColor(named: "InteractionNormMajor2")!
-    static var interactionNormMinor1 = UIColor(named: "InteractionNormMinor1")!
-    static var interactionNormMinor2 = UIColor(named: "InteractionNormMinor2")!
+public extension PassColor {
+    static var inputBackgroundNorm = Self
+        .color(named: "InputBackgroundNorm") // Self.color(named: , in: .module, compatibleWith: nil)!
+    static var inputBorderNorm = Self.color(named: "InputBorderNorm")
+
+    static var interactionNorm = Self.color(named: "InteractionNorm")
+    static var interactionNormMajor1 = Self.color(named: "InteractionNormMajor1")
+    static var interactionNormMajor2 = Self.color(named: "InteractionNormMajor2")
+    static var interactionNormMinor1 = Self.color(named: "InteractionNormMinor1")
+    static var interactionNormMinor2 = Self.color(named: "InteractionNormMinor2")
 }
 
 // MARK: - Background
 
 public extension PassColor {
-    static var backdrop = UIColor(named: "Backdrop")
-    static var backgroundMedium = UIColor(named: "BackgroundMedium")!
-    static var backgroundNorm = UIColor(named: "BackgroundNorm")!
-    static var backgroundStrong = UIColor(named: "BackgroundStrong")!
-    static var backgroundWeak = UIColor(named: "BackgroundWeak")!
-    static var tabBarBackground = UIColor(named: "TabBarBackground")!
+    static var backdrop = Self.color(named: "Backdrop")
+    static var backgroundMedium = Self.color(named: "BackgroundMedium")
+    static var backgroundNorm = Self.color(named: "BackgroundNorm")
+    static var backgroundStrong = Self.color(named: "BackgroundStrong")
+    static var backgroundWeak = Self.color(named: "BackgroundWeak")
+    static var tabBarBackground = Self.color(named: "TabBarBackground")
 }
 
 // MARK: - Items
 
 public extension PassColor {
-    static var aliasInteractionNorm = UIColor(named: "AliasInteractionNorm")!
-    static var aliasInteractionNormMajor1 = UIColor(named: "AliasInteractionNormMajor1")!
-    static var aliasInteractionNormMajor2 = UIColor(named: "AliasInteractionNormMajor2")!
-    static var aliasInteractionNormMinor1 = UIColor(named: "AliasInteractionNormMinor1")!
-    static var aliasInteractionNormMinor2 = UIColor(named: "AliasInteractionNormMinor2")!
+    static var aliasInteractionNorm = Self.color(named: "AliasInteractionNorm")
+    static var aliasInteractionNormMajor1 = Self.color(named: "AliasInteractionNormMajor1")
+    static var aliasInteractionNormMajor2 = Self.color(named: "AliasInteractionNormMajor2")
+    static var aliasInteractionNormMinor1 = Self.color(named: "AliasInteractionNormMinor1")
+    static var aliasInteractionNormMinor2 = Self.color(named: "AliasInteractionNormMinor2")
 
-    static var cardInteractionNorm = UIColor(named: "CardInteractionNorm")!
-    static var cardInteractionNormMajor1 = UIColor(named: "CardInteractionNormMajor1")!
-    static var cardInteractionNormMajor2 = UIColor(named: "CardInteractionNormMajor2")!
-    static var cardInteractionNormMinor1 = UIColor(named: "CardInteractionNormMinor1")!
-    static var cardInteractionNormMinor2 = UIColor(named: "CardInteractionNormMinor2")!
+    static var cardInteractionNorm = Self.color(named: "CardInteractionNorm")
+    static var cardInteractionNormMajor1 = Self.color(named: "CardInteractionNormMajor1")
+    static var cardInteractionNormMajor2 = Self.color(named: "CardInteractionNormMajor2")
+    static var cardInteractionNormMinor1 = Self.color(named: "CardInteractionNormMinor1")
+    static var cardInteractionNormMinor2 = Self.color(named: "CardInteractionNormMinor2")
 
-    static var loginInteractionNorm = UIColor(named: "LoginInteractionNorm")!
-    static var loginInteractionNormMajor1 = UIColor(named: "LoginInteractionNormMajor1")!
-    static var loginInteractionNormMajor2 = UIColor(named: "LoginInteractionNormMajor2")!
-    static var loginInteractionNormMinor1 = UIColor(named: "LoginInteractionNormMinor1")!
-    static var loginInteractionNormMinor2 = UIColor(named: "LoginInteractionNormMinor2")!
+    static var loginInteractionNorm = Self.color(named: "LoginInteractionNorm")
+    static var loginInteractionNormMajor1 = Self.color(named: "LoginInteractionNormMajor1")
+    static var loginInteractionNormMajor2 = Self.color(named: "LoginInteractionNormMajor2")
+    static var loginInteractionNormMinor1 = Self.color(named: "LoginInteractionNormMinor1")
+    static var loginInteractionNormMinor2 = Self.color(named: "LoginInteractionNormMinor2")
 
-    static var noteInteractionNorm = UIColor(named: "NoteInteractionNorm")!
-    static var noteInteractionNormMajor1 = UIColor(named: "NoteInteractionNormMajor1")!
-    static var noteInteractionNormMajor2 = UIColor(named: "NoteInteractionNormMajor2")!
-    static var noteInteractionNormMinor1 = UIColor(named: "NoteInteractionNormMinor1")!
-    static var noteInteractionNormMinor2 = UIColor(named: "NoteInteractionNormMinor2")!
+    static var noteInteractionNorm = Self.color(named: "NoteInteractionNorm")
+    static var noteInteractionNormMajor1 = Self.color(named: "NoteInteractionNormMajor1")
+    static var noteInteractionNormMajor2 = Self.color(named: "NoteInteractionNormMajor2")
+    static var noteInteractionNormMinor1 = Self.color(named: "NoteInteractionNormMinor1")
+    static var noteInteractionNormMinor2 = Self.color(named: "NoteInteractionNormMinor2")
 
-    static var passwordInteractionNorm = UIColor(named: "PasswordInteractionNorm")!
-    static var passwordInteractionNormMajor1 = UIColor(named: "PasswordInteractionNormMajor1")!
-    static var passwordInteractionNormMajor2 = UIColor(named: "PasswordInteractionNormMajor2")!
-    static var passwordInteractionNormMinor1 = UIColor(named: "PasswordInteractionNormMinor1")!
-    static var passwordInteractionNormMinor2 = UIColor(named: "PasswordInteractionNormMinor2")!
+    static var passwordInteractionNorm = Self.color(named: "PasswordInteractionNorm")
+    static var passwordInteractionNormMajor1 = Self.color(named: "PasswordInteractionNormMajor1")
+    static var passwordInteractionNormMajor2 = Self.color(named: "PasswordInteractionNormMajor2")
+    static var passwordInteractionNormMinor1 = Self.color(named: "PasswordInteractionNormMinor1")
+    static var passwordInteractionNormMinor2 = Self.color(named: "PasswordInteractionNormMinor2")
 }
 
 // MARK: - Signals
 
 public extension PassColor {
-    static var signalDanger = UIColor(named: "SignalDanger")!
-    static var signalInfo = UIColor(named: "SignalInfo")!
-    static var signalSuccess = UIColor(named: "SignalSuccess")!
-    static var signalWarning = UIColor(named: "SignalWarning")!
+    static var signalDanger = Self.color(named: "SignalDanger")
+    static var signalInfo = Self.color(named: "SignalInfo")
+    static var signalSuccess = Self.color(named: "SignalSuccess")
+    static var signalWarning = Self.color(named: "SignalWarning")
 }
 
 // MARK: - Texts
 
 public extension PassColor {
-    static var textDisabled = UIColor(named: "TextDisabled")!
-    static var textHint = UIColor(named: "TextHint")!
-    static var textInvert = UIColor(named: "TextInvert")!
-    static var textNorm = UIColor(named: "TextNorm")!
-    static var textWeak = UIColor(named: "TextWeak")!
+    static var textDisabled = Self.color(named: "TextDisabled")
+    static var textHint = Self.color(named: "TextHint")
+    static var textInvert = Self.color(named: "TextInvert")
+    static var textNorm = Self.color(named: "TextNorm")
+    static var textWeak = Self.color(named: "TextWeak")
 }
 
 // MARK: - Vaults
 
 public extension PassColor {
-    static var vaultChestnutRose = UIColor(named: "VaultChestnutRose")!
-    static var vaultDeYork = UIColor(named: "VaultDeYork")!
-    static var vaultHeliotrope = UIColor(named: "VaultHeliotrope")!
-    static var vaultJordyBlue = UIColor(named: "VaultJordyBlue")!
-    static var vaultLavenderMagenta = UIColor(named: "VaultLavenderMagenta")!
-    static var vaultMarigoldYellow = UIColor(named: "VaultMarigoldYellow")!
-    static var vaultMauvelous = UIColor(named: "VaultMauvelous")!
-    static var vaultMercury = UIColor(named: "VaultMercury")!
-    static var vaultPorsche = UIColor(named: "VaultPorsche")!
-    static var vaultWaterLeaf = UIColor(named: "VaultWaterLeaf")!
+    static var vaultChestnutRose = Self.color(named: "VaultChestnutRose")
+    static var vaultDeYork = Self.color(named: "VaultDeYork")
+    static var vaultHeliotrope = Self.color(named: "VaultHeliotrope")
+    static var vaultJordyBlue = Self.color(named: "VaultJordyBlue")
+    static var vaultLavenderMagenta = Self.color(named: "VaultLavenderMagenta")
+    static var vaultMarigoldYellow = Self.color(named: "VaultMarigoldYellow")
+    static var vaultMauvelous = Self.color(named: "VaultMauvelous")
+    static var vaultMercury = Self.color(named: "VaultMercury")
+    static var vaultPorsche = Self.color(named: "VaultPorsche")
+    static var vaultWaterLeaf = Self.color(named: "VaultWaterLeaf")
 }
 
 // swiftlint:enable force_unwrapping

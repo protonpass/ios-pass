@@ -25,7 +25,8 @@ import fusion
 import ProtonCoreDoh
 import ProtonCoreEnvironment
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUITestsLogin
 import XCTest
 
 final class ExternalAccountsTests: LoginBaseTestCase {

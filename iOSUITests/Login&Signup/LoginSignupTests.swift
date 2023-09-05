@@ -19,10 +19,31 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCoreObfuscatedConstants
+//import ProtonCoreObfuscatedConstants
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import XCTest
+
+enum ObfuscatedConstants {
+    static let passTestUsername = ""
+    static let passTestPassword = ""
+    static let password = ""
+    static let shortPassword = ""
+    static let emailVerificationCode = ""
+    static let emailVerificationWrongCode = ""
+    static let testEmail = ""
+    static let testNumber = ""
+    static let existingUsername = ""
+    static let externalUserUsername = ""
+    static let externalUserPassword = ""
+    static let blackApiHost = ""
+    static let blackDefaultPath = ""
+    static let blackSignupDomain = ""
+    static let blackCaptchaHost = ""
+    static let blackHumanVerificationV3Host = ""
+    static let blackAccountHost = ""
+    static let blackDefaultHost = ""
+}
 
 class LoginSignupTests: LoginBaseTestCase {
     lazy var quarkCommands = QuarkCommands(doh: doh)
