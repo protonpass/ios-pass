@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
-import ProtonCore_Settings
+import ProtonCoreKeymaker
+import ProtonCoreSettings
 
 public protocol MainKeyProvider: AnyObject {
     var mainKey: MainKey? { get }

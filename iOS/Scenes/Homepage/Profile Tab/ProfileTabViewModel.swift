@@ -22,7 +22,7 @@ import Client
 import Combine
 import Core
 import Factory
-import ProtonCore_Services
+import ProtonCoreServices
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {

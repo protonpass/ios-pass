@@ -20,7 +20,7 @@
 
 import Client
 import Core
-import ProtonCore_Services
+import ProtonCoreServices
 
 /// Inform the BE that the users had logged in into Pass so that welcome or instruction emails can be sent
 protocol CheckAccessToPassUseCase: Sendable {

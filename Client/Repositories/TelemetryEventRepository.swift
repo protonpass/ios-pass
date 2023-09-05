@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_Login
-import ProtonCore_Services
+import ProtonCoreLogin
+import ProtonCoreServices
 
 public enum TelemetryEventSendResult {
     case thresholdNotReached

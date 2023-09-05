@@ -20,7 +20,7 @@
 
 import Client
 import Core
-import ProtonCore_Login
+import ProtonCoreLogin
 
 final class QAFeaturesViewModel: ObservableObject {
     let bannerManager: BannerManager

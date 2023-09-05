@@ -21,12 +21,12 @@
 import Core
 import CoreData
 import CryptoKit
-import ProtonCore_Crypto
-import ProtonCore_Login
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreLogin
+import ProtonCoreServices
 
-typealias DecryptionKey = ProtonCore_Crypto.DecryptionKey
-typealias Encryptor = ProtonCore_Crypto.Encryptor
+typealias DecryptionKey = ProtonCoreCrypto.DecryptionKey
+typealias Encryptor = ProtonCoreCrypto.Encryptor
 
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol {

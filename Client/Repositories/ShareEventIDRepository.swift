@@ -20,8 +20,8 @@
 
 import Core
 import CoreData
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public protocol ShareEventIDRepositoryProtocol {
     var localDatasource: LocalShareEventIDDatasourceProtocol { get }

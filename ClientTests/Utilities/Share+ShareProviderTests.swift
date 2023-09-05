@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-import ProtonCore_DataModel
-import ProtonCore_Login
+import ProtonCoreDataModel
+import ProtonCoreLogin
 import XCTest
 
 final class SharePlusShareProviderTests: XCTestCase {

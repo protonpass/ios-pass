@@ -23,7 +23,7 @@
 import Combine
 import Factory
 import Foundation
-import ProtonCore_HumanVerification
+import ProtonCoreHumanVerification
 
 @MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {

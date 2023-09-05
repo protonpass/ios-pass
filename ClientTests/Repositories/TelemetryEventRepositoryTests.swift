@@ -20,7 +20,7 @@
 
 @testable import Client
 import Core
-import ProtonCore_Services
+import ProtonCoreServices
 import XCTest
 
 private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtocol {

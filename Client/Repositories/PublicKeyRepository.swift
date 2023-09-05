@@ -21,7 +21,7 @@
 import Core
 import CoreData
 import Entities
-import ProtonCore_Services
+import ProtonCoreServices
 
 // sourcery: AutoMockable
 public protocol PublicKeyRepositoryProtocol {

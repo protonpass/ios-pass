@@ -20,12 +20,12 @@
 
 import Client
 import Core
-import ProtonCore_Doh
-import ProtonCore_ForceUpgrade
-import ProtonCore_Login
-import ProtonCore_LoginUI
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreDoh
+import ProtonCoreForceUpgrade
+import ProtonCoreLogin
+import ProtonCoreLoginUI
+import ProtonCoreNetworking
+import ProtonCoreServices
 import UIComponents
 import UIKit
 

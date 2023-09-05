@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Doh
+import ProtonCoreDoh
 
 // swiftlint:disable:next force_unwrapping
 public let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)!

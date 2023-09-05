@@ -22,10 +22,10 @@
 import Foundation
 
 import fusion
-import ProtonCore_Environment
-import ProtonCore_ObfuscatedConstants
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreEnvironment
+import ProtonCoreObfuscatedConstants
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class TokenRefreshTests: LoginBaseTestCase {

@@ -21,10 +21,10 @@
 import Core
 import Factory
 @testable import Proton_Pass
-import ProtonCore_Keymaker
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
+import ProtonCoreKeymaker
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkit
 import XCTest
 
 

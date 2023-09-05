@@ -19,10 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Login
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreLogin
 
 public enum CryptoUtils {
     public static func generateKey(name: String, email: String) throws -> (String, String) {
@@ -90,7 +90,7 @@ public enum CryptoUtils {
     }
 
     public static func unlockAddressKeys(addressID: String,
-                                         userData: UserData) throws -> [ProtonCore_Crypto.DecryptionKey] {
+                                         userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
         guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
             throw PPClientError.crypto(.addressNotFound(addressID: addressID))
         }
@@ -108,7 +108,7 @@ public enum CryptoUtils {
     }
 
     public static func unlockKey(_ armoredKey: String,
-                                 passphrase: String) throws -> ProtonCore_Crypto.DecryptionKey {
+                                 passphrase: String) throws -> ProtonCoreCrypto.DecryptionKey {
         DecryptionKey(privateKey: .init(value: armoredKey), passphrase: .init(value: passphrase))
     }
 }

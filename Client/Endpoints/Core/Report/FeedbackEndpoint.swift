@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 public struct FeedbackEndpoint: Endpoint {
     public typealias Body = FeedbackRequest

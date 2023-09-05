@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import ProtonCore_Services
+import ProtonCoreServices
 
 /// Special repository that doesn't conform to `BaseRemoteDatasourceProtocol`
 /// because it doesn't need `AuthCredential`
