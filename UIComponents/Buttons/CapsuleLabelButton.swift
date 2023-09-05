@@ -27,6 +27,7 @@ public struct CapsuleLabelButton: View {
     let titleColor: UIColor
     let backgroundColor: UIColor
     let height: CGFloat
+    let maxWidth: CGFloat?
     let action: () -> Void
 
     public init(icon: UIImage,
@@ -34,12 +35,14 @@ public struct CapsuleLabelButton: View {
                 titleColor: UIColor,
                 backgroundColor: UIColor,
                 height: CGFloat = 40,
+                maxWidth: CGFloat? = .infinity,
                 action: @escaping () -> Void) {
         self.icon = icon
         self.title = title
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
         self.height = height
+        self.maxWidth = maxWidth
         self.action = action
     }
 
@@ -57,7 +60,7 @@ public struct CapsuleLabelButton: View {
             .padding(.horizontal)
             .foregroundColor(Color(uiColor: titleColor))
             .frame(height: height)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: maxWidth)
             .background(Color(uiColor: backgroundColor))
             .clipShape(Capsule())
             .contentShape(Rectangle())
