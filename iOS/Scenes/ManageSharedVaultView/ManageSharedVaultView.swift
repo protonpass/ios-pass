@@ -21,11 +21,11 @@
 //
 
 import Client
+import DesignSystem
 import Entities
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
