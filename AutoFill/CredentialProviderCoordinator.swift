@@ -25,16 +25,14 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import DesignSystem
 import Factory
 import MBProgressHUD
 import ProtonCoreAuthentication
-import ProtonCoreCryptoGoImplementation
-import ProtonCoreCryptoGoInterface
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
 import SwiftUI
-import UIComponents
 
 public final class CredentialProviderCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -92,7 +90,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     init(rootViewController: UIViewController) {
-        injectDefaultCryptoImplementation()
         bannerManager = .init(container: rootViewController)
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.rootViewController = rootViewController

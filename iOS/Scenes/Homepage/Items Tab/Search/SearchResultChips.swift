@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct SearchResultChips: View {
     @Binding var selectedType: ItemContentType?

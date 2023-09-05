@@ -19,10 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 /// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {

@@ -20,6 +20,7 @@
 
 import Core
 import Factory
+import Foundation
 import ProtonCorePayments
 import ProtonCorePaymentsUI
 import ProtonCoreServices

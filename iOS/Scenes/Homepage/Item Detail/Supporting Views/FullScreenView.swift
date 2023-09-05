@@ -20,10 +20,10 @@
 
 import Core
 import CoreImage.CIFilterBuiltins
+import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct FullScreenView: View {
     @Environment(\.dismiss) private var dismiss

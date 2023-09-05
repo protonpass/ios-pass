@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "MagnifyingGlass.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

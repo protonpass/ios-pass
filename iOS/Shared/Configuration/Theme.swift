@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreUIFoundations
+import UIKit
 
 public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable {
     case light = 0

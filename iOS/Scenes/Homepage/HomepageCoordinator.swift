@@ -24,6 +24,7 @@ import Combine
 import Core
 import CoreData
 import CryptoKit
+import DesignSystem
 import Entities
 import Factory
 import MBProgressHUD
@@ -33,7 +34,6 @@ import ProtonCoreServices
 import ProtonCoreUIFoundations
 import StoreKit
 import SwiftUI
-import UIComponents
 import UIKit
 
 private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"

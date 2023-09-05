@@ -20,13 +20,13 @@
 
 import Client
 import Core
+import DesignSystem
 import ProtonCoreDoh
 import ProtonCoreForceUpgrade
 import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreServices
-import UIComponents
 import UIKit
 
 protocol WelcomeCoordinatorDelegate: AnyObject {

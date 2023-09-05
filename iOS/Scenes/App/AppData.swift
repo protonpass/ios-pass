@@ -20,6 +20,7 @@
 
 import Core
 import CryptoKit
+import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
 

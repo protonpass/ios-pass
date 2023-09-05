@@ -21,6 +21,7 @@
 import Client
 import CryptoKit
 import Entities
+import Foundation
 
 struct ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable, Hashable, Equatable {
     let itemId: String

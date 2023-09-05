@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 struct SortTypeButton: View {
     @Binding var selectedSortType: SortType
