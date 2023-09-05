@@ -28,9 +28,10 @@ public enum Browser: Int, Codable, CustomStringConvertible {
     case firefox = 4
     case brave = 5
     case edge = 6
+    case firefoxFocus = 7
 
     public static var thirdPartyBrowsers: [Browser] {
-        [.chrome, .duckDuckGo, .firefox, .brave, .edge]
+        [.chrome, .duckDuckGo, .firefox, .firefoxFocus, .brave, .edge]
     }
 
     public var description: String {
@@ -45,6 +46,8 @@ public enum Browser: Int, Codable, CustomStringConvertible {
             return "DuckDuckGo"
         case .firefox:
             return "Firefox"
+        case .firefoxFocus:
+            return "Firefox Focus"
         case .brave:
             return "Brave"
         case .edge:
@@ -60,6 +63,8 @@ public enum Browser: Int, Codable, CustomStringConvertible {
             return "ddgQuickLink://"
         case .firefox:
             return "firefox://open-url?url="
+        case .firefoxFocus:
+            return "firefox-focus://open-url?url="
         case .brave:
             return "brave://open-url?url="
         case .edge:
