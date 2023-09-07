@@ -25,7 +25,7 @@ public protocol PassPlanRepositoryDelegate: AnyObject {
 }
 
 // sourcery: AutoMockable
-public protocol PassPlanRepositoryProtocol: AnyObject {
+public protocol PassPlanRepositoryProtocol: AnyObject, Sendable {
     var localDatasource: LocalPassPlanDatasourceProtocol { get }
     var remoteDatasource: RemotePassPlanDatasourceProtocol { get }
     var userId: String { get }

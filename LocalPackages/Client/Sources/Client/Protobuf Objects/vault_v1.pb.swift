@@ -377,8 +377,8 @@ extension ProtonPassVaultV1_VaultDisplayPreferences: SwiftProtobuf.Message,
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularEnumField(value: &icon)
-            case 2: try try decoder.decodeSingularEnumField(value: &color)
+            case 1: try decoder.decodeSingularEnumField(value: &icon)
+            case 2: try decoder.decodeSingularEnumField(value: &color)
             default: break
             }
         }
@@ -418,9 +418,9 @@ extension ProtonPassVaultV1_Vault: SwiftProtobuf.Message, SwiftProtobuf._Message
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &name)
-            case 2: try try decoder.decodeSingularStringField(value: &description_p)
-            case 3: try try decoder.decodeSingularMessageField(value: &_display)
+            case 1: try decoder.decodeSingularStringField(value: &name)
+            case 2: try decoder.decodeSingularStringField(value: &description_p)
+            case 3: try decoder.decodeSingularMessageField(value: &_display)
             default: break
             }
         }
