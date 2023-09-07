@@ -21,7 +21,7 @@
 import Core
 import UIKit
 
-public protocol HighlightableText {
+public protocol HighlightableText: Sendable {
     var fullText: String { get }
     var highlightText: String? { get }
     var isLeadingText: Bool { get }
