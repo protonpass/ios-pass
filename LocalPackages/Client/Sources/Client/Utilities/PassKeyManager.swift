@@ -23,13 +23,13 @@ import CryptoKit
 import Foundation
 import ProtonCoreLogin
 
-public struct DecryptedShareKey: Hashable {
+public struct DecryptedShareKey: Hashable, Sendable {
     public let shareId: String
     public let keyRotation: Int64
     public let keyData: Data
 }
 
-public struct DecryptedItemKey: Hashable {
+public struct DecryptedItemKey: Hashable, Sendable {
     public let shareId: String
     public let itemId: String
     public let keyRotation: Int64
