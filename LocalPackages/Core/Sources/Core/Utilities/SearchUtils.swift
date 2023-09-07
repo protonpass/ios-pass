@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct SearchResult {
+public struct SearchResult: Sendable {
     /// The phrase that contains the matched word
     public let matchedPhrase: String
 

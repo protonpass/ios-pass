@@ -23,7 +23,7 @@ import DesignSystem
 import Factory
 import UIKit
 
-final class ClipboardManager {
+final class ClipboardManager: Sendable {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     weak var bannerManager: BannerManager?
 

@@ -26,7 +26,7 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public protocol ShareRepositoryProtocol {
+public protocol ShareRepositoryProtocol: Sendable {
     // MARK: - Shares
 
     /// Get all local shares
