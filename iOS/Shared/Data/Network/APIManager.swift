@@ -126,6 +126,13 @@ final class APIManager: APIManagerProtocol {
         authHelper.onSessionObtaining(credential: Credential(authCredential, scopes: scopes))
     }
 
+    // Should only be used for tests
+    func setLastSuccessfulRefreshTimestamp(_ date: Date) {
+        #if DEBUG
+        lastSuccessfulRefreshTimestamp = date.timeIntervalSince1970
+        #endif
+    }
+
     func clearCredentials() {
         appData.unauthSessionCredentials = nil
         apiService.setSessionUID(uid: "")
@@ -198,11 +205,11 @@ final class APIManager: APIManagerProtocol {
 
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        clearCredentials()
         if isAuthenticatedSession {
             if shouldIgnoreFailure() {
                 logger.debug("Authenticated session is invalidated. Ignore failure.")
                 ignoredRefreshFailure = true
+                return
             } else {
                 logger.info("Authenticated session is invalidated. Logging out.")
                 appData.userData = nil
@@ -212,6 +219,7 @@ extension APIManager: AuthHelperDelegate {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
         }
+        clearCredentials()
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
