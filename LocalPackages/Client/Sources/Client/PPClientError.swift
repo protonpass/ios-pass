@@ -72,7 +72,7 @@ public enum PPClientError: Error, CustomDebugStringConvertible, LocalizedError {
 // MARK: - CoreDataFailureReason
 
 public extension PPClientError {
-    enum CoreDataFailureReason: CustomDebugStringConvertible {
+    enum CoreDataFailureReason: CustomDebugStringConvertible, Sendable {
         case corrupted(object: NSManagedObject, property: String)
         case corruptedShareKeys(shareId: String)
 
@@ -90,7 +90,7 @@ public extension PPClientError {
 // MARK: - UserDataCorruptionReason
 
 public extension PPClientError {
-    enum UserDataCorruptionReason: CustomDebugStringConvertible {
+    enum UserDataCorruptionReason: CustomDebugStringConvertible, Sendable {
         case noAddresses
         case noAddressKeys
         case failedToGetAddressKeyPassphrase
@@ -111,7 +111,7 @@ public extension PPClientError {
 // MARK: - CryptoFailureReason
 
 public extension PPClientError {
-    enum CryptoFailureReason: CustomDebugStringConvertible {
+    enum CryptoFailureReason: CustomDebugStringConvertible, Sendable {
         case failedToSplitPGPMessage
         case failedToUnarmor(String)
         case failedToArmor(String)
@@ -187,7 +187,7 @@ public extension PPClientError {
 }
 
 public extension PPClientError {
-    enum SymmetricEncryptionFailureReason: CustomDebugStringConvertible {
+    enum SymmetricEncryptionFailureReason: CustomDebugStringConvertible, Sendable {
         case failedToUtf8ConvertToData(String)
         case failedToBase64Decode(String)
         case failedToUtf8Decode
