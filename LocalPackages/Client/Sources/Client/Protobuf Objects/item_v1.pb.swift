@@ -501,10 +501,10 @@ extension ProtonPassItemV1_ItemLogin: SwiftProtobuf.Message, SwiftProtobuf._Mess
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &username)
-            case 2: try try decoder.decodeSingularStringField(value: &password)
-            case 3: try try decoder.decodeRepeatedStringField(value: &urls)
-            case 4: try try decoder.decodeSingularStringField(value: &totpUri)
+            case 1: try decoder.decodeSingularStringField(value: &username)
+            case 2: try decoder.decodeSingularStringField(value: &password)
+            case 3: try decoder.decodeRepeatedStringField(value: &urls)
+            case 4: try decoder.decodeSingularStringField(value: &totpUri)
             default: break
             }
         }
@@ -573,12 +573,12 @@ extension ProtonPassItemV1_ItemCreditCard: SwiftProtobuf.Message, SwiftProtobuf.
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &cardholderName)
-            case 2: try try decoder.decodeSingularEnumField(value: &cardType)
-            case 3: try try decoder.decodeSingularStringField(value: &number)
-            case 4: try try decoder.decodeSingularStringField(value: &verificationNumber)
-            case 5: try try decoder.decodeSingularStringField(value: &expirationDate)
-            case 6: try try decoder.decodeSingularStringField(value: &pin)
+            case 1: try decoder.decodeSingularStringField(value: &cardholderName)
+            case 2: try decoder.decodeSingularEnumField(value: &cardType)
+            case 3: try decoder.decodeSingularStringField(value: &number)
+            case 4: try decoder.decodeSingularStringField(value: &verificationNumber)
+            case 5: try decoder.decodeSingularStringField(value: &expirationDate)
+            case 6: try decoder.decodeSingularStringField(value: &pin)
             default: break
             }
         }
@@ -633,9 +633,9 @@ extension ProtonPassItemV1_AllowedAndroidApp: SwiftProtobuf.Message, SwiftProtob
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &packageName)
-            case 2: try try decoder.decodeRepeatedStringField(value: &hashes)
-            case 3: try try decoder.decodeSingularStringField(value: &appName)
+            case 1: try decoder.decodeSingularStringField(value: &packageName)
+            case 2: try decoder.decodeRepeatedStringField(value: &hashes)
+            case 3: try decoder.decodeSingularStringField(value: &appName)
             default: break
             }
         }
@@ -677,7 +677,7 @@ extension ProtonPassItemV1_AndroidSpecific: SwiftProtobuf.Message, SwiftProtobuf
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeRepeatedMessageField(value: &allowedApps)
+            case 1: try decoder.decodeRepeatedMessageField(value: &allowedApps)
             default: break
             }
         }
@@ -710,7 +710,7 @@ extension ProtonPassItemV1_PlatformSpecific: SwiftProtobuf.Message, SwiftProtobu
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularMessageField(value: &_android)
+            case 1: try decoder.decodeSingularMessageField(value: &_android)
             default: break
             }
         }
@@ -748,7 +748,7 @@ extension ProtonPassItemV1_ExtraTotp: SwiftProtobuf.Message, SwiftProtobuf._Mess
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &totpUri)
+            case 1: try decoder.decodeSingularStringField(value: &totpUri)
             default: break
             }
         }
@@ -781,7 +781,7 @@ extension ProtonPassItemV1_ExtraTextField: SwiftProtobuf.Message, SwiftProtobuf.
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &content)
+            case 1: try decoder.decodeSingularStringField(value: &content)
             default: break
             }
         }
@@ -814,7 +814,7 @@ extension ProtonPassItemV1_ExtraHiddenField: SwiftProtobuf.Message, SwiftProtobu
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &content)
+            case 1: try decoder.decodeSingularStringField(value: &content)
             default: break
             }
         }
@@ -851,7 +851,7 @@ extension ProtonPassItemV1_ExtraField: SwiftProtobuf.Message, SwiftProtobuf._Mes
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &fieldName)
+            case 1: try decoder.decodeSingularStringField(value: &fieldName)
             case 2: try {
                     var v: ProtonPassItemV1_ExtraTotp?
                     var hadOneofValue = false
@@ -945,9 +945,9 @@ extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._Messa
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularStringField(value: &name)
-            case 2: try try decoder.decodeSingularStringField(value: &note)
-            case 3: try try decoder.decodeSingularStringField(value: &itemUuid)
+            case 1: try decoder.decodeSingularStringField(value: &name)
+            case 2: try decoder.decodeSingularStringField(value: &note)
+            case 3: try decoder.decodeSingularStringField(value: &itemUuid)
             default: break
             }
         }
@@ -1098,10 +1098,10 @@ extension ProtonPassItemV1_Item: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
             // allocates stack space for every case branch when no optimizations are
             // enabled. https://github.com/apple/swift-protobuf/issues/1034
             switch fieldNumber {
-            case 1: try try decoder.decodeSingularMessageField(value: &_metadata)
-            case 2: try try decoder.decodeSingularMessageField(value: &_content)
-            case 3: try try decoder.decodeSingularMessageField(value: &_platformSpecific)
-            case 4: try try decoder.decodeRepeatedMessageField(value: &extraFields)
+            case 1: try decoder.decodeSingularMessageField(value: &_metadata)
+            case 2: try decoder.decodeSingularMessageField(value: &_content)
+            case 3: try decoder.decodeSingularMessageField(value: &_platformSpecific)
+            case 4: try decoder.decodeRepeatedMessageField(value: &extraFields)
             default: break
             }
         }
