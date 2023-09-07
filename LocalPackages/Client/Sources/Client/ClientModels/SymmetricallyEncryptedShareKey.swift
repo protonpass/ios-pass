@@ -21,7 +21,7 @@
 import Foundation
 
 /// `ShareKey` with its symmetrically encrypted key by an application-wide symmetric key
-public struct SymmetricallyEncryptedShareKey: Hashable {
+public struct SymmetricallyEncryptedShareKey: Hashable, Sendable {
     /// Base64 representation of the symmetrically encrypted share key
     public let encryptedKey: String
 
