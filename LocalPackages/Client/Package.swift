@@ -24,7 +24,7 @@ let package = Package(name: "Client",
                           .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.0.0"),
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Entities", path: "../Entities"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "10.1.1")
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "11.0.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
