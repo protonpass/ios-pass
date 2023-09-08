@@ -23,8 +23,8 @@ import Foundation
 // swiftlint:disable identifier_name
 // https://gist.github.com/wilg/47a04c8f5083a6938da6087f77333784
 public extension Collection {
-    func parallelMap<T>(parallelism requestedParallelism: Int? = nil,
-                        _ transform: @escaping (Element) async throws -> T) async rethrows -> [T] {
+    func parallelMap<T: Sendable>(parallelism requestedParallelism: Int? = nil,
+                                  _ transform: @escaping (Element) async throws -> T) async rethrows -> [T] {
         let defaultParallelism = 2
         let parallelism = requestedParallelism ?? defaultParallelism
 

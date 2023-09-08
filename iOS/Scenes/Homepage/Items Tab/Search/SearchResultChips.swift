@@ -31,7 +31,7 @@ struct SearchResultChips: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ItemCountChip(icon: IconProvider.listBullets,
-                              title: "All",
+                              title: "All".localized,
                               count: itemCount.total,
                               isSelected: selectedType == nil,
                               action: { selectedType = nil })

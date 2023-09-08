@@ -41,13 +41,13 @@ extension ItemContentType {
 
 protocol ItemTypeListViewModelDelegate: AnyObject {
     func itemTypeListViewModelDidSelect(type: ItemType)
-    func itemTypeListViewModelDidEncounter(error: Error)
 }
 
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemTypeListViewModelDelegate?
 
@@ -58,7 +58,7 @@ final class ItemTypeListViewModel: ObservableObject {
                 self.limitation = try await self.upgradeChecker.aliasLimitation()
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemTypeListViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -117,30 +117,30 @@ extension ItemType {
     var title: String {
         switch self {
         case .login:
-            return "Login"
+            return "Login".localized
         case .alias:
-            return "Alias"
+            return "Alias".localized
         case .note:
-            return "Note"
+            return "Note".localized
         case .creditCard:
-            return "Credit card"
+            return "Credit card".localized
         case .password:
-            return "Password"
+            return "Password".localized
         }
     }
 
     var description: String {
         switch self {
         case .login:
-            return "Add login details for an app or site"
+            return "Add login details for an app or site".localized
         case .alias:
-            return "Get an email alias to use on new apps"
+            return "Get an email alias to use on new apps".localized
         case .creditCard:
-            return "Securely store your payment information"
+            return "Securely store your payment information".localized
         case .note:
-            return "Jot down a PIN, code, or note to self"
+            return "Jot down a PIN, code, or note to self".localized
         case .password:
-            return "Generate a secure password"
+            return "Generate a secure password".localized
         }
     }
 }

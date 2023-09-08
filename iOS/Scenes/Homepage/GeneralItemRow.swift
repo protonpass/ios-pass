@@ -27,18 +27,18 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let secondaryTitle: String?
     let secondaryTitleColor: UIColor?
     let description: String?
-    let descriptionMinScaleFactor: CGFloat
+    let descriptionLineLimit: Int
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
          description: String?,
-         descriptionMinScaleFactor: CGFloat = 1.0,
+         descriptionLineLimit: Int = 1,
          secondaryTitle: String? = nil,
          secondaryTitleColor: UIColor? = nil) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.description = description
-        self.descriptionMinScaleFactor = descriptionMinScaleFactor
+        self.descriptionLineLimit = descriptionLineLimit
         self.secondaryTitle = secondaryTitle
         self.secondaryTitleColor = secondaryTitleColor
     }
@@ -65,13 +65,11 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                 if let description, !description.isEmpty {
                     Text(description)
                         .font(.callout)
-                        .lineLimit(1)
-                        // "scaledToFill" otherwise the text is always scaled
-                        // even if there's enough space for larger font
-                        .scaledToFill()
-                        .minimumScaleFactor(descriptionMinScaleFactor)
+                        .lineLimit(descriptionLineLimit)
+                        .minimumScaleFactor(descriptionLineLimit > 1 ? 0.75 : 1.0)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                         .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxHeight: .infinity)
                 }
             }
             .padding(.vertical, 12)

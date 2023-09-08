@@ -21,6 +21,7 @@
 //
 
 import Client
+import Combine
 import Entities
 import Factory
 
@@ -29,7 +30,6 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var vaultInfos: VaultProtobuf?
     @Published private(set) var executingAction = false
     @Published private(set) var shouldCloseSheet = false
-    @Published var error: Error?
 
     private let rejectInvitation = resolve(\UseCasesContainer.rejectInvitation)
     private let acceptInvitation = resolve(\UseCasesContainer.acceptInvitation)
@@ -37,6 +37,9 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let updateCachedInvitations = resolve(\UseCasesContainer.updateCachedInvitations)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private var cancellables = Set<AnyCancellable>()
 
     init(invite: UserInvite) {
         userInvite = invite
@@ -59,7 +62,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
                 self.shouldCloseSheet = true
             } catch {
                 self.logger.error(message: "Could not reject invitation \(userInvite)", error: error)
-                self.error = error
+                self.display(error: error)
             }
         }
     }
@@ -69,19 +72,16 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             guard let self else {
                 return
             }
-            defer {
-                self.executingAction = false
-            }
 
             do {
                 self.executingAction = true
                 _ = try await self.acceptInvitation(with: self.userInvite)
                 await self.updateCachedInvitations(for: self.userInvite.inviteToken)
                 self.syncEventLoop.forceSync()
-                self.shouldCloseSheet = true
             } catch {
                 self.logger.error(message: "Could not accept invitation \(userInvite)", error: error)
-                self.error = error
+                self.display(error: error)
+                self.executingAction = false
             }
         }
     }
@@ -90,6 +90,16 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 private extension AcceptRejectInviteViewModel {
     func setUp() {
         decodeVaultData()
+        vaultsManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self, case let .loaded(vaults: vaultInfos, trashedItems: _) = state,
+                      vaultInfos.map(\.vault.id).contains(self.userInvite.targetID) else {
+                    return
+                }
+                self.executingAction = false
+                self.shouldCloseSheet = true
+            }.store(in: &cancellables)
     }
 
     func decodeVaultData() {
@@ -101,8 +111,12 @@ private extension AcceptRejectInviteViewModel {
                 self.vaultInfos = try await self.decodeShareVaultInformation(with: self.userInvite)
             } catch {
                 self.logger.error(message: "Could not decode vault content from invitation", error: error)
-                self.error = error
+                self.display(error: error)
             }
         }
+    }
+
+    func display(error: Error) {
+        router.display(element: .displayErrorBanner(error))
     }
 }

@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct LogEntry: Codable {
+public struct LogEntry: Codable, Sendable {
     public let timestamp: TimeInterval
     public let subsystem: String
     public let category: String

@@ -42,19 +42,21 @@ final class DeleteVaultAlertHandler: DeinitPrintable {
     }
 
     func showAlert() {
-        let alert = UIAlertController(title: "Delete vault?",
+        let alert = UIAlertController(title: "Delete vault?".localized,
                                       // swiftlint:disable:next line_length
-                                      message: "This will permanently delete the vault \"\(vault.name)\" and all its contents. Enter the vault name to confirm deletion.",
+                                      message: "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
+                                          .localized(vault.name),
                                       preferredStyle: .alert)
         alert.addTextField { [vault] textField in
-            textField.placeholder = "Vault name"
+            textField.placeholder = "Vault name".localized
             let action = UIAction { [vault] _ in
                 alert.actions.first?.isEnabled = textField.text == vault.name
             }
             textField.addAction(action, for: .editingChanged)
         }
 
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [vault, delegate] _ in
+        let deleteAction = UIAlertAction(title: "Delete".localized,
+                                         style: .destructive) { [vault, delegate] _ in
             if alert.textFields?.first?.text == vault.name {
                 delegate.confirmDelete(vault: vault)
             }
@@ -62,7 +64,7 @@ final class DeleteVaultAlertHandler: DeinitPrintable {
         deleteAction.isEnabled = false
         alert.addAction(deleteAction)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel)
         alert.addAction(cancelAction)
 
         rootViewController.present(alert, animated: true)

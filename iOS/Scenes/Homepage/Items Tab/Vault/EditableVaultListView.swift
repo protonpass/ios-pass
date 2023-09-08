@@ -55,9 +55,8 @@ struct EditableVaultListView: View {
                 .padding(.horizontal)
             }
             .animation(.default, value: viewModel.vaultsManager.state)
-
             HStack {
-                CapsuleTextButton(title: "Create vault",
+                CapsuleTextButton(title: "Create vault".localized,
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   action: viewModel.createNewVault)
@@ -67,22 +66,20 @@ struct EditableVaultListView: View {
             .padding([.bottom, .horizontal])
         }
         .background(Color(uiColor: PassColor.backgroundWeak))
+        .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .alert("Aliases won’t be shared",
+        .alert("Aliases won't be shared",
                isPresented: $viewModel.showingAliasAlert,
                actions: {
                    Button(action: {
-                              viewModel.router.presentSheet(for: .sharingFlow)
+                              viewModel.router.present(for: .sharingFlow)
                           },
                           label: {
                               Text("OK")
                           })
                },
                message: {
-                   Text("""
-                   This vault contains \(viewModel.numberOfAliasforSharedVault) Aliases.
-                   Alias sharing is currently not supported and they won’t be shared.
-                   """)
+                   Text("not shared %d alias(es)".localized(viewModel.numberOfAliasforSharedVault))
                })
     }
 
@@ -102,6 +99,7 @@ struct EditableVaultListView: View {
                          },
                          title: selection.title,
                          itemCount: vaultsManager.getItemCount(for: selection),
+                         isShared: selection.shared,
                          isSelected: vaultsManager.isSelected(selection),
                          height: 74)
             })
@@ -111,8 +109,7 @@ struct EditableVaultListView: View {
 
             switch selection {
             case .all:
-                // Gimmick view to take up space
-                threeDotsIcon().opacity(0)
+                EmptyView()
             case let .precise(vault):
                 vaultTrailingView(vault)
             case .trash:
@@ -160,7 +157,7 @@ struct EditableVaultListView: View {
 
             if vault.shared {
                 Button(action: {
-                    viewModel.router.presentSheet(for: .manageShareVault(vault, dismissBeforeShowing: false))
+                    viewModel.router.present(for: .manageShareVault(vault, dismissBeforeShowing: false))
                 }, label: {
                     Label(title: {
                         Text(vault.isAdmin ? "Manage access" : "View members")
@@ -228,11 +225,11 @@ extension VaultSelection {
     var title: String {
         switch self {
         case .all:
-            return "All vaults"
+            return "All vaults".localized
         case let .precise(vault):
             return vault.name
         case .trash:
-            return "Trash"
+            return "Trash".localized
         }
     }
 

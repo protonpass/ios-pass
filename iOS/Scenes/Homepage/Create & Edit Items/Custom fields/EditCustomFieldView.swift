@@ -50,18 +50,20 @@ struct EditCustomFieldView<Field: Hashable>: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .opacity(0)
                 } else {
+                    let placeholder = uiModel.customField.type.title
                     switch uiModel.customField.type {
                     case .text:
                         TextEditorWithPlaceholder(text: $uiModel.customField.content,
                                                   focusedField: focusedField,
                                                   field: field,
-                                                  placeholder: "Text")
+                                                  placeholder: placeholder)
 
                     case .totp:
                         SensitiveTextField(text: $uiModel.customField.content,
-                                           placeholder: "2FA secret (TOTP)",
+                                           placeholder: placeholder,
                                            focusedField: focusedField,
-                                           field: field)
+                                           field: field,
+                                           font: .body.monospacedFont(for: uiModel.customField.content))
                             .foregroundColor(PassColor.textNorm.toColor)
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
@@ -69,7 +71,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
 
                     case .hidden:
                         SensitiveTextField(text: $uiModel.customField.content,
-                                           placeholder: "Hidden",
+                                           placeholder: placeholder,
                                            focusedField: focusedField,
                                            field: field)
                             .foregroundColor(PassColor.textNorm.toColor)

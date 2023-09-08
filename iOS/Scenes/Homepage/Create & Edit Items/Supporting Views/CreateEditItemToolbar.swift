@@ -31,6 +31,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let shouldUpgrade: Bool
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
+    let onScan: () -> Void
     let onSave: () -> Void
 
     var body: some ToolbarContent {
@@ -49,15 +50,35 @@ struct CreateEditItemToolbar: ToolbarContent {
                 if isSaving {
                     ProgressView()
                 } else {
-                    DisablableCapsuleTextButton(title: saveButtonTitle,
-                                                titleColor: PassColor.textInvert,
-                                                disableTitleColor: PassColor.textHint,
-                                                backgroundColor: itemContentType.normMajor1Color,
-                                                disableBackgroundColor: itemContentType.normMinor1Color,
-                                                disabled: !isSaveable,
-                                                action: onSave)
+                    buttons
                 }
             }
+        }
+    }
+}
+
+private extension CreateEditItemToolbar {
+    var buttons: some View {
+        HStack {
+            if !ProcessInfo.processInfo.isiOSAppOnMac {
+                switch itemContentType {
+                case .creditCard, .note:
+                    CircleButton(icon: PassIcon.scanner,
+                                 iconColor: itemContentType.normMajor2Color,
+                                 backgroundColor: itemContentType.normMinor1Color,
+                                 action: onScan)
+                default:
+                    EmptyView()
+                }
+            }
+
+            DisablableCapsuleTextButton(title: saveButtonTitle,
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: itemContentType.normMajor1Color,
+                                        disableBackgroundColor: itemContentType.normMinor1Color,
+                                        disabled: !isSaveable,
+                                        action: onSave)
         }
     }
 }
