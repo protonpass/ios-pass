@@ -56,7 +56,8 @@ enum VaultSelection {
     }
 }
 
-protocol VaultsManagerProtocol {
+protocol VaultsManagerProtocol: Sendable {
+    var currentVaults: CurrentValueSubject<[Vault], Never> { get }
     func refresh()
     func fullSync() async throws
 }
@@ -80,6 +81,8 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     @Published private(set) var vaultSelection = VaultSelection.all
     @Published private(set) var filterOption = ItemTypeFilterOption.all
     @Published private(set) var itemCount = ItemCount.zero
+
+    let currentVaults: CurrentValueSubject<[Vault], Never> = .init([])
 
     init() {
         setUp()
@@ -148,7 +151,7 @@ private extension VaultsManager {
     func loadContents(for vaults: [Vault]) async throws {
         let allItems = try await itemRepository.getAllItems()
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
-
+        currentVaults.send(vaults)
         var vaultContentUiModels = vaults.map { vault in
             let items = allItemUiModels
                 .filter { $0.shareId == vault.shareId }
