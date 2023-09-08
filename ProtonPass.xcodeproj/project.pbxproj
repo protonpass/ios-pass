@@ -4985,7 +4985,7 @@
 			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
 			requirement = {
 				kind = exactVersion;
-				version = 10.1.1;
+				version = 11.0.0;
 			};
 		};
 		5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */ = {
