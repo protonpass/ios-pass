@@ -1,6 +1,6 @@
 # https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
 
---exclude Pods/**, CoreTests/, ClientTests/,iOSTests, iOSUITests, UIComponentsTests, Package.swift, Protobuf Objects/,
+--exclude Pods/**, CoreTests/, ClientTests/,iOSTests, iOSUITests, UIComponentsTests, Package.swift, Protobuf Objects/, fastlane/**
 
 # format options
 

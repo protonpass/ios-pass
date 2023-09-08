@@ -90,7 +90,7 @@ extension LocalShareDatasourceTests {
         }
 
         let share =
-            await try await XCTUnwrapAsync(sut.getShare(userId: givenUserId,
+             try await XCTUnwrapAsync(await sut.getShare(userId: givenUserId,
                                                         shareId: givenInsertedShare.share.shareID))
         assertEqual(share, givenInsertedShare)
     }

@@ -57,7 +57,7 @@ extension LocalShareEventIDDatasourceTests {
                                         lastEventId: givenEventId1)
 
         // Then
-        let eventId1 = await try await XCTUnwrapAsync(sut.getLastEventId(userId: userId,
+        let eventId1 = try await XCTUnwrapAsync(await sut.getLastEventId(userId: userId,
                                                                          shareId: shareId))
         XCTAssertEqual(eventId1, givenEventId1)
 
@@ -70,7 +70,7 @@ extension LocalShareEventIDDatasourceTests {
                                         lastEventId: givenEventId2)
 
         // Then
-        let eventId2 = await try await XCTUnwrapAsync(sut.getLastEventId(userId: userId,
+        let eventId2 = try await XCTUnwrapAsync(await sut.getLastEventId(userId: userId,
                                                                          shareId: shareId))
         XCTAssertEqual(eventId2, givenEventId2)
     }
