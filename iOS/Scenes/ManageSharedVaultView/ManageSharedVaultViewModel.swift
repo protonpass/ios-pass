@@ -35,6 +35,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     @Published private(set) var loading = false
     @Published private(set) var expandedEmails: [String] = []
     @Published var userRole: ShareRole = .read
+    @Published var newOwner: ShareUser?
 
     private var currentSelectedUser: ShareUser?
 
@@ -177,7 +178,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 return
             }
             self.loading = true
-            defer { self.loading = false }
             do {
                 try await self.transferVaultOwnership(newOwnerID: userSharedId, shareId: self.vault.shareId)
                 self.syncEventLoop.forceSync()
@@ -225,6 +225,7 @@ private extension ManageSharedVaultViewModel {
                 }
                 self.vault = vaultInfos
                 self.fetchShareInformation()
+                self.loading = false
             }
             .store(in: &cancellables)
     }
