@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DocScanner
 import ProtonCore_Login
 import SwiftUI
 
@@ -38,6 +39,18 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
+
+        scanResponsePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { _ in } receiveValue: { [weak self] result in
+                guard let self, let result else { return }
+                if let document = result as? ScannedDocument {
+                    self.transformIntoNote(document: document)
+                } else {
+                    assertionFailure("Expecting ScannedDocument as result")
+                }
+            }
+            .store(in: &cancellables)
 
         Publishers
             .CombineLatest($title, $note)
@@ -58,11 +71,28 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override func itemContentType() -> ItemContentType { .note }
 
+    override var interpretor: ScanInterpreting { ScanInterpreter() }
+
     override func generateItemContent() -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
                             note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.note,
                             customFields: [])
+    }
+}
+
+private extension CreateEditNoteViewModel {
+    func transformIntoNote(document: ScannedDocument) {
+        for (index, page) in document.scannedPages.enumerated() {
+            note += page.text.reduce(into: "") { partialResult, next in
+                partialResult = partialResult + "\n" + next
+            }
+
+            if index != document.scannedPages.count - 1 {
+                // Add an empty line between pages
+                note += "\n\n"
+            }
+        }
     }
 }

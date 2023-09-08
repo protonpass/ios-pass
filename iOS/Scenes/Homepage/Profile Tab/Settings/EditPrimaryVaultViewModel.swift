@@ -23,10 +23,7 @@ import Core
 import Factory
 
 protocol EditPrimaryVaultViewModelDelegate: AnyObject {
-    func editPrimaryVaultViewModelWantsToShowSpinner()
-    func editPrimaryVaultViewModelWantsToHideSpinner()
     func editPrimaryVaultViewModelDidUpdatePrimaryVault()
-    func editPrimaryVaultViewModelDidEncounter(error: Error)
 }
 
 final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
@@ -37,6 +34,7 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var primaryVault: Vault
 
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: EditPrimaryVaultViewModelDelegate?
 
@@ -54,17 +52,15 @@ final class EditPrimaryVaultViewModel: ObservableObject, DeinitPrintable {
             guard let self else { return }
             defer {
                 self.isLoading = false
-                self.delegate?.editPrimaryVaultViewModelWantsToHideSpinner()
             }
             do {
                 self.isLoading = true
-                self.delegate?.editPrimaryVaultViewModelWantsToShowSpinner()
                 if try await self.shareRepository.setPrimaryVault(shareId: vault.shareId) {
                     self.primaryVault = vault
                     self.delegate?.editPrimaryVaultViewModelDidUpdatePrimaryVault()
                 }
             } catch {
-                self.delegate?.editPrimaryVaultViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }

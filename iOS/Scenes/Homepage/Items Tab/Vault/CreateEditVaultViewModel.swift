@@ -40,12 +40,8 @@ enum VaultMode {
 }
 
 protocol CreateEditVaultViewModelDelegate: AnyObject {
-    func createEditVaultViewModelWantsToShowSpinner()
-    func createEditVaultViewModelWantsToHideSpinner()
-    func createEditVaultViewModelWantsToUpgrade()
     func createEditVaultViewModelDidCreateVault()
     func createEditVaultViewModelDidEditVault()
-    func createEditVaultViewModelDidEncounter(error: Error)
 }
 
 final class CreateEditVaultViewModel: ObservableObject {
@@ -53,20 +49,22 @@ final class CreateEditVaultViewModel: ObservableObject {
     @Published var selectedColor: VaultColor
     @Published var selectedIcon: VaultIcon
     @Published var title: String
+    @Published private(set) var loading = false
 
     private let mode: VaultMode
     private let logger = resolve(\SharedToolingContainer.logger)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
     var saveButtonTitle: String {
         switch mode {
         case .create:
-            return "Create vault"
+            return "Create vault".localized
         case .edit:
-            return "Save"
+            return "Save".localized
         }
     }
 
@@ -101,7 +99,7 @@ private extension CreateEditVaultViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -116,17 +114,17 @@ private extension CreateEditVaultViewModel {
     func editVault(_ oldVault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.createEditVaultViewModelWantsToHideSpinner() }
+            defer { self.loading = false }
             do {
                 self.logger.trace("Editing vault \(oldVault.id)")
-                self.delegate?.createEditVaultViewModelWantsToShowSpinner()
+                self.loading = true
                 try await self.shareRepository.edit(oldVault: oldVault,
                                                     newVault: self.generateVaultProtobuf())
                 self.delegate?.createEditVaultViewModelDidEditVault()
                 self.logger.info("Edited vault \(oldVault.id)")
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -134,16 +132,16 @@ private extension CreateEditVaultViewModel {
     func createVault() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.createEditVaultViewModelWantsToHideSpinner() }
+            defer { self.loading = false }
             do {
                 self.logger.trace("Creating vault")
-                self.delegate?.createEditVaultViewModelWantsToShowSpinner()
+                self.loading = true
                 try await self.shareRepository.createVault(self.generateVaultProtobuf())
                 self.delegate?.createEditVaultViewModelDidCreateVault()
                 self.logger.info("Created vault")
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditVaultViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -162,7 +160,7 @@ extension CreateEditVaultViewModel {
     }
 
     func upgrade() {
-        delegate?.createEditVaultViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 }
 

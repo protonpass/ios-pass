@@ -120,6 +120,8 @@ struct ItemsTabView: View {
                         .scaledToFit()
                         .frame(width: 20, height: 20)
                     Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                 }
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
                 .padding(.horizontal)
@@ -165,14 +167,14 @@ struct ItemsTabView: View {
     private func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
                      content: {
-                         section(for: result.today, headerTitle: "Today")
-                         section(for: result.yesterday, headerTitle: "Yesterday")
-                         section(for: result.last7Days, headerTitle: "Last week")
-                         section(for: result.last14Days, headerTitle: "Last two weeks")
-                         section(for: result.last30Days, headerTitle: "Last 30 days")
-                         section(for: result.last60Days, headerTitle: "Last 60 days")
-                         section(for: result.last90Days, headerTitle: "Last 90 days")
-                         section(for: result.others, headerTitle: "More than 90 days")
+                         section(for: result.today, headerTitle: "Today".localized)
+                         section(for: result.yesterday, headerTitle: "Yesterday".localized)
+                         section(for: result.last7Days, headerTitle: "Last week".localized)
+                         section(for: result.last14Days, headerTitle: "Last two weeks".localized)
+                         section(for: result.last30Days, headerTitle: "Last 30 days".localized)
+                         section(for: result.last60Days, headerTitle: "Last 60 days".localized)
+                         section(for: result.last90Days, headerTitle: "Last 90 days".localized)
+                         section(for: result.others, headerTitle: "More than 90 days".localized)
                      },
                      onRefresh: viewModel.forceSync)
     }

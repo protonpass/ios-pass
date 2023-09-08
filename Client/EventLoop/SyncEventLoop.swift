@@ -55,12 +55,29 @@ public protocol SyncEventLoopDelegate: AnyObject {
     /// - Parameters:
     ///   - error: Occured error
     func syncEventLoopDidFailLoop(error: Error)
+
+    /// Called when an additional task is started to be executed
+    /// - Parameters:
+    ///  - label: the uniquely identifiable label of the failed task
+    func syncEventLoopDidBeginExecutingAdditionalTask(label: String)
+
+    /// Called when an additional task is executed successfully
+    /// - Parameters:
+    func syncEventLoopDidFinishAdditionalTask(label: String)
+
+    /// Called when an additional task is failed
+    /// - Parameters:
+    ///  - label: the uniquely identifiable label of the failed task.
+    ///  - error: the underlying error
+    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error)
 }
 
 public protocol SyncEventLoopActionProtocol {
     func start()
     func stop()
     func forceSync()
+    func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
+    func removeAdditionalTask(label: String)
 }
 
 public enum SyncEventLoopSkipReason {
@@ -78,6 +95,25 @@ public protocol SyncEventLoopProtocol {
     func stop()
 }
 
+public extension SyncEventLoop {
+    struct AdditionalTask {
+        /// Uniquely identiable label between tasks, each task should have a unique label
+        /// This is to help the event loop adding/removing tasks
+        let label: String
+        /// The execution block of the task
+        let task: () async throws -> Void
+
+        public init(label: String, task: @escaping () async throws -> Void) {
+            self.label = label
+            self.task = task
+        }
+
+        public func callAsFunction() async throws {
+            try await task()
+        }
+    }
+}
+
 /// A background event loop that keeps data up to date by synching after a random number of seconds
 public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -89,6 +125,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     private var timer: Timer?
     private var secondCount = 0
     private var threshold = kThresholdRange.randomElement() ?? 5
+    private var additionalTasks: [AdditionalTask] = []
     private var ongoingTask: Task<Void, Error>?
 
     // Injected params
@@ -160,6 +197,18 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
         ongoingTask?.cancel()
         delegate?.syncEventLoopDidStopLooping()
     }
+
+    public func addAdditionalTask(_ task: AdditionalTask) {
+        guard !additionalTasks.contains(where: { $0.label == task.label }) else {
+            assertionFailure("Existing task with label \(task.label)")
+            return
+        }
+        additionalTasks.append(task)
+    }
+
+    public func removeAdditionalTask(label: String) {
+        additionalTasks.removeAll(where: { $0.label == label })
+    }
 }
 
 /*
@@ -221,7 +270,22 @@ private extension SyncEventLoop {
                     if Task.isCancelled {
                         return
                     }
+
                     let hasNewEvents = try await self.sync()
+
+                    // Execute additional tasks and record failures in a different delegate callback
+                    // So up to this point, the event loop is considered successful
+                    for task in additionalTasks {
+                        do {
+                            self.delegate?.syncEventLoopDidBeginExecutingAdditionalTask(label: task.label)
+                            try await task()
+                            self.delegate?.syncEventLoopDidFinishAdditionalTask(label: task.label)
+                        } catch {
+                            self.delegate?.syncEventLoopDidFailedAdditionalTask(label: task.label,
+                                                                                error: error)
+                        }
+                    }
+
                     self.delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
                     self.backOffManager.recordSuccess()
                 } catch {
@@ -260,16 +324,26 @@ private extension SyncEventLoop {
         }
 
         var hasNewShareEvents = false
-        // This is used to respond to sahring modification that are not tied to events in the BE
+        // This is used to respond to sharing modifications that are not tied to events in the BE
         // making changes not visible to the user.
-        if remoteShares != localShares.map(\.share) {
+        if !remoteShares.isLooselyEqual(to: localShares.map(\.share)) {
             hasNewShareEvents = true
+
+            // Update local shares
+            let remainingLocalShares = localShares
+                .filter { remoteShares.map(\.shareID).contains($0.share.shareID) }
+            for share in remainingLocalShares {
+                // A work around for a Core Data bug that fails the updates of booleans & numbers
+                // We delete local shares instead of simply upserting and re-insert remote shares later on
+                try await shareRepository.deleteShareLocally(shareId: share.share.shareID)
+            }
             try await shareRepository.upsertShares(remoteShares)
-            if remoteShares.count < localShares.count {
-                let leftShares = localShares.filter {
-                    !remoteShares.map(\.shareID).contains($0.share.shareID)
-                }.map(\.share)
-                try await delete(shares: leftShares)
+
+            // Delete local shares if applicable
+            let deletedLocalShares = localShares
+                .filter { !remoteShares.map(\.shareID).contains($0.share.shareID) }
+            if !deletedLocalShares.isEmpty {
+                try await delete(shares: deletedLocalShares.map(\.share))
             }
         }
 
@@ -335,15 +409,21 @@ private extension SyncEventLoop {
                         if Task.isCancelled {
                             return false
                         }
-                        _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
-                        if Task.isCancelled {
-                            return false
+
+                        do {
+                            _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
+                            try await self.shareRepository.upsertShares([remoteShare])
+                            try await self.itemRepository.refreshItems(shareId: shareId)
+                        } catch {
+                            if let clientError = error as? PPClientError,
+                               case let .crypto(reason) = clientError,
+                               case .inactiveUserKey = reason {
+                                // Ignore the case where user key is inactive
+                                self.logger.warning(reason.debugDescription)
+                            } else {
+                                throw error
+                            }
                         }
-                        try await self.shareRepository.upsertShares([remoteShare])
-                        if Task.isCancelled {
-                            return false
-                        }
-                        try await self.itemRepository.refreshItems(shareId: shareId)
                     }
                     return hasNewEvents
                 }

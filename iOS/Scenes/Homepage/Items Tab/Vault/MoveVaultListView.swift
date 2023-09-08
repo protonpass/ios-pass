@@ -46,13 +46,13 @@ struct MoveVaultListView: View {
             }
 
             HStack(spacing: 16) {
-                CapsuleTextButton(title: "Cancel",
+                CapsuleTextButton(title: "Cancel".localized,
                                   titleColor: PassColor.textWeak,
                                   backgroundColor: PassColor.textDisabled,
                                   height: 44,
                                   action: dismiss.callAsFunction)
 
-                DisablableCapsuleTextButton(title: "Confirm",
+                DisablableCapsuleTextButton(title: "Confirm".localized,
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,
@@ -75,6 +75,7 @@ struct MoveVaultListView: View {
             VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
                      title: vault.vault.name,
                      itemCount: vault.itemCount,
+                     isShared: vault.vault.shared,
                      isSelected: viewModel.selectedVault == vault)
         })
         .buttonStyle(.plain)

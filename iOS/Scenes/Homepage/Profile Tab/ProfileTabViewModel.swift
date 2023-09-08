@@ -26,18 +26,11 @@ import ProtonCore_Services
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowSpinner()
-    func profileTabViewModelWantsToHideSpinner()
-    func profileTabViewModelWantsToUpgrade()
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowAcknowledgments()
-    func profileTabViewModelWantsToShowPrivacyPolicy()
-    func profileTabViewModelWantsToShowTermsOfService()
-    func profileTabViewModelWantsToShowImportInstructions()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
-    func profileTabViewModelDidEncounter(error: Error)
 }
 
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
@@ -53,6 +46,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -79,6 +73,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
+    @Published private(set) var loading = false
     @Published private(set) var plan: PassPlan?
 
     private var cancellables = Set<AnyCancellable>()
@@ -116,7 +111,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
 extension ProfileTabViewModel {
     func upgrade() {
-        delegate?.profileTabViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 
     func refreshPlan() {
@@ -129,7 +124,7 @@ extension ProfileTabViewModel {
                 self.plan = try await self.passPlanRepository.refreshPlan()
             } catch {
                 self.logger.error(error)
-                self.delegate?.profileTabViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -146,6 +141,10 @@ extension ProfileTabViewModel {
         securitySettingsCoordinator.editPINCode()
     }
 
+    func showEnableAutoFillOnMacInstructions() {
+        router.present(for: .autoFillInstructions)
+    }
+
     func showAccountMenu() {
         delegate?.profileTabViewModelWantsToShowAccountMenu()
     }
@@ -159,15 +158,15 @@ extension ProfileTabViewModel {
     }
 
     func showPrivacyPolicy() {
-        delegate?.profileTabViewModelWantsToShowPrivacyPolicy()
+        router.navigate(to: .urlPage(urlString: ProtonLink.privacyPolicy))
     }
 
     func showTermsOfService() {
-        delegate?.profileTabViewModelWantsToShowTermsOfService()
+        router.navigate(to: .urlPage(urlString: ProtonLink.termsOfService))
     }
 
     func showImportInstructions() {
-        delegate?.profileTabViewModelWantsToShowImportInstructions()
+        router.navigate(to: .urlPage(urlString: ProtonLink.howToImport))
     }
 
     func showFeedback() {
@@ -200,7 +199,7 @@ private extension ProfileTabViewModel {
             } catch {
                 // Fallback to `none`, not much we can do except displaying the error
                 logger.error(error)
-                delegate?.profileTabViewModelDidEncounter(error: error)
+                router.display(element: .displayErrorBanner(error))
                 localAuthenticationMethod = .none
             }
         case .pin:
@@ -231,10 +230,10 @@ private extension ProfileTabViewModel {
         guard quickTypeBar != preferences.quickTypeBar else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.profileTabViewModelWantsToHideSpinner() }
+            defer { self.loading = false }
             do {
                 self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
-                self.delegate?.profileTabViewModelWantsToShowSpinner()
+                self.loading = true
                 if self.quickTypeBar {
                     try await self.indexAllLoginItems(ignorePreferences: true)
                 } else {
@@ -244,7 +243,7 @@ private extension ProfileTabViewModel {
             } catch {
                 self.logger.error(error)
                 self.quickTypeBar.toggle() // rollback to previous value
-                self.delegate?.profileTabViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }

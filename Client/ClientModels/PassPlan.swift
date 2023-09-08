@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct PassPlan: Decodable, Equatable {
+public struct PassPlan: Decodable, Equatable, Sendable {
     /// ⚠️ Use `planType` instead
     /// Possible values: `free`, `plus`
     public let type: String
@@ -59,4 +59,6 @@ public struct PassPlan: Decodable, Equatable {
     }
 
     public var isFreeUser: Bool { planType == .free }
+
+    public var isInTrial: Bool { planType == .trial }
 }

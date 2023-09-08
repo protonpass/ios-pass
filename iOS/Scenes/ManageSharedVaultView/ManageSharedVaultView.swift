@@ -30,7 +30,7 @@ import UIComponents
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ManageSharedVaultViewModel
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     @State private var sort: ShareRole = .admin
 
@@ -38,10 +38,10 @@ struct ManageSharedVaultView: View {
         ZStack(alignment: .bottom) {
             mainContainer
             if viewModel.vault.isAdmin {
-                CapsuleTextButton(title: "Share with more people",
+                CapsuleTextButton(title: "Share with more people".localized,
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
-                                  action: { router.presentSheet(for: .sharingFlow) })
+                                  action: { router.present(for: .sharingFlow) })
             }
         }
         .onAppear {
@@ -76,7 +76,6 @@ private extension ManageSharedVaultView {
                     .background(PassColor.backgroundNorm.toColor)
             }
         }
-        .errorAlert(error: $viewModel.error)
     }
 }
 
@@ -99,7 +98,7 @@ private extension ManageSharedVaultView {
             Text(viewModel.vault.name)
                 .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("\(viewModel.itemsNumber) items")
+            Text("%d item(s)".localized(viewModel.itemsNumber))
                 .font(.title3)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
@@ -138,6 +137,11 @@ private extension ManageSharedVaultView {
             VStack(alignment: .leading, spacing: 4) {
                 Text(user.email)
                     .foregroundColor(PassColor.textNorm.toColor)
+                    .lineLimit(viewModel.isExpanded(email: user.email) ? nil : 1)
+                    .onTapGesture {
+                        viewModel.expand(email: user.email)
+                    }
+                    .animation(.default, value: viewModel.expandedEmails)
                 HStack {
                     if viewModel.isCurrentUser(with: user) {
                         Text("You")
@@ -147,7 +151,7 @@ private extension ManageSharedVaultView {
                             .padding(.horizontal, 8)
                             .background(Capsule().fill(PassColor.interactionNorm.toColor))
                     }
-                    Text(user.shareRole?.role ?? "pending")
+                    Text(user.permission)
                         .foregroundColor(PassColor.textWeak.toColor)
                 }
             }
@@ -166,8 +170,9 @@ private extension ManageSharedVaultView {
 private extension ManageSharedVaultView {
     @ViewBuilder
     func vaultTrailingView(user: ShareUser) -> some View {
+        let isOwnerAndCurrentUser = viewModel.isOwnerAndCurrentUser(with: user)
         Menu(content: {
-            if !user.isPending {
+            if !isOwnerAndCurrentUser, !user.isPending {
                 ForEach(ShareRole.allCases, id: \.self) { role in
                     Label(title: {
                         Button(action: {
@@ -185,6 +190,7 @@ private extension ManageSharedVaultView {
                     })
                 }
             }
+
             if user.isPending {
                 Button(action: {
                     viewModel.sendInviteReminder(for: user)
@@ -198,6 +204,7 @@ private extension ManageSharedVaultView {
                     })
                 })
             }
+
             if viewModel.vault.isOwner, !user.isPending {
                 Button(action: {}, label: {
                     Label(title: {
@@ -210,21 +217,23 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            Button(action: {
-                if user.isPending {
-                    viewModel.revokeInvite(for: user)
-                } else {
-                    viewModel.revokeShareAccess(for: user)
-                }
-            }, label: {
-                Label(title: {
-                    Text("Remove access")
-                }, icon: {
-                    Image(uiImage: IconProvider.circleSlash)
-                        .renderingMode(.template)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+            if !isOwnerAndCurrentUser {
+                Button(action: {
+                    if user.isPending {
+                        viewModel.revokeInvite(for: user)
+                    } else {
+                        viewModel.revokeShareAccess(for: user)
+                    }
+                }, label: {
+                    Label(title: {
+                        Text("Remove access")
+                    }, icon: {
+                        Image(uiImage: IconProvider.circleSlash)
+                            .renderingMode(.template)
+                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                    })
                 })
-            })
+            }
         }, label: { Image(uiImage: IconProvider.threeDotsVertical)
             .resizable()
             .scaledToFit()

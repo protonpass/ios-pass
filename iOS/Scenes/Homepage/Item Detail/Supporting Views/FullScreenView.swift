@@ -20,6 +20,7 @@
 
 import Core
 import CoreImage.CIFilterBuiltins
+import Factory
 import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
@@ -29,8 +30,8 @@ struct FullScreenView: View {
     @State private var mode: Mode = .text
     @State private var originalBrightness: CGFloat = 0.5
     @State private var percentage: Double = 0.5
+    private let theme = resolve(\SharedToolingContainer.theme)
     let text: String
-    let theme: Theme
 
     enum Mode {
         case text, qr
@@ -53,6 +54,9 @@ struct FullScreenView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                Color(uiColor: PassColor.backgroundNorm)
+                    .ignoresSafeArea()
+
                 Group {
                     switch mode {
                     case .text:
@@ -70,6 +74,7 @@ struct FullScreenView: View {
             .toolbar { toolbarContent }
         }
         .navigationViewStyle(.stack)
+        .theme(theme)
         .onAppear {
             originalBrightness = UIScreen.main.brightness
             UIScreen.main.brightness = CGFloat(1.0)
@@ -119,6 +124,7 @@ private struct FullScreenTextView: View {
                     .font(.title)
             }
         }
+        .foregroundColor(PassColor.textNorm.toColor)
     }
 }
 
