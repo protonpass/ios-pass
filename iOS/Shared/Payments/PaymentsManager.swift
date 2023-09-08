@@ -62,7 +62,12 @@ final class PaymentsManager {
     }
 
     private func initializePaymentsStack() {
-        payments.planService.currentSubscriptionChangeDelegate = self
+        switch payments.planService {
+        case .left(let service):
+            service.currentSubscriptionChangeDelegate = self
+        default:
+            break
+        }
         payments.storeKitManager.delegate = self
         payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
             self?.payments.storeKitManager.subscribeToPaymentQueue()
