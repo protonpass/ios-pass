@@ -24,13 +24,13 @@ import XCTest
 
 final class LocalItemDatasourceTests: XCTestCase {
     var sut: LocalItemDatasource!
-
+    
     override func setUp() {
         super.setUp()
         sut = .init(container: .Builder.build(name: kProtonPassContainerName,
                                               inMemory: true))
     }
-
+    
     override func tearDown() {
         sut = nil
         super.tearDown()
@@ -42,49 +42,50 @@ extension LocalItemDatasourceTests {
         // Given
         let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
         try await sut.upsertItems(givenItems)
-
+        
         // When
         let items = try await sut.getAllItems()
-
+        
         // Then
         XCTAssertEqual(items.count, givenItems.count)
         XCTAssertEqual(Set(items.map(\.itemId)), Set(givenItems.map(\.itemId)))
     }
-
+    
     func testGetAllItemsByState() async throws {
         // Given
         let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
         try await sut.upsertItems(givenItems)
-
+        
         // When
         let activeItems = try await sut.getItems(state: .active)
         let trashedItems = try await sut.getItems(state: .trashed)
         let allItems = activeItems + trashedItems
-
+        
         // Then
         XCTAssertEqual(activeItems.count + trashedItems.count, givenItems.count)
         XCTAssertEqual(Set(allItems.map(\.itemId)),
                        Set(givenItems.map(\.itemId)))
     }
-
+    
     func testGetItem() async throws {
         // Given
         let givenShareId = String.random()
         let givenItemId = String.random()
         let givenInsertedItem = try await sut.givenInsertedItem(itemId: givenItemId,
                                                                 shareId: givenShareId)
-
+        
         // When
         for _ in 0...10 {
             try await sut.upsertItems(.random(randomElement: .random()))
         }
-
+        
         // Then
-        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
-                                                              itemId: givenItemId))
+        let optionalItems = try await sut.getItem(shareId: givenShareId,
+                                                  itemId: givenItemId)
+        let item = try await XCTUnwrapAsync(optionalItems)
         XCTAssertEqual(item, givenInsertedItem)
     }
-
+    
     func testGetAliasItem() async throws {
         // Given
         let givenShareId = String.random()
@@ -93,54 +94,55 @@ extension LocalItemDatasourceTests {
         let givenInsertedItem = try await sut.givenInsertedItem(itemId: givenItemId,
                                                                 shareId: givenShareId,
                                                                 aliasEmail: givenAliasEmail)
-
+        
         // When
         for _ in 0...10 {
             try await sut.upsertItems(.random(randomElement: .random()))
         }
-
+        
         // Then
-        let item = try await XCTUnwrapAsync(await sut.getAliasItem(email: givenAliasEmail))
+        let optionalAlias = try await sut.getAliasItem(email: givenAliasEmail)
+        let item = try await XCTUnwrapAsync(optionalAlias)
         XCTAssertEqual(item, givenInsertedItem)
     }
-
+    
     func testInsertItems() async throws {
         // Given
         let givenShareId = String.random()
-
+        
         let firstItems =
-            [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenShareId))
-
+        [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenShareId))
+        
         let secondItems =
-            [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenShareId))
-
+        [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenShareId))
+        
         let thirdItems =
-            [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenShareId))
-
+        [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenShareId))
+        
         let givenItems = firstItems + secondItems + thirdItems
-
+        
         // When
         try await sut.upsertItems(firstItems)
         try await sut.upsertItems(secondItems)
         try await sut.upsertItems(thirdItems)
-
+        
         // Then
         let itemCount = try await sut.getItemCount(shareId: givenShareId)
         XCTAssertEqual(itemCount, givenItems.count)
-
+        
         let activeItems = try await sut.getItems(shareId: givenShareId,
                                                  state: .active)
         let activeItemIds = activeItems.map(\.item.itemID)
-
+        
         let trashedItems = try await sut.getItems(shareId: givenShareId,
                                                   state: .trashed)
         let trashedItemIds = trashedItems.map(\.item.itemID)
-
+        
         let givenItemIds = Set(givenItems.map(\.item.itemID))
-
+        
         XCTAssertEqual(Set(activeItemIds + trashedItemIds), givenItemIds)
     }
-
+    
     func testUpdateItems() async throws {
         // Given
         let givenItemId = String.random()
@@ -151,19 +153,20 @@ extension LocalItemDatasourceTests {
         let updatedItem = SymmetricallyEncryptedItem.random(shareId: givenShareId,
                                                             item: updatedItemRevision,
                                                             isLogInItem: givenItem.isLogInItem)
-
+        
         // When
         try await sut.upsertItems([updatedItem])
-
+        
         // Then
         let itemCount = try await sut.getItemCount(shareId: givenShareId)
         XCTAssertEqual(itemCount, 1)
-
-        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
-                                                              itemId: givenItemId))
+        
+        let optionalItems = try await sut.getItem(shareId: givenShareId,
+                                                  itemId: givenItemId)
+        let item = try await XCTUnwrapAsync(optionalItems)
         XCTAssertEqual(item, updatedItem)
     }
-
+    
     func testTrashItems() async throws {
         // Given
         let givenItemId = String.random()
@@ -171,7 +174,7 @@ extension LocalItemDatasourceTests {
         let insertedItem = try await sut.givenInsertedItem(itemId: givenItemId,
                                                            shareId: givenShareId,
                                                            state: .active)
-
+        
         // When
         let modifiedItem = ModifiedItem(itemID: insertedItem.item.itemID,
                                         revision: insertedItem.item.revision,
@@ -179,13 +182,14 @@ extension LocalItemDatasourceTests {
                                         modifyTime: insertedItem.item.modifyTime,
                                         revisionTime: insertedItem.item.revisionTime)
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
-
+        
         // Then
-        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
-                                                              itemId: givenItemId))
+        let optionalItems = try await sut.getItem(shareId: givenShareId,
+                                                  itemId: givenItemId)
+        let item = try await XCTUnwrapAsync(optionalItems)
         XCTAssertEqual(item.item.itemState, .trashed)
     }
-
+    
     func testUntrashItems() async throws {
         // Given
         let givenItemId = String.random()
@@ -193,7 +197,7 @@ extension LocalItemDatasourceTests {
         let insertedItem = try await sut.givenInsertedItem(itemId: givenItemId,
                                                            shareId: givenShareId,
                                                            state: .trashed)
-
+        
         // When
         let modifiedItem = ModifiedItem(itemID: insertedItem.item.itemID,
                                         revision: insertedItem.item.revision,
@@ -201,101 +205,102 @@ extension LocalItemDatasourceTests {
                                         modifyTime: insertedItem.item.modifyTime,
                                         revisionTime: insertedItem.item.revisionTime)
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
-
+        
         // Then
-        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
-                                                              itemId: givenItemId))
+        let optionalItems = try await sut.getItem(shareId: givenShareId,
+                                                  itemId: givenItemId)
+        let item = try await XCTUnwrapAsync(optionalItems)
         XCTAssertEqual(item.item.itemState, .active)
     }
-
+    
     func testDeleteItems() async throws {
         // Given
         let shareId = String.random()
         let firstItem = try await sut.givenInsertedItem(shareId: shareId)
         let secondItem = try await sut.givenInsertedItem(shareId: shareId)
         let thirdItem = try await sut.givenInsertedItem(shareId: shareId)
-
+        
         let firstCount = try await sut.getItemCount(shareId: shareId)
         XCTAssertEqual(firstCount, 3)
-
+        
         // Delete third item
         try await sut.deleteItems([thirdItem])
         let secondCount = try await sut.getItemCount(shareId: shareId)
         XCTAssertEqual(secondCount, 2)
-
+        
         // Delete both first and second item
         try await sut.deleteItems([firstItem, secondItem])
         let thirdCount = try await sut.getItemCount(shareId: shareId)
         XCTAssertEqual(thirdCount, 0)
     }
-
+    
     func testRemoveAllItems() async throws {
         // Given
         let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random())
         try await sut.upsertItems(givenItems)
-
+        
         // When
         try await sut.removeAllItems()
         let items = try await sut.getAllItems()
-
+        
         // Then
         XCTAssertTrue(items.isEmpty)
     }
-
+    
     func testRemoveAllItemsOfGivenShares() async throws {
         // Given
         let givenFirstShareId = String.random()
         let givenFirstShareItems =
-            [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenFirstShareId))
-
+        [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenFirstShareId))
+        
         let givenSecondShareId = String.random()
         let givenSecondShareItems =
-            [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenSecondShareId))
-
+        [SymmetricallyEncryptedItem].random(randomElement: .random(shareId: givenSecondShareId))
+        
         // When
         try await sut.upsertItems(givenFirstShareItems)
         try await sut.upsertItems(givenSecondShareItems)
-
+        
         // Then
         let firstShareItemsFirstGetCount = try await sut.getItemCount(shareId: givenFirstShareId)
         XCTAssertEqual(firstShareItemsFirstGetCount, givenFirstShareItems.count)
-
+        
         let secondShareItemsFirstGetCount = try await sut.getItemCount(shareId: givenSecondShareId)
         XCTAssertEqual(secondShareItemsFirstGetCount, givenSecondShareItems.count)
-
+        
         // When
         try await sut.removeAllItems(shareId: givenFirstShareId)
-
+        
         // Then
         let firstShareItemsSecondGetCount = try await sut.getItemCount(shareId: givenFirstShareId)
         XCTAssertEqual(firstShareItemsSecondGetCount, 0)
-
+        
         let secondShareItemsSecondGetCount = try await sut.getItemCount(shareId: givenSecondShareId)
         XCTAssertEqual(secondShareItemsSecondGetCount, givenSecondShareItems.count)
     }
-
+    
     // Don't now why it is failing because lastUsedTime is not updated
     /*
      func testUpdateLastUsedTime() throws {
-         continueAfterFailure = false
-         let expectation = expectation(description: #function)
-         Task {
-             // Given
-             let givenInsertedLogInItem = try await sut.givenInsertedItem(isLogInItem: true)
-             let updatedLastUsedTime = Date().timeIntervalSince1970
-
-             // When
-             try await sut.update(item: givenInsertedLogInItem, lastUsedTime: updatedLastUsedTime)
-             let item = try await sut.getItem(shareId: givenInsertedLogInItem.shareId,
-                                              itemId: givenInsertedLogInItem.item.itemID)
-             let notNilItem = try XCTUnwrap(item)
-             XCTAssertEqual(notNilItem.lastUsedTime, Int64(updatedLastUsedTime))
-             expectation.fulfill()
-         }
-         waitForExpectations(timeout: expectationTimeOut)
+     continueAfterFailure = false
+     let expectation = expectation(description: #function)
+     Task {
+     // Given
+     let givenInsertedLogInItem = try await sut.givenInsertedItem(isLogInItem: true)
+     let updatedLastUsedTime = Date().timeIntervalSince1970
+     
+     // When
+     try await sut.update(item: givenInsertedLogInItem, lastUsedTime: updatedLastUsedTime)
+     let item = try await sut.getItem(shareId: givenInsertedLogInItem.shareId,
+     itemId: givenInsertedLogInItem.item.itemID)
+     let notNilItem = try XCTUnwrap(item)
+     XCTAssertEqual(notNilItem.lastUsedTime, Int64(updatedLastUsedTime))
+     expectation.fulfill()
      }
-      */
-
+     waitForExpectations(timeout: expectationTimeOut)
+     }
+     */
+    
     func testGetActiveLogInItems() async throws {
         // Given
         let givenShareId = String.random()
@@ -303,57 +308,57 @@ extension LocalItemDatasourceTests {
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .trashed,
                                             isLogInItem: true)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .trashed,
                                             isLogInItem: true)
-
+        
         // 3 trashed other items
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .trashed,
                                             isLogInItem: false)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .trashed,
                                             isLogInItem: false)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .trashed,
                                             isLogInItem: false)
-
+        
         // 4 active log in items
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .active,
                                             isLogInItem: true)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .active,
                                             isLogInItem: true)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .active,
                                             isLogInItem: true)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .active,
                                             isLogInItem: true)
-
+        
         // 4 active other items
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .active,
                                             isLogInItem: false)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .active,
                                             isLogInItem: false)
-
+        
         _ = try await sut.givenInsertedItem(shareId: givenShareId,
                                             state: .active,
                                             isLogInItem: false)
-
+        
         // When
         let activeLogInItems = try await sut.getActiveLogInItems()
-
+        
         // Then
         XCTAssertEqual(activeLogInItems.count, 4)
     }
@@ -368,7 +373,7 @@ extension LocalItemDatasource {
                            modifyTime: Int64 = .random(in: 1_234_567...1_987_654),
                            lastUsedItem: Int64 = .random(in: 1_234_567...1_987_654),
                            isLogInItem: Bool = .random())
-        async throws -> SymmetricallyEncryptedItem {
+    async throws -> SymmetricallyEncryptedItem {
         let shareId = shareId ?? .random()
         let itemRevision = ItemRevision.random(itemId: itemId ?? .random(),
                                                state: state,
