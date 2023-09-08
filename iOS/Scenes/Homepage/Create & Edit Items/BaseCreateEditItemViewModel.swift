@@ -21,22 +21,19 @@
 import Client
 import Combine
 import Core
+import DocScanner
 import Factory
 import ProtonCore_Login
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToShowLoadingHud()
-    func createEditItemViewModelWantsToHideLoadingHud()
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate)
-    func createEditItemViewModelWantsToUpgrade()
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType)
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType)
-    func createEditItemViewModelDidEncounter(error: Error)
 }
 
 enum ItemMode {
@@ -75,11 +72,16 @@ class BaseCreateEditItemViewModel {
 
     @Published var isObsolete = false
 
+    // Scanning
+    @Published var isShowingScanner = false
+    let scanResponsePublisher: PassthroughSubject<ScanResult?, Error> = .init()
+
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -118,6 +120,9 @@ class BaseCreateEditItemViewModel {
     /// To be overridden by subclasses
     var isSaveable: Bool { false }
 
+    /// To be overridden by subclasses
+    var interpretor: ScanInterpreting { ScanInterpreter() }
+
     func bindValues() {}
 
     // swiftlint:disable:next unavailable_function
@@ -133,9 +138,9 @@ class BaseCreateEditItemViewModel {
     func saveButtonTitle() -> String {
         switch mode {
         case .create:
-            return "Create"
+            return "Create".localized
         case .edit:
-            return "Save"
+            return "Save".localized
         }
     }
 
@@ -155,7 +160,7 @@ private extension BaseCreateEditItemViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -172,7 +177,7 @@ private extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -185,7 +190,7 @@ private extension BaseCreateEditItemViewModel {
                 self.canAddMoreCustomFields = !isFreeUser
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -251,7 +256,11 @@ extension BaseCreateEditItemViewModel {
     }
 
     func upgrade() {
-        delegate?.createEditItemViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
+    }
+
+    func openScanner() {
+        isShowingScanner = true
     }
 
     func save() {
@@ -278,7 +287,7 @@ extension BaseCreateEditItemViewModel {
                 }
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -298,7 +307,7 @@ extension BaseCreateEditItemViewModel {
                 self.isObsolete = itemContent.item.revision != updatedItem.item.revision
             } catch {
                 self.logger.error(error)
-                self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -311,16 +320,8 @@ extension BaseCreateEditItemViewModel {
 // MARK: - VaultSelectorViewModelDelegate
 
 extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
-    func vaultSelectorViewModelWantsToUpgrade() {
-        upgrade()
-    }
-
     func vaultSelectorViewModelDidSelect(vault: Vault) {
         selectedVault = vault
-    }
-
-    func vaultSelectorViewModelDidEncounter(error: Error) {
-        delegate?.createEditItemViewModelDidEncounter(error: error)
     }
 }
 

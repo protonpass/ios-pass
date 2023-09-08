@@ -20,13 +20,13 @@
 
 import Foundation
 
-public struct TelemetryEvent {
+public struct TelemetryEvent: Sendable {
     public let uuid: String
     public let time: TimeInterval
     public let type: TelemetryEventType
 }
 
-public enum TelemetryEventType {
+public enum TelemetryEventType: Sendable {
     case create(ItemContentType)
     case read(ItemContentType)
     case update(ItemContentType)

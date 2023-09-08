@@ -36,6 +36,7 @@ struct EditPrimaryVaultView: View {
                                       VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
                                                title: vault.vault.name,
                                                itemCount: vault.itemCount,
+                                               isShared: vault.vault.shared,
                                                isSelected: vault.vault.shareId == viewModel.primaryVault.shareId,
                                                height: 44)
                                   })
@@ -47,6 +48,7 @@ struct EditPrimaryVaultView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .disabled(viewModel.isLoading)
+            .showSpinner(viewModel.isLoading)
             .background(Color(uiColor: PassColor.backgroundWeak))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

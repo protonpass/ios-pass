@@ -20,22 +20,11 @@
 
 import Foundation
 
-public enum ShareRole: String, CaseIterable, Equatable {
+public enum ShareRole: String, CaseIterable, Equatable, Sendable {
     /// Administrator
     case admin = "1"
     /// Full write permission. They can do anything an admin can do except manage membership and invite users.
     case write = "2"
     /// Read only. Can only read the contents of a share. They can update the last used time for themselves.
     case read = "3"
-
-    public var role: String {
-        switch self {
-        case .admin:
-            return "admin"
-        case .write:
-            return "edit"
-        case .read:
-            return "read"
-        }
-    }
 }

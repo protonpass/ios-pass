@@ -22,7 +22,7 @@ import Core
 
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching
-public protocol ItemIdentifiable {
+public protocol ItemIdentifiable: Sendable {
     var shareId: String { get }
     var itemId: String { get }
 }

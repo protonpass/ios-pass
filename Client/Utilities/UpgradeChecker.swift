@@ -20,7 +20,7 @@
 
 import Core
 
-public struct AliasLimitation {
+public struct AliasLimitation: Sendable {
     public let count: Int
     public let limit: Int
 }

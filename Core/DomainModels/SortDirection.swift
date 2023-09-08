@@ -20,6 +20,6 @@
 
 import Foundation
 
-public enum SortDirection: CaseIterable {
+public enum SortDirection: CaseIterable, Sendable {
     case ascending, descending
 }

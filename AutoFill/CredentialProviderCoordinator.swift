@@ -21,6 +21,7 @@
 // swiftlint:disable file_length
 import AuthenticationServices
 import Client
+import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -46,10 +47,12 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let bannerManager: BannerManager
     private let container: NSPersistentContainer
     private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
+    private var cancellables = Set<AnyCancellable>()
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
@@ -99,6 +102,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         makeSymmetricKeyAndRepositories()
         sendAllEventsIfApplicable()
         AppearanceSettings.apply()
+        setUpRouting()
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -307,6 +311,46 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 }
 
 private extension CredentialProviderCoordinator {
+    func setUpRouting() {
+        router
+            .newSheetDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case .upgradeFlow:
+                    self.startUpgradeFlow()
+                case let .suffixView(suffixSelection):
+                    self.createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
+                case let .mailboxView(mailboxSelection, _):
+                    self.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
+
+        router
+            .globalElementDisplay
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .globalLoading(shouldShow):
+                    if shouldShow {
+                        self.showLoadingHud()
+                    } else {
+                        self.hideLoadingHud()
+                    }
+                case let .displayErrorBanner(error):
+                    self.bannerManager.displayTopErrorMessage(error)
+                }
+            }
+            .store(in: &cancellables)
+    }
+}
+
+private extension CredentialProviderCoordinator {
     // swiftlint:disable:next function_parameter_count
     func complete(quickTypeBar: Bool,
                   credential: ASPasswordCredential,
@@ -497,14 +541,6 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CredentialsViewModelDelegate
 
 extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
-    func credentialsViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func credentialsViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
     func credentialsViewModelWantsToCancel() {
         cancelAutoFill(reason: .userCanceled)
     }
@@ -575,10 +611,6 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         }
     }
 
-    func credentialsViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        itemContent: ItemContent,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -590,23 +622,11 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                  upgradeChecker: upgradeChecker,
                  serviceIdentifiers: serviceIdentifiers)
     }
-
-    func credentialsViewModelDidFail(_ error: Error) {
-        handle(error: error)
-    }
 }
 
 // MARK: - CreateEditItemViewModelDelegate
 
 extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToShowLoadingHud() {
-        showLoadingHud()
-    }
-
-    func createEditItemViewModelWantsToHideLoadingHud() {
-        hideLoadingHud()
-    }
-
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
                                                    delegate: VaultSelectorViewModelDelegate) {
         guard let vaultListUiModels, let rootViewController else { return }
@@ -644,10 +664,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem,
                                               type: ItemContentType) {
         switch type {
@@ -672,10 +688,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     // Not applicable
     func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {}
-
-    func createEditItemViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error.localizedDescription)
-    }
 }
 
 // MARK: - CreateEditLoginViewModelDelegate
@@ -686,7 +698,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
                                                       delegate: AliasCreationLiteInfoDelegate) {
         let viewModel = CreateAliasLiteViewModel(options: options, creationInfo: creationInfo)
         viewModel.aliasCreationDelegate = delegate
-        viewModel.delegate = self
         let view = CreateAliasLiteView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
@@ -697,20 +708,16 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
     }
-
-    // Not applicable
-    func createEditLoginViewModelWantsToOpenSettings() {}
 }
 
 // MARK: - CreateAliasLiteViewModelDelegate
 
-extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
+extension CredentialProviderCoordinator {
     func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
         guard let rootViewController else { return }
         let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
                                                   mode: .createAliasLite,
                                                   titleMode: .create)
-        viewModel.delegate = self
         let view = MailboxSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
@@ -725,7 +732,6 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
     func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
         guard let rootViewController else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
-        viewModel.delegate = self
         let view = SuffixSelectionView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
@@ -736,47 +742,11 @@ extension CredentialProviderCoordinator: CreateAliasLiteViewModelDelegate {
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }
-
-    func createAliasLiteViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
 }
 
-// MARK: - MailboxSelectionViewModelDelegate
-
-extension CredentialProviderCoordinator: MailboxSelectionViewModelDelegate {
-    func mailboxSelectionViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
-    func mailboxSelectionViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - SuffixSelectionViewModelDelegate
-
-extension CredentialProviderCoordinator: SuffixSelectionViewModelDelegate {
-    func suffixSelectionViewModelWantsToUpgrade() {
-        startUpgradeFlow()
-    }
-
-    func suffixSelectionViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error)
-    }
-}
-
-// MARK: - ExtensionSettingsViewModelDelegate
+// MARK: ExtensionSettingsViewModelDelegate
 
 extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
-    func extensionSettingsViewModelWantsToShowSpinner() {
-        showLoadingHud()
-    }
-
-    func extensionSettingsViewModelWantsToHideSpinner() {
-        hideLoadingHud()
-    }
-
     func extensionSettingsViewModelWantsToDismiss() {
         context.completeExtensionConfigurationRequest()
     }
@@ -784,10 +754,6 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     func extensionSettingsViewModelWantsToLogOut() {
         appData.userData = nil
         context.completeExtensionConfigurationRequest()
-    }
-
-    func extensionSettingsViewModelDidEncounter(error: Error) {
-        bannerManager.displayTopErrorMessage(error)
     }
 }
 

@@ -38,7 +38,7 @@ struct NoteEditSection<Field: Hashable>: View {
                 TextEditorWithPlaceholder(text: $note,
                                           focusedField: focusedField,
                                           field: field,
-                                          placeholder: "Add note")
+                                          placeholder: "Add note".localized)
                     .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

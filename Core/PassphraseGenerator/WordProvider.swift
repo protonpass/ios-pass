@@ -54,7 +54,7 @@ public struct DiceResult {
     }
 }
 
-public protocol WordProviderProtocol {
+public protocol WordProviderProtocol: Sendable {
     func word(for result: DiceResult) -> String
 }
 

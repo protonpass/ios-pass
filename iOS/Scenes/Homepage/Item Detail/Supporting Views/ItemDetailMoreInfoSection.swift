@@ -60,7 +60,7 @@ struct ItemDetailMoreInfoSection: View {
                 VStack(alignment: .leading) {
                     if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
                         HStack {
-                            title("Auto-filled:")
+                            title("Auto-filled:".localized)
                             Text(lastAutoFilledDate)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -68,7 +68,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
 
                     HStack {
-                        title("Modified:")
+                        title("Modified:".localized)
                         VStack(alignment: .leading, spacing: 4) {
                             Text(uiModel.modificationCount)
                                 .fontWeight(.semibold)
@@ -77,7 +77,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
 
                     HStack {
-                        title("Created:")
+                        title("Created:".localized)
                         Text(uiModel.creationDate)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -142,8 +142,8 @@ private struct ItemDetailMoreInfoSectionUIModel {
             lastAutoFilledDate = nil
         }
 
-        modificationCount = "\(item.revision) time(s)"
-        modificationDate = "Last time, \(fullDateString(item.modifyTime))"
+        modificationCount = "%d time(s)".localized(item.revision)
+        modificationDate = "Last time, %@".localized(fullDateString(item.modifyTime))
         creationDate = fullDateString(item.createTime).capitalizingFirstLetter()
     }
 }

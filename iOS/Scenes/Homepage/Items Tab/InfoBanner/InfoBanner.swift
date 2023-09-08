@@ -42,41 +42,44 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         }
     }
 
+    // swiftlint:disable line_length
     var detail: InfoBannerDetail {
         switch self {
         case .trial:
-            // swiftlint:disable line_length
-            return .init(title: "Enjoy your free trial",
-                         description: "Check out all the exclusive features that are available to you for a limited time.",
+            return .init(title: "Enjoy your free trial".localized,
+                         description: "Check out all the exclusive features that are available to you for a limited time"
+                             .localized,
                          icon: nil,
-                         ctaTitle: "Learn more",
+                         ctaTitle: "Learn more".localized,
                          backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
                          foregroundColor: PassColor.textInvert.toColor)
-        // swiftlint:enable line_length
         case .autofill:
-            return .init(title: "Enjoy the magic of AutoFill",
-                         description: "One tap and⏤presto!⏤your username and password are filled in instantly.",
+            return .init(title: "Enjoy the magic of AutoFill".localized,
+                         description: "One tap and⏤presto!⏤your username and password are filled in instantly"
+                             .localized,
                          icon: PassIcon.infoBannerAutoFill,
-                         ctaTitle: "Turn on AutoFill",
+                         ctaTitle: "Turn on AutoFill".localized,
                          backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
                          foregroundColor: PassColor.textInvert.toColor)
 
         case .aliases:
-            return .init(title: "Use email aliases",
-                         description: "Protect your inbox against spams and phishings.",
+            return .init(title: "Use email aliases".localized,
+                         description: "Protect your inbox against spams and phishings".localized,
                          icon: PassIcon.infoBannerAliases,
                          ctaTitle: nil,
                          backgroundColor: PassColor.signalSuccess.toColor,
                          foregroundColor: PassColor.textInvert.toColor)
         case .invite:
-            return .init(title: "Shared vault invitation",
-                         description: "You’ve been invited to a vault. Tap here to see the invitation.",
+            return .init(title: "Shared vault invitation".localized,
+                         description: "You've been invited to a vault. Tap here to see the invitation.".localized,
                          icon: PassIcon.inviteBannerIcon,
                          ctaTitle: nil,
                          backgroundColor: PassColor.backgroundMedium.toColor,
                          foregroundColor: PassColor.textNorm.toColor)
         }
     }
+
+    // swiftlint:enable line_length
 
     var isInvite: Bool {
         if case .invite = self { return true }

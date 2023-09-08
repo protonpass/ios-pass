@@ -43,7 +43,7 @@ enum ItemTypeFilterOption: Equatable, Hashable {
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
         switch self {
         case .all:
-            return .init(icon: IconProvider.grid2, title: "All", count: itemCount.total)
+            return .init(icon: IconProvider.grid2, title: "All".localized, count: itemCount.total)
         case let .precise(type):
             return type.uiModel(from: itemCount)
         }

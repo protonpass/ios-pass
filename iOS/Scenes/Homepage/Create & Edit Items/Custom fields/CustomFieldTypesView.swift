@@ -64,11 +64,11 @@ extension CustomFieldType {
     var title: String {
         switch self {
         case .text:
-            return "Text"
+            return "Text".localized
         case .totp:
-            return "2FA secret (TOTP)"
+            return "2FA secret (TOTP)".localized
         case .hidden:
-            return "Hidden"
+            return "Hidden".localized
         }
     }
 

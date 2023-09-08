@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import SwiftUI
 import UIComponents
 
@@ -25,6 +26,7 @@ struct VaultRow<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
     let title: String
     let itemCount: Int
+    let isShared: Bool
     let isSelected: Bool
     var height: CGFloat = 70
 
@@ -40,7 +42,7 @@ struct VaultRow<Thumbnail: View>: View {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    Text("\(itemCount) items")
+                    Text("%d item(s)".localized(itemCount))
                         .font(.callout)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }
@@ -48,10 +50,20 @@ struct VaultRow<Thumbnail: View>: View {
 
             Spacer()
 
+            if isShared {
+                Image(uiImage: IconProvider.users)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(PassColor.textWeak.toColor)
+                    .frame(maxHeight: 20)
+            }
+
             if isSelected {
-                Label("", systemImage: "checkmark")
+                Image(uiImage: IconProvider.checkmark)
+                    .resizable()
+                    .scaledToFit()
                     .foregroundColor(Color(uiColor: PassColor.interactionNorm))
-                    .padding(.trailing)
+                    .frame(maxHeight: 20)
             }
         }
         .frame(maxWidth: .infinity)

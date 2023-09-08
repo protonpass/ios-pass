@@ -24,8 +24,6 @@ import Factory
 import ProtonCore_UIFoundations
 
 protocol ItemContextMenuHandlerDelegate: AnyObject {
-    func itemContextMenuHandlerWantsToShowSpinner()
-    func itemContextMenuHandlerWantsToHideSpinner()
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
     func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable)
     func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable)
@@ -36,6 +34,7 @@ final class ItemContextMenuHandler {
     private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemContextMenuHandlerDelegate?
 
@@ -62,9 +61,9 @@ extension ItemContextMenuHandler {
     func trash(_ item: ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemContextMenuHandlerWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.delegate?.itemContextMenuHandlerWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.trashItems([encryptedItem])
 
@@ -74,7 +73,7 @@ extension ItemContextMenuHandler {
                 }
 
                 self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.trashMessage,
-                                                                              dismissButtonTitle: "Undo",
+                                                                              dismissButtonTitle: "Undo".localized,
                                                                               onDismiss: undoBlock)
 
                 self.delegate?.itemContextMenuHandlerDidTrash(item: item)
@@ -88,9 +87,9 @@ extension ItemContextMenuHandler {
     func restore(_ item: ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemContextMenuHandlerWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.delegate?.itemContextMenuHandlerWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.untrashItems([encryptedItem])
                 self.clipboardManager.bannerManager?.displayBottomSuccessMessage(item.type.restoreMessage)
@@ -105,9 +104,9 @@ extension ItemContextMenuHandler {
     func deletePermanently(_ item: ItemTypeIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemContextMenuHandlerWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.delegate?.itemContextMenuHandlerWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.deleteMessage)
@@ -127,7 +126,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.username,
-                                               bannerMessage: "Username copied")
+                                               bannerMessage: "Username copied".localized)
                     self.logger.info("Copied username \(item.debugInformation)")
                 }
             } catch {
@@ -145,7 +144,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.password,
-                                               bannerMessage: "Password copied")
+                                               bannerMessage: "Password copied".localized)
                     self.logger.info("Copied Password \(item.debugInformation)")
                 }
             } catch {
@@ -163,7 +162,7 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 if let aliasEmail = encryptedItem.item.aliasEmail {
                     self.clipboardManager.copy(text: aliasEmail,
-                                               bannerMessage: "Alias address copied")
+                                               bannerMessage: "Alias address copied".localized)
                     self.logger.info("Copied alias address \(item.debugInformation)")
                 }
             } catch {

@@ -47,7 +47,6 @@ struct AcceptRejectInviteView: View {
             }
             .frame(width: geometry.size.width)
         }
-        .errorAlert(error: $viewModel.error)
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
         .background(PassColor.backgroundWeak.toColor)
@@ -101,12 +100,12 @@ private extension AcceptRejectInviteView {
 private extension AcceptRejectInviteView {
     var actionButtons: some View {
         VStack {
-            CapsuleTextButton(title: "Join shared vault",
+            CapsuleTextButton(title: "Join shared vault".localized,
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               action: viewModel.accept)
 
-            CapsuleTextButton(title: "Reject invitation",
+            CapsuleTextButton(title: "Reject invitation".localized,
                               titleColor: PassColor.interactionNormMajor1,
                               backgroundColor: PassColor.interactionNormMinor1,
                               action: viewModel.reject)
@@ -122,6 +121,8 @@ struct AcceptRejectInviteView_Previews: PreviewProvider {
 
 private extension UserInvite {
     var vaultsCountInfos: String {
-        "\(vaultData?.itemCount ?? 0) items • \(vaultData?.memberCount ?? 0) members"
+        let itemsCount = "%d item(s)".localized(vaultData?.itemCount ?? 0)
+        let membersCount = "%d member(s)".localized(vaultData?.memberCount ?? 0)
+        return "\(itemsCount) • \(membersCount)"
     }
 }

@@ -29,7 +29,7 @@ public enum ShareContent {
     case item // Not handled yet
 }
 
-public struct Share: Decodable, Swift.Hashable, Equatable {
+public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// ID of the share
     public let shareID: String
 
@@ -80,6 +80,10 @@ public struct Share: Decodable, Swift.Hashable, Equatable {
     public var shareType: TargetType {
         .init(rawValue: targetType) ?? .unknown
     }
+}
+
+extension Share: Identifiable {
+    public var id: String { shareID }
 }
 
 public extension Share {

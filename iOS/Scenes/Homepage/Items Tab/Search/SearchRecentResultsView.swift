@@ -32,7 +32,7 @@ struct SearchRecentResultsView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Saved searches")
+                Text("Recent searches")
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundColor(Color(uiColor: PassColor.textNorm)) +

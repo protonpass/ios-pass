@@ -86,7 +86,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
                 TextEditorWithPlaceholder(text: $title,
                                           focusedField: focusedField,
                                           field: field,
-                                          placeholder: "Untitled",
+                                          placeholder: "Untitled".localized,
                                           font: .title,
                                           fontWeight: .bold,
                                           onSubmit: onSubmit)

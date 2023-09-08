@@ -56,6 +56,7 @@ struct SettingsView: View {
                     .padding(.top)
             }
             .padding()
+            .showSpinner(viewModel.loading)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("Settings")
@@ -78,19 +79,21 @@ struct SettingsView: View {
 
     private var untitledSection: some View {
         VStack(spacing: 0) {
-            OptionRow(action: viewModel.editDefaultBrowser,
-                      title: "Default browser",
-                      height: .tall,
-                      content: {
-                          Text(viewModel.selectedBrowser.description)
-                              .foregroundColor(Color(uiColor: PassColor.textNorm))
-                      },
-                      trailing: { ChevronRight() })
+            if !ProcessInfo.processInfo.isiOSAppOnMac {
+                OptionRow(action: viewModel.editDefaultBrowser,
+                          title: "Default browser".localized,
+                          height: .tall,
+                          content: {
+                              Text(viewModel.selectedBrowser.description)
+                                  .foregroundColor(Color(uiColor: PassColor.textNorm))
+                          },
+                          trailing: { ChevronRight() })
 
-            PassSectionDivider()
+                PassSectionDivider()
+            }
 
             OptionRow(action: viewModel.editTheme,
-                      title: "Theme",
+                      title: "Theme".localized,
                       height: .tall,
                       content: {
                           Label(title: {
@@ -126,7 +129,7 @@ struct SettingsView: View {
 
             VStack(spacing: 0) {
                 OptionRow(action: viewModel.editClipboardExpiration,
-                          title: "Clear clipboard",
+                          title: "Clear clipboard".localized,
                           height: .tall,
                           content: {
                               Text(viewModel.selectedClipboardExpiration.description)
@@ -156,7 +159,7 @@ struct SettingsView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
-                      title: "Primary vault",
+                      title: "Primary vault".localized,
                       height: .tall,
                       content: { Text(vault.name).foregroundColor(Color(uiColor: PassColor.textNorm)) },
                       leading: { VaultThumbnail(vault: vault) },

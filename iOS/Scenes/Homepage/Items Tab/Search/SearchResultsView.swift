@@ -115,7 +115,9 @@ private extension SearchResultsView {
                 .font(.callout)
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" result(s)")
+                Text(" ")
+                .font(.callout) +
+                Text("%d search result(s)".localized(viewModel.results.numberOfItems))
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -173,14 +175,14 @@ private extension SearchResultsView {
 
     @ViewBuilder
     func mostRecentItemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
-        section(for: result.today, headerTitle: "Today")
-        section(for: result.yesterday, headerTitle: "Yesterday")
-        section(for: result.last7Days, headerTitle: "Last week")
-        section(for: result.last14Days, headerTitle: "Last two weeks")
-        section(for: result.last30Days, headerTitle: "Last 30 days")
-        section(for: result.last60Days, headerTitle: "Last 60 days")
-        section(for: result.last90Days, headerTitle: "Last 90 days")
-        section(for: result.others, headerTitle: "More than 90 days")
+        section(for: result.today, headerTitle: "Today".localized)
+        section(for: result.yesterday, headerTitle: "Yesterday".localized)
+        section(for: result.last7Days, headerTitle: "Last week".localized)
+        section(for: result.last14Days, headerTitle: "Last two weeks".localized)
+        section(for: result.last30Days, headerTitle: "Last 30 days".localized)
+        section(for: result.last60Days, headerTitle: "Last 60 days".localized)
+        section(for: result.last90Days, headerTitle: "Last 90 days".localized)
+        section(for: result.others, headerTitle: "More than 90 days".localized)
     }
 
     func alphabeticalItemList(_ result: AlphabeticalSortResult<ItemSearchResult>) -> some View {

@@ -20,21 +20,21 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
+import Client
 import Combine
 import Entities
 import Factory
 import Foundation
 import ProtonCore_Networking
 
-final class ManageSharedVaultViewModel: ObservableObject, Sendable {
+final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     let vault: Vault
     @Published private(set) var itemsNumber = 0
     @Published private(set) var users: [ShareUser] = []
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
+    @Published private(set) var expandedEmails: [String] = []
     @Published var userRole: ShareRole = .read
-    @Published var error: Error?
 
     private var currentSelectedUser: ShareUser?
 
@@ -50,6 +50,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
@@ -72,6 +73,10 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
         return user.email == email
     }
 
+    func isOwnerAndCurrentUser(with user: ShareUser) -> Bool {
+        vault.isOwner && isCurrentUser(with: user)
+    }
+
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
         fetchingTask?.cancel()
         fetchingTask = Task { @MainActor [weak self] in
@@ -89,7 +94,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 }
                 self.users = try await self.fetchVaultContent(for: vault)
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed to fetch the current share informations", error: error)
             }
         }
@@ -117,7 +122,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 self.fetchShareInformation()
                 self.syncEventLoop.forceSync()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed to revoke the invite \(inviteId)", error: error)
             }
         }
@@ -138,7 +143,7 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 self.fetchShareInformation()
                 self.syncEventLoop.forceSync()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed to revoke the share access \(userShareId)", error: error)
             }
         }
@@ -156,9 +161,19 @@ final class ManageSharedVaultViewModel: ObservableObject, Sendable {
                 try await self.sendInviteReminder(with: self.vault.shareId, and: inviteId)
                 self.fetchShareInformation()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed send invite reminder \(inviteId)", error: error)
             }
+        }
+    }
+
+    func isExpanded(email: String) -> Bool {
+        expandedEmails.contains(email)
+    }
+
+    func expand(email: String) {
+        if !expandedEmails.contains(email) {
+            expandedEmails.append(email)
         }
     }
 }
@@ -200,9 +215,13 @@ private extension ManageSharedVaultViewModel {
                                                    shareRole: role)
                 self.fetchShareInformation()
             } catch {
-                self.error = error
+                self.display(error: error)
                 self.logger.error(message: "Failed update user role with \(role)", error: error)
             }
         }
+    }
+
+    func display(error: Error) {
+        router.display(element: .displayErrorBanner(error))
     }
 }

@@ -1,0 +1,502 @@
+/* Slogan */
+"Secure password manager and more" = "Gestionnaire de mots de passe sécurisé et plus encore";
+
+/* Onboarding: Enable Proton Pass AutoFill in iOS Settings */
+"Open **Settings** app" = "Ouvrir **Réglages**";
+"Tap **Passwords**" = "Tapper **Mots de passe**";
+"Tap **Password Options**" = "Tapper **Options des mots de passe**";
+"Turn on **Autofill Passwords**" = "Activer **Préremplir les mots de passe**";
+"Select **Proton Pass**" = "Choisir **Proton Pass**";
+
+/* Onboarding: Titles of the steps */
+"Enjoy the magic of AutoFill" = "Profitez du confort du remplissage automatique";
+"Log in to apps instantly" = "Connectez-vous instantanément aux applications";
+"Protect your most sensitive data" = "Protégez vos données les plus sensibles";
+"Face ID enabled" = "Face ID activé";
+"Touch ID enabled" = "Touch ID activé";
+"Control what lands in your inbox" = "Gardez le contrôle sur ce qui arrive dans votre boite de réception";
+
+/* Onboarding: Descriptions of the steps */
+"Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours" = "Activer le remplissage automatique pour laisser Proton Pass remplir les informations de connexion pour vous ⏤ 10 secondes qui vous feront gagner des heures";
+"When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details" = "Lorsque vous vous connectez à un site ou à un service, appuyez sur l'icône Proton Pass pour remplir automatiquement vos informations de connexion";
+"Set Proton Pass to unlock with your face or fingerprint so only you have access" = "Configurer Proton Pass pour qu'il se déverrouille avec votre visage ou votre empreinte digitale afin que vous seul y ayez accès";
+"Now you can unlock Proton Pass only when you need it⏤quickly and securely" = "Vous pouvez désormais déverrouiller Proton Pass uniquement lorsque vous en avez besoin⏤rapidement et en toute sécurité";
+"Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." = "Arrêter de partager votre véritable adresse e-mail. Au lieu de cela, le cacher avec des alias de messagerie ⏤ une exclusivité Proton Pass.";
+
+/* Onboarding: Buttons title of the steps */
+"Go to Settings" = "Ouvrir Réglages";
+"Enable Touch ID" = "Activer Touch ID";
+"Enable Face ID" = "Activer Face ID";
+"Start using Proton Pass" = "Commencer à utiliser Proton Pass";
+"Next" = "Suivant";
+"Not now" = "Pas maintenant";
+
+/* Vault sharing: Short description for share permission */
+"admin" = "admin";
+"edit" = "modifier";
+"read" = "lire";
+"pending" = "en attente";
+
+/* Vault sharing: Title for roles */
+"Can View" = "Consulter";
+"Can Edit" = "Modifier";
+"Can Manage" = "Gérer";
+
+/* Vault sharing: Descriptions for role */
+"Can view items in this vault" = "Permet de consulter les éléments de ce coffre-fort";
+"Can create, edit, delete and export items in this vault" = "Permet de créer, modifier, supprimer et exporter des éléments dans ce coffre-fort";
+"Can grant and revoke access to this vault" = "Permet d'accorder et de révoquer l'accès à ce coffre-fort";
+
+/* Vault sharing: Enter invitee email address page */
+"Share with" = "Partager avec";
+"This user will receive an invitation to join your ‘%@’ vault" = "Cet utilisateur recevra une invitation à rejoindre votre coffre-fort ‘%@’";
+"Email address" = "Adresse e-mail";
+
+/* Vault sharing: Set permissions page title & description */
+"Set permissions" = "Définir les autorisations";
+"Select the level of access this user will gain when they join your ‘%@’ vault" = "Sélectionnez le niveau d'accès dont bénéficiera cet utilisateur en rejoignant votre coffre-fort \'%@\'";
+"Continue" = "Continuer";
+
+/* Vault sharing: Summary page before making the share request */
+"Share Vault" = "Partager le coffre-fort";
+"Summary" = "Résumé";
+"Vault" = "Coffre-fort";
+"User" = "Utilisateur";
+"Permissions" = "Autorisations";
+"Empty" = "Vide";
+"%@ vault" = "coffre-fort %@";
+"You are about to invite %@ into your %@. They will gain access to %@ and they will be able to %@ in this vault." = "Vous êtes sur le point d'inviter %@ dans votre %@. Ils auront accès à %@ et pourront %@ dans ce coffre-fort.";
+"only view items" = "voir uniquement des éléments";
+"create, edit, delete and export items" = "créer, modifier, supprimer et exporter des éléments";
+"grant and revoke access" = "accorder et révoquer l'accès";
+
+/* Profile tab */
+"Profile" = "Profil";
+"Items" = "Eléments";
+"Version %@" = "Version %@";
+"Upgrade" = "Changer d'abonnement";
+"Free trial" = "Essai gratuit";
+
+/* Profile tab: security section */
+"Security" = "Sécurité";
+"Unlock with" = "Déverrouiller avec";
+"No unlock" = "Aucun verrouillage";
+"PIN Code" = "Code PIN";
+"Face ID" = "Face ID";
+"Touch ID" = "Touch ID";
+"Please authenticate" = "Veuillez vous authentifier";
+"Automatic lock" = "Verrouillage automatique";
+"Immediately" = "Immédiatement";
+"After 1 minute" = "Après 1 minute";
+"After 2 minutes" = "Après 2 minutes";
+"After 5 minutes" = "Après 5 minutes";
+"After 10 minutes" = "Après 10 minutes";
+"After 1 hour" = "Après 1 heure";
+"After 4 hours" = "Après 4 heures";
+"Never" = "Jamais";
+"Use system passcode when Face ID fails" = "Utiliser le code d'accès du système en cas d'échec de Face ID";
+"Use system passcode when Touch ID fails" = "Utiliser le code d'accès du système en cas d'échec de Touch ID";
+"Set PIN code" = "Définir le code PIN";
+"Unlock the app with this code" = "Déverrouillez l'application avec ce code";
+"Enter PIN code" = "Saisissez le code PIN";
+"Repeat PIN code" = "Confirmez le code PIN";
+"Type your PIN again to confirm" = "Saisissez le code PIN pour confirmer";
+"PINs not matched" = "Les codes PIN ne correspondent pas";
+"PIN code set" = "Le code PIN est défini";
+"Change PIN code" = "Modifier le code PIN";
+"Show me how" = "Me montrer comment";
+"Enable AutoFill" = "Activer le remplissage automatique";
+"Follow these simple steps to get the best experience:" = "Suivez ces étapes simples pour obtenir la meilleure expérience :";
+"Open System Settings → Passwords → Password Options" = "Ouvrir Réglages Systèmes → Mots de passe → Options des mots de passe";
+"Turn on AutoFill Passwords and allow filling from Proton Pass" = "Activer Préremplir les mots de passe et autoriser le remplissage par Proton Pass";
+"Restart Proton Pass" = "Redémarrer Proton Pass";
+
+/* Profile tab: AutoFill settings */
+"AutoFill" = "Remplissage automatique";
+"AutoFill disabled" = "Remplissage automatique désactivé";
+"Open Settings" = "Ouvrir Réglages";
+"AutoFill on apps and websites by enabling Proton Pass AutoFill" = "Remplisser automatiquement sur les applications et les sites Web en activant Proton Pass remplissage automatique";
+"QuickType bar suggestions" = "Suggestions de barre QuickType";
+"Quickly pick a login item from suggestions above the keyboard" = "Choisir rapidement un élément d'identifiant parmi les suggestions au-dessus du clavier";
+"Copy 2FA code" = "Copier le code 2FA";
+
+/* Profile tab: Other sections */
+"Account" = "Compte";
+"Settings" = "Paramètres";
+"Privacy policy" = "Politique de confidentialité";
+"Terms of service" = "Conditions d'utilisation";
+"Help center" = "Aide & Support";
+"How to import to Proton Pass" = "Comment importer vers Proton Pass";
+"Feedback" = "Commentaires";
+
+/* Feedback channels */
+"Report a problem" = "Signaler un problème";
+"Write us on Reddit" = "Nous écrire sur Reddit";
+"Vote for new features" = "Voter pour de nouvelles fonctionnalités";
+
+/* Account page */
+"Username" = "Nom d'utilisateur";
+"Subscription plan" = "Abonnement";
+"Manage subscription" = "Gérer l'abonnement";
+"Sign out" = "Se déconnecter";
+"Delete account" = "Supprimer le compte";
+"This will permanently delete your Proton account and all of its data, including email, calendars and data stored in Drive. You will not be able to reactivate this account." = "Cela supprimera définitivement votre compte Proton et toutes ses données, y compris les e-mails, les calendriers et les données stockées dans Drive. Vous ne pourrez pas réactiver ce compte.";
+"You will be signed out" = "Vous serez déconnecté";
+"Yes, sign me out" = "Oui, me déconnecter";
+"Cancel" = "Annuler";
+
+/* Settings page */
+"Default browser" = "Navigateur par défaut";
+"This preference will fallback to Safari if the browser of choice is uninstalled" = "Cette préférence reviendra à Safari si le navigateur de votre choix est désinstallé";
+"Theme" = "Thème";
+"Light" = "Claire";
+"Dark" = "Sombre";
+"Match system" = "Correspondre au système";
+"Show website thumbnails" = "Afficher les vignettes du site Web";
+"Clipboard" = "Presse-papiers";
+"Clear clipboard" = "Vider le presse-papiers";
+"After 15 seconds" = "Après 15 secondes";
+"After 60 seconds" = "Après 60 secondes";
+"After 120 seconds" = "Après 120 secondes";
+"Share clipboard between devices" = "Partager le presse-papiers entre les appareils";
+"Vaults" = "Coffres-forts";
+"Primary vault" = "Coffre-fort principal";
+"You can not delete a primary vault" = "Vous ne pouvez supprimer le coffre-fort principal";
+"Primary vault updated" = "Coffre-fort principal mis à jour";
+"Logs" = "Journaux";
+"Application logs" = "Journaux de l'application";
+"AutoFill extension logs" = "Journaux de l'extension de remplissage automatique";
+"No logs" = "Aucun journal";
+"Clear all logs" = "Effacer tous les journaux";
+"All logs cleared" = "Tous les journaux effacés";
+"Share" = "Partager";
+"Application" = "Application";
+"Force synchronization" = "Forcer la synchronisation";
+"Force synchronization done" = "Forcer la synchronisation effectuée";
+"Download all your items again to make sure you are in sync" = "Télécharger à nouveau tous vos éléments pour vous assurer que vous êtes synchronisé";
+
+/* List of available item types */
+"Create" = "Créer";
+"Login" = "Identifiant";
+"Add login details for an app or site" = "Ajouter des informations d'identifiant pour une application ou un site";
+"Alias" = "Alias";
+"Get an email alias to use on new apps" = "Créer un alias d'adresse e-mail que vous utiliserez dans les nouvelles applications";
+"Note" = "Note";
+"Jot down a PIN, code, or note to self" = "Noter un code PIN, tout autre code ou une note à votre attention";
+"Credit card" = "Carte de crédit";
+"Securely store your payment information" = "Stocker vos informations de paiement de façon sécurisée";
+"Password" = "Mot de passe";
+"Generate a secure password" = "Générer un mot de passe sécurisé";
+
+/* Report problems page */
+"I want to report a problem with..." = "Je souhaite signaler un problème avec...";
+"Autosave" = "Sauvegarde automatique";
+"Aliases" = "Alias";
+"Syncing" = "Synchronisation";
+"Feature request" = "Demande de fonctionnalité";
+"Other" = "Autre";
+"What went wrong?" = "Qu'est-ce qui s'est mal passé ?";
+"Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." = "Veuillez décrire le problème de manière aussi détaillée que possible. S'il y a eu un message d'erreur, dites-nous ce qu'il dit.";
+"Send logs" = "Envoyer des journaux";
+"A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." = "Un journal est un type de fichier qui nous montre les actions que vous avez entreprises et qui ont conduit à une erreur. Nous ne les utiliserons que pour aider nos ingénieurs à corriger des bugs.";
+"Report successfully sent" = "Rapport envoyé avec succès";
+
+/* Item detail pages */
+"Edit" = "Modifier";
+"Move to another vault" = "Déplacer vers un autre coffre-fort";
+"Move to trash" = "Déplacer dans la corbeille";
+"Restore" = "Restaurer";
+"Delete permanently" = "Supprimer définitivement";
+"Delete permanently?" = "Supprimer définitivement ?";
+"You are going to delete the item irreversibly, are you sure?" = "Vous allez supprimer l’élément de manière irréversible, en êtes-vous sûr ?";
+"Delete" = "Supprimer";
+"More info" = "Plus d'informations";
+"Last time, %@" = "La dernière fois, %@";
+"Auto-filled:" = "Remplissage automatique :";
+"Modified:" = "Modification :";
+"Created:" = "Création :";
+"Confirm" = "Confirmer";
+"Undo" = "Annuler";
+
+/* Messages when items are created */
+"Login created" = "L'identifiant a été créé";
+"Alias created" = "L'alias a été créé";
+"Credit card created" = "La carte de crédit a été créée";
+"Note created" = "La note a été créée";
+
+/* Message when items are edited */
+"Login updated" = "L'identifiant a été mis à jour";
+"Alias updated" = "L'alias a été mis à jour";
+"Credit card updated" = "La carte de crédit a été mise à jour";
+"Note updated" = "La note a été mise à jour";
+
+/* Messages when items moved to trash */
+"Login moved to trash" = "L'identifiant a été déplacé dans la corbeille";
+"Alias \"%@\" will stop forwarding emails to your mailbox" = "L'alias \"%@\" cessera de transférer les messages vers votre messagerie";
+"Credit card moved to trash" = "La carte de crédit a été déplacée dans la corbeille";
+"Note moved to trash" = "La note a été déplacée dans la corbeille";
+
+/* Messages when items are restored */
+"Login restored" = "L'identifiant a été restauré";
+"Alias restored" = "L'alias a été restauré";
+"Credit card restored" = "La carte de crédit a été restaurée";
+"Note restored" = "La note a été restaurée";
+
+/* Messages when items are permanently deleted */
+"Login permanently deleted" = "L'identifiant a été définitivement supprimé";
+"Alias permanently deleted" = "L'alias a été définitivement supprimé";
+"Credit card permanently deleted" = "La carte de crédit a été définitivement supprimée";
+"Note permanently deleted" = "La note a été définitivement supprimée";
+
+/* Login item detail page */
+"Username or email address" = "Nom d'utilisateur ou adresse e-mail";
+"Website" = "Site internet";
+"2FA token (TOTP)" = "Jeton A2F (TOTP/mot de passe à usage unique basé sur le temps)";
+"Reveal" = "Afficher";
+"Conceal" = "Masquer";
+"Copy" = "Copier";
+"Show large" = "Afficher en grand";
+"Password copied" = "Le mot de passe a été copié";
+"TOTP copied" = "Le mot de passe à usage unique basé sur le temps (TOTP) a été copié";
+"Open" = "Ouvrir";
+"Username copied" = "Le nom d'utilisateur a été copié";
+"Website copied" = "Le site internet a été copié";
+"Hidden text copied" = "Texte masqué a été copié";
+"View alias" = "Afficher l'alias";
+"View" = "Afficher";
+"View and edit details for this alias on the separate alias page." = "Afficher et modifier les détails de cet alias sur la page d'alias distincte.";
+"Invalid TOTP URI" = "URI TOTP invalide";
+
+/* Alias item detail page */
+"Alias address" = "Adresse de l'alias";
+"Forwarding to" = "Transfert vers";
+"Alias copied" = "L'alias a été copié";
+"Mailbox copied" = "L'adresse e-mail a été copié";
+
+/* Credit card item detail page */
+"Cardholder name" = "Nom du titulaire de la carte";
+"Card number" = "Numéro de la carte";
+"Verification number" = "Numéro de vérification";
+"Expires on" = "Expire le";
+"PIN number" = "Code PIN";
+"Cardholder name copied" = "Nom du titulaire de la carte a été copié";
+"Card number copied" = "Numéro de la carte a été copié";
+"Verification number copied" = "Numéro de vérification a été copié";
+
+/* Note item detail page */
+"Empty note" = "Note vide";
+
+/* Password generator */
+"Generate password" = "Générer un mot de passe";
+"Type" = "Type";
+"Random Password" = "Mot de passe aléatoire";
+"Memorable Password" = "Mot de passe facile à mémoriser";
+"Capitalise" = "Majuscules";
+"Advanced options" = "Options avancées";
+"Copy and close" = "Copier et fermer";
+"Word separator" = "Séparateur de mots";
+"Hyphens" = "Tirets";
+"Spaces" = "Espaces";
+"Periods" = "Points";
+"Commas" = "Virgules";
+"Underscores" = "Tirets bas";
+"Numbers" = "Chiffres";
+"Numbers and Symbols" = "Chiffres et symboles";
+"Include numbers" = "Ajouter des chiffres";
+"%d characters" = "%d caractères";
+"Special characters" = "Caractères spéciaux";
+"Capital letters" = "Lettres majuscules";
+
+/* Item create/edit page */
+"Save" = "Sauvegarder";
+"Select a vault" = "Sélectionner un coffre-fort";
+"Title" = "Titre";
+"Untitled" = "Sans titre";
+"Add note" = "Ajouter une note";
+"Add more" = "Ajouter";
+"Upgrade to add custom fields" = "Changer d'abonnement pour ajouter des champs personnalisés";
+"Discard changes?" = "Annuler les modifications ?";
+"You have unsaved changes, are you sure you want to discard them?" = "Des modifications n'ont pas été enregistrées. Voulez-vous vraiment les annuler ?";
+"Discard" = "Annuler";
+"Keep Editing" = "Continuer à modifier";
+
+/* Custom fields */
+"Text" = "Texte";
+"2FA secret (TOTP)" = "Clé secrète A2F (TOTP)";
+"Hidden" = "Masqué";
+"Custom field title" = "Titre du champ personnalisé";
+"Enter a title for your custom field" = "Saisissez un titre pour votre champ personnalisé";
+"Title of the custom field" = "Titre du champ personnalisé";
+"Edit title" = "Modifier le titre";
+"Remove field" = "Supprimer le champ";
+"Enter new title for « %@ »" = "Saisissez un nouveau titre pour « %@ »";
+"New title" = "Nouveau titre";
+
+/* Login item create/edit page */
+"Add username or email address" = "Ajouter un nom d'utilisateur ou une adresse e-mail";
+"Add password" = "Ajouter un mot de passe";
+"Add 2FA secret" = "Ajouter une clé secrète A2F";
+"2FA limit reached" = "La limite de l'A2F est atteinte";
+"Hide my email" = "Hide-my-email";
+"Use %@" = "Utiliser %@";
+"Paste from clipboard" = "Coller depuis le presse-papiers";
+"Open camera" = "Ouvrir la caméra";
+"Add" = "Ajouter";
+"Edit alias" = "Modifier l'alias";
+"Remove alias" = "Retirer l'alias";
+"Delete alias" = "Supprimer l'alias";
+
+/* Alias item create/edit page */
+"You are about to create" = "Vous êtes sur le point de créer";
+"Forward to" = "Transférer vers";
+"Forwarding to" = "Transfert vers";
+"Prefix" = "Préfixe";
+"Add a prefix" = "Ajouter un préfixe";
+"Suffix" = "Suffixe";
+"Close" = "Fermer";
+"Prefix can not be empty" = "Le préfixe ne peut être vide";
+"Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)" = "Le préfixe doit contenir uniquement des caractères alphanumériques minuscules (a-z, 0-9), des points (.), des traits d'union (-) et des traits de soulignement (_)";
+"Prefix can not contain 2 consecutive dots (..)" = "Le préfixe ne peut contenir 2 points consécutifs (..)";
+"Alias can not contain 2 consecutive dots (..)" = "L'alias ne peut contenir 2 points consécutifs (..)";
+"Alias of login item \"%@\"" = "L'alias de l'élément d'identifiant \"%@\"";
+"Create & AutoFill" = "Créer & remplir";
+"You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription." = "Vous avez atteint le nombre maximum d'alias que vous pouvez créer. Changez d'abonnement pour créer un nombre illimité d'alias.";
+
+/* Credit card item create/edit page */
+"Full name" = "Nom complet";
+"MM / YYYY" = "MM / AAAA";
+
+/* Search page */
+"Find an alias, login, or note" = "Rechercher un alias, un identifiant ou une note";
+"Search in all vaults..." = "Rechercher dans tous les coffres-forts...";
+"Search in all vaults" = "Rechercher dans tous les coffres-forts";
+"Search in %@..." = "Rechercher dans %@...";
+"Search in Trash..." = "Rechercher dans la corbeille...";
+"Couldn't find « %@ »" = "Aucun résultat n'a été trouvé pour « %@ »";
+"Couldn't find « %@ » in %@" = "Aucun résultat n'a été trouvé pour « %@ » dans %@";
+"Couldn't find « %@ » in Trash" = "Aucun résultat n'a été trouvé pour « %@ » dans la corbeille";
+"Try searching using different spelling or keywords" = "Essayez d'effectuer une recherche en utilisant une orthographe ou des mots-clés différents";
+"All" = "Tous";
+"Recent searches" = "Recherches récentes";
+"Clear" = "Effacer";
+
+/* Items sorting/filtering */
+"Sort by" = "Trier par";
+"Most recent" = "Le plus récent";
+"Title (A-Z)" = "Titre (A-Z)";
+"Title (Z-A)" = "Titre (Z-A)";
+"Newest to oldest" = "Du plus récent au plus ancien";
+"Oldest to newest" = "Du plus ancien au plus récent";
+"Today" = "Aujourd'hui";
+"Yesterday" = "Hier";
+"Last week" = "La semaine dernière";
+"Last two weeks" = "Les 2 dernières semaines";
+"Last 30 days" = "Les 30 derniers jours";
+"Last 60 days" = "Les 60 derniers jours";
+"Last 90 days" = "Les 90 derniers jours";
+"More than 90 days" = "Plus de 90 jours";
+"Filter by" = "Filtrer par";
+"Logins" = "Identifiants";
+"Aliases" = "Alias";
+"Notes" = "Notes";
+"Credit cards" = "Cartes de crédit";
+
+/* Context menu options for items */
+"Copy username" = "Copier le nom d'utilisateur";
+"Copy password" = "Copier le mot de passe";
+"Copy alias address" = "Copier l'adresse e-mail";
+"Alias address copied" = "L'adresse e-mail a été copiée";
+
+/* Vault list */
+"All vaults" = "Tous les coffres-forts";
+"Trash" = "Corbeille";
+"Manage access" = "Gérer l'accès";
+"View members" = "Voir les membres";
+"Delete vault" = "Supprimer le coffre-fort";
+"Delete vault?" = "Supprimer le coffre-fort ?";
+"This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion." = "Ceci supprimera définitivement le coffre-fort « %@ » et tout son contenu. Saisissez le nom du coffre-fort pour confirmer la suppression.";
+"Vault name" = "Nom du coffre-fort";
+"Vault « %@ » deleted" = "Le coffre-fort « %@ » a été supprimé";
+"Leave vault" = "Quitter le coffre-fort";
+"Restore all items" = "Restaurer tous les éléments";
+"Empty trash" = "Vider la corbeille";
+"All items restored" = "Tous les éléments ont été restaurés";
+"All items permanently deleted" = "Tous les éléments sont supprimés définitivement";
+"All items in trash will be permanently deleted" = "Tous les éléments dans la corbeille seront supprimés définitivement";
+"Aliases won't be shared" = "Les alias ne seront pas partagés";
+"Create vault" = "Créer un coffre-fort";
+"Vault created" = "Le coffre-fort a été créé";
+"Vault updated" = "Le coffre-fort a été mis à jour";
+"You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription." = "Vous avez atteint le nombre maximum de coffres-forts que vous pouvez créer. Changez d'abonnement pour créer un nombre illimité de coffres-forts.";
+"To interact with your other vaults, you need to upgrade your account." = "Pour interagir avec vos autres coffres-forts, vous devez changer d'abonnement.";
+
+/* AutoFill extension */
+"Create login" = "Créer un identifiant";
+"Search in primary vault" = "Rechercher le coffre-fort principal";
+"Search in all vaults" = "Rechercher dans tous les coffres-forts";
+"Suggestions for %@" = "Suggestions pour %@";
+"No suggestions" = "Aucune suggestion";
+"Other items" = "Autres éléments";
+"Results" = "Résultats";
+"Associate URL?" = "Associer l'URL ?";
+"Would you want to associate « %@ » with « %@ »?" = "Souhaitez-vous associer « %@ » à « %@ » ?";
+"Associate and autofill" = "Associer et remplir";
+"Just autofill" = "Remplir seulement";
+"Your plan only allows to use items in your primary vault for autofill purposes." = "Votre abonnement vous permet d'utiliser uniquement les éléments de votre coffre-fort principal pour la fonction de remplissage automatique.";
+"Upgrade now" = "Changer d'abonnement";
+"Please log in in order to use Proton Pass AutoFill extension" = "Veuillez vous connecter pour utiliser l'extension de remplissage automatique Proton Pass";
+"You currently have no login items" = "Vous n'avez actuellement aucun élément d'identifiant";
+
+/* Info banners */
+"Enjoy your free trial" = "Profitez de votre essai gratuit";
+"Check out all the exclusive features that are available to you for a limited time" = "Découvrez toutes les fonctionnalités exclusives qui vous sont proposées pour une durée limitée";
+"Learn more" = "En savoir plus";
+"Enjoy the magic of AutoFill" = "Profitez du confort du remplissage automatique";
+"One tap and⏤presto!⏤your username and password are filled in instantly" = "Il vous suffit d'appuyer pour que votre nom d'utilisateur et votre mot de passe soient immédiatement renseignés";
+"Turn on AutoFill" = "Activer le remplissage automatique";
+"Use email aliases" = "Utilisez des alias";
+"Protect your inbox against spams and phishings" = "Protégez votre boîte de réception contre les spams et le phishing";
+"Shared vault invitation" = "Invitation au coffre-fort partagé";
+"You've been invited to a vault. Tap here to see the invitation." = "Vous avez été invité dans un coffre-fort. Appuyez ici pour voir l'invitation.";
+
+/* Vault sharing: accept/reject invitations */
+"Invitation from" = "Invitation de";
+"Join shared vault" = "Rejoindre le coffre-fort partagé";
+"Reject invitation" = "Rejeter l'invitation";
+
+/* Vault sharing: manage members */
+"Transfer ownership" = "Transfert de propriété";
+"Remove access" = "Supprimer l'accès";
+"Share with more people" = "Partager avec plus de personnes";
+"You" = "Vous";
+
+/* Empty vault page */
+"Your vault is empty" = "Votre coffre-fort est vide";
+"Let's get started by creating your first item" = "Commencez par créer votre premier élément";
+"Create a login" = "Créer un identifiant";
+"Create a Hide My Email alias" = "Créer un alias « Hide My Email »";
+"Create a credit card" = "Créer une carte de crédit";
+"Create a note" = "Créer une note";
+
+/* Empty trash page */
+"Trash empty" = "La corbeille est vide";
+"Items moved to trash appear here" = "Les éléments déplacés dans la corbeille apparaissent ici";
+
+/* No camera permission page */
+"Camera permission required for this feature to be available" = "L'autorisation de l'appareil photo est nécessaire pour que cette fonction soit disponible";
+"Please allow camera access in Settings" = "Veuillez autoriser l'accès à l'appareil photo dans Réglages";
+
+/* Trial page */
+"For next-level password management:" = "Tout ce qu'il vous faut pour gérer vos mots de passe de façon optimale :";
+"20 vaults" = "20 coffres-forts";
+"Unlimited email aliases" = "Nombre illimité d'alias";
+"Integrated 2FA authenticator" = "Authentification à deux facteurs (A2F) intégrée";
+"Custom fields" = "Champs personnalisés";
+"Upgrade to keep these features" = "Changer d'abonnement pour garder ces fonctionnalités";
+
+/* Local authentication */
+"This is your last attempt. You will be logged out after failing to authenticate again." = "C'est votre dernière tentative. Vous serez déconnecté après avoir échoué à vous authentifier à nouveau.";
+"Try again" = "Essayer à nouveau";
+"Unlock" = "Déverrouiller";
+"Enter your PIN code" = "Entrez votre code PIN";
+"Incorrect PIN code." = "Code PIN incorrect.";

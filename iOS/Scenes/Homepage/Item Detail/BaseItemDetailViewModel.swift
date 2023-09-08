@@ -27,20 +27,15 @@ import UIKit
 let kItemDetailSectionPadding: CGFloat = 16
 
 protocol ItemDetailViewModelDelegate: AnyObject {
-    func itemDetailViewModelWantsToShowSpinner()
-    func itemDetailViewModelWantsToHideSpinner()
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
-    func itemDetailViewModelWantsToOpen(urlString: String)
     func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
-    func itemDetailViewModelWantsToUpgrade()
     func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
     func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
-    func itemDetailViewModelDidEncounter(error: Error)
 }
 
 class BaseItemDetailViewModel: ObservableObject {
@@ -60,6 +55,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemDetailViewModelDelegate?
 
@@ -112,7 +108,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.bindValues()
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -132,10 +128,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func moveToTrash() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Trashing \(self.itemContent.debugInformation)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
                 try await self.itemRepository.trashItems([encryptedItem])
@@ -143,7 +139,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Trashed \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -151,10 +147,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func restore() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Restoring \(self.itemContent.debugInformation)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -163,7 +159,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Restored \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -171,10 +167,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func permanentlyDelete() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -183,13 +179,13 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
     func upgrade() {
-        delegate?.itemDetailViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 }
 
@@ -203,7 +199,7 @@ private extension BaseItemDetailViewModel {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -224,16 +220,16 @@ private extension BaseItemDetailViewModel {
     func doMove(to vault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.delegate?.itemDetailViewModelWantsToHideSpinner() }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.logger.trace("Moving \(self.itemContent.debugInformation) to share \(vault.shareId)")
-                self.delegate?.itemDetailViewModelWantsToShowSpinner()
+                self.router.display(element: .globalLoading(shouldShow: true))
                 try await self.itemRepository.move(item: self.itemContent, toShareId: vault.shareId)
                 self.logger.trace("Moved \(self.itemContent.debugInformation) to share \(vault.shareId)")
                 self.delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
             } catch {
                 self.logger.error(error)
-                self.delegate?.itemDetailViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -243,7 +239,7 @@ private extension BaseItemDetailViewModel {
 
 extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
     func moveVaultListViewModelWantsToUpgrade() {
-        delegate?.itemDetailViewModelWantsToUpgrade()
+        router.present(for: .upgradeFlow)
     }
 
     func moveVaultListViewModelDidPick(vault: Vault) {
@@ -251,6 +247,6 @@ extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
     }
 
     func moveVaultListViewModelDidEncounter(error: Error) {
-        delegate?.itemDetailViewModelDidEncounter(error: error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
