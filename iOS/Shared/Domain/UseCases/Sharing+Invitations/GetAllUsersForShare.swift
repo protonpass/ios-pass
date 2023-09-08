@@ -67,6 +67,13 @@ struct ShareUser: Equatable, Hashable {
         }
         return "pending".localized
     }
+
+    var isAdmin: Bool {
+        guard let shareRole, shareRole.role == "admin" else {
+            return false
+        }
+        return true
+    }
 }
 
 extension UserShareInfos {
