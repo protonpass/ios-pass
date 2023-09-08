@@ -28,7 +28,7 @@ import Foundation
 import ProtonCoreNetworking
 
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
-    let vault: Vault
+    private(set) var vault: Vault
     @Published private(set) var itemsNumber = 0
     @Published private(set) var users: [ShareUser] = []
     @Published private(set) var fetching = false
@@ -39,6 +39,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private var currentSelectedUser: ShareUser?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
+    private let getVaultInfos = resolve(\UseCasesContainer.getVaultInfos)
     private let getUsersLinkedToShare: GetUsersLinkedToShareUseCase = resolve(\UseCasesContainer
         .getUsersLinkedToShare)
     private let getAllUsersForShare = resolve(\UseCasesContainer.getAllUsersForShare)
@@ -47,6 +48,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let sendInviteReminder = resolve(\UseCasesContainer.sendInviteReminder)
     private let updateUserShareRole = resolve(\UseCasesContainer.updateUserShareRole)
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
+    private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
@@ -54,7 +56,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
 
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
-
     private var cancellables = Set<AnyCancellable>()
 
     init(vault: Vault) {
@@ -88,7 +89,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             }
             defer { self.fetching = false }
             do {
-                self.itemsNumber = self.getVaultItemCount(for: self.vault)
+                self.itemsNumber = self.getVaultItemCount(for: vault)
                 if Task.isCancelled {
                     return
                 }
@@ -167,6 +168,28 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         }
     }
 
+    func transferOwnership(to user: ShareUser) {
+        guard let userSharedId = user.shareID else {
+            return
+        }
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            self.loading = true
+            defer { self.loading = false }
+            do {
+                try await self.transferVaultOwnership(newOwnerID: userSharedId, shareId: self.vault.shareId)
+                self.syncEventLoop.forceSync()
+            } catch {
+                self.display(error: error)
+                self.logger
+                    .error(message: "Failed to transfer ownership of vault \(self.vault.shareId) to \(userSharedId)",
+                           error: error)
+            }
+        }
+    }
+
     func isExpanded(email: String) -> Bool {
         expandedEmails.contains(email)
     }
@@ -190,6 +213,18 @@ private extension ManageSharedVaultViewModel {
                     return
                 }
                 self.updateRole(userSharedId: userSharedId, role: role)
+            }
+            .store(in: &cancellables)
+
+        getVaultInfos(for: vault.id)
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] vaultInfos in
+                guard let self, vaultInfos != self.vault else {
+                    return
+                }
+                self.vault = vaultInfos
+                self.fetchShareInformation()
             }
             .store(in: &cancellables)
     }

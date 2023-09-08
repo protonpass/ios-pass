@@ -157,7 +157,7 @@ private extension ManageSharedVaultView {
             }
 
             Spacer()
-            if viewModel.vault.isAdmin {
+            if viewModel.vault.isAdmin, !viewModel.isOwnerAndCurrentUser(with: user) {
                 vaultTrailingView(user: user)
                     .onTapGesture {
                         viewModel.setCurrentRole(for: user)
@@ -205,8 +205,10 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            if viewModel.vault.isOwner, !user.isPending {
-                Button(action: {}, label: {
+            if viewModel.vault.isOwner, !user.isPending, user.isAdmin, !isOwnerAndCurrentUser {
+                Button(action: {
+                    viewModel.transferOwnership(to: user)
+                }, label: {
                     Label(title: {
                         Text("Transfer ownership")
                     }, icon: {
