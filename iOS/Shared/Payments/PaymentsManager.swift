@@ -63,7 +63,7 @@ final class PaymentsManager {
 
     private func initializePaymentsStack() {
         switch payments.planService {
-        case .left(let service):
+        case let .left(service):
             service.currentSubscriptionChangeDelegate = self
         default:
             break

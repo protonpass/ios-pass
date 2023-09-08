@@ -80,7 +80,7 @@ extension LocalItemDatasourceTests {
         }
 
         // Then
-        let item = await try await XCTUnwrapAsync(sut.getItem(shareId: givenShareId,
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
                                                               itemId: givenItemId))
         XCTAssertEqual(item, givenInsertedItem)
     }
@@ -100,7 +100,7 @@ extension LocalItemDatasourceTests {
         }
 
         // Then
-        let item = await try await XCTUnwrapAsync(sut.getAliasItem(email: givenAliasEmail))
+        let item = try await XCTUnwrapAsync(await sut.getAliasItem(email: givenAliasEmail))
         XCTAssertEqual(item, givenInsertedItem)
     }
 
@@ -159,7 +159,7 @@ extension LocalItemDatasourceTests {
         let itemCount = try await sut.getItemCount(shareId: givenShareId)
         XCTAssertEqual(itemCount, 1)
 
-        let item = await try await XCTUnwrapAsync(sut.getItem(shareId: givenShareId,
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
                                                               itemId: givenItemId))
         XCTAssertEqual(item, updatedItem)
     }
@@ -181,7 +181,7 @@ extension LocalItemDatasourceTests {
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
 
         // Then
-        let item = await try await XCTUnwrapAsync(sut.getItem(shareId: givenShareId,
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
                                                               itemId: givenItemId))
         XCTAssertEqual(item.item.itemState, .trashed)
     }
@@ -203,7 +203,7 @@ extension LocalItemDatasourceTests {
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
 
         // Then
-        let item = await try await XCTUnwrapAsync(sut.getItem(shareId: givenShareId,
+        let item = try await XCTUnwrapAsync(await sut.getItem(shareId: givenShareId,
                                                               itemId: givenItemId))
         XCTAssertEqual(item.item.itemState, .active)
     }
