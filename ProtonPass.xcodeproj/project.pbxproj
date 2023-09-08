@@ -2577,7 +2577,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "scripts/public/swiftformat.sh\n";
+			shellScript = "#scripts/public/swiftformat.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
