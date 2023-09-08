@@ -23,27 +23,46 @@ import Combine
 import Entities
 import SwiftUI
 
-enum CoordinatorRouterDestination: Hashable {}
+enum RouterDestination: Hashable {
+    case urlPage(urlString: String)
+    case openSettings
+}
 
-enum CoordinatorSheetDestination: Equatable, Hashable {
+enum SheetDestination: Equatable, Hashable {
     case sharingFlow
     ///  The boolean helps to know if we should dismiss the previous sheet or not as the route if used in different
     /// context
     case manageShareVault(Vault, dismissBeforeShowing: Bool)
     case filterItems
     case acceptRejectInvite(UserInvite)
+    case vaultCreateEdit(vault: Vault?)
+    case upgradeFlow
+    case logView(module: PassModule)
+    case suffixView(SuffixSelection)
+    case mailboxView(MailboxSelection, MailboxSection.Mode)
+    case autoFillInstructions
+}
+
+enum UIElementDisplay {
+    case globalLoading(shouldShow: Bool)
+    case displayErrorBanner(Error)
 }
 
 final class MainUIKitSwiftUIRouter {
-    let newPresentationDestination: PassthroughSubject<CoordinatorRouterDestination, Never> = .init()
-    let newSheetDestination: PassthroughSubject<CoordinatorSheetDestination, Never> = .init()
+    let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
+    let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
+    let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
 
-    func navigate(to destination: CoordinatorRouterDestination) {
+    func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
     }
 
-    func presentSheet(for destination: CoordinatorSheetDestination) {
+    func present(for destination: SheetDestination) {
         newSheetDestination.send(destination)
+    }
+
+    func display(element: UIElementDisplay) {
+        globalElementDisplay.send(element)
     }
 }
 

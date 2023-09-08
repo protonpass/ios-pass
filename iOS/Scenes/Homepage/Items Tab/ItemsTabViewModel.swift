@@ -26,8 +26,6 @@ import Factory
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
-    func itemsTabViewModelWantsToShowSpinner()
-    func itemsTabViewModelWantsToHideSpinner()
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
@@ -35,7 +33,6 @@ protocol ItemsTabViewModelDelegate: AnyObject {
                                                      delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
-    func itemsTabViewModelDidEncounter(error: Error)
 }
 
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
@@ -64,7 +61,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
-    private let router = resolve(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemsTabViewModelDelegate?
     private var inviteRefreshTask: Task<Void, Never>?
@@ -118,36 +115,29 @@ private extension ItemsTabViewModel {
         do {
             for banner in InfoBanner.allCases {
                 if preferences.dismissedBannerIds.contains(where: { $0 == banner.id }) {
-                    break
+                    continue
                 }
 
+                var shouldShow = true
                 switch banner {
                 case .trial:
-                    // If not in trial, consider dismissed
                     let plan = try await passPlanRepository.getPlan()
-                    switch plan.planType {
-                    case .trial:
-                        break
-                    default:
-                        break
-                    }
+                    shouldShow = plan.isInTrial
 
                 case .autofill:
-                    // We don't show the banner if AutoFill extension is enabled
-                    // consider dismissed in this case
-                    if await credentialManager.isAutoFillEnabled {
-                        // dismissed = true
-                        break
-                    }
+                    shouldShow = await !credentialManager.isAutoFillEnabled
 
                 default:
                     break
                 }
-                banners.append(banner)
+
+                if shouldShow {
+                    banners.append(banner)
+                }
             }
         } catch {
             logger.error(error)
-            delegate?.itemsTabViewModelDidEncounter(error: error)
+            router.display(element: .displayErrorBanner(error))
         }
     }
 }
@@ -179,7 +169,7 @@ extension ItemsTabViewModel {
             UIApplication.shared.openPasswordSettings()
         case let .invite(invites: invites):
             if let firstInvite = invites.first {
-                router.presentSheet(for: .acceptRejectInvite(firstInvite))
+                router.present(for: .acceptRejectInvite(firstInvite))
             }
         default:
             break
@@ -209,13 +199,13 @@ extension ItemsTabViewModel {
                     self.delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                self.delegate?.itemsTabViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
     func showFilterOptions() {
-        router.presentSheet(for: .filterItems)
+        router.present(for: .filterItems)
     }
 
     func permanentlyDelete() {

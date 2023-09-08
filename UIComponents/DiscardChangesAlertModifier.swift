@@ -35,10 +35,10 @@ public struct DiscardChangesAlertModifier: ViewModifier {
                    isPresented: $isPresented,
                    actions: {
                        Button("Keep Editing", role: .cancel, action: {})
-                       Button("Discard Changes", role: .destructive, action: onDiscard)
+                       Button("Discard", role: .destructive, action: onDiscard)
                    },
                    message: {
-                       Text("You will lose all unsaved changes")
+                       Text("You have unsaved changes, are you sure you want to discard them?")
                    })
     }
 }

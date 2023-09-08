@@ -84,6 +84,7 @@ private struct TrashItemsView: View {
                                  },
                                  title: vault.name,
                                  itemCount: uiModel.itemCount,
+                                 isShared: uiModel.vault.shared,
                                  isSelected: false,
                                  height: 44)
                     })

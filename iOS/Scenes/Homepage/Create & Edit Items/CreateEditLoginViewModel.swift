@@ -32,14 +32,12 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
                                                       delegate: AliasCreationLiteInfoDelegate)
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: GeneratePasswordViewModelDelegate)
-    func createEditLoginViewModelWantsToOpenSettings()
 }
 
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     @Published private(set) var canAddOrEdit2FAURI = true
-    @Published private(set) var isAlias = false // `Username` is an alias or a custom one
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
@@ -50,17 +48,20 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     @Published var isShowingNoCameraPermissionView = false
     @Published var isShowingCodeScanner = false
+    @Published private(set) var loading = false
 
     /// Proton account email address
     let emailAddress: String
 
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     /// The original associated alias item
     private var aliasItem: SymmetricallyEncryptedItem?
 
     private var aliasOptions: AliasOptions?
-    private(set) var aliasCreationLiteInfo: AliasCreationLiteInfo?
+    @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
+    var isAlias: Bool { aliasCreationLiteInfo != nil }
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
@@ -109,7 +110,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 if self.aliasOptions != nil {
                     self.aliasOptions = nil
                     self.aliasCreationLiteInfo = nil
-                    self.isAlias = false
                     self.username = ""
                 }
             }
@@ -128,17 +128,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     urls = data.urls.map { .init(value: $0) }
                 }
                 note = itemContent.note
-
-                Task { @MainActor [weak self] in
-                    guard let self else { return }
-                    do {
-                        self.aliasItem = try await self.itemRepository.getAliasItem(email: username)
-                        self.isAlias = self.aliasItem != nil
-                    } catch {
-                        self.logger.error(error)
-                        self.delegate?.createEditItemViewModelDidEncounter(error: error)
-                    }
-                }
             }
 
         case let .create(_, type):
@@ -153,7 +142,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     self.canAddOrEdit2FAURI = try await self.upgradeChecker.canHaveMoreLoginsWith2FA()
                 } catch {
                     self.logger.error(error)
-                    self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                    self.router.display(element: .displayErrorBanner(error))
                 }
             }
         }
@@ -167,7 +156,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
               autofill else {
             return super.saveButtonTitle()
         }
-        return "Create & AutoFill"
+        return "Create & AutoFill".localized
     }
 
     override func generateItemContent() -> ItemContentProtobuf {
@@ -184,7 +173,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
-        guard isAlias, let aliasCreationLiteInfo else { return nil }
+        guard let aliasCreationLiteInfo else { return nil }
 
         return .init(prefix: aliasCreationLiteInfo.prefix,
                      suffix: aliasCreationLiteInfo.suffix,
@@ -192,22 +181,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func generateAliasItemContent() -> ItemContentProtobuf? {
-        guard isAlias, aliasCreationLiteInfo != nil else { return nil }
+        guard isAlias else { return nil }
         return .init(name: title,
-                     note: "Alias of login item \"\(title)\"",
+                     note: "Alias of login item \"%@\"".localized(title),
                      itemUuid: UUID().uuidString,
                      data: .alias,
                      customFields: [])
     }
 
     override func additionalEdit() async throws {
-        // Remove alias item if necessary
-        if let aliasEmail = aliasItem?.item.aliasEmail, !isAlias {
-            try await itemRepository.deleteAlias(email: aliasEmail)
-        }
         // Create new alias item if applicable
-        else if let aliasCreationInfo = generateAliasCreationInfo(),
-                let aliasItemContent = generateAliasItemContent() {
+        if let aliasCreationInfo = generateAliasCreationInfo(),
+           let aliasItemContent = generateAliasItemContent() {
             try await itemRepository.createAlias(info: aliasCreationInfo,
                                                  itemContent: aliasItemContent,
                                                  shareId: selectedVault.shareId)
@@ -223,11 +208,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         } else {
             Task { @MainActor [weak self] in
                 guard let self else { return }
+                defer { self.loading = false }
                 do {
-                    self.delegate?.createEditItemViewModelWantsToShowLoadingHud()
+                    self.loading = true
                     let aliasOptions = try await self.aliasRepository
                         .getAliasOptions(shareId: self.selectedVault.shareId)
-                    self.delegate?.createEditItemViewModelWantsToHideLoadingHud()
                     if let firstSuffix = aliasOptions.suffixes.first,
                        let firstMailbox = aliasOptions.mailboxes.first {
                         var prefix = PrefixUtils.generatePrefix(fromTitle: title)
@@ -242,8 +227,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                         self.generateAlias()
                     }
                 } catch {
-                    self.delegate?.createEditItemViewModelWantsToHideLoadingHud()
-                    self.delegate?.createEditItemViewModelDidEncounter(error: error)
+                    self.router.display(element: .displayErrorBanner(error))
                 }
             }
         }
@@ -275,7 +259,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func removeAlias() {
         aliasCreationLiteInfo = nil
         username = ""
-        isAlias = false
     }
 
     func handleScanResult(_ result: Result<String, Error>, customField: CustomFieldUiModel? = nil) {
@@ -287,12 +270,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 totpUri = scanResult
             }
         case let .failure(error):
-            delegate?.createEditItemViewModelDidEncounter(error: error)
+            router.display(element: .displayErrorBanner(error))
         }
     }
 
     func openSettings() {
-        createEditLoginViewModelDelegate?.createEditLoginViewModelWantsToOpenSettings()
+        router.navigate(to: .openSettings)
     }
 
     func validateURLs() -> Bool {
@@ -321,6 +304,5 @@ extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info
         username = info.aliasAddress
-        isAlias = true
     }
 }

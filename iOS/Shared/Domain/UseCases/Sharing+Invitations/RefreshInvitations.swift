@@ -23,32 +23,33 @@
 import Client
 
 protocol RefreshInvitationsUseCase: Sendable {
-    func execute()
+    func execute() async throws
 }
 
 extension RefreshInvitationsUseCase {
-    func callAsFunction() {
-        execute()
+    func callAsFunction() async throws {
+        try await execute()
     }
 }
 
 final class RefreshInvitations: RefreshInvitationsUseCase {
-    private let repository: InviteRepositoryProtocol
+    private let inviteRepository: InviteRepositoryProtocol
+    private let passPlanRepository: PassPlanRepositoryProtocol
     private let getFeatureFlagStatus: GetFeatureFlagStatusUseCase
 
-    init(repository: InviteRepositoryProtocol,
+    init(inviteRepository: InviteRepositoryProtocol,
+         passPlanRepository: PassPlanRepositoryProtocol,
          getFeatureFlagStatus: GetFeatureFlagStatusUseCase) {
-        self.repository = repository
+        self.inviteRepository = inviteRepository
+        self.passPlanRepository = passPlanRepository
         self.getFeatureFlagStatus = getFeatureFlagStatus
     }
 
-    func execute() {
-        Task { [weak self] in
-            guard let status = try? await self?.getFeatureFlagStatus(with: FeatureFlagType.passSharingV1),
-                  status else {
-                return
-            }
-            await self?.repository.refreshInvites()
-        }
+    func execute() async throws {
+        let plan = try await passPlanRepository.getPlan()
+        guard !plan.isFreeUser else { return }
+        let sharingEnabled = try await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
+        guard sharingEnabled else { return }
+        await inviteRepository.refreshInvites()
     }
 }
