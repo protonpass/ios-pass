@@ -22,9 +22,10 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Protobuf Objects
   - iOSTests
   - iOSUITests
-  - CoreTests
-  - ClientTests
-  - UIComponentsTests
+  - LocalPackages/Core/Tests
+  - LocalPackages/Client/Tests
+  - LocalPackages/DesignSystem/Tests
+  - LocalPackages/Entities/Tests
   - fastlane/*
   
 ##############
