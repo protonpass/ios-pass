@@ -20,7 +20,7 @@ let package = Package(name: "Core",
                       ],
                       dependencies: [
                           .package(url: "https://github.com/protonpass/OneTimePassword", exact: "0.1.1"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "10.1.1")
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "11.0.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
