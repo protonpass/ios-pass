@@ -38,7 +38,7 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share
     func deleteVault(shareId: String) async throws
     func setPrimaryVault(shareId: String) async throws -> Bool
-    func transferVaultOwnership(shareId: String, request: TransferOwnershipVaultRequest) async throws -> Bool
+    func transferVaultOwnership(vaultShareId: String, request: TransferOwnershipVaultRequest) async throws -> Bool
 }
 
 public extension RemoteShareDatasourceProtocol {
@@ -137,8 +137,9 @@ public extension RemoteShareDatasourceProtocol {
         return response.isSuccessful
     }
 
-    func transferVaultOwnership(shareId: String, request: TransferOwnershipVaultRequest) async throws -> Bool {
-        let endpoint = TransferOwnershipVaultEndpoint(shareId: shareId, request: request)
+    func transferVaultOwnership(vaultShareId: String,
+                                request: TransferOwnershipVaultRequest) async throws -> Bool {
+        let endpoint = TransferOwnershipVaultEndpoint(vaultShareId: vaultShareId, request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
     }
