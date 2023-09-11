@@ -99,3 +99,40 @@ public struct VaultSyncProgress {
         .init(shareId: shareId, vaultState: vaultState, itemsState: itemState)
     }
 }
+
+extension VaultSyncProgress: Identifiable {
+    public var id: String {
+        shareId
+    }
+}
+
+public extension VaultSyncProgress {
+    var vault: Vault? {
+        switch vaultState {
+        case let .known(vault):
+            return vault
+        case .unknown:
+            return nil
+        }
+    }
+
+    var isDone: Bool {
+        switch itemsState {
+        case let .decrypt(decrypted, total):
+            return decrypted >= total
+        default:
+            return false
+        }
+    }
+
+    var isEmpty: Bool {
+        switch itemsState {
+        case .loading:
+            return false
+        case let .download(_, total):
+            return total == 0
+        case let .decrypt(_, total):
+            return total == 0
+        }
+    }
+}
