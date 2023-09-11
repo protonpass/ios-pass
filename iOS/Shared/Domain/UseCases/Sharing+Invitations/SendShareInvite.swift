@@ -23,8 +23,8 @@
 import Client
 import CryptoKit
 import Entities
-import ProtonCore_Crypto
-import ProtonCore_Login
+import ProtonCoreCrypto
+import ProtonCoreLogin
 
 protocol SendVaultShareInviteUseCase: Sendable {
     func execute(with infos: SharingInfos) async throws -> Bool

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Foundation
 
 extension LogManager {
     /// Convenience initialize for iOS & extensions which creates a log file in shared container.

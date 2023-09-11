@@ -20,15 +20,15 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import fusion
-import ProtonCore_Doh
-import ProtonCore_Environment
-import ProtonCore_ObfuscatedConstants
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreDoh
+import ProtonCoreEnvironment
+//import ProtonCoreObfuscatedConstants
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
 class LoginBaseTestCase: ProtonCoreBaseTestCase {
-    let testData = TestData()
     var doh: DoHInterface {
         if let customDomain = dynamicDomain.map({ "\($0)" }) {
             return CustomServerConfigDoH(

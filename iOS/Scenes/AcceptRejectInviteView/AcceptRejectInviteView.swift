@@ -21,9 +21,9 @@
 //
 
 import Client
+import DesignSystem
 import Entities
 import SwiftUI
-import UIComponents
 
 struct AcceptRejectInviteView: View {
     @Environment(\.dismiss) private var dismiss

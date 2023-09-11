@@ -20,9 +20,9 @@
 
 import CodeScanner
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct CreateEditLoginView: View {
     @Environment(\.dismiss) private var dismiss

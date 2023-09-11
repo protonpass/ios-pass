@@ -25,7 +25,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     let vault: Vault

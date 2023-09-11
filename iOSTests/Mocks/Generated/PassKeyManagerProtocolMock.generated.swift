@@ -22,7 +22,7 @@
 @testable import Client
 import Core
 import CryptoKit
-import ProtonCore_Login
+import ProtonCoreLogin
 
 final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManagerProtocol {
     // MARK: - itemKeyDatasource

@@ -23,8 +23,8 @@ import Core
 import CoreData
 import CryptoKit
 import Factory
-import ProtonCore_Login
-import ProtonCore_Services
+import ProtonCoreLogin
+import ProtonCoreServices
 
 /// Contain all repositories
 final class SharedRepositoryContainer: SharedContainer, AutoRegistering {

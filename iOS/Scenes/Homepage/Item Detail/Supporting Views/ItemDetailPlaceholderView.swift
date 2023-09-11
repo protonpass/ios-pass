@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ItemDetailPlaceholderView: View {
     let onGoBack: () -> Void

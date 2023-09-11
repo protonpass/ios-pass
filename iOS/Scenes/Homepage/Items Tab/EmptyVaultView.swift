@@ -20,8 +20,8 @@
 
 import Client
 import Core
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 struct EmptyVaultView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]

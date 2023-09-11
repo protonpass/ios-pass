@@ -19,8 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
-import ProtonCore_Login
+import ProtonCoreLogin
 
 final class QAFeaturesViewModel: ObservableObject {
     let bannerManager: BannerManager

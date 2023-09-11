@@ -21,6 +21,7 @@
 import Combine
 import Core
 import Factory
+import Foundation
 
 final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }

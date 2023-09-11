@@ -18,9 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
 import SwiftUI
-import UIComponents
 
 enum InfoBanner: CaseIterable, Equatable, Hashable {
     static var allCases: [InfoBanner] {
