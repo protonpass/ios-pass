@@ -20,7 +20,7 @@ This repository contains the source code for the Proton Pass iOS application.
 
 # Installation
 
-The app targets iOS 15 and above. Make sure you have Xcode 14+ installed, check out the repo and open `ProtonPass.xcworkspace` to run the project.
+The app targets iOS 15 and above. Make sure you have Xcode 14+ installed, check out the repo and open `ProtonPass.xcodeproj` to run the project.
 
 # Technical Choices
 
@@ -39,9 +39,13 @@ The project is modularized into targets:
 
 - iOS: the main app target
 - AutoFill: the AutoFill extension
-- Client: network layer, database operation & models
+
+And local Swift packages:
+
+- Entities: models
+- Client: network layer, database operations, repositories...
 - Core: coordinator, domain parser, password/passphrase generator, 2FA token generator, useful extensions...
-- UIComponents: UI utilities (custom views, view modifiers, icons, colors...)
+- DesignSystem: UI utilities (custom views, view modifiers, icons, colors...)
 
 # Debug
 
