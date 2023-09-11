@@ -89,11 +89,6 @@ public struct CreditCardData: Sendable {
                 verificationNumber: String,
                 expirationDate: String,
                 pin: String) {
-        let monthYear = expirationDate.components(separatedBy: "-")
-        let month = Int(monthYear.last ?? "")
-        let year = Int(monthYear.first ?? "")
-        assert(month != nil && year != nil, "Bad expirationDate format")
-
         self.cardholderName = cardholderName
         self.type = type
         self.number = number
