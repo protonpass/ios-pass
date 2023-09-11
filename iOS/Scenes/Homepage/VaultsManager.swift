@@ -58,6 +58,7 @@ enum VaultSelection {
 
 protocol VaultsManagerProtocol: Sendable {
     var currentVaults: CurrentValueSubject<[Vault], Never> { get }
+
     func refresh()
     func fullSync() async throws
 }
