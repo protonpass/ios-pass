@@ -36,6 +36,7 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreServices
+import SwiftUI
 import UIKit
 
 protocol APIManagerDelegate: AnyObject {
