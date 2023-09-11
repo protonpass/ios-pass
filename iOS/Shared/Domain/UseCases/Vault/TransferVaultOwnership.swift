@@ -41,7 +41,7 @@ final class TransferVaultOwnership: TransferVaultOwnershipUseCase {
     }
 
     func execute(newOwnerID: String, shareId: String) async throws {
-        try await repository.transferVaultOwnership(shareId: shareId,
-                                                    newOwnerId: newOwnerID)
+        try await repository.transferVaultOwnership(vaultShareId: shareId,
+                                                    newOwnerShareId: newOwnerID)
     }
 }

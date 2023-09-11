@@ -32,8 +32,6 @@
 "Not now" = "Pas maintenant";
 
 /* Vault ownership transfer*/
-"Transfer ownership" = "Transfert de propriété";
-"Confirm" = "Confirmer";
 "Are sure you want to transfer your ownership to %@" = "Êtes-vous sûr de vouloir transférer la propriété de votre coffre-fort à %@";
 
 /* Vault sharing: Short description for share permission */
