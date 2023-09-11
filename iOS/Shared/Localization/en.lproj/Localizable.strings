@@ -32,8 +32,6 @@
 "Not now" = "Not now";
 
 /* Vault ownership transfer*/
-"Transfer ownership" = "Transfer ownership";
-"Confirm" = "Confirm";
 "Are sure you want to transfer your ownership to %@" = "Are sure you want to transfer your ownership to %@";
 
 /* Vault sharing: Short description for share permission */

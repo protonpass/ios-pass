@@ -43,9 +43,9 @@ public struct TransferOwnershipVaultEndpoint: Endpoint {
     public var method: HTTPMethod
     public var body: Body?
 
-    public init(shareId: String, request: TransferOwnershipVaultRequest) {
-        debugDescription = "Set primary vault"
-        path = "/pass/v1/vault/\(shareId)/owner"
+    public init(vaultShareId: String, request: TransferOwnershipVaultRequest) {
+        debugDescription = "Transfert vault ownership"
+        path = "/pass/v1/vault/\(vaultShareId)/owner"
         method = .put
         body = request
     }
