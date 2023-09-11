@@ -205,6 +205,10 @@
 		3565FD5D298D49B300E2A0EE /* NoteDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD5C298D49B300E2A0EE /* NoteDetailSection.swift */; };
 		35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35661CB129B8BF97003BBAD6 /* EditableVaultListView.swift */; };
 		35661CB429B8BFCD003BBAD6 /* EditableVaultListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35661CB329B8BFCD003BBAD6 /* EditableVaultListViewModel.swift */; };
+		356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356650D52AAF604D00BFF4F3 /* FullSyncProgressView.swift */; };
+		356650D92AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356650D82AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift */; };
+		356650DB2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356650DA2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift */; };
+		356650DC2AAF610E00BFF4F3 /* ProcessVaultSyncEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356650DA2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift */; };
 		3567414F2A28927800C99C32 /* UserDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567414E2A28927800C99C32 /* UserDataProvider.swift */; };
 		356750D529D31E9200247648 /* View+ItemSwipeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356750D429D31E9200247648 /* View+ItemSwipeModifier.swift */; };
 		3567DF4D2A49C7950025BD88 /* UpsellableDetailText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567DF4C2A49C7950025BD88 /* UpsellableDetailText.swift */; };
@@ -730,6 +734,9 @@
 		3565FD5C298D49B300E2A0EE /* NoteDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailSection.swift; sourceTree = "<group>"; };
 		35661CB129B8BF97003BBAD6 /* EditableVaultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableVaultListView.swift; sourceTree = "<group>"; };
 		35661CB329B8BFCD003BBAD6 /* EditableVaultListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableVaultListViewModel.swift; sourceTree = "<group>"; };
+		356650D52AAF604D00BFF4F3 /* FullSyncProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSyncProgressView.swift; sourceTree = "<group>"; };
+		356650D82AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSyncProgressViewModel.swift; sourceTree = "<group>"; };
+		356650DA2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessVaultSyncEvent.swift; sourceTree = "<group>"; };
 		3567414E2A28927800C99C32 /* UserDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataProvider.swift; sourceTree = "<group>"; };
 		356750D429D31E9200247648 /* View+ItemSwipeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemSwipeModifier.swift"; sourceTree = "<group>"; };
 		3567DF4C2A49C7950025BD88 /* UpsellableDetailText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpsellableDetailText.swift; sourceTree = "<group>"; };
@@ -1366,6 +1373,15 @@
 			path = Vault;
 			sourceTree = "<group>";
 		};
+		356650D72AAF606500BFF4F3 /* Full Sync Progress */ = {
+			isa = PBXGroup;
+			children = (
+				356650D52AAF604D00BFF4F3 /* FullSyncProgressView.swift */,
+				356650D82AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift */,
+			);
+			path = "Full Sync Progress";
+			sourceTree = "<group>";
+		};
 		3569B2A229B7888B0070830B /* Items Tab */ = {
 			isa = PBXGroup;
 			children = (
@@ -1682,6 +1698,7 @@
 				357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */,
 				3569B29A29B76BF60070830B /* VaultsManager.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
+				356650D72AAF606500BFF4F3 /* Full Sync Progress */,
 				3565622529BA760800C43F72 /* Item Detail */,
 				3569B2A229B7888B0070830B /* Items Tab */,
 				3569B2A729B7D2030070830B /* Profile Tab */,
@@ -1786,11 +1803,10 @@
 		5B1453AB2A696C5B0048B022 /* Vault */ = {
 			isa = PBXGroup;
 			children = (
-				5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */,
-				5B083A7F2AAA10B900D1FF18 /* TransferVaultOwnership.swift */,
 				5B083A832AAB145E00D1FF18 /* GetVaultInfos.swift */,
-				5B7AD1A62AB1C494000D475A /* GetVaultContentForVault.swift */,
-				5B7AD1A82AB1C82E000D475A /* MoveItemsBetweenVaults.swift */,
+				5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */,
+				356650DA2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift */,
+				5B083A7F2AAA10B900D1FF18 /* TransferVaultOwnership.swift */,
 			);
 			path = Vault;
 			sourceTree = "<group>";
@@ -2680,6 +2696,7 @@
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
+				356650DC2AAF610E00BFF4F3 /* ProcessVaultSyncEvent.swift in Sources */,
 				3559BA962A5AE4DB0020E172 /* PassModule.swift in Sources */,
 				5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */,
 				358C68292A681379006E720F /* Preferences+LocalAuthentication.swift in Sources */,
@@ -2873,6 +2890,7 @@
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */,
 				35711D5D2A7A7A01003B6845 /* RefreshFeatureFlags.swift in Sources */,
+				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
 				3559BAA02A5B32550020E172 /* Preferences.swift in Sources */,
@@ -3041,6 +3059,7 @@
 				3554D42D2967854000DF0CBE /* DeveloperModeStateManager.swift in Sources */,
 				35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */,
 				5B229A692A863FBC0009103E /* SharedRouter+DependencyInjections.swift in Sources */,
+				356650DB2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift in Sources */,
 				3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				3565FD4F298D319500E2A0EE /* ItemDetailSectionIcon.swift in Sources */,
 				5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */,
@@ -3068,6 +3087,7 @@
 				354B24862A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
+				356650D92AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift in Sources */,
 				5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */,
 				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
 				350CF79C2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */,
