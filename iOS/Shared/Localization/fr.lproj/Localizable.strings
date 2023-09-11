@@ -31,6 +31,9 @@
 "Next" = "Suivant";
 "Not now" = "Pas maintenant";
 
+/* Vault ownership transfer*/
+"Are sure you want to transfer your ownership to %@" = "Êtes-vous sûr de vouloir transférer la propriété de votre coffre-fort à %@";
+
 /* Vault sharing: Short description for share permission */
 "admin" = "admin";
 "edit" = "modifier";

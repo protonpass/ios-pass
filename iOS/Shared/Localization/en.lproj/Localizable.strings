@@ -31,6 +31,9 @@
 "Next" = "Next";
 "Not now" = "Not now";
 
+/* Vault ownership transfer*/
+"Are sure you want to transfer your ownership to %@" = "Are sure you want to transfer your ownership to %@";
+
 /* Vault sharing: Short description for share permission */
 "admin" = "admin";
 "edit" = "edit";

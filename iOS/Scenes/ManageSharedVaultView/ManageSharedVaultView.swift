@@ -32,8 +32,6 @@ struct ManageSharedVaultView: View {
     @ObservedObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    @State private var sort: ShareRole = .admin
-
     var body: some View {
         ZStack(alignment: .bottom) {
             mainContainer
@@ -53,6 +51,14 @@ struct ManageSharedVaultView: View {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.loading)
+        .alert(item: $viewModel.newOwner) { user in
+            Alert(title: Text("Transfer ownership"),
+                  message: Text("Are sure you want to transfer your ownership to %@".localized(user.email)),
+                  primaryButton: .default(Text("Confirm")) {
+                      viewModel.transferOwnership(to: user)
+                  },
+                  secondaryButton: .cancel())
+        }
         .navigationModifier()
     }
 
@@ -157,7 +163,7 @@ private extension ManageSharedVaultView {
             }
 
             Spacer()
-            if viewModel.vault.isAdmin {
+            if viewModel.vault.isAdmin, !viewModel.isOwnerAndCurrentUser(with: user) {
                 vaultTrailingView(user: user)
                     .onTapGesture {
                         viewModel.setCurrentRole(for: user)
@@ -205,8 +211,10 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            if viewModel.vault.isOwner, !user.isPending {
-                Button(action: {}, label: {
+            if viewModel.vault.isOwner, !user.isPending, user.isAdmin, !isOwnerAndCurrentUser {
+                Button(action: {
+                    viewModel.newOwner = user
+                }, label: {
                     Label(title: {
                         Text("Transfer ownership")
                     }, icon: {
