@@ -41,11 +41,8 @@ final class GetVaultInfos: GetVaultInfosUseCase {
     }
 
     func execute(for id: String) -> AnyPublisher<Vault?, Never> {
-        vaultsManager.currentVaults.map { vaults -> Vault? in
-            guard !vaults.isEmpty else {
-                return nil
-            }
-            return vaults.first { $0.id == id }
-        }.eraseToAnyPublisher()
+        vaultsManager.currentVaults
+            .map { $0.first(where: { $0.shareId == id }) }
+            .eraseToAnyPublisher()
     }
 }
