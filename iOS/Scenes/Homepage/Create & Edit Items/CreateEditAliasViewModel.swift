@@ -23,7 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
-import ProtonCore_Login
+import ProtonCoreLogin
 import SwiftUI
 
 final class SuffixSelection: ObservableObject, Equatable, Hashable {

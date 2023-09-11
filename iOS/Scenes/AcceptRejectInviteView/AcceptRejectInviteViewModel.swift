@@ -24,6 +24,7 @@ import Client
 import Combine
 import Entities
 import Factory
+import Foundation
 
 final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var userInvite: UserInvite

@@ -20,12 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-
 import fusion
-import ProtonCore_Environment
-import ProtonCore_ObfuscatedConstants
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreEnvironment
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUITestsLogin
 import XCTest
 
 final class TokenRefreshTests: LoginBaseTestCase {

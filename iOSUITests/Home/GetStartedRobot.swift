@@ -21,7 +21,7 @@
 
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
 private let title = "Don't give spam a chance"

@@ -23,7 +23,7 @@
 import Core
 import CoreData
 import Entities
-import ProtonCore_Services
+import ProtonCoreServices
 
 final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicKeyRepositoryProtocol {
     // MARK: - getPublicKeys

@@ -20,10 +20,10 @@
 
 import Client
 import Core
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 /// Note section of item detail pages
 struct NoteDetailSection: View {
