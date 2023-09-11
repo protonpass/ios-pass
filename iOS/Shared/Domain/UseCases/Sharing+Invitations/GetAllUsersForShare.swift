@@ -73,10 +73,7 @@ struct ShareUser: Equatable, Hashable, Identifiable {
     }
 
     var isAdmin: Bool {
-        guard let shareRole, shareRole == .admin else {
-            return false
-        }
-        return true
+        shareRole == .admin
     }
 }
 
