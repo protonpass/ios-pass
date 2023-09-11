@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
-import UIComponents
+import DesignSystem
+import ProtonCoreUIFoundations
 import UIKit
 
 // MARK: - Colors & icons

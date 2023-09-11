@@ -23,7 +23,7 @@
 import Combine
 import Core
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 import Reachability
 
 final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoopProtocol {

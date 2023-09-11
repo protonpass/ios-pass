@@ -23,7 +23,7 @@
 import Core
 import Entities
 import Foundation
-import ProtonCore_Login
+import ProtonCoreLogin
 
 final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, ShareInviteRepositoryProtocol {
     // MARK: - getAllPendingInvites

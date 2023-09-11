@@ -20,9 +20,10 @@
 
 import Core
 import Factory
-import ProtonCore_Payments
-import ProtonCore_PaymentsUI
-import ProtonCore_Services
+import Foundation
+import ProtonCorePayments
+import ProtonCorePaymentsUI
+import ProtonCoreServices
 
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
@@ -61,7 +62,12 @@ final class PaymentsManager {
     }
 
     private func initializePaymentsStack() {
-        payments.planService.currentSubscriptionChangeDelegate = self
+        switch payments.planService {
+        case let .left(service):
+            service.currentSubscriptionChangeDelegate = self
+        default:
+            break
+        }
         payments.storeKitManager.delegate = self
         payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
             self?.payments.storeKitManager.subscribeToPaymentQueue()

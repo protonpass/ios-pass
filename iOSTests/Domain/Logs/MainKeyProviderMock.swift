@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_Keymaker
-import ProtonCore_TestingToolkit
+import ProtonCoreKeymaker
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class MainKeyProviderMock: MainKeyProvider {
     @PropertyStub(\MainKeyProviderMock.mainKey, initialGet: nil) var mainKeyStub
