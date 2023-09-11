@@ -74,7 +74,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     func setPrimaryVault(shareId: String) async throws -> Bool
 
     @discardableResult
-    func transferVaultOwnership(shareId: String, newOwnerId: String) async throws -> Bool
+    func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
 }
 
 public struct ShareRepository: ShareRepositoryProtocol {
@@ -327,12 +327,13 @@ public extension ShareRepository {
         return true
     }
 
-    func transferVaultOwnership(shareId: String, newOwnerId: String) async throws -> Bool {
-        logger.trace("Setting new owner \(newOwnerId) for vault \(shareId)")
+    func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool {
+        logger.trace("Setting new owner \(newOwnerShareId) for vault \(vaultShareId)")
 
-        let request = TransferOwnershipVaultRequest(newOwnerShareID: newOwnerId)
-        let updated = try await remoteDatasouce.transferVaultOwnership(shareId: shareId, request: request)
-        logger.trace("Finished transfer of ownership")
+        let request = TransferOwnershipVaultRequest(newOwnerShareID: newOwnerShareId)
+        let updated = try await remoteDatasouce.transferVaultOwnership(vaultShareId: vaultShareId,
+                                                                       request: request)
+        logger.info("Finished transfer of ownership")
         return updated
     }
 }
