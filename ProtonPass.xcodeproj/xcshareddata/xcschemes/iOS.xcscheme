@@ -35,6 +35,15 @@
          <TestPlanReference
             reference = "container:TestPlans/iOSUI.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlans/Core.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlans/Client.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlans/DesignSystem.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
