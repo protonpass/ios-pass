@@ -50,12 +50,16 @@ final class GetAllUsersForShare: GetAllUsersForShareUseCase {
     }
 }
 
-struct ShareUser: Equatable, Hashable {
+struct ShareUser: Equatable, Hashable, Identifiable {
     let email: String
     let shareRole: ShareRole?
     let inviteID: String?
     let shareID: String?
     let userName: String?
+
+    var id: Int {
+        hashValue
+    }
 
     var isPending: Bool {
         shareRole == nil
@@ -66,6 +70,10 @@ struct ShareUser: Equatable, Hashable {
             return shareRole.role
         }
         return "pending".localized
+    }
+
+    var isAdmin: Bool {
+        shareRole == .admin
     }
 }
 
