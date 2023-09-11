@@ -228,6 +228,7 @@ extension APIManager: AuthHelperDelegate {
         if let userData = appData.userData {
             update(userData: userData, authCredential: authCredential)
             lastSuccessfulRefreshTimestamp = Date.now.timeIntervalSince1970
+            ignoredRefreshFailure = false
         } else {
             appData.unauthSessionCredentials = authCredential
         }
