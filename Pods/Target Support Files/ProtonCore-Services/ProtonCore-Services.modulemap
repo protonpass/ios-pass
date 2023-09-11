@@ -1,6 +1,0 @@
-framework module ProtonCore_Services {
-  umbrella header "ProtonCore-Services-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -23,7 +23,7 @@ import Combine
 import Core
 import DocScanner
 import Factory
-import ProtonCore_Login
+import ProtonCoreLogin
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,

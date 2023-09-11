@@ -22,7 +22,7 @@ import Client
 import Combine
 import Core
 import DocScanner
-import ProtonCore_Login
+import ProtonCoreLogin
 import SwiftUI
 
 final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {

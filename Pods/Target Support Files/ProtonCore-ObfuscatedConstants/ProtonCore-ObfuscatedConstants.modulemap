@@ -1,6 +1,0 @@
-framework module ProtonCore_ObfuscatedConstants {
-  umbrella header "ProtonCore-ObfuscatedConstants-umbrella.h"
-
-  export *
-  module * { export * }
-}

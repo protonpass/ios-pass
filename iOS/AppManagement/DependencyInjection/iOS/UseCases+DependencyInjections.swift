@@ -20,7 +20,7 @@
 
 import Core
 import Factory
-import ProtonCore_Services
+import ProtonCoreServices
 
 final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()

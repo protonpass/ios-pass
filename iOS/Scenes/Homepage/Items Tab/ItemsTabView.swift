@@ -20,9 +20,9 @@
 
 import Client
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel

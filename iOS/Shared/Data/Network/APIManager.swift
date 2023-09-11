@@ -23,19 +23,20 @@ import Combine
 import Core
 import CryptoKit
 import Factory
-import ProtonCore_Authentication
-import ProtonCore_Challenge
-import ProtonCore_CryptoGoInterface
-import ProtonCore_Environment
-import ProtonCore_FeatureSwitch
-import ProtonCore_ForceUpgrade
-import ProtonCore_Foundations
-import ProtonCore_HumanVerification
-import ProtonCore_Keymaker
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_Observability
-import ProtonCore_Services
+import Foundation
+import ProtonCoreAuthentication
+import ProtonCoreChallenge
+import ProtonCoreCryptoGoInterface
+import ProtonCoreEnvironment
+import ProtonCoreForceUpgrade
+import ProtonCoreFoundations
+import ProtonCoreHumanVerification
+import ProtonCoreKeymaker
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreObservability
+import ProtonCoreServices
+import UIKit
 
 protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
@@ -136,20 +137,10 @@ final class APIManager: APIManagerProtocol {
     }
 
     private func setUpCore() {
-        FeatureFactory.shared.enable(&.observability)
-        // Core unauth session feature flag
-        FeatureFactory.shared.enable(&.unauthSession)
-
-        FeatureFactory.shared.enable(&.externalSignup)
-        #if DEBUG
-        FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
-        #endif
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 
     private func fetchUnauthSessionIfNeeded() {
-        guard FeatureFactory.shared.isEnabled(.unauthSession) else { return }
-
         apiService.acquireSessionIfNeeded { result in
             switch result {
             case .success:

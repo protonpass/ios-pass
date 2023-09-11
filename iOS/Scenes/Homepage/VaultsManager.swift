@@ -23,7 +23,8 @@ import Combine
 import Core
 import CryptoKit
 import Factory
-import ProtonCore_Login
+import Foundation
+import ProtonCoreLogin
 
 enum VaultManagerState {
     case loading

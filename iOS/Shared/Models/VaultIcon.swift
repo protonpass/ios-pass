@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import UIComponents
+import DesignSystem
 import UIKit
 
 enum VaultIcon: CaseIterable {
