@@ -26,6 +26,7 @@ import SwiftUI
 struct FullSyncProgressView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: FullSyncProgressViewModel
+    var onContinue: (() -> Void)?
 
     init(mode: FullSyncProgressViewModel.Mode) {
         _viewModel = .init(wrappedValue: .init(mode: mode))
@@ -38,22 +39,8 @@ struct FullSyncProgressView: View {
                 realBody
                     .background(PassColor.backgroundNorm.toColor)
                     .navigationTitle("Syncing items...")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            CircleButton(icon: IconProvider.cross,
-                                         iconColor: PassColor.interactionNormMajor2,
-                                         backgroundColor: PassColor.interactionNormMinor1,
-                                         action: dismiss.callAsFunction)
-                        }
-                    }
             }
             .navigationViewStyle(.stack)
-            .onReceive(viewModel.$isDoneSynching) { isDoneSynching in
-                if isDoneSynching {
-                    dismiss()
-                }
-            }
-
         case .logIn:
             realBody
         }
@@ -62,36 +49,55 @@ struct FullSyncProgressView: View {
 
 private extension FullSyncProgressView {
     var realBody: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                if !viewModel.mode.isFullSync {
-                    Text("Syncing items...")
-                        .font(.title3.bold())
+        VStack {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    if !viewModel.mode.isFullSync {
+                        Text("Syncing items...")
+                            .font(.title3.bold())
+                            .foregroundColor(PassColor.textNorm.toColor)
+                    }
+
+                    Text("We are downloading and decrypting your items. This might take a few minutes.")
                         .foregroundColor(PassColor.textNorm.toColor)
-                }
+                        .padding(.vertical, viewModel.mode.isFullSync ? 0 : nil)
+                        .fixedSize(horizontal: false, vertical: true)
 
-                Text("We are downloading and decrypting your items. This might take a few minutes.")
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .padding(.vertical, viewModel.mode.isFullSync ? 0 : nil)
-
-                if viewModel.progresses.isEmpty {
-                    ProgressView()
-                        .frame(maxWidth: .infinity, alignment: .center)
-                } else {
-                    ForEach(viewModel.progresses) { progress in
-                        VaultSyncProgressView(progress: progress)
+                    if viewModel.progresses.isEmpty {
+                        ProgressView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    } else {
+                        ForEach(viewModel.progresses) { progress in
+                            VaultSyncProgressView(progress: progress)
+                        }
                     }
                 }
-
-                Spacer()
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .animation(.default, value: viewModel.progresses.count)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            .padding()
-            .animation(.default, value: viewModel.progresses.count)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            DisablableCapsuleTextButton(title: "Continue".localized,
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: PassColor.interactionNormMajor1,
+                                        disableBackgroundColor: PassColor.interactionNormMinor1,
+                                        disabled: !viewModel.isDoneSynching,
+                                        action: handleContinuation)
+                .padding()
         }
-        .frame(maxWidth: .infinity)
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
+    }
+
+    func handleContinuation() {
+        switch viewModel.mode {
+        case .fullSync:
+            dismiss()
+        case .logIn:
+            onContinue?()
+        }
     }
 }
 

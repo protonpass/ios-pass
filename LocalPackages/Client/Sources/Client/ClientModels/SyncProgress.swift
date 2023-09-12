@@ -118,6 +118,8 @@ public extension VaultSyncProgress {
 
     var isDone: Bool {
         switch itemsState {
+        case let .download(_, total):
+            return total == 0
         case let .decrypt(decrypted, total):
             return decrypted >= total
         default:
