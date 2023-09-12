@@ -30,7 +30,17 @@ final class FullSyncProgressViewModel: ObservableObject {
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private var cancellables = Set<AnyCancellable>()
 
-    init() {
+    let mode: Mode
+
+    enum Mode {
+        case logIn, fullSync
+
+        var isFullSync: Bool { self == .fullSync }
+    }
+
+    init(mode: Mode) {
+        self.mode = mode
+
         vaultSyncEventStream
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
