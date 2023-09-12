@@ -20,32 +20,35 @@
 
 import Client
 
-/// Process an event and update the current array of progresses
+/// Process an event and map the current array of progresses
 protocol ProcessVaultSyncEventUseCase: Sendable {
-    func execute(_ event: VaultSyncProgressEvent, with progresses: inout [VaultSyncProgress])
+    func execute(_ event: VaultSyncProgressEvent,
+                 with progresses: [VaultSyncProgress]) -> [VaultSyncProgress]
 }
 
 extension ProcessVaultSyncEventUseCase {
-    func callAsFunction(_ event: VaultSyncProgressEvent, with progresses: inout [VaultSyncProgress]) {
-        execute(event, with: &progresses)
+    func callAsFunction(_ event: VaultSyncProgressEvent,
+                        with progresses: [VaultSyncProgress]) -> [VaultSyncProgress] {
+        execute(event, with: progresses)
     }
 }
 
 final class ProcessVaultSyncEvent: Sendable, ProcessVaultSyncEventUseCase {
     init() {}
 
-    func execute(_ event: VaultSyncProgressEvent, with progresses: inout [VaultSyncProgress]) {
+    func execute(_ event: VaultSyncProgressEvent,
+                 with progresses: [VaultSyncProgress]) -> [VaultSyncProgress] {
         switch event {
         case .done, .started:
-            break
+            return progresses
 
         case let .downloadedShares(shares):
-            progresses = shares.map { .init(shareId: $0.shareID,
-                                            vaultState: .unknown,
-                                            itemsState: .loading) }
+            return shares.map { .init(shareId: $0.shareID,
+                                      vaultState: .unknown,
+                                      itemsState: .loading) }
 
         case let .decryptedVault(vault):
-            progresses = progresses.map { progress in
+            return progresses.map { progress in
                 if progress.shareId == vault.shareId {
                     return progress.copy(vaultState: .known(vault))
                 } else {
@@ -53,21 +56,21 @@ final class ProcessVaultSyncEvent: Sendable, ProcessVaultSyncEventUseCase {
                 }
             }
 
-        case let .getRemoteItems(getRemoteItemsProgress):
-            progresses = progresses.map { progress in
-                if progress.shareId == getRemoteItemsProgress.shareId {
-                    return progress.copy(itemState: .download(downloaded: getRemoteItemsProgress.downloaded,
-                                                              total: getRemoteItemsProgress.total))
+        case let .getRemoteItems(getProgress):
+            return progresses.map { progress in
+                if progress.shareId == getProgress.shareId {
+                    return progress.copy(itemState: .download(downloaded: getProgress.downloaded,
+                                                              total: getProgress.total))
                 } else {
                     return progress
                 }
             }
 
-        case let .decryptItems(decryptItemsProgress):
-            progresses = progresses.map { progress in
-                if progress.shareId == decryptItemsProgress.shareId {
-                    return progress.copy(itemState: .decrypt(decrypted: decryptItemsProgress.decrypted,
-                                                             total: decryptItemsProgress.total))
+        case let .decryptItems(decryptProgress):
+            return progresses.map { progress in
+                if progress.shareId == decryptProgress.shareId {
+                    return progress.copy(itemState: .decrypt(decrypted: decryptProgress.decrypted,
+                                                             total: decryptProgress.total))
                 } else {
                     return progress
                 }
