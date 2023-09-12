@@ -383,13 +383,7 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-
-        // 66 per row + nav bar height
-        let customHeight = ItemType.allCases.count * 66 + 72
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        viewController.setDetentType(.medium, parentViewController: rootViewController)
         present(viewController)
     }
 
