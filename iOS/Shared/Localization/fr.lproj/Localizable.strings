@@ -175,7 +175,6 @@
 "Share" = "Partager";
 "Application" = "Application";
 "Force synchronization" = "Forcer la synchronisation";
-"Force synchronization done" = "Forcer la synchronisation effectuée";
 "Download all your items again to make sure you are in sync" = "Télécharger à nouveau tous vos éléments pour vous assurer que vous êtes synchronisé";
 
 /* List of available item types */
