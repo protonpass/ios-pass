@@ -199,6 +199,33 @@ final class ItemSortableTests: XCTestCase {
         XCTAssertEqual(tBucket.items[0].alphabeticalSortableString, "Touti")
     }
 
+    func testAlphabeticalSortWithNumbersAsPrefix() {
+        struct DummyItem: AlphabeticalSortable {
+            let alphabeticalSortableString: String
+        }
+        continueAfterFailure = false
+
+        // Given
+        let strings: [String] = ["1 a", "3 b", "2 b", "1 b", "3 a", "2 a", "1 c"]
+        let items = strings.map { DummyItem(alphabeticalSortableString: $0) }
+
+        // When
+        let sortResult = items.alphabeticalSortResult(direction: .ascending)
+
+        // Then
+        XCTAssertEqual(sortResult.buckets.count, 1)
+
+        let sharpBucket = sortResult.buckets[0]
+        XCTAssertEqual(sharpBucket.items.count, 7)
+        XCTAssertEqual(sharpBucket.items[0].alphabeticalSortableString, "1 a")
+        XCTAssertEqual(sharpBucket.items[1].alphabeticalSortableString, "1 b")
+        XCTAssertEqual(sharpBucket.items[2].alphabeticalSortableString, "1 c")
+        XCTAssertEqual(sharpBucket.items[3].alphabeticalSortableString, "2 a")
+        XCTAssertEqual(sharpBucket.items[4].alphabeticalSortableString, "2 b")
+        XCTAssertEqual(sharpBucket.items[5].alphabeticalSortableString, "3 a")
+        XCTAssertEqual(sharpBucket.items[6].alphabeticalSortableString, "3 b")
+    }
+
     func testMonthYearSort() {
         struct DummyItem: DateSortable {
             let dateForSorting: Date
