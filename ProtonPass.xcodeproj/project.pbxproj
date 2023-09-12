@@ -2340,6 +2340,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75283BE12946E1A9006658A6 /* Build configuration list for PBXNativeTarget "iOSUITests" */;
 			buildPhases = (
+				35F3A2F92AB09BE000DD30DC /* Replace ObfuscatedConstants.swift */,
 				75283BD12946E1A8006658A6 /* Sources */,
 				75283BD22946E1A8006658A6 /* Frameworks */,
 				75283BD32946E1A8006658A6 /* Resources */,
@@ -2570,6 +2571,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "scripts/public/swiftlint.sh\n";
+		};
+		35F3A2F92AB09BE000DD30DC /* Replace ObfuscatedConstants.swift */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Replace ObfuscatedConstants.swift";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "scripts/internal/replace_obfuscated_constants.sh\n";
 		};
 		5BB2B6F02A4479F3005E831C /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
