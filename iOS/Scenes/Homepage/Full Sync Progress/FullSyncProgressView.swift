@@ -25,11 +25,15 @@ import SwiftUI
 
 struct FullSyncProgressView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = FullSyncProgressViewModel()
-    let asSheet: Bool
+    @StateObject private var viewModel: FullSyncProgressViewModel
+
+    init(mode: FullSyncProgressViewModel.Mode) {
+        _viewModel = .init(wrappedValue: .init(mode: mode))
+    }
 
     var body: some View {
-        if asSheet {
+        switch viewModel.mode {
+        case .fullSync:
             NavigationView {
                 realBody
                     .background(PassColor.backgroundNorm.toColor)
@@ -49,7 +53,8 @@ struct FullSyncProgressView: View {
                     dismiss()
                 }
             }
-        } else {
+
+        case .logIn:
             realBody
         }
     }
@@ -59,7 +64,7 @@ private extension FullSyncProgressView {
     var realBody: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                if !asSheet {
+                if !viewModel.mode.isFullSync {
                     Text("Syncing items...")
                         .font(.title3.bold())
                         .foregroundColor(PassColor.textNorm.toColor)
@@ -67,7 +72,7 @@ private extension FullSyncProgressView {
 
                 Text("We are downloading and decrypting your items. This might take a few minutes.")
                     .foregroundColor(PassColor.textNorm.toColor)
-                    .padding(.vertical, asSheet ? 0 : nil)
+                    .padding(.vertical, viewModel.mode.isFullSync ? 0 : nil)
 
                 if viewModel.progresses.isEmpty {
                     ProgressView()
