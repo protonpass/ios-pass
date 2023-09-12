@@ -4962,8 +4962,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/protonpass/DocScanner";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
 			};
 		};
 		5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */ = {
