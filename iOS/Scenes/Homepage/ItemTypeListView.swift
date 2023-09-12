@@ -68,7 +68,6 @@ struct ItemTypeListView: View {
                            descriptionLineLimit: 2,
                            secondaryTitle: secondaryTitle(for: type),
                            secondaryTitleColor: secondaryTitleColor(for: type))
-                .frame(height: 72)
         })
         .buttonStyle(.plain)
     }
