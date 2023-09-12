@@ -243,10 +243,7 @@ public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults, Se
 public extension Array where Element: AlphabeticalSortable {
     // swiftlint:disable cyclomatic_complexity
     func alphabeticalSortResult(direction: SortDirection) -> AlphabeticalSortResult<Element> {
-        let sortedAlphabetically =
-            sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
-
-        let dict = Dictionary(grouping: sortedAlphabetically) { element in
+        let dict = Dictionary(grouping: self) { element in
             if let firstCharacter = element.alphabeticalSortableString.first {
                 return String(firstCharacter).uppercased()
             } else {
@@ -292,80 +289,36 @@ public extension Array where Element: AlphabeticalSortable {
             }
 
             if letter != .sharp {
-                buckets.append(.init(letter: letter, items: elements))
+                buckets.append(.init(letter: letter, items: elements.sorted(by: direction)))
             }
         }
 
-        buckets.append(.init(letter: .sharp, items: sharpElements))
+        buckets.append(.init(letter: .sharp, items: sharpElements.sorted(by: direction)))
         buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
 
-        return .init(numberOfItems: sortedAlphabetically.count,
+        return .init(numberOfItems: count,
                      buckets: direction == .ascending ? buckets : buckets.reversed())
     }
 
     func asyncAlphabeticalSortResult(direction: SortDirection) async -> AlphabeticalSortResult<Element> {
         await Task {
-            let sortedAlphabetically =
-                sorted(by: { $0.alphabeticalSortableString < $1.alphabeticalSortableString })
-
-            let dict = Dictionary(grouping: sortedAlphabetically) { element in
-                if let firstCharacter = element.alphabeticalSortableString.first {
-                    return String(firstCharacter).uppercased()
-                } else {
-                    return ""
-                }
-            }
-
-            var buckets = [AlphabetBucket<Element>]()
-            var sharpElements = [Element]()
-            for key in dict.keys {
-                guard let elements = dict[key] else { continue }
-                let letter: AlphabetLetter
-                switch key.uppercased() {
-                case "A": letter = .a
-                case "B": letter = .b
-                case "C": letter = .c
-                case "D": letter = .d
-                case "E": letter = .e
-                case "F": letter = .f
-                case "G": letter = .g
-                case "H": letter = .h
-                case "I": letter = .i
-                case "J": letter = .j
-                case "K": letter = .k
-                case "L": letter = .l
-                case "M": letter = .m
-                case "N": letter = .n
-                case "O": letter = .o
-                case "P": letter = .p
-                case "Q": letter = .q
-                case "R": letter = .r
-                case "S": letter = .s
-                case "T": letter = .t
-                case "U": letter = .u
-                case "V": letter = .v
-                case "W": letter = .w
-                case "X": letter = .x
-                case "Y": letter = .y
-                case "Z": letter = .z
-                default:
-                    letter = .sharp
-                    sharpElements.append(contentsOf: elements)
-                }
-
-                if letter != .sharp {
-                    buckets.append(.init(letter: letter, items: elements))
-                }
-            }
-
-            buckets.append(.init(letter: .sharp, items: sharpElements))
-            buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
-
-            return AlphabeticalSortResult(numberOfItems: sortedAlphabetically.count,
-                                          buckets: direction == .ascending ? buckets : buckets.reversed())
+            alphabeticalSortResult(direction: direction)
         }.value
     }
     // swiftlint:enable cyclomatic_complexity
+}
+
+private extension Array where Element: AlphabeticalSortable {
+    func sorted(by direction: SortDirection) -> [Element] {
+        sorted { lhs, rhs in
+            switch direction {
+            case .ascending:
+                return lhs.alphabeticalSortableString < rhs.alphabeticalSortableString
+            case .descending:
+                return lhs.alphabeticalSortableString > rhs.alphabeticalSortableString
+            }
+        }
+    }
 }
 
 // MARK: - Month year
