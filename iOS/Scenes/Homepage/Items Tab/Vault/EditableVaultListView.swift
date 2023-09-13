@@ -167,6 +167,17 @@ struct EditableVaultListView: View {
                 })
             }
 
+            Button(action: {
+                viewModel.router.present(for: .moveItemsBetweenVault(currentVault: vault,
+                                                                     singleItemToMove: nil))
+            }, label: {
+                Label(title: {
+                    Text("Move all items to another vault")
+                }, icon: {
+                    IconProvider.users
+                })
+            })
+
             Divider()
 
             Button(role: .destructive,
