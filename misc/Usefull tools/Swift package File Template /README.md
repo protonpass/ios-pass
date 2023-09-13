@@ -19,6 +19,8 @@ Now when creating a new file in swift package just scroll down to the `Template`
 #Xcode Macro
 
 There is also a `.plist` **configuration** to override Xcodes `FILEHEADER` `Text Macros` and set a custom header to your newly created files.
+
+[Xcode Macros](https://help.apple.com/xcode/mac/9.0/index.html?localePath=en.lproj#/dev7fe737ce0)
 The current macro references `Proton Pass` so you should tweak it if needed.
 
 This plist can be used or not.
