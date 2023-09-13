@@ -41,7 +41,7 @@ extension ItemContentType: CustomDebugStringConvertible {
     }
 }
 
-public enum ItemContentData: Sendable {
+public enum ItemContentData: Sendable, Equatable, Hashable {
     case alias
     case login(LogInItemData)
     case note
@@ -61,7 +61,7 @@ public enum ItemContentData: Sendable {
     }
 }
 
-public struct LogInItemData: Sendable {
+public struct LogInItemData: Sendable, Equatable, Hashable {
     public let username: String
     public let password: String
     public let totpUri: String
@@ -75,7 +75,7 @@ public struct LogInItemData: Sendable {
     }
 }
 
-public struct CreditCardData: Sendable {
+public struct CreditCardData: Sendable, Equatable, Hashable {
     public let cardholderName: String
     public let type: ProtonPassItemV1_CardType
     public let number: String
@@ -243,7 +243,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     }
 }
 
-public struct ItemContent: ItemContentProtocol, Sendable {
+public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable {
     public let shareId: String
     public let itemUuid: String
     public let item: ItemRevision
