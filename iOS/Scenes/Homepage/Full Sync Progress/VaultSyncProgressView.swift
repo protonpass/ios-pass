@@ -99,13 +99,14 @@ private extension VaultSyncProgressView {
 
             switch itemsState {
             case .loading:
-                spinnerLabel(text: "Preparing...")
+                spinnerLabel(text: "Preparing...".localized)
 
             case let .download(downloaded, total):
                 if progress.isEmpty {
                     emptyText
                 } else {
-                    spinnerLabel(text: "\(percentage(done: downloaded, total: total))% downloaded...")
+                    spinnerLabel(text: "%@%% downloaded...".localized(percentage(done: downloaded,
+                                                                                 total: total)))
                 }
 
             case let .decrypt(decrypted, total):
@@ -115,7 +116,8 @@ private extension VaultSyncProgressView {
                     Text("%d item(s)".localized(total))
                         .foregroundColor(PassColor.textWeak.toColor)
                 } else {
-                    spinnerLabel(text: "\(percentage(done: decrypted, total: total))% decrypted...")
+                    spinnerLabel(text: "%@%% decrypted...".localized(percentage(done: decrypted,
+                                                                                total: total)))
                 }
             }
         }
