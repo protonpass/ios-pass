@@ -27,6 +27,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - LocalPackages/DesignSystem/Tests
   - LocalPackages/Entities/Tests
   - fastlane/*
+  - misc/*
   
 ##############
 #Disabled rules#
