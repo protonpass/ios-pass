@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "FullSyncInProgress.svg",
+      "filename" : "FullSyncInProgressLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "FullSyncInProgressDark.svg",
       "idiom" : "universal"
     }
   ],
