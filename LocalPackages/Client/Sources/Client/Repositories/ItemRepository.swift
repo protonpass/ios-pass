@@ -91,6 +91,13 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
+    @discardableResult
+    func move(oldEncryptedItems: [SymmetricallyEncryptedItem], toShareId: String) async throws
+        -> [SymmetricallyEncryptedItem]
+
+    @discardableResult
+    func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem]
+
     /// Delete all local items
     func deleteAllItemsLocally() async throws
 
@@ -349,6 +356,31 @@ public extension ItemRepositoryProtocol {
         return newEncryptedItem
     }
 
+    func move(oldEncryptedItems: [SymmetricallyEncryptedItem],
+              toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
+        guard let fromSharedId = oldEncryptedItems.first?.shareId else {
+            throw PPClientError.unexpectedError
+        }
+
+        let oldItemsContent = try oldEncryptedItems
+            .map { try $0.getItemContent(symmetricKey: symmetricKey) }
+        let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
+
+        let request = try MoveItemsRequest(itemsContent: oldItemsContent,
+                                           destinationShareId: toShareId,
+                                           destinationShareKey: destinationShareKey)
+
+        let newItems = try await remoteDatasource.move(fromShareId: fromSharedId,
+                                                       request: request)
+
+        let newEncryptedItems = try await newItems
+            .parallelMap { try await symmetricallyEncrypt(itemRevision: $0, shareId: toShareId) }
+        try await localDatasoure.deleteItems(oldEncryptedItems)
+        try await localDatasoure.upsertItems(newEncryptedItems)
+
+        return newEncryptedItems
+    }
+
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {
         logger.trace("Getting local active log in items for all shares")
         let logInItems = try await localDatasoure.getActiveLogInItems()
@@ -476,5 +508,46 @@ public final class ItemRepository: ItemRepositoryProtocol {
                                         logManager: logManager,
                                         symmetricKey: symmetricKey)
         logger = .init(manager: logManager)
+    }
+
+    public func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
+        logger.trace("Moving current share \(currentShareId) to share \(toShareId)")
+        let oldEncryptedItems = try await getItems(shareId: currentShareId, state: .active)
+        let results = try await parallelMove(oldEncryptedItems: oldEncryptedItems, to: toShareId)
+        logger.trace("Moved share \(currentShareId) to share \(toShareId)")
+        return results
+    }
+}
+
+private extension ItemRepository {
+    @discardableResult
+    func parallelMove(oldEncryptedItems: [SymmetricallyEncryptedItem],
+                      to toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
+        let splitArray = oldEncryptedItems.chunked(into: 100)
+        do {
+            let sortedConcurrentDatas = try await withThrowingTaskGroup(of: [SymmetricallyEncryptedItem].self,
+                                                                        returning: [SymmetricallyEncryptedItem]
+                                                                            .self) { [weak self] group in
+                guard let self else {
+                    return []
+                }
+
+                for contentToFetch in splitArray {
+                    group.addTask {
+                        try await self.move(oldEncryptedItems: contentToFetch,
+                                            toShareId: toShareId)
+                    }
+                }
+
+                let allConcurrentData = try await group
+                    .reduce(into: [SymmetricallyEncryptedItem]()) { result, data in
+                        result.append(contentsOf: data)
+                    }
+                return allConcurrentData
+            }
+            return sortedConcurrentDatas
+        } catch {
+            throw error
+        }
     }
 }

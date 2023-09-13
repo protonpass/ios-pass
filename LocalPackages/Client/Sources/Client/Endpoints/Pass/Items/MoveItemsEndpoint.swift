@@ -1,5 +1,5 @@
 //
-// MoveItemEndpoint.swift
+// MoveItemsEndpoint.swift
 // Proton Pass - Created on 29/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,14 +18,73 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreNetworking
-import ProtonCoreServices
 import CryptoKit
 import Foundation
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public struct MoveItemsResponse: Decodable {
     let code: Int
     let items: [ItemRevision]
+}
+
+public struct MoveItemsRequest: Encodable {
+    /// Encrypted ID of the destination share
+    public let shareId: String
+    public let items: [ItemToBeMovedContainer]
+
+    enum CodingKeys: String, CodingKey {
+        case shareId = "ShareID"
+        case items = "Items"
+    }
+}
+
+extension MoveItemsRequest {
+    init(itemsContent: [ItemContent],
+         destinationShareId: String,
+         destinationShareKey: DecryptedShareKey) throws {
+        let encryptedItems = try itemsContent.map { try Self.createItemRevision(itemContent: $0,
+                                                                                destinationShareId: destinationShareId,
+                                                                                destinationShareKey: destinationShareKey)
+        }
+        self.init(shareId: destinationShareId,
+                  items: encryptedItems)
+    }
+
+    private static func createItemRevision(itemContent: ItemContent,
+                                           destinationShareId: String,
+                                           destinationShareKey: DecryptedShareKey) throws
+        -> ItemToBeMovedContainer {
+        let itemKey = try Data.random()
+        let encryptedContent = try AES.GCM.seal(itemContent.protobuf.data(),
+                                                key: itemKey,
+                                                associatedData: .itemContent)
+
+        guard let content = encryptedContent.combined?.base64EncodedString() else {
+            throw PPClientError.crypto(.failedToAESEncrypt)
+        }
+
+        let encryptedItemKey = try AES.GCM.seal(itemKey,
+                                                key: destinationShareKey.keyData,
+                                                associatedData: .itemKey)
+        let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
+        let itemToBeMoved = ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
+                                          contentFormatVersion: 1,
+                                          content: content,
+                                          itemKey: encryptedItemKeyData.base64EncodedString())
+        return ItemToBeMovedContainer(itemId: itemContent.itemId,
+                                      item: itemToBeMoved)
+    }
+}
+
+public struct ItemToBeMovedContainer: Codable {
+    public let itemId: String
+    public let item: ItemToBeMoved
+
+    enum CodingKeys: String, CodingKey {
+        case itemId = "ItemID"
+        case item = "Item"
+    }
 }
 
 public struct MoveItemsEndpoint: Endpoint {
@@ -35,73 +94,10 @@ public struct MoveItemsEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
-    public var body: MoveItemRequest?
-
-    public init(request: MoveItemRequest, fromShareId: String) {
-        debugDescription = "Move item"
-        path = "/pass/v1/share/\(fromShareId)/item/\(itemId)/share"
-        method = .put
-        body = request
-    }
-}
-
-public struct MoveItemsRequest: Encodable {
-    /// Encrypted ID of the destination share
-    public let shareId: String
-    public let items: [ItemToBeMoved]
-    
-    enum CodingKeys: String, CodingKey {
-        case shareId = "ShareID"
-        case items = "Items"
-    }
-}
-
-extension MoveItemsRequest {
-    init(itemsContent: [ProtobufableItemContentProtocol],
-         destinationShareId: String,
-         destinationShareKey: DecryptedShareKey) throws {
-        let encryptedItems = try itemsContent.map { try Self.createItemRevision(itemContent: $0,
-                                                                       destinationShareId: destinationShareId,
-                                                                       destinationShareKey: destinationShareKey) }
-        self.init(shareId: destinationShareId,
-                  items: encryptedItems)
-    }
-    
-    private static func createItemRevision(itemContent: ProtobufableItemContentProtocol,
-                                    destinationShareId: String,
-                                    destinationShareKey: DecryptedShareKey) throws -> ItemToBeMoved {
-        let itemKey = try Data.random()
-        let encryptedContent = try AES.GCM.seal(itemContent.data(),
-                                                key: itemKey,
-                                                associatedData: .itemContent)
-        
-        guard let content = encryptedContent.combined?.base64EncodedString() else {
-            throw PPClientError.crypto(.failedToAESEncrypt)
-        }
-        
-        let encryptedItemKey = try AES.GCM.seal(itemKey,
-                                                key: destinationShareKey.keyData,
-                                                associatedData: .itemKey)
-        let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
-        return ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
-                            contentFormatVersion: 1,
-                            content: content,
-                            itemKey: encryptedItemKeyData.base64EncodedString())
-    }
-}
-
-
-public struct MoveItemsEndpoint: Endpoint {
-    public typealias Body = MoveItemRequest
-    public typealias Response = MoveItemResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
     public var body: MoveItemsRequest?
 
     public init(request: MoveItemsRequest, fromShareId: String) {
-        debugDescription = "Move item"
+        debugDescription = "Move items"
         path = "/pass/v1/share/\(fromShareId)/item/share"
         method = .put
         body = request

@@ -61,6 +61,20 @@ protocol VaultsManagerProtocol: Sendable {
 
     func refresh()
     func fullSync() async throws
+    func select(_ selection: VaultSelection)
+    func isSelected(_ selection: VaultSelection) -> Bool
+    func getItems(for vault: Vault) -> [ItemUiModel]
+    func getItemCount(for selection: Vault) -> Int
+    func getItemCount(for selection: VaultSelection) -> Int
+    func getAllVaultContents() -> [VaultContentUiModel]
+    func getAllVaults() -> [Vault]
+    func vaultHasTrashedItems(_ vault: Vault) -> Bool
+    func delete(vault: Vault) async throws
+    func restoreAllTrashedItems() async throws
+    func permanentlyDeleteAllTrashedItems() async throws
+    func getPrimaryVault() -> Vault?
+    func getSelectedShareId() -> String?
+    func getFilteredItems() -> [ItemUiModel]
 }
 
 final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {
@@ -276,6 +290,10 @@ extension VaultsManager {
         guard case let .loaded(vaults, _) = state else { return [] }
 
         return vaults.first { $0.vault.id == vault.id }?.items ?? []
+    }
+
+    func getItemCount(for selection: Vault) -> Int {
+        getItems(for: selection).count
     }
 
     func getItemCount(for selection: VaultSelection) -> Int {

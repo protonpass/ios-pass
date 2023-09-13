@@ -273,8 +273,8 @@ private extension HomepageCoordinator {
                                                      titleMode: mode)
                 case .autoFillInstructions:
                     self.present(AutoFillInstructionsView())
-                case let .moveItemsBetweenVault(item):
-                    self.itemMoveBetweenVault(item: item)
+                case let .moveItemsBetweenVault(currentVault, itemToMove):
+                    self.itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
                 }
             }
             .store(in: &cancellables)
@@ -293,7 +293,7 @@ private extension HomepageCoordinator {
                     }
                 case let .displayErrorBanner(errorLocalized):
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
-                case let .displaySuccessMessage(message, config):
+                case let .successMessage(message, config):
                     self.displaySuccessBanner(with: message, and: config)
                 }
             }
@@ -494,15 +494,14 @@ private extension HomepageCoordinator {
         }
     }
 
-    func itemMoveBetweenVault(item: ItemContent) {
+    func itemMoveBetweenVault(currentVault: Vault, itemToMove: ItemContent?) {
         let allVaults = vaultsManager.getAllVaultContents()
-        guard !allVaults.isEmpty,
-              let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else {
+        guard !allVaults.isEmpty else {
             return
         }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
-                                               currentVault: .init(vaultContent: currentVault),
-                                               itemContent: item)
+        let viewModel = MoveVaultListViewModel(allVaults: allVaults,
+                                               currentVault: currentVault,
+                                               itemContent: itemToMove)
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
