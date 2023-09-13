@@ -53,10 +53,8 @@ private extension FullSyncProgressView {
         ZStack {
             if viewModel.isDoneSynching {
                 doneView
-                    .navigationBarHidden(true)
             } else {
                 inProgressView
-                    .navigationTitle("Syncing items...")
             }
         }
         .animation(.default, value: viewModel.isDoneSynching)
@@ -66,35 +64,93 @@ private extension FullSyncProgressView {
 private extension FullSyncProgressView {
     var inProgressView: some View {
         VStack {
-            ScrollView {
-                VStack(alignment: .leading) {
-                    if !viewModel.mode.isFullSync {
-                        Text("Syncing items...")
-                            .font(.title3.bold())
-                            .foregroundColor(PassColor.textNorm.toColor)
-                    }
-
-                    Text("We are downloading and decrypting your items. This might take a few minutes.")
-                        .foregroundColor(PassColor.textNorm.toColor)
-                        .padding(.vertical, viewModel.mode.isFullSync ? 0 : nil)
-                        .fixedSize(horizontal: false, vertical: true)
-
-                    if viewModel.progresses.isEmpty {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    } else {
-                        ForEach(viewModel.progresses) { progress in
-                            VaultSyncProgressView(progress: progress)
-                                .padding(.vertical, 4)
-                        }
-                    }
-                }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                .animation(.default, value: viewModel.progresses.count)
+            Spacer()
+            overallProgressView
+            if isShowingDetail {
+                PassDivider()
+                    .padding(.horizontal)
+                allProgressesView
+            } else {
+                Spacer()
+                Spacer()
+                moreInfoButton
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .animation(.default, value: isShowingDetail)
+    }
+}
+
+private extension FullSyncProgressView {
+    var overallProgressView: some View {
+        VStack(alignment: .center) {
+            Image(uiImage: PassIcon.fullSyncInProgress)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80)
+
+            Text("Syncing items...")
+                .font(.title3.bold())
+                .foregroundColor(PassColor.textNorm.toColor)
+                .padding(.bottom, 8)
+
+            Text("We are downloading and decrypting your items.")
+                .foregroundColor(PassColor.textNorm.toColor)
+
+            Text("This might take a few minutes.")
+                .foregroundColor(PassColor.textNorm.toColor)
+
+            Text("Please keep the app open.")
+                .foregroundColor(PassColor.textNorm.toColor)
+                .padding(.top, 8)
+                .padding(.bottom, 16)
+
+            if viewModel.progresses.isEmpty {
+                ProgressView()
+            } else {
+                ProgressView(value: Float(viewModel.numberOfSyncedVaults()),
+                             total: Float(viewModel.progresses.count))
+                    .frame(width: 200)
+                    .animation(.default, value: viewModel.numberOfSyncedVaults())
+                    .progressViewStyle(.pass)
+            }
+        }
+        .animation(.default, value: viewModel.progresses.isEmpty)
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding()
+    }
+}
+
+private extension FullSyncProgressView {
+    var moreInfoButton: some View {
+        Button(action: {
+            isShowingDetail = true
+        }, label: {
+            VStack(alignment: .center) {
+                Text("More info")
+                Label("", systemImage: "chevron.down")
+            }
+            .foregroundColor(PassColor.textWeak.toColor)
+        })
+        .buttonStyle(.plain)
+        .disabled(viewModel.progresses.isEmpty)
+        .opacity(viewModel.progresses.isEmpty ? 0 : 1)
+    }
+}
+
+private extension FullSyncProgressView {
+    var allProgressesView: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading) {
+                ForEach(viewModel.progresses) { progress in
+                    VaultSyncProgressView(progress: progress)
+                        .padding(.vertical, 4)
+                }
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .animation(.default, value: viewModel.progresses.count)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
