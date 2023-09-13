@@ -120,7 +120,10 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToAnotherVault() {
-        router.present(for: .moveItemsBetweenVault(itemContent))
+        guard let vault else {
+            return
+        }
+        router.present(for: .moveItemsBetweenVault(currentVault: vault, singleItemToMove: itemContent))
     }
 
     func moveToTrash() {
