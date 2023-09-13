@@ -63,6 +63,3 @@ Carthage/
 **/fastlane/Preview.html
 **/fastlane/screenshots
 **/fastlane/test_output
-
-# Obfuscated constants
-**/ObfuscatedConstants.swift
