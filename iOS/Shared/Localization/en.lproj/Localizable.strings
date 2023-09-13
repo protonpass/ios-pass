@@ -221,6 +221,10 @@
 "Confirm" = "Confirm";
 "Undo" = "Undo";
 
+/* Item moving to other vault*/
+"Item moved to vault \"%@\"" = "Item moved to vault \"%@\"";
+"Items from %@ moved to vault \"%@\"" = "Items from %@ moved to vault \"%@\"";
+
 /* Messages when items are created */
 "Login created" = "Login created";
 "Alias created" = "Alias created";
