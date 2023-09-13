@@ -133,7 +133,7 @@ private extension VaultSyncProgressView {
 
 private extension VaultSyncProgressView {
     func spinnerLabel(text: String) -> some View {
-        HStack {
+        HStack(spacing: 8) {
             ProgressView()
             Text(text)
         }
