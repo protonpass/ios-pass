@@ -20,7 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
+import Client
 
 protocol RevokeUserShareAccessUseCase: Sendable {
     func execute(with userShareId: String, and shareId: String) async throws

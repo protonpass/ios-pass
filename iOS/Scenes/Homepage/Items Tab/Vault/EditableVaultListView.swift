@@ -33,7 +33,7 @@ struct EditableVaultListView: View {
         VStack(alignment: .leading) {
             ScrollView {
                 VStack(spacing: 0) {
-                    switch viewModel.vaultsManager.state {
+                    switch viewModel.state {
                     case .error, .loading:
                         // Should never happen
                         ProgressView()
@@ -43,7 +43,7 @@ struct EditableVaultListView: View {
                         PassDivider()
 
                         ForEach(vaults, id: \.hashValue) { vault in
-                            vaultRow(for: .precise(vault.vault))
+                            vaultRow(for: .precise(vault.vault), vaultContent: vault)
                             PassDivider()
                         }
 
@@ -54,7 +54,7 @@ struct EditableVaultListView: View {
                 }
                 .padding(.horizontal)
             }
-            .animation(.default, value: viewModel.vaultsManager.state)
+            .animation(.default, value: viewModel.state)
             HStack {
                 CapsuleTextButton(title: "Create vault".localized,
                                   titleColor: PassColor.interactionNormMajor2,
@@ -79,18 +79,16 @@ struct EditableVaultListView: View {
                           })
                },
                message: {
-                   Text("not shared %d alias(es)".localized(viewModel.numberOfAliasforSharedVault))
+                   Text("not shared %d alias(es)".localized(viewModel.numberOfAliasForSharedVault))
                })
     }
 
     @ViewBuilder
-    private func vaultRow(for selection: VaultSelection) -> some View {
-        let vaultsManager = viewModel.vaultsManager
-
+    private func vaultRow(for selection: VaultSelection, vaultContent: VaultContentUiModel? = nil) -> some View {
         HStack {
             Button(action: {
                 dismiss()
-                vaultsManager.select(selection)
+                viewModel.select(selection)
             }, label: {
                 VaultRow(thumbnail: {
                              CircleButton(icon: selection.icon,
@@ -98,9 +96,9 @@ struct EditableVaultListView: View {
                                           backgroundColor: selection.color.withAlphaComponent(0.16))
                          },
                          title: selection.title,
-                         itemCount: vaultsManager.getItemCount(for: selection),
+                         itemCount: vaultContent?.itemCount ?? 0,
                          isShared: selection.shared,
-                         isSelected: vaultsManager.isSelected(selection),
+                         isSelected: viewModel.isSelected(selection),
                          height: 74)
             })
             .buttonStyle(.plain)
@@ -111,7 +109,7 @@ struct EditableVaultListView: View {
             case .all:
                 EmptyView()
             case let .precise(vault):
-                vaultTrailingView(vault)
+                vaultTrailingView(vault, vaultContent: vaultContent)
             case .trash:
                 trashTrailingView
             }
@@ -127,7 +125,7 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private func vaultTrailingView(_ vault: Vault) -> some View {
+    private func vaultTrailingView(_ vault: Vault, vaultContent: VaultContentUiModel? = nil) -> some View {
         Menu(content: {
             if vault.isOwner {
                 Button(action: {
@@ -167,16 +165,18 @@ struct EditableVaultListView: View {
                 })
             }
 
-            Button(action: {
-                viewModel.router.present(for: .moveItemsBetweenVault(currentVault: vault,
-                                                                     singleItemToMove: nil))
-            }, label: {
-                Label(title: {
-                    Text("Move all items to another vault")
-                }, icon: {
-                    IconProvider.users
+            if let vaultContent, !vaultContent.items.isEmpty {
+                Button(action: {
+                    viewModel.router.present(for: .moveItemsBetweenVault(currentVault: vault,
+                                                                         singleItemToMove: nil))
+                }, label: {
+                    Label(title: {
+                        Text("Move all items to another vault")
+                    }, icon: {
+                        IconProvider.users
+                    })
                 })
-            })
+            }
 
             Divider()
 
@@ -194,7 +194,7 @@ struct EditableVaultListView: View {
 
     @ViewBuilder
     private var trashTrailingView: some View {
-        if viewModel.vaultsManager.getItemCount(for: .trash) > 0 {
+        if viewModel.hasTrash {
             Menu(content: {
                 Button(action: viewModel.restoreAllTrashedItems) {
                     Label(title: {
