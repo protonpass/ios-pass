@@ -23,6 +23,19 @@ import Combine
 import Entities
 import SwiftUI
 
+struct NavigationActions {
+    let dismissBeforeShowing: Bool
+    let refresh: Bool
+    let telemetryEvent: TelemetryEventType?
+    init(dismissBeforeShowing: Bool = false,
+         refresh: Bool = false,
+         telemetryEvent: TelemetryEventType? = nil) {
+        self.dismissBeforeShowing = dismissBeforeShowing
+        self.refresh = refresh
+        self.telemetryEvent = telemetryEvent
+    }
+}
+
 enum RouterDestination: Hashable {
     case urlPage(urlString: String)
     case openSettings
@@ -41,11 +54,13 @@ enum SheetDestination: Equatable, Hashable {
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
+    case moveItemsBetweenVault(ItemContent)
 }
 
 enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
+    case displaySuccessMessage(String, config: NavigationActions)
 }
 
 final class MainUIKitSwiftUIRouter {

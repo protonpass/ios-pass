@@ -273,6 +273,8 @@ private extension HomepageCoordinator {
                                                      titleMode: mode)
                 case .autoFillInstructions:
                     self.present(AutoFillInstructionsView())
+                case let .moveItemsBetweenVault(item):
+                    self.itemMoveBetweenVault(item: item)
                 }
             }
             .store(in: &cancellables)
@@ -291,6 +293,8 @@ private extension HomepageCoordinator {
                     }
                 case let .displayErrorBanner(errorLocalized):
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
+                case let .displaySuccessMessage(message, config):
+                    self.displaySuccessBanner(with: message, and: config)
                 }
             }
             .store(in: &cancellables)
@@ -470,6 +474,44 @@ private extension HomepageCoordinator {
                 }
             }
         }
+    }
+
+    func displaySuccessBanner(with message: String, and config: NavigationActions) {
+        if let event = config.telemetryEvent {
+            addNewEvent(type: event)
+        }
+
+        if config.dismissBeforeShowing {
+            dismissTopMostViewController(animated: true) { [weak self] in
+                self?.bannerManager.displayBottomSuccessMessage(message)
+            }
+        } else {
+            bannerManager.displayBottomSuccessMessage(message)
+        }
+
+        if config.refresh {
+            refresh()
+        }
+    }
+
+    func itemMoveBetweenVault(item: ItemContent) {
+        let allVaults = vaultsManager.getAllVaultContents()
+        guard !allVaults.isEmpty,
+              let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else {
+            return
+        }
+        let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
+                                               currentVault: .init(vaultContent: currentVault),
+                                               itemContent: item)
+        let view = MoveVaultListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+
+        let customHeight = 66 * allVaults.count + 180
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 
     // MARK: - UI Helper presentation functions
@@ -1077,32 +1119,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
         showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
-    }
-
-    func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault) {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage("Item moved to vault \"\(vault.name)\"")
-        }
-        refresh()
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate) {
-        let allVaults = vaultsManager.getAllVaultContents()
-        guard !allVaults.isEmpty,
-              let currentVault = allVaults.first(where: { $0.vault.shareId == item.shareId }) else { return }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults.map { .init(vaultContent: $0) },
-                                               currentVault: .init(vaultContent: currentVault))
-        viewModel.delegate = delegate
-        let view = MoveVaultListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = 66 * allVaults.count + 180
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {

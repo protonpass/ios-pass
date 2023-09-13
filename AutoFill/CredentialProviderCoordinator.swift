@@ -341,6 +341,8 @@ private extension CredentialProviderCoordinator {
                     }
                 case let .displayErrorBanner(error):
                     self.bannerManager.displayTopErrorMessage(error)
+                default:
+                    return
                 }
             }
             .store(in: &cancellables)
