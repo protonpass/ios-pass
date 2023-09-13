@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "FullSyncDone.svg",
+      "filename" : "FullSyncDoneLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "FullSyncDoneDark.svg",
       "idiom" : "universal"
     }
   ],
