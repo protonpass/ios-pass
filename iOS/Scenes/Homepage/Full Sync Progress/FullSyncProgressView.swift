@@ -25,6 +25,7 @@ import SwiftUI
 
 struct FullSyncProgressView: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var isShowingDetail = false
     @StateObject private var viewModel: FullSyncProgressViewModel
     var onContinue: (() -> Void)?
 
@@ -38,7 +39,6 @@ struct FullSyncProgressView: View {
             NavigationView {
                 realBody
                     .background(PassColor.backgroundNorm.toColor)
-                    .navigationTitle("Syncing items...")
             }
             .navigationViewStyle(.stack)
         case .logIn:
@@ -48,7 +48,23 @@ struct FullSyncProgressView: View {
 }
 
 private extension FullSyncProgressView {
+    @ViewBuilder
     var realBody: some View {
+        ZStack {
+            if viewModel.isDoneSynching {
+                doneView
+                    .navigationBarHidden(true)
+            } else {
+                inProgressView
+                    .navigationTitle("Syncing items...")
+            }
+        }
+        .animation(.default, value: viewModel.isDoneSynching)
+    }
+}
+
+private extension FullSyncProgressView {
+    var inProgressView: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -78,18 +94,42 @@ private extension FullSyncProgressView {
                 .animation(.default, value: viewModel.progresses.count)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+}
 
-            DisablableCapsuleTextButton(title: "Continue".localized,
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.interactionNormMajor1,
-                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: !viewModel.isDoneSynching,
-                                        action: handleContinuation)
+private extension FullSyncProgressView {
+    var doneView: some View {
+        VStack {
+            Spacer()
+
+            Image(uiImage: PassIcon.fullSyncDone)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 156)
+
+            Text("Sync complete")
+                .font(.title2.bold())
+                .foregroundColor(PassColor.textNorm.toColor)
+                .padding(.top)
+
+            if !viewModel.mode.isFullSync {
+                Text("The app is now ready to use")
+                    .foregroundColor(PassColor.textNorm.toColor)
+            }
+
+            Spacer()
+
+            CapsuleTextButton(title: "Continue".localized,
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNormMajor1,
+                              action: handleContinuation)
                 .padding()
         }
     }
+}
 
+private extension FullSyncProgressView {
     func handleContinuation() {
         switch viewModel.mode {
         case .fullSync:
@@ -97,121 +137,5 @@ private extension FullSyncProgressView {
         case .logIn:
             onContinue?()
         }
-    }
-}
-
-// MARK: - VaultSyncProgressView
-
-private struct VaultSyncProgressView: View {
-    let progress: VaultSyncProgress
-
-    var body: some View {
-        HStack {
-            if let vault = progress.vault {
-                content(vault: vault, itemsState: progress.itemsState)
-            } else {
-                skeleton
-            }
-        }
-    }
-}
-
-private extension VaultSyncProgressView {
-    var skeleton: some View {
-        HStack {
-            AnimatingGradient()
-                .frame(width: 48, height: 48)
-                .clipShape(Circle())
-
-            VStack(alignment: .leading) {
-                AnimatingGradient()
-                    .frame(width: 170, height: 16)
-                    .clipShape(Capsule())
-                Spacer()
-                AnimatingGradient()
-                    .frame(height: 16)
-                    .clipShape(Capsule())
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-}
-
-private extension VaultSyncProgressView {
-    func content(vault: Vault, itemsState: VaultSyncProgress.ItemsState) -> some View {
-        HStack(spacing: 16) {
-            thumbnail(for: vault)
-            detail(vault: vault, itemsState: itemsState)
-            Spacer()
-            if progress.isDone {
-                Image(uiImage: IconProvider.checkmark)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(PassColor.interactionNorm.toColor)
-                    .frame(maxHeight: 20)
-            }
-        }
-        .animation(.default, value: progress.isDone)
-    }
-
-    @ViewBuilder
-    func thumbnail(for vault: Vault) -> some View {
-        let icon = vault.displayPreferences.icon.icon.bigImage
-        let color = vault.displayPreferences.color.color.color
-        CircleButton(icon: icon,
-                     iconColor: color,
-                     backgroundColor: color.withAlphaComponent(0.16),
-                     type: .big)
-    }
-
-    func detail(vault: Vault, itemsState: VaultSyncProgress.ItemsState) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(vault.name)
-                .font(.headline)
-                .foregroundColor(PassColor.textNorm.toColor)
-
-            Spacer()
-
-            switch itemsState {
-            case .loading:
-                spinnerLabel(text: "Preparing...")
-
-            case let .download(downloaded, total):
-                if progress.isEmpty {
-                    emptyText
-                } else {
-                    spinnerLabel(text: "\(percentage(done: downloaded, total: total))% downloaded...")
-                }
-
-            case let .decrypt(decrypted, total):
-                if progress.isEmpty {
-                    emptyText
-                } else if progress.isDone {
-                    Text("%d item(s)".localized(total))
-                        .foregroundColor(PassColor.textWeak.toColor)
-                } else {
-                    spinnerLabel(text: "\(percentage(done: decrypted, total: total))% decrypted...")
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    var emptyText: some View {
-        Text("Empty")
-            .font(.body.italic())
-            .foregroundColor(PassColor.textWeak.toColor)
-    }
-
-    func spinnerLabel(text: String) -> some View {
-        HStack {
-            ProgressView()
-            Text(text)
-        }
-        .foregroundColor(PassColor.textWeak.toColor)
-    }
-
-    func percentage(done: Int, total: Int) -> String {
-        String(format: "%.0f", Float(done) / Float(total) * 100)
     }
 }

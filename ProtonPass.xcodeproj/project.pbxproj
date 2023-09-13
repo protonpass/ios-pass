@@ -325,6 +325,7 @@
 		35AC9A6D2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
 		35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */; };
+		35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */; };
 		35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35B9321D2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
@@ -820,6 +821,7 @@
 		35AC9A672A0C16FE00FBCEEC /* EditCustomFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCustomFieldView.swift; sourceTree = "<group>"; };
 		35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldEditionCoordinator.swift; sourceTree = "<group>"; };
 		35B089DB288E8A34000D2ECB /* CreateEditNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditNoteViewModel.swift; sourceTree = "<group>"; };
+		35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSyncProgressView.swift; sourceTree = "<group>"; };
 		35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRepository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
 		35C2161529EA8991001720FF /* iOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release.xcconfig"; sourceTree = "<group>"; };
@@ -1378,6 +1380,7 @@
 			children = (
 				356650D52AAF604D00BFF4F3 /* FullSyncProgressView.swift */,
 				356650D82AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift */,
+				35B6FD332AB1C9ED00E21FA4 /* VaultSyncProgressView.swift */,
 			);
 			path = "Full Sync Progress";
 			sourceTree = "<group>";
@@ -3053,6 +3056,7 @@
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
 				5BA664002A7D0A520049EA68 /* RevokeUserShareAccess.swift in Sources */,
+				35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */,
 				5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */,
 				356BC35929D6F36200F03497 /* OptionRow.swift in Sources */,
 				35733B7F29CC60D200052229 /* VaultColor.swift in Sources */,
