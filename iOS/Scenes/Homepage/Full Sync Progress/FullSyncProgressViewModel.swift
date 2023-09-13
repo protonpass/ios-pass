@@ -53,3 +53,9 @@ final class FullSyncProgressViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 }
+
+extension FullSyncProgressViewModel {
+    func numberOfSyncedVaults() -> Int {
+        progresses.filter(\.isDone).count
+    }
+}
