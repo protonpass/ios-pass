@@ -83,16 +83,17 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
 private extension MoveVaultListViewModel {
     var createMoveSuccessMessage: UIElementDisplay {
         if let itemContent {
-            return UIElementDisplay.successMessage("Item moved to vault \"\(selectedVault.vault.name)\"",
-                                                   config: NavigationActions(dismissBeforeShowing: true,
-                                                                             refresh: true,
-                                                                             telemetryEvent: .update(itemContent
-                                                                                 .type)))
+            return UIElementDisplay
+                .successMessage("Item moved to vault \"%@\"".localized(selectedVault.vault.name),
+                                config: NavigationActions(dismissBeforeShowing: true,
+                                                          refresh: true,
+                                                          telemetryEvent: .update(itemContent.type)))
         } else {
             return UIElementDisplay
-                .successMessage("Items from \(currentVault.vault.name) moved to vault \"\(selectedVault.vault.name)\"",
-                                config: NavigationActions(dismissBeforeShowing: true,
-                                                          refresh: true))
+                .successMessage("Items from %@ moved to vault \"%@\""
+                    .localized(currentVault.vault.name, selectedVault.vault.name),
+                    config: NavigationActions(dismissBeforeShowing: true,
+                                              refresh: true))
         }
     }
 }

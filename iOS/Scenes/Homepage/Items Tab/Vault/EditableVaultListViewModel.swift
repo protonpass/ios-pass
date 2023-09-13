@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Factory
+import Foundation
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
@@ -32,29 +33,41 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 }
 
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
-
-    private let logger = resolve(\SharedToolingContainer.logger)
-    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     @Published var showingAliasAlert = false
     @Published private(set) var isAllowedToShare = false
     @Published private(set) var loading = false
+    @Published private(set) var state = VaultManagerState.loading
+
+    private(set) var numberOfAliasForSharedVault = 0
+    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private var cancellables = Set<AnyCancellable>()
 
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
-    private(set) var numberOfAliasforSharedVault = 0
+    var hasTrash: Bool {
+        vaultsManager.getItemCount(for: .trash) > 0
+    }
 
     weak var delegate: EditableVaultListViewModelDelegate?
-    private var cancellables = Set<AnyCancellable>()
 
     init() {
         setUp()
+    }
+
+    deinit { print(deinitMessage) }
+
+    func select(_ selection: VaultSelection) {
+        vaultsManager.select(selection)
+    }
+
+    func isSelected(_ selection: VaultSelection) -> Bool {
+        vaultsManager.isSelected(selection)
     }
 }
 
@@ -62,7 +75,12 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
 private extension EditableVaultListViewModel {
     func setUp() {
-        vaultsManager.attach(to: self, storeIn: &cancellables)
+        vaultsManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                self?.state = state
+            }.store(in: &cancellables)
+
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -100,8 +118,8 @@ extension EditableVaultListViewModel {
 
     func share(vault: Vault) {
         setShareInviteVault(with: vault)
-        numberOfAliasforSharedVault = getVaultItemCount(for: vault, and: .alias)
-        if numberOfAliasforSharedVault > 0 {
+        numberOfAliasForSharedVault = getVaultItemCount(for: vault, and: .alias)
+        if numberOfAliasForSharedVault > 0 {
             showingAliasAlert = true
         } else {
             router.present(for: .sharingFlow)
