@@ -70,11 +70,6 @@ public enum VaultSyncProgressEvent {
 
 /// The sync progress of a given vault
 public struct VaultSyncProgress {
-    public enum VaultState {
-        case unknown
-        case known(Vault)
-    }
-
     public enum ItemsState {
         case loading
         case download(downloaded: Int, total: Int)
@@ -82,23 +77,23 @@ public struct VaultSyncProgress {
     }
 
     public let shareId: String
-    public let vaultState: VaultState
+    public let vault: Vault?
     public let itemsState: ItemsState
 
-    public init(shareId: String, vaultState: VaultState, itemsState: ItemsState) {
+    public init(shareId: String, vault: Vault?, itemsState: ItemsState) {
         self.shareId = shareId
-        self.vaultState = vaultState
+        self.vault = vault
         self.itemsState = itemsState
     }
 
     /// Make a copy of the progress with a new `VaultState`
-    public func copy(vaultState: VaultState) -> Self {
-        .init(shareId: shareId, vaultState: vaultState, itemsState: itemsState)
+    public func copy(vault: Vault?) -> Self {
+        .init(shareId: shareId, vault: vault, itemsState: itemsState)
     }
 
     /// Make a copy of the progress with a new `ItemsState`
     public func copy(itemState: ItemsState) -> Self {
-        .init(shareId: shareId, vaultState: vaultState, itemsState: itemState)
+        .init(shareId: shareId, vault: vault, itemsState: itemState)
     }
 }
 
@@ -109,15 +104,6 @@ extension VaultSyncProgress: Identifiable {
 }
 
 public extension VaultSyncProgress {
-    var vault: Vault? {
-        switch vaultState {
-        case let .known(vault):
-            return vault
-        case .unknown:
-            return nil
-        }
-    }
-
     var isDone: Bool {
         switch itemsState {
         case let .download(_, total):
