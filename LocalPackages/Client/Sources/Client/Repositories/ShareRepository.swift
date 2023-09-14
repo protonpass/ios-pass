@@ -78,6 +78,16 @@ public protocol ShareRepositoryProtocol: Sendable {
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
 }
 
+public extension ShareRepositoryProtocol {
+    func getRemoteShares() async throws -> [Share] {
+        try await getRemoteShares(eventStream: nil)
+    }
+
+    func upsertShares(_ shares: [Share]) async throws {
+        try await upsertShares(shares, eventStream: nil)
+    }
+}
+
 public struct ShareRepository: ShareRepositoryProtocol {
     public let symmetricKey: SymmetricKey
     public let userData: UserData

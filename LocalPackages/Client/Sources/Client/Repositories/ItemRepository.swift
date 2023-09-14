@@ -121,6 +121,12 @@ private extension ItemRepositoryProtocol {
 }
 
 public extension ItemRepositoryProtocol {
+    func refreshItems(shareId: String) async throws {
+        try await refreshItems(shareId: shareId, eventStream: nil)
+    }
+}
+
+public extension ItemRepositoryProtocol {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
         try await localDatasoure.getAllItems()
     }
