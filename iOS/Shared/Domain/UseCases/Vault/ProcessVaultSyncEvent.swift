@@ -39,7 +39,7 @@ final class ProcessVaultSyncEvent: Sendable, ProcessVaultSyncEventUseCase {
     func execute(_ event: VaultSyncProgressEvent,
                  with progresses: [VaultSyncProgress]) -> [VaultSyncProgress] {
         switch event {
-        case .done, .started:
+        case .done, .initialization, .started:
             return progresses
 
         case let .downloadedShares(shares):
