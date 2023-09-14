@@ -41,7 +41,6 @@ enum VaultMode {
 }
 
 protocol CreateEditVaultViewModelDelegate: AnyObject {
-    func createEditVaultViewModelDidCreateVault()
     func createEditVaultViewModelDidEditVault()
 }
 
@@ -57,6 +56,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -137,8 +137,9 @@ private extension CreateEditVaultViewModel {
             do {
                 self.logger.trace("Creating vault")
                 self.loading = true
-                try await self.shareRepository.createVault(self.generateVaultProtobuf())
-                self.delegate?.createEditVaultViewModelDidCreateVault()
+                try await self.createVaultUseCase(with: self.generateVaultProtobuf())
+                self.router.display(element: .successMessage("Vault created".localized,
+                                                             config: NavigationActions.dismissAndRefresh))
                 self.logger.info("Created vault")
             } catch {
                 self.logger.error(error)

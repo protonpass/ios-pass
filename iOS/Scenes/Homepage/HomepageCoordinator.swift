@@ -476,7 +476,7 @@ private extension HomepageCoordinator {
 
     func displaySuccessBanner(with message: String?, and config: NavigationActions) {
         parseNavigationConfig(config: config)
-        
+
         guard let message else { return }
         
         if config.dismissBeforeShowing {
@@ -1158,13 +1158,6 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 // MARK: - CreateEditVaultViewModelDelegate
 
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
-    func createEditVaultViewModelDidCreateVault() {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage("Vault created".localized)
-        }
-        vaultsManager.refresh()
-    }
-
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
             self?.bannerManager.displayBottomInfoMessage("Vault updated".localized)
