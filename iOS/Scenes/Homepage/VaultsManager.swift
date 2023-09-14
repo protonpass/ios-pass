@@ -292,8 +292,8 @@ extension VaultsManager {
         return vaults.first { $0.vault.id == vault.id }?.items ?? []
     }
 
-    func getItemCount(for selection: Vault) -> Int {
-        getItems(for: selection).count
+    func getItemCount(for vault: Vault) -> Int {
+        getItems(for: vault).count
     }
 
     func getItemCount(for selection: VaultSelection) -> Int {

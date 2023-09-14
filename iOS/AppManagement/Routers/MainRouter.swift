@@ -24,17 +24,21 @@ import Client
 import Entities
 import SwiftUI
 
-struct NavigationActions {
-    let dismissBeforeShowing: Bool
-    let refresh: Bool
-    let telemetryEvent: TelemetryEventType?
+struct NavigationConfiguration {
+    var dismissBeforeShowing = false
+    var refresh = false
+    var telemetryEvent: TelemetryEventType?
 
-    init(dismissBeforeShowing: Bool = false,
-         refresh: Bool = false,
-         telemetryEvent: TelemetryEventType? = nil) {
-        self.dismissBeforeShowing = dismissBeforeShowing
-        self.refresh = refresh
-        self.telemetryEvent = telemetryEvent
+    static var refresh: NavigationConfiguration {
+        NavigationConfiguration(refresh: true)
+    }
+
+    static var dimissAndRefresh: NavigationConfiguration {
+        NavigationConfiguration(dismissBeforeShowing: true, refresh: true)
+    }
+
+    static func dimissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
+        NavigationConfiguration(dismissBeforeShowing: true, refresh: true, telemetryEvent: event)
     }
 }
 
@@ -56,13 +60,13 @@ enum SheetDestination: Equatable, Hashable {
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
-    case moveItemsBetweenVault(currentVault: Vault, singleItemToMove: ItemContent?)
+    case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
 }
 
 enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
-    case successMessage(String, config: NavigationActions)
+    case successMessage(String, config: NavigationConfiguration)
 }
 
 final class MainUIKitSwiftUIRouter: Sendable {
