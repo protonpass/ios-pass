@@ -27,9 +27,6 @@ import Foundation
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate)
-    func editableVaultListViewModelDidDelete(vault: Vault)
-    func editableVaultListViewModelDidRestoreAllTrashedItems()
-    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
 }
 
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
@@ -96,7 +93,8 @@ private extension EditableVaultListViewModel {
             do {
                 self.loading = true
                 try await self.vaultsManager.delete(vault: vault)
-                self.delegate?.editableVaultListViewModelDidDelete(vault: vault)
+                self.vaultsManager.refresh()
+                self.router.display(element: .infosMessage("Vault « %@ » deleted".localized(vault.name)))
             } catch {
                 self.logger.error(error)
                 self.router.display(element: .displayErrorBanner(error))
@@ -156,7 +154,8 @@ extension EditableVaultListViewModel {
                 self.logger.trace("Restoring all trashed items")
                 self.loading = true
                 try await self.vaultsManager.restoreAllTrashedItems()
-                self.delegate?.editableVaultListViewModelDidRestoreAllTrashedItems()
+                self.router.display(element: .successMessage("All items restored".localized,
+                                                             config: NavigationActions.refresh))
                 self.logger.info("Restored all trashed items")
             } catch {
                 self.logger.error(error)
@@ -173,7 +172,8 @@ extension EditableVaultListViewModel {
                 self.logger.trace("Emptying all trashed items")
                 self.loading = true
                 try await self.vaultsManager.permanentlyDeleteAllTrashedItems()
-                self.delegate?.editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
+                self.router.display(element: .infosMessage("All items permanently deleted".localized,
+                                                           config: NavigationActions.refresh))
                 self.logger.info("Emptied all trashed items")
             } catch {
                 self.logger.error(error)
