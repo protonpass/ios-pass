@@ -167,8 +167,8 @@ struct EditableVaultListView: View {
 
             if let vaultContent, !vaultContent.items.isEmpty {
                 Button(action: {
-                    viewModel.router.present(for: .moveItemsBetweenVault(currentVault: vault,
-                                                                         singleItemToMove: nil))
+                    viewModel.router.present(for: .moveItemsBetweenVaults(currentVault: vault,
+                                                                          singleItemToMove: nil))
                 }, label: {
                     Label(title: {
                         Text("Move all items to another vault")
@@ -194,7 +194,7 @@ struct EditableVaultListView: View {
 
     @ViewBuilder
     private var trashTrailingView: some View {
-        if viewModel.hasTrash {
+        if viewModel.hasTrashItems {
             Menu(content: {
                 Button(action: viewModel.restoreAllTrashedItems) {
                     Label(title: {

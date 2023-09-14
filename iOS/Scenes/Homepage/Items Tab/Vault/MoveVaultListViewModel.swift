@@ -68,9 +68,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
             defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 self.router.display(element: .globalLoading(shouldShow: true))
-                try await self.moveItemsBetweenVaults(from: currentVault.vault.shareId,
-                                                      or: itemContent,
-                                                      to: selectedVault.vault.shareId)
+                try await self.moveItemsBetweenVaults(movingContext: movingContext)
                 router.display(element: self.createMoveSuccessMessage)
             } catch {
                 self.logger.error(error)
@@ -84,16 +82,21 @@ private extension MoveVaultListViewModel {
     var createMoveSuccessMessage: UIElementDisplay {
         if let itemContent {
             return UIElementDisplay
-                .successMessage("Item moved to vault \"%@\"".localized(selectedVault.vault.name),
-                                config: NavigationActions(dismissBeforeShowing: true,
-                                                          refresh: true,
-                                                          telemetryEvent: .update(itemContent.type)))
+                .successMessage("Item moved to vault « %@ »".localized(selectedVault.vault.name),
+                                config: NavigationConfiguration.dimissAndRefresh(with: .update(itemContent.type)))
         } else {
             return UIElementDisplay
-                .successMessage("Items from %@ moved to vault \"%@\""
+                .successMessage("Items from « %@ » moved to vault « %@ »"
                     .localized(currentVault.vault.name, selectedVault.vault.name),
-                    config: NavigationActions(dismissBeforeShowing: true,
-                                              refresh: true))
+                    config: NavigationConfiguration.dimissAndRefresh)
+        }
+    }
+
+    var movingContext: MovingContext {
+        if let itemContent {
+            return .item(itemContent, newShareId: selectedVault.vault.shareId)
+        } else {
+            return .vault(currentVault.vault.shareId, newShareId: selectedVault.vault.shareId)
         }
     }
 }

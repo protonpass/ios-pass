@@ -273,7 +273,7 @@ private extension HomepageCoordinator {
                                                      titleMode: mode)
                 case .autoFillInstructions:
                     self.present(AutoFillInstructionsView())
-                case let .moveItemsBetweenVault(currentVault, itemToMove):
+                case let .moveItemsBetweenVaults(currentVault, itemToMove):
                     self.itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
                 }
             }
@@ -470,7 +470,7 @@ private extension HomepageCoordinator {
         }
     }
 
-    func displaySuccessBanner(with message: String, and config: NavigationActions) {
+    func displaySuccessBanner(with message: String, and config: NavigationConfiguration) {
         if let event = config.telemetryEvent {
             addNewEvent(type: event)
         }
