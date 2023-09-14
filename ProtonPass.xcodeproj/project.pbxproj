@@ -284,6 +284,8 @@
 		35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7C29CC5DB700052229 /* VaultIcon.swift */; };
 		35733B7F29CC60D200052229 /* VaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7E29CC60D200052229 /* VaultColor.swift */; };
 		3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */; };
+		357C6B832AB34C4400A799A7 /* GetVaultContentForVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357C6B812AB34C4400A799A7 /* GetVaultContentForVault.swift */; };
+		357C6B842AB34C4400A799A7 /* MoveItemsBetweenVaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357C6B822AB34C4400A799A7 /* MoveItemsBetweenVaults.swift */; };
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
 		35855AB42A0A68DC0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
 		35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
@@ -443,8 +445,6 @@
 		5B653AF32A78EE0700D6869A /* UpdateCachedInvitations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */; };
 		5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */; };
 		5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */; };
-		5B7AD1A72AB1C494000D475A /* GetVaultContentForVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7AD1A62AB1C494000D475A /* GetVaultContentForVault.swift */; };
-		5B7AD1A92AB1C82E000D475A /* MoveItemsBetweenVaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7AD1A82AB1C82E000D475A /* MoveItemsBetweenVaults.swift */; };
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20632AA7454400457CA3 /* MBProgressHUD */; };
@@ -796,6 +796,8 @@
 		35733B7E29CC60D200052229 /* VaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultColor.swift; sourceTree = "<group>"; };
 		3575EB5229FAB017000FFD53 /* AppLockTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTime.swift; sourceTree = "<group>"; };
 		3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAppLockTimeView.swift; sourceTree = "<group>"; };
+		357C6B812AB34C4400A799A7 /* GetVaultContentForVault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetVaultContentForVault.swift; sourceTree = "<group>"; };
+		357C6B822AB34C4400A799A7 /* MoveItemsBetweenVaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveItemsBetweenVaults.swift; sourceTree = "<group>"; };
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
 		35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+NavigationTitleText.swift"; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
@@ -1497,6 +1499,15 @@
 			path = "Supporting Views";
 			sourceTree = "<group>";
 		};
+		357C6B802AB349DA00A799A7 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				5B7AD1A82AB1C82E000D475A /* MoveItemsBetweenVaults.swift */,
+				5B7AD1A62AB1C494000D475A /* GetVaultContentForVault.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		35855AB02A0A65F20091992F /* Password generator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1581,6 +1592,7 @@
 				5B8D20A92AA74B4700457CA3 /* DesignSystem */,
 				5B8D209B2AA748AB00457CA3 /* Client */,
 				3569AE402A695E070026B780 /* Entities */,
+				357C6B802AB349DA00A799A7 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1806,8 +1818,10 @@
 		5B1453AB2A696C5B0048B022 /* Vault */ = {
 			isa = PBXGroup;
 			children = (
+				357C6B812AB34C4400A799A7 /* GetVaultContentForVault.swift */,
 				5B083A832AAB145E00D1FF18 /* GetVaultInfos.swift */,
 				5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */,
+				357C6B822AB34C4400A799A7 /* MoveItemsBetweenVaults.swift */,
 				356650DA2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift */,
 				5B083A7F2AAA10B900D1FF18 /* TransferVaultOwnership.swift */,
 			);
@@ -2843,6 +2857,7 @@
 			files = (
 				35AC9A5C2A0BDAA300FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				5B1453992A6938660048B022 /* UserPermissionView.swift in Sources */,
+				357C6B832AB34C4400A799A7 /* GetVaultContentForVault.swift in Sources */,
 				356BC35029D6C57100F03497 /* SettingsView.swift in Sources */,
 				35E152C22A38864600E47E57 /* CreateEditCreditCardView.swift in Sources */,
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
@@ -2874,7 +2889,6 @@
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
 				5B14539F2A69652D0048B022 /* SetShareInviteVault.swift in Sources */,
-				5B7AD1A92AB1C82E000D475A /* MoveItemsBetweenVaults.swift in Sources */,
 				5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */,
 				3542E2D028DA4E7400194F24 /* ItemUiModel.swift in Sources */,
 				35711D562A7A61B8003B6845 /* SaveAllLogs.swift in Sources */,
@@ -2902,6 +2916,7 @@
 				5B653AF32A78EE0700D6869A /* UpdateCachedInvitations.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
+				357C6B842AB34C4400A799A7 /* MoveItemsBetweenVaults.swift in Sources */,
 				3559BA9D2A5B32550020E172 /* Browser.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
@@ -2935,7 +2950,6 @@
 				35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
 				35C281562A7BD6220077030C /* MapLoginItem.swift in Sources */,
-				5B7AD1A72AB1C494000D475A /* GetVaultContentForVault.swift in Sources */,
 				66CA928129F971CF00F2FC59 /* PaymentsConstants.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
