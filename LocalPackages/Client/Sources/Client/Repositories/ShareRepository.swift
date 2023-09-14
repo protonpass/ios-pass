@@ -386,9 +386,8 @@ private extension ShareRepository {
 
 private extension SymmetricallyEncryptedShare {
     func toVault(symmetricKey: SymmetricKey) throws -> Vault? {
-        guard share.shareType == .vault else { return nil }
+        guard share.shareType == .vault, let encryptedContent else { return nil }
 
-        guard let encryptedContent else { return nil }
         let decryptedContent = try symmetricKey.decrypt(encryptedContent)
         guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
         let vaultContent = try VaultProtobuf(data: decryptedContentData)
