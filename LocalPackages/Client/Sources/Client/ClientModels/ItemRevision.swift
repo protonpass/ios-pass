@@ -30,7 +30,7 @@ public struct ItemRevisionsPaginated: Decodable {
     public let revisionsData: [ItemRevision]
 }
 
-public struct ItemRevision: Decodable, Equatable, Sendable {
+public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
     public let itemID: String
     public let revision: Int64
     public let contentFormatVersion: Int64

@@ -215,6 +215,14 @@ extension UseCasesContainer {
     var getVaultInfos: Factory<GetVaultInfosUseCase> {
         self { GetVaultInfos(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
+
+    var moveItemsBetweenVaults: Factory<MoveItemsBetweenVaultsUseCase> {
+        self { MoveItemsBetweenVaults(repository: SharedRepositoryContainer.shared.itemRepository()) }
+    }
+
+    var getVaultContentForVault: Factory<GetVaultContentForVaultUseCase> {
+        self { GetVaultContentForVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
 }
 
 // MARK: - User

@@ -59,7 +59,7 @@ struct MoveVaultListView: View {
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: false,
                                             height: 44,
-                                            action: { dismiss(); viewModel.confirm() })
+                                            action: { dismiss(); viewModel.doMove() })
             }
             .padding([.bottom, .horizontal])
         }
@@ -68,7 +68,7 @@ struct MoveVaultListView: View {
         .animation(.default, value: viewModel.isFreeUser)
     }
 
-    private func vaultRow(for vault: VaultListUiModel) -> some View {
+    private func vaultRow(for vault: VaultContentUiModel) -> some View {
         Button(action: {
             viewModel.selectedVault = vault
         }, label: {

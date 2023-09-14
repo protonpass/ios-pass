@@ -27,7 +27,7 @@ public struct MoveItemRequest {
     public let item: ItemToBeMoved
 }
 
-public struct ItemToBeMoved {
+public struct ItemToBeMoved: Decodable {
     /// Encrypted ID of the VaultKey used to create this item
     /// >= 1
     public let keyRotation: Int64
