@@ -491,6 +491,7 @@
 		5B8D20C22AA7658B00457CA3 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20C12AA7658B00457CA3 /* ProtonCoreTestingToolkitUITestsCore */; };
 		5B8D20C62AA7666800457CA3 /* ProtonCoreTestingToolkitUITestsLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20C52AA7666800457CA3 /* ProtonCoreTestingToolkitUITestsLogin */; };
 		5B8D20C82AA7677B00457CA3 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20C72AA7677B00457CA3 /* ProtonCoreTestingToolkitUITestsPaymentsUI */; };
+		5B9931232AB329AF00EDAD91 /* CreateVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9931222AB329AF00EDAD91 /* CreateVault.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
 		5BA663EC2A7AA5090049EA68 /* GetFeatureFlagStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */; };
@@ -920,6 +921,7 @@
 		5B8D209B2AA748AB00457CA3 /* Client */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Client; path = LocalPackages/Client; sourceTree = "<group>"; };
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
 		5B8D20A92AA74B4700457CA3 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = LocalPackages/DesignSystem; sourceTree = "<group>"; };
+		5B9931222AB329AF00EDAD91 /* CreateVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVault.swift; sourceTree = "<group>"; };
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
 		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
 		5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFeatureFlagStatus.swift; sourceTree = "<group>"; };
@@ -1821,6 +1823,7 @@
 				357C6B822AB34C4400A799A7 /* MoveItemsBetweenVaults.swift */,
 				356650DA2AAF60DD00BFF4F3 /* ProcessVaultSyncEvent.swift */,
 				5B083A7F2AAA10B900D1FF18 /* TransferVaultOwnership.swift */,
+				5B9931222AB329AF00EDAD91 /* CreateVault.swift */,
 			);
 			path = Vault;
 			sourceTree = "<group>";
@@ -3089,6 +3092,7 @@
 				5BA663F22A7BDC6D0049EA68 /* LeaveShare.swift in Sources */,
 				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
+				5B9931232AB329AF00EDAD91 /* CreateVault.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URLExtensions.swift in Sources */,
 				354B24842A7820120060EDF7 /* ItemTypeFilterButton.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
