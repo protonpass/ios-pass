@@ -22,17 +22,18 @@
 
 import Client
 
+enum MovingContext {
+    case item(ItemIdentifiable, newShareId: String)
+    case vault(String, newShareId: String)
+}
+
 protocol MoveItemsBetweenVaultsUseCase: Sendable {
-    func execute(from currentSharedId: String,
-                 or itemToMove: ItemIdentifiable?,
-                 to newShareId: String) async throws
+    func execute(movingContext: MovingContext) async throws
 }
 
 extension MoveItemsBetweenVaultsUseCase {
-    func callAsFunction(from currentSharedId: String,
-                        or itemToMove: ItemIdentifiable?,
-                        to newShareId: String) async throws {
-        try await execute(from: currentSharedId, or: itemToMove, to: newShareId)
+    func callAsFunction(movingContext: MovingContext) async throws {
+        try await execute(movingContext: movingContext)
     }
 }
 
@@ -43,12 +44,11 @@ final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
         self.repository = repository
     }
 
-    func execute(from currentSharedId: String,
-                 or itemToMove: ItemIdentifiable?,
-                 to newShareId: String) async throws {
-        if let itemToMove {
+    func execute(movingContext: MovingContext) async throws {
+        switch movingContext {
+        case let .item(itemToMove, newShareId):
             try await repository.move(item: itemToMove, toShareId: newShareId)
-        } else {
+        case let .vault(currentSharedId, newShareId):
             try await repository.move(currentShareId: currentSharedId, toShareId: newShareId)
         }
     }

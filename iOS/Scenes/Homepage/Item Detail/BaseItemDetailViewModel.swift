@@ -123,7 +123,7 @@ class BaseItemDetailViewModel: ObservableObject {
         guard let vault else {
             return
         }
-        router.present(for: .moveItemsBetweenVault(currentVault: vault, singleItemToMove: itemContent))
+        router.present(for: .moveItemsBetweenVaults(currentVault: vault, singleItemToMove: itemContent))
     }
 
     func moveToTrash() {

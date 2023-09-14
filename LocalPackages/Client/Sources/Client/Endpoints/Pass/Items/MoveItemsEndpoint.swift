@@ -44,7 +44,6 @@ extension MoveItemsRequest {
          destinationShareId: String,
          destinationShareKey: DecryptedShareKey) throws {
         let encryptedItems = try itemsContent.map { try Self.createItemRevision(itemContent: $0,
-                                                                                destinationShareId: destinationShareId,
                                                                                 destinationShareKey: destinationShareKey)
         }
         self.init(shareId: destinationShareId,
@@ -52,7 +51,6 @@ extension MoveItemsRequest {
     }
 
     private static func createItemRevision(itemContent: ItemContent,
-                                           destinationShareId: String,
                                            destinationShareKey: DecryptedShareKey) throws
         -> ItemToBeMovedContainer {
         let itemKey = try Data.random()

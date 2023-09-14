@@ -50,7 +50,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private var cancellables = Set<AnyCancellable>()
 
-    var hasTrash: Bool {
+    var hasTrashItems: Bool {
         vaultsManager.getItemCount(for: .trash) > 0
     }
 
