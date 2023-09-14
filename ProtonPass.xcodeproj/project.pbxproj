@@ -1663,13 +1663,13 @@
 		35E5070B286FB57800A3F6EA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */,
 				5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */,
-				5B1453902A6831C60048B022 /* Sharing */,
 				35E5070C286FB58800A3F6EA /* App */,
 				35F8CCFE29B617510017DBC6 /* Homepage */,
 				354E9A9A2A443CA200AD2B9A /* LocalAuthentication */,
+				5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */,
 				354E19F2293F8EB900A3F853 /* Onboarding */,
+				5B1453902A6831C60048B022 /* Sharing */,
 				35E50712286FB5F500A3F6EA /* Welcome */,
 			);
 			path = Scenes;
