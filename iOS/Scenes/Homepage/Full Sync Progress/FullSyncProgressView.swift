@@ -75,10 +75,10 @@ private extension FullSyncProgressView {
                 Spacer()
                 Spacer()
                 moreInfoButton
+                    .padding(.bottom)
             }
         }
         .animation(.default, value: isShowingDetail)
-        .padding()
     }
 }
 
@@ -122,7 +122,7 @@ private extension FullSyncProgressView {
         }
         .animation(.default, value: viewModel.progresses.isEmpty)
         .frame(maxWidth: .infinity, alignment: .center)
-        .padding()
+        .padding(.horizontal)
     }
 }
 
