@@ -44,13 +44,13 @@ final class ProcessVaultSyncEvent: Sendable, ProcessVaultSyncEventUseCase {
 
         case let .downloadedShares(shares):
             return shares.map { .init(shareId: $0.shareID,
-                                      vaultState: .unknown,
+                                      vault: nil,
                                       itemsState: .loading) }
 
         case let .decryptedVault(vault):
             return progresses.map { progress in
                 if progress.shareId == vault.shareId {
-                    return progress.copy(vaultState: .known(vault))
+                    return progress.copy(vault: vault)
                 } else {
                     return progress
                 }
