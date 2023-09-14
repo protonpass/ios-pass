@@ -21,7 +21,7 @@
 import Combine
 
 // All the models related to vault sync progress feature
-public typealias VaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>
+public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
 
 /// Object to track events when fetching items for vaults
 public struct GetRemoteItemsProgress {
@@ -51,6 +51,8 @@ public struct DecryptItemsProgress {
 
 /// Possible events when synching vaults
 public enum VaultSyncProgressEvent {
+    /// An initial value for the sake of being able to make a `CurrentValueSubject`
+    case initialization
     /// The sync progress has started (log in or full sync)
     case started
     /// Remote shares are fetched but not yet decrypted so no info like vault names or icons are known at this
