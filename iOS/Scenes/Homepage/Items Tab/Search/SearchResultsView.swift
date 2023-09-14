@@ -143,7 +143,7 @@ private extension SearchResultsView {
             }
             .listStyle(.plain)
             .animation(.default, value: viewModel.results.hashValue)
-            .gesture(DragGesture().onChanged { _ in onScroll() })
+            .simultaneousGesture(DragGesture().onChanged { _ in onScroll() })
             .onChange(of: selectedType) { _ in
                 proxy.scrollTo(uuid)
             }
