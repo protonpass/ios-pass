@@ -61,6 +61,7 @@ enum SheetDestination: Equatable, Hashable {
     case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
     case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
+    case fullSync
 }
 
 enum UIElementDisplay {
