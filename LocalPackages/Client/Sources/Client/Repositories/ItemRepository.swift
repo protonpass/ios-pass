@@ -56,7 +56,7 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
     /// Full sync for a given `shareId`
-    func refreshItems(shareId: String) async throws
+    func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws
 
     @discardableResult
     func createItem(itemContent: ProtobufableItemContentProtocol,
@@ -121,6 +121,12 @@ private extension ItemRepositoryProtocol {
 }
 
 public extension ItemRepositoryProtocol {
+    func refreshItems(shareId: String) async throws {
+        try await refreshItems(shareId: shareId, eventStream: nil)
+    }
+}
+
+public extension ItemRepositoryProtocol {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
         try await localDatasoure.getAllItems()
     }
@@ -146,15 +152,19 @@ public extension ItemRepositoryProtocol {
         try await localDatasoure.getAliasItem(email: email)
     }
 
-    func refreshItems(shareId: String) async throws {
+    func refreshItems(shareId: String, eventStream: VaultSyncEventStream?) async throws {
         logger.trace("Refreshing share \(shareId)")
-        let itemRevisions = try await remoteDatasource.getItemRevisions(shareId: shareId)
+        let itemRevisions = try await remoteDatasource.getItemRevisions(shareId: shareId,
+                                                                        eventStream: eventStream)
         logger.trace("Got \(itemRevisions.count) items from remote for share \(shareId)")
 
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
-        for itemRevision in itemRevisions {
+        for (index, itemRevision) in itemRevisions.enumerated() {
             let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision, shareId: shareId)
+            eventStream?.send(.decryptItems(.init(shareId: shareId,
+                                                  total: itemRevisions.count,
+                                                  decrypted: index + 1)))
             encryptedItems.append(encrypedItem)
         }
 

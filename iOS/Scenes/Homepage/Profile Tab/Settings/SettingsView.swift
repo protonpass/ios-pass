@@ -56,7 +56,6 @@ struct SettingsView: View {
                     .padding(.top)
             }
             .padding()
-            .showSpinner(viewModel.loading)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("Settings")

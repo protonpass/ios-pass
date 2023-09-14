@@ -75,6 +75,10 @@ extension SharedServiceContainer {
         self { VaultsManager() }
     }
 
+    var vaultSyncEventStream: Factory<VaultSyncEventStream> {
+        self { VaultSyncEventStream(.initialization) }
+    }
+
     var upgradeChecker: Factory<UpgradeCheckerProtocol> {
         self { UpgradeChecker(passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
                               counter: self.vaultsManager(),

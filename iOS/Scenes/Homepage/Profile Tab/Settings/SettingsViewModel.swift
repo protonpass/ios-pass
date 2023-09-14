@@ -59,8 +59,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
-    @Published private(set) var loading = false
-
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
     weak var delegate: SettingsViewModelDelegate?
@@ -150,11 +148,10 @@ extension SettingsViewModel {
 
     func forceSync() {
         Task { @MainActor [weak self] in
-            defer { self?.loading = false }
             do {
+                self?.router.present(for: .fullSync)
                 self?.syncEventLoop.stop()
                 self?.logger.info("Doing full sync")
-                self?.loading = true
                 try await self?.vaultsManager.fullSync()
                 self?.logger.info("Done full sync")
                 self?.syncEventLoop.start()

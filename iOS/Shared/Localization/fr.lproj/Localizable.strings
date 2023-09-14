@@ -175,7 +175,6 @@
 "Share" = "Partager";
 "Application" = "Application";
 "Force synchronization" = "Forcer la synchronisation";
-"Force synchronization done" = "Forcer la synchronisation effectuée";
 "Download all your items again to make sure you are in sync" = "Télécharger à nouveau tous vos éléments pour vous assurer que vous êtes synchronisé";
 
 /* List of available item types */
@@ -503,3 +502,14 @@
 "Unlock" = "Déverrouiller";
 "Enter your PIN code" = "Entrez votre code PIN";
 "Incorrect PIN code." = "Code PIN incorrect.";
+
+/* Sync progress */
+"Syncing items..." = "Synchronisation des éléments en cours...";
+"We are downloading and decrypting your items." = "Nous téléchargeons et décryptons vos éléments.";
+"This might take a few minutes." = "Ceci pourrait prendre quelques minutes.";
+"Please keep the app open." = "Veuillez garder l'application ouverte.";
+"Sync complete" = "Synchronisation terminée";
+"The app is now ready to use" = "L'application est maintenant prête à être utilisée";
+"Preparing..." = "Préparation...";
+"%@%% downloaded..." = "%@%% téléchargé...";
+"%@%%% decrypted..." = "%@%% décrypté...";
