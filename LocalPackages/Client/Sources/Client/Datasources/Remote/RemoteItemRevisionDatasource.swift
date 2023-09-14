@@ -33,6 +33,7 @@ public protocol RemoteItemRevisionDatasourceProtocol: RemoteDatasourceProtocol {
     func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> ItemRevision
     func updateLastUseTime(shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> ItemRevision
     func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> ItemRevision
+    func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision]
 }
 
 public extension RemoteItemRevisionDatasourceProtocol {
@@ -114,6 +115,12 @@ public extension RemoteItemRevisionDatasourceProtocol {
         let endpoint = MoveItemEndpoint(request: request, itemId: itemId, fromShareId: fromShareId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.item
+    }
+
+    func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
+        let endpoint = MoveItemsEndpoint(request: request, fromShareId: fromShareId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.items
     }
 }
 

@@ -25,7 +25,7 @@ public struct AliasLimitation: Sendable {
     public let limit: Int
 }
 
-public protocol UpgradeCheckerProtocol: AnyObject {
+public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
     var passPlanRepository: PassPlanRepositoryProtocol { get }
     var counter: LimitationCounterProtocol { get }
     var totpChecker: TOTPCheckerProtocol { get }
@@ -78,13 +78,13 @@ public extension UpgradeCheckerProtocol {
     }
 }
 
-public protocol LimitationCounterProtocol: AnyObject {
+public protocol LimitationCounterProtocol: AnyObject, Sendable {
     func getAliasCount() -> Int
     func getVaultCount() -> Int
     func getTOTPCount() -> Int
 }
 
-public protocol TOTPCheckerProtocol {
+public protocol TOTPCheckerProtocol: Sendable {
     /// Get the maximum creation date of items that are allowed to display 2FA token
     /// If the creation date of a given login is less than this max creation date, we don't calculate the 2FA token
     func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64?

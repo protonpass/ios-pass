@@ -19,9 +19,28 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+
+@preconcurrency import Combine
 import Entities
 import SwiftUI
+
+struct NavigationConfiguration {
+    var dismissBeforeShowing = false
+    var refresh = false
+    var telemetryEvent: TelemetryEventType?
+
+    static var refresh: NavigationConfiguration {
+        NavigationConfiguration(refresh: true)
+    }
+
+    static var dimissAndRefresh: NavigationConfiguration {
+        NavigationConfiguration(dismissBeforeShowing: true, refresh: true)
+    }
+
+    static func dimissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
+        NavigationConfiguration(dismissBeforeShowing: true, refresh: true, telemetryEvent: event)
+    }
+}
 
 enum RouterDestination: Hashable {
     case urlPage(urlString: String)
@@ -41,14 +60,16 @@ enum SheetDestination: Equatable, Hashable {
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
+    case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
 }
 
 enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
+    case successMessage(String, config: NavigationConfiguration)
 }
 
-final class MainUIKitSwiftUIRouter {
+final class MainUIKitSwiftUIRouter: Sendable {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
