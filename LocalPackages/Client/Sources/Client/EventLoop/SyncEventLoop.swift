@@ -317,7 +317,7 @@ private extension SyncEventLoop {
             return false
         }
 
-        let remoteShares = try await shareRepository.getRemoteShares(eventStream: nil)
+        let remoteShares = try await shareRepository.getRemoteShares()
 
         if Task.isCancelled {
             return false
@@ -337,7 +337,7 @@ private extension SyncEventLoop {
                 // We delete local shares instead of simply upserting and re-insert remote shares later on
                 try await shareRepository.deleteShareLocally(shareId: share.share.shareID)
             }
-            try await shareRepository.upsertShares(remoteShares, eventStream: nil)
+            try await shareRepository.upsertShares(remoteShares)
 
             // Delete local shares if applicable
             let deletedLocalShares = localShares
@@ -412,8 +412,8 @@ private extension SyncEventLoop {
 
                         do {
                             _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
-                            try await self.shareRepository.upsertShares([remoteShare], eventStream: nil)
-                            try await self.itemRepository.refreshItems(shareId: shareId, eventStream: nil)
+                            try await self.shareRepository.upsertShares([remoteShare])
+                            try await self.itemRepository.refreshItems(shareId: shareId)
                         } catch {
                             if let clientError = error as? PPClientError,
                                case let .crypto(reason) = clientError,
@@ -494,14 +494,14 @@ private extension SyncEventLoop {
         if events.fullRefresh {
             logger.info("Force full sync for share \(shareId)")
             hasNewEvents = true
-            try await itemRepository.refreshItems(shareId: shareId, eventStream: nil)
+            try await itemRepository.refreshItems(shareId: shareId)
             return
         }
 
         if let updatedShare = events.updatedShare {
             hasNewEvents = true
             logger.trace("Found updated share \(shareId)")
-            try await shareRepository.upsertShares([updatedShare], eventStream: nil)
+            try await shareRepository.upsertShares([updatedShare])
         }
 
         if !events.updatedItems.isEmpty {
