@@ -40,6 +40,25 @@ struct NavigationConfiguration {
     static func dimissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
         NavigationConfiguration(dismissBeforeShowing: true, refresh: true, telemetryEvent: event)
     }
+
+    static var refresh: NavigationActions {
+        NavigationActions(refresh: true)
+    }
+
+    static var dismissAndRefresh: NavigationActions {
+        NavigationActions(dismissBeforeShowing: true, refresh: true)
+    }
+
+    static func dismissAndRefresh(with event: TelemetryEventType) -> NavigationActions {
+        NavigationActions(dismissBeforeShowing: true,
+                          refresh: true,
+                          telemetryEvent: event)
+    }
+
+    static func refresh(with event: TelemetryEventType) -> NavigationActions {
+        NavigationActions(refresh: true,
+                          telemetryEvent: event)
+    }
 }
 
 enum RouterDestination: Hashable {
@@ -67,7 +86,8 @@ enum SheetDestination: Equatable, Hashable {
 enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
-    case successMessage(String, config: NavigationConfiguration)
+    case successMessage(String? = nil, config: NavigationActions = .init())
+    case infosMessage(String? = nil, config: NavigationActions = .init())
 }
 
 final class MainUIKitSwiftUIRouter: Sendable {
