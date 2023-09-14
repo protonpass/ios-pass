@@ -29,8 +29,9 @@ struct FullSyncProgressView: View {
     @StateObject private var viewModel: FullSyncProgressViewModel
     var onContinue: (() -> Void)?
 
-    init(mode: FullSyncProgressViewModel.Mode) {
+    init(mode: FullSyncProgressViewModel.Mode, onContinue: (() -> Void)? = nil) {
         _viewModel = .init(wrappedValue: .init(mode: mode))
+        self.onContinue = onContinue
     }
 
     var body: some View {
@@ -167,7 +168,7 @@ private extension FullSyncProgressView {
             Text("Sync complete")
                 .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-                .padding(.top)
+                .padding(.vertical)
 
             if !viewModel.mode.isFullSync {
                 Text("The app is now ready to use")

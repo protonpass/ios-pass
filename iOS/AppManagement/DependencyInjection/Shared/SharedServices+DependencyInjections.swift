@@ -76,7 +76,7 @@ extension SharedServiceContainer {
     }
 
     var vaultSyncEventStream: Factory<VaultSyncEventStream> {
-        self { VaultSyncEventStream() }
+        self { VaultSyncEventStream(.initialization) }
     }
 
     var upgradeChecker: Factory<UpgradeCheckerProtocol> {
