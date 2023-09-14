@@ -1,7 +1,7 @@
 //
 //
-// RevokeUserShareAccess.swift
-// Proton Pass - Created on 04/08/2023.
+// GetVaultContentForVault.swift
+// Proton Pass - Created on 13/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,24 +22,25 @@
 
 import Client
 
-protocol RevokeUserShareAccessUseCase: Sendable {
-    func execute(with userShareId: String, and shareId: String) async throws
+protocol GetVaultContentForVaultUseCase: Sendable {
+    func execute(for vault: Vault) -> VaultContentUiModel
 }
 
-extension RevokeUserShareAccessUseCase {
-    func callAsFunction(with userShareId: String, and shareId: String) async throws {
-        try await execute(with: userShareId, and: shareId)
+extension GetVaultContentForVaultUseCase {
+    func callAsFunction(for vault: Vault) -> VaultContentUiModel {
+        execute(for: vault)
     }
 }
 
-final class RevokeUserShareAccess: RevokeUserShareAccessUseCase {
-    private let repository: ShareRepositoryProtocol
+final class GetVaultContentForVault: GetVaultContentForVaultUseCase {
+    private let vaultsManager: VaultsManagerProtocol
 
-    init(repository: ShareRepositoryProtocol) {
-        self.repository = repository
+    init(vaultsManager: VaultsManagerProtocol) {
+        self.vaultsManager = vaultsManager
     }
 
-    func execute(with userShareId: String, and shareId: String) async throws {
-        try await repository.deleteUserShare(userId: userShareId, shareId: shareId)
+    func execute(for vault: Vault) -> VaultContentUiModel {
+        VaultContentUiModel(vault: vault,
+                            items: vaultsManager.getItems(for: vault))
     }
 }
