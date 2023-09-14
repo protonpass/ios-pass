@@ -78,6 +78,7 @@ private extension FullSyncProgressView {
             }
         }
         .animation(.default, value: isShowingDetail)
+        .padding()
     }
 }
 
@@ -91,16 +92,20 @@ private extension FullSyncProgressView {
 
             Text("Syncing items...")
                 .font(.title3.bold())
+                .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
                 .padding(.bottom, 8)
 
             Text("We are downloading and decrypting your items.")
+                .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
 
             Text("This might take a few minutes.")
+                .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
 
             Text("Please keep the app open.")
+                .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textNorm.toColor)
                 .padding(.top, 8)
                 .padding(.bottom, 16)
