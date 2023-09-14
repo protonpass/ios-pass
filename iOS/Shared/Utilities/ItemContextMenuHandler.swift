@@ -25,9 +25,6 @@ import ProtonCoreUIFoundations
 
 protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
-    func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable)
-    func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable)
-    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable)
 }
 
 final class ItemContextMenuHandler {
@@ -75,8 +72,8 @@ extension ItemContextMenuHandler {
                 self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.trashMessage,
                                                                               dismissButtonTitle: "Undo".localized,
                                                                               onDismiss: undoBlock)
-
-                self.delegate?.itemContextMenuHandlerDidTrash(item: item)
+                self.router
+                    .display(element: .successMessage(config: NavigationActions.refresh(with: .update(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
@@ -93,7 +90,8 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.untrashItems([encryptedItem])
                 self.clipboardManager.bannerManager?.displayBottomSuccessMessage(item.type.restoreMessage)
-                self.delegate?.itemContextMenuHandlerDidUntrash(item: item)
+                self.router
+                    .display(element: .successMessage(config: NavigationActions.refresh(with: .update(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
@@ -110,7 +108,8 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.deleteMessage)
-                self.delegate?.itemContextMenuHandlerDidPermanentlyDelete(item: item)
+                self.router
+                    .display(element: .successMessage(config: NavigationActions.refresh(with: .delete(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
