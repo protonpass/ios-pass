@@ -297,6 +297,8 @@ private extension HomepageCoordinator {
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
                 case let .successMessage(message, config):
                     self.displaySuccessBanner(with: message, and: config)
+                case let .infosMessage(message, config):
+                    self.displayInfoBanner(with: message, and: config)
                 }
             }
             .store(in: &cancellables)
@@ -472,11 +474,11 @@ private extension HomepageCoordinator {
         }
     }
 
-    func displaySuccessBanner(with message: String, and config: NavigationConfiguration) {
-        if let event = config.telemetryEvent {
-            addNewEvent(type: event)
-        }
-
+    func displaySuccessBanner(with message: String?, and config: NavigationActions) {
+        parseNavigationConfig(config: config)
+        
+        guard let message else { return }
+        
         if config.dismissBeforeShowing {
             dismissTopMostViewController(animated: true) { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage(message)
@@ -484,9 +486,19 @@ private extension HomepageCoordinator {
         } else {
             bannerManager.displayBottomSuccessMessage(message)
         }
+    }
 
-        if config.refresh {
-            refresh()
+    func displayInfoBanner(with message: String?, and config: NavigationActions) {
+        parseNavigationConfig(config: config)
+
+        guard let message else { return }
+
+        if config.dismissBeforeShowing {
+            dismissTopMostViewController(animated: true) { [weak self] in
+                self?.bannerManager.displayBottomInfoMessage(message)
+            }
+        } else {
+            bannerManager.displayBottomInfoMessage(message)
         }
     }
 
@@ -965,10 +977,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             }
         }
     }
-
-    func settingsViewModelDidFinishFullSync() {
-        refresh()
-    }
 }
 
 // MARK: - GeneratePasswordCoordinatorDelegate
@@ -1076,20 +1084,15 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
         handler.showAlert()
     }
 
-    func editableVaultListViewModelDidDelete(vault: Vault) {
-        bannerManager.displayBottomInfoMessage("Vault « %@ » deleted".localized(vault.name))
-        vaultsManager.refresh()
-    }
-
-    func editableVaultListViewModelDidRestoreAllTrashedItems() {
-        bannerManager.displayBottomSuccessMessage("All items restored".localized)
-        refresh()
-    }
-
-    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
-        bannerManager.displayBottomInfoMessage("All items permanently deleted".localized)
-        refresh()
-    }
+//    func editableVaultListViewModelDidDelete(vault: Vault) {
+//        bannerManager.displayBottomInfoMessage("Vault « %@ » deleted".localized(vault.name))
+//        vaultsManager.refresh()
+//    }
+//
+//    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
+//        bannerManager.displayBottomInfoMessage("All items permanently deleted".localized)
+//        refresh()
+//    }
 }
 
 // MARK: - ItemDetailViewModelDelegate
@@ -1128,22 +1131,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
         addNewEvent(type: .update(item.type))
     }
-
-    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
-        }
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
-        }
-        addNewEvent(type: .delete(item.type))
-    }
 }
 
 // MARK: - ItemContextMenuHandlerDelegate
@@ -1151,21 +1138,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent) {
         presentEditItemView(for: itemContent)
-    }
-
-    func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
-        refresh()
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
-        refresh()
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refresh()
-        addNewEvent(type: .delete(item.type))
     }
 }
 
@@ -1268,5 +1240,17 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
 
     func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
         logger.error(message: "Failed to execute additional task \(label)", error: error)
+    }
+}
+
+private extension HomepageCoordinator {
+    func parseNavigationConfig(config: NavigationActions) {
+        if let event = config.telemetryEvent {
+            addNewEvent(type: event)
+        }
+
+        if config.refresh {
+            refresh()
+        }
     }
 }
