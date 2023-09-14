@@ -1,7 +1,12 @@
-//
-// macOS-Release.swift
-// Proton Pass - Created on 08/06/2022.
-// Copyright (c) 2022 Proton Technologies AG
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>FILEHEADER</key>
+    <string>
+// ___FILENAME___
+// Proton Pass - Created on ___DATE___.
+// Copyright (c) ___YEAR___ Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,9 +22,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
-
-APP_VERSION_IDENTIFIER =
-IS_QA_BUILD =
+//</string>
+</dict>
+</plist>
