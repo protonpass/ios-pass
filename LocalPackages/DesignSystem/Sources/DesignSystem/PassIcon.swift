@@ -45,6 +45,9 @@ public extension PassIcon {
     static var coverScreenBackground = Self.icon(named: "CoverScreenBackground")
     static var coverScreenLogo = Self.icon(named: "CoverScreenLogo")
 
+    static var fullSyncDone = Self.icon(named: "FullSyncDone")
+    static var fullSyncInProgress = Self.icon(named: "FullSyncInProgress")
+
     static var infoBannerAliases = Self.icon(named: "InfoBannerAliases")
     static var infoBannerAutoFill = Self.icon(named: "InfoBannerAutoFill")
     static var infoBannerPass = Self.icon(named: "InfoBannerPass")

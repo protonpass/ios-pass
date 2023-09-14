@@ -33,10 +33,20 @@ struct ItemsTabView: View {
         ZStack {
             switch vaultsManager.state {
             case .loading:
+                // We display both the skeleton and the progress at the same time
+                // and use opacity trick because we need fullSyncProgressView
+                // to be intialized asap so its viewModel doesn't miss any events
+                fullSyncProgressView
+                    .opacity(viewModel.shouldShowSyncProgress ? 1 : 0)
                 ItemsTabsSkeleton()
+                    .opacity(viewModel.shouldShowSyncProgress ? 0 : 1)
 
             case .loaded:
-                vaultContent(vaultsManager.getFilteredItems())
+                if viewModel.shouldShowSyncProgress {
+                    fullSyncProgressView
+                } else {
+                    vaultContent(vaultsManager.getFilteredItems())
+                }
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
@@ -44,8 +54,15 @@ struct ItemsTabView: View {
             }
         }
         .animation(.default, value: vaultsManager.state)
+        .animation(.default, value: viewModel.shouldShowSyncProgress)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarHidden(true)
+    }
+
+    private var fullSyncProgressView: some View {
+        FullSyncProgressView(mode: .logIn) {
+            viewModel.shouldShowSyncProgress = false
+        }
     }
 
     @ViewBuilder
