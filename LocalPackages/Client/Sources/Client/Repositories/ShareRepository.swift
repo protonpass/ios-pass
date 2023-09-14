@@ -33,7 +33,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getShares() async throws -> [SymmetricallyEncryptedShare]
 
     /// Get all remote shares
-    func getRemoteShares() async throws -> [Share]
+    func getRemoteShares(eventStream: VaultSyncEventStream?) async throws -> [Share]
 
     /// Delete all local shares
     func deleteAllSharesLocally() async throws
@@ -41,7 +41,8 @@ public protocol ShareRepositoryProtocol: Sendable {
     /// Delete locally a given share
     func deleteShareLocally(shareId: String) async throws
 
-    func upsertShares(_ shares: [Share]) async throws
+    /// Re-encrypt and then upserting shares, emit `decryptedVault` events if `eventStream` is provided
+    func upsertShares(_ shares: [Share], eventStream: VaultSyncEventStream?) async throws
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
 
@@ -75,6 +76,16 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     @discardableResult
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
+}
+
+public extension ShareRepositoryProtocol {
+    func getRemoteShares() async throws -> [Share] {
+        try await getRemoteShares(eventStream: nil)
+    }
+
+    func upsertShares(_ shares: [Share]) async throws {
+        try await upsertShares(shares, eventStream: nil)
+    }
 }
 
 public struct ShareRepository: ShareRepositoryProtocol {
@@ -137,10 +148,11 @@ public extension ShareRepository {
         }
     }
 
-    func getRemoteShares() async throws -> [Share] {
+    func getRemoteShares(eventStream: VaultSyncEventStream?) async throws -> [Share] {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
             let shares = try await remoteDatasouce.getShares()
+            eventStream?.send(.downloadedShares(shares))
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
         } catch {
@@ -161,12 +173,21 @@ public extension ShareRepository {
         logger.trace("Deleted local share \(shareId) for user \(userId)")
     }
 
-    func upsertShares(_ shares: [Share]) async throws {
+    func upsertShares(_ shares: [Share], eventStream: VaultSyncEventStream?) async throws {
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
         let encryptedShares = try await shares
             .parallelMap { try await symmetricallyEncryptNullable($0) }
             .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
+
+        if let eventStream {
+            for share in encryptedShares {
+                if let vault = try share.toVault(symmetricKey: symmetricKey) {
+                    eventStream.send(.decryptedVault(vault))
+                }
+            }
+        }
+
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
@@ -238,26 +259,7 @@ public extension ShareRepository {
         logger.trace("Getting local vaults for user \(userId)")
 
         let shares = try await getShares()
-        let vaults = try shares.compactMap { share -> Vault? in
-            guard share.share.shareType == .vault else { return nil }
-
-            guard let encryptedContent = share.encryptedContent else { return nil }
-            let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-            guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
-            let vaultContent = try VaultProtobuf(data: decryptedContentData)
-
-            return .init(id: share.share.vaultID,
-                         shareId: share.share.shareID,
-                         addressId: share.share.addressID,
-                         name: vaultContent.name,
-                         description: vaultContent.description_p,
-                         displayPreferences: vaultContent.display,
-                         isPrimary: share.share.primary,
-                         isOwner: share.share.owner,
-                         shareRole: ShareRole(rawValue: share.share.shareRoleID) ?? .read,
-                         members: Int(share.share.targetMembers),
-                         shared: share.share.shared)
-        }
+        let vaults = try shares.compactMap { try $0.toVault(symmetricKey: symmetricKey) }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
     }
@@ -379,5 +381,27 @@ private extension ShareRepository {
                 throw error
             }
         }
+    }
+}
+
+private extension SymmetricallyEncryptedShare {
+    func toVault(symmetricKey: SymmetricKey) throws -> Vault? {
+        guard share.shareType == .vault, let encryptedContent else { return nil }
+
+        let decryptedContent = try symmetricKey.decrypt(encryptedContent)
+        guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
+        let vaultContent = try VaultProtobuf(data: decryptedContentData)
+
+        return .init(id: share.vaultID,
+                     shareId: share.shareID,
+                     addressId: share.addressID,
+                     name: vaultContent.name,
+                     description: vaultContent.description_p,
+                     displayPreferences: vaultContent.display,
+                     isPrimary: share.primary,
+                     isOwner: share.owner,
+                     shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
+                     members: Int(share.targetMembers),
+                     shared: share.shared)
     }
 }

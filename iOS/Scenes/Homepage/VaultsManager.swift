@@ -83,9 +83,11 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
+    private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
+    private var progresses = [VaultSyncProgress]()
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -243,17 +245,22 @@ extension VaultsManager {
 
     // Delete everything and download again
     func fullSync() async throws {
+        vaultSyncEventStream.send(.started)
+
         // 1. Delete all local items & shares
         try await itemRepository.deleteAllItemsLocally()
         try await shareRepository.deleteAllSharesLocally()
 
         // 2. Get all remote shares and their items
-        let remoteShares = try await shareRepository.getRemoteShares()
+        let remoteShares = try await shareRepository.getRemoteShares(eventStream: vaultSyncEventStream)
         await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in remoteShares {
                 taskGroup.addTask { [weak self] in
-                    try await self?.shareRepository.upsertShares([share])
-                    try await self?.itemRepository.refreshItems(shareId: share.shareID)
+                    guard let self else { return }
+                    try await self.shareRepository.upsertShares([share],
+                                                                eventStream: self.vaultSyncEventStream)
+                    try await self.itemRepository.refreshItems(shareId: share.shareID,
+                                                               eventStream: self.vaultSyncEventStream)
                 }
             }
         }
@@ -276,6 +283,8 @@ extension VaultsManager {
         }
 
         try await loadContents(for: vaults)
+
+        vaultSyncEventStream.send(.done)
     }
 
     func select(_ selection: VaultSelection) {

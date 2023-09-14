@@ -275,6 +275,8 @@ private extension HomepageCoordinator {
                     self.present(AutoFillInstructionsView())
                 case let .moveItemsBetweenVaults(currentVault, itemToMove):
                     self.itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
+                case .fullSync:
+                    self.present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 }
             }
             .store(in: &cancellables)
@@ -966,7 +968,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
 
     func settingsViewModelDidFinishFullSync() {
         refresh()
-        bannerManager.displayBottomSuccessMessage("Force synchronization done".localized)
     }
 }
 

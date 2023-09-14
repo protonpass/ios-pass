@@ -22,7 +22,7 @@ import Foundation
 
 public protocol RemoteItemRevisionDatasourceProtocol: RemoteDatasourceProtocol {
     /// Get all item revisions of a share
-    func getItemRevisions(shareId: String) async throws -> [ItemRevision]
+    func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
     func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision
     func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
@@ -37,7 +37,7 @@ public protocol RemoteItemRevisionDatasourceProtocol: RemoteDatasourceProtocol {
 }
 
 public extension RemoteItemRevisionDatasourceProtocol {
-    func getItemRevisions(shareId: String) async throws -> [ItemRevision] {
+    func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision] {
         var itemRevisions = [ItemRevision]()
         var sinceToken: String?
         while true {
@@ -48,6 +48,9 @@ public extension RemoteItemRevisionDatasourceProtocol {
 
             itemRevisions += response.items.revisionsData
             sinceToken = response.items.lastToken
+            eventStream?.send(.getRemoteItems(.init(shareId: shareId,
+                                                    total: response.items.total,
+                                                    downloaded: itemRevisions.count)))
             if itemRevisions.count >= response.items.total {
                 break
             }
