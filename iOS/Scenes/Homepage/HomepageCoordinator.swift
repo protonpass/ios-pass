@@ -474,12 +474,12 @@ private extension HomepageCoordinator {
         }
     }
 
-    func displaySuccessBanner(with message: String?, and config: NavigationActions) {
+    func displaySuccessBanner(with message: String?, and config: NavigationConfiguration?) {
         parseNavigationConfig(config: config)
 
         guard let message else { return }
-        
-        if config.dismissBeforeShowing {
+
+        if let config, config.dismissBeforeShowing {
             dismissTopMostViewController(animated: true) { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage(message)
             }
@@ -488,12 +488,12 @@ private extension HomepageCoordinator {
         }
     }
 
-    func displayInfoBanner(with message: String?, and config: NavigationActions) {
+    func displayInfoBanner(with message: String?, and config: NavigationConfiguration?) {
         parseNavigationConfig(config: config)
 
         guard let message else { return }
 
-        if config.dismissBeforeShowing {
+        if let config, config.dismissBeforeShowing {
             dismissTopMostViewController(animated: true) { [weak self] in
                 self?.bannerManager.displayBottomInfoMessage(message)
             }
@@ -1237,7 +1237,10 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
 }
 
 private extension HomepageCoordinator {
-    func parseNavigationConfig(config: NavigationActions) {
+    func parseNavigationConfig(config: NavigationConfiguration?) {
+        guard let config else {
+            return
+        }
         if let event = config.telemetryEvent {
             addNewEvent(type: event)
         }
