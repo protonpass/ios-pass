@@ -47,7 +47,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -64,8 +63,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
 
-    // Lazily initialized properties
-    private lazy var bannerManager: BannerManager = .init(container: rootViewController)
+    // Lazily initialised properties
+    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
+    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -89,6 +89,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     override init() {
         super.init()
+        SharedViewContainer.shared.register(rootViewController: rootViewController)
         setUpRouting()
         finalizeInitialization()
         vaultsManager.refresh()
@@ -107,7 +108,6 @@ private extension HomepageCoordinator {
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
     func finalizeInitialization() {
         eventLoop.delegate = self
-        clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
         passPlanRepository.delegate = self
         urlOpener.rootViewController = rootViewController
@@ -575,8 +575,7 @@ private extension HomepageCoordinator {
 extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
-        let onboardingViewModel = OnboardingViewModel(bannerManager: bannerManager)
-        let onboardingView = OnboardingView(viewModel: onboardingViewModel)
+        let onboardingView = OnboardingView()
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         onboardingViewController.isModalInPresentation = true
@@ -861,8 +860,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToQaFeatures() {
-        let viewModel = QAFeaturesViewModel(bannerManager: bannerManager)
-        let view = QAFeaturesView(viewModel: viewModel)
+        let view = QAFeaturesView()
         present(view)
     }
 }
@@ -1083,16 +1081,6 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
                                               delegate: delegate)
         handler.showAlert()
     }
-
-//    func editableVaultListViewModelDidDelete(vault: Vault) {
-//        bannerManager.displayBottomInfoMessage("Vault « %@ » deleted".localized(vault.name))
-//        vaultsManager.refresh()
-//    }
-//
-//    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
-//        bannerManager.displayBottomInfoMessage("All items permanently deleted".localized)
-//        refresh()
-//    }
 }
 
 // MARK: - ItemDetailViewModelDelegate

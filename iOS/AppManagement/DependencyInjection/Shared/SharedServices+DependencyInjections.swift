@@ -64,7 +64,8 @@ extension SharedServiceContainer {
     }
 
     var clipboardManager: Factory<ClipboardManager> {
-        self { ClipboardManager() }
+        self { ClipboardManager(bannerManager: SharedViewContainer.shared.bannerManager(),
+                                preferences: SharedToolingContainer.shared.preferences()) }
     }
 
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
