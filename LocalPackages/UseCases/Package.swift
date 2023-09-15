@@ -20,8 +20,9 @@ let package = Package(name: "UseCases",
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
-                          .package(name: "Clien", path: "../Client"),
-                          .package(name: "Core", path: "../Core")
+                          .package(name: "Client", path: "../Client"),
+                          .package(name: "Core", path: "../Core"),
+                          .package(name: "Entities", path: "../Entities")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
