@@ -73,7 +73,7 @@ extension ItemContextMenuHandler {
                                                                               dismissButtonTitle: "Undo".localized,
                                                                               onDismiss: undoBlock)
                 self.router
-                    .display(element: .successMessage(config: NavigationActions.refresh(with: .update(item.type))))
+                    .display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
@@ -90,8 +90,7 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.untrashItems([encryptedItem])
                 self.clipboardManager.bannerManager?.displayBottomSuccessMessage(item.type.restoreMessage)
-                self.router
-                    .display(element: .successMessage(config: NavigationActions.refresh(with: .update(item.type))))
+                self.router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
@@ -108,8 +107,7 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.deleteMessage)
-                self.router
-                    .display(element: .successMessage(config: NavigationActions.refresh(with: .delete(item.type))))
+                self.router.display(element: .successMessage(config: .refresh(with: .delete(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
