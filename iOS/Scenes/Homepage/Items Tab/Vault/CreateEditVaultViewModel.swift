@@ -139,7 +139,7 @@ private extension CreateEditVaultViewModel {
                 self.loading = true
                 try await self.createVaultUseCase(with: self.generateVaultProtobuf())
                 self.router.display(element: .successMessage("Vault created".localized,
-                                                             config: NavigationActions.dismissAndRefresh))
+                                                             config: .dismissAndRefresh))
                 self.logger.info("Created vault")
             } catch {
                 self.logger.error(error)

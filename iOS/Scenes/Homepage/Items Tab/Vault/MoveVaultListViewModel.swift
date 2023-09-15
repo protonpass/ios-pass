@@ -83,12 +83,12 @@ private extension MoveVaultListViewModel {
         if let itemContent {
             return UIElementDisplay
                 .successMessage("Item moved to vault « %@ »".localized(selectedVault.vault.name),
-                                config: NavigationConfiguration.dimissAndRefresh(with: .update(itemContent.type)))
+                                config: .dismissAndRefresh(with: .update(itemContent.type)))
         } else {
             return UIElementDisplay
                 .successMessage("Items from « %@ » moved to vault « %@ »"
                     .localized(currentVault.vault.name, selectedVault.vault.name),
-                    config: NavigationConfiguration.dimissAndRefresh)
+                    config: .dismissAndRefresh)
         }
     }
 

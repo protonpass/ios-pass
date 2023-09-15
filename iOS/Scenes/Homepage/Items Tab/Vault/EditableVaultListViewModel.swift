@@ -155,7 +155,7 @@ extension EditableVaultListViewModel {
                 self.loading = true
                 try await self.vaultsManager.restoreAllTrashedItems()
                 self.router.display(element: .successMessage("All items restored".localized,
-                                                             config: NavigationActions.refresh))
+                                                             config: .refresh))
                 self.logger.info("Restored all trashed items")
             } catch {
                 self.logger.error(error)
@@ -173,7 +173,7 @@ extension EditableVaultListViewModel {
                 self.loading = true
                 try await self.vaultsManager.permanentlyDeleteAllTrashedItems()
                 self.router.display(element: .infosMessage("All items permanently deleted".localized,
-                                                           config: NavigationActions.refresh))
+                                                           config: .refresh))
                 self.logger.info("Emptied all trashed items")
             } catch {
                 self.logger.error(error)
