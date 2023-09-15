@@ -72,8 +72,7 @@ extension ItemContextMenuHandler {
                 self.clipboardManager.bannerManager.displayBottomInfoMessage(item.trashMessage,
                                                                              dismissButtonTitle: "Undo".localized,
                                                                              onDismiss: undoBlock)
-                self.router
-                    .display(element: .successMessage(config: .refresh(with: .update(item.type))))
+                self.router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
