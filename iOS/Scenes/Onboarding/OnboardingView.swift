@@ -24,7 +24,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: OnboardingViewModel
+    @StateObject private var viewModel = OnboardingViewModel()
     private let theme = resolve(\SharedToolingContainer.theme)
 
     var body: some View {

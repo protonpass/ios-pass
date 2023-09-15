@@ -121,13 +121,22 @@ private extension CompleteAutoFill {
         try await copyTotpTokenAndNotify(itemContent: itemContent,
                                          clipboardManager: clipboardManager,
                                          upgradeChecker: upgradeChecker)
-
         logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
         try await itemRepository.update(item: itemContent,
                                         lastUseTime: Date().timeIntervalSince1970)
         logger.info("Updated lastUseTime \(itemContent.debugInformation)")
 
         try await indexAllLoginItems(ignorePreferences: false)
+        release()
+    }
+
+    func release() {
+        SharedDataContainer.shared.reset()
+        SharedViewContainer.shared.reset()
+        SharedToolingContainer.shared.resetCache()
+        SharedRepositoryContainer.shared.reset()
+        SharedServiceContainer.shared.reset()
+        SharedViewContainer.shared.reset()
     }
 }
 

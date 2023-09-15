@@ -25,18 +25,17 @@ import SwiftUI
 
 struct QAFeaturesView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: QAFeaturesViewModel
 
     var body: some View {
         let tintColor = Color(uiColor: PassColor.interactionNorm)
         NavigationView {
             Form {
-                OnboardSection(viewModel: viewModel)
+                OnboardSection()
                 HapticFeedbacksSection()
                 Section {
                     CachedFavIconsSection()
                     TelemetryEventsSection()
-                    TrashItemsSection(bannerManager: viewModel.bannerManager)
+                    TrashItemsSection()
                     BannersSection()
                 }
             }
