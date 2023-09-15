@@ -46,6 +46,7 @@ And local Swift packages:
 - Client: network layer, database operations, repositories...
 - Core: coordinator, domain parser, password/passphrase generator, 2FA token generator, useful extensions...
 - DesignSystem: UI utilities (custom views, view modifiers, icons, colors...)
+- UseCases: use cases
 
 # Debug
 
