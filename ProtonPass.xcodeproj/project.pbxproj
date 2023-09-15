@@ -807,6 +807,7 @@
 		359EB88B2A20CF74009588A9 /* InfoBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerView.swift; sourceTree = "<group>"; };
 		359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerViewStack.swift; sourceTree = "<group>"; };
 		359EB8912A213A44009588A9 /* TrialDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialDetailView.swift; sourceTree = "<group>"; };
+		359F80B42AB48C70007AC0F4 /* UseCases */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UseCases; path = LocalPackages/UseCases; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
 		35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCreateEditItemViewModel.swift; sourceTree = "<group>"; };
@@ -1587,6 +1588,7 @@
 				5B8D20A92AA74B4700457CA3 /* DesignSystem */,
 				5B8D209B2AA748AB00457CA3 /* Client */,
 				3569AE402A695E070026B780 /* Entities */,
+				359F80B42AB48C70007AC0F4 /* UseCases */,
 				357C6B802AB349DA00A799A7 /* Recovered References */,
 			);
 			sourceTree = "<group>";
