@@ -37,7 +37,7 @@ struct TrashItemsSection: View {
 
 private struct TrashItemsView: View {
     @StateObject private var viewModel = TrashItemsViewModel()
-    @State private var selectedUiModel: VaultListUiModel?
+    @State private var selectedVault: VaultListUiModel?
 
     init() {}
 
