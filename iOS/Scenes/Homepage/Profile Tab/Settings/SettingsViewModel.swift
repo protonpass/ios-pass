@@ -154,8 +154,7 @@ extension SettingsViewModel {
                 try await self?.vaultsManager.fullSync()
                 self?.logger.info("Done full sync")
                 self?.syncEventLoop.start()
-                self?.router.display(element: .successMessage("Force synchronization done".localized,
-                                                              config: NavigationActions(refresh: true)))
+                self?.router.display(element: .successMessage(config: .refresh))
             } catch {
                 self?.logger.error(error)
                 self?.router.display(element: .displayErrorBanner(error))

@@ -86,8 +86,8 @@ enum SheetDestination: Equatable, Hashable {
 enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
-    case successMessage(String? = nil, config: NavigationActions = .init())
-    case infosMessage(String? = nil, config: NavigationActions = .init())
+    case successMessage(String? = nil, config: NavigationConfiguration? = nil)
+    case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
 }
 
 final class MainUIKitSwiftUIRouter: Sendable {

@@ -155,8 +155,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await self.itemRepository.untrashItems([encryptedItem])
                 self.router.display(element: .successMessage(item.type.restoreMessage,
-                                                             config: NavigationActions
-                                                                 .dismissAndRefresh(with: .update(item.type))))
+                                                             config: .dismissAndRefresh(with: .update(item.type))))
                 self.logger.info("Restored \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
@@ -177,8 +176,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 self.router.display(element: .successMessage(item.type.deleteMessage,
-                                                             config: NavigationActions
-                                                                 .dismissAndRefresh(with: .delete(item.type))))
+                                                             config: .dismissAndRefresh(with: .delete(item.type))))
                 self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
