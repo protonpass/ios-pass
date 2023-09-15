@@ -408,6 +408,8 @@
 "Copy password" = "Copier le mot de passe";
 "Copy alias address" = "Copier l'adresse e-mail";
 "Alias address copied" = "L'adresse e-mail a été copiée";
+"Copy note content" = "Copier le contenu de la note";
+"Note content copied" = "Le contenu de la note a été copié";
 
 /* Vault list */
 "All vaults" = "Tous les coffres-forts";
