@@ -413,6 +413,8 @@
 "Copy password" = "Copy password";
 "Copy alias address" = "Copy alias address";
 "Alias address copied" = "Alias address copied";
+"Copy note content" = "Copy note content";
+"Note content copied" = "Note content copied";
 
 /* Vault list */
 "All vaults" = "All vaults";

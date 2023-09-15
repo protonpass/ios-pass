@@ -171,6 +171,24 @@ extension ItemContextMenuHandler {
             }
         }
     }
+
+    func copyNoteContent(_ item: ItemTypeIdentifiable) {
+        guard case .note = item.type else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let itemContent = try await self.getDecryptedItemContent(for: item)
+                if case .note = itemContent.contentData {
+                    self.clipboardManager.copy(text: itemContent.note,
+                                               bannerMessage: "Note content copied".localized)
+                    self.logger.info("Copied note content \(item.debugInformation)")
+                }
+            } catch {
+                self.logger.error(error)
+                self.handleError(error)
+            }
+        }
+    }
 }
 
 // MARK: - Private APIs
