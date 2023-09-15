@@ -35,7 +35,8 @@ enum ItemContextMenu {
     case creditCard(onEdit: () -> Void,
                     onTrash: () -> Void)
 
-    case note(onEdit: () -> Void,
+    case note(onCopyContent: () -> Void,
+              onEdit: () -> Void,
               onTrash: () -> Void)
 
     case trashedItem(onRestore: () -> Void,
@@ -72,8 +73,11 @@ enum ItemContextMenu {
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
-        case let .note(onEdit, onTrash):
+        case let .note(onCopyContent, onEdit, onTrash):
             return [
+                .init(options: [.init(title: "Copy note content".localized,
+                                      icon: IconProvider.note,
+                                      action: onCopyContent)]),
                 .init(options: [.editOption(action: onEdit)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
@@ -179,7 +183,8 @@ extension View {
                                                    onTrash: { handler.trash(item) }))
 
             case .note:
-                return itemContextMenu(.note(onEdit: { handler.edit(item) },
+                return itemContextMenu(.note(onCopyContent: { handler.copyNoteContent(item) },
+                                             onEdit: { handler.edit(item) },
                                              onTrash: { handler.trash(item) }))
             }
         }
