@@ -43,10 +43,9 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
-    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let bannerManager: BannerManager
+
     private let container: NSPersistentContainer
     private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
@@ -61,6 +60,8 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
+    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
+    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -90,12 +91,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     init(rootViewController: UIViewController) {
-        bannerManager = .init(container: rootViewController)
+        SharedViewContainer.shared.register(rootViewController: rootViewController)
         container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.rootViewController = rootViewController
 
         // Post init
-        clipboardManager.bannerManager = bannerManager
         makeSymmetricKeyAndRepositories()
         sendAllEventsIfApplicable()
         AppearanceSettings.apply()
@@ -114,6 +114,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                                                 symmetricKey: symmetricKey,
                                                 userData: userData,
                                                 manualLogIn: false)
+
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
             showCredentialsView(userData: userData,
@@ -266,30 +267,16 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                                             symmetricKey: symmetricKey,
                                             userData: userData,
                                             manualLogIn: false)
-        let apiService = apiManager.apiService
-
-        let repositoryManager = RepositoryManager(apiService: apiService,
-                                                  container: container,
-                                                  currentDateProvider: CurrentDateProvider(),
-                                                  limitationCounter: WeakLimitationCounter(actualCounter: self),
-                                                  logManager: logManager,
-                                                  symmetricKey: symmetricKey,
-                                                  userData: userData,
-                                                  telemetryThresholdProvider: preferences)
         self.symmetricKey = symmetricKey
-        shareRepository = repositoryManager.shareRepository
-        shareEventIDRepository = repositoryManager.shareEventIDRepository
-
-        itemRepository = repositoryManager.itemRepository
-        favIconRepository = FavIconRepository(apiService: apiService,
-                                              containerUrl: URL.favIconsContainerURL(),
-                                              settings: preferences,
-                                              symmetricKey: symmetricKey)
-        shareKeyRepository = repositoryManager.shareKeyRepository
-        aliasRepository = repositoryManager.aliasRepository
-        remoteSyncEventsDatasource = repositoryManager.remoteSyncEventsDatasource
-        telemetryEventRepository = repositoryManager.telemetryEventRepository
-        upgradeChecker = repositoryManager.upgradeChecker
+        shareRepository = SharedRepositoryContainer.shared.shareRepository()
+        shareEventIDRepository = SharedRepositoryContainer.shared.shareEventIDRepository()
+        itemRepository = SharedRepositoryContainer.shared.itemRepository()
+        favIconRepository = SharedRepositoryContainer.shared.favIconRepository()
+        shareKeyRepository = SharedRepositoryContainer.shared.shareKeyRepository()
+        aliasRepository = SharedRepositoryContainer.shared.aliasRepository()
+        remoteSyncEventsDatasource = SharedRepositoryContainer.shared.remoteSyncEventsDatasource()
+        telemetryEventRepository = SharedRepositoryContainer.shared.telemetryEventRepository()
+        upgradeChecker = SharedServiceContainer.shared.upgradeChecker()
     }
 
     func addNewEvent(type: TelemetryEventType) {
