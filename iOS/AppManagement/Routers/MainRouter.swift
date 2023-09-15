@@ -33,31 +33,16 @@ struct NavigationConfiguration {
         NavigationConfiguration(refresh: true)
     }
 
-    static var dimissAndRefresh: NavigationConfiguration {
+    static func refresh(with event: TelemetryEventType) -> NavigationConfiguration {
+        NavigationConfiguration(refresh: true, telemetryEvent: event)
+    }
+
+    static var dismissAndRefresh: NavigationConfiguration {
         NavigationConfiguration(dismissBeforeShowing: true, refresh: true)
     }
 
-    static func dimissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
+    static func dismissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
         NavigationConfiguration(dismissBeforeShowing: true, refresh: true, telemetryEvent: event)
-    }
-
-    static var refresh: NavigationActions {
-        NavigationActions(refresh: true)
-    }
-
-    static var dismissAndRefresh: NavigationActions {
-        NavigationActions(dismissBeforeShowing: true, refresh: true)
-    }
-
-    static func dismissAndRefresh(with event: TelemetryEventType) -> NavigationActions {
-        NavigationActions(dismissBeforeShowing: true,
-                          refresh: true,
-                          telemetryEvent: event)
-    }
-
-    static func refresh(with event: TelemetryEventType) -> NavigationActions {
-        NavigationActions(refresh: true,
-                          telemetryEvent: event)
     }
 }
 

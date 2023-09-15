@@ -127,16 +127,6 @@ private extension CompleteAutoFill {
         logger.info("Updated lastUseTime \(itemContent.debugInformation)")
 
         try await indexAllLoginItems(ignorePreferences: false)
-        release()
-    }
-
-    func release() {
-        SharedDataContainer.shared.reset()
-        SharedViewContainer.shared.reset()
-        SharedToolingContainer.shared.resetCache()
-        SharedRepositoryContainer.shared.reset()
-        SharedServiceContainer.shared.reset()
-        SharedViewContainer.shared.reset()
     }
 }
 
