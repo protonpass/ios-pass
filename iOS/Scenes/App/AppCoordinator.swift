@@ -166,6 +166,7 @@ final class AppCoordinator {
             SharedToolingContainer.shared.resetCache()
             SharedRepositoryContainer.shared.reset()
             SharedServiceContainer.shared.reset()
+            SharedViewContainer.shared.reset()
 
             let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
