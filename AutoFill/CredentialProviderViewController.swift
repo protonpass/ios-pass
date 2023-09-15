@@ -34,6 +34,11 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
         AutoFillDataContainer.shared.register(context: extensionContext)
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        release()
+    }
+
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can
@@ -65,5 +70,14 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func prepareInterfaceForExtensionConfiguration() {
         coordinator.configureExtension()
+    }
+
+    func release() {
+        SharedDataContainer.shared.reset()
+        SharedViewContainer.shared.reset()
+        SharedToolingContainer.shared.resetCache()
+        SharedRepositoryContainer.shared.reset()
+        SharedServiceContainer.shared.reset()
+        SharedViewContainer.shared.reset()
     }
 }
