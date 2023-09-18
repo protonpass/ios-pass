@@ -13,9 +13,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d élément</string>
+        <string>%d Eintrag</string>
         <key>other</key>
-        <string>%d éléments</string>
+        <string>%d Einträge</string>
       </dict>
     </dict>
     <key>%d time(s)</key>
@@ -29,9 +29,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Une fois</string>
+        <string>Einmal</string>
         <key>other</key>
-        <string>%d fois</string>
+        <string>%d Mal</string>
       </dict>
     </dict>
     <key>%d word(s)</key>
@@ -45,9 +45,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d mot</string>
+        <string>%d Wort</string>
         <key>other</key>
-        <string>%d mots</string>
+        <string>%d Wörter</string>
       </dict>
     </dict>
     <key>%d search result(s)</key>
@@ -61,9 +61,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>résultat</string>
+        <string>Ergebnis</string>
         <key>other</key>
-        <string>résultats</string>
+        <string>Ergebnisse</string>
       </dict>
     </dict>
     <key>not shared %d alias(es)</key>
@@ -77,9 +77,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Ce coffre-fort contient un alias. Le partage d'alias n'est pas possible pour le moment : l'alias ne sera pas partagé.</string>
+        <string>Dieser Tresor enthält einen Alias. Das Teilen von Aliassen wird derzeit nicht unterstützt und sie werden nicht geteilt.</string>
         <key>other</key>
-        <string>Ce coffre-fort contient %d alias. Le partage d'alias n'est pas possible pour le moment : les alias ne seront pas partagés.</string>
+        <string>Dieser Tresor enthält %d Aliasse. Das Teilen von Aliassen wird derzeit nicht unterstützt und sie werden nicht geteilt.</string>
       </dict>
     </dict>
     <key>%d member(s)</key>
@@ -93,9 +93,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d membre</string>
+        <string>%d Mitglied</string>
         <key>other</key>
-        <string>%d membres</string>
+        <string>%d Mitglieder</string>
       </dict>
     </dict>
     <key>%d trial day(s) left</key>
@@ -109,9 +109,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Votre période d'essai se termine dans un jour.</string>
+        <string>Deine kostenlose Testphase läuft noch einen Tag.</string>
         <key>other</key>
-        <string>Votre période d'essai se termine dans %d jours.</string>
+        <string>Deine kostenlose Testphase läuft noch %d Tage.</string>
       </dict>
     </dict>
     <key>%d remaining attempt(s)</key>
@@ -125,9 +125,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>1 tentative restante</string>
+        <string>Ein Versuch verbleibend</string>
         <key>other</key>
-        <string>%d tentatives restantes</string>
+        <string>%d Versuche verbleibend</string>
       </dict>
     </dict>
   </dict>
