@@ -808,6 +808,8 @@
 		35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixSuffixSection.swift; sourceTree = "<group>"; };
 		35992154299F910500FEFA32 /* MailboxSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSection.swift; sourceTree = "<group>"; };
 		35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionView.swift; sourceTree = "<group>"; };
+		359C0E052AB97C00002C1986 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		359C0E062AB97C00002C1986 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		359DB2A82A70435800549466 /* Service+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+DependencyInjections.swift"; sourceTree = "<group>"; };
 		359EB88B2A20CF74009588A9 /* InfoBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerView.swift; sourceTree = "<group>"; };
 		359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBannerViewStack.swift; sourceTree = "<group>"; };
@@ -2444,6 +2446,7 @@
 				en,
 				Base,
 				fr,
+				de,
 			);
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
@@ -3180,6 +3183,7 @@
 			children = (
 				35271EF62A883847000F543E /* en */,
 				35271EF72A883859000F543E /* fr */,
+				359C0E062AB97C00002C1986 /* de */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -3197,6 +3201,7 @@
 			children = (
 				3547A0252A840F3500C9DAF1 /* en */,
 				3547A0272A840F4300C9DAF1 /* fr */,
+				359C0E052AB97C00002C1986 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
