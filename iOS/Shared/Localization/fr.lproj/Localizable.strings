@@ -50,7 +50,7 @@
 
 "Not now" = "Plus tard";
 
-/* Vault ownership transfer*/ */
+/* Vault ownership transfer */
 "Are sure you want to transfer your ownership to %@" = "Voulez-vous vraiment transférer la propriété à %@ ?";
 
 /* Vault sharing: Short description for share permission */
@@ -377,7 +377,7 @@
 
 "Undo" = "Annuler";
 
-/* Item moving to other vault*/ */
+/* Item moving to other vault */
 "Move all items to another vault" = "Déplacer tous les éléments vers un autre coffre-fort";
 
 "Item moved to vault « %@ »" = "L'élément a été déplacé dans le coffre-fort « %@ ».";
