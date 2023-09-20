@@ -196,7 +196,7 @@ private extension CredentialsView {
         ZStack {
             Text("Your plan only allows to use items in your primary vault for autofill purposes.")
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" ") +
+                Text(verbatim: " ") +
                 Text("Upgrade now")
                 .underline(color: Color(uiColor: PassColor.interactionNormMajor1))
                 .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
