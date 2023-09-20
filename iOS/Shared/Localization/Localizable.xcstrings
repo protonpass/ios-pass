@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     " (%lld)" : {
 
     },
@@ -561,25 +558,7 @@
     "%lld" : {
 
     },
-    "%lld cached icons" : {
-
-    },
-    "%lld pending event(s)" : {
-
-    },
-    "%lld vault(s) in total" : {
-
-    },
     "•" : {
-
-    },
-    "👋" : {
-
-    },
-    "🔴 icon is cached but can't be displayed" : {
-
-    },
-    "🟡 icon doesn't exist" : {
 
     },
     "2FA limit reached" : {
@@ -652,9 +631,6 @@
           }
         }
       }
-    },
-    "A" : {
-
     },
     "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." : {
       "localizations" : {
@@ -1409,6 +1385,12 @@
             "value" : "Alle Einträge im Papierkorb werden dauerhaft gelöscht."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All items in trash will be permanently deleted"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1738,12 +1720,6 @@
           }
         }
       }
-    },
-    "Banners" : {
-
-    },
-    "Cached fav icons" : {
-
     },
     "Camera permission required for this feature to be available" : {
       "comment" : "No camera permission page",
@@ -3253,9 +3229,6 @@
         }
       }
     },
-    "Empty cache" : {
-
-    },
     "Empty note" : {
       "comment" : "Note item detail page",
       "localizations" : {
@@ -3477,9 +3450,6 @@
         }
       }
     },
-    "Error" : {
-
-    },
     "Expires on" : {
       "localizations" : {
         "de" : {
@@ -3613,9 +3583,6 @@
           }
         }
       }
-    },
-    "Fine-tuned haptic feedbacks" : {
-
     },
     "Follow these simple steps to get the best experience:" : {
       "localizations" : {
@@ -3855,12 +3822,6 @@
         }
       }
     },
-    "Haptic feedbacks" : {
-
-    },
-    "Heavy" : {
-
-    },
     "Help center" : {
       "localizations" : {
         "de" : {
@@ -4028,9 +3989,6 @@
         }
       }
     },
-    "In order for changes to take effect, either move app to background or close app" : {
-
-    },
     "Include numbers" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4092,9 +4050,6 @@
           }
         }
       }
-    },
-    "Intensity %lf" : {
-
     },
     "Invalid TOTP URI" : {
       "localizations" : {
@@ -4485,6 +4440,7 @@
       }
     },
     "Light" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4522,12 +4478,6 @@
           }
         }
       }
-    },
-    "Log level (%@)" : {
-
-    },
-    "Log level (All)" : {
-
     },
     "Login" : {
       "extractionState" : "manual",
@@ -4788,9 +4738,6 @@
           }
         }
       }
-    },
-    "Medium" : {
-
     },
     "Memorable Password" : {
       "extractionState" : "manual",
@@ -5063,9 +5010,6 @@
           }
         }
       }
-    },
-    "No events" : {
-
     },
     "No logs" : {
       "localizations" : {
@@ -5456,9 +5400,6 @@
     "OK" : {
 
     },
-    "Old school" : {
-
-    },
     "Oldest to newest" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5481,9 +5422,6 @@
           }
         }
       }
-    },
-    "Onboard" : {
-
     },
     "One tap and⏤presto!⏤your username and password are filled in instantly" : {
       "extractionState" : "manual",
@@ -5760,7 +5698,14 @@
       }
     },
     "Permanently delete" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permanently delete"
+          }
+        }
+      }
     },
     "Permissions" : {
       "localizations" : {
@@ -6504,9 +6449,6 @@
         }
       }
     },
-    "Rigid" : {
-
-    },
     "Save" : {
       "comment" : "Item create/edit page",
       "extractionState" : "manual",
@@ -6752,9 +6694,6 @@
       }
     },
     "Select to trash all items" : {
-
-    },
-    "Selection" : {
 
     },
     "Send logs" : {
@@ -7003,9 +6942,6 @@
         }
       }
     },
-    "Show more..." : {
-
-    },
     "Show website thumbnails" : {
       "localizations" : {
         "de" : {
@@ -7037,9 +6973,6 @@
           }
         }
       }
-    },
-    "Soft" : {
-
     },
     "Sort by" : {
       "comment" : "Items filtering",
@@ -7172,9 +7105,6 @@
           }
         }
       }
-    },
-    "Success" : {
-
     },
     "Suffix" : {
       "localizations" : {
@@ -7318,9 +7248,6 @@
           }
         }
       }
-    },
-    "Telemetry events" : {
-
     },
     "Terms of service" : {
       "extractionState" : "manual",
@@ -7931,9 +7858,6 @@
         }
       }
     },
-    "Undismiss all banners" : {
-
-    },
     "Undo" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8319,16 +8243,6 @@
         }
       }
     },
-    "Vault \"%@\" with %lld item(s)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Vault \"%1$@\" with %2$lld item(s)"
-          }
-        }
-      }
-    },
     "Vault « %@ » deleted" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8579,9 +8493,6 @@
         }
       }
     },
-    "Warning" : {
-
-    },
     "We are downloading and decrypting your items." : {
       "localizations" : {
         "de" : {
@@ -8744,9 +8655,6 @@
           }
         }
       }
-    },
-    "Yes" : {
-
     },
     "Yes, sign me out" : {
       "localizations" : {

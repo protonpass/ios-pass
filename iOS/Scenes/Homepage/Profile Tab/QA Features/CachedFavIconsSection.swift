@@ -26,7 +26,7 @@ import SwiftUI
 struct CachedFavIconsSection: View {
     var body: some View {
         NavigationLink(destination: { CachedFavIconsView() },
-                       label: { Text("Cached fav icons") })
+                       label: { Text(verbatim: "Cached fav icons") })
     }
 }
 
@@ -73,7 +73,7 @@ struct CachedFavIconsView: View {
                                    onRetry: viewModel.loadIcons)
             } else {
                 if viewModel.icons.isEmpty {
-                    Text("Empty cache")
+                    Text(verbatim: "Empty cache")
                         .font(.body.italic())
                         .foregroundColor(.secondary)
                 } else {
@@ -81,11 +81,15 @@ struct CachedFavIconsView: View {
                 }
             }
         }
-        .navigationTitle("Cached fav icons")
+        .navigationTitle(Text(verbatim: "Cached fav icons"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: viewModel.emptyCache) {
-                    Label("Empty cache", systemImage: "trash")
+                    Label(title: {
+                        Text(verbatim: "Empty cache")
+                    }, icon: {
+                        Image(systemName: "trash")
+                    })
                 }
             }
         }
@@ -95,8 +99,8 @@ struct CachedFavIconsView: View {
     @ViewBuilder
     private var cachedIcons: some View {
         Section {
-            Text("🔴 icon is cached but can't be displayed")
-            Text("🟡 icon doesn't exist")
+            Text(verbatim: "🔴 icon is cached but can't be displayed")
+            Text(verbatim: "🟡 icon doesn't exist")
         }
 
         Section(content: {
@@ -123,7 +127,7 @@ struct CachedFavIconsView: View {
                 }
             }
         }, header: {
-            Text("\(viewModel.icons.count) cached icons")
+            Text(verbatim: "\(viewModel.icons.count) cached icons")
         })
     }
 }
