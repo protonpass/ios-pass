@@ -164,28 +164,28 @@ extension View {
                          onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
         if isTrashed {
-            return itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
-                                                onPermanentlyDelete: onPermanentlyDelete))
+            itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
+                                         onPermanentlyDelete: onPermanentlyDelete))
         } else {
             switch item.type {
             case .login:
-                return itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
-                                              onCopyPassword: { handler.copyPassword(item) },
-                                              onEdit: { handler.edit(item) },
-                                              onTrash: { handler.trash(item) }))
+                itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
+                                       onCopyPassword: { handler.copyPassword(item) },
+                                       onEdit: { handler.edit(item) },
+                                       onTrash: { handler.trash(item) }))
             case .alias:
-                return itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
-                                              onEdit: { handler.edit(item) },
-                                              onTrash: { handler.trash(item) }))
+                itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
+                                       onEdit: { handler.edit(item) },
+                                       onTrash: { handler.trash(item) }))
 
             case .creditCard:
-                return itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
-                                                   onTrash: { handler.trash(item) }))
+                itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
+                                            onTrash: { handler.trash(item) }))
 
             case .note:
-                return itemContextMenu(.note(onCopyContent: { handler.copyNoteContent(item) },
-                                             onEdit: { handler.edit(item) },
-                                             onTrash: { handler.trash(item) }))
+                itemContextMenu(.note(onCopyContent: { handler.copyNoteContent(item) },
+                                      onEdit: { handler.edit(item) },
+                                      onTrash: { handler.trash(item) }))
             }
         }
     }

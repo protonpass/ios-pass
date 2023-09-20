@@ -53,17 +53,17 @@ final class OnboardingViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                if self.preferences.localAuthenticationMethod == .biometric {
+                if preferences.localAuthenticationMethod == .biometric {
                     do {
-                        let biometryType = try self.checkBiometryType(policy: self.policy)
+                        let biometryType = try checkBiometryType(policy: policy)
                         switch biometryType {
                         case .touchID:
-                            self.state = .touchIDEnabled
+                            state = .touchIDEnabled
                         default:
-                            self.state = .faceIDEnabled
+                            state = .faceIDEnabled
                         }
                     } catch {
-                        self.state = .faceIDEnabled
+                        state = .faceIDEnabled
                     }
                 }
             }

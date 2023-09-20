@@ -59,10 +59,10 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 if Task.isCancelled {
                     return
                 }
-                self.isChecking = true
-                let receiverPublicKeys = try await self.getEmailPublicKey(with: email)
-                self.setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
-                self.goToNextStep = true
+                isChecking = true
+                let receiverPublicKeys = try await getEmailPublicKey(with: email)
+                setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
+                goToNextStep = true
             } catch {
                 self.error = "You cannot share \(vaultName) vault with this email"
             }

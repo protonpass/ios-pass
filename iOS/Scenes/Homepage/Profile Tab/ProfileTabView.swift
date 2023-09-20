@@ -326,18 +326,18 @@ private extension PassPlan {
     var associatedPlanInfo: AssociatedPlanInfo? {
         switch planType {
         case .free:
-            return nil
+            nil
 
         case .trial:
-            return .init(title: "Free trial".localized,
-                         icon: PassIcon.badgeTrial,
-                         iconWidth: 12,
-                         tintColor: PassColor.interactionNormMajor2)
+            .init(title: "Free trial".localized,
+                  icon: PassIcon.badgeTrial,
+                  iconWidth: 12,
+                  tintColor: PassColor.interactionNormMajor2)
         case .plus:
-            return .init(title: displayName,
-                         icon: PassIcon.badgePaid,
-                         iconWidth: 16,
-                         tintColor: PassColor.noteInteractionNormMajor2)
+            .init(title: displayName,
+                  icon: PassIcon.badgePaid,
+                  iconWidth: 16,
+                  tintColor: PassColor.noteInteractionNormMajor2)
         }
     }
 }

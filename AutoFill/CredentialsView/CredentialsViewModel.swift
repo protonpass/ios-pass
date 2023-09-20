@@ -366,8 +366,8 @@ private extension CredentialsViewModel {
                 throw PPError.CredentialProviderFailureReason.generic
             }
             guard let encryptedItem =
-                try await self.itemRepository.getItem(shareId: item.shareId,
-                                                      itemId: item.itemId) else {
+                try await itemRepository.getItem(shareId: item.shareId,
+                                                 itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return encryptedItem
@@ -380,32 +380,32 @@ private extension CredentialsViewModel {
                 throw PPError.CredentialProviderFailureReason.generic
             }
 
-            let vaults = try await self.shareRepository.getVaults()
-            let encryptedItems = try await self.itemRepository.getActiveLogInItems()
-            self.logger.debug("Mapping \(encryptedItems.count) encrypted items")
+            let vaults = try await shareRepository.getVaults()
+            let encryptedItems = try await itemRepository.getActiveLogInItems()
+            logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
             let domainParser = try DomainParser()
             var searchableItems = [SearchableItem]()
             var matchedEncryptedItems = [ScoredSymmetricallyEncryptedItem]()
             var notMatchedEncryptedItems = [SymmetricallyEncryptedItem]()
             for encryptedItem in encryptedItems {
-                let decryptedItemContent = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
+                let decryptedItemContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
 
                 let vault = vaults.first { $0.shareId == encryptedItem.shareId }
                 assert(vault != nil, "Must have at least 1 vault")
-                let shouldTakeIntoAccount = self.shouldTakeIntoAccount(vault: vault, withPlan: plan)
+                let shouldTakeIntoAccount = shouldTakeIntoAccount(vault: vault, withPlan: plan)
 
                 if case let .login(data) = decryptedItemContent.contentData {
                     if shouldTakeIntoAccount {
                         try searchableItems.append(SearchableItem(from: encryptedItem,
-                                                                  symmetricKey: self.symmetricKey,
+                                                                  symmetricKey: symmetricKey,
                                                                   allVaults: vaults))
                     }
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()
                     for itemUrl in itemUrls {
-                        for url in self.urls {
+                        for url in urls {
                             let result = URLUtils.Matcher.compare(itemUrl, url, domainParser: domainParser)
                             if case .matched = result {
                                 matchResults.append(result)
@@ -430,9 +430,9 @@ private extension CredentialsViewModel {
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
                 .parallelMap { try $0.toItemUiModel(self.symmetricKey) }
 
-            self.logger.debug("Mapped \(encryptedItems.count) encrypted items.")
-            self.logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
-            self.logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
+            logger.debug("Mapped \(encryptedItems.count) encrypted items.")
+            logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
+            logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
             return .init(vaults: vaults,
                          searchableItems: searchableItems,
                          matchedItems: matchedItems,
@@ -446,8 +446,8 @@ private extension CredentialsViewModel {
                 throw PPError.CredentialProviderFailureReason.generic
             }
             guard let itemContent =
-                try await self.itemRepository.getItemContent(shareId: item.shareId,
-                                                             itemId: item.itemId) else {
+                try await itemRepository.getItemContent(shareId: item.shareId,
+                                                        itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
 

@@ -236,33 +236,33 @@ extension VaultSelection {
     var title: String {
         switch self {
         case .all:
-            return "All vaults".localized
+            "All vaults".localized
         case let .precise(vault):
-            return vault.name
+            vault.name
         case .trash:
-            return "Trash".localized
+            "Trash".localized
         }
     }
 
     var icon: UIImage {
         switch self {
         case .all:
-            return PassIcon.brandPass
+            PassIcon.brandPass
         case let .precise(vault):
-            return vault.displayPreferences.icon.icon.bigImage
+            vault.displayPreferences.icon.icon.bigImage
         case .trash:
-            return IconProvider.trash
+            IconProvider.trash
         }
     }
 
     var color: UIColor {
         switch self {
         case .all:
-            return PassColor.interactionNormMajor2
+            PassColor.interactionNormMajor2
         case let .precise(vault):
-            return vault.displayPreferences.color.color.color
+            vault.displayPreferences.color.color.color
         case .trash:
-            return PassColor.textWeak
+            PassColor.textWeak
         }
     }
 }

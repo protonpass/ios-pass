@@ -48,13 +48,13 @@ public struct PassPlan: Decodable, Equatable, Sendable {
         switch type {
         case "plus":
             if let trialEnd, trialEnd > 0 {
-                return .trial
+                .trial
             } else {
-                return .plus
+                .plus
             }
 
         default:
-            return .free
+            .free
         }
     }
 
