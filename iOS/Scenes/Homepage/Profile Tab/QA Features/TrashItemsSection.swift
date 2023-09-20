@@ -34,7 +34,7 @@ struct TrashItemsSection: View {
         NavigationLink(destination: {
             TrashItemsView(bannerManager: bannerManager)
         }, label: {
-            Text("Trash all items")
+            Text(verbatim: "Trash all items")
         })
     }
 }
@@ -91,14 +91,14 @@ private struct TrashItemsView: View {
                     .buttonStyle(.plain)
                 }
             }, header: {
-                Text("\(uiModels.count) vault(s) in total")
+                Text(verbatim: "\(uiModels.count) vault(s) in total")
             })
         }
         .navigationTitle("Select to trash all items")
         .alert("Trash all items",
                isPresented: showingAlert,
                actions: {
-                   Button(role: .cancel, label: { Text("Cancel") })
+                   Button(role: .cancel, label: { Text(verbatim: "Cancel") })
                    Button(role: .destructive,
                           action: {
                               if let selectedUiModel {
@@ -106,12 +106,12 @@ private struct TrashItemsView: View {
                               }
                           },
                           label: {
-                              Text("Yes")
+                              Text(verbatim: "Yes")
                           })
                },
                message: {
                    if let selectedUiModel {
-                       Text("Vault \"\(selectedUiModel.vault.name)\" with \(selectedUiModel.itemCount) item(s)")
+                       Text(verbatim: "Vault \"\(selectedUiModel.vault.name)\" with \(selectedUiModel.itemCount) item(s)")
                    }
                })
     }

@@ -2,7 +2,7 @@ import SwiftUI
 
 extension TextView.Representable {
     final class Coordinator: NSObject, UITextViewDelegate {
-        internal let textView: UIKitTextView
+        let textView: UIKitTextView
 
         private var originalText: NSAttributedString = .init()
         private var text: Binding<NSAttributedString>

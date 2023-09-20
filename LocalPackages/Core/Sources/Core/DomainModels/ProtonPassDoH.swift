@@ -1,5 +1,5 @@
 //
-// PPDoH.swift
+// ProtonPassDoH.swift
 // Proton Pass - Created on 02/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
