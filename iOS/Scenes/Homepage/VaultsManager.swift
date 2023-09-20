@@ -40,11 +40,11 @@ enum VaultSelection {
     var searchBarPlacehoder: String {
         switch self {
         case .all:
-            return "Search in all vaults...".localized
+            "Search in all vaults...".localized
         case let .precise(vault):
-            return "Search in %@...".localized(vault.name)
+            "Search in %@...".localized(vault.name)
         case .trash:
-            return "Search in Trash...".localized
+            "Search in Trash...".localized
         }
     }
 
@@ -379,9 +379,9 @@ extension VaultsManager {
     func getSelectedShareId() -> String? {
         switch vaultSelection {
         case .all, .trash:
-            return getPrimaryVault()?.shareId
+            getPrimaryVault()?.shareId
         case let .precise(vault):
-            return vault.shareId
+            vault.shareId
         }
     }
 
@@ -437,9 +437,9 @@ extension VaultsManager: LimitationCounterProtocol {
     func getVaultCount() -> Int {
         switch state {
         case let .loaded(vaults, _):
-            return vaults.count
+            vaults.count
         default:
-            return 0
+            0
         }
     }
 }
@@ -448,14 +448,14 @@ extension VaultManagerState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading):
-            return true
+            true
         case let (.loaded(lhsVaults, lhsTrashedItems), .loaded(rhsVaults, rhsTrashedItems)):
-            return lhsVaults.hashValue == rhsVaults.hashValue &&
+            lhsVaults.hashValue == rhsVaults.hashValue &&
                 lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
         case let (.error(lhsError), .error(rhsError)):
-            return lhsError.localizedDescription == rhsError.localizedDescription
+            lhsError.localizedDescription == rhsError.localizedDescription
         default:
-            return false
+            false
         }
     }
 }
@@ -464,11 +464,11 @@ extension VaultSelection: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.all, .all), (.trash, .trash):
-            return true
+            true
         case let (.precise(lhsVault), .precise(rhsVault)):
-            return lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
+            lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
         default:
-            return false
+            false
         }
     }
 }

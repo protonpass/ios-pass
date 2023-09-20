@@ -32,9 +32,9 @@ struct MailboxSection: View {
         var title: String {
             switch self {
             case .create:
-                return "Forward to".localized
+                "Forward to".localized
             case .edit:
-                return "Forwarding to".localized
+                "Forwarding to".localized
             }
         }
     }

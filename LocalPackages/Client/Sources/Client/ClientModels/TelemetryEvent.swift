@@ -40,23 +40,23 @@ public enum TelemetryEventType: Sendable {
     public var rawValue: String {
         switch self {
         case let .create(type):
-            return "create.\(type.rawValue)"
+            "create.\(type.rawValue)"
         case let .read(type):
-            return "read.\(type.rawValue)"
+            "read.\(type.rawValue)"
         case let .update(type):
-            return "update.\(type.rawValue)"
+            "update.\(type.rawValue)"
         case let .delete(type):
-            return "delete.\(type.rawValue)"
+            "delete.\(type.rawValue)"
         case .autofillDisplay:
-            return "autofill.display"
+            "autofill.display"
         case .autofillTriggeredFromSource:
-            return "autofill.triggered.source"
+            "autofill.triggered.source"
         case .autofillTriggeredFromApp:
-            return "autofill.triggered.app"
+            "autofill.triggered.app"
         case .searchTriggered:
-            return "search.triggered"
+            "search.triggered"
         case .searchClick:
-            return "search.click"
+            "search.click"
         }
     }
 

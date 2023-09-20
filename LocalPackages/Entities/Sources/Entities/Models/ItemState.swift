@@ -26,10 +26,8 @@ public enum ItemState: Int64, CaseIterable, Sendable {
 
     public var description: String {
         switch self {
-        case .active:
-            return "active"
-        case .trashed:
-            return "trashed"
+        case .active: "active"
+        case .trashed: "trashed"
         }
     }
 }

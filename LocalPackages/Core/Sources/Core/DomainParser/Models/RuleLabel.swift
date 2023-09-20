@@ -24,9 +24,9 @@ public enum RuleLabel {
     public func isMatching(label: Substring) -> Bool {
         switch self {
         case let .text(text):
-            return text == label
+            text == label
         case .wildcard:
-            return true
+            true
         }
     }
 }

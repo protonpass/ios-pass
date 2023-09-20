@@ -25,17 +25,17 @@ public enum CircleButtonType {
 
     var width: CGFloat {
         switch self {
-        case .small: return 36
-        case .regular: return 40
-        case .big: return 48
+        case .small: 36
+        case .regular: 40
+        case .big: 48
         }
     }
 
     var iconWidth: CGFloat {
         switch self {
-        case .small: return 16
-        case .regular: return 20
-        case .big: return 20
+        case .small: 16
+        case .regular: 20
+        case .big: 20
         }
     }
 }

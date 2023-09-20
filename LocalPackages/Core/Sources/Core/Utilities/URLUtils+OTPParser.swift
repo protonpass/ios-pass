@@ -34,13 +34,13 @@ public extension URLUtils.OTPParser {
         public static func == (lhs: Self, rhs: Self) -> Bool {
             switch (lhs, rhs) {
             case let (.invalidScheme(lScheme), .invalidScheme(rScheme)):
-                return lScheme == rScheme
+                lScheme == rScheme
             case let (.invalidHost(lHost), .invalidHost(rHost)):
-                return lHost == rHost
+                lHost == rHost
             case (.missingSecret, .missingSecret):
-                return true
+                true
             default:
-                return false
+                false
             }
         }
     }

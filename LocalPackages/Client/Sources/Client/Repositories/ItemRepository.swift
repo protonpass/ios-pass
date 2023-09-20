@@ -454,9 +454,9 @@ public extension ItemRepositoryProtocol {
                 .filter { item in
                     switch item.contentData {
                     case let .login(loginData):
-                        return !loginData.totpUri.isEmpty
+                        !loginData.totpUri.isEmpty
                     default:
-                        return false
+                        false
                     }
                 }
                 .sorted(by: { $0.item.createTime < $1.item.createTime })
