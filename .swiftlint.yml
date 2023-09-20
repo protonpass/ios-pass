@@ -8,9 +8,9 @@
 included: # paths to include during linting. `--path` is ignored if present.
   - iOS
   - AutoFill
-  - Client
-  - Core
-  - UIComponents
+  - LocalPackages/Client/Sources
+  - LocalPackages/Core/Sources
+  - LocalPackages/UIComponents/Sources
   - Keyboard
   
 ################
@@ -26,6 +26,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - LocalPackages/Client/Tests
   - LocalPackages/DesignSystem/Tests
   - LocalPackages/Entities/Tests
+  - LocalPackages/Client/Sources/Client/Protobuf*
   - fastlane/*
   - misc/*
   
