@@ -34,7 +34,7 @@ struct TOTPText: View {
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)))
             if index != segments.count - 1 {
-                texts.append(Text(" • ")
+                texts.append(Text(verbatim: " • ")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textHint)))
             }
