@@ -2534,6 +2534,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		35610BC22A41C75B0065710D /* Update git commit hash */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -2552,6 +2553,7 @@
 		};
 		35C2162A29EA92A4001720FF /* Copy appropriate Settings.bundle base on configuration */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

@@ -26,7 +26,7 @@ import SwiftUI
 struct TelemetryEventsSection: View {
     var body: some View {
         NavigationLink(destination: { TelemetryEventsView() },
-                       label: { Text("Telemetry events") })
+                       label: { Text(verbatim: "Telemetry events") })
     }
 }
 
@@ -86,7 +86,7 @@ private struct TelemetryEventsView: View {
         } else {
             if viewModel.uiModels.isEmpty {
                 Form {
-                    Text("No events")
+                    Text(verbatim: "No events")
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }
             } else {
@@ -102,7 +102,7 @@ private struct TelemetryEventsView: View {
                     EventView(uiModel: uiModel)
                 }
             }, header: {
-                Text("\(viewModel.uiModels.count) pending event(s)")
+                Text(verbatim: "\(viewModel.uiModels.count) pending event(s)")
             })
         }
         .navigationTitle(viewModel.relativeThreshold)
