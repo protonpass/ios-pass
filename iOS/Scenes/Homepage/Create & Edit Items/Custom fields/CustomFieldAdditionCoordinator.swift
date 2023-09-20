@@ -46,8 +46,8 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
                 guard let self else {
                     return
                 }
-                let alert = self.makeAlert(for: type)
-                self.rootViewController.topMostViewController.present(alert, animated: true)
+                let alert = makeAlert(for: type)
+                rootViewController.topMostViewController.present(alert, animated: true)
             }
         }
         let viewController = UIHostingController(rootView: view)
