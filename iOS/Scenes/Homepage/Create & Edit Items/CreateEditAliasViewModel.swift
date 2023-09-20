@@ -134,9 +134,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override var isSaveable: Bool {
         switch mode {
         case .create:
-            return !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
+            !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
         case .edit:
-            return !title.isEmpty && !mailboxes.isEmpty
+            !title.isEmpty && !mailboxes.isEmpty
         }
     }
 

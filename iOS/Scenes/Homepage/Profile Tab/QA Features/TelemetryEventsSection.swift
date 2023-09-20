@@ -136,36 +136,36 @@ private extension TelemetryEventType {
     var icon: UIImage {
         switch self {
         case let .create(type):
-            return type.regularIcon
+            type.regularIcon
         case let .read(type):
-            return type.regularIcon
+            type.regularIcon
         case let .update(type):
-            return type.regularIcon
+            type.regularIcon
         case let .delete(type):
-            return type.regularIcon
+            type.regularIcon
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
             // swiftlint:disable:next force_unwrapping
-            return UIImage(systemName: "rectangle.and.pencil.and.ellipsis")!
+            UIImage(systemName: "rectangle.and.pencil.and.ellipsis")!
         case .searchClick, .searchTriggered:
             // swiftlint:disable:next force_unwrapping
-            return UIImage(systemName: "magnifyingglass")!
+            UIImage(systemName: "magnifyingglass")!
         }
     }
 
     var iconColor: UIColor {
         switch self {
         case let .create(type):
-            return type.normMajor1Color
+            type.normMajor1Color
         case let .read(type):
-            return type.normMajor1Color
+            type.normMajor1Color
         case let .update(type):
-            return type.normMajor1Color
+            type.normMajor1Color
         case let .delete(type):
-            return type.normMajor1Color
+            type.normMajor1Color
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
-            return PassColor.signalInfo
+            PassColor.signalInfo
         case .searchClick, .searchTriggered:
-            return PassColor.signalDanger
+            PassColor.signalDanger
         }
     }
 
@@ -189,23 +189,23 @@ private extension TelemetryEventType {
     var emoji: String {
         switch self {
         case .create:
-            return "Create ➕"
+            "Create ➕"
         case .read:
-            return "Read 🗒️"
+            "Read 🗒️"
         case .update:
-            return "Update ✏️"
+            "Update ✏️"
         case .delete:
-            return "Delete ❌"
+            "Delete ❌"
         case .autofillDisplay:
-            return "AutoFill extension opened 🔑"
+            "AutoFill extension opened 🔑"
         case .autofillTriggeredFromSource:
-            return "Autofilled from QuickType bar ⌨️"
+            "Autofilled from QuickType bar ⌨️"
         case .autofillTriggeredFromApp:
-            return "Autofilled from extension 📱"
+            "Autofilled from extension 📱"
         case .searchClick:
-            return "Pick search result 🔎"
+            "Pick search result 🔎"
         case .searchTriggered:
-            return "Open search 🔎"
+            "Open search 🔎"
         }
     }
 }

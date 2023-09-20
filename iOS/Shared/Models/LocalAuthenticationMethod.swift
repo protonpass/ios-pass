@@ -64,12 +64,9 @@ enum LocalAuthenticationMethodUiModel {
 
     var method: LocalAuthenticationMethod {
         switch self {
-        case .none:
-            return .none
-        case .biometric:
-            return .biometric
-        case .pin:
-            return .pin
+        case .none: .none
+        case .biometric: .biometric
+        case .pin: .pin
         }
     }
 }
@@ -84,10 +81,8 @@ extension LABiometryType {
     // We only use Face ID or Touch ID
     var usable: Bool {
         switch self {
-        case .faceID, .touchID:
-            return true
-        default:
-            return false
+        case .faceID, .touchID: true
+        default: false
         }
     }
 
