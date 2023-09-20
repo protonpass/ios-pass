@@ -31,10 +31,10 @@ protocol CreateEditItemCoordinatorDelegate: AnyObject {
 }
 
 typealias CreateEditItemDelegates =
-    GeneratePasswordViewModelDelegate &
-    GeneratePasswordCoordinatorDelegate &
     CreateEditItemViewModelDelegate &
-    CreateEditLoginViewModelDelegate
+    CreateEditLoginViewModelDelegate &
+    GeneratePasswordCoordinatorDelegate &
+    GeneratePasswordViewModelDelegate
 
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }

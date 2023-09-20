@@ -133,7 +133,8 @@ private extension FullSyncProgressView {
         }, label: {
             VStack(alignment: .center) {
                 Text("More info")
-                Label("", systemImage: "chevron.down")
+                Label(title: { Text(verbatim: "") },
+                      icon: { Image(systemName: "chevron.down") })
             }
             .foregroundColor(PassColor.textWeak.toColor)
         })

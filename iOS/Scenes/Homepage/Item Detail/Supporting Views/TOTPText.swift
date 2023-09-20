@@ -43,7 +43,7 @@ struct TOTPText: View {
     }
 
     public var body: some View {
-        texts.reduce(into: Text("")) { partialResult, text in
+        texts.reduce(into: Text(verbatim: "")) { partialResult, text in
             // swiftlint:disable:next shorthand_operator
             partialResult = partialResult + text
         }

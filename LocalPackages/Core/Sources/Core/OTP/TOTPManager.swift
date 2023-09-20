@@ -1,5 +1,5 @@
 //
-// TotpManager.swift
+// TOTPManager.swift
 // Proton Pass - Created on 25/01/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
