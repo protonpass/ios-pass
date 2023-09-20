@@ -37,4 +37,4 @@
 
 --enable isEmpty,\
 blankLineAfterImports,\
-sortedSwitchCases,\
+sortSwitchCases,\
