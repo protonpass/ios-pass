@@ -167,6 +167,7 @@ extension HomepageTabBarController {
             do {
                 let plan = try await self.passPlanRepository.getPlan()
 
+                // swiftlint:disable switch_case_alignment
                 let (image, selectedImage): (UIImage, UIImage) =
                     switch plan.planType {
                 case .free:
@@ -176,6 +177,7 @@ extension HomepageTabBarController {
                 case .trial:
                     (PassIcon.tabProfileTrialUnselected, PassIcon.tabProfileTrialSelected)
                 }
+                // swiftlint:enable switch_case_alignment
 
                 self.profileTabViewController?.tabBarItem.image = image
                 self.profileTabViewController?.tabBarItem.selectedImage = selectedImage
