@@ -115,7 +115,7 @@ private extension SearchResultsView {
                 .font(.callout)
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" ")
+                Text(verbatim: " ")
                 .font(.callout) +
                 Text("%d search result(s)".localized(viewModel.results.numberOfItems))
                 .font(.callout)
