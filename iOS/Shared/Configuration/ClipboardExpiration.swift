@@ -29,26 +29,26 @@ public enum ClipboardExpiration: Int, Codable, CustomStringConvertible, CaseIter
     public var description: String {
         switch self {
         case .fifteenSeconds:
-            return "After 15 seconds".localized
+            "After 15 seconds".localized
         case .oneMinute:
-            return "After 60 seconds".localized
+            "After 60 seconds".localized
         case .twoMinutes:
-            return "After 120 seconds".localized
+            "After 120 seconds".localized
         case .never:
-            return "Never".localized
+            "Never".localized
         }
     }
 
     public var expirationDate: Date? {
         switch self {
         case .fifteenSeconds:
-            return Date().addingTimeInterval(15)
+            Date().addingTimeInterval(15)
         case .oneMinute:
-            return Date().addingTimeInterval(60)
+            Date().addingTimeInterval(60)
         case .twoMinutes:
-            return Date().addingTimeInterval(120)
+            Date().addingTimeInterval(120)
         case .never:
-            return nil
+            nil
         }
     }
 }

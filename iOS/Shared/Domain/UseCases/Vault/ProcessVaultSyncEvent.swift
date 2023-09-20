@@ -40,39 +40,39 @@ final class ProcessVaultSyncEvent: Sendable, ProcessVaultSyncEventUseCase {
                  with progresses: [VaultSyncProgress]) -> [VaultSyncProgress] {
         switch event {
         case .done, .initialization, .started:
-            return progresses
+            progresses
 
         case let .downloadedShares(shares):
-            return shares.map { .init(shareId: $0.shareID,
-                                      vault: nil,
-                                      itemsState: .loading) }
+            shares.map { .init(shareId: $0.shareID,
+                               vault: nil,
+                               itemsState: .loading) }
 
         case let .decryptedVault(vault):
-            return progresses.map { progress in
+            progresses.map { progress in
                 if progress.shareId == vault.shareId {
-                    return progress.copy(vault: vault)
+                    progress.copy(vault: vault)
                 } else {
-                    return progress
+                    progress
                 }
             }
 
         case let .getRemoteItems(getProgress):
-            return progresses.map { progress in
+            progresses.map { progress in
                 if progress.shareId == getProgress.shareId {
-                    return progress.copy(itemState: .download(downloaded: getProgress.downloaded,
-                                                              total: getProgress.total))
+                    progress.copy(itemState: .download(downloaded: getProgress.downloaded,
+                                                       total: getProgress.total))
                 } else {
-                    return progress
+                    progress
                 }
             }
 
         case let .decryptItems(decryptProgress):
-            return progresses.map { progress in
+            progresses.map { progress in
                 if progress.shareId == decryptProgress.shareId {
-                    return progress.copy(itemState: .decrypt(decrypted: decryptProgress.decrypted,
-                                                             total: decryptProgress.total))
+                    progress.copy(itemState: .decrypt(decrypted: decryptProgress.decrypted,
+                                                      total: decryptProgress.total))
                 } else {
-                    return progress
+                    progress
                 }
             }
         }

@@ -30,16 +30,11 @@ public enum LogLevel: String, Codable, CaseIterable, Sendable {
 
     private var emoji: String {
         switch self {
-        case .error, .fatal:
-            return "🔴"
-        case .warning:
-            return "🟡"
-        case .info:
-            return "🔵"
-        case .trace:
-            return "⚫"
-        case .debug:
-            return "🟣"
+        case .error, .fatal: "🔴"
+        case .warning: "🟡"
+        case .info: "🔵"
+        case .trace: "⚫"
+        case .debug: "🟣"
         }
     }
 

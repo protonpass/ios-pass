@@ -128,9 +128,9 @@ private extension SearchViewModel {
             if let item = allItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID
             }) {
-                return try item.toSearchEntryUiModel(symmetricKey)
+                try item.toSearchEntryUiModel(symmetricKey)
             } else {
-                return nil
+                nil
             }
         }
 

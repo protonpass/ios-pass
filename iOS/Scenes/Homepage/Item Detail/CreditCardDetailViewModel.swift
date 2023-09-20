@@ -34,9 +34,9 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
 
     var expirationDate: String {
         if let month, let year {
-            return String(format: "%02d / %d", month, year)
+            String(format: "%02d / %d", month, year)
         } else {
-            return ""
+            ""
         }
     }
 

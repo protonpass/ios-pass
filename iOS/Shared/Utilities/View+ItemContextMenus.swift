@@ -45,7 +45,7 @@ enum ItemContextMenu {
     var sections: [ItemContextMenuOptionSection] {
         switch self {
         case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
-            return [
+            [
                 .init(options: [
                     .init(title: "Copy username".localized,
                           icon: IconProvider.user,
@@ -59,7 +59,7 @@ enum ItemContextMenu {
             ]
 
         case let .alias(onCopyAlias, onEdit, onTrash):
-            return [
+            [
                 .init(options: [.init(title: "Copy alias address".localized,
                                       icon: IconProvider.alias,
                                       action: onCopyAlias)]),
@@ -68,13 +68,13 @@ enum ItemContextMenu {
             ]
 
         case let .creditCard(onEdit, onTrash):
-            return [
+            [
                 .init(options: [.editOption(action: onEdit)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
         case let .note(onCopyContent, onEdit, onTrash):
-            return [
+            [
                 .init(options: [.init(title: "Copy note content".localized,
                                       icon: IconProvider.note,
                                       action: onCopyContent)]),
@@ -83,7 +83,7 @@ enum ItemContextMenu {
             ]
 
         case let .trashedItem(onRestore, onPermanentlyDelete):
-            return [
+            [
                 .init(options: [.init(title: "Restore".localized,
                                       icon: IconProvider.clockRotateLeft,
                                       action: onRestore)]),

@@ -167,18 +167,14 @@ extension HomepageTabBarController {
             do {
                 let plan = try await self.passPlanRepository.getPlan()
 
-                let image: UIImage
-                let selectedImage: UIImage
-                switch plan.planType {
+                let (image, selectedImage): (UIImage, UIImage) =
+                    switch plan.planType {
                 case .free:
-                    image = IconProvider.user
-                    selectedImage = IconProvider.user
+                    (IconProvider.user, IconProvider.user)
                 case .plus:
-                    image = PassIcon.tabProfilePaidUnselected
-                    selectedImage = PassIcon.tabProfilePaidSelected
+                    (PassIcon.tabProfilePaidUnselected, PassIcon.tabProfilePaidSelected)
                 case .trial:
-                    image = PassIcon.tabProfileTrialUnselected
-                    selectedImage = PassIcon.tabProfileTrialSelected
+                    (PassIcon.tabProfileTrialUnselected, PassIcon.tabProfileTrialSelected)
                 }
 
                 self.profileTabViewController?.tabBarItem.image = image

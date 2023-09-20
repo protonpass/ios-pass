@@ -30,13 +30,13 @@ public enum PPCoreError: Error, CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .biometryTypeNotInitialized:
-            return "Biometry type not initialized"
+            "Biometry type not initialized"
         case let .failedToConvertBase64StringToData(string):
-            return "Failed to convert base 64 string to data \"\(string)\""
+            "Failed to convert base 64 string to data \"\(string)\""
         case .failedToRandomizeData:
-            return "Failed to randomize data"
+            "Failed to randomize data"
         case let .totp(reason):
-            return reason.debugDescription
+            reason.debugDescription
         }
     }
 }
@@ -50,11 +50,11 @@ public extension PPCoreError {
         public var debugDescription: String {
             switch self {
             case .unsupportedOTP:
-                return "Unsupported OTP type (not TOTP)"
+                "Unsupported OTP type (not TOTP)"
             case .failedToDecodeSecret:
-                return "Failed to decode secret"
+                "Failed to decode secret"
             case .failedToInitializeTOTPObject:
-                return "Failed to initialize TOTP object"
+                "Failed to initialize TOTP object"
             }
         }
     }
