@@ -88,21 +88,21 @@ public extension InviteRepository {
             guard let self else {
                 return
             }
-            self.logger.trace("Refreshing all user invitations")
+            logger.trace("Refreshing all user invitations")
             do {
                 if Task.isCancelled {
                     return
                 }
-                let invites = try await self.getPendingInvitesForUser()
+                let invites = try await getPendingInvitesForUser()
                 if Task.isCancelled {
                     return
                 }
-                if invites != self.currentPendingInvites.value {
-                    self.currentPendingInvites.send(invites)
+                if invites != currentPendingInvites.value {
+                    currentPendingInvites.send(invites)
                 }
-                self.logger.trace("Invites refreshed with \(invites)")
+                logger.trace("Invites refreshed with \(invites)")
             } catch {
-                self.logger.error(message: "Could not refresh all the user's invitations", error: error)
+                logger.error(message: "Could not refresh all the user's invitations", error: error)
             }
         }
     }

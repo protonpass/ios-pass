@@ -109,18 +109,18 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         var isLoaded: Bool {
             switch self {
             case .loaded:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
 
         var isLoading: Bool {
             switch self {
             case .loading:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
     }
@@ -170,7 +170,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 guard let self, !self.prefixManuallyEdited else {
                     return
                 }
-                self.prefix = PrefixUtils.generatePrefix(fromTitle: title)
+                prefix = PrefixUtils.generatePrefix(fromTitle: title)
             }
             .store(in: &cancellables)
 
@@ -287,7 +287,7 @@ private extension CreateEditAliasViewModel {
             guard let self else {
                 throw PPError.deallocatedSelf
             }
-            return try await self.aliasRepository.getAliasOptions(shareId: shareId)
+            return try await aliasRepository.getAliasOptions(shareId: shareId)
         }
     }
 
@@ -298,9 +298,9 @@ private extension CreateEditAliasViewModel {
             guard let self else {
                 throw PPError.deallocatedSelf
             }
-            try await self.aliasRepository.changeMailboxes(shareId: shareId,
-                                                           itemId: itemId,
-                                                           mailboxIDs: mailboxIDs)
+            try await aliasRepository.changeMailboxes(shareId: shareId,
+                                                      itemId: itemId,
+                                                      mailboxIDs: mailboxIDs)
         }
     }
 }

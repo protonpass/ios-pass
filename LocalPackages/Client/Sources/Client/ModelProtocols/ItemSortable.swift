@@ -245,9 +245,9 @@ public extension Array where Element: AlphabeticalSortable {
     func alphabeticalSortResult(direction: SortDirection) -> AlphabeticalSortResult<Element> {
         let dict = Dictionary(grouping: self) { element in
             if let firstCharacter = element.alphabeticalSortableString.first {
-                return String(firstCharacter).uppercased()
+                String(firstCharacter).uppercased()
             } else {
-                return ""
+                ""
             }
         }
 
@@ -255,36 +255,37 @@ public extension Array where Element: AlphabeticalSortable {
         var sharpElements = [Element]()
         for key in dict.keys {
             guard let elements = dict[key] else { continue }
-            let letter: AlphabetLetter
-            switch key.uppercased() {
-            case "A": letter = .a
-            case "B": letter = .b
-            case "C": letter = .c
-            case "D": letter = .d
-            case "E": letter = .e
-            case "F": letter = .f
-            case "G": letter = .g
-            case "H": letter = .h
-            case "I": letter = .i
-            case "J": letter = .j
-            case "K": letter = .k
-            case "L": letter = .l
-            case "M": letter = .m
-            case "N": letter = .n
-            case "O": letter = .o
-            case "P": letter = .p
-            case "Q": letter = .q
-            case "R": letter = .r
-            case "S": letter = .s
-            case "T": letter = .t
-            case "U": letter = .u
-            case "V": letter = .v
-            case "W": letter = .w
-            case "X": letter = .x
-            case "Y": letter = .y
-            case "Z": letter = .z
-            default:
-                letter = .sharp
+            let letter: AlphabetLetter = switch key.uppercased() {
+            case "A": .a
+            case "B": .b
+            case "C": .c
+            case "D": .d
+            case "E": .e
+            case "F": .f
+            case "G": .g
+            case "H": .h
+            case "I": .i
+            case "J": .j
+            case "K": .k
+            case "L": .l
+            case "M": .m
+            case "N": .n
+            case "O": .o
+            case "P": .p
+            case "Q": .q
+            case "R": .r
+            case "S": .s
+            case "T": .t
+            case "U": .u
+            case "V": .v
+            case "W": .w
+            case "X": .x
+            case "Y": .y
+            case "Z": .z
+            default: .sharp
+            }
+
+            if letter == .sharp {
                 sharpElements.append(contentsOf: elements)
             }
 
@@ -372,12 +373,11 @@ public struct MonthYearSortResult<T: DateSortable>: SearchResults {
 
 public extension Array where Element: DateSortable {
     func monthYearSortResult(direction: SortDirection) -> MonthYearSortResult<Element> {
-        let sortedElements: [Element]
-        switch direction {
+        let sortedElements: [Element] = switch direction {
         case .ascending:
-            sortedElements = sorted(by: { $0.dateForSorting < $1.dateForSorting })
+            sorted(by: { $0.dateForSorting < $1.dateForSorting })
         case .descending:
-            sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+            sorted(by: { $0.dateForSorting > $1.dateForSorting })
         }
         let dict = Dictionary(grouping: sortedElements) { element in
             MonthYear(date: element.dateForSorting)
@@ -403,12 +403,11 @@ public extension Array where Element: DateSortable {
 
     func asyncMonthYearSortResult(direction: SortDirection) async -> MonthYearSortResult<Element> {
         await Task {
-            let sortedElements: [Element]
-            switch direction {
+            let sortedElements: [Element] = switch direction {
             case .ascending:
-                sortedElements = sorted(by: { $0.dateForSorting < $1.dateForSorting })
+                sorted(by: { $0.dateForSorting < $1.dateForSorting })
             case .descending:
-                sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+                sorted(by: { $0.dateForSorting > $1.dateForSorting })
             }
             let dict = Dictionary(grouping: sortedElements) { element in
                 MonthYear(date: element.dateForSorting)

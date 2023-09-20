@@ -172,17 +172,17 @@ private extension TelemetryEventType {
     var backgroundColor: UIColor {
         switch self {
         case let .create(type):
-            return type.normMinor1Color
+            type.normMinor1Color
         case let .read(type):
-            return type.normMinor1Color
+            type.normMinor1Color
         case let .update(type):
-            return type.normMinor1Color
+            type.normMinor1Color
         case let .delete(type):
-            return type.normMinor1Color
+            type.normMinor1Color
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
-            return PassColor.signalInfo.withAlphaComponent(0.16)
+            PassColor.signalInfo.withAlphaComponent(0.16)
         case .searchClick, .searchTriggered:
-            return PassColor.signalDanger.withAlphaComponent(0.16)
+            PassColor.signalDanger.withAlphaComponent(0.16)
         }
     }
 

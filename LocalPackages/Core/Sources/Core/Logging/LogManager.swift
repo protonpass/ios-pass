@@ -186,9 +186,9 @@ private extension LogManager {
                                      repeats: true) { [weak self] _ in
             Task { [weak self] in
                 guard let self,
-                      await self.currentMemoryLogs.count > self.config.dumpThreshold,
-                      await self.shouldLog else { return }
-                await self.saveAllLogs()
+                      await currentMemoryLogs.count > self.config.dumpThreshold,
+                      await shouldLog else { return }
+                await saveAllLogs()
             }
         }
     }

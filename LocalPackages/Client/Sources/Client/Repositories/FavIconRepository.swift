@@ -73,12 +73,11 @@ public extension FavIconRepositoryProtocol {
         // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
         let result = try await datasource.fetchFavIcon(for: domain)
 
-        let dataToWrite: Data
-        switch result {
+        let dataToWrite: Data = switch result {
         case let .positive(data):
-            dataToWrite = data
+            data
         case .negative:
-            dataToWrite = .init()
+            .init()
         }
 
         // Create 2 files: 1 contains the actual data & 1 contains the encrypted root domain

@@ -52,16 +52,15 @@ final class ItemDetailCoordinator: DeinitPrintable {
             vault = allVaults.first(where: { $0.shareId == itemContent.shareId })
         }
 
-        let itemDetailPage: ItemDetailPage
-        switch itemContent.contentData {
+        let itemDetailPage: ItemDetailPage = switch itemContent.contentData {
         case .login:
-            itemDetailPage = makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+            makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
         case .note:
-            itemDetailPage = makeNoteDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+            makeNoteDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
         case .alias:
-            itemDetailPage = makeAliasItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+            makeAliasItemDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
         case .creditCard:
-            itemDetailPage = makeCreditCardDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
+            makeCreditCardDetailPage(from: itemContent, asSheet: asSheet, vault: vault)
         }
 
         itemDetailPage.viewModel.delegate = itemDetailViewModelDelegate
