@@ -49,11 +49,9 @@ enum OnboardingViewState {
     var description: String {
         switch self {
         case .autoFill:
-            // swiftlint:disable:next line_length
             "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours"
                 .localized
         case .autoFillEnabled:
-            // swiftlint:disable:next line_length
             "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details"
                 .localized
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:

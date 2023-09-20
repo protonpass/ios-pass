@@ -58,6 +58,7 @@ struct ItemTypeFilterOptionUiModel {
 
 private extension ItemContentType {
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
+        // swiftlint:disable switch_case_alignment
         let count: Int =
             switch self {
         case .login:
@@ -69,6 +70,7 @@ private extension ItemContentType {
         case .creditCard:
             itemCount.creditCard
         }
+        // swiftlint:enable switch_case_alignment
         return .init(icon: regularIcon, title: filterTitle, count: count)
     }
 }
