@@ -284,9 +284,9 @@ extension ItemContent: ItemThumbnailable {
     public var url: String? {
         switch contentData {
         case let .login(data):
-            return data.urls.first
+            data.urls.first
         default:
-            return nil
+            nil
         }
     }
 }

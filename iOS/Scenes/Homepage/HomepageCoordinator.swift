@@ -119,7 +119,7 @@ private extension HomepageCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                self.rootViewController.setUserInterfaceStyle(self.preferences
+                rootViewController.setUserInterfaceStyle(preferences
                     .theme.userInterfaceStyle)
             }
             .store(in: &cancellables)
@@ -128,7 +128,7 @@ private extension HomepageCoordinator {
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
-                self.eventLoop.stop()
+                eventLoop.stop()
             }
             .store(in: &cancellables)
 
@@ -136,12 +136,12 @@ private extension HomepageCoordinator {
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
-                self.logger.info("App goes back to foreground")
-                self.refresh()
-                self.sendAllEventsIfApplicable()
-                self.eventLoop.start()
-                self.eventLoop.forceSync()
-                self.refreshPlan()
+                logger.info("App goes back to foreground")
+                refresh()
+                sendAllEventsIfApplicable()
+                eventLoop.start()
+                eventLoop.forceSync()
+                refreshPlan()
             }
             .store(in: &cancellables)
     }
@@ -174,8 +174,8 @@ private extension HomepageCoordinator {
                                  },
                                  onFailure: { [weak self] in
                                      guard let self else { return }
-                                     self.logger.error("Failed to locally authenticate. Logging out.")
-                                     self.delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+                                     logger.error("Failed to locally authenticate. Logging out.")
+                                     delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
                                  })
 
         start(with: homeView, secondaryView: placeholderView)
@@ -238,7 +238,7 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 switch destination {
                 case let .urlPage(urlString: url):
-                    self.urlOpener.open(urlString: url)
+                    urlOpener.open(urlString: url)
                 case .openSettings:
                     UIApplication.shared.openAppSettings()
                 }
@@ -252,31 +252,31 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 switch destination {
                 case .sharingFlow:
-                    self.presentSharingFlow()
+                    presentSharingFlow()
                 case let .manageShareVault(vault, dismissPrevious):
-                    self.presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
+                    presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
                 case .filterItems:
-                    self.presentItemFilterOptions()
+                    presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
-                    self.presentAcceptRejectInvite(with: invite)
+                    presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
-                    self.startUpgradeFlow()
+                    startUpgradeFlow()
                 case let .vaultCreateEdit(vault: vault):
-                    self.createEditVaultView(vault: vault)
+                    createEditVaultView(vault: vault)
                 case let .logView(module: module):
-                    self.presentLogsView(for: module)
+                    presentLogsView(for: module)
                 case let .suffixView(suffixSelection):
-                    self.presentSuffixSelectionView(selection: suffixSelection)
+                    presentSuffixSelectionView(selection: suffixSelection)
                 case let .mailboxView(mailboxSelection, mode):
-                    self.presentMailboxSelectionView(selection: mailboxSelection,
-                                                     mode: .createAliasLite,
-                                                     titleMode: mode)
+                    presentMailboxSelectionView(selection: mailboxSelection,
+                                                mode: .createAliasLite,
+                                                titleMode: mode)
                 case .autoFillInstructions:
-                    self.present(AutoFillInstructionsView())
+                    present(AutoFillInstructionsView())
                 case let .moveItemsBetweenVaults(currentVault, itemToMove):
-                    self.itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
+                    itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
                 case .fullSync:
-                    self.present(FullSyncProgressView(mode: .fullSync), dismissible: false)
+                    present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 }
             }
             .store(in: &cancellables)
@@ -289,12 +289,12 @@ private extension HomepageCoordinator {
                 switch destination {
                 case let .globalLoading(shouldShow):
                     if shouldShow {
-                        self.showLoadingHud()
+                        showLoadingHud()
                     } else {
-                        self.hideLoadingHud()
+                        hideLoadingHud()
                     }
                 case let .displayErrorBanner(errorLocalized):
-                    self.bannerManager.displayTopErrorMessage(errorLocalized)
+                    bannerManager.displayTopErrorMessage(errorLocalized)
                 case let .successMessage(message, config):
                     self.displaySuccessBanner(with: message, and: config)
                 case let .infosMessage(message, config):
@@ -327,13 +327,13 @@ private extension HomepageCoordinator {
                 guard let self else {
                     return
                 }
-                if let host = self.rootViewController
+                if let host = rootViewController
                     .topMostViewController as? UIHostingController<ManageSharedVaultView> {
                     /// Updating share data circumventing the onAppear not being called after a sheet presentation
                     host.rootView.refresh()
                     return
                 }
-                self.present(manageShareVaultView)
+                present(manageShareVaultView)
             }
         } else {
             present(manageShareVaultView)
@@ -665,11 +665,11 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
             guard let self else { return }
             switch bannerOption {
             case let .info(message):
-                self.bannerManager.displayBottomInfoMessage(message)
+                bannerManager.displayBottomInfoMessage(message)
             case let .success(message):
-                self.bannerManager.displayBottomSuccessMessage(message)
+                bannerManager.displayBottomSuccessMessage(message)
             case let .error(message):
-                self.bannerManager.displayTopErrorMessage(message)
+                bannerManager.displayTopErrorMessage(message)
             }
         }
         switch presentationOption {
@@ -888,7 +888,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                        },
                                                        completion: { [weak self] result in
                                                            guard let self else { return }
-                                                           self.hideLoadingHud(view)
+                                                           hideLoadingHud(view)
                                                            DispatchQueue.main.async {
                                                                switch result {
                                                                case .success:

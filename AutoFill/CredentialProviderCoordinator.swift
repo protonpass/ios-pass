@@ -156,27 +156,27 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             Task { [weak self] in
                 guard let self else { return }
                 do {
-                    self.logger.trace("Autofilling from QuickType bar")
+                    logger.trace("Autofilling from QuickType bar")
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                     if let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
                                                                                  itemId: ids.itemId) {
                         if case let .login(data) = itemContent.contentData {
-                            self.complete(quickTypeBar: true,
-                                          credential: .init(user: data.username, password: data.password),
-                                          itemContent: itemContent,
-                                          itemRepository: itemRepository,
-                                          upgradeChecker: upgradeChecker,
-                                          serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+                            complete(quickTypeBar: true,
+                                     credential: .init(user: data.username, password: data.password),
+                                     itemContent: itemContent,
+                                     itemRepository: itemRepository,
+                                     upgradeChecker: upgradeChecker,
+                                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
                         } else {
-                            self.logger.error("Failed to autofill. Not log in item.")
+                            logger.error("Failed to autofill. Not log in item.")
                         }
                     } else {
-                        self.logger.warning("Failed to autofill. Item not found.")
-                        self.cancelAutoFill(reason: .failed)
+                        logger.warning("Failed to autofill. Item not found.")
+                        cancelAutoFill(reason: .failed)
                     }
                 } catch {
-                    self.logger.error(error)
-                    self.cancelAutoFill(reason: .failed)
+                    logger.error(error)
+                    cancelAutoFill(reason: .failed)
                 }
             }
         }
@@ -227,12 +227,12 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 guard let self else { return }
                 defer { self.cancelAutoFill(reason: .failed) }
                 do {
-                    self.logger.trace("Authenticaion failed. Removing all credentials")
-                    self.appData.userData = nil
-                    try await self.unindexAllLoginItems()
-                    self.logger.info("Removed all credentials after authentication failure")
+                    logger.trace("Authenticaion failed. Removing all credentials")
+                    appData.userData = nil
+                    try await unindexAllLoginItems()
+                    logger.info("Removed all credentials after authentication failure")
                 } catch {
-                    self.logger.error(error)
+                    logger.error(error)
                 }
             }
         default:
@@ -303,11 +303,11 @@ private extension CredentialProviderCoordinator {
                 guard let self else { return }
                 switch destination {
                 case .upgradeFlow:
-                    self.startUpgradeFlow()
+                    startUpgradeFlow()
                 case let .suffixView(suffixSelection):
-                    self.createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
+                    createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
                 case let .mailboxView(mailboxSelection, _):
-                    self.createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+                    createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
                 default:
                     break
                 }
@@ -322,12 +322,12 @@ private extension CredentialProviderCoordinator {
                 switch destination {
                 case let .globalLoading(shouldShow):
                     if shouldShow {
-                        self.showLoadingHud()
+                        showLoadingHud()
                     } else {
-                        self.hideLoadingHud()
+                        hideLoadingHud()
                     }
                 case let .displayErrorBanner(error):
-                    self.bannerManager.displayTopErrorMessage(error)
+                    bannerManager.displayTopErrorMessage(error)
                 default:
                     return
                 }
@@ -657,10 +657,10 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self else { return }
                 do {
-                    try await self.indexAllLoginItems(ignorePreferences: false)
-                    self.credentialsViewModel?.select(item: item)
+                    try await indexAllLoginItems(ignorePreferences: false)
+                    credentialsViewModel?.select(item: item)
                 } catch {
-                    self.logger.error(error)
+                    logger.error(error)
                 }
             }
         default:

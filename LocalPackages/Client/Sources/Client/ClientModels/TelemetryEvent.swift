@@ -107,21 +107,21 @@ extension TelemetryEventType: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case let (.create(lhsType), .create(rhsType)):
-            return lhsType == rhsType
+            lhsType == rhsType
         case let (.read(lhsType), .read(rhsType)):
-            return lhsType == rhsType
+            lhsType == rhsType
         case let (.update(lhsType), .update(rhsType)):
-            return lhsType == rhsType
+            lhsType == rhsType
         case let (.delete(lhsType), .delete(rhsType)):
-            return lhsType == rhsType
+            lhsType == rhsType
         case (.autofillDisplay, .autofillDisplay),
              (.autofillTriggeredFromApp, .autofillTriggeredFromApp),
              (.autofillTriggeredFromSource, .autofillTriggeredFromSource),
              (.searchClick, .searchClick),
              (.searchTriggered, .searchTriggered):
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 }

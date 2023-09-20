@@ -98,8 +98,8 @@ private extension AcceptRejectInviteViewModel {
                       vaultInfos.map(\.vault.id).contains(self.userInvite.targetID) else {
                     return
                 }
-                self.executingAction = false
-                self.shouldCloseSheet = true
+                executingAction = false
+                shouldCloseSheet = true
             }.store(in: &cancellables)
     }
 

@@ -107,10 +107,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                if self.aliasOptions != nil {
-                    self.aliasOptions = nil
-                    self.aliasCreationLiteInfo = nil
-                    self.username = ""
+                if aliasOptions != nil {
+                    aliasOptions = nil
+                    aliasCreationLiteInfo = nil
+                    username = ""
                 }
             }
             .store(in: &cancellables)

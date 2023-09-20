@@ -124,8 +124,8 @@ private extension VaultsManager {
             .sink { [weak self] _ in
                 guard let self else { return }
                 // Reset back to filter "all" when switching vaults
-                self.filterOption = .all
-                self.updateItemCount()
+                filterOption = .all
+                updateItemCount()
             }
             .store(in: &cancellables)
     }
@@ -257,10 +257,10 @@ extension VaultsManager {
             for share in remoteShares {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
-                    try await self.shareRepository.upsertShares([share],
-                                                                eventStream: self.vaultSyncEventStream)
-                    try await self.itemRepository.refreshItems(shareId: share.shareID,
-                                                               eventStream: self.vaultSyncEventStream)
+                    try await shareRepository.upsertShares([share],
+                                                           eventStream: vaultSyncEventStream)
+                    try await itemRepository.refreshItems(shareId: share.shareID,
+                                                          eventStream: vaultSyncEventStream)
                 }
             }
         }

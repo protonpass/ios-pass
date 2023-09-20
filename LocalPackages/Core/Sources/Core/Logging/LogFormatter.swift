@@ -139,9 +139,9 @@ public extension LogFormatter {
     func format(entry: LogEntry) -> String {
         switch format {
         case .txt:
-            return txtFormat(entry: entry)
+            txtFormat(entry: entry)
         case let .html(style):
-            return htmlFormat(entry: entry, style: style)
+            htmlFormat(entry: entry, style: style)
         }
     }
 }

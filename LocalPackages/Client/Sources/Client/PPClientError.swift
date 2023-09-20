@@ -79,9 +79,9 @@ public extension PPClientError {
         public var debugDescription: String {
             switch self {
             case let .corrupted(object, property):
-                return "Corrupted \(type(of: object)): missing value for \(property)"
+                "Corrupted \(type(of: object)): missing value for \(property)"
             case let .corruptedShareKeys(shareId):
-                return "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
+                "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
             }
         }
     }

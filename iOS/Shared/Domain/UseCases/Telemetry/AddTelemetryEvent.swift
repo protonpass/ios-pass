@@ -45,9 +45,9 @@ final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await self.repository.addNewEvent(type: eventType)
+                try await repository.addNewEvent(type: eventType)
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }
