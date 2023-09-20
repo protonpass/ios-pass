@@ -98,36 +98,36 @@ extension SetPINCodeViewModel.State {
     var title: String {
         switch self {
         case .definition:
-            return "Set PIN code".localized
+            "Set PIN code".localized
         case .confirmation:
-            return "Repeat PIN code".localized
+            "Repeat PIN code".localized
         }
     }
 
     var description: String {
         switch self {
         case .definition:
-            return "Unlock the app with this code".localized
+            "Unlock the app with this code".localized
         case .confirmation:
-            return "Type your PIN again to confirm".localized
+            "Type your PIN again to confirm".localized
         }
     }
 
     var placeholder: String {
         switch self {
         case .definition:
-            return "Enter PIN code".localized
+            "Enter PIN code".localized
         case .confirmation:
-            return "Repeat PIN code".localized
+            "Repeat PIN code".localized
         }
     }
 
     var actionTitle: String {
         switch self {
         case .definition:
-            return "Continue".localized
+            "Continue".localized
         case .confirmation:
-            return "Set PIN code".localized
+            "Set PIN code".localized
         }
     }
 }
@@ -136,7 +136,7 @@ extension SetPINCodeViewModel.ValidationError {
     var description: String {
         switch self {
         case .notMatched:
-            return "PINs not matched".localized
+            "PINs not matched".localized
         }
     }
 }

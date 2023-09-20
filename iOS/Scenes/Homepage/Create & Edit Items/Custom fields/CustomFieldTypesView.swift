@@ -64,22 +64,22 @@ extension CustomFieldType {
     var title: String {
         switch self {
         case .text:
-            return "Text".localized
+            "Text".localized
         case .totp:
-            return "2FA secret (TOTP)".localized
+            "2FA secret (TOTP)".localized
         case .hidden:
-            return "Hidden".localized
+            "Hidden".localized
         }
     }
 
     var icon: UIImage {
         switch self {
         case .text:
-            return IconProvider.textAlignLeft
+            IconProvider.textAlignLeft
         case .totp:
-            return IconProvider.lock
+            IconProvider.lock
         case .hidden:
-            return IconProvider.eyeSlash
+            IconProvider.eyeSlash
         }
     }
 }

@@ -29,44 +29,44 @@ public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable {
     public var description: String {
         switch self {
         case .light:
-            return "Light".localized
+            "Light".localized
         case .dark:
-            return "Dark".localized
+            "Dark".localized
         case .matchSystem:
-            return "Match system".localized
+            "Match system".localized
         }
     }
 
     public var icon: UIImage {
         switch self {
         case .light:
-            return IconProvider.sun
+            IconProvider.sun
         case .dark:
-            return IconProvider.moon
+            IconProvider.moon
         case .matchSystem:
-            return IconProvider.cogWheel
+            IconProvider.cogWheel
         }
     }
 
     public var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
         case .light:
-            return .light
+            .light
         case .dark:
-            return .dark
+            .dark
         case .matchSystem:
-            return .unspecified
+            .unspecified
         }
     }
 
     public var inAppTheme: InAppTheme {
         switch self {
         case .light:
-            return .light
+            .light
         case .dark:
-            return .dark
+            .dark
         case .matchSystem:
-            return .matchSystem
+            .matchSystem
         }
     }
 }

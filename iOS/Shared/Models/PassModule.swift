@@ -28,19 +28,19 @@ extension PassModule {
     var logTitle: String {
         switch self {
         case .hostApp:
-            return "Application logs".localized
+            "Application logs".localized
         case .autoFillExtension:
-            return "AutoFill extension logs".localized
+            "AutoFill extension logs".localized
         case .keyboardExtension:
-            return "Keyboard extension logs"
+            "Keyboard extension logs"
         }
     }
 
     var logFileName: String {
         switch self {
-        case .hostApp: return "pass_host_application.log"
-        case .autoFillExtension: return "pass_autofill_extension.log"
-        case .keyboardExtension: return "pass_keyboard_extension.log"
+        case .hostApp: "pass_host_application.log"
+        case .autoFillExtension: "pass_autofill_extension.log"
+        case .keyboardExtension: "pass_keyboard_extension.log"
         }
     }
 
