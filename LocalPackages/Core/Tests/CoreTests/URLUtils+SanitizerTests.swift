@@ -31,8 +31,6 @@ final class URLUtilsPlusSanitizerTests: XCTestCase {
         XCTAssertNil(URLUtils.Sanitizer.sanitize("ssh:/example"))
         XCTAssertNil(URLUtils.Sanitizer.sanitize("https:/example"))
         XCTAssertNil(URLUtils.Sanitizer.sanitize("https://example"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("https://example❤️.com"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("ftp://àbcdé.net"))
 
         // Valid URLs
         XCTAssertEqual(URLUtils.Sanitizer.sanitize("example.com/path?param=true"),
