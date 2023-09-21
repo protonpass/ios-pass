@@ -40,7 +40,7 @@ struct QAFeaturesView: View {
                     BannersSection()
                 }
             }
-            .navigationTitle("QA Features")
+            .navigationTitle(Text(verbatim: "QA Features"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,
