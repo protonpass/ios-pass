@@ -57,7 +57,9 @@ private struct ManageBannersView: View {
                         }
                     })
 
-                    Toggle("Dismissed", isOn: binding)
+                    Toggle(isOn: binding) {
+                        Text(verbatim: "Dismissed")
+                    }
                 }
             }
         }

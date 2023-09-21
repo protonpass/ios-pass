@@ -94,8 +94,8 @@ private struct TrashItemsView: View {
                 Text(verbatim: "\(uiModels.count) vault(s) in total")
             })
         }
-        .navigationTitle("Select to trash all items")
-        .alert("Trash all items",
+        .navigationTitle(Text(verbatim: "Select to trash all items"))
+        .alert(Text(verbatim: "Trash all items"),
                isPresented: showingAlert,
                actions: {
                    Button(role: .cancel, label: { Text(verbatim: "Cancel") })
