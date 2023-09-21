@@ -558,9 +558,6 @@
     "%lld" : {
 
     },
-    "•" : {
-
-    },
     "2FA limit reached" : {
       "localizations" : {
         "de" : {
@@ -3100,9 +3097,6 @@
         }
       }
     },
-    "Dismissed" : {
-
-    },
     "Download all your items again to make sure you are in sync" : {
       "localizations" : {
         "de" : {
@@ -3118,12 +3112,6 @@
           }
         }
       }
-    },
-    "Dummy text" : {
-
-    },
-    "Dummy text that takes place" : {
-
     },
     "edit" : {
       "extractionState" : "manual",
@@ -3922,9 +3910,6 @@
           }
         }
       }
-    },
-    "https://" : {
-
     },
     "Hyphens" : {
       "extractionState" : "manual",
@@ -6128,9 +6113,6 @@
         }
       }
     },
-    "QA Features" : {
-
-    },
     "Quickly pick a login item from suggestions above the keyboard" : {
       "localizations" : {
         "de" : {
@@ -6692,9 +6674,6 @@
           }
         }
       }
-    },
-    "Select to trash all items" : {
-
     },
     "Send logs" : {
       "localizations" : {
@@ -7657,9 +7636,6 @@
           }
         }
       }
-    },
-    "Trash all items" : {
-
     },
     "Trash empty" : {
       "comment" : "Empty trash page",
