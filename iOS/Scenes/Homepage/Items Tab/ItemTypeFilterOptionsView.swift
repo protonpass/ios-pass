@@ -57,7 +57,7 @@ private extension ItemTypeFilterOptionsView {
         }, label: {
             HStack {
                 Label(title: {
-                    Text("\(uiModel.title) (\(uiModel.count))")
+                    Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
                         .foregroundColor(Color(uiColor: isSelected ?
                                 PassColor.interactionNormMajor2 : PassColor.textNorm))
                 }, icon: {

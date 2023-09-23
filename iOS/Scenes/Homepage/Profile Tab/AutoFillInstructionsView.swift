@@ -96,7 +96,7 @@ private extension AutoFillInstructionsView {
                 }
             }
         }, icon: {
-            Text("\(number)")
+            Text(verbatim: "\(number)")
                 .fontWeight(.medium)
                 .padding(10)
                 .background(PassColor.interactionNorm.toColor)
