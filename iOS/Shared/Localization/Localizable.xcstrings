@@ -7,16 +7,6 @@
     " %lld" : {
 
     },
-    "%@ (%lld)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ (%2$lld)"
-          }
-        }
-      }
-    },
     "%@ vault" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -554,9 +544,6 @@
           }
         }
       }
-    },
-    "%lld" : {
-
     },
     "2FA limit reached" : {
       "localizations" : {

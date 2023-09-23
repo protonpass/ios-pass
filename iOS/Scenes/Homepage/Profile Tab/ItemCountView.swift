@@ -79,7 +79,7 @@ private struct ItemContentTypeCountView: View {
 
             Spacer()
 
-            Text("\(count)")
+            Text(verbatim: "\(count)")
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
 

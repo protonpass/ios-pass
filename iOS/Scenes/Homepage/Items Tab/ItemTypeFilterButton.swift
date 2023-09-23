@@ -73,6 +73,6 @@ private extension ItemTypeFilterButton {
     }
 
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
-        Text("\(uiModel.title) (\(uiModel.count))")
+        Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
     }
 }

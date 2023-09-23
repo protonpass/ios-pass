@@ -111,7 +111,7 @@ struct SearchResultsView: View, Equatable {
 private extension SearchResultsView {
     var topBarSearchInformations: some View {
         HStack {
-            Text("\(viewModel.results.numberOfItems)")
+            Text(verbatim: "\(viewModel.results.numberOfItems)")
                 .font(.callout)
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
