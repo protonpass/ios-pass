@@ -105,7 +105,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
                 if isLoading {
                     ZStack {
                         // Dummy text to make ZStack occupy a correct height
-                        Text("Dummy text")
+                        Text(verbatim: "Dummy text")
                             .opacity(0)
                         AnimatingGradient(tintColor: tintColor)
                             .clipShape(Capsule())

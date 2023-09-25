@@ -537,17 +537,19 @@ private struct WebsiteSection<Field: Hashable>: View {
                 VStack(alignment: .leading) {
                     ForEach($viewModel.urls) { $url in
                         HStack {
-                            TextField("https://", text: $url.value)
-                                .focused(focusedField, equals: field)
-                                .onChange(of: viewModel.urls) { _ in
-                                    viewModel.invalidURLs.removeAll()
-                                }
-                                .keyboardType(.URL)
-                                .textInputAutocapitalization(.never)
-                                .autocorrectionDisabled()
-                                .foregroundColor(Color(uiColor: isValid(url) ?
-                                        PassColor.textNorm : PassColor.signalDanger))
-                                .onSubmit(onSubmit)
+                            TextField(text: $url.value) {
+                                Text(verbatim: "https://")
+                            }
+                            .focused(focusedField, equals: field)
+                            .onChange(of: viewModel.urls) { _ in
+                                viewModel.invalidURLs.removeAll()
+                            }
+                            .keyboardType(.URL)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                            .foregroundColor(Color(uiColor: isValid(url) ?
+                                    PassColor.textNorm : PassColor.signalDanger))
+                            .onSubmit(onSubmit)
 
                             if !url.value.isEmpty {
                                 Button(action: {

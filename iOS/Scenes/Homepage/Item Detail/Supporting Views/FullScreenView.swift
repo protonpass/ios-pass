@@ -117,10 +117,10 @@ private struct FullScreenTextView: View {
                 .fontWeight(.semibold)
             Spacer()
             HStack {
-                Text("A")
+                Text(verbatim: "A")
                 Slider(value: $percentage)
                     .tint(Color(uiColor: PassColor.interactionNorm))
-                Text("A")
+                Text(verbatim: "A")
                     .font(.title)
             }
         }

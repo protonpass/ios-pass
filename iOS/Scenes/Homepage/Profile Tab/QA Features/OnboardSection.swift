@@ -34,10 +34,10 @@ struct OnboardSection: View {
                     isShowingFullScreen.toggle()
                 }
             }, label: {
-                Text("Onboard")
+                Text(verbatim: "Onboard")
             })
         }, header: {
-            Text("👋")
+            Text(verbatim: "👋")
         })
         .fullScreenCover(isPresented: $isShowingFullScreen) { onboardingView }
         .sheet(isPresented: $isShowingSheet) { onboardingView }
