@@ -47,6 +47,9 @@
          <TestPlanReference
             reference = "container:TestPlans/UseCasesTests.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlans/Macro.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference

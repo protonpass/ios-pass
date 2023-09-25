@@ -18,12 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-/// A macro that converts a static literal string into a localized one
-/// For example,
-///
-///     #localized("Welcome to Proton")
-///
-/// produces `String(localized: "Welcome to Proton")`
+/// A macro that converts a static literal string with optional arguments into a localized one
+/// - Parameters:
+///   - key: the localized key
+///   - arguments: the list of arguments if the key contains format specifiers
 @freestanding(expression)
-public macro localized<T>(_ value: T) -> String = #externalMacro(module: "MacroImplementation",
-                                                                 type: "LocalizedMacro")
+public macro localized<each T>(_ key: StaticString, _ arguments: repeat each T)
+    -> String = #externalMacro(module: "MacroImplementation", type: "LocalizedMacro")
+
+/// A macro that converts a static literal string with optional arguments into a localized one
+/// - Parameters:
+///   - key: the localized key
+@freestanding(expression)
+public macro localized(_ key: StaticString) -> String = #externalMacro(module: "MacroImplementation",
+                                                                       type: "LocalizedMacro")

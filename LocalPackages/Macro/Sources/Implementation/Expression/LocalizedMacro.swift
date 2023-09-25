@@ -22,14 +22,16 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-/// Implementation of the `localized` macro, which converts a static literal string into a localized one
-/// For example,
+/// Implementation of the `#localized` macro, which converts a static literal string with optional arguments into a
+/// localized one. For example:
 ///
-///     #localized("Welcome to Proton")
+///     #localized("Hello world")
+///     #localized("Hello %@", "world")
 ///
 /// will expand to
 ///
-///     String(localized: "Welcome to Proton")
+///     String(localized: "Hello world")
+///     String(format: String(localized: "Hello %@"), "world")
 public struct LocalizedMacro: ExpressionMacro {
     public static func expansion(of node: some FreestandingMacroExpansionSyntax,
                                  in context: some MacroExpansionContext) throws -> ExprSyntax {
@@ -48,7 +50,12 @@ public struct LocalizedMacro: ExpressionMacro {
             throw MacroError.message(LocalizedMacroError.emptyLocalizedKey)
         }
 
-        return "String(localized: \(firstArgument))"
+        if node.argumentList.count == 1 {
+            return "String(localized: \(firstArgument))"
+        }
+
+        let lastArguments = node.argumentList.filter { $0.expression != firstArgument }
+        return "String(format: String(localized: \(firstArgument)), \(lastArguments))"
     }
 }
 
