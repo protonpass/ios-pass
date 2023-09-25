@@ -34,7 +34,8 @@ final class LocalizedMacroTests: XCTestCase {
                              #localized(123)
                              """,
                              diagnostics: [
-                                .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral, line: 1, column: 1)
+                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral, line: 1,
+                                       column: 1)
                              ],
                              macros: macros)
     }
@@ -47,7 +48,7 @@ final class LocalizedMacroTests: XCTestCase {
                              #localized("")
                              """,
                              diagnostics: [
-                                .init(message: LocalizedMacroError.emptyLocalizedKey, line: 1, column: 1)
+                                 .init(message: LocalizedMacroError.emptyLocalizedKey, line: 1, column: 1)
                              ],
                              macros: macros)
     }
