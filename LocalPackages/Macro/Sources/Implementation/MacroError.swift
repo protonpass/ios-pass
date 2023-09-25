@@ -27,9 +27,9 @@ enum MacroError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .noArguments:
-            return "The macro does not have any arguments"
+            "The macro does not have any arguments"
         case let .message(text):
-            return text
+            text
         }
     }
 }

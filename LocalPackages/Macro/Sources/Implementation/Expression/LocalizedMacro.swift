@@ -43,7 +43,7 @@ public struct LocalizedMacro: ExpressionMacro {
         guard let firstArgumentSegments = firstArgument.as(StringLiteralExprSyntax.self)?.segments,
               firstArgumentSegments.count == 1,
               case let .stringSegment(firstArgumentStringSegment) = firstArgumentSegments.first else {
-            throw MacroError.message(LocalizedMacroError.firstArgumentStaticStringLiteral)
+            throw MacroError.message(LocalizedMacroError.firstArgumentMustBeAString)
         }
 
         guard !firstArgumentStringSegment.content.text.isEmpty else {
@@ -60,6 +60,6 @@ public struct LocalizedMacro: ExpressionMacro {
 }
 
 enum LocalizedMacroError {
-    static let firstArgumentStaticStringLiteral = "The first argument has to be a static string literal"
+    static let firstArgumentMustBeAString = "The first argument has to be a static string literal"
     static let emptyLocalizedKey = "Localized key can not be empty"
 }
