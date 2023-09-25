@@ -22,7 +22,7 @@
 import fusion
 import ProtonCoreDoh
 import ProtonCoreEnvironment
-//import ProtonCoreObfuscatedConstants
+import ProtonCoreLog
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsCore
@@ -57,8 +57,9 @@ class LoginBaseTestCase: ProtonCoreBaseTestCase {
     var appRobot: MainRobot!
 
     override func setUp() {
-        beforeSetUp(bundleIdentifier: "me.proton.pass.ios.iOSUITests")
+        beforeSetUp(bundleIdentifier: "me.proton.pass.iOSUITests")
         super.setUp()
+        PMLog.info("UI TEST runs on: " + doh.getAccountHost())
     }
 
     // MARK: - Helpers
