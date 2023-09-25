@@ -17,15 +17,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
 
-/// A macro that produces both a value and a string containing the
-/// source code that generated the value. For example,
+/// A macro that converts a static literal string into a localized one
+/// For example,
 ///
-///     #stringify(x + y)
+///     #localized("Welcome to Proton")
 ///
-/// produces a tuple `(x + y, "x + y")`.
+/// produces `String(localized: "Welcome to Proton")`
 @freestanding(expression)
-public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "MacroImplementation",
-                                                                      type: "StringifyMacro")
+public macro localized<T>(_ value: T) -> String = #externalMacro(module: "MacroImplementation",
+                                                                 type: "LocalizedMacro")
