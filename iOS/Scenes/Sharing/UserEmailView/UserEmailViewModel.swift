@@ -80,10 +80,11 @@ private extension UserEmailViewModel {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
-                if self?.error != nil {
-                    self?.error = nil
+                guard let self else { return }
+                if error != nil {
+                    error = nil
                 }
-                self?.canContinue = newValue.isValidEmail()
+                canContinue = newValue.isValidEmail()
             }
             .store(in: &cancellables)
     }

@@ -97,7 +97,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .combineLatest($note)
             .dropFirst(mode.isEditMode ? 1 : 3)
             .sink(receiveValue: { [weak self] _ in
-                self?.didEditSomething = true
+                guard let self else { return }
+                didEditSomething = true
             })
             .store(in: &cancellables)
 
@@ -247,12 +248,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func openCodeScanner() {
         Task { @MainActor [weak self] in
-            guard let authorized = await self?.checkCameraPermission(),
-                  authorized else {
-                self?.isShowingNoCameraPermissionView = true
-                return
+            guard let self else { return }
+            if await checkCameraPermission() {
+                isShowingCodeScanner = true
+            } else {
+                isShowingNoCameraPermissionView = true
             }
-            self?.isShowingCodeScanner = true
         }
     }
 

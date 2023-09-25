@@ -100,7 +100,8 @@ final class APIManager: APIManagerProtocol {
 
         humanHelper = HumanCheckHelper(apiService: apiService,
                                        inAppTheme: { [weak self] in
-                                           self?.preferences.theme.inAppTheme ?? .matchSystem
+                                           guard let self else { return .matchSystem }
+                                           return preferences.theme.inAppTheme
                                        },
                                        clientApp: .pass)
         apiService.humanDelegate = humanHelper
@@ -175,8 +176,8 @@ final class APIManager: APIManagerProtocol {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                guard let userData = self?.appData.userData else { return }
-                self?.authHelper.onSessionObtaining(credential: userData.getCredential)
+                guard let self, let userData = appData.userData else { return }
+                authHelper.onSessionObtaining(credential: userData.getCredential)
             }
             .store(in: &cancellables)
     }

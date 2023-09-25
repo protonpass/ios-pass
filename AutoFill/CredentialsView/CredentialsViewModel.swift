@@ -329,7 +329,8 @@ private extension CredentialsViewModel {
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink { [weak self] term in
-                self?.doSearch(term: term)
+                guard let self else { return }
+                doSearch(term: term)
             }
             .store(in: &cancellables)
 
@@ -337,17 +338,16 @@ private extension CredentialsViewModel {
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.isShowingConfirmationAlert = true
+                guard let self else { return }
+                isShowingConfirmationAlert = true
             }
             .store(in: &cancellables)
 
         $isShowingConfirmationAlert
             .receive(on: DispatchQueue.main)
             .sink { [weak self] showing in
-                guard !showing else {
-                    return
-                }
-                self?.notMatchedItemInformation = nil
+                guard let self, !showing else { return }
+                notMatchedItemInformation = nil
             }
             .store(in: &cancellables)
     }

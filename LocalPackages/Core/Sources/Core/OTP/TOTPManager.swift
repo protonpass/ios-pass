@@ -173,7 +173,8 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
                               generator: tokenGenerator)
 
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-                self?.calculate(token: token, username: username, issuer: issuer)
+                guard let self else { return }
+                calculate(token: token, username: username, issuer: issuer)
             }
             timer?.fire()
         } catch {

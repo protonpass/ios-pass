@@ -147,17 +147,18 @@ extension SettingsViewModel {
 
     func forceSync() {
         Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                self?.router.present(for: .fullSync)
-                self?.syncEventLoop.stop()
-                self?.logger.info("Doing full sync")
-                try await self?.vaultsManager.fullSync()
-                self?.logger.info("Done full sync")
-                self?.syncEventLoop.start()
-                self?.router.display(element: .successMessage(config: .refresh))
+                router.present(for: .fullSync)
+                syncEventLoop.stop()
+                logger.info("Doing full sync")
+                try await vaultsManager.fullSync()
+                logger.info("Done full sync")
+                syncEventLoop.start()
+                router.display(element: .successMessage(config: .refresh))
             } catch {
-                self?.logger.error(error)
-                self?.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

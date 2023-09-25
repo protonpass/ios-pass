@@ -71,7 +71,8 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.updateStateBasedOnFailedAttemptCount()
+                guard let self else { return }
+                updateStateBasedOnFailedAttemptCount()
             }
             .store(in: &cancellables)
     }

@@ -64,7 +64,8 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
             .CombineLatest($definedPIN, $confirmedPIN)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.error = nil
+                guard let self else { return }
+                error = nil
             }
             .store(in: &cancellables)
     }
