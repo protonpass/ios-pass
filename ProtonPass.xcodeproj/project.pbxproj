@@ -916,8 +916,6 @@
 		5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCachedInvitations.swift; sourceTree = "<group>"; };
 		5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultView.swift; sourceTree = "<group>"; };
 		5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultViewModel.swift; sourceTree = "<group>"; };
-		5B7AD1A62AB1C494000D475A /* GetVaultContentForVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVaultContentForVault.swift; sourceTree = "<group>"; };
-		5B7AD1A82AB1C82E000D475A /* MoveItemsBetweenVaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveItemsBetweenVaults.swift; sourceTree = "<group>"; };
 		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
 		5B8D209B2AA748AB00457CA3 /* Client */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Client; path = LocalPackages/Client; sourceTree = "<group>"; };
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
@@ -1499,15 +1497,6 @@
 			path = "Supporting Views";
 			sourceTree = "<group>";
 		};
-		357C6B802AB349DA00A799A7 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				5B7AD1A82AB1C82E000D475A /* MoveItemsBetweenVaults.swift */,
-				5B7AD1A62AB1C494000D475A /* GetVaultContentForVault.swift */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		35855AB02A0A65F20091992F /* Password generator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1593,7 +1582,6 @@
 				5B8D209B2AA748AB00457CA3 /* Client */,
 				3569AE402A695E070026B780 /* Entities */,
 				359F80B42AB48C70007AC0F4 /* UseCases */,
-				357C6B802AB349DA00A799A7 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
