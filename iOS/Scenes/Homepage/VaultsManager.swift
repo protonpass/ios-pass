@@ -114,7 +114,8 @@ private extension VaultsManager {
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] _ in
-                self?.updateItemCount()
+                guard let self else { return }
+                updateItemCount()
             }
             .store(in: &cancellables)
 
@@ -192,7 +193,8 @@ private extension VaultsManager {
             try await indexAllLoginItems(ignorePreferences: false)
         } else {
             Task.detached(priority: .background) { [weak self] in
-                try await self?.indexAllLoginItems(ignorePreferences: false)
+                guard let self else { return }
+                try await indexAllLoginItems(ignorePreferences: false)
             }
         }
     }

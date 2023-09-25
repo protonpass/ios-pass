@@ -42,10 +42,9 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
 
     func start() {
         let view = CustomFieldTypesView { [weak self] type in
-            self?.rootViewController.topMostViewController.dismiss(animated: true) { [weak self] in
-                guard let self else {
-                    return
-                }
+            guard let self else { return }
+            rootViewController.topMostViewController.dismiss(animated: true) { [weak self] in
+                guard let self else { return }
                 let alert = makeAlert(for: type)
                 rootViewController.topMostViewController.present(alert, animated: true)
             }
