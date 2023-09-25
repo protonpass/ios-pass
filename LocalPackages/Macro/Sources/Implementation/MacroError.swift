@@ -1,5 +1,5 @@
 //
-// ExpressionMacros.swift
+// MacroError.swift
 // Proton Pass - Created on 25/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,12 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-/// A macro that converts a static literal string into a localized one
-/// For example,
-///
-///     #localized("Welcome to Proton")
-///
-/// produces `String(localized: "Welcome to Proton")`
-@freestanding(expression)
-public macro localized<T>(_ value: T) -> String = #externalMacro(module: "MacroImplementation",
-                                                                 type: "LocalizedMacro")
+import Foundation
+
+enum MacroError: Error, CustomStringConvertible {
+    case message(String)
+
+    var description: String {
+        switch self {
+        case let .message(text):
+            return text
+        }
+    }
+}
