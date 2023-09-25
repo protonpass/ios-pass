@@ -34,20 +34,25 @@ public struct LocalizedMacro: ExpressionMacro {
     public static func expansion(of node: some FreestandingMacroExpansionSyntax,
                                  in context: some MacroExpansionContext) throws -> ExprSyntax {
         guard let firstArgument = node.argumentList.first?.expression else {
-            throw MacroError.message("The macro does not have any arguments")
+            throw MacroError.noArguments
         }
 
         // First argument always has to be a string
         guard let firstArgumentSegments = firstArgument.as(StringLiteralExprSyntax.self)?.segments,
               firstArgumentSegments.count == 1,
               case let .stringSegment(firstArgumentStringSegment) = firstArgumentSegments.first else {
-            throw MacroError.message("The first argument has to be a static string literal")
+            throw MacroError.message(LocalizedMacroError.firstArgumentStaticStringLiteral)
         }
 
         guard !firstArgumentStringSegment.content.text.isEmpty else {
-            throw MacroError.message("Localized key can not be empty")
+            throw MacroError.message(LocalizedMacroError.emptyLocalizedKey)
         }
 
         return "String(localized: \(firstArgument))"
     }
+}
+
+enum LocalizedMacroError {
+    static let firstArgumentStaticStringLiteral = "The first argument has to be a static string literal"
+    static let emptyLocalizedKey = "Localized key can not be empty"
 }

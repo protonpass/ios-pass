@@ -36,5 +36,5 @@ let package = Package(name: "Macro",
                                           "MacroImplementation",
                                           .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
                                       ],
-                                      path: "Tests/Implementation")
+                                      path: "Tests")
                       ])
