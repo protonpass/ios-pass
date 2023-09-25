@@ -161,8 +161,14 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     func makeReachabilityIfNecessary() throws {
         guard reachability == nil else { return }
         reachability = try .init()
-        reachability?.whenReachable = { [weak self] _ in self?.isReachable = true }
-        reachability?.whenUnreachable = { [weak self] _ in self?.isReachable = false }
+        reachability?.whenReachable = { [weak self] _ in
+            guard let self else { return }
+            isReachable = true
+        }
+        reachability?.whenUnreachable = { [weak self] _ in
+            guard let self else { return }
+            isReachable = false
+        }
         try reachability?.startNotifier()
     }
 }

@@ -158,7 +158,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.validatePrefix()
+                guard let self else { return }
+                validatePrefix()
             }
             .store(in: &cancellables)
 
@@ -179,7 +180,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.getAliasAndAliasOptions()
+                guard let self else { return }
+                getAliasAndAliasOptions()
             }
             .store(in: &cancellables)
 
@@ -188,7 +190,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .combineLatest($note)
             .dropFirst()
             .sink(receiveValue: { [weak self] _ in
-                self?.didEditSomething = true
+                guard let self else { return }
+                didEditSomething = true
             })
             .store(in: &cancellables)
     }
