@@ -26,7 +26,7 @@ import XCTest
 final class LocalizedMacroTests: XCTestCase {
     private let macros = ["localized": LocalizedMacro.self]
 
-    func testExpansionWithFirstArgumentOtherThanString() {
+    func testExpansionWithNumericLocalizedKey() {
         assertMacroExpansion("""
                              #localized(123)
                              """,
@@ -34,13 +34,44 @@ final class LocalizedMacroTests: XCTestCase {
                              #localized(123)
                              """,
                              diagnostics: [
-                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral, line: 1,
+                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral,
+                                       line: 1,
                                        column: 1)
                              ],
                              macros: macros)
     }
 
-    func testExpansionWithEmptyLocalizedKey() {
+    func testExpansionWithBooleanLocalizedKey() {
+        assertMacroExpansion("""
+                             #localized(true)
+                             """,
+                             expandedSource: """
+                             #localized(true)
+                             """,
+                             diagnostics: [
+                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral,
+                                       line: 1,
+                                       column: 1)
+                             ],
+                             macros: macros)
+    }
+
+    func testExpansionWithNonStaticStringLocalizedKey() {
+        assertMacroExpansion("""
+                             #localized("Hello" + " " + "world")
+                             """,
+                             expandedSource: """
+                             #localized("Hello" + " " + "world")
+                             """,
+                             diagnostics: [
+                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral,
+                                       line: 1,
+                                       column: 1)
+                             ],
+                             macros: macros)
+    }
+
+    func testExpansionWithEmptyStaticStringLocalizedKey() {
         assertMacroExpansion("""
                              #localized("")
                              """,
@@ -53,12 +84,42 @@ final class LocalizedMacroTests: XCTestCase {
                              macros: macros)
     }
 
-    func testExpansionWithStaticStringArgument() {
+    func testExpansionWithNonEmptyStaticStringLocalizedKey() {
         assertMacroExpansion("""
-                             #localized("a string to localized")
+                             #localized("Hello world")
                              """,
                              expandedSource: """
-                             String(localized: "a string to localized")
+                             String(localized: "Hello world")
+                             """,
+                             macros: macros)
+    }
+
+    func testExpansionWithNonEmptyStaticStringLocalizedKeyAndOneArgument() {
+        assertMacroExpansion("""
+                             #localized("Hello %@", "world")
+                             """,
+                             expandedSource: """
+                             String(format: String(localized: "Hello %@"), "world")
+                             """,
+                             macros: macros)
+    }
+
+    func testExpansionWithNonEmptyStaticStringLocalizedKeyAndTwoArguments() {
+        assertMacroExpansion("""
+                             #localized("Version %@ (%d)", "1.0.0", 5)
+                             """,
+                             expandedSource: """
+                             String(format: String(localized: "Version %@ (%d)"), "1.0.0", 5)
+                             """,
+                             macros: macros)
+    }
+
+    func testExpansionWithNonEmptyStaticStringLocalizedKeyAndThreeArguments() {
+        assertMacroExpansion("""
+                             #localized("Version %@ (%d) (%@)", "1.0.0", 5, "abcd1234")
+                             """,
+                             expandedSource: """
+                             String(format: String(localized: "Version %@ (%d) (%@)"), "1.0.0", 5, "abcd1234")
                              """,
                              macros: macros)
     }
