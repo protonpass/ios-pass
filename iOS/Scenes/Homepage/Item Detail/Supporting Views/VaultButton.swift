@@ -40,10 +40,10 @@ struct VaultButton: View {
                         .frame(width: 12, height: 12)
                 })
                 .foregroundColor(vault.mainColor)
-                Text("•")
+                Text(verbatim: "•")
                     .font(.body)
                     .foregroundColor(PassColor.textNorm.toColor)
-                Text("\(vault.members)")
+                Text(verbatim: "\(vault.members)")
                     .font(.footnote)
                     .foregroundColor(PassColor.textNorm.toColor)
             }

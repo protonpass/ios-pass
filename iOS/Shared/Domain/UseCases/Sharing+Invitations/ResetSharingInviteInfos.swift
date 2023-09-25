@@ -1,5 +1,5 @@
 //
-// Service+DependencyInjections.swift
+// ResetSharingInviteInfos.swift
 // Proton Pass - Created on 25/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //

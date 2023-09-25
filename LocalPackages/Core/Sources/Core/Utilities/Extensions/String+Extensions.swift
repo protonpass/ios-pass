@@ -1,5 +1,5 @@
 //
-// StringExtensions.swift
+// String+Extensions.swift
 // Proton Pass - Created on 08/07/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //

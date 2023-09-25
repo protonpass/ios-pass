@@ -25,7 +25,7 @@ import SwiftUI
 struct BannersSection: View {
     var body: some View {
         NavigationLink(destination: { ManageBannersView() },
-                       label: { Text("Banners") })
+                       label: { Text(verbatim: "Banners") })
     }
 }
 
@@ -35,11 +35,11 @@ private struct ManageBannersView: View {
     var body: some View {
         Form {
             Section {
-                Text("In order for changes to take effect, either move app to background or close app")
+                Text(verbatim: "In order for changes to take effect, either move app to background or close app")
                 Button(action: {
                     preferences.dismissedBannerIds.removeAll()
                 }, label: {
-                    Text("Undismiss all banners")
+                    Text(verbatim: "Undismiss all banners")
                 })
             }
 
@@ -57,7 +57,9 @@ private struct ManageBannersView: View {
                         }
                     })
 
-                    Toggle("Dismissed", isOn: binding)
+                    Toggle(isOn: binding) {
+                        Text(verbatim: "Dismissed")
+                    }
                 }
             }
         }
