@@ -31,7 +31,7 @@ final class TokenRefreshTests: LoginBaseTestCase {
     let welcomeRobot = WelcomeRobot()
 
     func testSignInWithInternalAccountWorks() {
-        let hostUrl = Environment.black.doh.getCurrentlyUsedHostUrl()
+        let hostUrl = doh.getCurrentlyUsedHostUrl()
         let expectUnbanQuarkCommandToFinish = expectation(description: "Unban quark command should finish")
         QuarkCommands.unban(currentlyUsedHostUrl: hostUrl) { result in
             switch result {
