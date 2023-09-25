@@ -34,7 +34,7 @@ final class LocalizedMacroTests: XCTestCase {
                              #localized(123)
                              """,
                              diagnostics: [
-                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral,
+                                 .init(message: LocalizedMacroError.firstArgumentMustBeAString,
                                        line: 1,
                                        column: 1)
                              ],
@@ -49,7 +49,7 @@ final class LocalizedMacroTests: XCTestCase {
                              #localized(true)
                              """,
                              diagnostics: [
-                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral,
+                                 .init(message: LocalizedMacroError.firstArgumentMustBeAString,
                                        line: 1,
                                        column: 1)
                              ],
@@ -64,7 +64,7 @@ final class LocalizedMacroTests: XCTestCase {
                              #localized("Hello" + " " + "world")
                              """,
                              diagnostics: [
-                                 .init(message: LocalizedMacroError.firstArgumentStaticStringLiteral,
+                                 .init(message: LocalizedMacroError.firstArgumentMustBeAString,
                                        line: 1,
                                        column: 1)
                              ],
