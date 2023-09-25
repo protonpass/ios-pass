@@ -298,7 +298,6 @@ final class APIManagerTests: XCTestCase {
                                                   userID: "",
                                                   privateKey: nil,
                                                   passwordKeySalt: nil)
-        let newUnauthSessionData = try JSONEncoder().encode(newUnauthCredentials)
 
         // WHEN
         apiManager.credentialsWereUpdated(authCredential: newUnauthCredentials,
@@ -312,7 +311,20 @@ final class APIManagerTests: XCTestCase {
         let encryptedValue = try XCTUnwrap(keychain.setDataStub.lastArguments?.first)
         let unlockedSessionData = try Locked<Data>(encryptedValue: encryptedValue)
             .unlock(with: mainKey)
-        XCTAssertEqual(unlockedSessionData, newUnauthSessionData)
+        let unlockedSession = try JSONDecoder().decode(AuthCredential.self, from: unlockedSessionData)
+
+        /*
+         let newUnauthSessionData = try JSONEncoder().encode(newUnauthCredentials)
+         XCTAssertEqual(unlockedSessionData, newUnauthSessionData)
+
+         This no more works after upgrading to Xcode 15 and iOS 17
+         Work around by asserting field by field
+         */
+        XCTAssertEqual(unlockedSession.accessToken, newUnauthCredentials.accessToken)
+        XCTAssertEqual(unlockedSession.refreshToken, newUnauthCredentials.refreshToken)
+        XCTAssertEqual(unlockedSession.sessionID, newUnauthCredentials.sessionID)
+        XCTAssertEqual(unlockedSession.userName, newUnauthCredentials.userName)
+        XCTAssertEqual(unlockedSession.userID, newUnauthCredentials.userID)
     }
 
     func testAPIServiceAuthCredentialsUpdateUpdatesAuthSesson() throws {
