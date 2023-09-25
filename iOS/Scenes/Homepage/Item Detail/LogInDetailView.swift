@@ -323,7 +323,7 @@ struct LogInDetailView: View {
             Text("View and edit details for this alias on the separate alias page.")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" ")
+                Text(verbatim: " ")
                 .font(.callout) +
                 Text("View")
                 .font(.callout)

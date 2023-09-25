@@ -34,14 +34,14 @@ struct TrashItemsSection: View {
         NavigationLink(destination: {
             TrashItemsView(bannerManager: bannerManager)
         }, label: {
-            Text("Trash all items")
+            Text(verbatim: "Trash all items")
         })
     }
 }
 
 private struct TrashItemsView: View {
     @StateObject private var viewModel: TrashItemsViewModel
-    @State private var selectedUiModel: VaultListUiModel?
+    @State private var selectedVault: VaultListUiModel?
 
     init(bannerManager: BannerManager) {
         _viewModel = .init(wrappedValue: .init(bannerManager: bannerManager))
@@ -62,10 +62,10 @@ private struct TrashItemsView: View {
     @ViewBuilder
     private func vaultList(_ uiModels: [VaultListUiModel]) -> some View {
         let showingAlert = Binding<Bool>(get: {
-            selectedUiModel != nil
+            selectedVault != nil
         }, set: { newValue in
             if !newValue {
-                selectedUiModel = nil
+                selectedVault = nil
             }
         })
         Form {
@@ -75,7 +75,7 @@ private struct TrashItemsView: View {
                     let icon = vault.displayPreferences.icon.icon.bigImage
                     let color = vault.displayPreferences.color.color.color
                     Button(action: {
-                        selectedUiModel = uiModel
+                        selectedVault = uiModel
                     }, label: {
                         VaultRow(thumbnail: {
                                      CircleButton(icon: icon,
@@ -91,27 +91,27 @@ private struct TrashItemsView: View {
                     .buttonStyle(.plain)
                 }
             }, header: {
-                Text("\(uiModels.count) vault(s) in total")
+                Text(verbatim: "\(uiModels.count) vault(s) in total")
             })
         }
-        .navigationTitle("Select to trash all items")
-        .alert("Trash all items",
+        .navigationTitle(Text(verbatim: "Select to trash all items"))
+        .alert(Text(verbatim: "Trash all items"),
                isPresented: showingAlert,
                actions: {
-                   Button(role: .cancel, label: { Text("Cancel") })
+                   Button(role: .cancel, label: { Text(verbatim: "Cancel") })
                    Button(role: .destructive,
                           action: {
-                              if let selectedUiModel {
-                                  viewModel.trashItems(for: selectedUiModel.vault)
+                              if let selectedVault {
+                                  viewModel.trashItems(for: selectedVault.vault)
                               }
                           },
                           label: {
-                              Text("Yes")
+                              Text(verbatim: "Yes")
                           })
                },
                message: {
-                   if let selectedUiModel {
-                       Text("Vault \"\(selectedUiModel.vault.name)\" with \(selectedUiModel.itemCount) item(s)")
+                   if let selectedVault {
+                       Text(verbatim: "Vault \"\(selectedVault.vault.name)\" with \(selectedVault.itemCount) item(s)")
                    }
                })
     }

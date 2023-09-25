@@ -59,7 +59,7 @@ struct CreateEditNoteView: View {
                                                   fontWeight: .bold,
                                                   onSubmit: { focusedField = .content })
 
-                        Text("")
+                        Text(verbatim: "")
                             .id(dummyId)
 
                         TextEditorWithPlaceholder(text: $viewModel.note,

@@ -63,7 +63,7 @@ struct PinAuthenticationView: View {
             case let .remainingAttempts(count):
                 Text("Incorrect PIN code.")
                     .foregroundColor(PassColor.signalDanger.toColor) +
-                    Text(" ") +
+                    Text(verbatim: " ") +
                     Text("%d remaining attempt(s)".localized(count))
                     .foregroundColor(PassColor.signalDanger.toColor)
             case .lastAttempt:
