@@ -60,7 +60,7 @@ struct HapticFeedbacksSection: View {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }, label: {
-                    Text(verbatim: "Light")
+                    Text("Light")
                 })
 
                 Button(action: {
@@ -129,7 +129,7 @@ private struct FineTunedHapticFeedbackView: View {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred(intensity: intensity)
                 }, label: {
-                    Text(verbatim: "Light")
+                    Text("Light")
                 })
 
                 Button(action: {
