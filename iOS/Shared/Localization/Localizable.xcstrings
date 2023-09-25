@@ -4412,7 +4412,6 @@
       }
     },
     "Light" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
