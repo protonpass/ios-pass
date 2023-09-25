@@ -81,7 +81,8 @@ public actor LogManager: LogManagerProtocol {
             currentSavedlogs = logContents.components(separatedBy: .newlines)
         }
         Task { [weak self] in
-            await self?.setUp()
+            guard let self else { return }
+            await setUp()
         }
     }
 
