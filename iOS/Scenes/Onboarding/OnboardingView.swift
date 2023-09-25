@@ -85,7 +85,7 @@ struct OnboardingView: View {
                         }
                         .animation(.default, value: viewModel.state.secondaryButtonTitle)
                     } else {
-                        Text("Dummy text that takes place")
+                        Text(verbatim: "Dummy text that takes place")
                             .opacity(0)
                     }
 

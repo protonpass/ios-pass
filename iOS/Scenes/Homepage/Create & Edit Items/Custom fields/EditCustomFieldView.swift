@@ -46,7 +46,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                 // Looks like a SwiftUI bug
                 // https://stackoverflow.com/a/67436121
                 if isRemoved {
-                    Text("Dummy text")
+                    Text(verbatim: "Dummy text")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .opacity(0)
                 } else {
