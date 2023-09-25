@@ -42,7 +42,7 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <StoreKitConfigurationFileReference
-         identifier = "../iOSUITests/Subscription/Proton Pass - Password Manager.storekit">
+         identifier = "../../iOSUITests/Subscription/Proton Pass - Password Manager.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
