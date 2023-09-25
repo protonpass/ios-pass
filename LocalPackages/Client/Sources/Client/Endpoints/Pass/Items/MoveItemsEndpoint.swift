@@ -43,8 +43,8 @@ extension MoveItemsRequest {
     init(itemsContent: [ItemContent],
          destinationShareId: String,
          destinationShareKey: DecryptedShareKey) throws {
-        let encryptedItems = try itemsContent.map { try Self.createItemRevision(itemContent: $0,
-                                                                                destinationShareKey: destinationShareKey)
+        let encryptedItems = try itemsContent.map {
+            try Self.createItemRevision(itemContent: $0, destinationShareKey: destinationShareKey)
         }
         self.init(shareId: destinationShareId,
                   items: encryptedItems)
