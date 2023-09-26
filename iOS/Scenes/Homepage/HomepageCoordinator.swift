@@ -296,9 +296,9 @@ private extension HomepageCoordinator {
                 case let .displayErrorBanner(errorLocalized):
                     bannerManager.displayTopErrorMessage(errorLocalized)
                 case let .successMessage(message, config):
-                    self.displaySuccessBanner(with: message, and: config)
+                    displaySuccessBanner(with: message, and: config)
                 case let .infosMessage(message, config):
-                    self.displayInfoBanner(with: message, and: config)
+                    displayInfoBanner(with: message, and: config)
                 }
             }
             .store(in: &cancellables)
