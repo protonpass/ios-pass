@@ -181,6 +181,10 @@ extension EditableVaultListViewModel {
             }
         }
     }
+
+    func itemCount(for selection: VaultSelection) -> Int {
+        vaultsManager.getItemCount(for: selection)
+    }
 }
 
 // MARK: - DeleteVaultConfirmationDelegate
