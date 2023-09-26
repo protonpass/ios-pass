@@ -23,7 +23,6 @@ import SwiftUI
 struct OnboardSection: View {
     @State private var isShowingFullScreen = false
     @State private var isShowingSheet = false
-    @ObservedObject var viewModel: QAFeaturesViewModel
 
     var body: some View {
         Section(content: {
@@ -44,6 +43,6 @@ struct OnboardSection: View {
     }
 
     private var onboardingView: some View {
-        OnboardingView(viewModel: .init(bannerManager: viewModel.bannerManager))
+        OnboardingView()
     }
 }

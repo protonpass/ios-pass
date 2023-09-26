@@ -47,7 +47,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -64,8 +63,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
 
-    // Lazily initialized properties
-    private lazy var bannerManager: BannerManager = .init(container: rootViewController)
+    // Lazily initialised properties
+    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
+    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -89,6 +89,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     override init() {
         super.init()
+        SharedViewContainer.shared.register(rootViewController: rootViewController)
         setUpRouting()
         finalizeInitialization()
         vaultsManager.refresh()
@@ -107,7 +108,6 @@ private extension HomepageCoordinator {
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
     func finalizeInitialization() {
         eventLoop.delegate = self
-        clipboardManager.bannerManager = bannerManager
         itemContextMenuHandler.delegate = self
         passPlanRepository.delegate = self
         urlOpener.rootViewController = rootViewController
@@ -297,6 +297,8 @@ private extension HomepageCoordinator {
                     self.bannerManager.displayTopErrorMessage(errorLocalized)
                 case let .successMessage(message, config):
                     self.displaySuccessBanner(with: message, and: config)
+                case let .infosMessage(message, config):
+                    self.displayInfoBanner(with: message, and: config)
                 }
             }
             .store(in: &cancellables)
@@ -472,21 +474,31 @@ private extension HomepageCoordinator {
         }
     }
 
-    func displaySuccessBanner(with message: String, and config: NavigationConfiguration) {
-        if let event = config.telemetryEvent {
-            addNewEvent(type: event)
-        }
+    func displaySuccessBanner(with message: String?, and config: NavigationConfiguration?) {
+        parseNavigationConfig(config: config)
 
-        if config.dismissBeforeShowing {
+        guard let message else { return }
+
+        if let config, config.dismissBeforeShowing {
             dismissTopMostViewController(animated: true) { [weak self] in
                 self?.bannerManager.displayBottomSuccessMessage(message)
             }
         } else {
             bannerManager.displayBottomSuccessMessage(message)
         }
+    }
 
-        if config.refresh {
-            refresh()
+    func displayInfoBanner(with message: String?, and config: NavigationConfiguration?) {
+        parseNavigationConfig(config: config)
+
+        guard let message else { return }
+
+        if let config, config.dismissBeforeShowing {
+            dismissTopMostViewController(animated: true) { [weak self] in
+                self?.bannerManager.displayBottomInfoMessage(message)
+            }
+        } else {
+            bannerManager.displayBottomInfoMessage(message)
         }
     }
 
@@ -563,8 +575,7 @@ private extension HomepageCoordinator {
 extension HomepageCoordinator {
     func onboardIfNecessary() {
         if preferences.onboarded { return }
-        let onboardingViewModel = OnboardingViewModel(bannerManager: bannerManager)
-        let onboardingView = OnboardingView(viewModel: onboardingViewModel)
+        let onboardingView = OnboardingView()
         let onboardingViewController = UIHostingController(rootView: onboardingView)
         onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         onboardingViewController.isModalInPresentation = true
@@ -849,8 +860,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
     }
 
     func profileTabViewModelWantsToQaFeatures() {
-        let viewModel = QAFeaturesViewModel(bannerManager: bannerManager)
-        let view = QAFeaturesView(viewModel: viewModel)
+        let view = QAFeaturesView()
         present(view)
     }
 }
@@ -965,10 +975,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             }
         }
     }
-
-    func settingsViewModelDidFinishFullSync() {
-        refresh()
-    }
 }
 
 // MARK: - GeneratePasswordCoordinatorDelegate
@@ -1075,21 +1081,6 @@ extension HomepageCoordinator: EditableVaultListViewModelDelegate {
                                               delegate: delegate)
         handler.showAlert()
     }
-
-    func editableVaultListViewModelDidDelete(vault: Vault) {
-        bannerManager.displayBottomInfoMessage("Vault « %@ » deleted".localized(vault.name))
-        vaultsManager.refresh()
-    }
-
-    func editableVaultListViewModelDidRestoreAllTrashedItems() {
-        bannerManager.displayBottomSuccessMessage("All items restored".localized)
-        refresh()
-    }
-
-    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems() {
-        bannerManager.displayBottomInfoMessage("All items permanently deleted".localized)
-        refresh()
-    }
 }
 
 // MARK: - ItemDetailViewModelDelegate
@@ -1128,22 +1119,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
         addNewEvent(type: .update(item.type))
     }
-
-    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
-        }
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
-        }
-        addNewEvent(type: .delete(item.type))
-    }
 }
 
 // MARK: - ItemContextMenuHandlerDelegate
@@ -1151,21 +1126,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent) {
         presentEditItemView(for: itemContent)
-    }
-
-    func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable) {
-        refresh()
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable) {
-        refresh()
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refresh()
-        addNewEvent(type: .delete(item.type))
     }
 }
 
@@ -1186,13 +1146,6 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 // MARK: - CreateEditVaultViewModelDelegate
 
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
-    func createEditVaultViewModelDidCreateVault() {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage("Vault created".localized)
-        }
-        vaultsManager.refresh()
-    }
-
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
             self?.bannerManager.displayBottomInfoMessage("Vault updated".localized)
@@ -1268,5 +1221,20 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
 
     func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
         logger.error(message: "Failed to execute additional task \(label)", error: error)
+    }
+}
+
+private extension HomepageCoordinator {
+    func parseNavigationConfig(config: NavigationConfiguration?) {
+        guard let config else {
+            return
+        }
+        if let event = config.telemetryEvent {
+            addNewEvent(type: event)
+        }
+
+        if config.refresh {
+            refresh()
+        }
     }
 }
