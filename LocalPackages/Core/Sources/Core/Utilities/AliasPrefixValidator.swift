@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Macro
 
 public enum AliasPrefixError: LocalizedError {
     case emptyPrefix
@@ -29,14 +30,14 @@ public enum AliasPrefixError: LocalizedError {
     public var localizedDescription: String {
         switch self {
         case .emptyPrefix:
-            "Prefix can not be empty".localized
+            #localized("Prefix can not be empty")
         case .disallowedCharacters:
-            "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)"
-                .localized
+            // swiftlint:disable:next line_length
+            #localized("Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)")
         case .twoConsecutiveDots:
-            "Prefix can not contain 2 consecutive dots (..)".localized
+            #localized("Prefix can not contain 2 consecutive dots (..)")
         case .dotAtTheEnd:
-            "Alias can not contain 2 consecutive dots (..)".localized
+            #localized("Alias can not contain 2 consecutive dots (..)")
         }
     }
 }

@@ -23,6 +23,7 @@ import Combine
 import Core
 import DesignSystem
 import Factory
+import Macro
 import SwiftUI
 import UIKit
 
@@ -127,17 +128,17 @@ private extension LogInDetailViewModel {
 
 extension LogInDetailViewModel {
     func copyUsername() {
-        copyToClipboard(text: username, message: "Username copied".localized)
+        copyToClipboard(text: username, message: #localized("Username copied"))
     }
 
     func copyPassword() {
         guard !password.isEmpty else { return }
-        copyToClipboard(text: password, message: "Password copied".localized)
+        copyToClipboard(text: password, message: #localized("Password copied"))
     }
 
     func copyTotpCode() {
         if let code = totpManager.totpData?.code {
-            copyToClipboard(text: code, message: "TOTP copied".localized)
+            copyToClipboard(text: code, message: #localized("TOTP copied"))
         }
     }
 

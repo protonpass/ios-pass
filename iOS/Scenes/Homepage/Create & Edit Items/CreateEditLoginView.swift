@@ -21,6 +21,7 @@
 import CodeScanner
 import Core
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -211,7 +212,7 @@ private extension CreateEditLoginView {
                         focusedField = nil
                     }
                 }, label: {
-                    Text("Use %@".localized(viewModel.emailAddress))
+                    Text(#localized("Use %@", viewModel.emailAddress))
                         .minimumScaleFactor(0.5)
                 })
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -288,7 +289,7 @@ private extension CreateEditLoginView {
     }
 
     var useCurrentEmailButton: some View {
-        capsuleButton(icon: nil, title: "Use %@".localized(viewModel.emailAddress)) {
+        capsuleButton(icon: nil, title: #localized("Use %@", viewModel.emailAddress)) {
             viewModel.useRealEmailAddress()
             if viewModel.password.isEmpty {
                 focusedField = .password
@@ -415,7 +416,7 @@ private extension CreateEditLoginView {
                     .sectionTitleText()
 
                 SensitiveTextField(text: $viewModel.password,
-                                   placeholder: "Add password".localized,
+                                   placeholder: #localized("Add password"),
                                    focusedField: $focusedField,
                                    field: Field.password,
                                    font: .body.monospacedFont(for: viewModel.password),
@@ -471,7 +472,7 @@ private extension CreateEditLoginView {
                     .sectionTitleText()
 
                 SensitiveTextField(text: $viewModel.totpUri,
-                                   placeholder: "Add 2FA secret".localized,
+                                   placeholder: #localized("Add 2FA secret"),
                                    focusedField: $focusedField,
                                    field: .totp,
                                    font: .body.monospacedFont(for: viewModel.totpUri),

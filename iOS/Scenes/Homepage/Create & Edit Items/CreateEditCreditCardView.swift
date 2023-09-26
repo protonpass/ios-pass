@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -269,7 +270,7 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Expires on")
                     .sectionTitleText()
-                MonthYearTextField(placeholder: "MM / YYYY".localized,
+                MonthYearTextField(placeholder: #localized("MM / YYYY"),
                                    tintColor: tintColor,
                                    month: $viewModel.month,
                                    year: $viewModel.year)

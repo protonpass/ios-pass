@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -303,7 +304,7 @@ struct LogInDetailView: View {
                             })
 
                             Button(action: {
-                                viewModel.copyToClipboard(text: url, message: "Website copied".localized)
+                                viewModel.copyToClipboard(text: url, message: #localized("Website copied"))
                             }, label: {
                                 Text("Copy")
                             })
@@ -339,10 +340,10 @@ struct LogInDetailView: View {
 
 private extension LogInDetailView {
     func copyTOTPToken(_ token: String) {
-        viewModel.copyToClipboard(text: token, message: "TOTP copied".localized)
+        viewModel.copyToClipboard(text: token, message: #localized("TOTP copied"))
     }
 
     func copyHiddenText(_ text: String) {
-        viewModel.copyToClipboard(text: text, message: "Hidden text copied".localized)
+        viewModel.copyToClipboard(text: text, message: #localized("Hidden text copied"))
     }
 }

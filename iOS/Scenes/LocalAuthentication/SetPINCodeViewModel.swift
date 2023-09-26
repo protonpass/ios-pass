@@ -22,6 +22,7 @@ import Combine
 import Core
 import Factory
 import Foundation
+import Macro
 
 final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -99,36 +100,36 @@ extension SetPINCodeViewModel.State {
     var title: String {
         switch self {
         case .definition:
-            "Set PIN code".localized
+            #localized("Set PIN code")
         case .confirmation:
-            "Repeat PIN code".localized
+            #localized("Repeat PIN code")
         }
     }
 
     var description: String {
         switch self {
         case .definition:
-            "Unlock the app with this code".localized
+            #localized("Unlock the app with this code")
         case .confirmation:
-            "Type your PIN again to confirm".localized
+            #localized("Type your PIN again to confirm")
         }
     }
 
     var placeholder: String {
         switch self {
         case .definition:
-            "Enter PIN code".localized
+            #localized("Enter PIN code")
         case .confirmation:
-            "Repeat PIN code".localized
+            #localized("Repeat PIN code")
         }
     }
 
     var actionTitle: String {
         switch self {
         case .definition:
-            "Continue".localized
+            #localized("Continue")
         case .confirmation:
-            "Set PIN code".localized
+            #localized("Set PIN code")
         }
     }
 }
@@ -137,7 +138,7 @@ extension SetPINCodeViewModel.ValidationError {
     var description: String {
         switch self {
         case .notMatched:
-            "PINs not matched".localized
+            #localized("PINs not matched")
         }
     }
 }

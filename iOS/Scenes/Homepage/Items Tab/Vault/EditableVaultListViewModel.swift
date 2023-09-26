@@ -23,6 +23,7 @@ import Combine
 import Core
 import Factory
 import Foundation
+import Macro
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
@@ -93,7 +94,7 @@ private extension EditableVaultListViewModel {
                 loading = true
                 try await vaultsManager.delete(vault: vault)
                 vaultsManager.refresh()
-                router.display(element: .infosMessage("Vault « %@ » deleted".localized(vault.name)))
+                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vault.name))
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -154,7 +155,7 @@ extension EditableVaultListViewModel {
                 self.logger.trace("Restoring all trashed items")
                 self.loading = true
                 try await self.vaultsManager.restoreAllTrashedItems()
-                self.router.display(element: .successMessage("All items restored".localized,
+                self.router.display(element: .successMessage(#localized("All items restored"),
                                                              config: .refresh))
                 self.logger.info("Restored all trashed items")
             } catch {
@@ -172,7 +173,7 @@ extension EditableVaultListViewModel {
                 self.logger.trace("Emptying all trashed items")
                 self.loading = true
                 try await self.vaultsManager.permanentlyDeleteAllTrashedItems()
-                self.router.display(element: .infosMessage("All items permanently deleted".localized,
+                self.router.display(element: .infosMessage(#localized("All items permanently deleted"),
                                                            config: .refresh))
                 self.logger.info("Emptied all trashed items")
             } catch {
