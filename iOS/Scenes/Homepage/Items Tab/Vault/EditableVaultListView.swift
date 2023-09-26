@@ -43,7 +43,7 @@ struct EditableVaultListView: View {
                         PassDivider()
 
                         ForEach(vaults, id: \.hashValue) { vault in
-                            vaultRow(for: .precise(vault.vault), vaultContent: vault)
+                            vaultRow(for: .precise(vault.vault))
                             PassDivider()
                         }
 
@@ -84,7 +84,8 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private func vaultRow(for selection: VaultSelection, vaultContent: VaultContentUiModel? = nil) -> some View {
+    private func vaultRow(for selection: VaultSelection) -> some View {
+        let itemCount = viewModel.itemCount(for: selection)
         HStack {
             Button(action: {
                 dismiss()
@@ -96,7 +97,7 @@ struct EditableVaultListView: View {
                                           backgroundColor: selection.color.withAlphaComponent(0.16))
                          },
                          title: selection.title,
-                         itemCount: vaultContent?.itemCount ?? 0,
+                         itemCount: itemCount,
                          isShared: selection.shared,
                          isSelected: viewModel.isSelected(selection),
                          height: 74)
@@ -109,7 +110,7 @@ struct EditableVaultListView: View {
             case .all:
                 EmptyView()
             case let .precise(vault):
-                vaultTrailingView(vault, vaultContent: vaultContent)
+                vaultTrailingView(vault, haveItems: itemCount > 0)
             case .trash:
                 trashTrailingView
             }
@@ -125,7 +126,7 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private func vaultTrailingView(_ vault: Vault, vaultContent: VaultContentUiModel? = nil) -> some View {
+    private func vaultTrailingView(_ vault: Vault, haveItems: Bool) -> some View {
         Menu(content: {
             if vault.isOwner {
                 Button(action: {
@@ -165,7 +166,7 @@ struct EditableVaultListView: View {
                 })
             }
 
-            if let vaultContent, !vaultContent.items.isEmpty {
+            if haveItems {
                 Button(action: {
                     viewModel.router.present(for: .moveItemsBetweenVaults(currentVault: vault,
                                                                           singleItemToMove: nil))
