@@ -94,7 +94,7 @@ private extension EditableVaultListViewModel {
                 loading = true
                 try await vaultsManager.delete(vault: vault)
                 vaultsManager.refresh()
-                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vault.name))
+                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vault.name)))
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
