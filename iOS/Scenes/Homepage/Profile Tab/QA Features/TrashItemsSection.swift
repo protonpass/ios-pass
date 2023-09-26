@@ -24,15 +24,11 @@ import Factory
 import SwiftUI
 
 struct TrashItemsSection: View {
-    private let bannerManager: BannerManager
-
-    init(bannerManager: BannerManager) {
-        self.bannerManager = bannerManager
-    }
+    init() {}
 
     var body: some View {
         NavigationLink(destination: {
-            TrashItemsView(bannerManager: bannerManager)
+            TrashItemsView()
         }, label: {
             Text(verbatim: "Trash all items")
         })
@@ -40,12 +36,10 @@ struct TrashItemsSection: View {
 }
 
 private struct TrashItemsView: View {
-    @StateObject private var viewModel: TrashItemsViewModel
+    @StateObject private var viewModel = TrashItemsViewModel()
     @State private var selectedVault: VaultListUiModel?
 
-    init(bannerManager: BannerManager) {
-        _viewModel = .init(wrappedValue: .init(bannerManager: bannerManager))
-    }
+    init() {}
 
     var body: some View {
         switch viewModel.state {
@@ -128,10 +122,9 @@ private final class TrashItemsViewModel: ObservableObject {
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let bannerManager: BannerManager
+    private let bannerManager = resolve(\SharedViewContainer.bannerManager)
 
-    init(bannerManager: BannerManager) {
-        self.bannerManager = bannerManager
+    init() {
         loadVaults()
     }
 

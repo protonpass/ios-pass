@@ -223,6 +223,11 @@ extension UseCasesContainer {
     var getVaultContentForVault: Factory<GetVaultContentForVaultUseCase> {
         self { GetVaultContentForVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
+
+    var createVault: Factory<CreateVaultUseCase> {
+        self { CreateVault(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                           repository: SharedRepositoryContainer.shared.shareRepository()) }
+    }
 }
 
 // MARK: - User

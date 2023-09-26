@@ -32,8 +32,6 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
-    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
-    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
 }
 
 class BaseItemDetailViewModel: ObservableObject {
@@ -156,7 +154,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await self.itemRepository.untrashItems([encryptedItem])
-                self.delegate?.itemDetailViewModelDidRestore(item: item)
+                self.router.display(element: .successMessage(item.type.restoreMessage,
+                                                             config: .dismissAndRefresh(with: .update(item.type))))
                 self.logger.info("Restored \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
@@ -176,7 +175,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
-                self.delegate?.itemDetailViewModelDidPermanentlyDelete(item: item)
+                self.router.display(element: .successMessage(item.type.deleteMessage,
+                                                             config: .dismissAndRefresh(with: .delete(item.type))))
                 self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
