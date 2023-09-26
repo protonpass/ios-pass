@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -105,7 +106,7 @@ struct LogsView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     CapsuleLabelButton(icon: IconProvider.arrowUpFromSquare,
-                                       title: "Share".localized,
+                                       title: #localized("Share"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: PassColor.interactionNorm,
                                        action: viewModel.shareLogs)

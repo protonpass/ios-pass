@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -47,16 +48,16 @@ struct GeneratePasswordView: View {
                     characterCountRow
                     PassDivider()
 
-                    toggle(title: "Special characters".localized,
+                    toggle(title: #localized("Special characters"),
                            isOn: $viewModel.hasSpecialCharacters)
                     PassDivider()
 
                     if viewModel.isShowingAdvancedOptions {
-                        toggle(title: "Capital letters".localized,
+                        toggle(title: #localized("Capital letters"),
                                isOn: $viewModel.hasCapitalCharacters)
                         PassDivider()
 
-                        toggle(title: "Include numbers".localized,
+                        toggle(title: #localized("Include numbers"),
                                isOn: $viewModel.hasNumberCharacters)
                         PassDivider()
                     } else {
@@ -73,7 +74,7 @@ struct GeneratePasswordView: View {
                         capitalizingWordsRow
                         PassDivider()
 
-                        toggle(title: "Include numbers".localized,
+                        toggle(title: #localized("Include numbers"),
                                isOn: $viewModel.includingNumbers)
                         PassDivider()
                     } else {
@@ -159,7 +160,7 @@ struct GeneratePasswordView: View {
 
     private var ctaButtons: some View {
         HStack {
-            CapsuleTextButton(title: "Cancel".localized,
+            CapsuleTextButton(title: #localized("Cancel"),
                               titleColor: PassColor.textWeak,
                               backgroundColor: PassColor.textDisabled,
                               height: 44,
@@ -181,7 +182,7 @@ struct GeneratePasswordView: View {
 
     private var characterCountRow: some View {
         HStack {
-            Text("%d characters".localized(Int(viewModel.characterCount)))
+            Text(#localized("%d characters", Int(viewModel.characterCount)))
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -195,7 +196,7 @@ struct GeneratePasswordView: View {
 
     private var wordCountRow: some View {
         HStack {
-            Text("%d word(s)".localized(Int(viewModel.wordCount)))
+            Text(#localized("%d word(s)", Int(viewModel.wordCount)))
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -216,7 +217,7 @@ struct GeneratePasswordView: View {
     }
 
     private var capitalizingWordsRow: some View {
-        toggle(title: "Capitalise".localized, isOn: $viewModel.capitalizingWords)
+        toggle(title: #localized("Capitalise"), isOn: $viewModel.capitalizingWords)
     }
 
     private var wordSeparatorRow: some View {

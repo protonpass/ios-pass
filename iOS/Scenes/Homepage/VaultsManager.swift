@@ -24,6 +24,7 @@ import Core
 import CryptoKit
 import Factory
 import Foundation
+import Macro
 import ProtonCoreLogin
 
 enum VaultManagerState {
@@ -40,11 +41,11 @@ enum VaultSelection {
     var searchBarPlacehoder: String {
         switch self {
         case .all:
-            "Search in all vaults...".localized
+            #localized("Search in all vaults...")
         case let .precise(vault):
-            "Search in %@...".localized(vault.name)
+            #localized("Search in %@...", vault.name)
         case .trash:
-            "Search in Trash...".localized
+            #localized("Search in Trash...")
         }
     }
 

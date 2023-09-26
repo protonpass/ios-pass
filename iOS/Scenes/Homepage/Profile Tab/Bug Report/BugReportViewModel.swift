@@ -21,6 +21,7 @@
 import Client
 import Factory
 import Foundation
+import Macro
 
 enum BugReportObject: CaseIterable {
     case autofill, autosave, aliases, syncing, featureRequest, other
@@ -28,17 +29,17 @@ enum BugReportObject: CaseIterable {
     var description: String {
         switch self {
         case .autofill:
-            "AutoFill".localized
+            #localized("AutoFill")
         case .autosave:
-            "Autosave".localized
+            #localized("Autosave")
         case .aliases:
-            "Aliases".localized
+            #localized("Aliases")
         case .syncing:
-            "Syncing".localized
+            #localized("Syncing")
         case .featureRequest:
-            "Feature request".localized
+            #localized("Feature request")
         case .other:
-            "Other".localized
+            #localized("Other")
         }
     }
 }

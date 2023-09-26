@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Factory
+import Macro
 
 final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable {
     deinit { print(deinitMessage) }
@@ -82,13 +83,13 @@ private extension MoveVaultListViewModel {
     var createMoveSuccessMessage: UIElementDisplay {
         if let itemContent {
             UIElementDisplay
-                .successMessage("Item moved to vault « %@ »".localized(selectedVault.vault.name),
+                .successMessage(#localized("Item moved to vault « %@ »", selectedVault.vault.name),
                                 config: .dismissAndRefresh(with: .update(itemContent.type)))
         } else {
             UIElementDisplay
-                .successMessage("Items from « %@ » moved to vault « %@ »"
-                    .localized(currentVault.vault.name, selectedVault.vault.name),
-                    config: .dismissAndRefresh)
+                .successMessage(#localized("Items from « %@ » moved to vault « %@ »",
+                                           currentVault.vault.name, selectedVault.vault.name),
+                                config: .dismissAndRefresh)
         }
     }
 

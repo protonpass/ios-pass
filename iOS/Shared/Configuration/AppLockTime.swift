@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Macro
 
 public enum AppLockTime: Int, Codable, CustomStringConvertible, CaseIterable {
     case immediately = 0
@@ -33,21 +34,21 @@ public enum AppLockTime: Int, Codable, CustomStringConvertible, CaseIterable {
     public var description: String {
         switch self {
         case .immediately:
-            "Immediately".localized
+            #localized("Immediately")
         case .oneMinute:
-            "After 1 minute".localized
+            #localized("After 1 minute")
         case .twoMinutes:
-            "After 2 minutes".localized
+            #localized("After 2 minutes")
         case .fiveMinutes:
-            "After 5 minutes".localized
+            #localized("After 5 minutes")
         case .tenMinutes:
-            "After 10 minutes".localized
+            #localized("After 10 minutes")
         case .oneHour:
-            "After 1 hour".localized
+            #localized("After 1 hour")
         case .fourHours:
-            "After 4 hours".localized
+            #localized("After 4 hours")
         case .never:
-            "Never".localized
+            #localized("Never")
         }
     }
 

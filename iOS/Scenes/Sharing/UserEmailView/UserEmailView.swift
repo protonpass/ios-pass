@@ -22,6 +22,7 @@
 
 import DesignSystem
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -111,7 +112,7 @@ private extension UserEmailView {
             if viewModel.isChecking {
                 ProgressView()
             } else {
-                DisablableCapsuleTextButton(title: "Continue".localized,
+                DisablableCapsuleTextButton(title: #localized("Continue"),
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,

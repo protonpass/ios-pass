@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Macro
 import UserNotifications
 
 protocol CopyTotpTokenAndNotifyUseCase: Sendable {
@@ -83,7 +84,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
         logger.trace("Copied TOTP token \(itemContent.debugInformation)")
 
         let content = UNMutableNotificationContent()
-        content.title = "TOTP copied".localized
+        content.title = #localized("TOTP copied")
         content.subtitle = itemContent.name
         content.body = """
         "\(totpData.code)" is copied to clipboard.

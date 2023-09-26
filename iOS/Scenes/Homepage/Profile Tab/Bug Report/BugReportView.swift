@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -142,11 +143,10 @@ private extension BugReportView {
 private extension BugReportView {
     @ViewBuilder
     var descriptionSection: some View {
-        let title = "What went wrong?".localized
+        let title = #localized("What went wrong?")
         let placeholder =
             // swiftlint:disable:next line_length
-            "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said."
-            .localized
+            #localized("Please describe the problem in as much detail as you can. If there was an error message, let us know what it said.")
         HStack(spacing: kItemDetailSectionPadding) {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text(title)

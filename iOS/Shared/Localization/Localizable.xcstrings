@@ -915,7 +915,7 @@
         }
       }
     },
-    "After 4 hour" : {
+    "After 4 hours" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -927,7 +927,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "After 4 hour"
+            "value" : "After 4 hours"
           }
         },
         "fr" : {

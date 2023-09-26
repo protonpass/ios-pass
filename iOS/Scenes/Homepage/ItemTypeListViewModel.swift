@@ -22,6 +22,7 @@ import Client
 import Core
 import DesignSystem
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import UIKit
 
@@ -122,30 +123,30 @@ extension ItemType {
     var title: String {
         switch self {
         case .login:
-            "Login".localized
+            #localized("Login")
         case .alias:
-            "Alias".localized
+            #localized("Alias")
         case .note:
-            "Note".localized
+            #localized("Note")
         case .creditCard:
-            "Credit card".localized
+            #localized("Credit card")
         case .password:
-            "Password".localized
+            #localized("Password")
         }
     }
 
     var description: String {
         switch self {
         case .login:
-            "Add login details for an app or site".localized
+            #localized("Add login details for an app or site")
         case .alias:
-            "Get an email alias to use on new apps".localized
+            #localized("Get an email alias to use on new apps")
         case .creditCard:
-            "Securely store your payment information".localized
+            #localized("Securely store your payment information")
         case .note:
-            "Jot down a PIN, code, or note to self".localized
+            #localized("Jot down a PIN, code, or note to self")
         case .password:
-            "Generate a secure password".localized
+            #localized("Generate a secure password")
         }
     }
 }

@@ -24,6 +24,7 @@ import Client
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -36,7 +37,7 @@ struct ManageSharedVaultView: View {
         ZStack(alignment: .bottom) {
             mainContainer
             if viewModel.vault.isAdmin {
-                CapsuleTextButton(title: "Share with more people".localized,
+                CapsuleTextButton(title: #localized("Share with more people"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
                                   action: { router.present(for: .sharingFlow) })
@@ -53,7 +54,7 @@ struct ManageSharedVaultView: View {
         .showSpinner(viewModel.loading)
         .alert(item: $viewModel.newOwner) { user in
             Alert(title: Text("Transfer ownership"),
-                  message: Text("Are sure you want to transfer your ownership to %@".localized(user.email)),
+                  message: Text(#localized("Are sure you want to transfer your ownership to %@", user.email)),
                   primaryButton: .default(Text("Confirm")) {
                       viewModel.transferOwnership(to: user)
                   },
@@ -104,7 +105,7 @@ private extension ManageSharedVaultView {
             Text(viewModel.vault.name)
                 .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("%d item(s)".localized(viewModel.itemsNumber))
+            Text(#localized("%d item(s)", viewModel.itemsNumber))
                 .font(.title3)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
