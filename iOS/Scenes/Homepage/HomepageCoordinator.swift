@@ -993,7 +993,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
                 guard let self else { return }
-                bannerManager.displayBottomSuccessMessage(#localized()"All logs cleared"))
+                bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
             }
         }
     }
