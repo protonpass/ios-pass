@@ -28,6 +28,8 @@
 		353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E229EAE9D900A3255E /* QAFeaturesView.swift */; };
 		353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E629EAEE6F00A3255E /* OnboardSection.swift */; };
 		353EC0162A05A7EF004AF925 /* TrashItemsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */; };
+		354192842AC1CB9B001F2996 /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = 354192832AC1CB9B001F2996 /* Macro */; };
+		354192862AC1CB9F001F2996 /* Macro in Frameworks */ = {isa = PBXBuildFile; productRef = 354192852AC1CB9F001F2996 /* Macro */; };
 		3542E2D028DA4E7400194F24 /* ItemUiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542E2CF28DA4E7400194F24 /* ItemUiModel.swift */; };
 		354361552941D251000CAE12 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361542941D251000CAE12 /* OnboardingView.swift */; };
 		354361572941D419000CAE12 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354361562941D419000CAE12 /* OnboardingViewModel.swift */; };
@@ -796,6 +798,7 @@
 		357C6B812AB34C4400A799A7 /* GetVaultContentForVault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetVaultContentForVault.swift; sourceTree = "<group>"; };
 		357C6B822AB34C4400A799A7 /* MoveItemsBetweenVaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveItemsBetweenVaults.swift; sourceTree = "<group>"; };
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
+		357ED8C42AC1C6F20019A0E9 /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = LocalPackages/Macro; sourceTree = "<group>"; };
 		35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+NavigationTitleText.swift"; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
 		3586478129F825E0003487B1 /* TelemetryEventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventsSection.swift; sourceTree = "<group>"; };
@@ -998,6 +1001,7 @@
 				5B8D20AD2AA74B6600457CA3 /* DesignSystem in Frameworks */,
 				35ABE12C2AA082BB001E20F9 /* DocScanner in Frameworks */,
 				5B8D209F2AA748F700457CA3 /* Client in Frameworks */,
+				354192862AC1CB9F001F2996 /* Macro in Frameworks */,
 				5B8D20A62AA74A5700457CA3 /* Core in Frameworks */,
 				5B8D209A2AA7466600457CA3 /* ProtonCoreCryptoGoImplementation in Frameworks */,
 				5B8D20B32AA7529400457CA3 /* ProtonCoreChallenge in Frameworks */,
@@ -1038,6 +1042,7 @@
 				5B8D206C2AA7461900457CA3 /* ProtonCoreAuthentication in Frameworks */,
 				5B8D20862AA7461900457CA3 /* ProtonCoreLogin in Frameworks */,
 				5B8D20742AA7461900457CA3 /* ProtonCoreCryptoGoInterface in Frameworks */,
+				354192842AC1CB9B001F2996 /* Macro in Frameworks */,
 				5B8D206A2AA7461900457CA3 /* ProtonCoreAccountDeletion in Frameworks */,
 				5B8D20882AA7461900457CA3 /* ProtonCoreLoginUI in Frameworks */,
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
@@ -1581,6 +1586,7 @@
 				5B8D20A92AA74B4700457CA3 /* DesignSystem */,
 				5B8D209B2AA748AB00457CA3 /* Client */,
 				3569AE402A695E070026B780 /* Entities */,
+				357ED8C42AC1C6F20019A0E9 /* Macro */,
 				359F80B42AB48C70007AC0F4 /* UseCases */,
 			);
 			sourceTree = "<group>";
@@ -2238,6 +2244,7 @@
 				5B8D20B22AA7529400457CA3 /* ProtonCoreChallenge */,
 				5B8D20B42AA752A700457CA3 /* ProtonCoreForceUpgrade */,
 				5B8D20B62AA752BB00457CA3 /* ProtonCoreHumanVerification */,
+				354192852AC1CB9F001F2996 /* Macro */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -2342,6 +2349,7 @@
 				5B8D209C2AA748ED00457CA3 /* Client */,
 				5B8D20A32AA74A4600457CA3 /* Core */,
 				5B8D20AA2AA74B5E00457CA3 /* DesignSystem */,
+				354192832AC1CB9B001F2996 /* Macro */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -5054,6 +5062,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		354192832AC1CB9B001F2996 /* Macro */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Macro;
+		};
+		354192852AC1CB9F001F2996 /* Macro */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Macro;
+		};
 		356A34C72978630100969BA2 /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
