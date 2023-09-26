@@ -21,6 +21,7 @@
 import Client
 import DesignSystem
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -117,7 +118,7 @@ private extension SearchResultsView {
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
                 Text(verbatim: " ")
                 .font(.callout) +
-                Text("%d search result(s)".localized(viewModel.results.numberOfItems))
+                Text(#localized("%d search result(s)", viewModel.results.numberOfItems))
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -175,14 +176,14 @@ private extension SearchResultsView {
 
     @ViewBuilder
     func mostRecentItemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
-        section(for: result.today, headerTitle: "Today".localized)
-        section(for: result.yesterday, headerTitle: "Yesterday".localized)
-        section(for: result.last7Days, headerTitle: "Last week".localized)
-        section(for: result.last14Days, headerTitle: "Last two weeks".localized)
-        section(for: result.last30Days, headerTitle: "Last 30 days".localized)
-        section(for: result.last60Days, headerTitle: "Last 60 days".localized)
-        section(for: result.last90Days, headerTitle: "Last 90 days".localized)
-        section(for: result.others, headerTitle: "More than 90 days".localized)
+        section(for: result.today, headerTitle: #localized("Today"))
+        section(for: result.yesterday, headerTitle: #localized("Yesterday"))
+        section(for: result.last7Days, headerTitle: #localized("Last week"))
+        section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
+        section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
+        section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
+        section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
+        section(for: result.others, headerTitle: #localized("More than 90 days"))
     }
 
     func alphabeticalItemList(_ result: AlphabeticalSortResult<ItemSearchResult>) -> some View {

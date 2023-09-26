@@ -21,6 +21,7 @@
 import Core
 import DesignSystem
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -53,11 +54,11 @@ private extension AutoFillInstructionsView {
                 .padding(.vertical, 8)
 
             Group {
-                step(number: 1, title: "Open System Settings → Passwords → Password Options".localized)
+                step(number: 1, title: #localized("Open System Settings → Passwords → Password Options"))
                 step(number: 2,
-                     title: "Turn on AutoFill Passwords and allow filling from Proton Pass".localized,
+                     title: #localized("Turn on AutoFill Passwords and allow filling from Proton Pass"),
                      images: [PassIcon.enableAutoFillStep2a, PassIcon.enableAutoFillStep2b])
-                step(number: 3, title: "Restart Proton Pass".localized)
+                step(number: 3, title: #localized("Restart Proton Pass"))
             }
 
             Spacer()

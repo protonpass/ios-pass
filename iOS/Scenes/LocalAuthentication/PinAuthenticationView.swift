@@ -21,6 +21,7 @@
 import Core
 import DesignSystem
 import Factory
+import Macro
 import SwiftUI
 
 struct PinAuthenticationView: View {
@@ -64,7 +65,7 @@ struct PinAuthenticationView: View {
                 Text("Incorrect PIN code.")
                     .foregroundColor(PassColor.signalDanger.toColor) +
                     Text(verbatim: " ") +
-                    Text("%d remaining attempt(s)".localized(count))
+                    Text(#localized("%d remaining attempt(s)", count))
                     .foregroundColor(PassColor.signalDanger.toColor)
             case .lastAttempt:
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")
@@ -74,7 +75,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            DisablableCapsuleTextButton(title: "Unlock".localized,
+            DisablableCapsuleTextButton(title: #localized("Unlock"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textInvert,
                                         backgroundColor: PassColor.interactionNormMajor1,

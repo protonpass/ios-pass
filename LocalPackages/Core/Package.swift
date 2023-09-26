@@ -20,7 +20,8 @@ let package = Package(name: "Core",
                       ],
                       dependencies: [
                           .package(url: "https://github.com/protonpass/OneTimePassword", exact: "0.1.1"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "11.0.1")
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "11.0.1"),
+                          .package(name: "Macro", path: "../Macro")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -35,7 +36,8 @@ let package = Package(name: "Core",
                                       .product(name: "ProtonCoreLogin", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreNetworking", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreSettings", package: "protoncore_ios"),
-                                      .product(name: "OneTimePassword", package: "OneTimePassword")
+                                      .product(name: "OneTimePassword", package: "OneTimePassword"),
+                                      .product(name: "Macro", package: "Macro")
                                   ],
                                   resources: [
                                       .process("Resources")

@@ -27,6 +27,7 @@ import CryptoKit
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import MBProgressHUD
 import ProtonCoreAccountDeletion
 import ProtonCoreLogin
@@ -870,7 +871,7 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
             guard let self else { return }
             dismissTopMostViewController { [weak self] in
                 guard let self else { return }
-                bannerManager.displayBottomSuccessMessage("Report successfully sent".localized)
+                bannerManager.displayBottomSuccessMessage(#localized("Report successfully sent"))
             }
         }
         let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
@@ -992,7 +993,7 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
                 guard let self else { return }
-                bannerManager.displayBottomSuccessMessage("All logs cleared".localized)
+                bannerManager.displayBottomSuccessMessage(#localized()"All logs cleared"))
             }
         }
     }
@@ -1090,7 +1091,7 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
-            clipboardManager.copy(text: password, bannerMessage: "Password copied".localized)
+            clipboardManager.copy(text: password, bannerMessage: #localized("Password copied"))
         }
     }
 }
@@ -1140,7 +1141,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                 itemContextMenuHandler.restore(item)
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                   dismissButtonTitle: "Undo".localized,
+                                                   dismissButtonTitle: #localized("Undo"),
                                                    onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
@@ -1175,7 +1176,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
-            bannerManager.displayBottomInfoMessage("Vault updated".localized)
+            bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
         }
         vaultsManager.refresh()
     }
@@ -1187,7 +1188,7 @@ extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
     func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
-            bannerManager.displayBottomSuccessMessage("Primary vault updated".localized)
+            bannerManager.displayBottomSuccessMessage(#localized("Primary vault updated"))
         }
         vaultsManager.refresh()
     }

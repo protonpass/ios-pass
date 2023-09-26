@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -99,25 +100,25 @@ private extension VaultSyncProgressView {
 
             switch itemsState {
             case .loading:
-                spinnerLabel(text: "Preparing...".localized)
+                spinnerLabel(text: #localized("Preparing..."))
 
             case let .download(downloaded, total):
                 if progress.isEmpty {
                     emptyText
                 } else {
-                    spinnerLabel(text: "%@%% downloaded...".localized(percentage(done: downloaded,
-                                                                                 total: total)))
+                    spinnerLabel(text: #localized("%@%% downloaded...",
+                                                  percentage(done: downloaded, total: total)))
                 }
 
             case let .decrypt(decrypted, total):
                 if progress.isEmpty {
                     emptyText
                 } else if progress.isDone {
-                    Text("%d item(s)".localized(total))
+                    Text(#localized("%d item(s)", total))
                         .foregroundColor(PassColor.textWeak.toColor)
                 } else {
-                    spinnerLabel(text: "%@%% decrypted...".localized(percentage(done: decrypted,
-                                                                                total: total)))
+                    spinnerLabel(text: #localized("%@%% decrypted...",
+                                                  percentage(done: decrypted, total: total)))
                 }
             }
         }

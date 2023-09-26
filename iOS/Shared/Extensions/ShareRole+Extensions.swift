@@ -19,49 +19,50 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Macro
 
 extension ShareRole {
     var role: String {
         switch self {
         case .admin:
-            "admin".localized
+            #localized("admin")
         case .write:
-            "edit".localized
+            #localized("edit")
         case .read:
-            "read".localized
+            #localized("read")
         }
     }
 
     var title: String {
         switch self {
         case .read:
-            "Can View".localized
+            #localized("Can View")
         case .write:
-            "Can Edit".localized
+            #localized("Can Edit")
         case .admin:
-            "Can Manage".localized
+            #localized("Can Manage")
         }
     }
 
     var description: String {
         switch self {
         case .read:
-            "Can view items in this vault".localized
+            #localized("Can view items in this vault")
         case .write:
-            "Can create, edit, delete and export items in this vault".localized
+            #localized("Can create, edit, delete and export items in this vault")
         case .admin:
-            "Can grant and revoke access to this vault".localized
+            #localized("Can grant and revoke access to this vault")
         }
     }
 
     var summary: String {
         switch self {
         case .read:
-            "only view items".localized
+            #localized("only view items")
         case .write:
-            "create, edit, delete and export items".localized
+            #localized("create, edit, delete and export items")
         case .admin:
-            "grant and revoke access".localized
+            #localized("grant and revoke access")
         }
     }
 }

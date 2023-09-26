@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -32,9 +33,9 @@ struct MailboxSection: View {
         var title: String {
             switch self {
             case .create:
-                "Forward to".localized
+                #localized("Forward to")
             case .edit:
-                "Forwarding to".localized
+                #localized("Forwarding to")
             }
         }
     }
