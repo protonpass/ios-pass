@@ -121,7 +121,6 @@ private extension CompleteAutoFill {
         try await copyTotpTokenAndNotify(itemContent: itemContent,
                                          clipboardManager: clipboardManager,
                                          upgradeChecker: upgradeChecker)
-
         logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
         try await itemRepository.update(item: itemContent,
                                         lastUseTime: Date().timeIntervalSince1970)

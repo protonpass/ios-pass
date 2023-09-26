@@ -31,7 +31,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToEditClipboardExpiration()
     func settingsViewModelWantsToEdit(primaryVault: Vault)
     func settingsViewModelWantsToClearLogs()
-    func settingsViewModelDidFinishFullSync()
 }
 
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
@@ -155,7 +154,7 @@ extension SettingsViewModel {
                 try await self?.vaultsManager.fullSync()
                 self?.logger.info("Done full sync")
                 self?.syncEventLoop.start()
-                self?.delegate?.settingsViewModelDidFinishFullSync()
+                self?.router.display(element: .successMessage(config: .refresh))
             } catch {
                 self?.logger.error(error)
                 self?.router.display(element: .displayErrorBanner(error))

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Factory
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreCryptoGoInterface
 
@@ -27,8 +28,15 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        SharedViewContainer.shared.register(rootViewController: self)
         injectDefaultCryptoImplementation()
         AutoFillDataContainer.shared.register(context: extensionContext)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        release()
     }
 
     /*
@@ -62,5 +70,14 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func prepareInterfaceForExtensionConfiguration() {
         coordinator.configureExtension()
+    }
+
+    func release() {
+        SharedDataContainer.shared.reset()
+        SharedViewContainer.shared.reset()
+        SharedToolingContainer.shared.resetCache()
+        SharedRepositoryContainer.shared.reset()
+        SharedServiceContainer.shared.reset()
+        SharedViewContainer.shared.reset()
     }
 }
