@@ -133,10 +133,14 @@ private extension TelemetryEvent {
 private extension ItemContentType {
     var dimensionType: String {
         switch self {
-        case .login: "login"
-        case .alias: "alias"
-        case .note: "note"
-        case .creditCard: "credit_card"
+        case .login:
+            "login"
+        case .alias:
+            "alias"
+        case .note:
+            "note"
+        case .creditCard:
+            "credit_card"
         }
     }
 }
