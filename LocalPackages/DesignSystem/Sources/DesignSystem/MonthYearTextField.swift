@@ -140,12 +140,12 @@ public extension MonthYearTextField {
             switch component {
             case 0:
                 // Month
-                return parent.months.count
+                parent.months.count
             case 1:
                 // Year
-                return parent.years.count
+                parent.years.count
             default:
-                return 0
+                0
             }
         }
 
@@ -155,12 +155,12 @@ public extension MonthYearTextField {
             switch component {
             case 0:
                 // Month
-                return String(format: "%02d", row + 1)
+                String(format: "%02d", row + 1)
             case 1:
                 // Year
-                return "\(parent.years[row])"
+                "\(parent.years[row])"
             default:
-                return nil
+                nil
             }
         }
     }

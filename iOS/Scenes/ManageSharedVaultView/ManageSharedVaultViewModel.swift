@@ -207,12 +207,12 @@ private extension ManageSharedVaultViewModel {
         $userRole
             .sink { [weak self] role in
                 guard let self,
-                      let selectedUser = self.currentSelectedUser,
+                      let selectedUser = currentSelectedUser,
                       let userSharedId = selectedUser.shareID,
                       role != selectedUser.shareRole else {
                     return
                 }
-                self.updateRole(userSharedId: userSharedId, role: role)
+                updateRole(userSharedId: userSharedId, role: role)
             }
             .store(in: &cancellables)
 
@@ -220,12 +220,12 @@ private extension ManageSharedVaultViewModel {
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] vaultInfos in
-                guard let self, vaultInfos != self.vault else {
+                guard let self, vaultInfos != vault else {
                     return
                 }
-                self.vault = vaultInfos
-                self.fetchShareInformation()
-                self.loading = false
+                vault = vaultInfos
+                fetchShareInformation()
+                loading = false
             }
             .store(in: &cancellables)
     }

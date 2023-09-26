@@ -107,22 +107,22 @@ public extension VaultSyncProgress {
     var isDone: Bool {
         switch itemsState {
         case let .download(_, total):
-            return total == 0
+            total == 0
         case let .decrypt(decrypted, total):
-            return decrypted >= total
+            decrypted >= total
         default:
-            return false
+            false
         }
     }
 
     var isEmpty: Bool {
         switch itemsState {
         case .loading:
-            return false
+            false
         case let .download(_, total):
-            return total == 0
+            total == 0
         case let .decrypt(_, total):
-            return total == 0
+            total == 0
         }
     }
 }

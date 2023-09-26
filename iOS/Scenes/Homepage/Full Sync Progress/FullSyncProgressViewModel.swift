@@ -45,9 +45,9 @@ final class FullSyncProgressViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
-                self.progresses = self.processVaultSyncEvent(event, with: self.progresses)
+                progresses = processVaultSyncEvent(event, with: progresses)
                 if case .done = event {
-                    self.isDoneSynching = true
+                    isDoneSynching = true
                 }
             }
             .store(in: &cancellables)

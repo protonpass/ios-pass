@@ -102,9 +102,9 @@ extension SearchableItem {
 
         let detailNotMatched = detail.allSatisfy { either in
             if case .matched = either {
-                return false
+                false
             } else {
-                return true
+                true
             }
         }
 

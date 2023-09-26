@@ -87,9 +87,9 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
             case .dismissed:
                 break
             case let .loggedIn(logInData):
-                self.handle(logInData: logInData)
+                handle(logInData: logInData)
             case let .signedUp(logInData):
-                self.handle(logInData: logInData)
+                handle(logInData: logInData)
             }
         }
     }
@@ -105,9 +105,9 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
             case .dismissed:
                 break
             case let .loggedIn(logInData):
-                self.handle(logInData: logInData)
+                handle(logInData: logInData)
             case let .signedUp(logInData):
-                self.handle(logInData: logInData)
+                handle(logInData: logInData)
             }
         }
     }

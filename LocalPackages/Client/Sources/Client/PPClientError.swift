@@ -40,31 +40,31 @@ public enum PPClientError: Error, CustomDebugStringConvertible, LocalizedError {
     public var debugDescription: String {
         switch self {
         case let .coreData(reason):
-            return reason.debugDescription
+            reason.debugDescription
         case .corruptedEncryptedContent:
-            return "Corrupted encrypted content"
+            "Corrupted encrypted content"
         case let .corruptedUserData(reason):
-            return reason.debugDescription
+            reason.debugDescription
         case let .crypto(reason):
-            return reason.debugDescription
+            reason.debugDescription
         case .errorExpected:
-            return "An error is expected"
+            "An error is expected"
         case let .itemNotFound(item):
-            return "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
+            "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
         case let .keysNotFound(shareID):
-            return "Keys not found for share \"\(shareID)\""
+            "Keys not found for share \"\(shareID)\""
         case let .shareNotFoundInLocalDB(shareID):
-            return "Share not found in local DB \"\(shareID)\""
+            "Share not found in local DB \"\(shareID)\""
         case let .symmetricEncryption(reason):
-            return reason.debugDescription
+            reason.debugDescription
         case .unexpectedError:
-            return "Unexpected error"
+            "Unexpected error"
         case let .unexpectedHttpStatusCode(statusCode):
-            return "Unexpected HTTP status code \(String(describing: statusCode))"
+            "Unexpected HTTP status code \(String(describing: statusCode))"
         case .unknownShareType:
-            return "Unknown share type"
+            "Unknown share type"
         case let .unmatchedRotationID(leftID, rightID):
-            return "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
+            "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
         }
     }
 }
@@ -79,9 +79,9 @@ public extension PPClientError {
         public var debugDescription: String {
             switch self {
             case let .corrupted(object, property):
-                return "Corrupted \(type(of: object)): missing value for \(property)"
+                "Corrupted \(type(of: object)): missing value for \(property)"
             case let .corruptedShareKeys(shareId):
-                return "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
+                "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
             }
         }
     }
@@ -98,11 +98,11 @@ public extension PPClientError {
         public var debugDescription: String {
             switch self {
             case .noAddresses:
-                return "No addresses"
+                "No addresses"
             case .noAddressKeys:
-                return "No address keys"
+                "No address keys"
             case .failedToGetAddressKeyPassphrase:
-                return "Failed to get address key passphrase"
+                "Failed to get address key passphrase"
             }
         }
     }
@@ -138,49 +138,49 @@ public extension PPClientError {
         public var debugDescription: String {
             switch self {
             case .failedToSplitPGPMessage:
-                return "Failed to split PGP message"
+                "Failed to split PGP message"
             case let .failedToUnarmor(string):
-                return "Failed to unarmor \(string)"
+                "Failed to unarmor \(string)"
             case let .failedToArmor(string):
-                return "Failed to armor \(string)"
+                "Failed to armor \(string)"
             case .failedToBase64Decode:
-                return "Failed to base 64 decode"
+                "Failed to base 64 decode"
             case .failedToBase64Encode:
-                return "Failed to base 64 encode"
+                "Failed to base 64 encode"
             case .failedToGetFingerprint:
-                return "Failed to get fingerprint"
+                "Failed to get fingerprint"
             case .failedToGenerateKeyRing:
-                return "Failed to generate key ring"
+                "Failed to generate key ring"
             case .failedToEncrypt:
-                return "Failed to encrypt"
+                "Failed to encrypt"
             case .failedToVerifyVault:
-                return "Failed to verify vault"
+                "Failed to verify vault"
             case .failedToDecryptContent:
-                return "Failed to decrypt content"
+                "Failed to decrypt content"
             case .failedToVerifySignature:
-                return "Failed to verify signature"
+                "Failed to verify signature"
             case .failedToGenerateSessionKey:
-                return "Failed to generate session key"
+                "Failed to generate session key"
             case .failedToDecode:
-                return "Failed to decode"
+                "Failed to decode"
             case let .failedToEncode(string):
-                return "Failed to encode \"\(string)\""
+                "Failed to encode \"\(string)\""
             case .failedToAESEncrypt:
-                return "Failed to AES encrypt"
+                "Failed to AES encrypt"
             case let .inactiveUserKey(userKeyId):
-                return "Inactive user key \(userKeyId)"
+                "Inactive user key \(userKeyId)"
             case let .addressNotFound(addressID):
-                return "Address not found \"\(addressID)\""
+                "Address not found \"\(addressID)\""
             case let .corruptedShareContent(shareID):
-                return "Corrupted share content shareID \"\(shareID)\""
+                "Corrupted share content shareID \"\(shareID)\""
             case let .missingUserKey(userID):
-                return "Missing user key \"\(userID)\""
+                "Missing user key \"\(userID)\""
             case let .missingPassphrase(keyID):
-                return "Missing passphrase \"\(keyID)\""
+                "Missing passphrase \"\(keyID)\""
             case .missingKeys:
-                return "Missing keys"
+                "Missing keys"
             case let .unmatchedKeyRotation(lhsKey, rhsKey):
-                return "Unmatch key rotation \(lhsKey) - \(rhsKey)"
+                "Unmatch key rotation \(lhsKey) - \(rhsKey)"
             }
         }
     }
@@ -195,11 +195,11 @@ public extension PPClientError {
         public var debugDescription: String {
             switch self {
             case let .failedToUtf8ConvertToData(string):
-                return "Failed to UTF8 convert to data \"\(string)\""
+                "Failed to UTF8 convert to data \"\(string)\""
             case let .failedToBase64Decode(string):
-                return "Failed to base 64 decode \"\(string)\""
+                "Failed to base 64 decode \"\(string)\""
             case .failedToUtf8Decode:
-                return "Failed to UTF8 decode"
+                "Failed to UTF8 decode"
             }
         }
     }

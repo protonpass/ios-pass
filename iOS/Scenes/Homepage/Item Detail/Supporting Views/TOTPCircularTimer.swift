@@ -60,9 +60,9 @@ struct TOTPCircularTimer: View {
     private var color: Color {
         switch data.remaining {
         case 0...10:
-            return Color(uiColor: PassColor.signalDanger)
+            Color(uiColor: PassColor.signalDanger)
         default:
-            return Color(uiColor: PassColor.signalSuccess)
+            Color(uiColor: PassColor.signalSuccess)
         }
     }
 }

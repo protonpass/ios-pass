@@ -45,7 +45,7 @@ enum ItemContextMenu {
     var sections: [ItemContextMenuOptionSection] {
         switch self {
         case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
-            return [
+            [
                 .init(options: [
                     .init(title: "Copy username".localized,
                           icon: IconProvider.user,
@@ -59,7 +59,7 @@ enum ItemContextMenu {
             ]
 
         case let .alias(onCopyAlias, onEdit, onTrash):
-            return [
+            [
                 .init(options: [.init(title: "Copy alias address".localized,
                                       icon: IconProvider.alias,
                                       action: onCopyAlias)]),
@@ -68,13 +68,13 @@ enum ItemContextMenu {
             ]
 
         case let .creditCard(onEdit, onTrash):
-            return [
+            [
                 .init(options: [.editOption(action: onEdit)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
         case let .note(onCopyContent, onEdit, onTrash):
-            return [
+            [
                 .init(options: [.init(title: "Copy note content".localized,
                                       icon: IconProvider.note,
                                       action: onCopyContent)]),
@@ -83,7 +83,7 @@ enum ItemContextMenu {
             ]
 
         case let .trashedItem(onRestore, onPermanentlyDelete):
-            return [
+            [
                 .init(options: [.init(title: "Restore".localized,
                                       icon: IconProvider.clockRotateLeft,
                                       action: onRestore)]),
@@ -164,28 +164,28 @@ extension View {
                          onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
         if isTrashed {
-            return itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
-                                                onPermanentlyDelete: onPermanentlyDelete))
+            itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
+                                         onPermanentlyDelete: onPermanentlyDelete))
         } else {
             switch item.type {
             case .login:
-                return itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
-                                              onCopyPassword: { handler.copyPassword(item) },
-                                              onEdit: { handler.edit(item) },
-                                              onTrash: { handler.trash(item) }))
+                itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
+                                       onCopyPassword: { handler.copyPassword(item) },
+                                       onEdit: { handler.edit(item) },
+                                       onTrash: { handler.trash(item) }))
             case .alias:
-                return itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
-                                              onEdit: { handler.edit(item) },
-                                              onTrash: { handler.trash(item) }))
+                itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
+                                       onEdit: { handler.edit(item) },
+                                       onTrash: { handler.trash(item) }))
 
             case .creditCard:
-                return itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
-                                                   onTrash: { handler.trash(item) }))
+                itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
+                                            onTrash: { handler.trash(item) }))
 
             case .note:
-                return itemContextMenu(.note(onCopyContent: { handler.copyNoteContent(item) },
-                                             onEdit: { handler.edit(item) },
-                                             onTrash: { handler.trash(item) }))
+                itemContextMenu(.note(onCopyContent: { handler.copyNoteContent(item) },
+                                      onEdit: { handler.edit(item) },
+                                      onTrash: { handler.trash(item) }))
             }
         }
     }

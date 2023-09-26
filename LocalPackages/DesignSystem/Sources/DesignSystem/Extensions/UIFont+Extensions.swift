@@ -25,9 +25,9 @@ public extension UIFont {
     /// Return a corresponding monospaced font when text is not empty
     func monospacedFont(for text: String, weight: UIFont.Weight = .regular) -> UIFont {
         if text.isEmpty {
-            return self
+            self
         } else {
-            return .monospacedSystemFont(ofSize: pointSize, weight: weight)
+            .monospacedSystemFont(ofSize: pointSize, weight: weight)
         }
     }
 }

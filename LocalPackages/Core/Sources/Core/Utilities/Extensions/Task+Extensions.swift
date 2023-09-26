@@ -24,19 +24,19 @@ extension TaskPriority: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .background:
-            return "background"
+            "background"
         case .high:
-            return "high"
+            "high"
         case .low:
-            return "low"
+            "low"
         case .medium:
-            return "medium"
+            "medium"
         case .userInitiated:
-            return "userInitiated"
+            "userInitiated"
         case .utility:
-            return "utility"
+            "utility"
         default:
-            return "unknown"
+            "unknown"
         }
     }
 }

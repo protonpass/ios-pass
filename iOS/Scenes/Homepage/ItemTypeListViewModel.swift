@@ -32,10 +32,14 @@ enum ItemType: CaseIterable {
 extension ItemContentType {
     var type: ItemType {
         switch self {
-        case .login: return .login
-        case .alias: return .alias
-        case .creditCard: return .creditCard
-        case .note: return .note
+        case .login:
+            .login
+        case .alias:
+            .alias
+        case .creditCard:
+            .creditCard
+        case .note:
+            .note
         }
     }
 }
@@ -73,75 +77,75 @@ extension ItemType {
     var icon: UIImage {
         switch self {
         case .login:
-            return IconProvider.user
+            IconProvider.user
         case .alias:
-            return IconProvider.alias
+            IconProvider.alias
         case .creditCard:
-            return PassIcon.passCreditCardOneStripe
+            PassIcon.passCreditCardOneStripe
         case .note:
-            return IconProvider.fileLines
+            IconProvider.fileLines
         case .password:
-            return IconProvider.key
+            IconProvider.key
         }
     }
 
     var tintColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.normMajor2Color
+            ItemContentType.login.normMajor2Color
         case .alias:
-            return ItemContentType.alias.normMajor2Color
+            ItemContentType.alias.normMajor2Color
         case .creditCard:
-            return ItemContentType.creditCard.normMajor2Color
+            ItemContentType.creditCard.normMajor2Color
         case .note:
-            return ItemContentType.note.normMajor2Color
+            ItemContentType.note.normMajor2Color
         case .password:
-            return PassColor.passwordInteractionNormMajor2
+            PassColor.passwordInteractionNormMajor2
         }
     }
 
     var backgroundColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.normMinor1Color
+            ItemContentType.login.normMinor1Color
         case .alias:
-            return ItemContentType.alias.normMinor1Color
+            ItemContentType.alias.normMinor1Color
         case .creditCard:
-            return ItemContentType.creditCard.normMinor1Color
+            ItemContentType.creditCard.normMinor1Color
         case .note:
-            return ItemContentType.note.normMinor1Color
+            ItemContentType.note.normMinor1Color
         case .password:
-            return PassColor.passwordInteractionNormMinor1
+            PassColor.passwordInteractionNormMinor1
         }
     }
 
     var title: String {
         switch self {
         case .login:
-            return "Login".localized
+            "Login".localized
         case .alias:
-            return "Alias".localized
+            "Alias".localized
         case .note:
-            return "Note".localized
+            "Note".localized
         case .creditCard:
-            return "Credit card".localized
+            "Credit card".localized
         case .password:
-            return "Password".localized
+            "Password".localized
         }
     }
 
     var description: String {
         switch self {
         case .login:
-            return "Add login details for an app or site".localized
+            "Add login details for an app or site".localized
         case .alias:
-            return "Get an email alias to use on new apps".localized
+            "Get an email alias to use on new apps".localized
         case .creditCard:
-            return "Securely store your payment information".localized
+            "Securely store your payment information".localized
         case .note:
-            return "Jot down a PIN, code, or note to self".localized
+            "Jot down a PIN, code, or note to self".localized
         case .password:
-            return "Generate a secure password".localized
+            "Generate a secure password".localized
         }
     }
 }

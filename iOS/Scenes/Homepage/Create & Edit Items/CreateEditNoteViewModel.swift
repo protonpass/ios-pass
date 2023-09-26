@@ -45,7 +45,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
             .sink { _ in } receiveValue: { [weak self] result in
                 guard let self, let result else { return }
                 if let document = result as? ScannedDocument {
-                    self.transformIntoNote(document: document)
+                    transformIntoNote(document: document)
                 } else {
                     assertionFailure("Expecting ScannedDocument as result")
                 }

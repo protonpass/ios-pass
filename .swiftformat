@@ -1,11 +1,11 @@
 # https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
 
---exclude iOSTests, iOSUITests, Package.swift, Protobuf Objects/, fastlane/** , LocalPackages/Core/Tests, LocalPackages/Client/Tests, LocalPackages/DesignSystem/Tests, LocalPackages/Entities/Tests, misc/**
+--exclude iOSTests, iOSUITests, Package.swift, fastlane/** , LocalPackages/Core/Tests,  LocalPackages/Client/Sources/Client/Protobuf Objects, LocalPackages/Client/Tests, LocalPackages/DesignSystem/Tests, LocalPackages/Entities/Tests, misc/**
 
 # format options
 
 --symlinks ignore
---swiftversion 5.7
+--swiftversion 5.9
 
 # format options
 

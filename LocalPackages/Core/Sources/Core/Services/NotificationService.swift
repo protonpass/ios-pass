@@ -64,9 +64,9 @@ public final class NotificationService: LocalNotificationServiceProtocol {
                                                             repeats: false) { [weak self] _ in
             guard let self else { return }
             let id = request.identifier
-            self.logger.info("Clearing notification with id: \(id)")
-            self.unUserNotificationCenter.removeDeliveredNotifications(withIdentifiers: [id])
-            self.stopTimer(with: id)
+            logger.info("Clearing notification with id: \(id)")
+            unUserNotificationCenter.removeDeliveredNotifications(withIdentifiers: [id])
+            stopTimer(with: id)
         }
     }
 }

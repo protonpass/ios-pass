@@ -27,11 +27,10 @@ public extension NSPersistentContainer {
             let model = NSPersistentContainer.model(for: name)
             let container = NSPersistentContainer(name: name, managedObjectModel: model)
 
-            let url: URL
-            if inMemory {
-                url = URL(fileURLWithPath: "/dev/null")
+            let url = if inMemory {
+                URL(fileURLWithPath: "/dev/null")
             } else {
-                url = URL.storeURL(for: Constants.appGroup, databaseName: name)
+                URL.storeURL(for: Constants.appGroup, databaseName: name)
             }
             /* add necessary support for migration */
             let description = NSPersistentStoreDescription(url: url)

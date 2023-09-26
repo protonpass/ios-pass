@@ -135,9 +135,9 @@ private extension Autolocker {
             let appLockTime: AppLockTime
             var lockTime: AutolockTimeout {
                 if let intervalInMinutes = appLockTime.intervalInMinutes {
-                    return .minutes(intervalInMinutes)
+                    .minutes(intervalInMinutes)
                 } else {
-                    return .never
+                    .never
                 }
             }
         }

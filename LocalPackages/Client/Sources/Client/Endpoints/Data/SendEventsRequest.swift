@@ -74,58 +74,58 @@ private extension TelemetryEvent {
     var eventName: String {
         switch type {
         case .create:
-            return "item.creation"
+            "item.creation"
         case .read:
-            return "item.read"
+            "item.read"
         case .update:
-            return "item.update"
+            "item.update"
         case .delete:
-            return "item.deletion"
+            "item.deletion"
         case .autofillDisplay:
-            return "autofill.display"
+            "autofill.display"
         case .autofillTriggeredFromApp, .autofillTriggeredFromSource:
-            return "autofill.triggered"
+            "autofill.triggered"
         case .searchClick:
-            return "search.click"
+            "search.click"
         case .searchTriggered:
-            return "search.triggered"
+            "search.triggered"
         }
     }
 
     var dimensionType: String? {
         switch type {
         case let .create(itemContentType):
-            return itemContentType.dimensionType
+            itemContentType.dimensionType
         case let .read(itemContentType):
-            return itemContentType.dimensionType
+            itemContentType.dimensionType
         case let .update(itemContentType):
-            return itemContentType.dimensionType
+            itemContentType.dimensionType
         case let .delete(itemContentType):
-            return itemContentType.dimensionType
+            itemContentType.dimensionType
         case .autofillDisplay,
              .autofillTriggeredFromApp,
              .autofillTriggeredFromSource,
              .searchClick,
              .searchTriggered:
-            return nil
+            nil
         }
     }
 
     var dimensionLocation: String? {
         switch type {
         case .autofillDisplay:
-            return "app"
+            "app"
         case .autofillTriggeredFromSource:
-            return "source"
+            "source"
         case .autofillTriggeredFromApp:
-            return "app"
+            "app"
         case .create,
              .delete,
              .read,
              .searchClick,
              .searchTriggered,
              .update:
-            return nil
+            nil
         }
     }
 }
@@ -134,13 +134,13 @@ private extension ItemContentType {
     var dimensionType: String {
         switch self {
         case .login:
-            return "login"
+            "login"
         case .alias:
-            return "alias"
+            "alias"
         case .note:
-            return "note"
+            "note"
         case .creditCard:
-            return "credit_card"
+            "credit_card"
         }
     }
 }

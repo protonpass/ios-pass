@@ -27,12 +27,18 @@ enum BugReportObject: CaseIterable {
 
     var description: String {
         switch self {
-        case .autofill: return "AutoFill".localized
-        case .autosave: return "Autosave".localized
-        case .aliases: return "Aliases".localized
-        case .syncing: return "Syncing".localized
-        case .featureRequest: return "Feature request".localized
-        case .other: return "Other".localized
+        case .autofill:
+            "AutoFill".localized
+        case .autosave:
+            "Autosave".localized
+        case .aliases:
+            "Aliases".localized
+        case .syncing:
+            "Syncing".localized
+        case .featureRequest:
+            "Feature request".localized
+        case .other:
+            "Other".localized
         }
     }
 }
@@ -61,23 +67,23 @@ final class BugReportViewModel: ObservableObject {
         assert(object != nil, "An object must be selected")
         Task { [weak self] in
             guard let self else { return }
-            self.isSending = true
+            isSending = true
             do {
-                let plan = try await self.planRepository.getPlan()
+                let plan = try await planRepository.getPlan()
                 let planName = plan.type.capitalized
-                let objectDescription = self.object?.description ?? ""
+                let objectDescription = object?.description ?? ""
                 let title = "[\(planName)] iOS Proton Pass: \(objectDescription)"
-                if try await self.sendUserBugReport(with: title,
-                                                    and: self.description,
-                                                    shouldSendLogs: self.shouldSendLogs) {
-                    self.hasSent = true
+                if try await sendUserBugReport(with: title,
+                                               and: description,
+                                               shouldSendLogs: shouldSendLogs) {
+                    hasSent = true
                 } else {
-                    self.error = SendError.failedToSendReport
+                    error = SendError.failedToSendReport
                 }
             } catch {
                 self.error = error
             }
-            self.isSending = false
+            isSending = false
         }
     }
 }

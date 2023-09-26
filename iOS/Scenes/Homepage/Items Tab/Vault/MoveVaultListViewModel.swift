@@ -81,11 +81,11 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
 private extension MoveVaultListViewModel {
     var createMoveSuccessMessage: UIElementDisplay {
         if let itemContent {
-            return UIElementDisplay
+            UIElementDisplay
                 .successMessage("Item moved to vault « %@ »".localized(selectedVault.vault.name),
                                 config: .dismissAndRefresh(with: .update(itemContent.type)))
         } else {
-            return UIElementDisplay
+            UIElementDisplay
                 .successMessage("Items from « %@ » moved to vault « %@ »"
                     .localized(currentVault.vault.name, selectedVault.vault.name),
                     config: .dismissAndRefresh)
@@ -94,9 +94,9 @@ private extension MoveVaultListViewModel {
 
     var movingContext: MovingContext {
         if let itemContent {
-            return .item(itemContent, newShareId: selectedVault.vault.shareId)
+            .item(itemContent, newShareId: selectedVault.vault.shareId)
         } else {
-            return .vault(currentVault.vault.shareId, newShareId: selectedVault.vault.shareId)
+            .vault(currentVault.vault.shareId, newShareId: selectedVault.vault.shareId)
         }
     }
 }

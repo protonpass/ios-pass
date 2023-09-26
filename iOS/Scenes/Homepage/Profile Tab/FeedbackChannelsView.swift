@@ -78,33 +78,33 @@ extension FeedbackChannel {
     var icon: UIImage {
         switch self {
         case .bugReport:
-            return IconProvider.bug
+            IconProvider.bug
         case .reddit:
-            return PassIcon.brandReddit
+            PassIcon.brandReddit
         case .uservoice:
-            return PassIcon.brandPass
+            PassIcon.brandPass
         }
     }
 
     var description: String {
         switch self {
         case .bugReport:
-            return "Report a problem".localized
+            "Report a problem".localized
         case .reddit:
-            return "Write us on Reddit".localized
+            "Write us on Reddit".localized
         case .uservoice:
-            return "Vote for new features".localized
+            "Vote for new features".localized
         }
     }
 
     var urlString: String? {
         switch self {
         case .bugReport:
-            return nil
+            nil
         case .reddit:
-            return "https://www.reddit.com/r/ProtonPass"
+            "https://www.reddit.com/r/ProtonPass"
         case .uservoice:
-            return "https://protonmail.uservoice.com/forums/953584-proton-pass"
+            "https://protonmail.uservoice.com/forums/953584-proton-pass"
         }
     }
 }

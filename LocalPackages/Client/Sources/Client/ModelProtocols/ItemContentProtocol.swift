@@ -33,10 +33,14 @@ public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
 extension ItemContentType: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
-        case .login: return "login"
-        case .alias: return "alias"
-        case .note: return "note"
-        case .creditCard: return "creditCard"
+        case .login:
+            "login"
+        case .alias:
+            "alias"
+        case .note:
+            "note"
+        case .creditCard:
+            "creditCard"
         }
     }
 }
@@ -50,13 +54,13 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
     public var type: ItemContentType {
         switch self {
         case .alias:
-            return .alias
+            .alias
         case .login:
-            return .login
+            .login
         case .note:
-            return .note
+            .note
         case .creditCard:
-            return .creditCard
+            .creditCard
         }
     }
 }
@@ -153,26 +157,26 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     public var contentData: ItemContentData {
         switch content.content {
         case .alias:
-            return .alias
+            .alias
 
         case .note:
-            return .note
+            .note
 
         case let .creditCard(data):
-            return .creditCard(.init(cardholderName: data.cardholderName,
-                                     type: data.cardType,
-                                     number: data.number,
-                                     verificationNumber: data.verificationNumber,
-                                     expirationDate: data.expirationDate,
-                                     pin: data.pin))
+            .creditCard(.init(cardholderName: data.cardholderName,
+                              type: data.cardType,
+                              number: data.number,
+                              verificationNumber: data.verificationNumber,
+                              expirationDate: data.expirationDate,
+                              pin: data.pin))
 
         case let .login(data):
-            return .login(.init(username: data.username,
-                                password: data.password,
-                                totpUri: data.totpUri,
-                                urls: data.urls))
+            .login(.init(username: data.username,
+                         password: data.password,
+                         totpUri: data.totpUri,
+                         urls: data.urls))
         case .none:
-            return .note
+            .note
         }
     }
 
@@ -288,9 +292,9 @@ extension ItemContent: ItemThumbnailable {
     public var url: String? {
         switch contentData {
         case let .login(data):
-            return data.urls.first
+            data.urls.first
         default:
-            return nil
+            nil
         }
     }
 }

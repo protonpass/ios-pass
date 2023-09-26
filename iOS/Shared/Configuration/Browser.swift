@@ -37,40 +37,40 @@ public enum Browser: Int, Codable, CustomStringConvertible {
     public var description: String {
         switch self {
         case .safari:
-            return "Safari"
+            "Safari"
         case .inAppSafari:
-            return "In-App Safari"
+            "In-App Safari"
         case .chrome:
-            return "Chrome"
+            "Chrome"
         case .duckDuckGo:
-            return "DuckDuckGo"
+            "DuckDuckGo"
         case .firefox:
-            return "Firefox"
+            "Firefox"
         case .firefoxFocus:
-            return "Firefox Focus"
+            "Firefox Focus"
         case .brave:
-            return "Brave"
+            "Brave"
         case .edge:
-            return "Edge"
+            "Edge"
         }
     }
 
     public var appScheme: String? {
         switch self {
         case .chrome:
-            return "googlechrome://"
+            "googlechrome://"
         case .duckDuckGo:
-            return "ddgQuickLink://"
+            "ddgQuickLink://"
         case .firefox:
-            return "firefox://open-url?url="
+            "firefox://open-url?url="
         case .firefoxFocus:
-            return "firefox-focus://open-url?url="
+            "firefox-focus://open-url?url="
         case .brave:
-            return "brave://open-url?url="
+            "brave://open-url?url="
         case .edge:
-            return "microsoft-edge://"
+            "microsoft-edge://"
         default:
-            return nil
+            nil
         }
     }
 }

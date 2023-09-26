@@ -91,23 +91,23 @@ final class AppCoordinator {
                 guard let self else { return }
                 switch appState {
                 case let .loggedOut(reason):
-                    self.logger.info("Logged out \(reason)")
+                    logger.info("Logged out \(reason)")
                     let shouldWipeUnauthSession = reason != .noAuthSessionButUnauthSessionAvailable
-                    self.wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
-                    self.showWelcomeScene(reason: reason)
+                    wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
+                    showWelcomeScene(reason: reason)
 
                 case let .loggedIn(userData, manualLogIn):
-                    self.logger.info("Logged in manual \(manualLogIn)")
-                    self.appData.userData = userData
-                    self.apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                                       scopes: userData.scopes)
-                    self.showHomeScene(userData: userData, manualLogIn: manualLogIn)
+                    logger.info("Logged in manual \(manualLogIn)")
+                    appData.userData = userData
+                    apiManager.sessionIsAvailable(authCredential: userData.credential,
+                                                  scopes: userData.scopes)
+                    showHomeScene(userData: userData, manualLogIn: manualLogIn)
                     if manualLogIn {
-                        self.checkAccessToPass()
+                        checkAccessToPass()
                     }
 
                 case .undefined:
-                    self.logger.warning("Undefined app state. Don't know what to do...")
+                    logger.warning("Undefined app state. Don't know what to do...")
                 }
             }
             .store(in: &cancellables)
@@ -143,11 +143,11 @@ final class AppCoordinator {
             guard let self else { return }
             switch reason {
             case .expiredRefreshToken:
-                self.alertRefreshTokenExpired()
+                alertRefreshTokenExpired()
             case .failedBiometricAuthentication:
-                self.alertFailedBiometricAuthentication()
+                alertFailedBiometricAuthentication()
             case .sessionInvalidated:
-                self.alertSessionInvalidated()
+                alertSessionInvalidated()
             default:
                 break
             }
@@ -204,15 +204,15 @@ final class AppCoordinator {
             // Do things independently in different `do catch` blocks
             // because we don't want a failed operation prevents others from running
             do {
-                try await self.credentialManager.removeAllCredentials()
-                self.logger.info("Removed all credentials")
+                try await credentialManager.removeAllCredentials()
+                logger.info("Removed all credentials")
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
 
             do {
                 // Delete existing persistent stores
-                let storeContainer = self.container.persistentStoreCoordinator
+                let storeContainer = container.persistentStoreCoordinator
                 for store in storeContainer.persistentStores {
                     if let url = store.url {
                         try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
@@ -220,10 +220,10 @@ final class AppCoordinator {
                 }
 
                 // Re-create persistent container
-                self.container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-                self.logger.info("Nuked local data")
+                container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
+                logger.info("Nuked local data")
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }

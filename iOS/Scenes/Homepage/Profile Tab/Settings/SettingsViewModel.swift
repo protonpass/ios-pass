@@ -100,9 +100,9 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
                 }
                 // These options are changed in other pages by passing a references
                 // of Preferences. So we listen to changes and update here.
-                self.selectedBrowser = self.preferences.browser
-                self.selectedTheme = self.preferences.theme
-                self.selectedClipboardExpiration = self.preferences.clipboardExpiration
+                selectedBrowser = preferences.browser
+                selectedTheme = preferences.theme
+                selectedClipboardExpiration = preferences.clipboardExpiration
             }
             .store(in: &cancellables)
 
@@ -170,11 +170,11 @@ private extension SettingsViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                self.logger.trace("Fav icons are disabled. Removing all cached fav icons")
-                try self.favIconRepository.emptyCache()
-                self.logger.info("Removed all cached fav icons")
+                logger.trace("Fav icons are disabled. Removing all cached fav icons")
+                try favIconRepository.emptyCache()
+                logger.info("Removed all cached fav icons")
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }

@@ -132,9 +132,9 @@ extension GeneratePasswordViewMode {
     var confirmTitle: String {
         switch self {
         case .createLogin:
-            return "Confirm".localized
+            "Confirm".localized
         case .random:
-            return "Copy and close".localized
+            "Copy and close".localized
         }
     }
 }
@@ -143,9 +143,9 @@ extension PasswordType {
     var title: String {
         switch self {
         case .random:
-            return "Random Password".localized
+            "Random Password".localized
         case .memorable:
-            return "Memorable Password".localized
+            "Memorable Password".localized
         }
     }
 }
@@ -154,19 +154,19 @@ extension WordSeparator {
     var title: String {
         switch self {
         case .hyphens:
-            return "Hyphens".localized
+            "Hyphens".localized
         case .spaces:
-            return "Spaces".localized
+            "Spaces".localized
         case .periods:
-            return "Periods".localized
+            "Periods".localized
         case .commas:
-            return "Commas".localized
+            "Commas".localized
         case .underscores:
-            return "Underscores".localized
+            "Underscores".localized
         case .numbers:
-            return "Numbers".localized
+            "Numbers".localized
         case .numbersAndSymbols:
-            return "Numbers and Symbols".localized
+            "Numbers and Symbols".localized
         }
     }
 
