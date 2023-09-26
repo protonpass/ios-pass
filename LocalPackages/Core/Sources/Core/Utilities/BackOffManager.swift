@@ -70,27 +70,27 @@ enum BackOffStride: CaseIterable {
     var valueInSeconds: Double {
         switch self {
         case .zeroSecond:
-            return 0
+            0
         case .oneSecond:
-            return 1
+            1
         case .twoSeconds:
-            return 2
+            2
         case .fiveSeconds:
-            return 5
+            5
         case .tenSeconds:
-            return 10
+            10
         case .thirtySeconds:
-            return 30
+            30
         case .oneMinute:
-            return 60
+            60
         case .twoMinutes:
-            return 2 * 60
+            2 * 60
         case .fiveMinutes:
-            return 5 * 60
+            5 * 60
         case .tenMinutes:
-            return 10 * 60
+            10 * 60
         case .thirtyMinutes:
-            return 30 * 60
+            30 * 60
         }
     }
 

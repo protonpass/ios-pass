@@ -68,9 +68,9 @@ public enum ItemThumbnailData: Equatable {
     public var url: String? {
         switch self {
         case let .favIcon(_, url, _):
-            return url
+            url
         default:
-            return nil
+            nil
         }
     }
 }

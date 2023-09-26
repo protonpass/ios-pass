@@ -80,9 +80,9 @@ public enum FeatureFlagVariantPayloadValue: Codable, Equatable, Hashable {
     public var stringValue: String? {
         switch self {
         case let .string(value):
-            return value
+            value
         default:
-            return nil
+            nil
         }
     }
 }
