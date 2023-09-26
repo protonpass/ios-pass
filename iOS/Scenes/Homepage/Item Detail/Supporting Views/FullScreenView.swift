@@ -38,15 +38,19 @@ struct FullScreenView: View {
 
         var systemImageName: String {
             switch self {
-            case .text: "textformat.abc"
-            case .qr: "qrcode"
+            case .text:
+                "textformat.abc"
+            case .qr:
+                "qrcode"
             }
         }
 
         var oppositeMode: Mode {
             switch self {
-            case .text: .qr
-            case .qr: .text
+            case .text:
+                .qr
+            case .qr:
+                .text
             }
         }
     }

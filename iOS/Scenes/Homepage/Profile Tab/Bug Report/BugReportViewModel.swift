@@ -27,12 +27,18 @@ enum BugReportObject: CaseIterable {
 
     var description: String {
         switch self {
-        case .autofill: "AutoFill".localized
-        case .autosave: "Autosave".localized
-        case .aliases: "Aliases".localized
-        case .syncing: "Syncing".localized
-        case .featureRequest: "Feature request".localized
-        case .other: "Other".localized
+        case .autofill:
+            "AutoFill".localized
+        case .autosave:
+            "Autosave".localized
+        case .aliases:
+            "Aliases".localized
+        case .syncing:
+            "Syncing".localized
+        case .featureRequest:
+            "Feature request".localized
+        case .other:
+            "Other".localized
         }
     }
 }

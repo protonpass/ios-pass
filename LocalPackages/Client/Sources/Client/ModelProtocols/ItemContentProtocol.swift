@@ -33,10 +33,14 @@ public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
 extension ItemContentType: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
-        case .login: "login"
-        case .alias: "alias"
-        case .note: "note"
-        case .creditCard: "creditCard"
+        case .login:
+            "login"
+        case .alias:
+            "alias"
+        case .note:
+            "note"
+        case .creditCard:
+            "creditCard"
         }
     }
 }
@@ -49,10 +53,14 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
 
     public var type: ItemContentType {
         switch self {
-        case .alias: .alias
-        case .login: .login
-        case .note: .note
-        case .creditCard: .creditCard
+        case .alias:
+            .alias
+        case .login:
+            .login
+        case .note:
+            .note
+        case .creditCard:
+            .creditCard
         }
     }
 }

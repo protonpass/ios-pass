@@ -32,10 +32,14 @@ enum ItemType: CaseIterable {
 extension ItemContentType {
     var type: ItemType {
         switch self {
-        case .login: .login
-        case .alias: .alias
-        case .creditCard: .creditCard
-        case .note: .note
+        case .login:
+            .login
+        case .alias:
+            .alias
+        case .creditCard:
+            .creditCard
+        case .note:
+            .note
         }
     }
 }
