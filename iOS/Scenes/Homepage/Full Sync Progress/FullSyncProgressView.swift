@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -183,7 +184,7 @@ private extension FullSyncProgressView {
 
             Spacer()
 
-            CapsuleTextButton(title: "Continue".localized,
+            CapsuleTextButton(title: #localized("Continue"),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNormMajor1,
                               action: handleContinuation)

@@ -21,6 +21,7 @@
 import Core
 import DesignSystem
 import Factory
+import Macro
 import SwiftUI
 
 struct BiometricAuthenticationView: View {
@@ -49,7 +50,7 @@ struct BiometricAuthenticationView: View {
                         .padding(.top)
 
                 case let .remainingAttempts(count):
-                    Text("%d remaining attempt(s)".localized(count))
+                    Text(#localized("%d remaining attempt(s)", count))
                         .foregroundColor(PassColor.textNorm.toColor)
                     retryButton
                         .padding(.top)

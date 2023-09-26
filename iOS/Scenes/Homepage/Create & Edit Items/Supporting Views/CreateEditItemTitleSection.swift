@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -86,7 +87,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
                 TextEditorWithPlaceholder(text: $title,
                                           focusedField: focusedField,
                                           field: field,
-                                          placeholder: "Untitled".localized,
+                                          placeholder: #localized("Untitled"),
                                           font: .title,
                                           fontWeight: .bold,
                                           onSubmit: onSubmit)

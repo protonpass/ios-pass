@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -89,11 +90,11 @@ extension FeedbackChannel {
     var description: String {
         switch self {
         case .bugReport:
-            "Report a problem".localized
+            #localized("Report a problem")
         case .reddit:
-            "Write us on Reddit".localized
+            #localized("Write us on Reddit")
         case .uservoice:
-            "Vote for new features".localized
+            #localized("Vote for new features")
         }
     }
 

@@ -23,6 +23,7 @@ import Combine
 import Core
 import DocScanner
 import Factory
+import Macro
 import ProtonCoreLogin
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
@@ -138,9 +139,9 @@ class BaseCreateEditItemViewModel {
     func saveButtonTitle() -> String {
         switch mode {
         case .create:
-            "Create".localized
+            #localized("Create")
         case .edit:
-            "Save".localized
+            #localized("Save")
         }
     }
 
