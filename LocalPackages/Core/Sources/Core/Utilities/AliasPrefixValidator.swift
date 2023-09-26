@@ -29,14 +29,14 @@ public enum AliasPrefixError: LocalizedError {
     public var localizedDescription: String {
         switch self {
         case .emptyPrefix:
-            return "Prefix can not be empty".localized
+            "Prefix can not be empty".localized
         case .disallowedCharacters:
-            return "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)"
+            "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)"
                 .localized
         case .twoConsecutiveDots:
-            return "Prefix can not contain 2 consecutive dots (..)".localized
+            "Prefix can not contain 2 consecutive dots (..)".localized
         case .dotAtTheEnd:
-            return "Alias can not contain 2 consecutive dots (..)".localized
+            "Alias can not contain 2 consecutive dots (..)".localized
         }
     }
 }

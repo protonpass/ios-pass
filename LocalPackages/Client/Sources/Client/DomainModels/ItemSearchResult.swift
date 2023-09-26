@@ -35,36 +35,36 @@ public enum SearchResultEither: HighlightableText {
     public var fullText: String {
         switch self {
         case let .notMatched(text):
-            return text
+            text
         case let .matched(searchResult):
-            return searchResult.matchedPhrase
+            searchResult.matchedPhrase
         }
     }
 
     public var highlightText: String? {
         switch self {
         case .notMatched:
-            return nil
+            nil
         case let .matched(searchResult):
-            return searchResult.matchedWord
+            searchResult.matchedWord
         }
     }
 
     public var isLeadingText: Bool {
         switch self {
         case .notMatched:
-            return true
+            true
         case let .matched(searchResult):
-            return searchResult.isLeadingPhrase
+            searchResult.isLeadingPhrase
         }
     }
 
     public var isTrailingText: Bool {
         switch self {
         case .notMatched:
-            return true
+            true
         case let .matched(searchResult):
-            return searchResult.isTrailingPhrase
+            searchResult.isTrailingPhrase
         }
     }
 }

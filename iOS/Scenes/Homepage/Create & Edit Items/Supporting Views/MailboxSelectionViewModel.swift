@@ -44,9 +44,9 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
         var tintColor: Color {
             switch self {
             case .createEditAlias:
-                return Color(uiColor: ItemContentType.alias.normMajor2Color)
+                Color(uiColor: ItemContentType.alias.normMajor2Color)
             case .createAliasLite:
-                return Color(uiColor: ItemContentType.login.normMajor2Color)
+                Color(uiColor: ItemContentType.login.normMajor2Color)
             }
         }
     }

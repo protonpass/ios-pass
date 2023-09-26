@@ -62,7 +62,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .map(transformAndLimit)
             .sink { [weak self] formattedCardNumber in
                 guard let self else { return }
-                self.cardNumber = formattedCardNumber
+                cardNumber = formattedCardNumber
             }
             .store(in: &cancellables)
 
@@ -73,7 +73,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .map { $0.prefix(4).toString }
             .sink { [weak self] formattedVerificationNumber in
                 guard let self else { return }
-                self.verificationNumber = formattedVerificationNumber
+                verificationNumber = formattedVerificationNumber
             }
             .store(in: &cancellables)
 
@@ -82,7 +82,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .sink { _ in } receiveValue: { [weak self] result in
                 guard let self, let result else { return }
                 if let cardDetails = result as? CardDetails {
-                    self.parse(cardDetails: cardDetails)
+                    parse(cardDetails: cardDetails)
                 } else {
                     assertionFailure("Expecting CardDetails as result")
                 }

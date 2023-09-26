@@ -101,11 +101,11 @@ extension URLUtils.Matcher.MatchResult: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case let (.matched(lScore), .matched(rScore)):
-            return lScore == rScore
+            lScore == rScore
         case (.notMatched, .notMatched):
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 }
