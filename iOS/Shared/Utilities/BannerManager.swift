@@ -21,14 +21,37 @@
 import ProtonCoreUIFoundations
 import UIKit
 
-final class BannerManager {
-    weak var container: UIViewController!
+protocol BannerDisplayProtocol: Sendable {
+    func displayBottomSuccessMessage(_ message: String)
+
+    func displayBottomInfoMessage(_ message: String,
+                                  dismissButtonTitle: String,
+                                  onDismiss: @escaping ((PMBanner) -> Void))
+
+    func displayBottomInfoMessage(_ message: String)
+    func displayTopErrorMessage(_ message: String,
+                                dismissButtonTitle: String,
+                                onDismiss: ((PMBanner) -> Void)?)
+
+    func displayTopErrorMessage(_ error: Error)
+}
+
+extension BannerDisplayProtocol {
+    func displayTopErrorMessage(_ message: String,
+                                dismissButtonTitle: String = "OK".localized,
+                                onDismiss: ((PMBanner) -> Void)? = nil) {
+        displayTopErrorMessage(message, dismissButtonTitle: dismissButtonTitle, onDismiss: onDismiss)
+    }
+}
+
+final class BannerManager: BannerDisplayProtocol {
+    private weak var container: UIViewController!
 
     init(container: UIViewController) {
         self.container = container
     }
 
-    func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
+    private func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
         let banner = PMBanner(message: message, style: style)
         banner.show(at: position, on: container.topMostViewController)
     }
@@ -50,7 +73,7 @@ final class BannerManager {
     }
 
     func displayTopErrorMessage(_ message: String,
-                                dismissButtonTitle: String = "OK",
+                                dismissButtonTitle: String = "OK".localized,
                                 onDismiss: ((PMBanner) -> Void)? = nil) {
         let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
         let banner = PMBanner(message: message, style: PMBannerNewStyle.error)

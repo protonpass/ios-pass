@@ -31,7 +31,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published private(set) var state = OnboardingViewState.autoFill
 
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let bannerManager: BannerManager
+    private let bannerManager = resolve(\SharedViewContainer.bannerManager)
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
@@ -39,9 +39,7 @@ final class OnboardingViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(bannerManager: BannerManager) {
-        self.bannerManager = bannerManager
-
+    init() {
         checkAutoFillStatus()
 
         NotificationCenter.default

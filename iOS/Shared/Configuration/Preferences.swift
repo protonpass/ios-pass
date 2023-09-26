@@ -32,6 +32,11 @@ private extension KeychainStorage {
     }
 }
 
+protocol PreferencesProtocol: Sendable {
+    var shareClipboard: Bool { get set }
+    var clipboardExpiration: ClipboardExpiration { get set }
+}
+
 /// User's personal preferences as well as settings related to app's functionalities
 /// Not all preference are saved the same way, some of them are sensitive while others aren't
 ///
@@ -44,7 +49,7 @@ private extension KeychainStorage {
 /// Use `@AppStorage` for trivial data that do not need to survive reinstallations
 /// Consider using this property wrapper for data that can be lost without any security impacts
 /// (theme settings, selected browser...)
-final class Preferences: ObservableObject, DeinitPrintable {
+final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol {
     deinit { print(deinitMessage) }
 
     init() {
