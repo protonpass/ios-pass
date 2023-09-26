@@ -171,28 +171,40 @@ extension ItemContentType {
 
     var restoreMessage: String {
         switch self {
-        case .login: "Login restored".localized
-        case .alias: "Alias restored".localized
-        case .creditCard: "Credit card restored".localized
-        case .note: "Note restored".localized
+        case .login:
+            "Login restored".localized
+        case .alias:
+            "Alias restored".localized
+        case .creditCard:
+            "Credit card restored".localized
+        case .note:
+            "Note restored".localized
         }
     }
 
     var deleteMessage: String {
         switch self {
-        case .login: "Login permanently deleted".localized
-        case .alias: "Alias permanently deleted".localized
-        case .creditCard: "Credit card permanently deleted".localized
-        case .note: "Note permanently deleted".localized
+        case .login:
+            "Login permanently deleted".localized
+        case .alias:
+            "Alias permanently deleted".localized
+        case .creditCard:
+            "Credit card permanently deleted".localized
+        case .note:
+            "Note permanently deleted".localized
         }
     }
 
     var updateMessage: String {
         switch self {
-        case .login: "Login updated".localized
-        case .alias: "Alias updated".localized
-        case .creditCard: "Credit card updated".localized
-        case .note: "Note updated".localized
+        case .login:
+            "Login updated".localized
+        case .alias:
+            "Alias updated".localized
+        case .creditCard:
+            "Credit card updated".localized
+        case .note:
+            "Note updated".localized
         }
     }
 }
@@ -200,10 +212,14 @@ extension ItemContentType {
 extension ItemTypeIdentifiable {
     var trashMessage: String {
         switch type {
-        case .login: "Login moved to trash".localized
-        case .alias: "Alias \"%@\" will stop forwarding emails to your mailbox".localized(aliasEmail ?? "")
-        case .creditCard: "Credit card moved to trash".localized
-        case .note: "Note moved to trash".localized
+        case .login:
+            "Login moved to trash".localized
+        case .alias:
+            "Alias \"%@\" will stop forwarding emails to your mailbox".localized(aliasEmail ?? "")
+        case .creditCard:
+            "Credit card moved to trash".localized
+        case .note:
+            "Note moved to trash".localized
         }
     }
 }

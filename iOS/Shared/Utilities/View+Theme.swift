@@ -43,9 +43,12 @@ extension View {
 extension Theme {
     var colorScheme: ColorScheme? {
         switch self {
-        case .dark: .dark
-        case .light: .light
-        case .matchSystem: nil
+        case .dark:
+            .dark
+        case .light:
+            .light
+        case .matchSystem:
+            nil
         }
     }
 }

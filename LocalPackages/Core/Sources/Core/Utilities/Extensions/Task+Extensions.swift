@@ -23,13 +23,20 @@ import Foundation
 extension TaskPriority: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
-        case .background: "background"
-        case .high: "high"
-        case .low: "low"
-        case .medium: "medium"
-        case .userInitiated: "userInitiated"
-        case .utility: "utility"
-        default: "unknown"
+        case .background:
+            "background"
+        case .high:
+            "high"
+        case .low:
+            "low"
+        case .medium:
+            "medium"
+        case .userInitiated:
+            "userInitiated"
+        case .utility:
+            "utility"
+        default:
+            "unknown"
         }
     }
 }
