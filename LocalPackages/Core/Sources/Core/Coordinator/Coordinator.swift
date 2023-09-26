@@ -104,9 +104,9 @@ enum CoordinatorType {
     var controller: UIViewController {
         switch self {
         case let .navigation(navigationController):
-            return navigationController
+            navigationController
         case let .split(splitViewController):
-            return splitViewController
+            splitViewController
         }
     }
 }
@@ -250,9 +250,9 @@ open class Coordinator: CoordinatorProtocol {
     public func isCollapsed() -> Bool {
         switch type {
         case .navigation:
-            return true
+            true
         case let .split(splitViewController):
-            return splitViewController.isCollapsed
+            splitViewController.isCollapsed
         }
     }
 }

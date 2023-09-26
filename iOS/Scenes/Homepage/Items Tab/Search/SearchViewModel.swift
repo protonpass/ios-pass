@@ -128,9 +128,9 @@ private extension SearchViewModel {
             if let item = allItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID
             }) {
-                return try item.toSearchEntryUiModel(symmetricKey)
+                try item.toSearchEntryUiModel(symmetricKey)
             } else {
-                return nil
+                nil
             }
         }
 
@@ -182,11 +182,10 @@ private extension SearchViewModel {
             return
         }
 
-        let filteredResults: [ItemSearchResult]
-        if let selectedType {
-            filteredResults = results.filter { $0.type == selectedType }
+        let filteredResults: [ItemSearchResult] = if let selectedType {
+            results.filter { $0.type == selectedType }
         } else {
-            filteredResults = results
+            results
         }
         filteringTask?.cancel()
         filteringTask = Task { [weak self] in
@@ -196,7 +195,7 @@ private extension SearchViewModel {
             if Task.isCancelled {
                 return
             }
-            let filteredAndSortedResults = await self.sortItems(for: filteredResults)
+            let filteredAndSortedResults = await sortItems(for: filteredResults)
             if Task.isCancelled {
                 return
             }
@@ -209,15 +208,15 @@ private extension SearchViewModel {
     func sortItems(for items: [ItemSearchResult]) async -> any SearchResults {
         switch selectedSortType {
         case .mostRecent:
-            return await items.asyncMostRecentSortResult()
+            await items.asyncMostRecentSortResult()
         case .alphabeticalAsc:
-            return await items.asyncAlphabeticalSortResult(direction: .ascending)
+            await items.asyncAlphabeticalSortResult(direction: .ascending)
         case .alphabeticalDesc:
-            return await items.asyncAlphabeticalSortResult(direction: .descending)
+            await items.asyncAlphabeticalSortResult(direction: .descending)
         case .newestToOldest:
-            return await items.asyncMonthYearSortResult(direction: .descending)
+            await items.asyncMonthYearSortResult(direction: .descending)
         case .oldestToNewest:
-            return await items.asyncMonthYearSortResult(direction: .ascending)
+            await items.asyncMonthYearSortResult(direction: .ascending)
         }
     }
 }
@@ -316,22 +315,22 @@ extension SearchViewState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.empty, .empty), (.initializing, .initializing):
-            return true
+            true
 
         case let (.history(lhsHistory), .history(rhsHistory)):
-            return lhsHistory == rhsHistory
+            lhsHistory == rhsHistory
 
         case let (.noResults(lhsQuery), .noResults(rhsQuery)):
-            return lhsQuery == rhsQuery
+            lhsQuery == rhsQuery
 
         case let (.results(lhsItemCount, lhsResults), .results(rhsItemCount, rhsResults)):
-            return lhsResults.hashValue == rhsResults.hashValue &&
+            lhsResults.hashValue == rhsResults.hashValue &&
                 lhsItemCount == rhsItemCount
 
         case let (.error(lhsError), .error(rhsError)):
-            return lhsError.localizedDescription == rhsError.localizedDescription
+            lhsError.localizedDescription == rhsError.localizedDescription
         default:
-            return false
+            false
         }
     }
 }

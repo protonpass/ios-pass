@@ -30,9 +30,9 @@ public struct DomainParser {
 
     public func parse(host: String) -> ParsedHost? {
         if onlyBasicRules {
-            return basicRulesParser.parse(host: host)
+            basicRulesParser.parse(host: host)
         } else {
-            return parseExceptionsAndWildCardRules(host: host) ?? basicRulesParser.parse(host: host)
+            parseExceptionsAndWildCardRules(host: host) ?? basicRulesParser.parse(host: host)
         }
     }
 

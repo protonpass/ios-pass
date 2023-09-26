@@ -44,9 +44,9 @@ final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await self.repository.refreshFlags()
+                try await repository.refreshFlags()
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }

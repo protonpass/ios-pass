@@ -421,11 +421,10 @@ private extension ItemRepositoryProtocol {
         let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey)
         let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
 
-        let isLogInItem: Bool
-        if case .login = contentProtobuf.contentData {
-            isLogInItem = true
+        let isLogInItem = if case .login = contentProtobuf.contentData {
+            true
         } else {
-            isLogInItem = false
+            false
         }
 
         return .init(shareId: shareId,
@@ -454,9 +453,9 @@ public extension ItemRepositoryProtocol {
                 .filter { item in
                     switch item.contentData {
                     case let .login(loginData):
-                        return !loginData.totpUri.isEmpty
+                        !loginData.totpUri.isEmpty
                     default:
-                        return false
+                        false
                     }
                 }
                 .sorted(by: { $0.item.createTime < $1.item.createTime })

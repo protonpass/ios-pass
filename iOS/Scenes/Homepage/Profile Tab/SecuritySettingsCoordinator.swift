@@ -114,10 +114,10 @@ private extension SecuritySettingsCoordinator {
                                                   allowFailure: Bool) {
         let succesHandler: () -> Void = { [weak self] in
             guard let self else { return }
-            self.delegate?.childCoordinatorWantsToDismissTopViewController()
+            delegate?.childCoordinatorWantsToDismissTopViewController()
 
             if newMethod != .biometric {
-                self.preferences.fallbackToPasscode = true
+                preferences.fallbackToPasscode = true
             }
 
             if newMethod == .pin {
@@ -127,7 +127,7 @@ private extension SecuritySettingsCoordinator {
                     self?.definePINCodeAndChangeToPINMethod()
                 }
             } else {
-                self.preferences.localAuthenticationMethod = newMethod
+                preferences.localAuthenticationMethod = newMethod
             }
         }
 
@@ -180,10 +180,10 @@ private extension SecuritySettingsCoordinator {
     func definePINCodeAndChangeToPINMethod() {
         let view = SetPINCodeView { [weak self] pinCode in
             guard let self else { return }
-            self.preferences.localAuthenticationMethod = .pin
-            self.preferences.pinCode = pinCode
-            self.delegate?.childCoordinatorWantsToDisplayBanner(bannerOption: .success("PIN code set".localized),
-                                                                presentationOption: .dismissTopViewController)
+            preferences.localAuthenticationMethod = .pin
+            preferences.pinCode = pinCode
+            delegate?.childCoordinatorWantsToDisplayBanner(bannerOption: .success("PIN code set".localized),
+                                                           presentationOption: .dismissTopViewController)
         }
         delegate?.childCoordinatorWantsToPresent(view: view,
                                                  viewOption: .sheet,
@@ -193,14 +193,14 @@ private extension SecuritySettingsCoordinator {
     func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
-            self.delegate?.childCoordinatorWantsToDismissTopViewController()
+            delegate?.childCoordinatorWantsToDismissTopViewController()
 
             if newMethod == .biometric {
-                self.biometricallyAuthenticateAndUpdateMethod(.biometric,
-                                                              policy: self.enablingPolicy,
-                                                              allowFailure: true)
+                biometricallyAuthenticateAndUpdateMethod(.biometric,
+                                                         policy: enablingPolicy,
+                                                         allowFailure: true)
             } else {
-                self.preferences.localAuthenticationMethod = newMethod
+                preferences.localAuthenticationMethod = newMethod
             }
         }
 

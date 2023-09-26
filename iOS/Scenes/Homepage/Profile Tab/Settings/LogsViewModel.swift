@@ -41,11 +41,10 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     @Published var logLevel: LogLevel?
 
     var formattedEntries: [String] {
-        let takenEntries: [LogEntry]
-        if let logLevel {
-            takenEntries = entries.filter { $0.level == logLevel }
+        let takenEntries: [LogEntry] = if let logLevel {
+            entries.filter { $0.level == logLevel }
         } else {
-            takenEntries = entries
+            entries
         }
         return takenEntries.map(logFormatter.format(entry:))
     }

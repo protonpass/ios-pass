@@ -35,9 +35,9 @@ public extension PullToRefreshable {
     func forceSync() async {
         await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
             guard let self else { return }
-            self.pullToRefreshContinuation = continuation
-            self.syncEventLoop.pullToRefreshDelegate = self
-            self.syncEventLoop.forceSync()
+            pullToRefreshContinuation = continuation
+            syncEventLoop.pullToRefreshDelegate = self
+            syncEventLoop.forceSync()
         }
     }
 

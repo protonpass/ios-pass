@@ -43,9 +43,9 @@ enum ItemMode {
     var isEditMode: Bool {
         switch self {
         case .edit:
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 
@@ -138,9 +138,9 @@ class BaseCreateEditItemViewModel {
     func saveButtonTitle() -> String {
         switch mode {
         case .create:
-            return "Create".localized
+            "Create".localized
         case .edit:
-            return "Save".localized
+            "Save".localized
         }
     }
 

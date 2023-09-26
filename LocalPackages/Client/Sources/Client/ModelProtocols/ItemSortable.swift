@@ -27,35 +27,35 @@ public enum SortType: Int, CaseIterable, Equatable {
     public var title: String {
         switch self {
         case .mostRecent:
-            return "Most recent".localized
+            "Most recent".localized
         case .alphabeticalAsc:
-            return "Title (A-Z)".localized
+            "Title (A-Z)".localized
         case .alphabeticalDesc:
-            return "Title (Z-A)".localized
+            "Title (Z-A)".localized
         case .newestToOldest:
-            return "Newest to oldest".localized
+            "Newest to oldest".localized
         case .oldestToNewest:
-            return "Oldest to newest".localized
+            "Oldest to newest".localized
         }
     }
 
     public var isAlphabetical: Bool {
         switch self {
         case .alphabeticalAsc, .alphabeticalDesc:
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 
     public var sortDirection: SortDirection? {
         switch self {
         case .alphabeticalAsc:
-            return .ascending
+            .ascending
         case .alphabeticalDesc:
-            return .descending
+            .descending
         default:
-            return nil
+            nil
         }
     }
 }
@@ -183,42 +183,42 @@ public enum AlphabetLetter: Int, CaseIterable, Sendable {
 
     public var character: String {
         switch self {
-        case .sharp: return "#"
-        case .a: return "A"
-        case .b: return "B"
-        case .c: return "C"
-        case .d: return "D"
-        case .e: return "E"
-        case .f: return "F"
-        case .g: return "G"
-        case .h: return "H"
-        case .i: return "I"
-        case .j: return "J"
-        case .k: return "K"
-        case .l: return "L"
-        case .m: return "M"
-        case .n: return "N"
-        case .o: return "O"
-        case .p: return "P"
-        case .q: return "Q"
-        case .r: return "R"
-        case .s: return "S"
-        case .t: return "T"
-        case .u: return "U"
-        case .v: return "V"
-        case .w: return "W"
-        case .x: return "X"
-        case .y: return "Y"
-        case .z: return "Z"
+        case .sharp: "#"
+        case .a: "A"
+        case .b: "B"
+        case .c: "C"
+        case .d: "D"
+        case .e: "E"
+        case .f: "F"
+        case .g: "G"
+        case .h: "H"
+        case .i: "I"
+        case .j: "J"
+        case .k: "K"
+        case .l: "L"
+        case .m: "M"
+        case .n: "N"
+        case .o: "O"
+        case .p: "P"
+        case .q: "Q"
+        case .r: "R"
+        case .s: "S"
+        case .t: "T"
+        case .u: "U"
+        case .v: "V"
+        case .w: "W"
+        case .x: "X"
+        case .y: "Y"
+        case .z: "Z"
         }
     }
 
     public static func letters(for direction: SortDirection) -> [AlphabetLetter] {
         switch direction {
         case .ascending:
-            return allCases
+            allCases
         case .descending:
-            return allCases.reversed()
+            allCases.reversed()
         }
     }
 }
@@ -245,9 +245,9 @@ public extension Array where Element: AlphabeticalSortable {
     func alphabeticalSortResult(direction: SortDirection) -> AlphabeticalSortResult<Element> {
         let dict = Dictionary(grouping: self) { element in
             if let firstCharacter = element.alphabeticalSortableString.first {
-                return String(firstCharacter).uppercased()
+                String(firstCharacter).uppercased()
             } else {
-                return ""
+                ""
             }
         }
 
@@ -255,36 +255,37 @@ public extension Array where Element: AlphabeticalSortable {
         var sharpElements = [Element]()
         for key in dict.keys {
             guard let elements = dict[key] else { continue }
-            let letter: AlphabetLetter
-            switch key.uppercased() {
-            case "A": letter = .a
-            case "B": letter = .b
-            case "C": letter = .c
-            case "D": letter = .d
-            case "E": letter = .e
-            case "F": letter = .f
-            case "G": letter = .g
-            case "H": letter = .h
-            case "I": letter = .i
-            case "J": letter = .j
-            case "K": letter = .k
-            case "L": letter = .l
-            case "M": letter = .m
-            case "N": letter = .n
-            case "O": letter = .o
-            case "P": letter = .p
-            case "Q": letter = .q
-            case "R": letter = .r
-            case "S": letter = .s
-            case "T": letter = .t
-            case "U": letter = .u
-            case "V": letter = .v
-            case "W": letter = .w
-            case "X": letter = .x
-            case "Y": letter = .y
-            case "Z": letter = .z
-            default:
-                letter = .sharp
+            let letter: AlphabetLetter = switch key.uppercased() {
+            case "A": .a
+            case "B": .b
+            case "C": .c
+            case "D": .d
+            case "E": .e
+            case "F": .f
+            case "G": .g
+            case "H": .h
+            case "I": .i
+            case "J": .j
+            case "K": .k
+            case "L": .l
+            case "M": .m
+            case "N": .n
+            case "O": .o
+            case "P": .p
+            case "Q": .q
+            case "R": .r
+            case "S": .s
+            case "T": .t
+            case "U": .u
+            case "V": .v
+            case "W": .w
+            case "X": .x
+            case "Y": .y
+            case "Z": .z
+            default: .sharp
+            }
+
+            if letter == .sharp {
                 sharpElements.append(contentsOf: elements)
             }
 
@@ -313,9 +314,9 @@ private extension Array where Element: AlphabeticalSortable {
         sorted { lhs, rhs in
             switch direction {
             case .ascending:
-                return lhs.alphabeticalSortableString < rhs.alphabeticalSortableString
+                lhs.alphabeticalSortableString < rhs.alphabeticalSortableString
             case .descending:
-                return lhs.alphabeticalSortableString > rhs.alphabeticalSortableString
+                lhs.alphabeticalSortableString > rhs.alphabeticalSortableString
             }
         }
     }
@@ -372,12 +373,11 @@ public struct MonthYearSortResult<T: DateSortable>: SearchResults {
 
 public extension Array where Element: DateSortable {
     func monthYearSortResult(direction: SortDirection) -> MonthYearSortResult<Element> {
-        let sortedElements: [Element]
-        switch direction {
+        let sortedElements: [Element] = switch direction {
         case .ascending:
-            sortedElements = sorted(by: { $0.dateForSorting < $1.dateForSorting })
+            sorted(by: { $0.dateForSorting < $1.dateForSorting })
         case .descending:
-            sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+            sorted(by: { $0.dateForSorting > $1.dateForSorting })
         }
         let dict = Dictionary(grouping: sortedElements) { element in
             MonthYear(date: element.dateForSorting)
@@ -392,9 +392,9 @@ public extension Array where Element: DateSortable {
         buckets = buckets.sorted(by: { lhs, rhs in
             switch direction {
             case .ascending:
-                return lhs.monthYear < rhs.monthYear
+                lhs.monthYear < rhs.monthYear
             case .descending:
-                return lhs.monthYear > rhs.monthYear
+                lhs.monthYear > rhs.monthYear
             }
         })
 
@@ -403,12 +403,11 @@ public extension Array where Element: DateSortable {
 
     func asyncMonthYearSortResult(direction: SortDirection) async -> MonthYearSortResult<Element> {
         await Task {
-            let sortedElements: [Element]
-            switch direction {
+            let sortedElements: [Element] = switch direction {
             case .ascending:
-                sortedElements = sorted(by: { $0.dateForSorting < $1.dateForSorting })
+                sorted(by: { $0.dateForSorting < $1.dateForSorting })
             case .descending:
-                sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+                sorted(by: { $0.dateForSorting > $1.dateForSorting })
             }
             let dict = Dictionary(grouping: sortedElements) { element in
                 MonthYear(date: element.dateForSorting)
@@ -423,9 +422,9 @@ public extension Array where Element: DateSortable {
             buckets = buckets.sorted(by: { lhs, rhs in
                 switch direction {
                 case .ascending:
-                    return lhs.monthYear < rhs.monthYear
+                    lhs.monthYear < rhs.monthYear
                 case .descending:
-                    return lhs.monthYear > rhs.monthYear
+                    lhs.monthYear > rhs.monthYear
                 }
             })
 

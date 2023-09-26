@@ -176,11 +176,11 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
             guard let self else { return }
-            self.secondCount += 1
-            if self.secondCount >= self.threshold {
-                self.secondCount = 0
-                self.threshold = kThresholdRange.randomElement() ?? 5
-                self.timerTask()
+            secondCount += 1
+            if secondCount >= threshold {
+                secondCount = 0
+                threshold = kThresholdRange.randomElement() ?? 5
+                timerTask()
             }
         }
         timer?.fire()
@@ -351,14 +351,14 @@ private extension SyncEventLoop {
                                                            returning: Bool.self) { taskGroup in
             taskGroup.addTask { [weak self] in
                 guard let self else { return false }
-                return try await self.syncCreateAndUpdateEvents(localShares: localShares,
-                                                                remoteShares: remoteShares)
+                return try await syncCreateAndUpdateEvents(localShares: localShares,
+                                                           remoteShares: remoteShares)
             }
 
             taskGroup.addTask { [weak self] in
                 guard let self else { return false }
-                return try await self.syncDeleteEvents(localShares: localShares,
-                                                       remoteShares: remoteShares)
+                return try await syncDeleteEvents(localShares: localShares,
+                                                  remoteShares: remoteShares)
             }
 
             return try await taskGroup.contains { $0 }
@@ -377,11 +377,11 @@ private extension SyncEventLoop {
                     if Task.isCancelled {
                         return
                     }
-                    try await self.shareRepository.deleteShareLocally(shareId: shareId)
+                    try await shareRepository.deleteShareLocally(shareId: shareId)
                     if Task.isCancelled {
                         return
                     }
-                    try await self.itemRepository.deleteAllItemsLocally(shareId: shareId)
+                    try await itemRepository.deleteAllItemsLocally(shareId: shareId)
                 }
             }
         }
@@ -399,11 +399,11 @@ private extension SyncEventLoop {
                     var hasNewEvents = false
                     if localShares.contains(where: { $0.share.shareID == remoteShare.shareID }) {
                         // Existing share
-                        self.logger.trace("Existing share \(remoteShare.shareID)")
-                        try await self.sync(share: remoteShare, hasNewEvents: &hasNewEvents)
+                        logger.trace("Existing share \(remoteShare.shareID)")
+                        try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
                     } else {
                         // New share
-                        self.logger.debug("New share \(remoteShare.shareID)")
+                        logger.debug("New share \(remoteShare.shareID)")
                         hasNewEvents = true
                         let shareId = remoteShare.shareID
                         if Task.isCancelled {
@@ -411,15 +411,15 @@ private extension SyncEventLoop {
                         }
 
                         do {
-                            _ = try await self.shareKeyRepository.refreshKeys(shareId: shareId)
-                            try await self.shareRepository.upsertShares([remoteShare])
-                            try await self.itemRepository.refreshItems(shareId: shareId)
+                            _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
+                            try await shareRepository.upsertShares([remoteShare])
+                            try await itemRepository.refreshItems(shareId: shareId)
                         } catch {
                             if let clientError = error as? PPClientError,
                                case let .crypto(reason) = clientError,
                                case .inactiveUserKey = reason {
                                 // Ignore the case where user key is inactive
-                                self.logger.warning(reason.debugDescription)
+                                logger.warning(reason.debugDescription)
                             } else {
                                 throw error
                             }
@@ -449,9 +449,9 @@ private extension SyncEventLoop {
                         // and compare with a known error code "DISABLED_SHARE: 300004"
                         do {
                             // Expect an error here so passing a dummy boolean
-                            self.logger.trace("Deleted share \(shareId)")
+                            logger.trace("Deleted share \(shareId)")
                             var dummyBoolean = false
-                            try await self.sync(share: localShare.share, hasNewEvents: &dummyBoolean)
+                            try await sync(share: localShare.share, hasNewEvents: &dummyBoolean)
                         } catch {
                             if let responseError = error as? ResponseError,
                                responseError.responseCode == 300_004 {
@@ -460,11 +460,11 @@ private extension SyncEventLoop {
                                 if Task.isCancelled {
                                     return false
                                 }
-                                try await self.shareRepository.deleteShareLocally(shareId: shareId)
+                                try await shareRepository.deleteShareLocally(shareId: shareId)
                                 if Task.isCancelled {
                                     return false
                                 }
-                                try await self.itemRepository.deleteAllItemsLocally(shareId: shareId)
+                                try await itemRepository.deleteAllItemsLocally(shareId: shareId)
                                 return true
                             }
                             throw error

@@ -32,15 +32,15 @@ enum PPError: Error, CustomDebugStringConvertible {
     var debugDescription: String {
         switch self {
         case let .credentialProvider(reason):
-            return reason.debugDescription
+            reason.debugDescription
         case .deallocatedSelf:
-            return "Failed to access deallocated self"
+            "Failed to access deallocated self"
         case .failedToGetOrCreateSymmetricKey:
-            return "Failed to get or create symmetric key"
+            "Failed to get or create symmetric key"
         case let .itemNotFound(shareID, itemID):
-            return "Item not found \"\(itemID)\" - Share ID \"\(shareID)\""
+            "Item not found \"\(itemID)\" - Share ID \"\(shareID)\""
         case let .vault(reason):
-            return reason.debugDescription
+            reason.debugDescription
         }
     }
 }
@@ -57,13 +57,13 @@ extension PPError {
         var debugDescription: String {
             switch self {
             case .canNotDeleteLastVault:
-                return "Can not delete last vault"
+                "Can not delete last vault"
             case .noSelectedVault:
-                return "No selected vault"
+                "No selected vault"
             case let .vaultNotEmpty(id):
-                return "Vault not empty \"\(id)\""
+                "Vault not empty \"\(id)\""
             case let .vaultNotFound(id):
-                return "Vault not found \"\(id)\""
+                "Vault not found \"\(id)\""
             }
         }
     }
@@ -83,17 +83,17 @@ extension PPError {
         var debugDescription: String {
             switch self {
             case .failedToAuthenticate:
-                return "Failed to authenticate"
+                "Failed to authenticate"
             case let .invalidURL(url):
-                return "Invalid URL \"\(String(describing: url?.absoluteString))\""
+                "Invalid URL \"\(String(describing: url?.absoluteString))\""
             case .missingRecordIdentifier:
-                return "ASPasswordCredentialIdentity object missing record identifier"
+                "ASPasswordCredentialIdentity object missing record identifier"
             case .notLogInItem:
-                return "Not log in item"
+                "Not log in item"
             case .userCancelled:
-                return "User cancelled"
+                "User cancelled"
             case .generic:
-                return "Something went wrong"
+                "Something went wrong"
             }
         }
     }
