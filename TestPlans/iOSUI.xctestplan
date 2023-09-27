@@ -10,12 +10,22 @@
   ],
   "defaultOptions" : {
     "codeCoverage" : false,
+    "environmentVariableEntries" : [
+      {
+        "key" : "DYNAMIC_DOMAIN",
+        "value" : "${DYNAMIC_DOMAIN}"
+      }
+    ],
     "language" : "en",
-    "region" : "US"
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ProtonPass.xcodeproj",
+      "identifier" : "35E5063A286F819F00A3F6EA",
+      "name" : "iOS"
+    }
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "skippedTests" : [
         "SettingsTests\/testTelemetrySettings()"
       ],
