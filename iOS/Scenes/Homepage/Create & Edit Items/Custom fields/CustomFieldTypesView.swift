@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -64,11 +65,11 @@ extension CustomFieldType {
     var title: String {
         switch self {
         case .text:
-            "Text".localized
+            #localized("Text")
         case .totp:
-            "2FA secret (TOTP)".localized
+            #localized("2FA secret (TOTP)")
         case .hidden:
-            "Hidden".localized
+            #localized("Hidden")
         }
     }
 

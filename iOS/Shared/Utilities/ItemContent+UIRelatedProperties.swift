@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import UIKit
 
@@ -120,91 +121,91 @@ extension ItemContentType {
     var chipTitle: String {
         switch self {
         case .login:
-            "Login".localized
+            #localized("Login")
         case .alias:
-            "Alias".localized
+            #localized("Alias")
         case .note:
-            "Note".localized
+            #localized("Note")
         case .creditCard:
-            "Credit card".localized
+            #localized("Credit card")
         }
     }
 
     var filterTitle: String {
         switch self {
         case .login:
-            "Logins".localized
+            #localized("Logins")
         case .alias:
-            "Aliases".localized
+            #localized("Aliases")
         case .note:
-            "Notes".localized
+            #localized("Notes")
         case .creditCard:
-            "Credit cards".localized
+            #localized("Credit cards")
         }
     }
 
     var createItemTitle: String {
         switch self {
         case .login:
-            "Create a login".localized
+            #localized("Create a login")
         case .alias:
-            "Create a Hide My Email alias".localized
+            #localized("Create a Hide My Email alias")
         case .creditCard:
-            "Create a credit card".localized
+            #localized("Create a credit card")
         case .note:
-            "Create a note".localized
+            #localized("Create a note")
         }
     }
 
     var creationMessage: String {
         switch self {
         case .login:
-            "Login created".localized
+            #localized("Login created")
         case .alias:
-            "Alias created".localized
+            #localized("Alias created")
         case .creditCard:
-            "Credit card created".localized
+            #localized("Credit card created")
         case .note:
-            "Note created".localized
+            #localized("Note created")
         }
     }
 
     var restoreMessage: String {
         switch self {
         case .login:
-            "Login restored".localized
+            #localized("Login restored")
         case .alias:
-            "Alias restored".localized
+            #localized("Alias restored")
         case .creditCard:
-            "Credit card restored".localized
+            #localized("Credit card restored")
         case .note:
-            "Note restored".localized
+            #localized("Note restored")
         }
     }
 
     var deleteMessage: String {
         switch self {
         case .login:
-            "Login permanently deleted".localized
+            #localized("Login permanently deleted")
         case .alias:
-            "Alias permanently deleted".localized
+            #localized("Alias permanently deleted")
         case .creditCard:
-            "Credit card permanently deleted".localized
+            #localized("Credit card permanently deleted")
         case .note:
-            "Note permanently deleted".localized
+            #localized("Note permanently deleted")
         }
     }
 
     var updateMessage: String {
         switch self {
         case .login:
-            "Login updated".localized
+            #localized("Login updated")
         case .alias:
-            "Alias updated".localized
+            #localized("Alias updated")
         case .creditCard:
-            "Credit card updated".localized
+            #localized("Credit card updated")
         case .note:
-            "Note updated".localized
+            #localized("Note updated")
         }
     }
 }
@@ -213,13 +214,13 @@ extension ItemTypeIdentifiable {
     var trashMessage: String {
         switch type {
         case .login:
-            "Login moved to trash".localized
+            #localized("Login moved to trash")
         case .alias:
-            "Alias \"%@\" will stop forwarding emails to your mailbox".localized(aliasEmail ?? "")
+            #localized("Alias \"%@\" will stop forwarding emails to your mailbox", aliasEmail ?? "")
         case .creditCard:
-            "Credit card moved to trash".localized
+            #localized("Credit card moved to trash")
         case .note:
-            "Note moved to trash".localized
+            #localized("Note moved to trash")
         }
     }
 }

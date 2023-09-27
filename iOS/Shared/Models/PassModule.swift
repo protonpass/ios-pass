@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Macro
 
 enum PassModule: String, CaseIterable {
     case hostApp, autoFillExtension, keyboardExtension
@@ -28,9 +29,9 @@ extension PassModule {
     var logTitle: String {
         switch self {
         case .hostApp:
-            "Application logs".localized
+            #localized("Application logs")
         case .autoFillExtension:
-            "AutoFill extension logs".localized
+            #localized("AutoFill extension logs")
         case .keyboardExtension:
             "Keyboard extension logs"
         }

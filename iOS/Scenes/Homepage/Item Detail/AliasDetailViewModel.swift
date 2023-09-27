@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import Macro
 
 final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -70,10 +71,10 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func copyAliasEmail() {
-        copyToClipboard(text: aliasEmail, message: "Alias copied".localized)
+        copyToClipboard(text: aliasEmail, message: #localized("Alias copied"))
     }
 
     func copyMailboxEmail(_ email: String) {
-        copyToClipboard(text: email, message: "Mailbox copied".localized)
+        copyToClipboard(text: email, message: #localized("Mailbox copied"))
     }
 }

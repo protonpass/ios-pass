@@ -24,6 +24,7 @@ let package = Package(name: "Client",
                           .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.0.0"),
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Entities", path: "../Entities"),
+                          .package(name: "Macro", path: "../Macro"),
                           .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "11.0.1")
                       ],
                       targets: [
@@ -44,7 +45,8 @@ let package = Package(name: "Client",
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "Reachability", package: "Reachability.swift"),
-                                      .product(name: "SwiftProtobuf", package: "swift-protobuf")
+                                      .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+                                      .product(name: "Macro", package: "Macro")
                                   ],
                                   resources: [.process("Resources")]),
                           .testTarget(name: "ClientTests",

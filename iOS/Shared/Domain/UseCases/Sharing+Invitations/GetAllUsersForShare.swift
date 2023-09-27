@@ -21,6 +21,7 @@
 //
 
 import Entities
+import Macro
 
 protocol GetAllUsersForShareUseCase: Sendable {
     func execute(with shareId: String) async throws -> [ShareUser]
@@ -69,7 +70,7 @@ struct ShareUser: Equatable, Hashable, Identifiable {
         if let shareRole {
             return shareRole.role
         }
-        return "pending".localized
+        return #localized("pending")
     }
 
     var isAdmin: Bool {

@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import SwiftUI
 
 struct MoveVaultListView: View {
@@ -46,13 +47,13 @@ struct MoveVaultListView: View {
             }
 
             HStack(spacing: 16) {
-                CapsuleTextButton(title: "Cancel".localized,
+                CapsuleTextButton(title: #localized("Cancel"),
                                   titleColor: PassColor.textWeak,
                                   backgroundColor: PassColor.textDisabled,
                                   height: 44,
                                   action: dismiss.callAsFunction)
 
-                DisablableCapsuleTextButton(title: "Confirm".localized,
+                DisablableCapsuleTextButton(title: #localized("Confirm"),
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,

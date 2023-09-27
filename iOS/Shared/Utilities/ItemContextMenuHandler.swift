@@ -21,6 +21,7 @@
 import Client
 import Core
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 
 protocol ItemContextMenuHandlerDelegate: AnyObject {
@@ -71,7 +72,7 @@ extension ItemContextMenuHandler {
                 }
 
                 self.clipboardManager.bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                                             dismissButtonTitle: "Undo".localized,
+                                                                             dismissButtonTitle: #localized("Undo"),
                                                                              onDismiss: undoBlock)
                 self.router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
@@ -123,7 +124,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.username,
-                                               bannerMessage: "Username copied".localized)
+                                               bannerMessage: #localized("Username copied"))
                     self.logger.info("Copied username \(item.debugInformation)")
                 }
             } catch {
@@ -141,7 +142,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.password,
-                                               bannerMessage: "Password copied".localized)
+                                               bannerMessage: #localized("Password copied"))
                     self.logger.info("Copied Password \(item.debugInformation)")
                 }
             } catch {
@@ -159,7 +160,7 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 if let aliasEmail = encryptedItem.item.aliasEmail {
                     self.clipboardManager.copy(text: aliasEmail,
-                                               bannerMessage: "Alias address copied".localized)
+                                               bannerMessage: #localized("Alias address copied"))
                     self.logger.info("Copied alias address \(item.debugInformation)")
                 }
             } catch {
@@ -177,7 +178,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case .note = itemContent.contentData {
                     self.clipboardManager.copy(text: itemContent.note,
-                                               bannerMessage: "Note content copied".localized)
+                                               bannerMessage: #localized("Note content copied"))
                     self.logger.info("Copied note content \(item.debugInformation)")
                 }
             } catch {

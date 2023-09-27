@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import SwiftUI
 
 enum InfoBanner: CaseIterable, Equatable, Hashable {
@@ -45,32 +46,31 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
     var detail: InfoBannerDetail {
         switch self {
         case .trial:
-            .init(title: "Enjoy your free trial".localized,
-                  description: "Check out all the exclusive features that are available to you for a limited time"
-                      .localized,
+            .init(title: #localized("Enjoy your free trial"),
+                  // swiftlint:disable:next line_length
+                  description: #localized("Check out all the exclusive features that are available to you for a limited time"),
                   icon: nil,
-                  ctaTitle: "Learn more".localized,
+                  ctaTitle: #localized("Learn more"),
                   backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
                   foregroundColor: PassColor.textInvert.toColor)
         case .autofill:
-            .init(title: "Enjoy the magic of AutoFill".localized,
-                  description: "One tap and⏤presto!⏤your username and password are filled in instantly"
-                      .localized,
+            .init(title: #localized("Enjoy the magic of AutoFill"),
+                  description: #localized("One tap and⏤presto!⏤your username and password are filled in instantly"),
                   icon: PassIcon.infoBannerAutoFill,
-                  ctaTitle: "Turn on AutoFill".localized,
+                  ctaTitle: #localized("Turn on AutoFill"),
                   backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
                   foregroundColor: PassColor.textInvert.toColor)
 
         case .aliases:
-            .init(title: "Use email aliases".localized,
-                  description: "Protect your inbox against spams and phishings".localized,
+            .init(title: #localized("Use email aliases"),
+                  description: #localized("Protect your inbox against spams and phishings"),
                   icon: PassIcon.infoBannerAliases,
                   ctaTitle: nil,
                   backgroundColor: PassColor.signalSuccess.toColor,
                   foregroundColor: PassColor.textInvert.toColor)
         case .invite:
-            .init(title: "Shared vault invitation".localized,
-                  description: "You've been invited to a vault. Tap here to see the invitation.".localized,
+            .init(title: #localized("Shared vault invitation"),
+                  description: #localized("You've been invited to a vault. Tap here to see the invitation."),
                   icon: PassIcon.inviteBannerIcon,
                   ctaTitle: nil,
                   backgroundColor: PassColor.backgroundMedium.toColor,
