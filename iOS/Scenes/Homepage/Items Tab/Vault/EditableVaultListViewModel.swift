@@ -74,9 +74,9 @@ private extension EditableVaultListViewModel {
     func setUp() {
         vaultsManager.$state
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
+            .sink { [weak self] newState in
                 guard let self else { return }
-                self.state = state
+                state = newState
             }.store(in: &cancellables)
 
         Task { @MainActor [weak self] in
