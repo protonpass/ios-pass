@@ -167,8 +167,7 @@ extension HomepageTabBarController {
             do {
                 let plan = try await self.passPlanRepository.getPlan()
 
-                let (image, selectedImage): (UIImage, UIImage) =
-                    switch plan.planType {
+                let (image, selectedImage): (UIImage, UIImage) = switch plan.planType {
                 case .free:
                     (IconProvider.user, IconProvider.user)
                 case .plus:
