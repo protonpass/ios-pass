@@ -47,7 +47,8 @@ public final class NotificationService: LocalNotificationServiceProtocol {
 
     public func requestNotificationPermission(with options: UNAuthorizationOptions = []) {
         unUserNotificationCenter.requestAuthorization(options: options) { [weak self] _, error in
-            self?.logger.error("unUserNotificationCenter authorization request error: \(error.debugDescription)")
+            guard let self else { return }
+            logger.error("unUserNotificationCenter authorization request error: \(error.debugDescription)")
         }
     }
 

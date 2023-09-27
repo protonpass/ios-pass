@@ -193,23 +193,26 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                                                   symmetricKey: symmetricKey,
                                                   credentialIdentity: credentialIdentity)
         viewModel.onFailure = { [weak self] error in
-            self?.handle(error: error)
+            guard let self else { return }
+            handle(error: error)
         }
         viewModel.onSuccess = { [weak self] credential, itemContent in
-            self?.complete(quickTypeBar: false,
-                           credential: credential,
-                           itemContent: itemContent,
-                           itemRepository: itemRepository,
-                           upgradeChecker: upgradeChecker,
-                           serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+            guard let self else { return }
+            complete(quickTypeBar: false,
+                     credential: credential,
+                     itemContent: itemContent,
+                     itemRepository: itemRepository,
+                     upgradeChecker: upgradeChecker,
+                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
     }
 
     private func handle(error: Error) {
         let defaultHandler: (Error) -> Void = { [weak self] error in
-            self?.logger.error(error)
-            self?.alert(error: error)
+            guard let self else { return }
+            logger.error(error)
+            alert(error: error)
         }
 
         guard let error = error as? PPError,
@@ -285,10 +288,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     func sendAllEventsIfApplicable() {
         Task { [weak self] in
+            guard let self else { return }
             do {
-                try await self?.telemetryEventRepository?.sendAllEventsIfApplicable()
+                try await telemetryEventRepository?.sendAllEventsIfApplicable()
             } catch {
-                self?.logger.error(error)
+                logger.error(error)
             }
         }
     }
@@ -408,7 +412,8 @@ private extension CredentialProviderCoordinator {
 
     func showNotLoggedInView() {
         let view = NotLoggedInView { [weak self] in
-            self?.cancelAutoFill(reason: .userCanceled)
+            guard let self else { return }
+            cancelAutoFill(reason: .userCanceled)
         }
         showView(view)
     }
@@ -478,7 +483,8 @@ private extension CredentialProviderCoordinator {
 
     func handleCreatedItem(_ itemContentType: ItemContentType) {
         topMostViewController?.dismiss(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage(itemContentType.creationMessage)
+            guard let self else { return }
+            bannerManager.displayBottomSuccessMessage(itemContentType.creationMessage)
         }
     }
 
@@ -498,7 +504,8 @@ private extension CredentialProviderCoordinator {
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
-            self?.cancelAutoFill(reason: .failed)
+            guard let self else { return }
+            cancelAutoFill(reason: .failed)
         }
         alert.addAction(cancelAction)
         rootViewController?.present(alert, animated: true)
@@ -511,7 +518,8 @@ private extension CredentialProviderCoordinator {
         let okButton = UIAlertAction(title: "OK", style: .default)
         alert.addAction(okButton)
         rootViewController?.dismiss(animated: true) { [weak self] in
-            self?.rootViewController?.present(alert, animated: true)
+            guard let self else { return }
+            rootViewController?.present(alert, animated: true)
         }
     }
 }

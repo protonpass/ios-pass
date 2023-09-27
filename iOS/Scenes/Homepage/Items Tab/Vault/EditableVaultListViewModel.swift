@@ -74,30 +74,29 @@ private extension EditableVaultListViewModel {
     func setUp() {
         vaultsManager.$state
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
-                self?.state = state
+            .sink { [weak self] newState in
+                guard let self else { return }
+                state = newState
             }.store(in: &cancellables)
 
         Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            self.isAllowedToShare = await self.userSharingStatus()
+            guard let self else { return }
+            isAllowedToShare = await userSharingStatus()
         }
     }
 
     func doDelete(vault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.loading = false }
+            defer { loading = false }
             do {
-                self.loading = true
-                try await self.vaultsManager.delete(vault: vault)
-                self.vaultsManager.refresh()
-                self.router.display(element: .infosMessage("Vault « %@ » deleted".localized(vault.name)))
+                loading = true
+                try await vaultsManager.delete(vault: vault)
+                vaultsManager.refresh()
+                router.display(element: .infosMessage("Vault « %@ » deleted".localized(vault.name)))
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -126,12 +125,13 @@ extension EditableVaultListViewModel {
 
     func leaveVault(vault: Vault) {
         Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                try await self?.leaveShare(with: vault.shareId)
-                self?.syncEventLoop.forceSync()
+                try await leaveShare(with: vault.shareId)
+                syncEventLoop.forceSync()
             } catch {
-                self?.logger.error(error)
-                self?.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
