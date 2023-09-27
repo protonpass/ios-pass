@@ -80,7 +80,7 @@ struct EditableVaultListView: View {
                           })
                },
                message: {
-                   Text(#localized("not shared %d alias(es)", viewModel.numberOfAliasForSharedVault))
+                   Text("not shared \(viewModel.numberOfAliasForSharedVault) alias(es)")
                })
     }
 

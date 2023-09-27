@@ -54,7 +54,7 @@ struct ManageSharedVaultView: View {
         .showSpinner(viewModel.loading)
         .alert(item: $viewModel.newOwner) { user in
             Alert(title: Text("Transfer ownership"),
-                  message: Text(#localized("Are sure you want to transfer your ownership to %@", user.email)),
+                  message: Text("Are sure you want to transfer your ownership to \(user.email)"),
                   primaryButton: .default(Text("Confirm")) {
                       viewModel.transferOwnership(to: user)
                   },
@@ -105,7 +105,7 @@ private extension ManageSharedVaultView {
             Text(viewModel.vault.name)
                 .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text(#localized("%d item(s)", viewModel.itemsNumber))
+            Text("\(viewModel.itemsNumber) item(s)")
                 .font(.title3)
                 .foregroundColor(PassColor.textWeak.toColor)
         }

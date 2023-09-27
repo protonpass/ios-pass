@@ -70,9 +70,8 @@ struct CredentialsView: View {
                },
                message: {
                    if let information = viewModel.notMatchedItemInformation {
-                       Text(#localized("Would you want to associate « %@ » with « %@ »?",
-                                       information.url,
-                                       information.item.itemTitle))
+                       // swiftlint:disable:next line_length
+                       Text("Would you want to associate « \(information.url) » with « \(information.item.itemTitle) »?")
                    }
                })
     }

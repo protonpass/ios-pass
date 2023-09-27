@@ -122,8 +122,8 @@ struct AcceptRejectInviteView_Previews: PreviewProvider {
 
 private extension UserInvite {
     var vaultsCountInfos: String {
-        let itemsCount = #localized("%d item(s)", vaultData?.itemCount ?? 0)
-        let membersCount = #localized("%d member(s)", vaultData?.memberCount ?? 0)
+        let itemsCount = #localized("%lld item(s)", vaultData?.itemCount ?? 0)
+        let membersCount = #localized("%lld member(s)", vaultData?.memberCount ?? 0)
         return "\(itemsCount) • \(membersCount)"
     }
 }

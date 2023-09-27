@@ -65,7 +65,7 @@ struct PinAuthenticationView: View {
                 Text("Incorrect PIN code.")
                     .foregroundColor(PassColor.signalDanger.toColor) +
                     Text(verbatim: " ") +
-                    Text(#localized("%d remaining attempt(s)", count))
+                    Text("\(count) remaining attempt(s)")
                     .foregroundColor(PassColor.signalDanger.toColor)
             case .lastAttempt:
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")

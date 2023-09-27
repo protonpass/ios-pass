@@ -56,7 +56,7 @@ private extension SharingSummaryView {
     var headerView: some View {
         let email = attributedText(for: viewModel.infos?.email ?? "")
         let vaultName = attributedText(for: #localized("%@ vault", viewModel.infos?.vault?.name ?? ""))
-        let itemCount = attributedText(for: #localized("%d item(s)", viewModel.infos?.itemsNum ?? 0))
+        let itemCount = attributedText(for: #localized("%lld item(s)", viewModel.infos?.itemsNum ?? 0))
         let permission = attributedText(for: viewModel.infos?.role?.summary ?? "")
         VStack(alignment: .leading, spacing: 11) {
             Text("Summary")
