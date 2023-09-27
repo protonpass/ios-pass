@@ -1145,24 +1145,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         }
         addNewEvent(type: .update(item.type))
     }
-
-    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
-        }
-        addNewEvent(type: .update(item.type))
-    }
-
-    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
-        }
-        addNewEvent(type: .delete(item.type))
-    }
 }
 
 // MARK: - ItemContextMenuHandlerDelegate
@@ -1190,14 +1172,6 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 // MARK: - CreateEditVaultViewModelDelegate
 
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
-    func createEditVaultViewModelDidCreateVault() {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomSuccessMessage("Vault created".localized)
-        }
-        vaultsManager.refresh()
-    }
-
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
