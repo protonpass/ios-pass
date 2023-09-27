@@ -143,7 +143,7 @@ private struct ItemDetailMoreInfoSectionUIModel {
             lastAutoFilledDate = nil
         }
 
-        modificationCount = #localized("%d time(s)", item.revision)
+        modificationCount = #localized("%lld time(s)", item.revision)
         modificationDate = #localized("Last time, %@", fullDateString(item.modifyTime))
         creationDate = fullDateString(item.createTime).capitalizingFirstLetter()
     }
