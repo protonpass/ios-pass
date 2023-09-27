@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Macro
 import SwiftUI
 import UIKit
 
@@ -132,9 +133,9 @@ extension GeneratePasswordViewMode {
     var confirmTitle: String {
         switch self {
         case .createLogin:
-            "Confirm".localized
+            #localized("Confirm")
         case .random:
-            "Copy and close".localized
+            #localized("Copy and close")
         }
     }
 }
@@ -143,9 +144,9 @@ extension PasswordType {
     var title: String {
         switch self {
         case .random:
-            "Random Password".localized
+            #localized("Random Password")
         case .memorable:
-            "Memorable Password".localized
+            #localized("Memorable Password")
         }
     }
 }
@@ -154,19 +155,19 @@ extension WordSeparator {
     var title: String {
         switch self {
         case .hyphens:
-            "Hyphens".localized
+            #localized("Hyphens")
         case .spaces:
-            "Spaces".localized
+            #localized("Spaces")
         case .periods:
-            "Periods".localized
+            #localized("Periods")
         case .commas:
-            "Commas".localized
+            #localized("Commas")
         case .underscores:
-            "Underscores".localized
+            #localized("Underscores")
         case .numbers:
-            "Numbers".localized
+            #localized("Numbers")
         case .numbersAndSymbols:
-            "Numbers and Symbols".localized
+            #localized("Numbers and Symbols")
         }
     }
 

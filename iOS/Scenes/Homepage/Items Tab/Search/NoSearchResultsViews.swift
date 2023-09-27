@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import SwiftUI
 
 struct NoSearchResultsInAllVaultView: View {
@@ -26,7 +27,7 @@ struct NoSearchResultsInAllVaultView: View {
 
     var body: some View {
         VStack {
-            Text("Couldn't find « %@ »".localized(query))
+            Text("Couldn't find « \(query) »")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -47,7 +48,7 @@ struct NoSearchResultsInPreciseVaultView: View {
 
     var body: some View {
         VStack {
-            Text("Couldn't find « %@ » in %@".localized(query, vaultName))
+            Text("Couldn't find « \(query) » in \(vaultName)")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
@@ -75,7 +76,7 @@ struct NoSearchResultsInTrashView: View {
 
     var body: some View {
         VStack {
-            Text("Couldn't find « %@ » in Trash".localized(query))
+            Text("Couldn't find « \(query) » in Trash")
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
