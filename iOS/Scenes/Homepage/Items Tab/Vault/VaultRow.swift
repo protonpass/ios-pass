@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -42,7 +43,7 @@ struct VaultRow<Thumbnail: View>: View {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    Text("%d item(s)".localized(itemCount))
+                    Text("\(itemCount) item(s)")
                         .font(.callout)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }

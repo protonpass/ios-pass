@@ -24,6 +24,7 @@ import Combine
 import Core
 import CryptoKit
 import Factory
+import Macro
 import SwiftUI
 
 protocol CredentialsViewModelDelegate: AnyObject {
@@ -543,9 +544,9 @@ extension PassPlan.PlanType {
     var searchBarPlaceholder: String {
         switch self {
         case .free:
-            "Search in primary vault".localized
+            #localized("Search in primary vault")
         default:
-            "Search in all vaults".localized
+            #localized("Search in all vaults")
         }
     }
 }

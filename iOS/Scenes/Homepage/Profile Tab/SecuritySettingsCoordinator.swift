@@ -21,6 +21,7 @@
 import Core
 import Factory
 import LocalAuthentication
+import Macro
 
 final class SecuritySettingsCoordinator {
     private let preferences = resolve(\SharedToolingContainer.preferences)
@@ -186,7 +187,7 @@ private extension SecuritySettingsCoordinator {
             guard let self else { return }
             preferences.localAuthenticationMethod = .pin
             preferences.pinCode = pinCode
-            delegate?.childCoordinatorWantsToDisplayBanner(bannerOption: .success("PIN code set".localized),
+            delegate?.childCoordinatorWantsToDisplayBanner(bannerOption: .success(#localized("PIN code set")),
                                                            presentationOption: .dismissTopViewController)
         }
         delegate?.childCoordinatorWantsToPresent(view: view,

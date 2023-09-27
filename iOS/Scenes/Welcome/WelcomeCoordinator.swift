@@ -21,6 +21,7 @@
 import Client
 import Core
 import DesignSystem
+import Macro
 import ProtonCoreDoh
 import ProtonCoreForceUpgrade
 import ProtonCoreLogin
@@ -52,7 +53,7 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     private func makeWelcomeViewController() -> UIViewController {
         let welcomeViewController =
-            WelcomeViewController(variant: .pass(.init(body: "Secure password manager and more".localized)),
+            WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
                                   delegate: self,
                                   username: nil,
                                   signupAvailable: true)
