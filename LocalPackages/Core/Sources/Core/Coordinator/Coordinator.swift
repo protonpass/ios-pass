@@ -90,8 +90,8 @@ public extension CoordinatorProtocol {
 
     func dismissAllViewControllers(animated: Bool = true, completion: (() -> Void)? = nil) {
         rootViewController.dismiss(animated: animated) { [weak self] in
-            guard let self else { return }
             completion?()
+            guard let self else { return }
             coordinatorDidDismiss()
         }
     }
