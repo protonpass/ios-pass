@@ -45,7 +45,8 @@ final class OnboardingViewModel: ObservableObject {
         NotificationCenter.default
             .publisher(for: UIApplication.didBecomeActiveNotification)
             .sink { [weak self] _ in
-                self?.checkAutoFillStatus()
+                guard let self else { return }
+                checkAutoFillStatus()
             }
             .store(in: &cancellables)
 

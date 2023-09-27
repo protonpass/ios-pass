@@ -86,14 +86,16 @@ private extension ItemsTabViewModel {
         getPendingUserInvitations()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
-                self?.refreshBanners(invites)
+                guard let self else { return }
+                refreshBanners(invites)
             }
             .store(in: &cancellables)
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                self?.refreshBanners()
+                guard let self else { return }
+                refreshBanners()
             }
             .store(in: &cancellables)
 

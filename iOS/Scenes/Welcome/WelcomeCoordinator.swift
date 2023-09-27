@@ -78,7 +78,8 @@ final class WelcomeCoordinator: DeinitPrintable {
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     func userWantsToLogIn(username: String?) {
         let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
-            self?.preferences.theme.inAppTheme ?? .default
+            guard let self else { return .default }
+            return preferences.theme.inAppTheme
         })
         logInAndSignUp.presentLoginFlow(over: welcomeViewController,
                                         customization: customization) { [weak self] result in
@@ -96,7 +97,8 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
 
     func userWantsToSignUp() {
         let customization: LoginCustomizationOptions = .init(inAppTheme: { [weak self] in
-            self?.preferences.theme.inAppTheme ?? .default
+            guard let self else { return .default }
+            return preferences.theme.inAppTheme
         })
         logInAndSignUp.presentSignupFlow(over: welcomeViewController,
                                          customization: customization) { [weak self] result in

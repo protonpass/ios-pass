@@ -58,8 +58,7 @@ struct ItemTypeFilterOptionUiModel {
 
 private extension ItemContentType {
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
-        let count: Int =
-            switch self {
+        let count: Int = switch self {
         case .login:
             itemCount.login
         case .alias:

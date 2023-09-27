@@ -226,44 +226,48 @@ private extension SearchViewModel {
 extension SearchViewModel {
     func refreshResults() {
         Task { @MainActor [weak self] in
-            await self?.indexItems()
-            self?.doSearch(query: self?.lastSearchQuery ?? "")
+            guard let self else { return }
+            await indexItems()
+            doSearch(query: lastSearchQuery ?? "")
         }
     }
 
     func viewDetail(of item: ItemIdentifiable) {
         Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                if let itemContent = try await self?.itemRepository.getItemContent(shareId: item.shareId,
-                                                                                   itemId: item.itemId) {
-                    try await self?.searchEntryDatasource.upsert(item: item, date: .now)
-                    try await self?.refreshSearchHistory()
-                    self?.delegate?.searchViewModelWantsToViewDetail(of: itemContent)
+                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                             itemId: item.itemId) {
+                    try await searchEntryDatasource.upsert(item: item, date: .now)
+                    try await refreshSearchHistory()
+                    delegate?.searchViewModelWantsToViewDetail(of: itemContent)
                 }
             } catch {
-                self?.router.display(element: .displayErrorBanner(error))
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
     func removeFromHistory(_ item: ItemIdentifiable) {
         Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                try await self?.searchEntryDatasource.remove(item: item)
-                try await self?.refreshSearchHistory()
+                try await searchEntryDatasource.remove(item: item)
+                try await refreshSearchHistory()
             } catch {
-                self?.router.display(element: .displayErrorBanner(error))
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
     func removeAllSearchHistory() {
         Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                try await self?.searchEntryDatasource.removeAllEntries()
-                try await self?.refreshSearchHistory()
+                try await searchEntryDatasource.removeAllEntries()
+                try await refreshSearchHistory()
             } catch {
-                self?.router.display(element: .displayErrorBanner(error))
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -289,7 +293,8 @@ private extension SearchViewModel {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] term in
-                self?.doSearch(query: term)
+                guard let self else { return }
+                doSearch(query: term)
             }
             .store(in: &cancellables)
 
@@ -297,7 +302,8 @@ private extension SearchViewModel {
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [weak self] _ in
-                self?.filterAndSortResults()
+                guard let self else { return }
+                filterAndSortResults()
             }
             .store(in: &cancellables)
     }

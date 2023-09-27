@@ -197,3 +197,8 @@ custom_rules:
     name: "Drop first one"
     message: "Implicitly drop first one element"
     regex: "(\\.dropFirst\\(1\\))"
+
+  discouraged_optional_self:
+    name: "Discouraged optional self"
+    message: "Unwrap self via guard let and use implicit self instead of optional self"
+    regex: "(self\\?\\.)"

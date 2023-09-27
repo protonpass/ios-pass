@@ -83,14 +83,16 @@ public extension CoordinatorProtocol {
     func dismissTopMostViewController(animated: Bool = true, completion: (() -> Void)? = nil) {
         rootViewController.topMostViewController.dismiss(animated: animated) { [weak self] in
             completion?()
-            self?.coordinatorDidDismiss()
+            guard let self else { return }
+            coordinatorDidDismiss()
         }
     }
 
     func dismissAllViewControllers(animated: Bool = true, completion: (() -> Void)? = nil) {
         rootViewController.dismiss(animated: animated) { [weak self] in
             completion?()
-            self?.coordinatorDidDismiss()
+            guard let self else { return }
+            coordinatorDidDismiss()
         }
     }
 
