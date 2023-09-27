@@ -23,6 +23,7 @@
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -145,7 +146,7 @@ private extension UserPermissionView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: "Continue".localized,
+            DisablableCapsuleTextButton(title: #localized("Continue"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,

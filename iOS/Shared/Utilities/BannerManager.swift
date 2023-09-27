@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Macro
 import ProtonCoreUIFoundations
 import UIKit
 
@@ -38,7 +39,7 @@ protocol BannerDisplayProtocol: Sendable {
 
 extension BannerDisplayProtocol {
     func displayTopErrorMessage(_ message: String,
-                                dismissButtonTitle: String = "OK".localized,
+                                dismissButtonTitle: String = #localized("OK"),
                                 onDismiss: ((PMBanner) -> Void)? = nil) {
         displayTopErrorMessage(message, dismissButtonTitle: dismissButtonTitle, onDismiss: onDismiss)
     }
@@ -73,7 +74,7 @@ final class BannerManager: BannerDisplayProtocol {
     }
 
     func displayTopErrorMessage(_ message: String,
-                                dismissButtonTitle: String = "OK".localized,
+                                dismissButtonTitle: String = #localized("OK"),
                                 onDismiss: ((PMBanner) -> Void)? = nil) {
         let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
         let banner = PMBanner(message: message, style: PMBannerNewStyle.error)

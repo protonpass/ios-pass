@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Macro
 
 public enum ClipboardExpiration: Int, Codable, CustomStringConvertible, CaseIterable, Sendable {
     case fifteenSeconds = 0
@@ -29,13 +30,13 @@ public enum ClipboardExpiration: Int, Codable, CustomStringConvertible, CaseIter
     public var description: String {
         switch self {
         case .fifteenSeconds:
-            "After 15 seconds".localized
+            #localized("After 15 seconds")
         case .oneMinute:
-            "After 60 seconds".localized
+            #localized("After 60 seconds")
         case .twoMinutes:
-            "After 120 seconds".localized
+            #localized("After 120 seconds")
         case .never:
-            "Never".localized
+            #localized("Never")
         }
     }
 

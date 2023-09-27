@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -43,7 +44,7 @@ struct ItemDetailToolbar: ToolbarContent {
             case .active:
                 HStack {
                     CapsuleLabelButton(icon: IconProvider.pencil,
-                                       title: "Edit".localized,
+                                       title: #localized("Edit"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: itemContentType.normMajor1Color,
                                        action: viewModel.edit)

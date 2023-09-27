@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -38,7 +39,7 @@ struct NoteEditSection<Field: Hashable>: View {
                 TextEditorWithPlaceholder(text: $note,
                                           focusedField: focusedField,
                                           field: field,
-                                          placeholder: "Add note".localized)
+                                          placeholder: #localized("Add note"))
                     .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

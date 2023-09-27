@@ -76,30 +76,30 @@
         }
       }
     },
-    "%d characters" : {
+    "%lld characters" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d Zeichen"
+            "value" : "%lld Zeichen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d characters"
+            "value" : "%lld characters"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d caractères"
+            "value" : "%lld caractères"
           }
         }
       }
     },
-    "%d item(s)" : {
+    "%lld item(s)" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -108,13 +108,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Eintrag"
+                  "value" : "%lld Eintrag"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Einträge"
+                  "value" : "%lld Einträge"
                 }
               }
             }
@@ -126,19 +126,19 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d item"
+                  "value" : "%lld item"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d items"
+                  "value" : "%lld items"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d item"
+                  "value" : "%lld item"
                 }
               }
             }
@@ -150,13 +150,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d élément"
+                  "value" : "%lld élément"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d éléments"
+                  "value" : "%lld éléments"
                 }
               }
             }
@@ -164,7 +164,7 @@
         }
       }
     },
-    "%d member(s)" : {
+    "%lld member(s)" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -173,13 +173,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Mitglied"
+                  "value" : "%lld Mitglied"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Mitglieder"
+                  "value" : "%lld Mitglieder"
                 }
               }
             }
@@ -191,13 +191,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d member"
+                  "value" : "%lld member"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d members"
+                  "value" : "%lld members"
                 }
               }
             }
@@ -209,13 +209,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d membre"
+                  "value" : "%lld membre"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d membres"
+                  "value" : "%lld membres"
                 }
               }
             }
@@ -223,7 +223,7 @@
         }
       }
     },
-    "%d remaining attempt(s)" : {
+    "%lld remaining attempt(s)" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -238,7 +238,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Versuche verbleibend"
+                  "value" : "%lld Versuche verbleibend"
                 }
               }
             }
@@ -256,7 +256,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d remaining attempts"
+                  "value" : "%lld remaining attempts"
                 }
               }
             }
@@ -274,7 +274,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d tentatives restantes"
+                  "value" : "%lld tentatives restantes"
                 }
               }
             }
@@ -282,7 +282,7 @@
         }
       }
     },
-    "%d search result(s)" : {
+    "%lld search result(s)" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -368,7 +368,7 @@
         }
       }
     },
-    "%d time(s)" : {
+    "%lld time(s)" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -383,7 +383,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Mal"
+                  "value" : "%lld Mal"
                 }
               }
             }
@@ -401,7 +401,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d times"
+                  "value" : "%lld times"
                 }
               }
             }
@@ -419,7 +419,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d fois"
+                  "value" : "%lld fois"
                 }
               }
             }
@@ -427,7 +427,7 @@
         }
       }
     },
-    "%d trial day(s) left" : {
+    "%lld trial day(s) left" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -442,7 +442,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Deine kostenlose Testphase läuft noch %d Tage."
+                  "value" : "Deine kostenlose Testphase läuft noch %lld Tage."
                 }
               }
             }
@@ -460,7 +460,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d days left in your trial period"
+                  "value" : "%lld days left in your trial period"
                 }
               }
             }
@@ -478,7 +478,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Votre période d'essai se termine dans %d jours."
+                  "value" : "Votre période d'essai se termine dans %lld jours."
                 }
               }
             }
@@ -486,7 +486,7 @@
         }
       }
     },
-    "%d word(s)" : {
+    "%lld word(s)" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -495,13 +495,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Wort"
+                  "value" : "%lld Wort"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d Wörter"
+                  "value" : "%lld Wörter"
                 }
               }
             }
@@ -513,13 +513,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d word"
+                  "value" : "%lld word"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d words"
+                  "value" : "%lld words"
                 }
               }
             }
@@ -531,13 +531,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d mot"
+                  "value" : "%lld mot"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d mots"
+                  "value" : "%lld mots"
                 }
               }
             }
@@ -915,7 +915,7 @@
         }
       }
     },
-    "After 4 hour" : {
+    "After 4 hours" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -927,7 +927,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "After 4 hour"
+            "value" : "After 4 hours"
           }
         },
         "fr" : {
@@ -5063,7 +5063,7 @@
         }
       }
     },
-    "not shared %d alias(es)" : {
+    "not shared %lld alias(es)" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -5078,7 +5078,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Dieser Tresor enthält %d Aliasse. Das Teilen von Aliassen wird derzeit nicht unterstützt und sie werden nicht geteilt."
+                  "value" : "Dieser Tresor enthält %lld Aliasse. Das Teilen von Aliassen wird derzeit nicht unterstützt und sie werden nicht geteilt."
                 }
               }
             }
@@ -5096,7 +5096,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "This vault contains %d aliases. Alias sharing is currently not supported and they won’t be shared."
+                  "value" : "This vault contains %lld aliases. Alias sharing is currently not supported and they won’t be shared."
                 }
               }
             }
@@ -5114,7 +5114,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ce coffre-fort contient %d alias. Le partage d'alias n'est pas possible pour le moment : les alias ne seront pas partagés."
+                  "value" : "Ce coffre-fort contient %lld alias. Le partage d'alias n'est pas possible pour le moment : les alias ne seront pas partagés."
                 }
               }
             }

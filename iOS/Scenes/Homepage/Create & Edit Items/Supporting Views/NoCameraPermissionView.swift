@@ -21,6 +21,7 @@
 import Core
 import DesignSystem
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -41,7 +42,7 @@ struct NoCameraPermissionView: View {
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                     if !Bundle.main.bundlePath.hasSuffix(".appex") {
-                        CapsuleTextButton(title: "Open Settings".localized,
+                        CapsuleTextButton(title: #localized("Open Settings"),
                                           titleColor: PassColor.textInvert,
                                           backgroundColor: PassColor.interactionNormMajor1,
                                           action: onOpenSettings)

@@ -21,6 +21,7 @@
 import Client
 import DesignSystem
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -56,7 +57,7 @@ struct EditableVaultListView: View {
             }
             .animation(.default, value: viewModel.state)
             HStack {
-                CapsuleTextButton(title: "Create vault".localized,
+                CapsuleTextButton(title: #localized("Create vault"),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   action: viewModel.createNewVault)
@@ -79,7 +80,7 @@ struct EditableVaultListView: View {
                           })
                },
                message: {
-                   Text("not shared %d alias(es)".localized(viewModel.numberOfAliasForSharedVault))
+                   Text("not shared \(viewModel.numberOfAliasForSharedVault) alias(es)")
                })
     }
 
@@ -237,11 +238,11 @@ extension VaultSelection {
     var title: String {
         switch self {
         case .all:
-            "All vaults".localized
+            #localized("All vaults")
         case let .precise(vault):
             vault.name
         case .trash:
-            "Trash".localized
+            #localized("Trash")
         }
     }
 

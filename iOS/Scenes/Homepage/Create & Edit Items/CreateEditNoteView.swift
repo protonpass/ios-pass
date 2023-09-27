@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -54,7 +55,7 @@ struct CreateEditNoteView: View {
                         TextEditorWithPlaceholder(text: $viewModel.title,
                                                   focusedField: $focusedField,
                                                   field: .title,
-                                                  placeholder: "Untitled".localized,
+                                                  placeholder: #localized("Untitled"),
                                                   font: .title,
                                                   fontWeight: .bold,
                                                   onSubmit: { focusedField = .content })
@@ -65,7 +66,7 @@ struct CreateEditNoteView: View {
                         TextEditorWithPlaceholder(text: $viewModel.note,
                                                   focusedField: $focusedField,
                                                   field: .content,
-                                                  placeholder: "Note".localized)
+                                                  placeholder: #localized("Note"))
                     }
                     .padding()
                 }

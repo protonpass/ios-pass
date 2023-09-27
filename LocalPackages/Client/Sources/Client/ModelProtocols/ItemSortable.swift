@@ -20,6 +20,7 @@
 
 import Core
 import Foundation
+import Macro
 
 public enum SortType: Int, CaseIterable, Equatable {
     case mostRecent = 0, alphabeticalAsc, alphabeticalDesc, newestToOldest, oldestToNewest
@@ -27,15 +28,15 @@ public enum SortType: Int, CaseIterable, Equatable {
     public var title: String {
         switch self {
         case .mostRecent:
-            "Most recent".localized
+            #localized("Most recent")
         case .alphabeticalAsc:
-            "Title (A-Z)".localized
+            #localized("Title (A-Z)")
         case .alphabeticalDesc:
-            "Title (Z-A)".localized
+            #localized("Title (Z-A)")
         case .newestToOldest:
-            "Newest to oldest".localized
+            #localized("Newest to oldest")
         case .oldestToNewest:
-            "Oldest to newest".localized
+            #localized("Oldest to newest")
         }
     }
 

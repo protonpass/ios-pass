@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -107,7 +108,7 @@ private extension CreditCardDetailView {
                     .sectionTitleText()
 
                 UpsellableDetailText(text: viewModel.cardholderName,
-                                     placeholder: "Empty".localized,
+                                     placeholder: #localized("Empty"),
                                      shouldUpgrade: false,
                                      upgradeTextColor: tintColor,
                                      onUpgrade: viewModel.upgrade)
@@ -145,7 +146,7 @@ private extension CreditCardDetailView {
                 UpsellableDetailText(text: isShowingCardNumber ?
                     viewModel.cardNumber.toCreditCardNumber() : viewModel.cardNumber
                     .toMaskedCreditCardNumber(),
-                    placeholder: "Empty".localized,
+                    placeholder: #localized("Empty"),
                     shouldUpgrade: viewModel.isFreeUser,
                     upgradeTextColor: tintColor,
                     onUpgrade: viewModel.upgrade)
@@ -197,7 +198,7 @@ private extension CreditCardDetailView {
                 UpsellableDetailText(text: isShowingVerificationNumber ?
                     viewModel.verificationNumber :
                     String(repeating: "•", count: viewModel.verificationNumber.count),
-                    placeholder: "Empty".localized,
+                    placeholder: #localized("Empty"),
                     shouldUpgrade: false,
                     upgradeTextColor: tintColor,
                     onUpgrade: viewModel.upgrade)

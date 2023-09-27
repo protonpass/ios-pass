@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -47,10 +48,10 @@ enum ItemContextMenu {
         case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
             [
                 .init(options: [
-                    .init(title: "Copy username".localized,
+                    .init(title: #localized("Copy username"),
                           icon: IconProvider.user,
                           action: onCopyUsername),
-                    .init(title: "Copy password".localized,
+                    .init(title: #localized("Copy password"),
                           icon: IconProvider.key,
                           action: onCopyPassword)
                 ]),
@@ -60,7 +61,7 @@ enum ItemContextMenu {
 
         case let .alias(onCopyAlias, onEdit, onTrash):
             [
-                .init(options: [.init(title: "Copy alias address".localized,
+                .init(options: [.init(title: #localized("Copy alias address"),
                                       icon: IconProvider.alias,
                                       action: onCopyAlias)]),
                 .init(options: [.editOption(action: onEdit)]),
@@ -75,7 +76,7 @@ enum ItemContextMenu {
 
         case let .note(onCopyContent, onEdit, onTrash):
             [
-                .init(options: [.init(title: "Copy note content".localized,
+                .init(options: [.init(title: #localized("Copy note content"),
                                       icon: IconProvider.note,
                                       action: onCopyContent)]),
                 .init(options: [.editOption(action: onEdit)]),
@@ -84,10 +85,10 @@ enum ItemContextMenu {
 
         case let .trashedItem(onRestore, onPermanentlyDelete):
             [
-                .init(options: [.init(title: "Restore".localized,
+                .init(options: [.init(title: #localized("Restore"),
                                       icon: IconProvider.clockRotateLeft,
                                       action: onRestore)]),
-                .init(options: [.init(title: "Delete permanently".localized,
+                .init(options: [.init(title: #localized("Delete permanently"),
                                       icon: IconProvider.trashCross,
                                       action: onPermanentlyDelete,
                                       isDestructive: true)])
@@ -104,11 +105,11 @@ struct ItemContextMenuOption: Identifiable {
     var isDestructive = false
 
     static func editOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Edit".localized, icon: IconProvider.pencil, action: action)
+        .init(title: #localized("Edit"), icon: IconProvider.pencil, action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Move to trash".localized,
+        .init(title: #localized("Move to trash"),
               icon: IconProvider.trash,
               action: action,
               isDestructive: true)

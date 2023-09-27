@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Factory
+import Macro
 import ProtonCoreLogin
 
 enum VaultColorIcon {
@@ -63,9 +64,9 @@ final class CreateEditVaultViewModel: ObservableObject {
     var saveButtonTitle: String {
         switch mode {
         case .create:
-            "Create vault".localized
+            #localized("Create vault")
         case .edit:
-            "Save".localized
+            #localized("Save")
         }
     }
 
@@ -138,7 +139,7 @@ private extension CreateEditVaultViewModel {
                 self.logger.trace("Creating vault")
                 self.loading = true
                 try await self.createVaultUseCase(with: self.generateVaultProtobuf())
-                self.router.display(element: .successMessage("Vault created".localized,
+                self.router.display(element: .successMessage(#localized("Vault created"),
                                                              config: .dismissAndRefresh))
                 self.logger.info("Created vault")
             } catch {
