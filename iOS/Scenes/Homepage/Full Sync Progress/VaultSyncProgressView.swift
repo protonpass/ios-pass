@@ -114,7 +114,7 @@ private extension VaultSyncProgressView {
                 if progress.isEmpty {
                     emptyText
                 } else if progress.isDone {
-                    Text(#localized("%d item(s)", total))
+                    Text("\(total) item(s)")
                         .foregroundColor(PassColor.textWeak.toColor)
                 } else {
                     spinnerLabel(text: #localized("%@%% decrypted...",

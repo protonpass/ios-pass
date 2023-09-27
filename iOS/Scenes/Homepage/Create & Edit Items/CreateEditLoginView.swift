@@ -212,7 +212,7 @@ private extension CreateEditLoginView {
                         focusedField = nil
                     }
                 }, label: {
-                    Text(#localized("Use %@", viewModel.emailAddress))
+                    Text("Use \(viewModel.emailAddress)")
                         .minimumScaleFactor(0.5)
                 })
                 .frame(maxWidth: .infinity, alignment: .center)

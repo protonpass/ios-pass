@@ -78,7 +78,7 @@ struct TrialDetailView: View {
                     endPoint: .trailing))
                 .clipShape(Capsule())
 
-                Text(#localized("%d trial day(s) left", daysLeft))
+                Text("\(daysLeft) trial day(s) left")
                     .font(.callout)
                     .padding(.top)
 
