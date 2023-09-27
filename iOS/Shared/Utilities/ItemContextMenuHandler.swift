@@ -65,8 +65,9 @@ extension ItemContextMenuHandler {
                 try await self.itemRepository.trashItems([encryptedItem])
 
                 let undoBlock: (PMBanner) -> Void = { [weak self] banner in
+                    guard let self else { return }
                     banner.dismiss()
-                    self?.restore(item)
+                    restore(item)
                 }
 
                 self.clipboardManager.bannerManager.displayBottomInfoMessage(item.trashMessage,

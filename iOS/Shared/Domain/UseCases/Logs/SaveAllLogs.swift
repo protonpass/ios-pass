@@ -39,7 +39,8 @@ final class SaveAllLogs: SaveAllLogsUseCase {
 
     func execute() {
         Task { [weak self] in
-            await self?.logManager.saveAllLogs()
+            guard let self else { return }
+            await logManager.saveAllLogs()
         }
     }
 }

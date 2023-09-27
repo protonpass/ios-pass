@@ -70,13 +70,15 @@ extension AccountViewModel {
 
     func manageSubscription() {
         paymentsManager.manageSubscription { [weak self] result in
-            self?.handlePaymentsResult(result: result)
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 
     func upgradeSubscription() {
         paymentsManager.upgradeSubscription { [weak self] result in
-            self?.handlePaymentsResult(result: result)
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 

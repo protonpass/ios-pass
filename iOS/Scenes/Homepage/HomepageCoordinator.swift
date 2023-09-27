@@ -155,7 +155,8 @@ private extension HomepageCoordinator {
         self.profileTabViewModel = profileTabViewModel
 
         let placeholderView = ItemDetailPlaceholderView { [weak self] in
-            self?.popTopViewController(animated: true)
+            guard let self else { return }
+            popTopViewController(animated: true)
         }
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
@@ -165,12 +166,14 @@ private extension HomepageCoordinator {
             .ignoresSafeArea(edges: [.top, .bottom])
             .localAuthentication(delayed: false,
                                  onAuth: { [weak self] in
-                                     self?.dismissAllViewControllers(animated: false)
-                                     self?.hideSecondaryView()
+                                     guard let self else { return }
+                                     dismissAllViewControllers(animated: false)
+                                     hideSecondaryView()
                                  },
                                  onSuccess: { [weak self] in
-                                     self?.showSecondaryView()
-                                     self?.logger.info("Local authentication succesful")
+                                     guard let self else { return }
+                                     showSecondaryView()
+                                     logger.info("Local authentication succesful")
                                  },
                                  onFailure: { [weak self] in
                                      guard let self else { return }
@@ -184,10 +187,11 @@ private extension HomepageCoordinator {
 
     func refreshPlan() {
         Task { [weak self] in
+            guard let self else { return }
             do {
-                try await self?.passPlanRepository.refreshPlan()
+                try await passPlanRepository.refreshPlan()
             } catch {
-                self?.logger.error(error)
+                logger.error(error)
             }
         }
     }
@@ -205,10 +209,11 @@ private extension HomepageCoordinator {
 
     func sendAllEventsIfApplicable() {
         Task { [weak self] in
+            guard let self else { return }
             do {
-                try await self?.telemetryEventRepository.sendAllEventsIfApplicable()
+                try await telemetryEventRepository.sendAllEventsIfApplicable()
             } catch {
-                self?.logger.error(error)
+                logger.error(error)
             }
         }
     }
@@ -459,16 +464,18 @@ private extension HomepageCoordinator {
 
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
-            self?.paymentsManager.upgradeSubscription { [weak self] result in
+            guard let self else { return }
+            paymentsManager.upgradeSubscription { [weak self] result in
+                guard let self else { return }
                 switch result {
                 case let .success(inAppPurchasePlan):
                     if inAppPurchasePlan != nil {
-                        self?.refreshPlan()
+                        refreshPlan()
                     } else {
-                        self?.logger.debug("Payment is done but no plan is purchased")
+                        logger.debug("Payment is done but no plan is purchased")
                     }
                 case let .failure(error):
-                    self?.bannerManager.displayTopErrorMessage(error)
+                    bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
@@ -481,7 +488,8 @@ private extension HomepageCoordinator {
 
         if let config, config.dismissBeforeShowing {
             dismissTopMostViewController(animated: true) { [weak self] in
-                self?.bannerManager.displayBottomSuccessMessage(message)
+                guard let self else { return }
+                bannerManager.displayBottomSuccessMessage(message)
             }
         } else {
             bannerManager.displayBottomSuccessMessage(message)
@@ -495,7 +503,8 @@ private extension HomepageCoordinator {
 
         if let config, config.dismissBeforeShowing {
             dismissTopMostViewController(animated: true) { [weak self] in
-                self?.bannerManager.displayBottomInfoMessage(message)
+                guard let self else { return }
+                bannerManager.displayBottomInfoMessage(message)
             }
         } else {
             bannerManager.displayBottomInfoMessage(message)
@@ -599,7 +608,8 @@ extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func homepageTabBarControllerDidSelectItemsTab() {
         if !isCollapsed() {
             let placeholderView = ItemDetailPlaceholderView { [weak self] in
-                self?.popTopViewController(animated: true)
+                guard let self else { return }
+                popTopViewController(animated: true)
             }
             push(placeholderView)
         }
@@ -649,12 +659,14 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
 
         case .dismissTopViewController:
             dismissTopMostViewController { [weak self] in
-                self?.present(viewController)
+                guard let self else { return }
+                present(viewController)
             }
 
         case .dismissAllViewControllers:
             dismissAllViewControllers { [weak self] in
-                self?.present(viewController)
+                guard let self else { return }
+                present(viewController)
             }
         }
     }
@@ -696,7 +708,8 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
 extension HomepageCoordinator: ItemTypeListViewModelDelegate {
     func itemTypeListViewModelDidSelect(type: ItemType) {
         dismissTopMostViewController { [weak self] in
-            self?.presentCreateItemView(for: type)
+            guard let self else { return }
+            presentCreateItemView(for: type)
         }
     }
 }
@@ -825,14 +838,16 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func profileTabViewModelWantsToShowFeedback() {
         let view = FeedbackChannelsView { [weak self] selectedChannel in
+            guard let self else { return }
             switch selectedChannel {
             case .bugReport:
-                self?.dismissTopMostViewController(animated: true) { [weak self] in
-                    self?.presentBugReportView()
+                dismissTopMostViewController(animated: true) { [weak self] in
+                    guard let self else { return }
+                    presentBugReportView()
                 }
             default:
                 if let urlString = selectedChannel.urlString {
-                    self?.urlOpener.open(urlString: urlString)
+                    urlOpener.open(urlString: urlString)
                 }
             }
         }
@@ -848,11 +863,14 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
 
     func presentBugReportView() {
         let errorHandler: (Error) -> Void = { [weak self] error in
-            self?.bannerManager.displayTopErrorMessage(error)
+            guard let self else { return }
+            bannerManager.displayTopErrorMessage(error)
         }
         let successHandler: () -> Void = { [weak self] in
-            self?.dismissTopMostViewController { [weak self] in
-                self?.bannerManager.displayBottomSuccessMessage("Report successfully sent".localized)
+            guard let self else { return }
+            dismissTopMostViewController { [weak self] in
+                guard let self else { return }
+                bannerManager.displayBottomSuccessMessage("Report successfully sent".localized)
             }
         }
         let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
@@ -884,22 +902,24 @@ extension HomepageCoordinator: AccountViewModelDelegate {
         showLoadingHud(view)
         accountDeletion.initiateAccountDeletionProcess(over: topMostViewController,
                                                        performAfterShowingAccountDeletionScreen: { [weak self] in
-                                                           self?.hideLoadingHud(view)
+                                                           guard let self else { return }
+                                                           hideLoadingHud(view)
                                                        },
                                                        completion: { [weak self] result in
                                                            guard let self else { return }
                                                            hideLoadingHud(view)
-                                                           DispatchQueue.main.async {
+                                                           DispatchQueue.main.async { [weak self] in
+                                                               guard let self else { return }
                                                                switch result {
                                                                case .success:
-                                                                   self.logger.trace("Account deletion successful")
-                                                                   self.accountViewModelWantsToSignOut()
+                                                                   logger.trace("Account deletion successful")
+                                                                   accountViewModelWantsToSignOut()
                                                                case .failure(AccountDeletionError.closedByUser):
-                                                                   self.logger
+                                                                   logger
                                                                        .trace("Accpunt deletion form closed by user")
                                                                case let .failure(error):
-                                                                   self.logger.error(error)
-                                                                   self.bannerManager
+                                                                   logger.error(error)
+                                                                   bannerManager
                                                                        .displayTopErrorMessage(error
                                                                            .userFacingMessageInAccountDeletion)
                                                                }
@@ -971,7 +991,8 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
             let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
             await MainActor.run { [weak self] in
-                self?.bannerManager.displayBottomSuccessMessage("All logs cleared".localized)
+                guard let self else { return }
+                bannerManager.displayBottomSuccessMessage("All logs cleared".localized)
             }
         }
     }
@@ -1022,7 +1043,8 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
         addNewEvent(type: .create(type))
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomInfoMessage(type.creationMessage)
+            guard let self else { return }
+            bannerManager.displayBottomInfoMessage(type.creationMessage)
         }
         vaultsManager.refresh()
         homepageTabDelegete?.homepageTabShouldChange(tab: .items)
@@ -1035,7 +1057,8 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
         dismissTopMostViewController { [weak self] in
-            self?.bannerManager.displayBottomInfoMessage(type.updateMessage)
+            guard let self else { return }
+            bannerManager.displayBottomInfoMessage(type.updateMessage)
         }
     }
 }
@@ -1066,7 +1089,8 @@ extension HomepageCoordinator: CreateEditLoginViewModelDelegate {
 extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
     func generatePasswordViewModelDidConfirm(password: String) {
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.clipboardManager.copy(text: password, bannerMessage: "Password copied".localized)
+            guard let self else { return }
+            clipboardManager.copy(text: password, bannerMessage: "Password copied".localized)
         }
     }
 }
@@ -1109,13 +1133,15 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
         refresh()
         dismissTopMostViewController(animated: true) { [weak self] in
+            guard let self else { return }
             let undoBlock: (PMBanner) -> Void = { [weak self] banner in
+                guard let self else { return }
                 banner.dismiss()
-                self?.itemContextMenuHandler.restore(item)
+                itemContextMenuHandler.restore(item)
             }
-            self?.bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                         dismissButtonTitle: "Undo".localized,
-                                                         onDismiss: undoBlock)
+            bannerManager.displayBottomInfoMessage(item.trashMessage,
+                                                   dismissButtonTitle: "Undo".localized,
+                                                   onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
     }
@@ -1148,7 +1174,8 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     func createEditVaultViewModelDidEditVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomInfoMessage("Vault updated".localized)
+            guard let self else { return }
+            bannerManager.displayBottomInfoMessage("Vault updated".localized)
         }
         vaultsManager.refresh()
     }
@@ -1159,7 +1186,8 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
 extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
     func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
         dismissTopMostViewController(animated: true) { [weak self] in
-            self?.bannerManager.displayBottomSuccessMessage("Primary vault updated".localized)
+            guard let self else { return }
+            bannerManager.displayBottomSuccessMessage("Primary vault updated".localized)
         }
         vaultsManager.refresh()
     }

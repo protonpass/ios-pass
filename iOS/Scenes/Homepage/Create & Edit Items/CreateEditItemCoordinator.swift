@@ -156,13 +156,14 @@ private extension CreateEditItemCoordinator {
                 assertionFailure("wordProvider should not be null")
                 return
             }
+            guard let self else { return }
             let coordinator =
                 GeneratePasswordCoordinator(generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
                                             mode: mode,
                                             wordProvider: wordProvider)
-            coordinator.delegate = self?.createEditItemDelegates
+            coordinator.delegate = createEditItemDelegates
             coordinator.start()
-            self?.generatePasswordCoordinator = coordinator
+            generatePasswordCoordinator = coordinator
         }
     }
 }
