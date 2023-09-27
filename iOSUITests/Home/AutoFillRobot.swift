@@ -39,7 +39,7 @@ public final class AutoFillRobot: CoreElements {
     }
 
     public func notNowTap<T: CoreElements>(robot _: T.Type) -> T {
-        button(notNowTxt).waitUntilExists().tap()
+        button(notNowTxt).waitForHittable().tap()
         return T()
     }
 }
