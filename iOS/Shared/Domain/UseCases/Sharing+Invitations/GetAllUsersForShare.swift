@@ -54,6 +54,7 @@ final class GetAllUsersForShare: GetAllUsersForShareUseCase {
 struct ShareUser: Equatable, Hashable, Identifiable {
     let email: String
     let shareRole: ShareRole?
+    let isOwner: Bool
     let inviteID: String?
     let shareID: String?
     let userName: String?
@@ -67,6 +68,9 @@ struct ShareUser: Equatable, Hashable, Identifiable {
     }
 
     var permission: String {
+        if isOwner {
+            return #localized("owner")
+        }
         if let shareRole {
             return shareRole.role
         }
@@ -82,6 +86,7 @@ extension UserShareInfos {
     var toShareUser: ShareUser {
         ShareUser(email: userEmail,
                   shareRole: shareRole,
+                  isOwner: owner,
                   inviteID: nil,
                   shareID: shareID,
                   userName: userName)
@@ -92,6 +97,7 @@ extension ShareInvite {
     var toShareUser: ShareUser {
         ShareUser(email: invitedEmail,
                   shareRole: nil,
+                  isOwner: false,
                   inviteID: inviteID,
                   shareID: nil,
                   userName: nil)
