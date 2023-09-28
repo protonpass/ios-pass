@@ -396,7 +396,6 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    // swiftlint:disable:next function_parameter_count
     func showCreateLoginView(shareId: String,
                              upgradeChecker: UpgradeCheckerProtocol,
                              vaults: [Vault],

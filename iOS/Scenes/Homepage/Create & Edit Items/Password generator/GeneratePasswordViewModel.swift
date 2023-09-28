@@ -174,6 +174,7 @@ private extension GeneratePasswordViewModel {
     }
 
     func requestHeightUpdate() {
-        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions:isShowingAdvancedOptions)
+        uiDelegate?
+            .generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: isShowingAdvancedOptions)
     }
 }
