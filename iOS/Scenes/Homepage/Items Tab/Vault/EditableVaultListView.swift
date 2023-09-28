@@ -69,19 +69,6 @@ struct EditableVaultListView: View {
         .background(Color(uiColor: PassColor.backgroundWeak))
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .alert("Aliases won't be shared",
-               isPresented: $viewModel.showingAliasAlert,
-               actions: {
-                   Button(action: {
-                              viewModel.router.present(for: .sharingFlow)
-                          },
-                          label: {
-                              Text("OK")
-                          })
-               },
-               message: {
-                   Text("not shared \(viewModel.numberOfAliasForSharedVault) alias(es)")
-               })
     }
 
     @ViewBuilder
