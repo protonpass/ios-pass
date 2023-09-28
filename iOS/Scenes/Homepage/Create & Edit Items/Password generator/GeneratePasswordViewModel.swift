@@ -27,8 +27,7 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 }
 
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
-    func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
-                                                           isShowingAdvancedOptions: Bool)
+    func generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: Bool)
 }
 
 enum PasswordUtils {
@@ -175,8 +174,6 @@ private extension GeneratePasswordViewModel {
     }
 
     func requestHeightUpdate() {
-        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: type,
-                                                                      isShowingAdvancedOptions:
-                                                                      isShowingAdvancedOptions)
+        uiDelegate?.generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions:isShowingAdvancedOptions)
     }
 }
