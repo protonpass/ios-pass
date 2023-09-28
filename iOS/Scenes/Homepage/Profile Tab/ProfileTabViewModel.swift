@@ -28,7 +28,6 @@ import SwiftUI
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
-    func profileTabViewModelWantsToShowAcknowledgments()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
 }
@@ -39,7 +38,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
@@ -153,10 +151,6 @@ extension ProfileTabViewModel {
 
     func showSettingsMenu() {
         delegate?.profileTabViewModelWantsToShowSettingsMenu()
-    }
-
-    func showAcknowledgments() {
-        delegate?.profileTabViewModelWantsToShowAcknowledgments()
     }
 
     func showPrivacyPolicy() {

@@ -28,7 +28,6 @@ struct PinAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
     @FocusState private var isFocused
     @State private var pinCode = ""
-    private let preferences = resolve(\SharedToolingContainer.preferences)
     private let module = resolve(\SharedToolingContainer.module)
 
     init(viewModel: LocalAuthenticationViewModel) {

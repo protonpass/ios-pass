@@ -31,7 +31,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var title = ""
     @Published var note = ""
 
-    override var isSaveable: Bool { !title.isEmpty }
+    var isSaveable: Bool { !title.isEmpty }
 
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
@@ -72,7 +72,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override func itemContentType() -> ItemContentType { .note }
 
-    override var interpretor: ScanInterpreting { ScanInterpreter() }
+    var interpretor: ScanInterpreting { ScanInterpreter() }
 
     override func generateItemContent() -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,

@@ -66,7 +66,6 @@ struct NoteDetailSection: View {
 
 private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
-    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     let itemContent: ItemContent
     let vault: Vault?
     let theme: Theme

@@ -48,19 +48,15 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
 
@@ -831,10 +827,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         viewModel.delegate = self
         let view = SettingsView(viewModel: viewModel)
         showView(view: view, asSheet: asSheet)
-    }
-
-    func profileTabViewModelWantsToShowAcknowledgments() {
-        print(#function)
     }
 
     func profileTabViewModelWantsToShowFeedback() {
