@@ -1324,6 +1324,7 @@
       }
     },
     "Aliases won't be shared" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -5566,6 +5567,9 @@
           }
         }
       }
+    },
+    "owner" : {
+
     },
     "Password" : {
       "localizations" : {
