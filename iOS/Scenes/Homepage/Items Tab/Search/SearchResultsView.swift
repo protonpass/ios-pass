@@ -201,7 +201,6 @@ private extension SearchResultsView {
 }
 
 private struct ItemSearchResultView: View, Equatable {
-    private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
     let result: ItemSearchResult
 
     var body: some View {
