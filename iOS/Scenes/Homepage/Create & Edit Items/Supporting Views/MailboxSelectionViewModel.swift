@@ -29,7 +29,6 @@ final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var shouldUpgrade = false
 
-    private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let mailboxSelection: MailboxSelection
     let mode: Mode
