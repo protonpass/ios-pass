@@ -164,7 +164,7 @@ private extension ManageSharedVaultView {
             }
 
             Spacer()
-            if viewModel.vault.isAdmin, !viewModel.isOwnerAndCurrentUser(with: user) {
+            if viewModel.vault.isAdmin, !user.isOwner {
                 vaultTrailingView(user: user)
                     .onTapGesture {
                         viewModel.setCurrentRole(for: user)
