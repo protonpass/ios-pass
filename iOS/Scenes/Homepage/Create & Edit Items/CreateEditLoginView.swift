@@ -30,10 +30,8 @@ struct CreateEditLoginView: View {
     @StateObject private var viewModel: CreateEditLoginViewModel
     @FocusState private var focusedField: Field?
     @State private var isShowingDiscardAlert = false
-    @State private var isShowingDeleteAliasAlert = false
     @Namespace private var usernameID
     @Namespace private var passwordID
-    @Namespace private var totpID
     @Namespace private var websitesID
     @Namespace private var noteID
     @Namespace private var bottomID
