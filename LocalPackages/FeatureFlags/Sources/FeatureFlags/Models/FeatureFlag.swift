@@ -1,9 +1,9 @@
 //
-// GetFeatureFlagEndpoint.swift
-// Proton Pass - Created on 31/05/2023.
+// FeatureFlag.swift
+// Proton - Created on 29/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
-// This file is part of Proton Pass.
+// This file is part of Proton.
 //
 // Proton Pass is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,13 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreNetworking
-import ProtonCoreServices
-
-public struct GetFeatureFlagEndpointResponse: Decodable {
-    public let code: Int
-    public let toggles: [FeatureFlag]
-}
+import Foundation
 
 public struct FeatureFlag: Codable, Equatable, Hashable {
     public let name: String
@@ -84,36 +78,5 @@ public enum FeatureFlagVariantPayloadValue: Codable, Equatable, Hashable {
         default:
             nil
         }
-    }
-}
-
-public protocol FeatureFlagTypeProtocol: Sendable, RawRepresentable where RawValue == String {
-    static func isPresent(rawValue: String) -> Bool
-}
-
-public extension FeatureFlagTypeProtocol {
-    static func isPresent(rawValue: String) -> Bool {
-        Self(rawValue: rawValue) != nil
-    }
-}
-
-public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-    case passSharingV1 = "PassSharingV1"
-    case passRemovePrimaryVault = "PassRemovePrimaryVault"
-    case firstTestFeatureFlag = "FirstTestFeatureFlag"
-}
-
-public struct GetFeatureFlagEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetFeatureFlagEndpointResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-
-    public init() {
-        debugDescription = "Get all feature flags from unleash"
-        path = "/feature/v2/frontend"
-        method = .get
     }
 }

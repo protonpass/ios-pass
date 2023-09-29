@@ -1,9 +1,9 @@
 //
-// FeatureFlags.swift
-// Proton Pass - Created on 09/06/2023.
+// DefaultLocalFeatureFlagsDatasource.swift
+// Proton - Created on 29/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
-// This file is part of Proton Pass.
+// This file is part of Proton.
 //
 // Proton Pass is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,14 +20,18 @@
 
 import Foundation
 
-public struct FeatureFlags: Hashable, Codable {
-    let flags: [FeatureFlag]
+public final class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol {
+    private var currentFlags: [String: FeatureFlags]
 
-    static var `default`: FeatureFlags {
-        FeatureFlags(flags: [])
+    public init(currentFlags: [String: FeatureFlags] = [String: FeatureFlags]()) {
+        self.currentFlags = currentFlags
     }
 
-    public func isFlagEnable(for key: any FeatureFlagTypeProtocol) -> Bool {
-        flags.first { $0.name == key.rawValue }?.enabled ?? false
+    public func getFeatureFlags(userId: String) async throws -> FeatureFlags? {
+        currentFlags[userId]
+    }
+
+    public func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
+        currentFlags[userId] = flags
     }
 }

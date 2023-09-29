@@ -256,7 +256,6 @@
 		35711D572A7A62DC003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
 		35711D582A7A62DD003B6845 /* SaveAllLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D552A7A61B8003B6845 /* SaveAllLogs.swift */; };
 		35711D5A2A7A76A9003B6845 /* CheckAccessToPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */; };
-		35711D5D2A7A7A01003B6845 /* RefreshFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */; };
 		35711D602A7A7D0C003B6845 /* AddTelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */; };
 		35711D622A7A7D0F003B6845 /* AddTelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */; };
 		35711D632A7A7D10003B6845 /* AddTelemetryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */; };
@@ -399,7 +398,6 @@
 		5B1453AD2A696C830048B022 /* GetVaultItemCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */; };
 		5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */; };
 		5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */; };
-		5B1453B72A6AB9F00048B022 /* UserSharingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B62A6AB9F00048B022 /* UserSharingStatus.swift */; };
 		5B1453B92A6ACE160048B022 /* SendShareInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B82A6ACE160048B022 /* SendShareInvite.swift */; };
 		5B1453BD2A6EA8890048B022 /* SharingInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453BC2A6EA8890048B022 /* SharingInfos.swift */; };
 		5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */; };
@@ -495,7 +493,6 @@
 		5B9931232AB329AF00EDAD91 /* CreateVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9931222AB329AF00EDAD91 /* CreateVault.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
-		5BA663EC2A7AA5090049EA68 /* GetFeatureFlagStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */; };
 		5BA663EE2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */; };
 		5BA663F22A7BDC6D0049EA68 /* LeaveShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */; };
 		5BA663F62A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */; };
@@ -513,9 +510,9 @@
 		5BB2B6F22A457F50005E831C /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
 		5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
 		5BCF61A02ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
-		5BE64E692AB4546C00777366 /* CreateVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E682AB4546C00777366 /* CreateVault.swift */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
+		5BE733EC2AC6E8D00016AFEA /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 5BE733EB2AC6E8D00016AFEA /* UseCases */; };
 		5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */; };
 		5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */; };
 		5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */; };
@@ -778,7 +775,6 @@
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		35711D552A7A61B8003B6845 /* SaveAllLogs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAllLogs.swift; sourceTree = "<group>"; };
 		35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccessToPass.swift; sourceTree = "<group>"; };
-		35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshFeatureFlags.swift; sourceTree = "<group>"; };
 		35711D5F2A7A7D0C003B6845 /* AddTelemetryEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTelemetryEvent.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59929BF173A008D4350 /* BannerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerManager.swift; sourceTree = "<group>"; };
@@ -883,7 +879,6 @@
 		5B1453AC2A696C830048B022 /* GetVaultItemCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVaultItemCount.swift; sourceTree = "<group>"; };
 		5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryView.swift; sourceTree = "<group>"; };
 		5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingSummaryViewModel.swift; sourceTree = "<group>"; };
-		5B1453B62A6AB9F00048B022 /* UserSharingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSharingStatus.swift; sourceTree = "<group>"; };
 		5B1453B82A6ACE160048B022 /* SendShareInvite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendShareInvite.swift; sourceTree = "<group>"; };
 		5B1453BC2A6EA8890048B022 /* SharingInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingInfos.swift; sourceTree = "<group>"; };
 		5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIRouter.swift; sourceTree = "<group>"; };
@@ -926,7 +921,6 @@
 		5B9931222AB329AF00EDAD91 /* CreateVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVault.swift; sourceTree = "<group>"; };
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
 		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
-		5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFeatureFlagStatus.swift; sourceTree = "<group>"; };
 		5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUsersLinkedToShare.swift; sourceTree = "<group>"; };
 		5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveShare.swift; sourceTree = "<group>"; };
 		5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingInvitationsForShare.swift; sourceTree = "<group>"; };
@@ -942,8 +936,8 @@
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
-		5BE64E682AB4546C00777366 /* CreateVault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateVault.swift; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
+		5BE733EA2AC6C49C0016AFEA /* FeatureFlags */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FeatureFlags; path = LocalPackages/FeatureFlags; sourceTree = "<group>"; };
 		5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialSearchResultView.swift; sourceTree = "<group>"; };
 		5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCredentialItemRow.swift; sourceTree = "<group>"; };
 		5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
@@ -1034,6 +1028,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BE733EC2AC6E8D00016AFEA /* UseCases in Frameworks */,
 				5B8D20982AA7461A00457CA3 /* ProtonCoreUtilities in Frameworks */,
 				5B8D20AB2AA74B5E00457CA3 /* DesignSystem in Frameworks */,
 				5B8D20722AA7461900457CA3 /* ProtonCoreCryptoGoImplementation in Frameworks */,
@@ -1451,7 +1446,6 @@
 			isa = PBXGroup;
 			children = (
 				35711D592A7A76A9003B6845 /* CheckAccessToPass.swift */,
-				35711D5C2A7A7A01003B6845 /* RefreshFeatureFlags.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1582,6 +1576,7 @@
 				356125012982438300EDA991 /* Keyboard */,
 				35E5063C286F819F00A3F6EA /* Products */,
 				2E7AE4F339A9234C7A1F51F3 /* Frameworks */,
+				5BE733EA2AC6C49C0016AFEA /* FeatureFlags */,
 				5B3E2FFF2AAF01A30002289A /* TestPlans */,
 				5B8D20A22AA7499400457CA3 /* Core */,
 				5B8D20A92AA74B4700457CA3 /* DesignSystem */,
@@ -1789,7 +1784,6 @@
 				5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */,
 				5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */,
 				5B14539E2A69652D0048B022 /* SetShareInviteVault.swift */,
-				5B1453B62A6AB9F00048B022 /* UserSharingStatus.swift */,
 				5B653AF22A78EE0700D6869A /* UpdateCachedInvitations.swift */,
 				5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */,
 				5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */,
@@ -2007,7 +2001,6 @@
 		5BA663EA2A7AA4CC0049EA68 /* FeatureFlags */ = {
 			isa = PBXGroup;
 			children = (
-				5BA663EB2A7AA5090049EA68 /* GetFeatureFlagStatus.swift */,
 			);
 			path = FeatureFlags;
 			sourceTree = "<group>";
@@ -2352,6 +2345,7 @@
 				5B8D20A32AA74A4600457CA3 /* Core */,
 				5B8D20AA2AA74B5E00457CA3 /* DesignSystem */,
 				354192832AC1CB9B001F2996 /* Macro */,
+				5BE733EB2AC6E8D00016AFEA /* UseCases */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -2888,7 +2882,6 @@
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
 				66CA927D29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift in Sources */,
 				35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */,
-				5BA663EC2A7AA5090049EA68 /* GetFeatureFlagStatus.swift in Sources */,
 				35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */,
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
@@ -2910,7 +2903,6 @@
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */,
-				35711D5D2A7A7A01003B6845 /* RefreshFeatureFlags.swift in Sources */,
 				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
@@ -2939,7 +2931,6 @@
 				35CEA8D72A60675900343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+ScannerSheet.swift in Sources */,
 				5B503FEA2A4D7AFE00E6681C /* SendUserFeedBack.swift in Sources */,
-				5B1453B72A6AB9F00048B022 /* UserSharingStatus.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */,
 				3572E51B299399AD00775FAC /* PPError.swift in Sources */,
@@ -5352,6 +5343,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
 			productName = ProtonCoreTestingToolkitUITestsPaymentsUI;
+		};
+		5BE733EB2AC6E8D00016AFEA /* UseCases */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UseCases;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

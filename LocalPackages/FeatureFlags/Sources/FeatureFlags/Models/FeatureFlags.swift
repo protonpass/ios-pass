@@ -1,9 +1,9 @@
 //
-// RemoteDatasource.swift
-// Proton Pass - Created on 16/08/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// FeatureFlags.swift
+// Proton - Created on 29/09/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
-// This file is part of Proton Pass.
+// This file is part of Proton.
 //
 // Proton Pass is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,19 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// import ProtonCoreNetworking
-import ProtonCoreServices
+import Foundation
 
-public let kDefaultPageSize = 100
+public struct FeatureFlags: Hashable, Codable {
+    public let flags: [FeatureFlag]
 
-public protocol RemoteDatasourceProtocol: AnyObject {
-    var apiService: APIService { get }
-}
+    static var `default`: FeatureFlags {
+        FeatureFlags(flags: [])
+    }
 
-public class RemoteDatasource: RemoteDatasourceProtocol {
-    public let apiService: APIService
-
-    public init(apiService: APIService) {
-        self.apiService = apiService
+    public func isFlagEnable(for key: any FeatureFlagTypeProtocol) -> Bool {
+        flags.first { $0.name == key.rawValue }?.enabled ?? false
     }
 }
