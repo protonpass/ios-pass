@@ -113,10 +113,6 @@ class BaseItemDetailViewModel: ObservableObject {
         delegate?.itemDetailViewModelWantsToShowFullScreen(text)
     }
 
-    func copyNote(_ text: String) {
-        copyToClipboard(text: text, message: "Note copied")
-    }
-
     func moveToAnotherVault() {
         guard let vault else {
             return
