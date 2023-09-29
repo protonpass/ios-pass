@@ -21,30 +21,33 @@
 import Client
 import Core
 
-protocol RefreshFeatureFlagsUseCase: Sendable {
+public protocol RefreshFeatureFlagsUseCase: Sendable {
     func execute()
 }
 
-extension RefreshFeatureFlagsUseCase {
+public extension RefreshFeatureFlagsUseCase {
     func callAsFunction() {
         execute()
     }
 }
 
-final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase {
+public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase {
     private let repository: FeatureFlagsRepositoryProtocol
     private let logger: Logger
 
-    init(repository: FeatureFlagsRepositoryProtocol, logManager: LogManagerProtocol) {
+    public init(repository: FeatureFlagsRepositoryProtocol,
+                logManager: LogManagerProtocol) {
         self.repository = repository
         logger = .init(manager: logManager)
     }
 
-    func execute() {
+    public func execute() {
         Task { [weak self] in
             guard let self else { return }
             do {
+                logger.trace("Refreshing features fags for user \(repository.userId)")
                 try await repository.refreshFlags()
+                logger.trace("Finished updating local flags for user \(repository.userId).")
             } catch {
                 logger.error(error)
             }

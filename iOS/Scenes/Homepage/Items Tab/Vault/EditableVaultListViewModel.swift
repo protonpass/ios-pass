@@ -40,7 +40,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
+    private let getFeatureFlagStatus = resolve(\UseCasesContainer.getFeatureFlagStatus)
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
@@ -82,7 +82,7 @@ private extension EditableVaultListViewModel {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            isAllowedToShare = await userSharingStatus()
+            isAllowedToShare = await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
         }
     }
 

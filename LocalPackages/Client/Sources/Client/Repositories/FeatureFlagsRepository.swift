@@ -22,6 +22,7 @@ import Core
 
 // sourcery: AutoMockable
 public protocol FeatureFlagsRepositoryProtocol: AnyObject {
+    var userId: String { get }
     /// Get from local, refresh if not exist
     func getFlags() async throws -> FeatureFlags
 
@@ -30,41 +31,36 @@ public protocol FeatureFlagsRepositoryProtocol: AnyObject {
 }
 
 public final class FeatureFlagsRepository: FeatureFlagsRepositoryProtocol {
+    public let userId: String
     private let localDatasource: LocalFeatureFlagsDatasourceProtocol
     private let remoteDatasource: RemoteFeatureFlagsDatasourceProtocol
-    private let userId: String
+    private let currentBUFlags: any FeatureFlagTypeProtocol.Type
     private let logger: Logger
 
     public init(localDatasource: LocalFeatureFlagsDatasourceProtocol,
                 remoteDatasource: RemoteFeatureFlagsDatasourceProtocol,
                 userId: String,
-                logManager: LogManagerProtocol) {
+                logManager: LogManagerProtocol,
+                currentBUFlags: any FeatureFlagTypeProtocol.Type = FeatureFlagType.self) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userId = userId
+        self.currentBUFlags = currentBUFlags
         logger = Logger(manager: logManager)
     }
 }
 
 public extension FeatureFlagsRepository {
     func getFlags() async throws -> FeatureFlags {
-        logger.trace("Getting feature flags for user \(userId)")
         if let localFlags = try await localDatasource.getFeatureFlags(userId: userId) {
-            logger.trace("Found local feature flags for user \(userId)")
             return localFlags
         }
-
-        logger.debug("No local feature flags found for user \(userId). Getting from remote.")
         return try await refreshFlags()
     }
 
     func refreshFlags() async throws -> FeatureFlags {
-        logger.trace("Getting remote credit card v1 flag for user \(userId)")
         let allflags = try await remoteDatasource.getFlags()
-
-        logger.trace("Got remote flags for user \(userId). Upserting to local database.")
-
-        let flags = filterPassFlags(from: allflags) // FeatureFlags(creditCardV1: creditCardV1)
+        let flags = filterPassFlags(from: allflags, currentBUFlags: currentBUFlags)
         try await localDatasource.upsertFlags(flags, userId: userId)
 
         return flags
@@ -76,9 +72,10 @@ private extension FeatureFlagsRepository {
     /// flags we want to
     /// filter only the ones that are linked to pass
     /// The flag only appears if it is activated otherwise it it absent from the response
-    func filterPassFlags(from flags: [FeatureFlag]) -> FeatureFlags {
+    func filterPassFlags(from flags: [FeatureFlag],
+                         currentBUFlags: any FeatureFlagTypeProtocol.Type) -> FeatureFlags {
         let currentPassFlags = flags.filter { element in
-            FeatureFlagType(rawValue: element.name) != nil
+            currentBUFlags.isPresent(rawValue: element.name)
         }
         return FeatureFlags(flags: currentPassFlags)
     }

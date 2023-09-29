@@ -21,6 +21,7 @@
 import Core
 import Factory
 import ProtonCoreServices
+import UseCases
 
 final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
@@ -188,16 +189,21 @@ extension UseCasesContainer {
 // MARK: - Flags
 
 extension UseCasesContainer {
-    var userSharingStatus: Factory<UserSharingStatusUseCase> {
-        self { UserSharingStatus(getFeatureFlagStatus: self.getFeatureFlagStatus(),
-                                 passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
-                                 logManager: SharedToolingContainer.shared.logManager()) }
-    }
+//    var sharingFlagStatus: Factory<SharingFlagStatusUseCase> {
+//        self { SharingFlagStatus(getFeatureFlagStatus: self.getFeatureFlagStatus(),
+//                                 logManager: SharedToolingContainer.shared.logManager()) }
+//    }
 
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
-            GetFeatureFlagStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository())
+            GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 logManager: SharedToolingContainer.shared.logManager())
         }
+    }
+
+    var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
+        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   logManager: self.logManager) }
     }
 }
 
@@ -235,10 +241,5 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
         self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
-    }
-
-    var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
-        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   logManager: self.logManager) }
     }
 }
