@@ -99,22 +99,11 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return false
     }
 
-//    private let prefixCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
-
     enum State {
         case loading
         case loaded
         case error(Error)
-
-//        var isLoaded: Bool {
-//            switch self {
-//            case .loaded:
-//                true
-//            default:
-//                false
-//            }
-//        }
-
+        
         var isLoading: Bool {
             switch self {
             case .loading:
