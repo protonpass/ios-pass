@@ -49,8 +49,6 @@ enum ItemMode {
             false
         }
     }
-
-    var isCreateMode: Bool { !isEditMode }
 }
 
 enum ItemCreationType {
@@ -117,12 +115,6 @@ class BaseCreateEditItemViewModel {
         pickPrimaryVaultIfApplicable()
         checkIfAbleToAddMoreCustomFields()
     }
-
-    /// To be overridden by subclasses
-    var isSaveable: Bool { false }
-
-    /// To be overridden by subclasses
-    var interpretor: ScanInterpreting { ScanInterpreter() }
 
     func bindValues() {}
 

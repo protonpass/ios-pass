@@ -57,30 +57,15 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    /// The original associated alias item
-    private var aliasItem: SymmetricallyEncryptedItem?
-
     private var aliasOptions: AliasOptions?
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
     var isAlias: Bool { aliasCreationLiteInfo != nil }
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
-    private var hasNoUrls: Bool {
-        urls.isEmpty || (urls.count == 1 && urls[0].value.isEmpty)
-    }
-
-    var isAutoFilling: Bool {
-        if case let .create(_, type) = mode,
-           case let .login(_, _, autofill) = type {
-            return autofill
-        }
-        return false
-    }
-
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
 
-    override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+    var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,

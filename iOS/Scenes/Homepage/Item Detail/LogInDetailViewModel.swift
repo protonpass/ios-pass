@@ -82,7 +82,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             getAliasItem(username: data.username)
 
             if !data.totpUri.isEmpty {
-                checkTotpState(createTime: itemContent.item.createTime)
+                checkTotpState()
             } else {
                 totpTokenState = .allowed
             }
@@ -107,7 +107,7 @@ private extension LogInDetailViewModel {
         }
     }
 
-    func checkTotpState(createTime: Int64) {
+    func checkTotpState() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
