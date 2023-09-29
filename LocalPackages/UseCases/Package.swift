@@ -22,7 +22,8 @@ let package = Package(name: "UseCases",
                           // Dependencies declare other packages that this package depends on.
                           .package(name: "Client", path: "../Client"),
                           .package(name: "Core", path: "../Core"),
-                          .package(name: "Entities", path: "../Entities")
+                          .package(name: "Entities", path: "../Entities"),
+                          .package(name: "PassRustCore", path: "../PassRustCore")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -30,7 +31,7 @@ let package = Package(name: "UseCases",
                           // Targets can depend on other targets in this package, and on products in packages this
                           // package depends on.
                           .target(name: "UseCases",
-                                  dependencies: [],
+                                  dependencies: ["PassRustCore"],
                                   resources: []),
                           .testTarget(name: "UseCasesTests",
                                       dependencies: ["UseCases"])
