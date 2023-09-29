@@ -45,8 +45,6 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     let onAuth: () -> Void
 
     @Published private(set) var state: LocalAuthenticationState = .noAttempts
-    /// Only applicable for biometric authentication
-    @Published private(set) var error: Error?
 
     var delayedTime: DispatchTimeInterval {
         delayed ? .milliseconds(200) : .milliseconds(0)

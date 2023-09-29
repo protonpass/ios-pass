@@ -250,22 +250,6 @@ private extension ManageSharedVaultView {
             .foregroundColor(Color(uiColor: PassColor.textWeak))
         })
     }
-
-    func attributedText(for text: String) -> AttributedString {
-        var result = AttributedString(text)
-        result.font = .body.bold()
-        result.foregroundColor = PassColor.textNorm
-        return result
-    }
-
-    func attributedSubText(for text: String) -> AttributedString {
-        var result = AttributedString(text)
-        result.font = .body
-        result.foregroundColor = PassColor.textWeak
-        result.underlineColor = PassColor.textWeak
-        result.strikethroughColor = PassColor.textWeak
-        return result
-    }
 }
 
 private extension ManageSharedVaultView {
