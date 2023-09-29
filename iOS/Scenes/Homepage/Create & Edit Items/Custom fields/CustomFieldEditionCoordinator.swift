@@ -39,7 +39,6 @@ extension CustomFieldUiModel {
 
 protocol CustomFieldEditionDelegate: AnyObject {
     func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
-    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String)
 }
 
 final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {

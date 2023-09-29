@@ -49,14 +49,6 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     weak var aliasCreationDelegate: AliasCreationLiteInfoDelegate?
 
-    var suffix: String {
-        suffixSelection.selectedSuffix?.suffix ?? ""
-    }
-
-    var mailboxes: String {
-        mailboxSelection.selectedMailboxes.map(\.email).joined(separator: "\n")
-    }
-
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         canCreateAlias = options.canCreateAlias
         suffixSelection = .init(suffixes: options.suffixes)

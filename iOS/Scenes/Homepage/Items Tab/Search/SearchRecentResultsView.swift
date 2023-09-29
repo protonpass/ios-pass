@@ -36,7 +36,7 @@ struct SearchRecentResultsView: View {
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                    Text(" (\(results.count))")
+                    Text(verbatim: " (\(results.count))")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textWeak))
 
