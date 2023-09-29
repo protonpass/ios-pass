@@ -103,7 +103,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case loading
         case loaded
         case error(Error)
-        
+
         var isLoading: Bool {
             switch self {
             case .loading:
