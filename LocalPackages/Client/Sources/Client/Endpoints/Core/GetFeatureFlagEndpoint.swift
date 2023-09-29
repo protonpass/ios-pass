@@ -87,8 +87,20 @@ public enum FeatureFlagVariantPayloadValue: Codable, Equatable, Hashable {
     }
 }
 
-public enum FeatureFlagType: String, CaseIterable {
+public protocol FeatureFlagTypeProtocol: Sendable, RawRepresentable where RawValue == String {
+    static func isPresent(rawValue: String) -> Bool
+}
+
+public extension FeatureFlagTypeProtocol {
+    static func isPresent(rawValue: String) -> Bool {
+        Self(rawValue: rawValue) != nil
+    }
+}
+
+public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
     case passSharingV1 = "PassSharingV1"
+    case passRemovePrimaryVault = "PassRemovePrimaryVault"
+    case firstTestFeatureFlag = "FirstTestFeatureFlag"
 }
 
 public struct GetFeatureFlagEndpoint: Endpoint {
