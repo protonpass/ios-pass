@@ -1323,29 +1323,6 @@
         }
       }
     },
-    "Aliases won't be shared" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aliasse werden nicht geteilt"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aliases won’t be shared"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les alias ne seront pas partagés."
-          }
-        }
-      }
-    },
     "All" : {
       "localizations" : {
         "de" : {
