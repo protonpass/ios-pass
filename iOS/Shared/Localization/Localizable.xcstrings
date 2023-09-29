@@ -1,12 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    " (%lld)" : {
-
-    },
-    " %lld" : {
-
-    },
     "%@ vault" : {
       "extractionState" : "manual",
       "localizations" : {
