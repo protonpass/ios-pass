@@ -1,6 +1,6 @@
 //
-// SanitizeTotpUriForEditing.swift
-// Proton Pass - Created on 15/09/2023.
+// SanitizeTotpUriForSaving.swift
+// Proton Pass - Created on 30/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,24 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@preconcurrency import PassRustCore
 
-/// Check if the given URI has default parameters (SHA1, 6 digits, 30 seconds) or not.
-/// If yes, return only the secret
-/// If no, return the URI as it is
-/// This is to make it easier for users because most of the time, TOTP URIs contain default parameters
-public protocol SanitizeTotpUriForEditingUseCase: Sendable {
-    func execute(_ uri: String) -> String
+public protocol SanitizeTotpUriForSavingUseCase: Sendable {
+    func execute(originalUri: String, editedUri: String) -> String
 }
 
-extension SanitizeTotpUriForEditingUseCase {
-    func callAsFunction(_ uri: String) -> String {
-        execute(uri)
+extension SanitizeTotpUriForSavingUseCase {
+    func callAsFunction(originalUri: String, editedUri: String) -> String {
+        execute(originalUri: originalUri, editedUri: editedUri)
     }
 }
 
-public final class SanitizeTotpUriForEditing: SanitizeTotpUriForEditingUseCase {
+public final class SanitizeTotpUriForSaving: SanitizeTotpUriForSavingUseCase {
     public init() {}
 
-    public func execute(_ uri: String) -> String { "" }
+    public func execute(originalUri: String, editedUri: String) -> String {
+        TotpUriSanitizer().uriForSaving(originalUri: originalUri, editedUri: editedUri)
+    }
 }
