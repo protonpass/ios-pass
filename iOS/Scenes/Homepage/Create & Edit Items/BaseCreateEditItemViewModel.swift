@@ -124,7 +124,7 @@ class BaseCreateEditItemViewModel {
     }
 
     // swiftlint:disable:next unavailable_function
-    func generateItemContent() -> ItemContentProtobuf {
+    func generateItemContent() throws -> ItemContentProtobuf {
         fatalError("Must be overridden by subclasses")
     }
 
@@ -190,7 +190,7 @@ private extension BaseCreateEditItemViewModel {
 
     func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
         let shareId = selectedVault.shareId
-        let itemContent = generateItemContent()
+        let itemContent = try generateItemContent()
 
         switch type {
         case .alias:
@@ -230,7 +230,7 @@ private extension BaseCreateEditItemViewModel {
                                                              itemId: itemId) else {
             throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
         }
-        let newItemContent = generateItemContent()
+        let newItemContent = try generateItemContent()
         try await itemRepository.updateItem(oldItem: oldItem.item,
                                             newItemContent: newItemContent,
                                             shareId: oldItem.shareId)
