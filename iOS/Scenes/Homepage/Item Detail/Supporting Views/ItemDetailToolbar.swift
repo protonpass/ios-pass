@@ -56,6 +56,13 @@ struct ItemDetailToolbar: ToolbarContent {
 
                         Divider()
 
+                        if viewModel.itemContent.type == .note {
+                            Button(action: viewModel.copyNoteContent,
+                                   label: { Label(title: { Text("Copy note content") },
+                                                  icon: { Image(uiImage: IconProvider.note) }) })
+                            Divider()
+                        }
+
                         Button(role: .destructive,
                                action: viewModel.moveToTrash,
                                label: { Label(title: { Text("Move to trash") },
