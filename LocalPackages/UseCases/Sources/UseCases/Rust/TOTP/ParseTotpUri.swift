@@ -26,7 +26,7 @@ public protocol ParseTotpUriUseCase: Sendable {
     func execute(_ uri: String) throws -> Entities.TotpComponents
 }
 
-extension ParseTotpUriUseCase {
+public extension ParseTotpUriUseCase {
     func callAsFunction(_ uri: String) throws -> Entities.TotpComponents {
         try execute(uri)
     }
@@ -53,7 +53,7 @@ private extension PassRustCore.TotpAlgorithm {
     }
 }
 
-private extension PassRustCore.TotpComponents {
+private extension PassRustCore.Totp {
     func toDomainComponents() -> Entities.TotpComponents {
         .init(secret: secret,
               label: label,
