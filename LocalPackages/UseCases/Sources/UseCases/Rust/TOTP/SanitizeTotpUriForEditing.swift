@@ -24,7 +24,7 @@ public protocol SanitizeTotpUriForEditingUseCase: Sendable {
     func execute(_ uri: String) -> String
 }
 
-extension SanitizeTotpUriForEditingUseCase {
+public extension SanitizeTotpUriForEditingUseCase {
     func callAsFunction(_ uri: String) -> String {
         execute(uri)
     }

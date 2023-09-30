@@ -595,7 +595,7 @@ public func FfiConverterTypeLoginValidator_lower(_ value: LoginValidator) -> Uns
 }
 
 public protocol TotpUriParserProtocol {
-    func parse(uriString: String) throws -> TotpComponents
+    func parse(uriString: String) throws -> Totp
 }
 
 public class TotpUriParser: TotpUriParserProtocol {
@@ -618,8 +618,8 @@ public class TotpUriParser: TotpUriParserProtocol {
         try! rustCall { uniffi_proton_pass_common_mobile_fn_free_totpuriparser(pointer, $0) }
     }
 
-    public func parse(uriString: String) throws -> TotpComponents {
-        return try FfiConverterTypeTOTPComponents.lift(
+    public func parse(uriString: String) throws -> Totp {
+        return try FfiConverterTypeTOTP.lift(
             rustCallWithError(FfiConverterTypeTOTPError.lift) {
                 uniffi_proton_pass_common_mobile_fn_method_totpuriparser_parse(self.pointer,
                                                                                FfiConverterString.lower(uriString), $0)
@@ -668,7 +668,7 @@ public func FfiConverterTypeTotpUriParser_lower(_ value: TotpUriParser) -> Unsaf
 
 public protocol TotpUriSanitizerProtocol {
     func uriForEditing(originalUri: String) -> String
-    func uriForSaving(originalUri: String, editedUri: String) -> String
+    func uriForSaving(originalUri: String, editedUri: String) throws -> String
 }
 
 public class TotpUriSanitizer: TotpUriSanitizerProtocol {
@@ -701,14 +701,13 @@ public class TotpUriSanitizer: TotpUriSanitizerProtocol {
         )
     }
 
-    public func uriForSaving(originalUri: String, editedUri: String) -> String {
-        return try! FfiConverterString.lift(
-            try!
-                rustCall {
-                    uniffi_proton_pass_common_mobile_fn_method_totpurisanitizer_uri_for_saving(self.pointer,
-                                                                                               FfiConverterString.lower(originalUri),
-                                                                                               FfiConverterString.lower(editedUri), $0)
-                }
+    public func uriForSaving(originalUri: String, editedUri: String) throws -> String {
+        return try FfiConverterString.lift(
+            rustCallWithError(FfiConverterTypeTOTPError.lift) {
+                uniffi_proton_pass_common_mobile_fn_method_totpurisanitizer_uri_for_saving(self.pointer,
+                                                                                           FfiConverterString.lower(originalUri),
+                                                                                           FfiConverterString.lower(editedUri), $0)
+            }
         )
     }
 }
@@ -826,7 +825,7 @@ public func FfiConverterTypeLogin_lower(_ value: Login) -> RustBuffer {
     return FfiConverterTypeLogin.lower(value)
 }
 
-public struct TotpComponents {
+public struct Totp {
     public var label: String?
     public var secret: String
     public var issuer: String?
@@ -846,8 +845,8 @@ public struct TotpComponents {
     }
 }
 
-extension TotpComponents: Equatable, Hashable {
-    public static func == (lhs: TotpComponents, rhs: TotpComponents) -> Bool {
+extension Totp: Equatable, Hashable {
+    public static func == (lhs: Totp, rhs: Totp) -> Bool {
         if lhs.label != rhs.label {
             return false
         }
@@ -879,9 +878,9 @@ extension TotpComponents: Equatable, Hashable {
     }
 }
 
-public struct FfiConverterTypeTOTPComponents: FfiConverterRustBuffer {
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TotpComponents {
-        return try TotpComponents(
+public struct FfiConverterTypeTOTP: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> Totp {
+        return try Totp(
             label: FfiConverterOptionString.read(from: &buf),
             secret: FfiConverterString.read(from: &buf),
             issuer: FfiConverterOptionString.read(from: &buf),
@@ -891,7 +890,7 @@ public struct FfiConverterTypeTOTPComponents: FfiConverterRustBuffer {
         )
     }
 
-    public static func write(_ value: TotpComponents, into buf: inout [UInt8]) {
+    public static func write(_ value: Totp, into buf: inout [UInt8]) {
         FfiConverterOptionString.write(value.label, into: &buf)
         FfiConverterString.write(value.secret, into: &buf)
         FfiConverterOptionString.write(value.issuer, into: &buf)
@@ -901,12 +900,12 @@ public struct FfiConverterTypeTOTPComponents: FfiConverterRustBuffer {
     }
 }
 
-public func FfiConverterTypeTOTPComponents_lift(_ buf: RustBuffer) throws -> TotpComponents {
-    return try FfiConverterTypeTOTPComponents.lift(buf)
+public func FfiConverterTypeTOTP_lift(_ buf: RustBuffer) throws -> Totp {
+    return try FfiConverterTypeTOTP.lift(buf)
 }
 
-public func FfiConverterTypeTOTPComponents_lower(_ value: TotpComponents) -> RustBuffer {
-    return FfiConverterTypeTOTPComponents.lower(value)
+public func FfiConverterTypeTOTP_lower(_ value: Totp) -> RustBuffer {
+    return FfiConverterTypeTOTP.lower(value)
 }
 
 public enum AliasPrefixError {
@@ -1083,6 +1082,9 @@ extension TotpAlgorithm: Equatable, Hashable {}
 
 public enum TotpError {
     // Simple error enums only carry a message
+    case NotTotpUri(message: String)
+
+    // Simple error enums only carry a message
     case InvalidAuthority(message: String)
 
     // Simple error enums only carry a message
@@ -1117,35 +1119,39 @@ public struct FfiConverterTypeTOTPError: FfiConverterRustBuffer {
     public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TotpError {
         let variant: Int32 = try readInt(&buf)
         switch variant {
-        case 1: return try .InvalidAuthority(
+        case 1: return try .NotTotpUri(
                 message: FfiConverterString.read(from: &buf)
             )
 
-        case 2: return try .NoAuthority(
+        case 2: return try .InvalidAuthority(
                 message: FfiConverterString.read(from: &buf)
             )
 
-        case 3: return try .InvalidAlgorithm(
+        case 3: return try .NoAuthority(
                 message: FfiConverterString.read(from: &buf)
             )
 
-        case 4: return try .InvalidScheme(
+        case 4: return try .InvalidAlgorithm(
                 message: FfiConverterString.read(from: &buf)
             )
 
-        case 5: return try .UrlParseError(
+        case 5: return try .InvalidScheme(
                 message: FfiConverterString.read(from: &buf)
             )
 
-        case 6: return try .NoSecret(
+        case 6: return try .UrlParseError(
                 message: FfiConverterString.read(from: &buf)
             )
 
-        case 7: return try .EmptySecret(
+        case 7: return try .NoSecret(
                 message: FfiConverterString.read(from: &buf)
             )
 
-        case 8: return try .NoQueries(
+        case 8: return try .EmptySecret(
+                message: FfiConverterString.read(from: &buf)
+            )
+
+        case 9: return try .NoQueries(
                 message: FfiConverterString.read(from: &buf)
             )
 
@@ -1155,22 +1161,24 @@ public struct FfiConverterTypeTOTPError: FfiConverterRustBuffer {
 
     public static func write(_ value: TotpError, into buf: inout [UInt8]) {
         switch value {
-        case let .InvalidAuthority(message):
+        case let .NotTotpUri(message):
             writeInt(&buf, Int32(1))
-        case let .NoAuthority(message):
+        case let .InvalidAuthority(message):
             writeInt(&buf, Int32(2))
-        case let .InvalidAlgorithm(message):
+        case let .NoAuthority(message):
             writeInt(&buf, Int32(3))
-        case let .InvalidScheme(message):
+        case let .InvalidAlgorithm(message):
             writeInt(&buf, Int32(4))
-        case let .UrlParseError(message):
+        case let .InvalidScheme(message):
             writeInt(&buf, Int32(5))
-        case let .NoSecret(message):
+        case let .UrlParseError(message):
             writeInt(&buf, Int32(6))
-        case let .EmptySecret(message):
+        case let .NoSecret(message):
             writeInt(&buf, Int32(7))
-        case let .NoQueries(message):
+        case let .EmptySecret(message):
             writeInt(&buf, Int32(8))
+        case let .NoQueries(message):
+            writeInt(&buf, Int32(9))
         }
     }
 }
@@ -1324,10 +1332,10 @@ private var initializationResult: InitializationResult {
     if uniffi_proton_pass_common_mobile_checksum_method_totpurisanitizer_uri_for_editing() != 36269 {
         return InitializationResult.apiChecksumMismatch
     }
-    if uniffi_proton_pass_common_mobile_checksum_method_totpurisanitizer_uri_for_saving() != 15094 {
+    if uniffi_proton_pass_common_mobile_checksum_method_totpurisanitizer_uri_for_saving() != 63563 {
         return InitializationResult.apiChecksumMismatch
     }
-    if uniffi_proton_pass_common_mobile_checksum_method_totpuriparser_parse() != 36566 {
+    if uniffi_proton_pass_common_mobile_checksum_method_totpuriparser_parse() != 33105 {
         return InitializationResult.apiChecksumMismatch
     }
     if uniffi_proton_pass_common_mobile_checksum_constructor_aliasprefixvalidator_new() != 7446 {

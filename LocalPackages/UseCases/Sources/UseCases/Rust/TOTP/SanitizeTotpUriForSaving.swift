@@ -21,19 +21,20 @@
 @preconcurrency import PassRustCore
 
 public protocol SanitizeTotpUriForSavingUseCase: Sendable {
-    func execute(originalUri: String, editedUri: String) -> String
+    /// Throw an error of type `TotpError`
+    func execute(originalUri: String, editedUri: String) throws -> String
 }
 
-extension SanitizeTotpUriForSavingUseCase {
-    func callAsFunction(originalUri: String, editedUri: String) -> String {
-        execute(originalUri: originalUri, editedUri: editedUri)
+public extension SanitizeTotpUriForSavingUseCase {
+    func callAsFunction(originalUri: String, editedUri: String) throws -> String {
+        try execute(originalUri: originalUri, editedUri: editedUri)
     }
 }
 
 public final class SanitizeTotpUriForSaving: SanitizeTotpUriForSavingUseCase {
     public init() {}
 
-    public func execute(originalUri: String, editedUri: String) -> String {
-        TotpUriSanitizer().uriForSaving(originalUri: originalUri, editedUri: editedUri)
+    public func execute(originalUri: String, editedUri: String) throws -> String {
+        try TotpUriSanitizer().uriForSaving(originalUri: originalUri, editedUri: editedUri)
     }
 }
