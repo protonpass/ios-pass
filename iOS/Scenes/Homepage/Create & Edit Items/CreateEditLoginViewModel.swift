@@ -42,6 +42,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
+    private var originalTotpUri = ""
     @Published var totpUri = ""
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
@@ -64,6 +65,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
+    private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
+    private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
@@ -110,7 +113,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 title = itemContent.name
                 username = data.username
                 password = data.password
-                totpUri = data.totpUri
+                originalTotpUri = data.totpUri
+                totpUri = sanitizeTotpUriForEditing(data.totpUri)
                 if !data.urls.isEmpty {
                     urls = data.urls.map { .init(value: $0) }
                 }
@@ -146,11 +150,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return #localized("Create & AutoFill")
     }
 
-    override func generateItemContent() -> ItemContentProtobuf {
+    override func generateItemContent() throws -> ItemContentProtobuf {
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
+        let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri, editedUri: totpUri)
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
-                                                    totpUri: totpUri,
+                                                    totpUri: sanitizedTotpUri,
                                                     urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,
