@@ -288,6 +288,8 @@
 		35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855AB92A0A7A0A0091992F /* Text+NavigationTitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB32A0A68DC0091992F /* Text+NavigationTitleText.swift */; };
+		35855C112AC8743F00794DB4 /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 35855C102AC8743F00794DB4 /* UseCases */; };
+		35855C132AC8744A00794DB4 /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 35855C122AC8744A00794DB4 /* UseCases */; };
 		3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586478129F825E0003487B1 /* TelemetryEventsSection.swift */; };
 		358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68252A68067B006E720F /* SetPINCodeViewModel.swift */; };
 		358C68282A68131E006E720F /* Preferences+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68272A68131E006E720F /* Preferences+LocalAuthentication.swift */; };
@@ -989,6 +991,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35855C132AC8744A00794DB4 /* UseCases in Frameworks */,
 				5B8D20B72AA752BB00457CA3 /* ProtonCoreHumanVerification in Frameworks */,
 				5B8D20B52AA752A700457CA3 /* ProtonCoreForceUpgrade in Frameworks */,
 				3544F5E128E2341900834CA4 /* AuthenticationServices.framework in Frameworks */,
@@ -1030,6 +1033,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35855C112AC8743F00794DB4 /* UseCases in Frameworks */,
 				5B8D20982AA7461A00457CA3 /* ProtonCoreUtilities in Frameworks */,
 				5B8D20AB2AA74B5E00457CA3 /* DesignSystem in Frameworks */,
 				5B8D20722AA7461900457CA3 /* ProtonCoreCryptoGoImplementation in Frameworks */,
@@ -2242,6 +2246,7 @@
 				5B8D20B42AA752A700457CA3 /* ProtonCoreForceUpgrade */,
 				5B8D20B62AA752BB00457CA3 /* ProtonCoreHumanVerification */,
 				354192852AC1CB9F001F2996 /* Macro */,
+				35855C122AC8744A00794DB4 /* UseCases */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -2347,6 +2352,7 @@
 				5B8D20A32AA74A4600457CA3 /* Core */,
 				5B8D20AA2AA74B5E00457CA3 /* DesignSystem */,
 				354192832AC1CB9B001F2996 /* Macro */,
+				35855C102AC8743F00794DB4 /* UseCases */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -5087,6 +5093,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		35855C102AC8743F00794DB4 /* UseCases */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UseCases;
+		};
+		35855C122AC8744A00794DB4 /* UseCases */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UseCases;
 		};
 		35ABE1292AA08275001E20F9 /* DocScanner */ = {
 			isa = XCSwiftPackageProductDependency;
