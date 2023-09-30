@@ -162,7 +162,7 @@ struct EditableVaultListView: View {
                     Label(title: {
                         Text("Move all items to another vault")
                     }, icon: {
-                        IconProvider.users
+                        IconProvider.folderArrowIn
                     })
                 })
             }
