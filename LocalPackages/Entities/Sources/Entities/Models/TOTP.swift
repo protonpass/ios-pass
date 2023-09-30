@@ -1,6 +1,6 @@
 //
-// SanitizeTotpUriForEditingTests.swift
-// Proton Pass - Created on 15/09/2023.
+// TOTP.swift
+// Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,11 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import UseCases
-import XCTest
+import Foundation
 
-final class SanitizeTotpUriForEditingTests: XCTestCase {
-    func testFunction() {
-        XCTAssertTrue(true)
+public enum TotpAlgorithm {
+    case sha1, sha256, sha512
+}
+
+public struct TotpComponents {
+    public let secret: String
+    public let label: String?
+    public let issuer: String?
+    public let algorithm: TotpAlgorithm
+    public let digits: Int
+    public let period: Int
+
+    public init(secret: String,
+                label: String?,
+                issuer: String?,
+                algorithm: TotpAlgorithm,
+                digits: Int,
+                period: Int) {
+        self.secret = secret
+        self.label = label
+        self.issuer = issuer
+        self.algorithm = algorithm
+        self.digits = digits
+        self.period = period
     }
 }
