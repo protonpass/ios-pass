@@ -2441,6 +2441,10 @@
 				Base,
 				fr,
 				de,
+				ka,
+				it,
+				es,
+				"es-419",
 			);
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
