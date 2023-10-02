@@ -202,3 +202,8 @@ custom_rules:
     name: "Discouraged optional self"
     message: "Unwrap self via guard let and use implicit self instead of optional self"
     regex: "(self\\?\\.)"
+
+  discouraged_previewprovider:
+    name: "Discouraged PreviewProvider"
+    message: "Use #Preview macro insteaf of PreviewProvider"
+    regex: "(PreviewProvider)"
