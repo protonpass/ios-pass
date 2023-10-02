@@ -172,8 +172,6 @@ private extension SharingSummaryView {
     }
 }
 
-struct SharingSummaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        SharingSummaryView()
-    }
+#Preview("SharingSummaryView Preview") {
+    SharingSummaryView()
 }
