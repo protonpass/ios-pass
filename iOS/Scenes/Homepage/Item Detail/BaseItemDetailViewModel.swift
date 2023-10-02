@@ -22,6 +22,7 @@ import Client
 import Core
 import CryptoKit
 import Factory
+import Macro
 import UIKit
 
 let kItemDetailSectionPadding: CGFloat = 16
@@ -52,6 +53,8 @@ class BaseItemDetailViewModel: ObservableObject {
     let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
     weak var delegate: ItemDetailViewModelDelegate?
 
@@ -118,6 +121,15 @@ class BaseItemDetailViewModel: ObservableObject {
             return
         }
         router.present(for: .moveItemsBetweenVaults(currentVault: vault, singleItemToMove: itemContent))
+    }
+
+    func copyNoteContent() {
+        guard itemContent.type == .note else {
+            assertionFailure("Only applicable to note item")
+            return
+        }
+        clipboardManager.copy(text: itemContent.note,
+                              bannerMessage: #localized("Note content copied"))
     }
 
     func moveToTrash() {
