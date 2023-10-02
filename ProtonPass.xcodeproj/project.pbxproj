@@ -980,7 +980,6 @@
 		D62E9861AC0EF5385C2714F2 /* UserSharingStatusUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = UserSharingStatusUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = SyncEventLoopProtocolMock.generated.swift; sourceTree = "<group>"; };
 		FA622F772AC1AECD003B439D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		FA65B54A2AC5BEAB009C3FE2 /* iOSUIPayments.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = iOSUIPayments.xctestplan; path = TestPlans/iOSUIPayments.xctestplan; sourceTree = "<group>"; };
 		FAA718FE2A8E1F7C002B951E /* ProfileRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRobot.swift; sourceTree = "<group>"; };
 		FAA719002A8E21E3002B951E /* AccountRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRobot.swift; sourceTree = "<group>"; };
 		FAD3ABA42A862A880004053E /* Proton Pass - Password Manager.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Proton Pass - Password Manager.storekit"; sourceTree = "<group>"; };
@@ -1573,7 +1572,6 @@
 		35E5062E286F819F00A3F6EA = {
 			isa = PBXGroup;
 			children = (
-				FA65B54A2AC5BEAB009C3FE2 /* iOSUIPayments.xctestplan */,
 				35E50652286F826000A3F6EA /* iOS */,
 				354A803D28D8B8D8003F49CF /* iOSTests */,
 				35E50633286F819F00A3F6EA /* iOS & macOS */,
