@@ -157,8 +157,6 @@ private extension UserPermissionView {
     }
 }
 
-struct UserPermissionView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserPermissionView()
-    }
+#Preview("UserPermissionView Preview") {
+    UserPermissionView()
 }
