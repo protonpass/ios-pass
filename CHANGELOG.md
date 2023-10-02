@@ -1,3 +1,24 @@
+## Version 1.4.0
+Features:
+- Added support for German language
+- Display sync progress during login and full sync
+- Move items between vaults
+
+Improvements:
+- Able to quickly copy the content of notes
+
+Bug Fixes:
+- Corrected alphabetical sorting
+
+Others:
+- Migrated to SPM
+- Mitigated logout issue
+- Improved item creation sheet
+- Improved swipe-to-delete for items on the search page
+- Migrated to String Catalogs
+- Swift 5.9 adapation
+- Make use of Macro
+
 ## Version 1.3.0
 Features:
 - Added support for the French language
