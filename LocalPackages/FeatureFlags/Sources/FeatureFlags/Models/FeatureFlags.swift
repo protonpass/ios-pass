@@ -20,14 +20,22 @@
 
 import Foundation
 
-public struct FeatureFlags: Hashable, Codable {
+public struct FeatureFlags: Hashable, Codable, Sendable {
     public let flags: [FeatureFlag]
 
-    static var `default`: FeatureFlags {
+    public init(flags: [FeatureFlag]) {
+        self.flags = flags
+    }
+
+    public static var `default`: FeatureFlags {
         FeatureFlags(flags: [])
     }
 
     public func isFlagEnable(for key: any FeatureFlagTypeProtocol) -> Bool {
         flags.first { $0.name == key.rawValue }?.enabled ?? false
+    }
+
+    func getFlag(for key: any FeatureFlagTypeProtocol) async -> FeatureFlag? {
+        flags.first { $0.name == key.rawValue }
     }
 }

@@ -45,9 +45,9 @@ public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStat
 
     public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
         do {
-            logger.trace("Getting feature flags for user \(featureFlagsRepository.userId)")
+            logger.trace("Getting feature flags for user")
             let flags = try await featureFlagsRepository.getFlags()
-            logger.trace("Found local feature flags for user \(featureFlagsRepository.userId)")
+            logger.trace("Found local feature flags for user")
             return flags.isFlagEnable(for: flag)
         } catch {
             logger.error(error)
