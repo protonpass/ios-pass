@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Macro
 import SwiftUI
 
 final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
@@ -34,9 +35,9 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
 
     var expirationDate: String {
         if let month, let year {
-            return String(format: "%02d / %d", month, year)
+            String(format: "%02d / %d", month, year)
         } else {
-            return ""
+            ""
         }
     }
 
@@ -63,16 +64,16 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel, DeinitPrintable 
 extension CreditCardDetailViewModel {
     func copyCardholderName() {
         guard !cardholderName.isEmpty else { return }
-        copyToClipboard(text: cardholderName, message: "Cardholder name copied".localized)
+        copyToClipboard(text: cardholderName, message: #localized("Cardholder name copied"))
     }
 
     func copyCardNumber() {
         guard !cardNumber.isEmpty else { return }
-        copyToClipboard(text: cardNumber, message: "Card number copied".localized)
+        copyToClipboard(text: cardNumber, message: #localized("Card number copied"))
     }
 
     func copyVerificationNumber() {
         guard !verificationNumber.isEmpty else { return }
-        copyToClipboard(text: verificationNumber, message: "Verification number copied".localized)
+        copyToClipboard(text: verificationNumber, message: #localized("Verification number copied"))
     }
 }

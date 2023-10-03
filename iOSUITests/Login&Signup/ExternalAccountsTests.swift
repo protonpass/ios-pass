@@ -22,10 +22,11 @@
 import Foundation
 
 import fusion
-import ProtonCore_Doh
-import ProtonCore_Environment
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreDoh
+import ProtonCoreEnvironment
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUITestsLogin
 import XCTest
 
 final class ExternalAccountsTests: LoginBaseTestCase {
@@ -37,7 +38,6 @@ final class ExternalAccountsTests: LoginBaseTestCase {
     // Sign-in with external account works
     // Sign-in with username account works (account is converted to internal under the hood)
     func testSignInWithInternalAccountWorks() {
-        let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let accountToCreate = AccountAvailableForCreation.freeWithAddressAndKeys(username: randomUsername,
@@ -54,7 +54,6 @@ final class ExternalAccountsTests: LoginBaseTestCase {
     }
 
     func testSignInWithExternalAccountWorks() {
-        let doh = Environment.black.doh
         let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let accountToCreate = AccountAvailableForCreation.external(email: randomEmail, password: randomPassword)
@@ -70,7 +69,6 @@ final class ExternalAccountsTests: LoginBaseTestCase {
     }
 
     func testSignInWithUsernameAccountWorks() {
-        let doh = Environment.black.doh
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         let accountToCreate = AccountAvailableForCreation.freeNoAddressNoKeys(username: randomUsername,
@@ -114,7 +112,7 @@ final class ExternalAccountsTests: LoginBaseTestCase {
 
     func testSignUpWithExternalAccountIsNotAvailable() {
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
-        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
+        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@example.com"
 
         let signupRobot = welcomeRobot
             .logIn()
@@ -147,22 +145,17 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                                username: String) -> Bool {
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: accountToCreate,
-                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
+        QuarkCommands.create(account: accountToCreate, currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
             quarkCommandResult = result
-            QuarkCommands.addPassScopeToUser(username: username,
-                                             currentlyUsedHostUrl: doh.getCurrentlyUsedHostUrl()) { result in
-                if case .failure(let error) = result {
-                    XCTFail("\(error)")
-                }
-                expectQuarkCommandToFinish.fulfill()
-            }
+            expectQuarkCommandToFinish.fulfill()
         }
+
         wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
         if case .failure(let error) = quarkCommandResult {
             XCTFail("Internal account creation failed: \(error.userFacingMessageInQuarkCommands)")
             return false
         }
         return true
+
     }
 }

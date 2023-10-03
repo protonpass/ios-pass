@@ -23,7 +23,7 @@
 import Combine
 import Factory
 import Foundation
-import ProtonCore_HumanVerification
+import ProtonCoreHumanVerification
 
 @MainActor
 final class UserEmailViewModel: ObservableObject, Sendable {
@@ -59,10 +59,10 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 if Task.isCancelled {
                     return
                 }
-                self.isChecking = true
-                let receiverPublicKeys = try await self.getEmailPublicKey(with: email)
-                self.setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
-                self.goToNextStep = true
+                isChecking = true
+                let receiverPublicKeys = try await getEmailPublicKey(with: email)
+                setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
+                goToNextStep = true
             } catch {
                 self.error = "You cannot share \(vaultName) vault with this email"
             }
@@ -80,10 +80,11 @@ private extension UserEmailViewModel {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
-                if self?.error != nil {
-                    self?.error = nil
+                guard let self else { return }
+                if error != nil {
+                    error = nil
                 }
-                self?.canContinue = newValue.isValidEmail()
+                canContinue = newValue.isValidEmail()
             }
             .store(in: &cancellables)
     }

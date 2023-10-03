@@ -19,10 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Entities
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct MailboxSelectionView: View {
     @Environment(\.dismiss) private var dismiss

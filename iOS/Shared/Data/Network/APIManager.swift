@@ -23,19 +23,21 @@ import Combine
 import Core
 import CryptoKit
 import Factory
-import ProtonCore_Authentication
-import ProtonCore_Challenge
-import ProtonCore_CryptoGoInterface
-import ProtonCore_Environment
-import ProtonCore_FeatureSwitch
-import ProtonCore_ForceUpgrade
-import ProtonCore_Foundations
-import ProtonCore_HumanVerification
-import ProtonCore_Keymaker
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_Observability
-import ProtonCore_Services
+import Foundation
+import ProtonCoreAuthentication
+import ProtonCoreChallenge
+import ProtonCoreCryptoGoInterface
+import ProtonCoreEnvironment
+import ProtonCoreForceUpgrade
+import ProtonCoreFoundations
+import ProtonCoreHumanVerification
+import ProtonCoreKeymaker
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreObservability
+import ProtonCoreServices
+import SwiftUI
+import UIKit
 
 protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
@@ -57,6 +59,11 @@ final class APIManager: APIManagerProtocol {
     private(set) var authHelper: AuthHelper
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
+
+    // Logout issue mitigation
+    @AppStorage("lastSuccessfulRefreshTimestamp", store: kSharedUserDefaults)
+    private var lastSuccessfulRefreshTimestamp: TimeInterval?
+    private var ignoredRefreshFailure = false
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -93,7 +100,8 @@ final class APIManager: APIManagerProtocol {
 
         humanHelper = HumanCheckHelper(apiService: apiService,
                                        inAppTheme: { [weak self] in
-                                           self?.preferences.theme.inAppTheme ?? .matchSystem
+                                           guard let self else { return .matchSystem }
+                                           return preferences.theme.inAppTheme
                                        },
                                        clientApp: .pass)
         apiService.humanDelegate = humanHelper
@@ -120,6 +128,13 @@ final class APIManager: APIManagerProtocol {
         authHelper.onSessionObtaining(credential: Credential(authCredential, scopes: scopes))
     }
 
+    // Should only be used for tests
+    func setLastSuccessfulRefreshTimestamp(_ date: Date) {
+        #if DEBUG
+        lastSuccessfulRefreshTimestamp = date.timeIntervalSince1970
+        #endif
+    }
+
     func clearCredentials() {
         appData.unauthSessionCredentials = nil
         apiService.setSessionUID(uid: "")
@@ -136,20 +151,10 @@ final class APIManager: APIManagerProtocol {
     }
 
     private func setUpCore() {
-        FeatureFactory.shared.enable(&.observability)
-        // Core unauth session feature flag
-        FeatureFactory.shared.enable(&.unauthSession)
-
-        FeatureFactory.shared.enable(&.externalSignup)
-        #if DEBUG
-        FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
-        #endif
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 
     private func fetchUnauthSessionIfNeeded() {
-        guard FeatureFactory.shared.isEnabled(.unauthSession) else { return }
-
         apiService.acquireSessionIfNeeded { result in
             switch result {
             case .success:
@@ -171,8 +176,8 @@ final class APIManager: APIManagerProtocol {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                guard let userData = self?.appData.userData else { return }
-                self?.authHelper.onSessionObtaining(credential: userData.getCredential)
+                guard let self, let userData = appData.userData else { return }
+                authHelper.onSessionObtaining(credential: userData.getCredential)
             }
             .store(in: &cancellables)
     }
@@ -188,27 +193,43 @@ final class APIManager: APIManagerProtocol {
         appData.userData = updatedUserData
         appData.unauthSessionCredentials = nil
     }
+
+    /// Ignore when last successful refresh happened less than 24h
+    private func shouldIgnoreFailure() -> Bool {
+        guard let lastSuccessfulRefreshTimestamp, !ignoredRefreshFailure else { return false }
+        let lastSuccessfulRefreshDate = Date(timeIntervalSince1970: lastSuccessfulRefreshTimestamp)
+        let days = Calendar.current.numberOfDaysBetween(lastSuccessfulRefreshDate, and: .now)
+        return days == 0
+    }
 }
 
 // MARK: - AuthHelperDelegate
 
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        clearCredentials()
         if isAuthenticatedSession {
-            logger.info("Authenticated session is invalidated. Logging out...")
-            appData.userData = nil
-            delegate?.appLoggedOutBecauseSessionWasInvalidated()
+            if shouldIgnoreFailure() {
+                logger.debug("Authenticated session is invalidated. Ignore failure.")
+                ignoredRefreshFailure = true
+                return
+            } else {
+                logger.info("Authenticated session is invalidated. Logging out.")
+                appData.userData = nil
+                delegate?.appLoggedOutBecauseSessionWasInvalidated()
+            }
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
         }
+        clearCredentials()
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
         if let userData = appData.userData {
             update(userData: userData, authCredential: authCredential)
+            lastSuccessfulRefreshTimestamp = Date.now.timeIntervalSince1970
+            ignoredRefreshFailure = false
         } else {
             appData.unauthSessionCredentials = authCredential
         }

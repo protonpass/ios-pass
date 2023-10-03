@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 enum FeedbackChannel: Int, CaseIterable, Identifiable {
     case bugReport = 0, reddit, uservoice
@@ -78,33 +79,33 @@ extension FeedbackChannel {
     var icon: UIImage {
         switch self {
         case .bugReport:
-            return IconProvider.bug
+            IconProvider.bug
         case .reddit:
-            return PassIcon.brandReddit
+            PassIcon.brandReddit
         case .uservoice:
-            return PassIcon.brandPass
+            PassIcon.brandPass
         }
     }
 
     var description: String {
         switch self {
         case .bugReport:
-            return "Report a problem".localized
+            #localized("Report a problem")
         case .reddit:
-            return "Write us on Reddit".localized
+            #localized("Write us on Reddit")
         case .uservoice:
-            return "Vote for new features".localized
+            #localized("Vote for new features")
         }
     }
 
     var urlString: String? {
         switch self {
         case .bugReport:
-            return nil
+            nil
         case .reddit:
-            return "https://www.reddit.com/r/ProtonPass"
+            "https://www.reddit.com/r/ProtonPass"
         case .uservoice:
-            return "https://protonmail.uservoice.com/forums/953584-proton-pass"
+            "https://protonmail.uservoice.com/forums/953584-proton-pass"
         }
     }
 }

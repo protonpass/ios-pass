@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import UIKit
 
 enum ItemTypeFilterOption: Equatable, Hashable {
@@ -43,9 +44,9 @@ enum ItemTypeFilterOption: Equatable, Hashable {
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
         switch self {
         case .all:
-            return .init(icon: IconProvider.grid2, title: "All".localized, count: itemCount.total)
+            .init(icon: IconProvider.grid2, title: #localized("All"), count: itemCount.total)
         case let .precise(type):
-            return type.uiModel(from: itemCount)
+            type.uiModel(from: itemCount)
         }
     }
 }
@@ -58,16 +59,15 @@ struct ItemTypeFilterOptionUiModel {
 
 private extension ItemContentType {
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
-        let count: Int
-        switch self {
+        let count: Int = switch self {
         case .login:
-            count = itemCount.login
+            itemCount.login
         case .alias:
-            count = itemCount.alias
+            itemCount.alias
         case .note:
-            count = itemCount.note
+            itemCount.note
         case .creditCard:
-            count = itemCount.creditCard
+            itemCount.creditCard
         }
         return .init(icon: regularIcon, title: filterTitle, count: count)
     }

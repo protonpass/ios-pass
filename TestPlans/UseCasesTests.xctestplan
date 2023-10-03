@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "2472302A-0905-452D-9C2F-A15AFCD46A01",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/UseCases",
+        "identifier" : "UseCasesTests",
+        "name" : "UseCasesTests"
+      }
+    }
+  ],
+  "version" : 1
+}

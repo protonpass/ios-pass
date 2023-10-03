@@ -21,7 +21,7 @@
 
 import Foundation
 import fusion
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import XCTest
 
 final class AppMainRobot: CoreElements {

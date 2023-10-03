@@ -88,11 +88,11 @@ final class GetLogEntries: GetLogEntriesUseCase {
     func execute(for module: PassModule) async throws -> [LogEntry] {
         switch module {
         case .hostApp:
-            return try await mainAppLogManager.getLogEntries()
+            try await mainAppLogManager.getLogEntries()
         case .autoFillExtension:
-            return try await autofillLogManager.getLogEntries()
+            try await autofillLogManager.getLogEntries()
         case .keyboardExtension:
-            return try await keyboardLogManager.getLogEntries()
+            try await keyboardLogManager.getLogEntries()
         }
     }
 }

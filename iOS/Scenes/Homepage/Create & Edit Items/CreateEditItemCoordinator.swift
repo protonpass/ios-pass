@@ -21,7 +21,7 @@
 import Client
 import Core
 import Factory
-import ProtonCore_Login
+import ProtonCoreLogin
 import SwiftUI
 import UIKit
 
@@ -31,10 +31,10 @@ protocol CreateEditItemCoordinatorDelegate: AnyObject {
 }
 
 typealias CreateEditItemDelegates =
-    GeneratePasswordViewModelDelegate &
-    GeneratePasswordCoordinatorDelegate &
     CreateEditItemViewModelDelegate &
-    CreateEditLoginViewModelDelegate
+    CreateEditLoginViewModelDelegate &
+    GeneratePasswordCoordinatorDelegate &
+    GeneratePasswordViewModelDelegate
 
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -156,13 +156,14 @@ private extension CreateEditItemCoordinator {
                 assertionFailure("wordProvider should not be null")
                 return
             }
+            guard let self else { return }
             let coordinator =
                 GeneratePasswordCoordinator(generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
                                             mode: mode,
                                             wordProvider: wordProvider)
-            coordinator.delegate = self?.createEditItemDelegates
+            coordinator.delegate = createEditItemDelegates
             coordinator.start()
-            self?.generatePasswordCoordinator = coordinator
+            generatePasswordCoordinator = coordinator
         }
     }
 }

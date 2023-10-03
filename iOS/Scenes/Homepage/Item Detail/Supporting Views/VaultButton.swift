@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 
 struct VaultButton: View {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -40,10 +40,10 @@ struct VaultButton: View {
                         .frame(width: 12, height: 12)
                 })
                 .foregroundColor(vault.mainColor)
-                Text("•")
+                Text(verbatim: "•")
                     .font(.body)
                     .foregroundColor(PassColor.textNorm.toColor)
-                Text("\(vault.members)")
+                Text(verbatim: "\(vault.members)")
                     .font(.footnote)
                     .foregroundColor(PassColor.textNorm.toColor)
             }

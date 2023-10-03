@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import Factory
 
@@ -69,13 +70,15 @@ extension AccountViewModel {
 
     func manageSubscription() {
         paymentsManager.manageSubscription { [weak self] result in
-            self?.handlePaymentsResult(result: result)
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 
     func upgradeSubscription() {
         paymentsManager.upgradeSubscription { [weak self] result in
-            self?.handlePaymentsResult(result: result)
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 

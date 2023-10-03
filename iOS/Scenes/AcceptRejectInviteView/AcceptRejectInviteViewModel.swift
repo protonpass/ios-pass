@@ -24,6 +24,7 @@ import Client
 import Combine
 import Entities
 import Factory
+import Foundation
 
 final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var userInvite: UserInvite
@@ -97,8 +98,8 @@ private extension AcceptRejectInviteViewModel {
                       vaultInfos.map(\.vault.id).contains(self.userInvite.targetID) else {
                     return
                 }
-                self.executingAction = false
-                self.shouldCloseSheet = true
+                executingAction = false
+                shouldCloseSheet = true
             }.store(in: &cancellables)
     }
 

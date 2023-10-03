@@ -19,9 +19,32 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+
+@preconcurrency import Combine
 import Entities
 import SwiftUI
+
+struct NavigationConfiguration {
+    var dismissBeforeShowing = false
+    var refresh = false
+    var telemetryEvent: TelemetryEventType?
+
+    static var refresh: NavigationConfiguration {
+        NavigationConfiguration(refresh: true)
+    }
+
+    static func refresh(with event: TelemetryEventType) -> NavigationConfiguration {
+        NavigationConfiguration(refresh: true, telemetryEvent: event)
+    }
+
+    static var dismissAndRefresh: NavigationConfiguration {
+        NavigationConfiguration(dismissBeforeShowing: true, refresh: true)
+    }
+
+    static func dismissAndRefresh(with event: TelemetryEventType) -> NavigationConfiguration {
+        NavigationConfiguration(dismissBeforeShowing: true, refresh: true, telemetryEvent: event)
+    }
+}
 
 enum RouterDestination: Hashable {
     case urlPage(urlString: String)
@@ -41,14 +64,18 @@ enum SheetDestination: Equatable, Hashable {
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
+    case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
+    case fullSync
 }
 
 enum UIElementDisplay {
     case globalLoading(shouldShow: Bool)
     case displayErrorBanner(Error)
+    case successMessage(String? = nil, config: NavigationConfiguration? = nil)
+    case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
 }
 
-final class MainUIKitSwiftUIRouter {
+final class MainUIKitSwiftUIRouter: Sendable {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()

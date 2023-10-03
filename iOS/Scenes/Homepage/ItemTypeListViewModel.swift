@@ -20,9 +20,11 @@
 
 import Client
 import Core
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
-import UIComponents
+import Macro
+import ProtonCoreUIFoundations
+import UIKit
 
 enum ItemType: CaseIterable {
     case login, alias, creditCard, note, password
@@ -31,10 +33,14 @@ enum ItemType: CaseIterable {
 extension ItemContentType {
     var type: ItemType {
         switch self {
-        case .login: return .login
-        case .alias: return .alias
-        case .creditCard: return .creditCard
-        case .note: return .note
+        case .login:
+            .login
+        case .alias:
+            .alias
+        case .creditCard:
+            .creditCard
+        case .note:
+            .note
         }
     }
 }
@@ -72,75 +78,75 @@ extension ItemType {
     var icon: UIImage {
         switch self {
         case .login:
-            return IconProvider.user
+            IconProvider.user
         case .alias:
-            return IconProvider.alias
+            IconProvider.alias
         case .creditCard:
-            return PassIcon.passCreditCardOneStripe
+            PassIcon.passCreditCardOneStripe
         case .note:
-            return IconProvider.fileLines
+            IconProvider.fileLines
         case .password:
-            return IconProvider.key
+            IconProvider.key
         }
     }
 
     var tintColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.normMajor2Color
+            ItemContentType.login.normMajor2Color
         case .alias:
-            return ItemContentType.alias.normMajor2Color
+            ItemContentType.alias.normMajor2Color
         case .creditCard:
-            return ItemContentType.creditCard.normMajor2Color
+            ItemContentType.creditCard.normMajor2Color
         case .note:
-            return ItemContentType.note.normMajor2Color
+            ItemContentType.note.normMajor2Color
         case .password:
-            return PassColor.passwordInteractionNormMajor2
+            PassColor.passwordInteractionNormMajor2
         }
     }
 
     var backgroundColor: UIColor {
         switch self {
         case .login:
-            return ItemContentType.login.normMinor1Color
+            ItemContentType.login.normMinor1Color
         case .alias:
-            return ItemContentType.alias.normMinor1Color
+            ItemContentType.alias.normMinor1Color
         case .creditCard:
-            return ItemContentType.creditCard.normMinor1Color
+            ItemContentType.creditCard.normMinor1Color
         case .note:
-            return ItemContentType.note.normMinor1Color
+            ItemContentType.note.normMinor1Color
         case .password:
-            return PassColor.passwordInteractionNormMinor1
+            PassColor.passwordInteractionNormMinor1
         }
     }
 
     var title: String {
         switch self {
         case .login:
-            return "Login".localized
+            #localized("Login")
         case .alias:
-            return "Alias".localized
+            #localized("Alias")
         case .note:
-            return "Note".localized
+            #localized("Note")
         case .creditCard:
-            return "Credit card".localized
+            #localized("Credit card")
         case .password:
-            return "Password".localized
+            #localized("Password")
         }
     }
 
     var description: String {
         switch self {
         case .login:
-            return "Add login details for an app or site".localized
+            #localized("Add login details for an app or site")
         case .alias:
-            return "Get an email alias to use on new apps".localized
+            #localized("Get an email alias to use on new apps")
         case .creditCard:
-            return "Securely store your payment information".localized
+            #localized("Securely store your payment information")
         case .note:
-            return "Jot down a PIN, code, or note to self".localized
+            #localized("Jot down a PIN, code, or note to self")
         case .password:
-            return "Generate a secure password".localized
+            #localized("Generate a secure password")
         }
     }
 }

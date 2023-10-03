@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct LogsView: View {
     @Environment(\.dismiss) private var dismiss
@@ -105,7 +106,7 @@ struct LogsView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     CapsuleLabelButton(icon: IconProvider.arrowUpFromSquare,
-                                       title: "Share".localized,
+                                       title: #localized("Share"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: PassColor.interactionNorm,
                                        action: viewModel.shareLogs)
@@ -133,11 +134,11 @@ private extension LogsView {
             }
         }, label: {
             if let level = viewModel.logLevel {
-                Text("Log level (\(level.descriptionWithEmoji))")
+                Text(verbatim: "Log level (\(level.descriptionWithEmoji))")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.callout.weight(.medium))
             } else {
-                Text("Log level (All)")
+                Text(verbatim: "Log level (All)")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.callout.weight(.medium))
             }

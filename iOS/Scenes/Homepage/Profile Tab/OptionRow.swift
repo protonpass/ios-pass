@@ -18,18 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 enum OptionRowHeight {
     case compact, short, medium, tall
 
     var value: CGFloat {
         switch self {
-        case .compact: return 44
-        case .short: return 56
-        case .medium: return 72
-        case .tall: return 76
+        case .compact:
+            44
+        case .short:
+            56
+        case .medium:
+            72
+        case .tall:
+            76
         }
     }
 }
@@ -121,7 +125,8 @@ struct SelectableOptionRow<Content: View>: View {
                   content: { content() },
                   trailing: {
                       if isSelected {
-                          Label("", systemImage: "checkmark")
+                          Label(title: { Text(verbatim: "") },
+                                icon: { Image(systemName: "checkmark") })
                               .foregroundColor(Color(uiColor: PassColor.interactionNorm))
                       }
                   })

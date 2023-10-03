@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "4C9FA698-157D-4EA1-A2D5-13464FCF7C66",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ProtonPass.xcodeproj",
+      "identifier" : "35E5063A286F819F00A3F6EA",
+      "name" : "iOS"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/DesignSystem",
+        "identifier" : "DesignSystemTests",
+        "name" : "DesignSystemTests"
+      }
+    }
+  ],
+  "version" : 1
+}

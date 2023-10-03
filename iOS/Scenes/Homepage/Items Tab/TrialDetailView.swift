@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct TrialDetailView: View {
     @Environment(\.dismiss) private var dismiss
@@ -46,15 +47,15 @@ struct TrialDetailView: View {
                     .multilineTextAlignment(.center)
 
                 VStack {
-                    perk(title: "20 vaults".localized, icon: PassIcon.trialVaults)
+                    perk(title: #localized("20 vaults"), icon: PassIcon.trialVaults)
                     PassDivider()
-                    perk(title: "Unlimited email aliases".localized,
+                    perk(title: #localized("Unlimited email aliases"),
                          icon: IconProvider.alias,
                          iconTintColor: PassColor.aliasInteractionNorm)
                     PassDivider()
-                    perk(title: "Integrated 2FA authenticator".localized, icon: PassIcon.trial2FA)
+                    perk(title: #localized("Integrated 2FA authenticator"), icon: PassIcon.trial2FA)
                     PassDivider()
-                    perk(title: "Custom fields".localized, icon: PassIcon.trialCustomFields)
+                    perk(title: #localized("Custom fields"), icon: PassIcon.trialCustomFields)
                 }
                 .padding()
                 .background(Color(uiColor: PassColor.inputBackgroundNorm))
@@ -77,7 +78,7 @@ struct TrialDetailView: View {
                     endPoint: .trailing))
                 .clipShape(Capsule())
 
-                Text("%d trial day(s) left".localized(daysLeft))
+                Text("\(daysLeft) trial day(s) left")
                     .font(.callout)
                     .padding(.top)
 

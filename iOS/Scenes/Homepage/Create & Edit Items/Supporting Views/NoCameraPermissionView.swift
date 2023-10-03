@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct NoCameraPermissionView: View {
     @Environment(\.dismiss) private var dismiss
@@ -41,7 +42,7 @@ struct NoCameraPermissionView: View {
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                     if !Bundle.main.bundlePath.hasSuffix(".appex") {
-                        CapsuleTextButton(title: "Open Settings".localized,
+                        CapsuleTextButton(title: #localized("Open Settings"),
                                           titleColor: PassColor.textInvert,
                                           backgroundColor: PassColor.interactionNormMajor1,
                                           action: onOpenSettings)

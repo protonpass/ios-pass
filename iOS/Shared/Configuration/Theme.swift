@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
+import UIKit
 
 public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable {
     case light = 0
@@ -28,44 +30,44 @@ public enum Theme: Int, Codable, CustomStringConvertible, CaseIterable {
     public var description: String {
         switch self {
         case .light:
-            return "Light".localized
+            #localized("Light")
         case .dark:
-            return "Dark".localized
+            #localized("Dark")
         case .matchSystem:
-            return "Match system".localized
+            #localized("Match system")
         }
     }
 
     public var icon: UIImage {
         switch self {
         case .light:
-            return IconProvider.sun
+            IconProvider.sun
         case .dark:
-            return IconProvider.moon
+            IconProvider.moon
         case .matchSystem:
-            return IconProvider.cogWheel
+            IconProvider.cogWheel
         }
     }
 
     public var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
         case .light:
-            return .light
+            .light
         case .dark:
-            return .dark
+            .dark
         case .matchSystem:
-            return .unspecified
+            .unspecified
         }
     }
 
     public var inAppTheme: InAppTheme {
         switch self {
         case .light:
-            return .light
+            .light
         case .dark:
-            return .dark
+            .dark
         case .matchSystem:
-            return .matchSystem
+            .matchSystem
         }
     }
 }

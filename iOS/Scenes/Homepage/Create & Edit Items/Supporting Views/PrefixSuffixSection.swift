@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 enum PrefixUtils {
     static func generatePrefix(fromTitle title: String) -> String {
@@ -105,7 +105,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
                 if isLoading {
                     ZStack {
                         // Dummy text to make ZStack occupy a correct height
-                        Text("Dummy text")
+                        Text(verbatim: "Dummy text")
                             .opacity(0)
                         AnimatingGradient(tintColor: tintColor)
                             .clipShape(Capsule())

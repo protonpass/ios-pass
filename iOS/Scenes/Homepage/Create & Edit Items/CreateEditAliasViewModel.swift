@@ -23,7 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
-import ProtonCore_Login
+import ProtonCoreLogin
 import SwiftUI
 
 final class SuffixSelection: ObservableObject, Equatable, Hashable {
@@ -109,18 +109,18 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         var isLoaded: Bool {
             switch self {
             case .loaded:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
 
         var isLoading: Bool {
             switch self {
             case .loading:
-                return true
+                true
             default:
-                return false
+                false
             }
         }
     }
@@ -134,9 +134,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override var isSaveable: Bool {
         switch mode {
         case .create:
-            return !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
+            !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
         case .edit:
-            return !title.isEmpty && !mailboxes.isEmpty
+            !title.isEmpty && !mailboxes.isEmpty
         }
     }
 
@@ -158,7 +158,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.validatePrefix()
+                guard let self else { return }
+                validatePrefix()
             }
             .store(in: &cancellables)
 
@@ -170,7 +171,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 guard let self, !self.prefixManuallyEdited else {
                     return
                 }
-                self.prefix = PrefixUtils.generatePrefix(fromTitle: title)
+                prefix = PrefixUtils.generatePrefix(fromTitle: title)
             }
             .store(in: &cancellables)
 
@@ -179,7 +180,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .dropFirst()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.getAliasAndAliasOptions()
+                guard let self else { return }
+                getAliasAndAliasOptions()
             }
             .store(in: &cancellables)
 
@@ -188,7 +190,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .combineLatest($note)
             .dropFirst()
             .sink(receiveValue: { [weak self] _ in
-                self?.didEditSomething = true
+                guard let self else { return }
+                didEditSomething = true
             })
             .store(in: &cancellables)
     }
@@ -287,7 +290,7 @@ private extension CreateEditAliasViewModel {
             guard let self else {
                 throw PPError.deallocatedSelf
             }
-            return try await self.aliasRepository.getAliasOptions(shareId: shareId)
+            return try await aliasRepository.getAliasOptions(shareId: shareId)
         }
     }
 
@@ -298,9 +301,9 @@ private extension CreateEditAliasViewModel {
             guard let self else {
                 throw PPError.deallocatedSelf
             }
-            try await self.aliasRepository.changeMailboxes(shareId: shareId,
-                                                           itemId: itemId,
-                                                           mailboxIDs: mailboxIDs)
+            try await aliasRepository.changeMailboxes(shareId: shareId,
+                                                      itemId: itemId,
+                                                      mailboxIDs: mailboxIDs)
         }
     }
 }

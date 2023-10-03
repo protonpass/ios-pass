@@ -42,6 +42,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var banners: [InfoBanner] = []
+    @Published var shouldShowSyncProgress = false
     @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
         didSet {
             if itemToBePermanentlyDeleted != nil {
@@ -57,6 +58,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -84,16 +86,27 @@ private extension ItemsTabViewModel {
         getPendingUserInvitations()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
-                self?.refreshBanners(invites)
+                guard let self else { return }
+                refreshBanners(invites)
             }
             .store(in: &cancellables)
 
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                self?.refreshBanners()
+                guard let self else { return }
+                refreshBanners()
             }
             .store(in: &cancellables)
+
+        // Show the progress if after 5 seconds after logging in and items are not yet loaded
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            guard let self else { return }
+            if manualLogIn,
+               case .loading = vaultsManager.state {
+                shouldShowSyncProgress = true
+            }
+        }
     }
 
     func refreshBanners(_ invites: [UserInvite]? = nil) {

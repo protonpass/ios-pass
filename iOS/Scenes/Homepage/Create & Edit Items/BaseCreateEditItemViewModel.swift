@@ -23,7 +23,8 @@ import Combine
 import Core
 import DocScanner
 import Factory
-import ProtonCore_Login
+import Macro
+import ProtonCoreLogin
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
@@ -43,9 +44,9 @@ enum ItemMode {
     var isEditMode: Bool {
         switch self {
         case .edit:
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 
@@ -138,9 +139,9 @@ class BaseCreateEditItemViewModel {
     func saveButtonTitle() -> String {
         switch mode {
         case .create:
-            return "Create".localized
+            #localized("Create")
         case .edit:
-            return "Save".localized
+            #localized("Save")
         }
     }
 

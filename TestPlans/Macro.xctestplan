@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "9FB5BEDA-2D2F-4D35-A1AF-79134B536438",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/Macro",
+        "identifier" : "MacroTests",
+        "name" : "MacroTests"
+      }
+    }
+  ],
+  "version" : 1
+}

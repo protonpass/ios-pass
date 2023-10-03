@@ -20,9 +20,10 @@
 
 import Client
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
@@ -33,10 +34,20 @@ struct ItemsTabView: View {
         ZStack {
             switch vaultsManager.state {
             case .loading:
+                // We display both the skeleton and the progress at the same time
+                // and use opacity trick because we need fullSyncProgressView
+                // to be intialized asap so its viewModel doesn't miss any events
+                fullSyncProgressView
+                    .opacity(viewModel.shouldShowSyncProgress ? 1 : 0)
                 ItemsTabsSkeleton()
+                    .opacity(viewModel.shouldShowSyncProgress ? 0 : 1)
 
             case .loaded:
-                vaultContent(vaultsManager.getFilteredItems())
+                if viewModel.shouldShowSyncProgress {
+                    fullSyncProgressView
+                } else {
+                    vaultContent(vaultsManager.getFilteredItems())
+                }
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
@@ -44,8 +55,15 @@ struct ItemsTabView: View {
             }
         }
         .animation(.default, value: vaultsManager.state)
+        .animation(.default, value: viewModel.shouldShowSyncProgress)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .navigationBarHidden(true)
+    }
+
+    private var fullSyncProgressView: some View {
+        FullSyncProgressView(mode: .logIn) {
+            viewModel.shouldShowSyncProgress = false
+        }
     }
 
     @ViewBuilder
@@ -167,14 +185,14 @@ struct ItemsTabView: View {
     private func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
                      content: {
-                         section(for: result.today, headerTitle: "Today".localized)
-                         section(for: result.yesterday, headerTitle: "Yesterday".localized)
-                         section(for: result.last7Days, headerTitle: "Last week".localized)
-                         section(for: result.last14Days, headerTitle: "Last two weeks".localized)
-                         section(for: result.last30Days, headerTitle: "Last 30 days".localized)
-                         section(for: result.last60Days, headerTitle: "Last 60 days".localized)
-                         section(for: result.last90Days, headerTitle: "Last 90 days".localized)
-                         section(for: result.others, headerTitle: "More than 90 days".localized)
+                         section(for: result.today, headerTitle: #localized("Today"))
+                         section(for: result.yesterday, headerTitle: #localized("Yesterday"))
+                         section(for: result.last7Days, headerTitle: #localized("Last week"))
+                         section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
+                         section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
+                         section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
+                         section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
+                         section(for: result.others, headerTitle: #localized("More than 90 days"))
                      },
                      onRefresh: viewModel.forceSync)
     }

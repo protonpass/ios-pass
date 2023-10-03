@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Macro
 
 enum OnboardingViewState {
     case autoFill
@@ -32,61 +32,59 @@ enum OnboardingViewState {
     var title: String {
         switch self {
         case .autoFill:
-            return "Enjoy the magic of AutoFill".localized
+            #localized("Enjoy the magic of AutoFill")
         case .autoFillEnabled:
-            return "Log in to apps instantly".localized
+            #localized("Log in to apps instantly")
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            return "Protect your most sensitive data".localized
+            #localized("Protect your most sensitive data")
         case .faceIDEnabled:
-            return "Face ID enabled".localized
+            #localized("Face ID enabled")
         case .touchIDEnabled:
-            return "Touch ID enabled".localized
+            #localized("Touch ID enabled")
         case .aliases:
-            return "Control what lands in your inbox".localized
+            #localized("Control what lands in your inbox")
         }
     }
 
+    // swiftlint:disable line_length
     var description: String {
         switch self {
         case .autoFill:
-            // swiftlint:disable:next line_length
-            return "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours"
-                .localized
+            #localized("Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours")
         case .autoFillEnabled:
-            // swiftlint:disable:next line_length
-            return "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details"
-                .localized
+            #localized("When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details")
         case .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            return "Set Proton Pass to unlock with your face or fingerprint so only you have access".localized
+            #localized("Set Proton Pass to unlock with your face or fingerprint so only you have access")
         case .faceIDEnabled, .touchIDEnabled:
-            return "Now you can unlock Proton Pass only when you need it⏤quickly and securely".localized
+            #localized("Now you can unlock Proton Pass only when you need it⏤quickly and securely")
         case .aliases:
-            return "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive."
-                .localized
+            #localized("Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive.")
         }
     }
+
+    // swiftlint:enable line_length
 
     var primaryButtonTitle: String {
         switch self {
         case .autoFill:
-            return "Go to Settings".localized
+            #localized("Go to Settings")
         case .biometricAuthenticationTouchID:
-            return "Enable Touch ID".localized
+            #localized("Enable Touch ID")
         case .biometricAuthenticationFaceID:
-            return "Enable Face ID".localized
+            #localized("Enable Face ID")
         case .aliases:
-            return "Start using Proton Pass".localized
+            #localized("Start using Proton Pass")
         case .autoFillEnabled, .faceIDEnabled, .touchIDEnabled:
-            return "Next".localized
+            #localized("Next")
         }
     }
 
     var secondaryButtonTitle: String? {
         switch self {
         case .autoFill, .biometricAuthenticationFaceID, .biometricAuthenticationTouchID:
-            return "Not now".localized
+            #localized("Not now")
         case .aliases, .autoFillEnabled, .faceIDEnabled, .touchIDEnabled:
-            return nil
+            nil
         }
     }
 }

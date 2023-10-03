@@ -20,7 +20,7 @@
 
 import Client
 import Core
-import ProtonCore_Services
+import ProtonCoreServices
 
 /// Inform the BE that the users had logged in into Pass so that welcome or instruction emails can be sent
 protocol CheckAccessToPassUseCase: Sendable {
@@ -46,12 +46,12 @@ final class CheckAccessToPass: @unchecked Sendable, CheckAccessToPassUseCase {
         Task { [weak self] in
             guard let self else { return }
             do {
-                self.logger.trace("Checking access to Pass")
+                logger.trace("Checking access to Pass")
                 let endpoint = CheckAccessAndPlanEndpoint()
-                _ = try await self.apiService.exec(endpoint: endpoint)
-                self.logger.info("Checked access to Pass")
+                _ = try await apiService.exec(endpoint: endpoint)
+                logger.info("Checked access to Pass")
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }

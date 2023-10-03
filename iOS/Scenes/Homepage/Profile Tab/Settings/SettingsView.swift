@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel
@@ -56,7 +57,6 @@ struct SettingsView: View {
                     .padding(.top)
             }
             .padding()
-            .showSpinner(viewModel.loading)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("Settings")
@@ -81,7 +81,7 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             if !ProcessInfo.processInfo.isiOSAppOnMac {
                 OptionRow(action: viewModel.editDefaultBrowser,
-                          title: "Default browser".localized,
+                          title: #localized("Default browser"),
                           height: .tall,
                           content: {
                               Text(viewModel.selectedBrowser.description)
@@ -93,7 +93,7 @@ struct SettingsView: View {
             }
 
             OptionRow(action: viewModel.editTheme,
-                      title: "Theme".localized,
+                      title: #localized("Theme"),
                       height: .tall,
                       content: {
                           Label(title: {
@@ -129,7 +129,7 @@ struct SettingsView: View {
 
             VStack(spacing: 0) {
                 OptionRow(action: viewModel.editClipboardExpiration,
-                          title: "Clear clipboard".localized,
+                          title: #localized("Clear clipboard"),
                           height: .tall,
                           content: {
                               Text(viewModel.selectedClipboardExpiration.description)
@@ -159,7 +159,7 @@ struct SettingsView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             OptionRow(action: { viewModel.edit(primaryVault: vault) },
-                      title: "Primary vault".localized,
+                      title: #localized("Primary vault"),
                       height: .tall,
                       content: { Text(vault.name).foregroundColor(Color(uiColor: PassColor.textNorm)) },
                       leading: { VaultThumbnail(vault: vault) },

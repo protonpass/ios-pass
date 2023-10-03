@@ -21,7 +21,7 @@
 
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
 private let title = "Enjoy the magic of AutoFill"
@@ -39,7 +39,7 @@ public final class AutoFillRobot: CoreElements {
     }
 
     public func notNowTap<T: CoreElements>(robot _: T.Type) -> T {
-        button(notNowTxt).waitUntilExists().tap()
+        button(notNowTxt).waitForHittable().tap()
         return T()
     }
 }

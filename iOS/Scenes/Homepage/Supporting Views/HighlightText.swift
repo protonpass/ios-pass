@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 public struct HighlightText: View {
     public let texts: [Text]
@@ -29,7 +29,7 @@ public struct HighlightText: View {
         var texts = [Text]()
 
         if !highlightableText.isLeadingText {
-            texts.append(Text("..."))
+            texts.append(Text(verbatim: "..."))
         }
 
         if let highlightText = highlightableText.highlightText {
@@ -46,7 +46,7 @@ public struct HighlightText: View {
         }
 
         if !highlightableText.isTrailingText {
-            texts.append(Text("..."))
+            texts.append(Text(verbatim: "..."))
         }
         self.texts = texts
     }

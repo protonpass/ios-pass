@@ -31,11 +31,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
     func itemDetailViewModelWantsToShowFullScreen(_ text: String)
-    func itemDetailViewModelWantsToMove(item: ItemIdentifiable, delegate: MoveVaultListViewModelDelegate)
-    func itemDetailViewModelDidMove(item: ItemTypeIdentifiable, to vault: Vault)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
-    func itemDetailViewModelDidRestore(item: ItemTypeIdentifiable)
-    func itemDetailViewModelDidPermanentlyDelete(item: ItemTypeIdentifiable)
 }
 
 class BaseItemDetailViewModel: ObservableObject {
@@ -122,7 +118,10 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToAnotherVault() {
-        delegate?.itemDetailViewModelWantsToMove(item: itemContent, delegate: self)
+        guard let vault else {
+            return
+        }
+        router.present(for: .moveItemsBetweenVaults(currentVault: vault, singleItemToMove: itemContent))
     }
 
     func moveToTrash() {
@@ -155,7 +154,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await self.itemRepository.untrashItems([encryptedItem])
-                self.delegate?.itemDetailViewModelDidRestore(item: item)
+                self.router.display(element: .successMessage(item.type.restoreMessage,
+                                                             config: .dismissAndRefresh(with: .update(item.type))))
                 self.logger.info("Restored \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
@@ -175,7 +175,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 let symmetricKey = self.itemRepository.symmetricKey
                 let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
-                self.delegate?.itemDetailViewModelDidPermanentlyDelete(item: item)
+                self.router.display(element: .successMessage(item.type.deleteMessage,
+                                                             config: .dismissAndRefresh(with: .delete(item.type))))
                 self.logger.info("Permanently deleted \(item.debugInformation)")
             } catch {
                 self.logger.error(error)
@@ -209,44 +210,11 @@ private extension BaseItemDetailViewModel {
             guard let self else {
                 throw PPError.deallocatedSelf
             }
-            guard let item = try await self.itemRepository.getItem(shareId: item.shareId,
-                                                                   itemId: item.itemId) else {
+            guard let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                              itemId: item.itemId) else {
                 throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return item
         }
-    }
-
-    func doMove(to vault: Vault) {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                self.logger.trace("Moving \(self.itemContent.debugInformation) to share \(vault.shareId)")
-                self.router.display(element: .globalLoading(shouldShow: true))
-                try await self.itemRepository.move(item: self.itemContent, toShareId: vault.shareId)
-                self.logger.trace("Moved \(self.itemContent.debugInformation) to share \(vault.shareId)")
-                self.delegate?.itemDetailViewModelDidMove(item: itemContent, to: vault)
-            } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-}
-
-// MARK: - MoveVaultListViewModelDelegate
-
-extension BaseItemDetailViewModel: MoveVaultListViewModelDelegate {
-    func moveVaultListViewModelWantsToUpgrade() {
-        router.present(for: .upgradeFlow)
-    }
-
-    func moveVaultListViewModelDidPick(vault: Vault) {
-        doMove(to: vault)
-    }
-
-    func moveVaultListViewModelDidEncounter(error: Error) {
-        router.display(element: .displayErrorBanner(error))
     }
 }
