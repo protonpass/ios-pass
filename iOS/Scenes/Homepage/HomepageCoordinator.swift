@@ -282,7 +282,11 @@ private extension HomepageCoordinator {
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault):
-                    print(vault)
+                    if vault.vault.shared {
+                        break
+                    } else {
+                        presentShareOrCreateNewVaultView(for: vault)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -466,6 +470,17 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
+    }
+
+    func presentShareOrCreateNewVaultView(for vault: VaultListUiModel) {
+        let view = ShareOrCreateNewVaultView(vault: vault,
+                                             onShareVault: {},
+                                             onCreateNewVault: {})
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.custom(310),
+                                     parentViewController: rootViewController)
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 
     func startUpgradeFlow() {
