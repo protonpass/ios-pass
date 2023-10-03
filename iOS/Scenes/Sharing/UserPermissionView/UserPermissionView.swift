@@ -79,7 +79,7 @@ private extension UserPermissionView {
 private extension UserPermissionView {
     var emailDisplayView: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(viewModel.email.initialsRemovingEmojis()),
+            SquircleThumbnail(data: .initials(viewModel.email.initials()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
@@ -157,8 +157,6 @@ private extension UserPermissionView {
     }
 }
 
-struct UserPermissionView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserPermissionView()
-    }
+#Preview("UserPermissionView Preview") {
+    UserPermissionView()
 }

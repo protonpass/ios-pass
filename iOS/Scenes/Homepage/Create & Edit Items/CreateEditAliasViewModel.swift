@@ -99,21 +99,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return false
     }
 
-    private let prefixCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789._-")
-
     enum State {
         case loading
         case loaded
         case error(Error)
-
-        var isLoaded: Bool {
-            switch self {
-            case .loaded:
-                true
-            default:
-                false
-            }
-        }
 
         var isLoading: Bool {
             switch self {
@@ -131,7 +120,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    override var isSaveable: Bool {
+    var isSaveable: Bool {
         switch mode {
         case .create:
             !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
