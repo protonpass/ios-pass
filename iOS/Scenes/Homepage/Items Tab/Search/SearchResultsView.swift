@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct SearchResultsView: View, Equatable {
     @ObservedObject private var viewModel: SearchResultsViewModel
@@ -111,13 +112,13 @@ struct SearchResultsView: View, Equatable {
 private extension SearchResultsView {
     var topBarSearchInformations: some View {
         HStack {
-            Text("\(viewModel.results.numberOfItems)")
+            Text(verbatim: "\(viewModel.results.numberOfItems)")
                 .font(.callout)
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" ")
+                Text(verbatim: " ")
                 .font(.callout) +
-                Text("%d search result(s)".localized(viewModel.results.numberOfItems))
+                Text("\(viewModel.results.numberOfItems) search result(s)")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
 
@@ -143,7 +144,7 @@ private extension SearchResultsView {
             }
             .listStyle(.plain)
             .animation(.default, value: viewModel.results.hashValue)
-            .gesture(DragGesture().onChanged { _ in onScroll() })
+            .simultaneousGesture(DragGesture().onChanged { _ in onScroll() })
             .onChange(of: selectedType) { _ in
                 proxy.scrollTo(uuid)
             }
@@ -175,14 +176,14 @@ private extension SearchResultsView {
 
     @ViewBuilder
     func mostRecentItemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
-        section(for: result.today, headerTitle: "Today".localized)
-        section(for: result.yesterday, headerTitle: "Yesterday".localized)
-        section(for: result.last7Days, headerTitle: "Last week".localized)
-        section(for: result.last14Days, headerTitle: "Last two weeks".localized)
-        section(for: result.last30Days, headerTitle: "Last 30 days".localized)
-        section(for: result.last60Days, headerTitle: "Last 60 days".localized)
-        section(for: result.last90Days, headerTitle: "Last 90 days".localized)
-        section(for: result.others, headerTitle: "More than 90 days".localized)
+        section(for: result.today, headerTitle: #localized("Today"))
+        section(for: result.yesterday, headerTitle: #localized("Yesterday"))
+        section(for: result.last7Days, headerTitle: #localized("Last week"))
+        section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
+        section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
+        section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
+        section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
+        section(for: result.others, headerTitle: #localized("More than 90 days"))
     }
 
     func alphabeticalItemList(_ result: AlphabeticalSortResult<ItemSearchResult>) -> some View {

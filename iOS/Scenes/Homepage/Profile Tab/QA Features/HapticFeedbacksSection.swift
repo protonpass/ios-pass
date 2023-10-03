@@ -30,19 +30,19 @@ struct HapticFeedbacksSection: View {
                 Button(action: {
                     UINotificationFeedbackGenerator().notificationOccurred(.success)
                 }, label: {
-                    Text("Success")
+                    Text(verbatim: "Success")
                 })
 
                 Button(action: {
                     UINotificationFeedbackGenerator().notificationOccurred(.warning)
                 }, label: {
-                    Text("Warning")
+                    Text(verbatim: "Warning")
                 })
 
                 Button(action: {
                     UINotificationFeedbackGenerator().notificationOccurred(.error)
                 }, label: {
-                    Text("Error")
+                    Text(verbatim: "Error")
                 })
 
                 if !isShowingAllOptions {
@@ -51,7 +51,7 @@ struct HapticFeedbacksSection: View {
                             isShowingAllOptions.toggle()
                         }
                     }, label: {
-                        Text("Show more...")
+                        Text(verbatim: "Show more...")
                     })
                 }
             }
@@ -66,44 +66,48 @@ struct HapticFeedbacksSection: View {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }, label: {
-                    Text("Medium")
+                    Text(verbatim: "Medium")
                 })
 
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 }, label: {
-                    Text("Heavy")
+                    Text(verbatim: "Heavy")
                 })
 
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                 }, label: {
-                    Text("Soft")
+                    Text(verbatim: "Soft")
                 })
 
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 }, label: {
-                    Text("Rigid")
+                    Text(verbatim: "Rigid")
                 })
 
                 Button(action: {
                     UISelectionFeedbackGenerator().selectionChanged()
                 }, label: {
-                    Text("Selection")
+                    Text(verbatim: "Selection")
                 })
 
                 Button(action: {
                     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 }, label: {
-                    Text("Old school")
+                    Text(verbatim: "Old school")
                 })
 
                 NavigationLink(destination: { FineTunedHapticFeedbackView() },
-                               label: { Text("Fine-tuned haptic feedbacks") })
+                               label: { Text(verbatim: "Fine-tuned haptic feedbacks") })
             }
         }, header: {
-            Label("Haptic feedbacks", systemImage: "iphone.radiowaves.left.and.right")
+            Label(title: {
+                Text(verbatim: "Haptic feedbacks")
+            }, icon: {
+                Image(systemName: "iphone.radiowaves.left.and.right")
+            })
         })
     }
 }
@@ -115,7 +119,7 @@ private struct FineTunedHapticFeedbackView: View {
         Form {
             Section {
                 VStack {
-                    Text("Intensity \(intensity)")
+                    Text(verbatim: "Intensity \(intensity)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Slider(value: $intensity, in: 0.0...1.0, step: 0.1)
                 }
@@ -131,28 +135,28 @@ private struct FineTunedHapticFeedbackView: View {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred(intensity: intensity)
                 }, label: {
-                    Text("Medium")
+                    Text(verbatim: "Medium")
                 })
 
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .heavy).impactOccurred(intensity: intensity)
                 }, label: {
-                    Text("Heavy")
+                    Text(verbatim: "Heavy")
                 })
 
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: intensity)
                 }, label: {
-                    Text("Soft")
+                    Text(verbatim: "Soft")
                 })
 
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .rigid).impactOccurred(intensity: intensity)
                 }, label: {
-                    Text("Rigid")
+                    Text(verbatim: "Rigid")
                 })
             }
         }
-        .navigationTitle("Fine-tuned haptic feedbacks")
+        .navigationTitle(Text(verbatim: "Fine-tuned haptic feedbacks"))
     }
 }

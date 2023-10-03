@@ -19,8 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
-import UIComponents
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import UIKit
 
 // MARK: - Colors & icons
@@ -29,87 +30,87 @@ extension ItemContentType {
     var regularIcon: UIImage {
         switch self {
         case .alias:
-            return IconProvider.alias
+            IconProvider.alias
         case .login:
-            return IconProvider.user
+            IconProvider.user
         case .note:
-            return IconProvider.fileLines
+            IconProvider.fileLines
         case .creditCard:
-            return PassIcon.passCreditCardOneStripe
+            PassIcon.passCreditCardOneStripe
         }
     }
 
     var largeIcon: UIImage {
         switch self {
         case .creditCard:
-            return PassIcon.passCreditCardTwoStripes
+            PassIcon.passCreditCardTwoStripes
         default:
-            return regularIcon
+            regularIcon
         }
     }
 
     var normColor: UIColor {
         switch self {
         case .alias:
-            return PassColor.aliasInteractionNorm
+            PassColor.aliasInteractionNorm
         case .login:
-            return PassColor.loginInteractionNorm
+            PassColor.loginInteractionNorm
         case .note:
-            return PassColor.noteInteractionNorm
+            PassColor.noteInteractionNorm
         case .creditCard:
-            return PassColor.cardInteractionNorm
+            PassColor.cardInteractionNorm
         }
     }
 
     var normMajor1Color: UIColor {
         switch self {
         case .alias:
-            return PassColor.aliasInteractionNormMajor1
+            PassColor.aliasInteractionNormMajor1
         case .login:
-            return PassColor.loginInteractionNormMajor1
+            PassColor.loginInteractionNormMajor1
         case .note:
-            return PassColor.noteInteractionNormMajor1
+            PassColor.noteInteractionNormMajor1
         case .creditCard:
-            return PassColor.cardInteractionNormMajor1
+            PassColor.cardInteractionNormMajor1
         }
     }
 
     var normMajor2Color: UIColor {
         switch self {
         case .alias:
-            return PassColor.aliasInteractionNormMajor2
+            PassColor.aliasInteractionNormMajor2
         case .login:
-            return PassColor.loginInteractionNormMajor2
+            PassColor.loginInteractionNormMajor2
         case .note:
-            return PassColor.noteInteractionNormMajor2
+            PassColor.noteInteractionNormMajor2
         case .creditCard:
-            return PassColor.cardInteractionNormMajor2
+            PassColor.cardInteractionNormMajor2
         }
     }
 
     var normMinor1Color: UIColor {
         switch self {
         case .alias:
-            return PassColor.aliasInteractionNormMinor1
+            PassColor.aliasInteractionNormMinor1
         case .login:
-            return PassColor.loginInteractionNormMinor1
+            PassColor.loginInteractionNormMinor1
         case .note:
-            return PassColor.noteInteractionNormMinor1
+            PassColor.noteInteractionNormMinor1
         case .creditCard:
-            return PassColor.cardInteractionNormMinor1
+            PassColor.cardInteractionNormMinor1
         }
     }
 
     var normMinor2Color: UIColor {
         switch self {
         case .alias:
-            return PassColor.aliasInteractionNormMinor2
+            PassColor.aliasInteractionNormMinor2
         case .login:
-            return PassColor.loginInteractionNormMinor2
+            PassColor.loginInteractionNormMinor2
         case .note:
-            return PassColor.noteInteractionNormMinor2
+            PassColor.noteInteractionNormMinor2
         case .creditCard:
-            return PassColor.cardInteractionNormMinor2
+            PassColor.cardInteractionNormMinor2
         }
     }
 }
@@ -120,79 +121,91 @@ extension ItemContentType {
     var chipTitle: String {
         switch self {
         case .login:
-            return "Login".localized
+            #localized("Login")
         case .alias:
-            return "Alias".localized
+            #localized("Alias")
         case .note:
-            return "Note".localized
+            #localized("Note")
         case .creditCard:
-            return "Credit card".localized
+            #localized("Credit card")
         }
     }
 
     var filterTitle: String {
         switch self {
         case .login:
-            return "Logins".localized
+            #localized("Logins")
         case .alias:
-            return "Aliases".localized
+            #localized("Aliases")
         case .note:
-            return "Notes".localized
+            #localized("Notes")
         case .creditCard:
-            return "Credit cards".localized
+            #localized("Credit cards")
         }
     }
 
     var createItemTitle: String {
         switch self {
         case .login:
-            return "Create a login".localized
+            #localized("Create a login")
         case .alias:
-            return "Create a Hide My Email alias".localized
+            #localized("Create a Hide My Email alias")
         case .creditCard:
-            return "Create a credit card".localized
+            #localized("Create a credit card")
         case .note:
-            return "Create a note".localized
+            #localized("Create a note")
         }
     }
 
     var creationMessage: String {
         switch self {
         case .login:
-            return "Login created".localized
+            #localized("Login created")
         case .alias:
-            return "Alias created".localized
+            #localized("Alias created")
         case .creditCard:
-            return "Credit card created".localized
+            #localized("Credit card created")
         case .note:
-            return "Note created".localized
+            #localized("Note created")
         }
     }
 
     var restoreMessage: String {
         switch self {
-        case .login: return "Login restored".localized
-        case .alias: return "Alias restored".localized
-        case .creditCard: return "Credit card restored".localized
-        case .note: return "Note restored".localized
+        case .login:
+            #localized("Login restored")
+        case .alias:
+            #localized("Alias restored")
+        case .creditCard:
+            #localized("Credit card restored")
+        case .note:
+            #localized("Note restored")
         }
     }
 
     var deleteMessage: String {
         switch self {
-        case .login: return "Login permanently deleted".localized
-        case .alias: return "Alias permanently deleted".localized
-        case .creditCard: return "Credit card permanently deleted".localized
-        case .note: return "Note permanently deleted".localized
+        case .login:
+            #localized("Login permanently deleted")
+        case .alias:
+            #localized("Alias permanently deleted")
+        case .creditCard:
+            #localized("Credit card permanently deleted")
+        case .note:
+            #localized("Note permanently deleted")
         }
     }
 
     var updateMessage: String {
         switch self {
-        case .login: return "Login updated".localized
-        case .alias: return "Alias updated".localized
-        case .creditCard: return "Credit card updated".localized
-        case .note: return "Note updated".localized
+        case .login:
+            #localized("Login updated")
+        case .alias:
+            #localized("Alias updated")
+        case .creditCard:
+            #localized("Credit card updated")
+        case .note:
+            #localized("Note updated")
         }
     }
 }
@@ -200,10 +213,14 @@ extension ItemContentType {
 extension ItemTypeIdentifiable {
     var trashMessage: String {
         switch type {
-        case .login: return "Login moved to trash".localized
-        case .alias: return "Alias \"%@\" will stop forwarding emails to your mailbox".localized(aliasEmail ?? "")
-        case .creditCard: return "Credit card moved to trash".localized
-        case .note: return "Note moved to trash".localized
+        case .login:
+            #localized("Login moved to trash")
+        case .alias:
+            #localized("Alias \"%@\" will stop forwarding emails to your mailbox", aliasEmail ?? "")
+        case .creditCard:
+            #localized("Credit card moved to trash")
+        case .note:
+            #localized("Note moved to trash")
         }
     }
 }

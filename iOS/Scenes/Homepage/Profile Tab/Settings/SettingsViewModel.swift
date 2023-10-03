@@ -31,7 +31,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToEditClipboardExpiration()
     func settingsViewModelWantsToEdit(primaryVault: Vault)
     func settingsViewModelWantsToClearLogs()
-    func settingsViewModelDidFinishFullSync()
 }
 
 final class SettingsViewModel: ObservableObject, DeinitPrintable {
@@ -58,8 +57,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
             }
         }
     }
-
-    @Published private(set) var loading = false
 
     @Published var shareClipboard: Bool { didSet { preferences.shareClipboard = shareClipboard } }
 
@@ -103,9 +100,9 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
                 }
                 // These options are changed in other pages by passing a references
                 // of Preferences. So we listen to changes and update here.
-                self.selectedBrowser = self.preferences.browser
-                self.selectedTheme = self.preferences.theme
-                self.selectedClipboardExpiration = self.preferences.clipboardExpiration
+                selectedBrowser = preferences.browser
+                selectedTheme = preferences.theme
+                selectedClipboardExpiration = preferences.clipboardExpiration
             }
             .store(in: &cancellables)
 
@@ -150,18 +147,18 @@ extension SettingsViewModel {
 
     func forceSync() {
         Task { @MainActor [weak self] in
-            defer { self?.loading = false }
+            guard let self else { return }
             do {
-                self?.syncEventLoop.stop()
-                self?.logger.info("Doing full sync")
-                self?.loading = true
-                try await self?.vaultsManager.fullSync()
-                self?.logger.info("Done full sync")
-                self?.syncEventLoop.start()
-                self?.delegate?.settingsViewModelDidFinishFullSync()
+                router.present(for: .fullSync)
+                syncEventLoop.stop()
+                logger.info("Doing full sync")
+                try await vaultsManager.fullSync()
+                logger.info("Done full sync")
+                syncEventLoop.start()
+                router.display(element: .successMessage(config: .refresh))
             } catch {
-                self?.logger.error(error)
-                self?.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -174,11 +171,11 @@ private extension SettingsViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                self.logger.trace("Fav icons are disabled. Removing all cached fav icons")
-                try self.favIconRepository.emptyCache()
-                self.logger.info("Removed all cached fav icons")
+                logger.trace("Fav icons are disabled. Removing all cached fav icons")
+                try favIconRepository.emptyCache()
+                logger.info("Removed all cached fav icons")
             } catch {
-                self.logger.error(error)
+                logger.error(error)
             }
         }
     }

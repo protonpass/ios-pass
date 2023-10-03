@@ -22,7 +22,7 @@ import Client
 import Combine
 import Core
 import DocScanner
-import ProtonCore_Login
+import ProtonCoreLogin
 import SwiftUI
 
 final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintable, ObservableObject {
@@ -45,7 +45,7 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
             .sink { _ in } receiveValue: { [weak self] result in
                 guard let self, let result else { return }
                 if let document = result as? ScannedDocument {
-                    self.transformIntoNote(document: document)
+                    transformIntoNote(document: document)
                 } else {
                     assertionFailure("Expecting ScannedDocument as result")
                 }
@@ -56,7 +56,8 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
             .CombineLatest($title, $note)
             .dropFirst(mode.isEditMode ? 1 : 3)
             .sink(receiveValue: { [weak self] _ in
-                self?.didEditSomething = true
+                guard let self else { return }
+                didEditSomething = true
             })
             .store(in: &cancellables)
     }

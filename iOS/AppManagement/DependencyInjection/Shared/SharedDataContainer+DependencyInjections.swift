@@ -24,7 +24,7 @@ import CoreData
 import CryptoKit
 import Factory
 import Foundation
-import ProtonCore_Login
+import ProtonCoreLogin
 
 final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()

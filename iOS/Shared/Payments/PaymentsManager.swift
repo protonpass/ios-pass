@@ -20,9 +20,10 @@
 
 import Core
 import Factory
-import ProtonCore_Payments
-import ProtonCore_PaymentsUI
-import ProtonCore_Services
+import Foundation
+import ProtonCorePayments
+import ProtonCorePaymentsUI
+import ProtonCoreServices
 
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
@@ -56,15 +57,22 @@ final class PaymentsManager {
                    clientApp: PaymentsConstants.clientApp,
                    shownPlanNames: PaymentsConstants.shownPlanNames,
                    customization: .init(inAppTheme: { [weak self] in
-                       self?.preferences.theme.inAppTheme ?? .default
+                       guard let self else { return .default }
+                       return preferences.theme.inAppTheme
                    }))
     }
 
     private func initializePaymentsStack() {
-        payments.planService.currentSubscriptionChangeDelegate = self
+        switch payments.planService {
+        case let .left(service):
+            service.currentSubscriptionChangeDelegate = self
+        default:
+            break
+        }
         payments.storeKitManager.delegate = self
         payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
-            self?.payments.storeKitManager.subscribeToPaymentQueue()
+            guard let self else { return }
+            payments.storeKitManager.subscribeToPaymentQueue()
         }
     }
 
@@ -75,7 +83,8 @@ final class PaymentsManager {
         // keep reference to avoid being deallocated
         self.paymentsUI = paymentsUI
         paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
-            self?.handlePaymentsResponse(result: result, completion: completion)
+            guard let self else { return }
+            handlePaymentsResponse(result: result, completion: completion)
         }
     }
 
@@ -86,7 +95,8 @@ final class PaymentsManager {
         // keep reference to avoid being deallocated
         self.paymentsUI = paymentsUI
         paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] result in
-            self?.handlePaymentsResponse(result: result, completion: completion)
+            guard let self else { return }
+            handlePaymentsResponse(result: result, completion: completion)
         }
     }
 

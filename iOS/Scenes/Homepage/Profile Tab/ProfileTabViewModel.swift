@@ -22,7 +22,7 @@ import Client
 import Combine
 import Core
 import Factory
-import ProtonCore_Services
+import ProtonCoreServices
 import SwiftUI
 
 protocol ProfileTabViewModelDelegate: AnyObject {
@@ -93,15 +93,17 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                self?.refresh()
+                guard let self else { return }
+                refresh()
             }
             .store(in: &cancellables)
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.updateAutoFillAvalability()
-                self?.updateSecuritySettings()
+                guard let self else { return }
+                updateAutoFillAvalability()
+                updateSecuritySettings()
             }
             .store(in: &cancellables)
     }

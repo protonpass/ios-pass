@@ -1,11 +1,11 @@
 # https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
 
---exclude Pods/**, CoreTests/, ClientTests/,iOSTests, iOSUITests, UIComponentsTests, Package.swift, Protobuf Objects/,
+--exclude iOSTests, iOSUITests, Package.swift, fastlane/** , LocalPackages/Core/Tests,  LocalPackages/Client/Sources/Client/Protobuf Objects, LocalPackages/Client/Tests, LocalPackages/DesignSystem/Tests, LocalPackages/Entities/Tests, misc/**
 
 # format options
 
 --symlinks ignore
---swiftversion 5.7
+--swiftversion 5.9
 
 # format options
 
@@ -37,4 +37,4 @@
 
 --enable isEmpty,\
 blankLineAfterImports,\
-sortedSwitchCases,\
+sortSwitchCases,\

@@ -1,5 +1,5 @@
 //
-// SharedTooling+DependencyInjection.swift
+// SharedTooling+DependencyInjections.swift
 // Proton Pass - Created on 07/06/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -24,9 +24,9 @@ import CoreData
 import CryptoKit
 import Factory
 import LocalAuthentication
-import ProtonCore_Keymaker
-import ProtonCore_Login
-import ProtonCore_Services
+import ProtonCoreKeymaker
+import ProtonCoreLogin
+import ProtonCoreServices
 
 /// Contain tools shared between main iOS app and extensions
 final class SharedToolingContainer: SharedContainer, AutoRegistering {

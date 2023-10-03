@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import Factory
+import Macro
 import SwiftUI
-import UIComponents
 
 struct PinAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
@@ -63,8 +64,8 @@ struct PinAuthenticationView: View {
             case let .remainingAttempts(count):
                 Text("Incorrect PIN code.")
                     .foregroundColor(PassColor.signalDanger.toColor) +
-                    Text(" ") +
-                    Text("%d remaining attempt(s)".localized(count))
+                    Text(verbatim: " ") +
+                    Text("\(count) remaining attempt(s)")
                     .foregroundColor(PassColor.signalDanger.toColor)
             case .lastAttempt:
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")
@@ -74,7 +75,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            DisablableCapsuleTextButton(title: "Unlock".localized,
+            DisablableCapsuleTextButton(title: #localized("Unlock"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textInvert,
                                         backgroundColor: PassColor.interactionNormMajor1,

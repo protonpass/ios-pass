@@ -19,8 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
+import Macro
 import SwiftUI
-import UIComponents
 
 struct MoveVaultListView: View {
     @Environment(\.dismiss) private var dismiss
@@ -46,20 +47,20 @@ struct MoveVaultListView: View {
             }
 
             HStack(spacing: 16) {
-                CapsuleTextButton(title: "Cancel".localized,
+                CapsuleTextButton(title: #localized("Cancel"),
                                   titleColor: PassColor.textWeak,
                                   backgroundColor: PassColor.textDisabled,
                                   height: 44,
                                   action: dismiss.callAsFunction)
 
-                DisablableCapsuleTextButton(title: "Confirm".localized,
+                DisablableCapsuleTextButton(title: #localized("Confirm"),
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.interactionNormMajor1,
                                             disableBackgroundColor: PassColor.interactionNormMinor1,
                                             disabled: false,
                                             height: 44,
-                                            action: { dismiss(); viewModel.confirm() })
+                                            action: { dismiss(); viewModel.doMove() })
             }
             .padding([.bottom, .horizontal])
         }
@@ -68,7 +69,7 @@ struct MoveVaultListView: View {
         .animation(.default, value: viewModel.isFreeUser)
     }
 
-    private func vaultRow(for vault: VaultListUiModel) -> some View {
+    private func vaultRow(for vault: VaultContentUiModel) -> some View {
         Button(action: {
             viewModel.selectedVault = vault
         }, label: {

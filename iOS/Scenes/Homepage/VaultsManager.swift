@@ -23,7 +23,9 @@ import Combine
 import Core
 import CryptoKit
 import Factory
-import ProtonCore_Login
+import Foundation
+import Macro
+import ProtonCoreLogin
 
 enum VaultManagerState {
     case loading
@@ -39,11 +41,11 @@ enum VaultSelection {
     var searchBarPlacehoder: String {
         switch self {
         case .all:
-            return "Search in all vaults...".localized
+            #localized("Search in all vaults...")
         case let .precise(vault):
-            return "Search in %@...".localized(vault.name)
+            #localized("Search in %@...", vault.name)
         case .trash:
-            return "Search in Trash...".localized
+            #localized("Search in Trash...")
         }
     }
 
@@ -55,9 +57,25 @@ enum VaultSelection {
     }
 }
 
-protocol VaultsManagerProtocol {
+protocol VaultsManagerProtocol: Sendable {
+    var currentVaults: CurrentValueSubject<[Vault], Never> { get }
+
     func refresh()
     func fullSync() async throws
+    func select(_ selection: VaultSelection)
+    func isSelected(_ selection: VaultSelection) -> Bool
+    func getItems(for vault: Vault) -> [ItemUiModel]
+    func getItemCount(for selection: Vault) -> Int
+    func getItemCount(for selection: VaultSelection) -> Int
+    func getAllVaultContents() -> [VaultContentUiModel]
+    func getAllVaults() -> [Vault]
+    func vaultHasTrashedItems(_ vault: Vault) -> Bool
+    func delete(vault: Vault) async throws
+    func restoreAllTrashedItems() async throws
+    func permanentlyDeleteAllTrashedItems() async throws
+    func getPrimaryVault() -> Vault?
+    func getSelectedShareId() -> String?
+    func getFilteredItems() -> [ItemUiModel]
 }
 
 final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {
@@ -66,9 +84,11 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
+    private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
+    private var progresses = [VaultSyncProgress]()
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -79,6 +99,8 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     @Published private(set) var vaultSelection = VaultSelection.all
     @Published private(set) var filterOption = ItemTypeFilterOption.all
     @Published private(set) var itemCount = ItemCount.zero
+
+    let currentVaults: CurrentValueSubject<[Vault], Never> = .init([])
 
     init() {
         setUp()
@@ -93,7 +115,8 @@ private extension VaultsManager {
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] _ in
-                self?.updateItemCount()
+                guard let self else { return }
+                updateItemCount()
             }
             .store(in: &cancellables)
 
@@ -103,8 +126,8 @@ private extension VaultsManager {
             .sink { [weak self] _ in
                 guard let self else { return }
                 // Reset back to filter "all" when switching vaults
-                self.filterOption = .all
-                self.updateItemCount()
+                filterOption = .all
+                updateItemCount()
             }
             .store(in: &cancellables)
     }
@@ -147,7 +170,7 @@ private extension VaultsManager {
     func loadContents(for vaults: [Vault]) async throws {
         let allItems = try await itemRepository.getAllItems()
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
-
+        currentVaults.send(vaults)
         var vaultContentUiModels = vaults.map { vault in
             let items = allItemUiModels
                 .filter { $0.shareId == vault.shareId }
@@ -171,7 +194,8 @@ private extension VaultsManager {
             try await indexAllLoginItems(ignorePreferences: false)
         } else {
             Task.detached(priority: .background) { [weak self] in
-                try await self?.indexAllLoginItems(ignorePreferences: false)
+                guard let self else { return }
+                try await indexAllLoginItems(ignorePreferences: false)
             }
         }
     }
@@ -224,17 +248,22 @@ extension VaultsManager {
 
     // Delete everything and download again
     func fullSync() async throws {
+        vaultSyncEventStream.send(.started)
+
         // 1. Delete all local items & shares
         try await itemRepository.deleteAllItemsLocally()
         try await shareRepository.deleteAllSharesLocally()
 
         // 2. Get all remote shares and their items
-        let remoteShares = try await shareRepository.getRemoteShares()
+        let remoteShares = try await shareRepository.getRemoteShares(eventStream: vaultSyncEventStream)
         await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in remoteShares {
                 taskGroup.addTask { [weak self] in
-                    try await self?.shareRepository.upsertShares([share])
-                    try await self?.itemRepository.refreshItems(shareId: share.shareID)
+                    guard let self else { return }
+                    try await shareRepository.upsertShares([share],
+                                                           eventStream: vaultSyncEventStream)
+                    try await itemRepository.refreshItems(shareId: share.shareID,
+                                                          eventStream: vaultSyncEventStream)
                 }
             }
         }
@@ -257,6 +286,8 @@ extension VaultsManager {
         }
 
         try await loadContents(for: vaults)
+
+        vaultSyncEventStream.send(.done)
     }
 
     func select(_ selection: VaultSelection) {
@@ -271,6 +302,10 @@ extension VaultsManager {
         guard case let .loaded(vaults, _) = state else { return [] }
 
         return vaults.first { $0.vault.id == vault.id }?.items ?? []
+    }
+
+    func getItemCount(for vault: Vault) -> Int {
+        getItems(for: vault).count
     }
 
     func getItemCount(for selection: VaultSelection) -> Int {
@@ -347,9 +382,9 @@ extension VaultsManager {
     func getSelectedShareId() -> String? {
         switch vaultSelection {
         case .all, .trash:
-            return getPrimaryVault()?.shareId
+            getPrimaryVault()?.shareId
         case let .precise(vault):
-            return vault.shareId
+            vault.shareId
         }
     }
 
@@ -405,9 +440,9 @@ extension VaultsManager: LimitationCounterProtocol {
     func getVaultCount() -> Int {
         switch state {
         case let .loaded(vaults, _):
-            return vaults.count
+            vaults.count
         default:
-            return 0
+            0
         }
     }
 }
@@ -416,14 +451,14 @@ extension VaultManagerState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading):
-            return true
+            true
         case let (.loaded(lhsVaults, lhsTrashedItems), .loaded(rhsVaults, rhsTrashedItems)):
-            return lhsVaults.hashValue == rhsVaults.hashValue &&
+            lhsVaults.hashValue == rhsVaults.hashValue &&
                 lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
         case let (.error(lhsError), .error(rhsError)):
-            return lhsError.localizedDescription == rhsError.localizedDescription
+            lhsError.localizedDescription == rhsError.localizedDescription
         default:
-            return false
+            false
         }
     }
 }
@@ -432,11 +467,11 @@ extension VaultSelection: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.all, .all), (.trash, .trash):
-            return true
+            true
         case let (.precise(lhsVault), .precise(rhsVault)):
-            return lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
+            lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
         default:
-            return false
+            false
         }
     }
 }

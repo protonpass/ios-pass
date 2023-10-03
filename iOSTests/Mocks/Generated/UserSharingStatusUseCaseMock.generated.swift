@@ -22,7 +22,7 @@
 @testable import Proton_Pass
 import Client
 import Core
-import ProtonCore_Login
+import ProtonCoreLogin
 
 final class UserSharingStatusUseCaseMock: @unchecked Sendable, UserSharingStatusUseCase {
     // MARK: - execute

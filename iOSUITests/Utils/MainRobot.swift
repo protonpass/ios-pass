@@ -22,8 +22,9 @@
 // swiftlint:disable prefixed_toplevel_constant
 
 import fusion
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import XCTest
+import ProtonCoreTestingToolkitUITestsLogin
 
 private let showLoginButtonLabelText = "Show login"
 private let showSignupButtonLabelText = "Show signup"

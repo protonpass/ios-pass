@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct LogInDetailView: View {
     @StateObject private var viewModel: LogInDetailViewModel
@@ -303,7 +304,7 @@ struct LogInDetailView: View {
                             })
 
                             Button(action: {
-                                viewModel.copyToClipboard(text: url, message: "Website copied".localized)
+                                viewModel.copyToClipboard(text: url, message: #localized("Website copied"))
                             }, label: {
                                 Text("Copy")
                             })
@@ -323,7 +324,7 @@ struct LogInDetailView: View {
             Text("View and edit details for this alias on the separate alias page.")
                 .font(.callout)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" ")
+                Text(verbatim: " ")
                 .font(.callout) +
                 Text("View")
                 .font(.callout)
@@ -339,10 +340,10 @@ struct LogInDetailView: View {
 
 private extension LogInDetailView {
     func copyTOTPToken(_ token: String) {
-        viewModel.copyToClipboard(text: token, message: "TOTP copied".localized)
+        viewModel.copyToClipboard(text: token, message: #localized("TOTP copied"))
     }
 
     func copyHiddenText(_ text: String) {
-        viewModel.copyToClipboard(text: text, message: "Hidden text copied".localized)
+        viewModel.copyToClipboard(text: text, message: #localized("Hidden text copied"))
     }
 }

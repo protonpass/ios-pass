@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
@@ -33,7 +34,7 @@ struct EditableVaultListView: View {
         VStack(alignment: .leading) {
             ScrollView {
                 VStack(spacing: 0) {
-                    switch viewModel.vaultsManager.state {
+                    switch viewModel.state {
                     case .error, .loading:
                         // Should never happen
                         ProgressView()
@@ -54,9 +55,9 @@ struct EditableVaultListView: View {
                 }
                 .padding(.horizontal)
             }
-            .animation(.default, value: viewModel.vaultsManager.state)
+            .animation(.default, value: viewModel.state)
             HStack {
-                CapsuleTextButton(title: "Create vault".localized,
+                CapsuleTextButton(title: #localized("Create vault"),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   action: viewModel.createNewVault)
@@ -79,18 +80,17 @@ struct EditableVaultListView: View {
                           })
                },
                message: {
-                   Text("not shared %d alias(es)".localized(viewModel.numberOfAliasforSharedVault))
+                   Text("not shared \(viewModel.numberOfAliasForSharedVault) alias(es)")
                })
     }
 
     @ViewBuilder
     private func vaultRow(for selection: VaultSelection) -> some View {
-        let vaultsManager = viewModel.vaultsManager
-
+        let itemCount = viewModel.itemCount(for: selection)
         HStack {
             Button(action: {
                 dismiss()
-                vaultsManager.select(selection)
+                viewModel.select(selection)
             }, label: {
                 VaultRow(thumbnail: {
                              CircleButton(icon: selection.icon,
@@ -98,9 +98,9 @@ struct EditableVaultListView: View {
                                           backgroundColor: selection.color.withAlphaComponent(0.16))
                          },
                          title: selection.title,
-                         itemCount: vaultsManager.getItemCount(for: selection),
+                         itemCount: itemCount,
                          isShared: selection.shared,
-                         isSelected: vaultsManager.isSelected(selection),
+                         isSelected: viewModel.isSelected(selection),
                          height: 74)
             })
             .buttonStyle(.plain)
@@ -111,7 +111,7 @@ struct EditableVaultListView: View {
             case .all:
                 EmptyView()
             case let .precise(vault):
-                vaultTrailingView(vault)
+                vaultTrailingView(vault, haveItems: itemCount > 0)
             case .trash:
                 trashTrailingView
             }
@@ -127,7 +127,7 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private func vaultTrailingView(_ vault: Vault) -> some View {
+    private func vaultTrailingView(_ vault: Vault, haveItems: Bool) -> some View {
         Menu(content: {
             if vault.isOwner {
                 Button(action: {
@@ -167,6 +167,19 @@ struct EditableVaultListView: View {
                 })
             }
 
+            if haveItems {
+                Button(action: {
+                    viewModel.router.present(for: .moveItemsBetweenVaults(currentVault: vault,
+                                                                          singleItemToMove: nil))
+                }, label: {
+                    Label(title: {
+                        Text("Move all items to another vault")
+                    }, icon: {
+                        IconProvider.users
+                    })
+                })
+            }
+
             Divider()
 
             Button(role: .destructive,
@@ -183,7 +196,7 @@ struct EditableVaultListView: View {
 
     @ViewBuilder
     private var trashTrailingView: some View {
-        if viewModel.vaultsManager.getItemCount(for: .trash) > 0 {
+        if viewModel.hasTrashItems {
             Menu(content: {
                 Button(action: viewModel.restoreAllTrashedItems) {
                     Label(title: {
@@ -225,33 +238,33 @@ extension VaultSelection {
     var title: String {
         switch self {
         case .all:
-            return "All vaults".localized
+            #localized("All vaults")
         case let .precise(vault):
-            return vault.name
+            vault.name
         case .trash:
-            return "Trash".localized
+            #localized("Trash")
         }
     }
 
     var icon: UIImage {
         switch self {
         case .all:
-            return PassIcon.brandPass
+            PassIcon.brandPass
         case let .precise(vault):
-            return vault.displayPreferences.icon.icon.bigImage
+            vault.displayPreferences.icon.icon.bigImage
         case .trash:
-            return IconProvider.trash
+            IconProvider.trash
         }
     }
 
     var color: UIColor {
         switch self {
         case .all:
-            return PassColor.interactionNormMajor2
+            PassColor.interactionNormMajor2
         case let .precise(vault):
-            return vault.displayPreferences.color.color.color
+            vault.displayPreferences.color.color.color
         case .trash:
-            return PassColor.textWeak
+            PassColor.textWeak
         }
     }
 }

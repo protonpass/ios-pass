@@ -8,9 +8,9 @@
 included: # paths to include during linting. `--path` is ignored if present.
   - iOS
   - AutoFill
-  - Client
-  - Core
-  - UIComponents
+  - LocalPackages/Client/Sources
+  - LocalPackages/Core/Sources
+  - LocalPackages/UIComponents/Sources
   - Keyboard
   
 ################
@@ -22,9 +22,13 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Protobuf Objects
   - iOSTests
   - iOSUITests
-  - CoreTests
-  - ClientTests
-  - UIComponentsTests
+  - LocalPackages/Core/Tests
+  - LocalPackages/Client/Tests
+  - LocalPackages/DesignSystem/Tests
+  - LocalPackages/Entities/Tests
+  - LocalPackages/Client/Sources/Client/Protobuf*
+  - fastlane/*
+  - misc/*
   
 ##############
 #Disabled rules#
@@ -193,3 +197,8 @@ custom_rules:
     name: "Drop first one"
     message: "Implicitly drop first one element"
     regex: "(\\.dropFirst\\(1\\))"
+
+  discouraged_optional_self:
+    name: "Discouraged optional self"
+    message: "Unwrap self via guard let and use implicit self instead of optional self"
+    regex: "(self\\?\\.)"

@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct CreateEditAliasView: View {
     @Environment(\.dismiss) private var dismiss
@@ -193,7 +193,7 @@ struct CreateEditAliasView: View {
                 case .loading:
                     ZStack {
                         // Dummy text to make ZStack occupy a correct height
-                        Text("Dummy text")
+                        Text(verbatim: "Dummy text")
                             .opacity(0)
                         AnimatingGradient(tintColor: tintColor)
                             .clipShape(Capsule())
@@ -225,7 +225,7 @@ struct CreateEditAliasView: View {
                     case .loading:
                         ZStack {
                             // Dummy text to make ZStack occupy a correct height
-                            Text("Dummy text")
+                            Text(verbatim: "Dummy text")
                                 .opacity(0)
                             AnimatingGradient(tintColor: tintColor)
                                 .clipShape(Capsule())

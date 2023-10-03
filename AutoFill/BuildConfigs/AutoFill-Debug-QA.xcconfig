@@ -21,6 +21,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "../../Pods/Target Support Files/Pods-AutoFill/Pods-AutoFill.debug-qa.xcconfig"
 APP_VERSION_IDENTIFIER =
 IS_QA_BUILD =

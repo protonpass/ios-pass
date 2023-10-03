@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 struct TOTPCircularTimer: View {
     let percentage: CGFloat
@@ -48,7 +48,7 @@ struct TOTPCircularTimer: View {
                 }
                 .animation(.default, value: data)
 
-            Text("\(data.remaining)")
+            Text(verbatim: "\(data.remaining)")
                 .font(.caption)
                 .fontWeight(.light)
                 .foregroundColor(Color(uiColor: PassColor.textWeak))
@@ -60,9 +60,9 @@ struct TOTPCircularTimer: View {
     private var color: Color {
         switch data.remaining {
         case 0...10:
-            return Color(uiColor: PassColor.signalDanger)
+            Color(uiColor: PassColor.signalDanger)
         default:
-            return Color(uiColor: PassColor.signalSuccess)
+            Color(uiColor: PassColor.signalSuccess)
         }
     }
 }

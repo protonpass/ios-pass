@@ -19,10 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct AutoFillInstructionsView: View {
     @Environment(\.dismiss) private var dismiss
@@ -53,11 +54,11 @@ private extension AutoFillInstructionsView {
                 .padding(.vertical, 8)
 
             Group {
-                step(number: 1, title: "Open System Settings → Passwords → Password Options".localized)
+                step(number: 1, title: #localized("Open System Settings → Passwords → Password Options"))
                 step(number: 2,
-                     title: "Turn on AutoFill Passwords and allow filling from Proton Pass".localized,
+                     title: #localized("Turn on AutoFill Passwords and allow filling from Proton Pass"),
                      images: [PassIcon.enableAutoFillStep2a, PassIcon.enableAutoFillStep2b])
-                step(number: 3, title: "Restart Proton Pass".localized)
+                step(number: 3, title: #localized("Restart Proton Pass"))
             }
 
             Spacer()
@@ -96,7 +97,7 @@ private extension AutoFillInstructionsView {
                 }
             }
         }, icon: {
-            Text("\(number)")
+            Text(verbatim: "\(number)")
                 .fontWeight(.medium)
                 .padding(10)
                 .background(PassColor.interactionNorm.toColor)

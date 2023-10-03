@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ItemDetailToolbar: ToolbarContent {
     let viewModel: BaseItemDetailViewModel
@@ -43,7 +44,7 @@ struct ItemDetailToolbar: ToolbarContent {
             case .active:
                 HStack {
                     CapsuleLabelButton(icon: IconProvider.pencil,
-                                       title: "Edit".localized,
+                                       title: #localized("Edit"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: itemContentType.normMajor1Color,
                                        action: viewModel.edit)
