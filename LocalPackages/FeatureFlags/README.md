@@ -1,6 +1,6 @@
 //
-// RemoteFeatureFlagsDatasource.swift
-// Proton Pass - Created on 31/05/2023.
+// File.swift
+// Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,16 +18,4 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteFeatureFlagsDatasourceProtocol: RemoteDatasourceProtocol {
-    func getFlags() async throws -> [FeatureFlag]
-}
-
-public extension RemoteFeatureFlagsDatasourceProtocol {
-    func getFlags() async throws -> [FeatureFlag] {
-        let endpoint = GetFeatureFlagEndpoint()
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.toggles
-    }
-}
-
-public final class RemoteFeatureFlagsDatasource: RemoteDatasource, RemoteFeatureFlagsDatasourceProtocol {}
+import Foundation

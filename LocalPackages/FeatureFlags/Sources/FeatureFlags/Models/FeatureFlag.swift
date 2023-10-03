@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct FeatureFlag: Codable, Equatable, Hashable {
+public struct FeatureFlag: Codable, Equatable, Hashable, Sendable {
     public let name: String
     public let enabled: Bool
     public let variant: FeatureFlagVariant?
@@ -28,7 +28,7 @@ public struct FeatureFlag: Codable, Equatable, Hashable {
 
 // MARK: - Variant
 
-public struct FeatureFlagVariant: Codable, Equatable, Hashable {
+public struct FeatureFlagVariant: Codable, Equatable, Hashable, Sendable {
     public let name: String
     public let enabled: Bool
     public let payload: FeatureFlagVariantPayload?
@@ -36,7 +36,7 @@ public struct FeatureFlagVariant: Codable, Equatable, Hashable {
 
 // MARK: - Payload
 
-public struct FeatureFlagVariantPayload: Codable, Equatable, Hashable {
+public struct FeatureFlagVariantPayload: Codable, Equatable, Hashable, Sendable {
     public let type: String
     public let value: FeatureFlagVariantPayloadValue
 }
@@ -44,7 +44,7 @@ public struct FeatureFlagVariantPayload: Codable, Equatable, Hashable {
 // As we don't know the exact type of the payload from unleash we should update the following as explained in
 // https://stackoverflow.com/questions/52681385/swift-codable-multiple-types
 // If new cases are implemented on the unleash backend we need to update the parsing cases
-public enum FeatureFlagVariantPayloadValue: Codable, Equatable, Hashable {
+public enum FeatureFlagVariantPayloadValue: Codable, Equatable, Hashable, Sendable {
     case string(String)
     case nonDecodable
 

@@ -20,7 +20,7 @@
 
 import Foundation
 
-public final class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol {
+public actor DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol {
     private var currentFlags: [String: FeatureFlags]
 
     public init(currentFlags: [String: FeatureFlags] = [String: FeatureFlags]()) {
@@ -33,5 +33,13 @@ public final class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol
 
     public func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
         currentFlags[userId] = flags
+    }
+
+    public func cleanAllFlags() async {
+        currentFlags = [:]
+    }
+
+    public func cleanFlags(for userId: String) async {
+        currentFlags.removeValue(forKey: userId)
     }
 }
