@@ -43,12 +43,17 @@ struct ItemDetailToolbar: ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
-                HStack {
+                HStack(spacing: 0) {
                     CapsuleLabelButton(icon: IconProvider.pencil,
                                        title: #localized("Edit"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: itemContentType.normMajor1Color,
                                        action: viewModel.edit)
+
+                    CircleButton(icon: IconProvider.usersPlus,
+                                 iconColor: itemContentType.normMajor2Color,
+                                 backgroundColor: itemContentType.normMinor1Color,
+                                 action: viewModel.share)
 
                     Menu(content: {
                         Button(action: viewModel.moveToAnotherVault,
