@@ -20,11 +20,16 @@
 import Foundation
 
 public protocol FeatureFlagsRepositoryProtocol: AnyObject {
-    var userId: String { get }
-
     /// Get from local, refresh if not exist
     func getFlags() async throws -> FeatureFlags
 
+    func getFlag(for key: any FeatureFlagTypeProtocol) async -> FeatureFlag?
+
     @discardableResult
     func refreshFlags() async throws -> FeatureFlags
+
+    func isFlagEnable(for key: any FeatureFlagTypeProtocol) async -> Bool
+
+    func resetFlags() async
+    func resetFlags(for userId: String) async
 }
