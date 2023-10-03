@@ -1,6 +1,6 @@
 //
-// SanitizeTotpUriForEditing.swift
-// Proton Pass - Created on 15/09/2023.
+// TOTP.swift
+// Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,22 +20,29 @@
 
 import Foundation
 
-/// Check if the given URI has default parameters (SHA1, 6 digits, 30 seconds) or not.
-/// If yes, return only the secret
-/// If no, return the URI as it is
-/// This is to make it easier for users because most of the time, TOTP URIs contain default parameters
-public protocol SanitizeTotpUriForEditingUseCase: Sendable {
-    func execute(_ uri: String) -> String
+public enum TotpAlgorithm {
+    case sha1, sha256, sha512
 }
 
-extension SanitizeTotpUriForEditingUseCase {
-    func callAsFunction(_ uri: String) -> String {
-        execute(uri)
+public struct TotpComponents {
+    public let secret: String
+    public let label: String?
+    public let issuer: String?
+    public let algorithm: TotpAlgorithm
+    public let digits: Int
+    public let period: Int
+
+    public init(secret: String,
+                label: String?,
+                issuer: String?,
+                algorithm: TotpAlgorithm,
+                digits: Int,
+                period: Int) {
+        self.secret = secret
+        self.label = label
+        self.issuer = issuer
+        self.algorithm = algorithm
+        self.digits = digits
+        self.period = period
     }
-}
-
-public final class SanitizeTotpUriForEditing: SanitizeTotpUriForEditingUseCase {
-    public init() {}
-
-    public func execute(_ uri: String) -> String { "" }
 }
