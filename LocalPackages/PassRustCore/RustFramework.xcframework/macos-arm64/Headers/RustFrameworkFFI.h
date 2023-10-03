@@ -65,6 +65,8 @@ typedef void (*UniFfiFutureCallbackInt8)(const void * _Nonnull, int8_t, RustCall
 typedef void (*UniFfiFutureCallbackUnsafeMutableRawPointer)(const void * _Nonnull, void*_Nonnull, RustCallStatus);
 typedef void (*UniFfiFutureCallbackUnsafeMutableRawPointer)(const void * _Nonnull, void*_Nonnull, RustCallStatus);
 typedef void (*UniFfiFutureCallbackUnsafeMutableRawPointer)(const void * _Nonnull, void*_Nonnull, RustCallStatus);
+typedef void (*UniFfiFutureCallbackUnsafeMutableRawPointer)(const void * _Nonnull, void*_Nonnull, RustCallStatus);
+typedef void (*UniFfiFutureCallbackUnsafeMutableRawPointer)(const void * _Nonnull, void*_Nonnull, RustCallStatus);
 typedef void (*UniFfiFutureCallbackRustBuffer)(const void * _Nonnull, RustBuffer, RustCallStatus);
 
 // Scaffolding functions
@@ -89,6 +91,22 @@ void*_Nonnull uniffi_proton_pass_common_mobile_fn_constructor_emailvalidator_new
 );
 int8_t uniffi_proton_pass_common_mobile_fn_method_emailvalidator_is_email_valid(void*_Nonnull ptr, RustBuffer email, RustCallStatus *_Nonnull out_status
 );
+void uniffi_proton_pass_common_mobile_fn_free_totpurisanitizer(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+);
+void*_Nonnull uniffi_proton_pass_common_mobile_fn_constructor_totpurisanitizer_new(RustCallStatus *_Nonnull out_status
+    
+);
+RustBuffer uniffi_proton_pass_common_mobile_fn_method_totpurisanitizer_uri_for_editing(void*_Nonnull ptr, RustBuffer original_uri, RustCallStatus *_Nonnull out_status
+);
+RustBuffer uniffi_proton_pass_common_mobile_fn_method_totpurisanitizer_uri_for_saving(void*_Nonnull ptr, RustBuffer original_uri, RustBuffer edited_uri, RustCallStatus *_Nonnull out_status
+);
+void uniffi_proton_pass_common_mobile_fn_free_totpuriparser(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
+);
+void*_Nonnull uniffi_proton_pass_common_mobile_fn_constructor_totpuriparser_new(RustCallStatus *_Nonnull out_status
+    
+);
+RustBuffer uniffi_proton_pass_common_mobile_fn_method_totpuriparser_parse(void*_Nonnull ptr, RustBuffer uri_string, RustCallStatus *_Nonnull out_status
+);
 RustBuffer uniffi_proton_pass_common_mobile_fn_func_library_version(RustCallStatus *_Nonnull out_status
     
 );
@@ -112,6 +130,15 @@ uint16_t uniffi_proton_pass_common_mobile_checksum_method_loginvalidator_validat
 uint16_t uniffi_proton_pass_common_mobile_checksum_method_emailvalidator_is_email_valid(void
     
 );
+uint16_t uniffi_proton_pass_common_mobile_checksum_method_totpurisanitizer_uri_for_editing(void
+    
+);
+uint16_t uniffi_proton_pass_common_mobile_checksum_method_totpurisanitizer_uri_for_saving(void
+    
+);
+uint16_t uniffi_proton_pass_common_mobile_checksum_method_totpuriparser_parse(void
+    
+);
 uint16_t uniffi_proton_pass_common_mobile_checksum_constructor_aliasprefixvalidator_new(void
     
 );
@@ -119,6 +146,12 @@ uint16_t uniffi_proton_pass_common_mobile_checksum_constructor_loginvalidator_ne
     
 );
 uint16_t uniffi_proton_pass_common_mobile_checksum_constructor_emailvalidator_new(void
+    
+);
+uint16_t uniffi_proton_pass_common_mobile_checksum_constructor_totpurisanitizer_new(void
+    
+);
+uint16_t uniffi_proton_pass_common_mobile_checksum_constructor_totpuriparser_new(void
     
 );
 uint32_t ffi_proton_pass_common_mobile_uniffi_contract_version(void

@@ -31,7 +31,7 @@ let package = Package(name: "UseCases",
                           // Targets can depend on other targets in this package, and on products in packages this
                           // package depends on.
                           .target(name: "UseCases",
-                                  dependencies: ["PassRustCore"],
+                                  dependencies: ["Entities", "PassRustCore"],
                                   resources: []),
                           .testTarget(name: "UseCasesTests",
                                       dependencies: ["UseCases"])
