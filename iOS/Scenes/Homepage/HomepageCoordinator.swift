@@ -281,6 +281,8 @@ private extension HomepageCoordinator {
                     itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
+                case let .shareVaultFromItemDetail(vault):
+                    print(vault)
                 }
             }
             .store(in: &cancellables)
