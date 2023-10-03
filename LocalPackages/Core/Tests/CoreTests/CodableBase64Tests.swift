@@ -35,7 +35,10 @@ final class CodableBase64Tests: XCTestCase {
         let base64String = try johnDoe.serializeBase64()
 
         // Then
-        XCTAssertEqual(base64String, "eyJuYW1lIjoiSm9obiBEb2UiLCJhZ2UiOjMxfQ==")
+        // iOS 17 fix: serialization process doesn't respect property order
+        // so we compare against 2 possible base 64 strings
+        XCTAssertTrue(["eyJhZ2UiOjMxLCJuYW1lIjoiSm9obiBEb2UifQ==",
+                       "eyJuYW1lIjoiSm9obiBEb2UiLCJhZ2UiOjMxfQ=="].contains(base64String))
     }
 
     func testDeserializeBase64() throws {
