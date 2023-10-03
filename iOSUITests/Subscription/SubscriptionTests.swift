@@ -24,11 +24,18 @@ import fusion
 import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsLogin
 import ProtonCoreTestingToolkitUITestsPaymentsUI
+import StoreKitTest
 
 class SubscriptionTests: LoginBaseTestCase {
-    let welcomeRobot = WelcomeRobot()
-    let homeRobot = HomeRobot()
-    let timeout = 120.0
+    private let welcomeRobot = WelcomeRobot()
+    private let homeRobot = HomeRobot()
+    private var session: SKTestSession!
+
+    override func setUpWithError() throws {
+        session = try SKTestSession(configurationFileNamed: "Proton Pass - Password Manager")
+        session.disableDialogs = true
+        session.clearTransactions()
+    }
 
     func testUpgradeAccountFromFreeToUnlimited() {
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
@@ -49,28 +56,34 @@ class SubscriptionTests: LoginBaseTestCase {
             .goToManageSubscription()
             .expandPlan(plan: .unlimited)
             .planButtonTap(plan: .unlimited)
-            .verifyPayment(robot: PaymentsUIRobot.self, password: "")
+
+        PaymentsUIRobot()
             .verifyCurrentPlan(plan: .unlimited)
             .verifyExtendButton()
     }
-}
 
+    func testUpgradeAccountFromFreeToPlus() {
+        let randomUsername = StringUtils.randomAlphanumericString(length: 8)
+        let randomPassword = StringUtils.randomAlphanumericString(length: 8)
 
-extension PaymentsUIRobot {
+        createAccount(randomUsername, randomPassword)
 
-    private func currentPlanCellIdentifier(name: String) -> String {
-        "CurrentPlanCell.\(name)"
-    }
+        SigninExternalAccountsCapability()
+            .signInWithAccount(userName: randomUsername,
+                               password: randomPassword,
+                               loginRobot: welcomeRobot.logIn(),
+                               retRobot: AutoFillRobot.self)
+            .notNowTap(robot: FaceIDRobot.self)
+            .noThanks(robot: GetStartedRobot.self)
+            .getStartedTap(robot: HomeRobot.self)
+            .tapProfile()
+            .tapAccountButton()
+            .goToManageSubscription()
+            .expandPlan(plan: .pass2022)
+            .planButtonTap(plan: .pass2022)
 
-    func verifyCurrentPlan(plan: PaymentsPlan) -> PaymentsUIRobot {
-        cell(currentPlanCellIdentifier(name: plan.rawValue)).waitUntilExists().checkExists()
-        return self
-    }
-
-    @discardableResult
-    func verifyExtendButton() -> PaymentsUIRobot {
-        let extendSubscriptionText = "PaymentsUIViewController.extendSubscriptionButton"
-        button(extendSubscriptionText).waitUntilExists().checkExists()
-        return self
+        PaymentsUIRobot()
+            .verifyCurrentPlan(plan: .pass2022)
+            .verifyExtendButton()
     }
 }

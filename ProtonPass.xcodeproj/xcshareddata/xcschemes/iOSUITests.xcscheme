@@ -11,10 +11,22 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;xcrun simctl --set ~/Library/Developer/XCTestDevices list devices | grep -E &quot;Booted&quot; | sed -E &apos;s/.*\(([A-F0-9-]+)\).*/\1/&apos;| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist&#10;xcrun simctl --set ~/Library/Developer/XCTestDevices list devices | grep -E &quot;Booted&quot; | sed -E &apos;s/.*\(([A-F0-9-]+)\).*/\1/&apos;| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist&#10;xcrun simctl --set ~/Library/Developer/XCTestDevices list devices | grep -E &quot;Booted&quot; | sed -E &apos;s/.*\(([A-F0-9-]+)\).*/\1/&apos;| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist&#10;xcrun simctl list devices | grep -E &quot;Booted&quot; | sed -E &apos;s/.*\(([A-F0-9-]+)\).*/\1/&apos;| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/{}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist&#10;xcrun simctl list devices | grep -E &quot;Booted&quot; | sed -E &apos;s/.*\(([A-F0-9-]+)\).*/\1/&apos;| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/{}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist&#10;xcrun simctl list devices | grep -E &quot;Booted&quot; | sed -E &apos;s/.*\(([A-F0-9-]+)\).*/\1/&apos;| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/{}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist&#10;">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
       <TestPlans>
          <TestPlanReference
             reference = "container:TestPlans/iOSUI.xctestplan"
             default = "YES">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlans/iOSUIPayments.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>
