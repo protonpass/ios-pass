@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct EditCustomFieldView<Field: Hashable>: View {
     let focusedField: FocusState<Field?>.Binding
@@ -46,7 +46,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                 // Looks like a SwiftUI bug
                 // https://stackoverflow.com/a/67436121
                 if isRemoved {
-                    Text("Dummy text")
+                    Text(verbatim: "Dummy text")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .opacity(0)
                 } else {

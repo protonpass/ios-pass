@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -93,11 +93,13 @@ private extension SceneDelegate {
     func uncoverApp() {
         UIView.animate(withDuration: 0.35,
                        animations: { [weak self] in
-                           self?.appCoverView?.alpha = 0
+                           guard let self else { return }
+                           appCoverView?.alpha = 0
                        },
                        completion: { [weak self] _ in
-                           self?.appCoverView?.removeFromSuperview()
-                           self?.appCoverView = nil
+                           guard let self else { return }
+                           appCoverView?.removeFromSuperview()
+                           appCoverView = nil
                        })
     }
 }

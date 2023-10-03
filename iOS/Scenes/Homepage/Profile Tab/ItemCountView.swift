@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 
 private let kChipHeight: CGFloat = 56
 
@@ -79,7 +79,7 @@ private struct ItemContentTypeCountView: View {
 
             Spacer()
 
-            Text("\(count)")
+            Text(verbatim: "\(count)")
                 .fontWeight(.bold)
                 .foregroundColor(Color(uiColor: PassColor.textNorm))
 

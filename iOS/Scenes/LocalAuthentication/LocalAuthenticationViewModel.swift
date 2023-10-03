@@ -21,6 +21,7 @@
 import Combine
 import Core
 import Factory
+import Foundation
 
 private let kMaxAttemptCount = 3
 
@@ -70,7 +71,8 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.updateStateBasedOnFailedAttemptCount()
+                guard let self else { return }
+                updateStateBasedOnFailedAttemptCount()
             }
             .store(in: &cancellables)
     }

@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import UIComponents
+import DesignSystem
 import UIKit
 
 enum VaultColor: CaseIterable {
@@ -27,16 +27,26 @@ enum VaultColor: CaseIterable {
 
     var color: UIColor {
         switch self {
-        case .color1: return PassColor.vaultHeliotrope
-        case .color2: return PassColor.vaultMauvelous
-        case .color3: return PassColor.vaultMarigoldYellow
-        case .color4: return PassColor.vaultDeYork
-        case .color5: return PassColor.vaultJordyBlue
-        case .color6: return PassColor.vaultLavenderMagenta
-        case .color7: return PassColor.vaultChestnutRose
-        case .color8: return PassColor.vaultPorsche
-        case .color9: return PassColor.vaultMercury
-        case .color10: return PassColor.vaultWaterLeaf
+        case .color1:
+            PassColor.vaultHeliotrope
+        case .color2:
+            PassColor.vaultMauvelous
+        case .color3:
+            PassColor.vaultMarigoldYellow
+        case .color4:
+            PassColor.vaultDeYork
+        case .color5:
+            PassColor.vaultJordyBlue
+        case .color6:
+            PassColor.vaultLavenderMagenta
+        case .color7:
+            PassColor.vaultChestnutRose
+        case .color8:
+            PassColor.vaultPorsche
+        case .color9:
+            PassColor.vaultMercury
+        case .color10:
+            PassColor.vaultWaterLeaf
         }
     }
 }
@@ -44,17 +54,28 @@ enum VaultColor: CaseIterable {
 extension ProtonPassVaultV1_VaultColor {
     var color: VaultColor {
         switch self {
-        case .color1: return .color1
-        case .color2: return .color2
-        case .color3: return .color3
-        case .color4: return .color4
-        case .color5: return .color5
-        case .color6: return .color6
-        case .color7: return .color7
-        case .color8: return .color8
-        case .color9: return .color9
-        case .color10: return .color10
-        default: return .color1
+        case .color1:
+            .color1
+        case .color2:
+            .color2
+        case .color3:
+            .color3
+        case .color4:
+            .color4
+        case .color5:
+            .color5
+        case .color6:
+            .color6
+        case .color7:
+            .color7
+        case .color8:
+            .color8
+        case .color9:
+            .color9
+        case .color10:
+            .color10
+        default:
+            .color1
         }
     }
 }

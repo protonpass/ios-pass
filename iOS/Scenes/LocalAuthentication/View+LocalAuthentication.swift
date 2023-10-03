@@ -20,10 +20,10 @@
 
 import Combine
 import Core
+import DesignSystem
 import Factory
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 import SwiftUI
-import UIComponents
 
 struct LocalAuthenticationModifier: ViewModifier {
     @State private var authenticated: Bool
@@ -135,9 +135,9 @@ private extension Autolocker {
             let appLockTime: AppLockTime
             var lockTime: AutolockTimeout {
                 if let intervalInMinutes = appLockTime.intervalInMinutes {
-                    return .minutes(intervalInMinutes)
+                    .minutes(intervalInMinutes)
                 } else {
-                    return .never
+                    .never
                 }
             }
         }

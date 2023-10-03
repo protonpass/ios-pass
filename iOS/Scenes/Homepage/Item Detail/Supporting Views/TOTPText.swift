@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 struct TOTPText: View {
     private let texts: [Text]
@@ -34,7 +34,7 @@ struct TOTPText: View {
                 .fontWeight(.medium)
                 .foregroundColor(Color(uiColor: PassColor.textNorm)))
             if index != segments.count - 1 {
-                texts.append(Text(" • ")
+                texts.append(Text(verbatim: " • ")
                     .font(.callout)
                     .foregroundColor(Color(uiColor: PassColor.textHint)))
             }
@@ -43,7 +43,7 @@ struct TOTPText: View {
     }
 
     public var body: some View {
-        texts.reduce(into: Text("")) { partialResult, text in
+        texts.reduce(into: Text(verbatim: "")) { partialResult, text in
             // swiftlint:disable:next shorthand_operator
             partialResult = partialResult + text
         }

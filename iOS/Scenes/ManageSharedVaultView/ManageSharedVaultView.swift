@@ -21,24 +21,23 @@
 //
 
 import Client
+import DesignSystem
 import Entities
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    @State private var sort: ShareRole = .admin
-
     var body: some View {
         ZStack(alignment: .bottom) {
             mainContainer
             if viewModel.vault.isAdmin {
-                CapsuleTextButton(title: "Share with more people".localized,
+                CapsuleTextButton(title: #localized("Share with more people"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
                                   action: { router.present(for: .sharingFlow) })
@@ -53,6 +52,14 @@ struct ManageSharedVaultView: View {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.loading)
+        .alert(item: $viewModel.newOwner) { user in
+            Alert(title: Text("Transfer ownership"),
+                  message: Text("Are sure you want to transfer your ownership to \(user.email)"),
+                  primaryButton: .default(Text("Confirm")) {
+                      viewModel.transferOwnership(to: user)
+                  },
+                  secondaryButton: .cancel())
+        }
         .navigationModifier()
     }
 
@@ -98,7 +105,7 @@ private extension ManageSharedVaultView {
             Text(viewModel.vault.name)
                 .font(.title2.bold())
                 .foregroundColor(PassColor.textNorm.toColor)
-            Text("%d item(s)".localized(viewModel.itemsNumber))
+            Text("\(viewModel.itemsNumber) item(s)")
                 .font(.title3)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
@@ -157,7 +164,7 @@ private extension ManageSharedVaultView {
             }
 
             Spacer()
-            if viewModel.vault.isAdmin {
+            if viewModel.vault.isAdmin, !viewModel.isOwnerAndCurrentUser(with: user) {
                 vaultTrailingView(user: user)
                     .onTapGesture {
                         viewModel.setCurrentRole(for: user)
@@ -205,8 +212,10 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            if viewModel.vault.isOwner, !user.isPending {
-                Button(action: {}, label: {
+            if viewModel.vault.isOwner, !user.isPending, user.isAdmin, !isOwnerAndCurrentUser {
+                Button(action: {
+                    viewModel.newOwner = user
+                }, label: {
                     Label(title: {
                         Text("Transfer ownership")
                     }, icon: {

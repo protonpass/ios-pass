@@ -20,8 +20,8 @@
 
 import Core
 import Factory
-import ProtonCore_CryptoGoImplementation
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoImplementation
+import ProtonCoreCryptoGoInterface
 import Sentry
 import UIKit
 
@@ -54,8 +54,8 @@ private extension AppDelegate {
                 options.debug = true
             }
             options.enableAppHangTracking = true
-            options.enableFileIOTracking = true
-            options.enableCoreDataTracking = true
+            options.enableFileIOTracing = true
+            options.enableCoreDataTracing = true
             options.attachViewHierarchy = true // EXPERIMENTAL
         }
     }
@@ -64,5 +64,20 @@ private extension AppDelegate {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
         kSharedUserDefaults.set(Bundle.main.displayedAppVersion, forKey: appVersionKey)
+
+        setUserDefaultsIfUITestsRunning()
+    }
+
+    private func setUserDefaultsIfUITestsRunning() {
+        if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
+            UIView.setAnimationsEnabled(false)
+            if ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] != "" {
+                let envDomain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"]
+                let envName = String(envDomain?.split(separator: ".")[0] ?? "")
+
+                kSharedUserDefaults.setValue("scientist", forKey: "pref_environment")
+                kSharedUserDefaults.setValue(envName, forKey: "pref_scientist_env_name")
+            }
+        }
     }
 }

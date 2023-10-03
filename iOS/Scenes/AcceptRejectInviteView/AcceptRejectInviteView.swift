@@ -21,9 +21,10 @@
 //
 
 import Client
+import DesignSystem
 import Entities
+import Macro
 import SwiftUI
-import UIComponents
 
 struct AcceptRejectInviteView: View {
     @Environment(\.dismiss) private var dismiss
@@ -100,12 +101,12 @@ private extension AcceptRejectInviteView {
 private extension AcceptRejectInviteView {
     var actionButtons: some View {
         VStack {
-            CapsuleTextButton(title: "Join shared vault".localized,
+            CapsuleTextButton(title: #localized("Join shared vault"),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               action: viewModel.accept)
 
-            CapsuleTextButton(title: "Reject invitation".localized,
+            CapsuleTextButton(title: #localized("Reject invitation"),
                               titleColor: PassColor.interactionNormMajor1,
                               backgroundColor: PassColor.interactionNormMinor1,
                               action: viewModel.reject)
@@ -121,8 +122,8 @@ struct AcceptRejectInviteView_Previews: PreviewProvider {
 
 private extension UserInvite {
     var vaultsCountInfos: String {
-        let itemsCount = "%d item(s)".localized(vaultData?.itemCount ?? 0)
-        let membersCount = "%d member(s)".localized(vaultData?.memberCount ?? 0)
+        let itemsCount = #localized("%lld item(s)", vaultData?.itemCount ?? 0)
+        let membersCount = #localized("%lld member(s)", vaultData?.memberCount ?? 0)
         return "\(itemsCount) • \(membersCount)"
     }
 }

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Macro
 
 enum PassModule: String, CaseIterable {
     case hostApp, autoFillExtension, keyboardExtension
@@ -28,28 +29,35 @@ extension PassModule {
     var logTitle: String {
         switch self {
         case .hostApp:
-            return "Application logs".localized
+            #localized("Application logs")
         case .autoFillExtension:
-            return "AutoFill extension logs".localized
+            #localized("AutoFill extension logs")
         case .keyboardExtension:
-            return "Keyboard extension logs"
+            "Keyboard extension logs"
         }
     }
 
     var logFileName: String {
         switch self {
-        case .hostApp: return "pass_host_application.log"
-        case .autoFillExtension: return "pass_autofill_extension.log"
-        case .keyboardExtension: return "pass_keyboard_extension.log"
+        case .hostApp:
+            "pass_host_application.log"
+        case .autoFillExtension:
+            "pass_autofill_extension.log"
+        case .keyboardExtension:
+            "pass_keyboard_extension.log"
         }
     }
 
     var exportLogFileName: String {
         let hash = Bundle.main.gitCommitHash ?? "?"
-        switch self {
-        case .hostApp: return "pass_host_application_\(hash).log"
-        case .autoFillExtension: return "pass_autofill_extension\(hash).log"
-        case .keyboardExtension: return "pass_keyboard_extension\(hash).log"
+        let fileName = switch self {
+        case .hostApp:
+            "pass_host_application_\(hash).log"
+        case .autoFillExtension:
+            "pass_autofill_extension\(hash).log"
+        case .keyboardExtension:
+            "pass_keyboard_extension\(hash).log"
         }
+        return fileName
     }
 }

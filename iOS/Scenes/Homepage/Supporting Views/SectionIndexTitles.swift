@@ -20,8 +20,8 @@
 
 import Client
 import Core
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 // https://www.fivestars.blog/articles/section-title-index-swiftui/
 struct SectionIndexTitles: View {

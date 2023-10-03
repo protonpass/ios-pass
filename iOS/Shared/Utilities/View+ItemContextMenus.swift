@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
 
 enum ItemContextMenu {
@@ -35,7 +36,8 @@ enum ItemContextMenu {
     case creditCard(onEdit: () -> Void,
                     onTrash: () -> Void)
 
-    case note(onEdit: () -> Void,
+    case note(onCopyContent: () -> Void,
+              onEdit: () -> Void,
               onTrash: () -> Void)
 
     case trashedItem(onRestore: () -> Void,
@@ -44,12 +46,12 @@ enum ItemContextMenu {
     var sections: [ItemContextMenuOptionSection] {
         switch self {
         case let .login(onCopyUsername, onCopyPassword, onEdit, onTrash):
-            return [
+            [
                 .init(options: [
-                    .init(title: "Copy username".localized,
+                    .init(title: #localized("Copy username"),
                           icon: IconProvider.user,
                           action: onCopyUsername),
-                    .init(title: "Copy password".localized,
+                    .init(title: #localized("Copy password"),
                           icon: IconProvider.key,
                           action: onCopyPassword)
                 ]),
@@ -58,8 +60,8 @@ enum ItemContextMenu {
             ]
 
         case let .alias(onCopyAlias, onEdit, onTrash):
-            return [
-                .init(options: [.init(title: "Copy alias address".localized,
+            [
+                .init(options: [.init(title: #localized("Copy alias address"),
                                       icon: IconProvider.alias,
                                       action: onCopyAlias)]),
                 .init(options: [.editOption(action: onEdit)]),
@@ -67,23 +69,26 @@ enum ItemContextMenu {
             ]
 
         case let .creditCard(onEdit, onTrash):
-            return [
+            [
                 .init(options: [.editOption(action: onEdit)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
-        case let .note(onEdit, onTrash):
-            return [
+        case let .note(onCopyContent, onEdit, onTrash):
+            [
+                .init(options: [.init(title: #localized("Copy note content"),
+                                      icon: IconProvider.note,
+                                      action: onCopyContent)]),
                 .init(options: [.editOption(action: onEdit)]),
                 .init(options: [.trashOption(action: onTrash)])
             ]
 
         case let .trashedItem(onRestore, onPermanentlyDelete):
-            return [
-                .init(options: [.init(title: "Restore".localized,
+            [
+                .init(options: [.init(title: #localized("Restore"),
                                       icon: IconProvider.clockRotateLeft,
                                       action: onRestore)]),
-                .init(options: [.init(title: "Delete permanently".localized,
+                .init(options: [.init(title: #localized("Delete permanently"),
                                       icon: IconProvider.trashCross,
                                       action: onPermanentlyDelete,
                                       isDestructive: true)])
@@ -100,11 +105,11 @@ struct ItemContextMenuOption: Identifiable {
     var isDestructive = false
 
     static func editOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Edit".localized, icon: IconProvider.pencil, action: action)
+        .init(title: #localized("Edit"), icon: IconProvider.pencil, action: action)
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Move to trash".localized,
+        .init(title: #localized("Move to trash"),
               icon: IconProvider.trash,
               action: action,
               isDestructive: true)
@@ -160,27 +165,28 @@ extension View {
                          onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
         if isTrashed {
-            return itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
-                                                onPermanentlyDelete: onPermanentlyDelete))
+            itemContextMenu(.trashedItem(onRestore: { handler.restore(item) },
+                                         onPermanentlyDelete: onPermanentlyDelete))
         } else {
             switch item.type {
             case .login:
-                return itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
-                                              onCopyPassword: { handler.copyPassword(item) },
-                                              onEdit: { handler.edit(item) },
-                                              onTrash: { handler.trash(item) }))
+                itemContextMenu(.login(onCopyUsername: { handler.copyUsername(item) },
+                                       onCopyPassword: { handler.copyPassword(item) },
+                                       onEdit: { handler.edit(item) },
+                                       onTrash: { handler.trash(item) }))
             case .alias:
-                return itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
-                                              onEdit: { handler.edit(item) },
-                                              onTrash: { handler.trash(item) }))
+                itemContextMenu(.alias(onCopyAlias: { handler.copyAlias(item) },
+                                       onEdit: { handler.edit(item) },
+                                       onTrash: { handler.trash(item) }))
 
             case .creditCard:
-                return itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
-                                                   onTrash: { handler.trash(item) }))
+                itemContextMenu(.creditCard(onEdit: { handler.edit(item) },
+                                            onTrash: { handler.trash(item) }))
 
             case .note:
-                return itemContextMenu(.note(onEdit: { handler.edit(item) },
-                                             onTrash: { handler.trash(item) }))
+                itemContextMenu(.note(onCopyContent: { handler.copyNoteContent(item) },
+                                      onEdit: { handler.edit(item) },
+                                      onTrash: { handler.trash(item) }))
             }
         }
     }

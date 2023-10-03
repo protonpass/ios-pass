@@ -20,7 +20,7 @@
 
 import Core
 import Factory
-import ProtonCore_Services
+import ProtonCoreServices
 
 final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
@@ -206,6 +206,27 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var getVaultItemCount: Factory<GetVaultItemCountUseCase> {
         self { GetVaultItemCount(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+
+    var transferVaultOwnership: Factory<TransferVaultOwnershipUseCase> {
+        self { TransferVaultOwnership(repository: SharedRepositoryContainer.shared.shareRepository()) }
+    }
+
+    var getVaultInfos: Factory<GetVaultInfosUseCase> {
+        self { GetVaultInfos(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+
+    var moveItemsBetweenVaults: Factory<MoveItemsBetweenVaultsUseCase> {
+        self { MoveItemsBetweenVaults(repository: SharedRepositoryContainer.shared.itemRepository()) }
+    }
+
+    var getVaultContentForVault: Factory<GetVaultContentForVaultUseCase> {
+        self { GetVaultContentForVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+
+    var createVault: Factory<CreateVaultUseCase> {
+        self { CreateVault(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                           repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
 }
 

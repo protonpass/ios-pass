@@ -20,9 +20,10 @@
 
 import Client
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
@@ -80,7 +81,7 @@ struct ProfileTabView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             if let plan = viewModel.plan, plan.planType != .plus {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
-                                   title: "Upgrade".localized,
+                                   title: #localized("Upgrade"),
                                    titleColor: PassColor.interactionNorm,
                                    backgroundColor: PassColor.interactionNormMinor2,
                                    action: viewModel.upgrade)
@@ -261,7 +262,7 @@ struct ProfileTabView: View {
 
             PassSectionDivider()
 
-            TextOptionRow(title: "Settings".localized, action: viewModel.showSettingsMenu)
+            TextOptionRow(title: #localized("Settings"), action: viewModel.showSettingsMenu)
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -273,9 +274,9 @@ struct ProfileTabView: View {
              TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
              PassSectionDivider()
              */
-            TextOptionRow(title: "Privacy policy".localized, action: viewModel.showPrivacyPolicy)
+            TextOptionRow(title: #localized("Privacy policy"), action: viewModel.showPrivacyPolicy)
             PassSectionDivider()
-            TextOptionRow(title: "Terms of service".localized, action: viewModel.showTermsOfService)
+            TextOptionRow(title: #localized("Terms of service"), action: viewModel.showTermsOfService)
         }
         .roundedEditableSection()
         .padding(.horizontal)
@@ -288,10 +289,10 @@ struct ProfileTabView: View {
                 .padding(.bottom, kItemDetailSectionPadding)
 
             VStack(spacing: 0) {
-                TextOptionRow(title: "How to import to Proton Pass".localized,
+                TextOptionRow(title: #localized("How to import to Proton Pass"),
                               action: viewModel.showImportInstructions)
                 PassSectionDivider()
-                TextOptionRow(title: "Feedback".localized, action: viewModel.showFeedback)
+                TextOptionRow(title: #localized("Feedback"), action: viewModel.showFeedback)
             }
             .roundedEditableSection()
         }
@@ -326,18 +327,18 @@ private extension PassPlan {
     var associatedPlanInfo: AssociatedPlanInfo? {
         switch planType {
         case .free:
-            return nil
+            nil
 
         case .trial:
-            return .init(title: "Free trial".localized,
-                         icon: PassIcon.badgeTrial,
-                         iconWidth: 12,
-                         tintColor: PassColor.interactionNormMajor2)
+            .init(title: #localized("Free trial"),
+                  icon: PassIcon.badgeTrial,
+                  iconWidth: 12,
+                  tintColor: PassColor.interactionNormMajor2)
         case .plus:
-            return .init(title: displayName,
-                         icon: PassIcon.badgePaid,
-                         iconWidth: 16,
-                         tintColor: PassColor.noteInteractionNormMajor2)
+            .init(title: displayName,
+                  icon: PassIcon.badgePaid,
+                  iconWidth: 16,
+                  tintColor: PassColor.noteInteractionNormMajor2)
         }
     }
 }

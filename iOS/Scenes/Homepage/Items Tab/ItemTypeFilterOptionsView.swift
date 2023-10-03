@@ -18,9 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 
 struct ItemTypeFilterOptionsView: View {
     static let rowHeight = OptionRowHeight.compact.value
@@ -57,7 +57,7 @@ private extension ItemTypeFilterOptionsView {
         }, label: {
             HStack {
                 Label(title: {
-                    Text("\(uiModel.title) (\(uiModel.count))")
+                    Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
                         .foregroundColor(Color(uiColor: isSelected ?
                                 PassColor.interactionNormMajor2 : PassColor.textNorm))
                 }, icon: {

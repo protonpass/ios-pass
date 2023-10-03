@@ -44,11 +44,11 @@ extension Theme {
     var colorScheme: ColorScheme? {
         switch self {
         case .dark:
-            return .dark
+            .dark
         case .light:
-            return .light
+            .light
         case .matchSystem:
-            return nil
+            nil
         }
     }
 }

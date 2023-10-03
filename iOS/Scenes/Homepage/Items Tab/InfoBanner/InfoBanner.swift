@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
+import Macro
 import SwiftUI
-import UIComponents
 
 enum InfoBanner: CaseIterable, Equatable, Hashable {
     static var allCases: [InfoBanner] {
@@ -32,54 +33,50 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
     var id: String {
         switch self {
         case .trial:
-            return "trial"
+            "trial"
         case .autofill:
-            return "autofill"
+            "autofill"
         case .aliases:
-            return "aliases"
+            "aliases"
         case .invite:
-            return "invite"
+            "invite"
         }
     }
 
-    // swiftlint:disable line_length
     var detail: InfoBannerDetail {
         switch self {
         case .trial:
-            return .init(title: "Enjoy your free trial".localized,
-                         description: "Check out all the exclusive features that are available to you for a limited time"
-                             .localized,
-                         icon: nil,
-                         ctaTitle: "Learn more".localized,
-                         backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
-                         foregroundColor: PassColor.textInvert.toColor)
+            .init(title: #localized("Enjoy your free trial"),
+                  // swiftlint:disable:next line_length
+                  description: #localized("Check out all the exclusive features that are available to you for a limited time"),
+                  icon: nil,
+                  ctaTitle: #localized("Learn more"),
+                  backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
+                  foregroundColor: PassColor.textInvert.toColor)
         case .autofill:
-            return .init(title: "Enjoy the magic of AutoFill".localized,
-                         description: "One tap and⏤presto!⏤your username and password are filled in instantly"
-                             .localized,
-                         icon: PassIcon.infoBannerAutoFill,
-                         ctaTitle: "Turn on AutoFill".localized,
-                         backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
-                         foregroundColor: PassColor.textInvert.toColor)
+            .init(title: #localized("Enjoy the magic of AutoFill"),
+                  description: #localized("One tap and⏤presto!⏤your username and password are filled in instantly"),
+                  icon: PassIcon.infoBannerAutoFill,
+                  ctaTitle: #localized("Turn on AutoFill"),
+                  backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
+                  foregroundColor: PassColor.textInvert.toColor)
 
         case .aliases:
-            return .init(title: "Use email aliases".localized,
-                         description: "Protect your inbox against spams and phishings".localized,
-                         icon: PassIcon.infoBannerAliases,
-                         ctaTitle: nil,
-                         backgroundColor: PassColor.signalSuccess.toColor,
-                         foregroundColor: PassColor.textInvert.toColor)
+            .init(title: #localized("Use email aliases"),
+                  description: #localized("Protect your inbox against spams and phishings"),
+                  icon: PassIcon.infoBannerAliases,
+                  ctaTitle: nil,
+                  backgroundColor: PassColor.signalSuccess.toColor,
+                  foregroundColor: PassColor.textInvert.toColor)
         case .invite:
-            return .init(title: "Shared vault invitation".localized,
-                         description: "You've been invited to a vault. Tap here to see the invitation.".localized,
-                         icon: PassIcon.inviteBannerIcon,
-                         ctaTitle: nil,
-                         backgroundColor: PassColor.backgroundMedium.toColor,
-                         foregroundColor: PassColor.textNorm.toColor)
+            .init(title: #localized("Shared vault invitation"),
+                  description: #localized("You've been invited to a vault. Tap here to see the invitation."),
+                  icon: PassIcon.inviteBannerIcon,
+                  ctaTitle: nil,
+                  backgroundColor: PassColor.backgroundMedium.toColor,
+                  foregroundColor: PassColor.textNorm.toColor)
         }
     }
-
-    // swiftlint:enable line_length
 
     var isInvite: Bool {
         if case .invite = self { return true }

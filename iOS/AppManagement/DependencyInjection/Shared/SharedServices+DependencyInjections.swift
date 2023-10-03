@@ -64,7 +64,8 @@ extension SharedServiceContainer {
     }
 
     var clipboardManager: Factory<ClipboardManager> {
-        self { ClipboardManager() }
+        self { ClipboardManager(bannerManager: SharedViewContainer.shared.bannerManager(),
+                                preferences: SharedToolingContainer.shared.preferences()) }
     }
 
     var itemContextMenuHandler: Factory<ItemContextMenuHandler> {
@@ -73,6 +74,10 @@ extension SharedServiceContainer {
 
     var vaultsManager: Factory<VaultsManager> {
         self { VaultsManager() }
+    }
+
+    var vaultSyncEventStream: Factory<VaultSyncEventStream> {
+        self { VaultSyncEventStream(.initialization) }
     }
 
     var upgradeChecker: Factory<UpgradeCheckerProtocol> {

@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_TestingToolkit
+import Foundation
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class KeychainMock: KeychainProtocol {
     @FuncStub(KeychainMock.data, initialReturn: nil) var dataStub

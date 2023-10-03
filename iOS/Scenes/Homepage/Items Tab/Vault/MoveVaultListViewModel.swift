@@ -19,33 +19,32 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import Factory
+import Macro
 
-protocol MoveVaultListViewModelDelegate: AnyObject {
-    func moveVaultListViewModelWantsToUpgrade()
-    func moveVaultListViewModelDidPick(vault: Vault)
-    func moveVaultListViewModelDidEncounter(error: Error)
-}
-
-final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
+final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
+    private let getVaultContentForVault = resolve(\UseCasesContainer.getVaultContentForVault)
 
     @Published private(set) var isFreeUser = false
-    @Published var selectedVault: VaultListUiModel
+    @Published var selectedVault: VaultContentUiModel
 
-    weak var delegate: MoveVaultListViewModelDelegate?
+    let allVaults: [VaultContentUiModel]
+    private let currentVault: VaultContentUiModel
+    private let itemContent: ItemContent?
 
-    let allVaults: [VaultListUiModel]
-    let currentVault: VaultListUiModel
-
-    init(allVaults: [VaultListUiModel], currentVault: VaultListUiModel) {
+    init(allVaults: [VaultContentUiModel], currentVault: Vault, itemContent: ItemContent?) {
         self.allVaults = allVaults
-        self.currentVault = currentVault
-        selectedVault = currentVault
+        self.currentVault = getVaultContentForVault(for: currentVault)
+        self.itemContent = itemContent
+        selectedVault = self.currentVault
 
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -53,17 +52,52 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
                 self.isFreeUser = try await self.upgradeChecker.isFreeUser()
             } catch {
                 self.logger.error(error)
-                self.delegate?.moveVaultListViewModelDidEncounter(error: error)
+                self.router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
-    func confirm() {
-        guard selectedVault != currentVault else { return }
-        delegate?.moveVaultListViewModelDidPick(vault: selectedVault.vault)
+    func upgrade() {
+        router.present(for: .upgradeFlow)
     }
 
-    func upgrade() {
-        delegate?.moveVaultListViewModelWantsToUpgrade()
+    func doMove() {
+        guard selectedVault != currentVault else { return }
+
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                self.router.display(element: .globalLoading(shouldShow: true))
+                try await self.moveItemsBetweenVaults(movingContext: movingContext)
+                router.display(element: self.createMoveSuccessMessage)
+            } catch {
+                self.logger.error(error)
+                self.router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+}
+
+private extension MoveVaultListViewModel {
+    var createMoveSuccessMessage: UIElementDisplay {
+        if let itemContent {
+            UIElementDisplay
+                .successMessage(#localized("Item moved to vault « %@ »", selectedVault.vault.name),
+                                config: .dismissAndRefresh(with: .update(itemContent.type)))
+        } else {
+            UIElementDisplay
+                .successMessage(#localized("Items from « %@ » moved to vault « %@ »",
+                                           currentVault.vault.name, selectedVault.vault.name),
+                                config: .dismissAndRefresh)
+        }
+    }
+
+    var movingContext: MovingContext {
+        if let itemContent {
+            .item(itemContent, newShareId: selectedVault.vault.shareId)
+        } else {
+            .vault(currentVault.vault.shareId, newShareId: selectedVault.vault.shareId)
+        }
     }
 }

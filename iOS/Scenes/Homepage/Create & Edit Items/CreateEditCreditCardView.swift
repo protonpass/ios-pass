@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct CreateEditCreditCardView: View {
     @Environment(\.dismiss) private var dismiss
@@ -269,7 +270,7 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Expires on")
                     .sectionTitleText()
-                MonthYearTextField(placeholder: "MM / YYYY".localized,
+                MonthYearTextField(placeholder: #localized("MM / YYYY"),
                                    tintColor: tintColor,
                                    month: $viewModel.month,
                                    year: $viewModel.year)

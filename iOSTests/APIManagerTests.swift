@@ -21,10 +21,10 @@
 import Core
 import Factory
 @testable import Proton_Pass
-import ProtonCore_Keymaker
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
+import ProtonCoreKeymaker
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkitUnitTestsCore
 import XCTest
 
 
@@ -261,11 +261,20 @@ final class APIManagerTests: XCTestCase {
         }
         let delegate = TestAPIManagerDelegate()
         apiManager.delegate = delegate
+        apiManager.setLastSuccessfulRefreshTimestamp(.now)
 
-        // WHEN
+        // WHEN: first refresh failure
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
 
-        // THEN
+        // THEN: logout issue mitigation, do nothing on first failure
+        XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
+        XCTAssertNotNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
+        XCTAssertTrue(delegate.appLoggedOutStub.wasNotCalled)
+
+        // WHEN: second refresh failure
+        apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
+
+        // THEN: log out on second refresh failure
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
         XCTAssertTrue(delegate.appLoggedOutStub.wasCalledExactlyOnce)
@@ -289,7 +298,6 @@ final class APIManagerTests: XCTestCase {
                                                   userID: "",
                                                   privateKey: nil,
                                                   passwordKeySalt: nil)
-        let newUnauthSessionData = try JSONEncoder().encode(newUnauthCredentials)
 
         // WHEN
         apiManager.credentialsWereUpdated(authCredential: newUnauthCredentials,
@@ -303,7 +311,20 @@ final class APIManagerTests: XCTestCase {
         let encryptedValue = try XCTUnwrap(keychain.setDataStub.lastArguments?.first)
         let unlockedSessionData = try Locked<Data>(encryptedValue: encryptedValue)
             .unlock(with: mainKey)
-        XCTAssertEqual(unlockedSessionData, newUnauthSessionData)
+        let unlockedSession = try JSONDecoder().decode(AuthCredential.self, from: unlockedSessionData)
+
+        /*
+         let newUnauthSessionData = try JSONEncoder().encode(newUnauthCredentials)
+         XCTAssertEqual(unlockedSessionData, newUnauthSessionData)
+
+         This no more works after upgrading to Xcode 15 and iOS 17
+         Work around by asserting field by field
+         */
+        XCTAssertEqual(unlockedSession.accessToken, newUnauthCredentials.accessToken)
+        XCTAssertEqual(unlockedSession.refreshToken, newUnauthCredentials.refreshToken)
+        XCTAssertEqual(unlockedSession.sessionID, newUnauthCredentials.sessionID)
+        XCTAssertEqual(unlockedSession.userName, newUnauthCredentials.userName)
+        XCTAssertEqual(unlockedSession.userID, newUnauthCredentials.userID)
     }
 
     func testAPIServiceAuthCredentialsUpdateUpdatesAuthSesson() throws {

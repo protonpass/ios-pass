@@ -19,28 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_UIFoundations
+import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct QAFeaturesView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: QAFeaturesViewModel
 
     var body: some View {
         let tintColor = Color(uiColor: PassColor.interactionNorm)
         NavigationView {
             Form {
-                OnboardSection(viewModel: viewModel)
+                OnboardSection()
                 HapticFeedbacksSection()
                 Section {
                     CachedFavIconsSection()
                     TelemetryEventsSection()
-                    TrashItemsSection(bannerManager: viewModel.bannerManager)
+                    TrashItemsSection()
                     BannersSection()
                 }
             }
-            .navigationTitle("QA Features")
+            .navigationTitle(Text(verbatim: "QA Features"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleButton(icon: IconProvider.cross,

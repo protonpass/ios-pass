@@ -7,7 +7,7 @@
       buildImplicitDependencies = "YES">
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug-Black"
+      buildConfiguration = "Debug-QA"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
@@ -32,7 +32,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug-Black"
+      buildConfiguration = "Debug-QA"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -42,21 +42,21 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <StoreKitConfigurationFileReference
-         identifier = "../iOSUITests/Subscription/Proton Pass - Password Manager.storekit">
+         identifier = "../../iOSUITests/Subscription/Proton Pass - Password Manager.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Release-Prod"
+      buildConfiguration = "Debug-QA"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug-Black">
+      buildConfiguration = "Debug-QA">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release-Prod"
+      buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

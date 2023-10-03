@@ -21,10 +21,11 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
@@ -69,8 +70,8 @@ struct CredentialsView: View {
                },
                message: {
                    if let information = viewModel.notMatchedItemInformation {
-                       Text("Would you want to associate « %@ » with « %@ »?"
-                           .localized(information.url, information.item.itemTitle))
+                       // swiftlint:disable:next line_length
+                       Text("Would you want to associate « \(information.url) » with « \(information.item.itemTitle) »?")
                    }
                })
     }
@@ -135,7 +136,7 @@ private extension CredentialsView {
     func itemList(results: CredentialsFetchResult) -> some View {
         ScrollViewReader { proxy in
             List {
-                let matchedItemsHeaderTitle = "Suggestions for %@".localized(viewModel.urls.first?.host ?? "")
+                let matchedItemsHeaderTitle = #localized("Suggestions for %@", viewModel.urls.first?.host ?? "")
                 if results.matchedItems.isEmpty {
                     Section(content: {
                         Text("No suggestions")
@@ -196,7 +197,7 @@ private extension CredentialsView {
         ZStack {
             Text("Your plan only allows to use items in your primary vault for autofill purposes.")
                 .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                Text(" ") +
+                Text(verbatim: " ") +
                 Text("Upgrade now")
                 .underline(color: Color(uiColor: PassColor.interactionNormMajor1))
                 .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
@@ -252,14 +253,14 @@ private extension CredentialsView {
 
     func sections(for result: MostRecentSortResult<some CredentialItem>) -> some View {
         Group {
-            section(for: result.today, headerTitle: "Today".localized)
-            section(for: result.yesterday, headerTitle: "Yesterday".localized)
-            section(for: result.last7Days, headerTitle: "Last week".localized)
-            section(for: result.last14Days, headerTitle: "Last two weeks".localized)
-            section(for: result.last30Days, headerTitle: "Last 30 days".localized)
-            section(for: result.last60Days, headerTitle: "Last 60 days".localized)
-            section(for: result.last90Days, headerTitle: "Last 90 days".localized)
-            section(for: result.others, headerTitle: "More than 90 days".localized)
+            section(for: result.today, headerTitle: #localized("Today"))
+            section(for: result.yesterday, headerTitle: #localized("Yesterday"))
+            section(for: result.last7Days, headerTitle: #localized("Last week"))
+            section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
+            section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
+            section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
+            section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
+            section(for: result.others, headerTitle: #localized("More than 90 days"))
         }
     }
 

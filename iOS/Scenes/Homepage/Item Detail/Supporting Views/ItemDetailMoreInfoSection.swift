@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct ItemDetailMoreInfoSection: View {
     @Binding var isExpanded: Bool
@@ -60,7 +61,7 @@ struct ItemDetailMoreInfoSection: View {
                 VStack(alignment: .leading) {
                     if let lastAutoFilledDate = uiModel.lastAutoFilledDate {
                         HStack {
-                            title("Auto-filled:".localized)
+                            title(#localized("Auto-filled:"))
                             Text(lastAutoFilledDate)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -68,7 +69,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
 
                     HStack {
-                        title("Modified:".localized)
+                        title(#localized("Modified:"))
                         VStack(alignment: .leading, spacing: 4) {
                             Text(uiModel.modificationCount)
                                 .fontWeight(.semibold)
@@ -77,7 +78,7 @@ struct ItemDetailMoreInfoSection: View {
                     }
 
                     HStack {
-                        title("Created:".localized)
+                        title(#localized("Created:"))
                         Text(uiModel.creationDate)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -142,8 +143,8 @@ private struct ItemDetailMoreInfoSectionUIModel {
             lastAutoFilledDate = nil
         }
 
-        modificationCount = "%d time(s)".localized(item.revision)
-        modificationDate = "Last time, %@".localized(fullDateString(item.modifyTime))
+        modificationCount = #localized("%lld time(s)", item.revision)
+        modificationDate = #localized("Last time, %@", fullDateString(item.modifyTime))
         creationDate = fullDateString(item.createTime).capitalizingFirstLetter()
     }
 }

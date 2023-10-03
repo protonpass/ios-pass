@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import LocalAuthentication
+import Macro
 
 enum LocalAuthenticationMethod: Codable {
     case none, biometric, pin
@@ -46,30 +47,30 @@ enum LocalAuthenticationMethodUiModel {
     var title: String {
         switch self {
         case .none:
-            return "No unlock".localized
+            return #localized("No unlock")
         case let .biometric(type):
             switch type {
             case .faceID:
-                return "Face ID".localized
+                return #localized("Face ID")
             case .touchID:
-                return "Touch ID".localized
+                return #localized("Touch ID")
             default:
                 assertionFailure("Not usable biometric type")
                 return ""
             }
         case .pin:
-            return "PIN Code".localized
+            return #localized("PIN Code")
         }
     }
 
     var method: LocalAuthenticationMethod {
         switch self {
         case .none:
-            return .none
+            .none
         case .biometric:
-            return .biometric
+            .biometric
         case .pin:
-            return .pin
+            .pin
         }
     }
 }
@@ -85,18 +86,18 @@ extension LABiometryType {
     var usable: Bool {
         switch self {
         case .faceID, .touchID:
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 
     var fallbackToPasscodeMessage: String {
         switch self {
         case .faceID:
-            return "Use system passcode when Face ID fails".localized
+            return #localized("Use system passcode when Face ID fails")
         case .touchID:
-            return "Use system passcode when Touch ID fails".localized
+            return #localized("Use system passcode when Touch ID fails")
         default:
             assertionFailure("Not applicable")
             return ""

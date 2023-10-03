@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import ProtonCore_Keymaker
+import Foundation
+import ProtonCoreKeymaker
 
 final class KeychainMainkeyProviderMock: KeychainProtocol, MainKeyProvider {
     var dict: [String: Data] = [:]
