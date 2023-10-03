@@ -111,3 +111,11 @@ extension SharedUseCasesContainer {
         self { UnindexAllLoginItems(manager: self.credentialManager) }
     }
 }
+
+// MARK: Vault
+
+extension SharedUseCasesContainer {
+    var processVaultSyncEvent: Factory<ProcessVaultSyncEventUseCase> {
+        self { ProcessVaultSyncEvent() }
+    }
+}

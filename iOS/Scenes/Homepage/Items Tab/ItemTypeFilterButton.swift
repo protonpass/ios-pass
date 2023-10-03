@@ -19,8 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 struct ItemTypeFilterButton: View {
     let itemCount: ItemCount
@@ -73,6 +73,6 @@ private extension ItemTypeFilterButton {
     }
 
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
-        Text("\(uiModel.title) (\(uiModel.count))")
+        Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
     }
 }

@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct CreateEditItemTitleSection<Field: Hashable>: View {
     @Binding var title: String
@@ -86,7 +87,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
                 TextEditorWithPlaceholder(text: $title,
                                           focusedField: focusedField,
                                           field: field,
-                                          placeholder: "Untitled".localized,
+                                          placeholder: #localized("Untitled"),
                                           font: .title,
                                           fontWeight: .bold,
                                           onSubmit: onSubmit)

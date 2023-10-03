@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct MailboxSection: View {
     @ObservedObject var mailboxSelection: MailboxSelection
@@ -32,9 +33,9 @@ struct MailboxSection: View {
         var title: String {
             switch self {
             case .create:
-                return "Forward to".localized
+                #localized("Forward to")
             case .edit:
-                return "Forwarding to".localized
+                #localized("Forwarding to")
             }
         }
     }

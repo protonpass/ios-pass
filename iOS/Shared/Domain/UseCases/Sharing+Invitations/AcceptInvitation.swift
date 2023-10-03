@@ -22,9 +22,9 @@
 
 import Client
 import Entities
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 
-@preconcurrency import ProtonCore_Login
+@preconcurrency import ProtonCoreLogin
 
 protocol AcceptInvitationUseCase: Sendable {
     func execute(with userInvite: UserInvite) async throws -> Bool

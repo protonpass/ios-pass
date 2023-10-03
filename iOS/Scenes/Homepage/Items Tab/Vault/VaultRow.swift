@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct VaultRow<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
@@ -42,7 +43,7 @@ struct VaultRow<Thumbnail: View>: View {
                     Text("Empty")
                         .placeholderText()
                 } else {
-                    Text("%d item(s)".localized(itemCount))
+                    Text("\(itemCount) item(s)")
                         .font(.callout)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))
                 }

@@ -21,10 +21,11 @@
 //
 
 import Core
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct SharingSummaryView: View {
     @Environment(\.dismiss) private var dismiss
@@ -54,8 +55,8 @@ private extension SharingSummaryView {
     @ViewBuilder
     var headerView: some View {
         let email = attributedText(for: viewModel.infos?.email ?? "")
-        let vaultName = attributedText(for: "%@ vault".localized(viewModel.infos?.vault?.name ?? ""))
-        let itemCount = attributedText(for: "%d item(s)".localized(viewModel.infos?.itemsNum ?? 0))
+        let vaultName = attributedText(for: #localized("%@ vault", viewModel.infos?.vault?.name ?? ""))
+        let itemCount = attributedText(for: #localized("%lld item(s)", viewModel.infos?.itemsNum ?? 0))
         let permission = attributedText(for: viewModel.infos?.role?.summary ?? "")
         VStack(alignment: .leading, spacing: 11) {
             Text("Summary")
@@ -160,7 +161,7 @@ private extension SharingSummaryView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: "Share Vault".localized,
+            DisablableCapsuleTextButton(title: #localized("Share Vault"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,

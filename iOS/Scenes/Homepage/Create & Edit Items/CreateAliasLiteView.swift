@@ -19,9 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct CreateAliasLiteView: View {
     @Environment(\.dismiss) private var dismiss
@@ -121,14 +122,14 @@ struct CreateAliasLiteView: View {
 
     private var buttons: some View {
         HStack(spacing: 16) {
-            CapsuleTextButton(title: "Cancel".localized,
+            CapsuleTextButton(title: #localized("Cancel"),
                               titleColor: PassColor.textWeak,
                               backgroundColor: PassColor.textDisabled,
                               height: 44,
                               action: dismiss.callAsFunction)
 
             if viewModel.canCreateAlias {
-                DisablableCapsuleTextButton(title: "Confirm".localized,
+                DisablableCapsuleTextButton(title: #localized("Confirm"),
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.loginInteractionNormMajor1,

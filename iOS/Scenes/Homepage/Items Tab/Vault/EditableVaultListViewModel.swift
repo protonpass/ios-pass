@@ -22,39 +22,50 @@ import Client
 import Combine
 import Core
 import Factory
+import Foundation
+import Macro
 
 protocol EditableVaultListViewModelDelegate: AnyObject {
     func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
                                                         delegate: DeleteVaultAlertHandlerDelegate)
-    func editableVaultListViewModelDidDelete(vault: Vault)
-    func editableVaultListViewModelDidRestoreAllTrashedItems()
-    func editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
 }
 
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
-
-    private let logger = resolve(\SharedToolingContainer.logger)
-    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     @Published var showingAliasAlert = false
     @Published private(set) var isAllowedToShare = false
     @Published private(set) var loading = false
+    @Published private(set) var state = VaultManagerState.loading
+
+    private(set) var numberOfAliasForSharedVault = 0
+    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    private let logger = resolve(\SharedToolingContainer.logger)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private var cancellables = Set<AnyCancellable>()
 
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
-    private(set) var numberOfAliasforSharedVault = 0
+    var hasTrashItems: Bool {
+        vaultsManager.getItemCount(for: .trash) > 0
+    }
 
     weak var delegate: EditableVaultListViewModelDelegate?
-    private var cancellables = Set<AnyCancellable>()
 
     init() {
         setUp()
+    }
+
+    deinit { print(deinitMessage) }
+
+    func select(_ selection: VaultSelection) {
+        vaultsManager.select(selection)
+    }
+
+    func isSelected(_ selection: VaultSelection) -> Bool {
+        vaultsManager.isSelected(selection)
     }
 }
 
@@ -62,26 +73,31 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
 private extension EditableVaultListViewModel {
     func setUp() {
-        vaultsManager.attach(to: self, storeIn: &cancellables)
+        vaultsManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newState in
+                guard let self else { return }
+                state = newState
+            }.store(in: &cancellables)
+
         Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            self.isAllowedToShare = await self.userSharingStatus()
+            guard let self else { return }
+            isAllowedToShare = await userSharingStatus()
         }
     }
 
     func doDelete(vault: Vault) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.loading = false }
+            defer { loading = false }
             do {
-                self.loading = true
-                try await self.vaultsManager.delete(vault: vault)
-                self.delegate?.editableVaultListViewModelDidDelete(vault: vault)
+                loading = true
+                try await vaultsManager.delete(vault: vault)
+                vaultsManager.refresh()
+                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vault.name)))
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -100,8 +116,8 @@ extension EditableVaultListViewModel {
 
     func share(vault: Vault) {
         setShareInviteVault(with: vault)
-        numberOfAliasforSharedVault = getVaultItemCount(for: vault, and: .alias)
-        if numberOfAliasforSharedVault > 0 {
+        numberOfAliasForSharedVault = getVaultItemCount(for: vault, and: .alias)
+        if numberOfAliasForSharedVault > 0 {
             showingAliasAlert = true
         } else {
             router.present(for: .sharingFlow)
@@ -110,12 +126,13 @@ extension EditableVaultListViewModel {
 
     func leaveVault(vault: Vault) {
         Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
-                try await self?.leaveShare(with: vault.shareId)
-                self?.syncEventLoop.forceSync()
+                try await leaveShare(with: vault.shareId)
+                syncEventLoop.forceSync()
             } catch {
-                self?.logger.error(error)
-                self?.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -138,7 +155,8 @@ extension EditableVaultListViewModel {
                 self.logger.trace("Restoring all trashed items")
                 self.loading = true
                 try await self.vaultsManager.restoreAllTrashedItems()
-                self.delegate?.editableVaultListViewModelDidRestoreAllTrashedItems()
+                self.router.display(element: .successMessage(#localized("All items restored"),
+                                                             config: .refresh))
                 self.logger.info("Restored all trashed items")
             } catch {
                 self.logger.error(error)
@@ -155,13 +173,18 @@ extension EditableVaultListViewModel {
                 self.logger.trace("Emptying all trashed items")
                 self.loading = true
                 try await self.vaultsManager.permanentlyDeleteAllTrashedItems()
-                self.delegate?.editableVaultListViewModelDidPermanentlyDeleteAllTrashedItems()
+                self.router.display(element: .infosMessage(#localized("All items permanently deleted"),
+                                                           config: .refresh))
                 self.logger.info("Emptied all trashed items")
             } catch {
                 self.logger.error(error)
                 self.router.display(element: .displayErrorBanner(error))
             }
         }
+    }
+
+    func itemCount(for selection: VaultSelection) -> Int {
+        vaultsManager.getItemCount(for: selection)
     }
 }
 

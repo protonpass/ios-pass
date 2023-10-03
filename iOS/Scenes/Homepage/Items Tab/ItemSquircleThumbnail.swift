@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Factory
 import SwiftUI
-import UIComponents
 
 enum ItemSquircleThumbnailSize {
     case regular, large
@@ -29,18 +29,18 @@ enum ItemSquircleThumbnailSize {
     var height: CGFloat {
         switch self {
         case .regular:
-            return 40
+            40
         case .large:
-            return 60
+            60
         }
     }
 
     var strokeWidth: CGFloat {
         switch self {
         case .regular:
-            return 2
+            2
         case .large:
-            return 3
+            3
         }
     }
 }

@@ -20,9 +20,9 @@
 
 import Client
 import Core
-import ProtonCore_DataModel
-import ProtonCore_Login
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreLogin
+import ProtonCoreNetworking
 
 extension UserData {
     static var mock: UserData {

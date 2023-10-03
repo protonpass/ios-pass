@@ -20,10 +20,10 @@
 
 import Core
 import CoreImage.CIFilterBuiltins
+import DesignSystem
 import Factory
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct FullScreenView: View {
     @Environment(\.dismiss) private var dismiss
@@ -38,15 +38,19 @@ struct FullScreenView: View {
 
         var systemImageName: String {
             switch self {
-            case .text: return "textformat.abc"
-            case .qr: return "qrcode"
+            case .text:
+                "textformat.abc"
+            case .qr:
+                "qrcode"
             }
         }
 
         var oppositeMode: Mode {
             switch self {
-            case .text: return .qr
-            case .qr: return .text
+            case .text:
+                .qr
+            case .qr:
+                .text
             }
         }
     }
@@ -117,10 +121,10 @@ private struct FullScreenTextView: View {
                 .fontWeight(.semibold)
             Spacer()
             HStack {
-                Text("A")
+                Text(verbatim: "A")
                 Slider(value: $percentage)
                     .tint(Color(uiColor: PassColor.interactionNorm))
-                Text("A")
+                Text(verbatim: "A")
                     .font(.title)
             }
         }

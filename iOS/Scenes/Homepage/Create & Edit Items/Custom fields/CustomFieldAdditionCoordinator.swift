@@ -20,9 +20,10 @@
 
 import Client
 import Core
+import DesignSystem
 import Factory
+import Macro
 import SwiftUI
-import UIComponents
 
 protocol CustomFieldAdditionDelegate: AnyObject {
     func customFieldAdded(_ customField: CustomField)
@@ -42,12 +43,11 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
 
     func start() {
         let view = CustomFieldTypesView { [weak self] type in
-            self?.rootViewController.topMostViewController.dismiss(animated: true) { [weak self] in
-                guard let self else {
-                    return
-                }
-                let alert = self.makeAlert(for: type)
-                self.rootViewController.topMostViewController.present(alert, animated: true)
+            guard let self else { return }
+            rootViewController.topMostViewController.dismiss(animated: true) { [weak self] in
+                guard let self else { return }
+                let alert = makeAlert(for: type)
+                rootViewController.topMostViewController.present(alert, animated: true)
             }
         }
         let viewController = UIHostingController(rootView: view)
@@ -64,18 +64,18 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
 
 private extension CustomFieldAdditionCoordinator {
     func makeAlert(for type: CustomFieldType) -> UIAlertController {
-        let alert = UIAlertController(title: "Custom field title".localized,
-                                      message: "Enter a title for your custom field".localized,
+        let alert = UIAlertController(title: #localized("Custom field title"),
+                                      message: #localized("Enter a title for your custom field"),
                                       preferredStyle: .alert)
         alert.addTextField { textField in
-            textField.placeholder = "Title of the custom field".localized
+            textField.placeholder = #localized("Title of the custom field")
             let action = UIAction { _ in
                 alert.actions.first?.isEnabled = textField.text?.isEmpty == false
             }
             textField.addAction(action, for: .editingChanged)
         }
 
-        let addAction = UIAlertAction(title: "Add".localized, style: .default) { [type, delegate] _ in
+        let addAction = UIAlertAction(title: #localized("Add"), style: .default) { [type, delegate] _ in
             delegate.customFieldAdded(.init(title: alert.textFields?.first?.text ?? "",
                                             type: type,
                                             content: ""))
@@ -83,7 +83,7 @@ private extension CustomFieldAdditionCoordinator {
         addAction.isEnabled = false
         alert.addAction(addAction)
 
-        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel)
+        let cancelAction = UIAlertAction(title: #localized("Cancel"), style: .cancel)
         alert.addAction(cancelAction)
         return alert
     }

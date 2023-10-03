@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct AccountView: View {
     @State private var isShowingSignOutConfirmation = false
@@ -42,7 +43,7 @@ struct AccountView: View {
         ScrollView {
             VStack {
                 VStack(spacing: 0) {
-                    OptionRow(title: "Username".localized,
+                    OptionRow(title: #localized("Username"),
                               height: .tall,
                               content: {
                                   Text(viewModel.username)
@@ -52,7 +53,7 @@ struct AccountView: View {
                     if let plan = viewModel.plan {
                         PassSectionDivider()
 
-                        OptionRow(title: "Subscription plan".localized,
+                        OptionRow(title: #localized("Subscription plan"),
                                   height: .tall,
                                   content: {
                                       Text(plan.displayName)
@@ -141,7 +142,7 @@ struct AccountView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             if let plan = viewModel.plan, plan.planType != .plus {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
-                                   title: "Upgrade".localized,
+                                   title: #localized("Upgrade"),
                                    titleColor: ColorProvider.TextInverted,
                                    backgroundColor: PassColor.interactionNormMajor2,
                                    action: viewModel.upgradeSubscription)

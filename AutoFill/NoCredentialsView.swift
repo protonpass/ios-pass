@@ -18,9 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct NoCredentialsView: View {
     let onCancel: () -> Void
@@ -58,7 +59,7 @@ struct CreateLoginButton: View {
     let onCreate: () -> Void
 
     var body: some View {
-        CapsuleTextButton(title: "Create login".localized,
+        CapsuleTextButton(title: #localized("Create login"),
                           titleColor: PassColor.loginInteractionNormMajor2,
                           backgroundColor: PassColor.loginInteractionNormMinor1,
                           height: 52,

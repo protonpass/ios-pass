@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Foundation
 
 extension URL {
     static func favIconsContainerURL() -> URL {

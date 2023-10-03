@@ -19,20 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import Factory
-import UIComponents
 import UIKit
 
-final class ClipboardManager {
-    private let preferences = resolve(\SharedToolingContainer.preferences)
-    weak var bannerManager: BannerManager?
+final class ClipboardManager: Sendable {
+    private let preferences: PreferencesProtocol
+    let bannerManager: BannerDisplayProtocol
 
-    init() {}
+    init(bannerManager: BannerDisplayProtocol, preferences: PreferencesProtocol) {
+        self.bannerManager = bannerManager
+        self.preferences = preferences
+    }
 
     func copy(text: String, bannerMessage: String) {
         UIPasteboard.general.setObjects([NSString(string: text)],
                                         localOnly: !preferences.shareClipboard,
                                         expirationDate: preferences.clipboardExpiration.expirationDate)
-        bannerManager?.displayBottomInfoMessage(bannerMessage)
+        bannerManager.displayBottomInfoMessage(bannerMessage)
     }
 }

@@ -21,17 +21,15 @@
 import Client
 import Core
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 
 protocol ItemContextMenuHandlerDelegate: AnyObject {
     func itemContextMenuHandlerWantsToEditItem(_ itemContent: ItemContent)
-    func itemContextMenuHandlerDidTrash(item: ItemTypeIdentifiable)
-    func itemContextMenuHandlerDidUntrash(item: ItemTypeIdentifiable)
-    func itemContextMenuHandlerDidPermanentlyDelete(item: ItemTypeIdentifiable)
 }
 
 final class ItemContextMenuHandler {
-    private let clipboardManager = resolve(\SharedServiceContainer.clipboardManager)
+    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -68,15 +66,15 @@ extension ItemContextMenuHandler {
                 try await self.itemRepository.trashItems([encryptedItem])
 
                 let undoBlock: (PMBanner) -> Void = { [weak self] banner in
+                    guard let self else { return }
                     banner.dismiss()
-                    self?.restore(item)
+                    restore(item)
                 }
 
-                self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.trashMessage,
-                                                                              dismissButtonTitle: "Undo".localized,
-                                                                              onDismiss: undoBlock)
-
-                self.delegate?.itemContextMenuHandlerDidTrash(item: item)
+                self.clipboardManager.bannerManager.displayBottomInfoMessage(item.trashMessage,
+                                                                             dismissButtonTitle: #localized("Undo"),
+                                                                             onDismiss: undoBlock)
+                self.router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
@@ -92,8 +90,8 @@ extension ItemContextMenuHandler {
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.untrashItems([encryptedItem])
-                self.clipboardManager.bannerManager?.displayBottomSuccessMessage(item.type.restoreMessage)
-                self.delegate?.itemContextMenuHandlerDidUntrash(item: item)
+                self.clipboardManager.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+                self.router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
@@ -109,8 +107,8 @@ extension ItemContextMenuHandler {
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
-                self.clipboardManager.bannerManager?.displayBottomInfoMessage(item.type.deleteMessage)
-                self.delegate?.itemContextMenuHandlerDidPermanentlyDelete(item: item)
+                self.clipboardManager.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+                self.router.display(element: .successMessage(config: .refresh(with: .delete(item.type))))
             } catch {
                 self.logger.error(error)
                 self.handleError(error)
@@ -126,7 +124,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.username,
-                                               bannerMessage: "Username copied".localized)
+                                               bannerMessage: #localized("Username copied"))
                     self.logger.info("Copied username \(item.debugInformation)")
                 }
             } catch {
@@ -144,7 +142,7 @@ extension ItemContextMenuHandler {
                 let itemContent = try await self.getDecryptedItemContent(for: item)
                 if case let .login(data) = itemContent.contentData {
                     self.clipboardManager.copy(text: data.password,
-                                               bannerMessage: "Password copied".localized)
+                                               bannerMessage: #localized("Password copied"))
                     self.logger.info("Copied Password \(item.debugInformation)")
                 }
             } catch {
@@ -162,8 +160,26 @@ extension ItemContextMenuHandler {
                 let encryptedItem = try await self.getEncryptedItem(for: item)
                 if let aliasEmail = encryptedItem.item.aliasEmail {
                     self.clipboardManager.copy(text: aliasEmail,
-                                               bannerMessage: "Alias address copied".localized)
+                                               bannerMessage: #localized("Alias address copied"))
                     self.logger.info("Copied alias address \(item.debugInformation)")
+                }
+            } catch {
+                self.logger.error(error)
+                self.handleError(error)
+            }
+        }
+    }
+
+    func copyNoteContent(_ item: ItemTypeIdentifiable) {
+        guard case .note = item.type else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let itemContent = try await self.getDecryptedItemContent(for: item)
+                if case .note = itemContent.contentData {
+                    self.clipboardManager.copy(text: itemContent.note,
+                                               bannerMessage: #localized("Note content copied"))
+                    self.logger.info("Copied note content \(item.debugInformation)")
                 }
             } catch {
                 self.logger.error(error)
@@ -191,6 +207,6 @@ private extension ItemContextMenuHandler {
     }
 
     func handleError(_ error: Error) {
-        clipboardManager.bannerManager?.displayTopErrorMessage(error)
+        clipboardManager.bannerManager.displayTopErrorMessage(error)
     }
 }

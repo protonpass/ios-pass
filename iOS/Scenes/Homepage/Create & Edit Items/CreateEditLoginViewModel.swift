@@ -24,6 +24,7 @@ import CodeScanner
 import Combine
 import Core
 import Factory
+import Macro
 import SwiftUI
 
 protocol CreateEditLoginViewModelDelegate: AnyObject {
@@ -97,7 +98,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .combineLatest($note)
             .dropFirst(mode.isEditMode ? 1 : 3)
             .sink(receiveValue: { [weak self] _ in
-                self?.didEditSomething = true
+                guard let self else { return }
+                didEditSomething = true
             })
             .store(in: &cancellables)
 
@@ -107,10 +109,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                if self.aliasOptions != nil {
-                    self.aliasOptions = nil
-                    self.aliasCreationLiteInfo = nil
-                    self.username = ""
+                if aliasOptions != nil {
+                    aliasOptions = nil
+                    aliasCreationLiteInfo = nil
+                    username = ""
                 }
             }
             .store(in: &cancellables)
@@ -156,7 +158,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
               autofill else {
             return super.saveButtonTitle()
         }
-        return "Create & AutoFill".localized
+        return #localized("Create & AutoFill")
     }
 
     override func generateItemContent() -> ItemContentProtobuf {
@@ -183,7 +185,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func generateAliasItemContent() -> ItemContentProtobuf? {
         guard isAlias else { return nil }
         return .init(name: title,
-                     note: "Alias of login item \"%@\"".localized(title),
+                     note: #localized("Alias of login item \"%@\"", title),
                      itemUuid: UUID().uuidString,
                      data: .alias,
                      customFields: [])
@@ -247,12 +249,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     func openCodeScanner() {
         Task { @MainActor [weak self] in
-            guard let authorized = await self?.checkCameraPermission(),
-                  authorized else {
-                self?.isShowingNoCameraPermissionView = true
-                return
+            guard let self else { return }
+            if await checkCameraPermission() {
+                isShowingCodeScanner = true
+            } else {
+                isShowingNoCameraPermissionView = true
             }
-            self?.isShowingCodeScanner = true
         }
     }
 

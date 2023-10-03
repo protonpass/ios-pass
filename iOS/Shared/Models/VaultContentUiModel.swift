@@ -24,6 +24,10 @@ struct VaultContentUiModel: Hashable {
     let vault: Vault
     /// `Active` items only
     let items: [ItemUiModel]
+
+    var itemCount: Int {
+        items.count
+    }
 }
 
 extension VaultListUiModel {

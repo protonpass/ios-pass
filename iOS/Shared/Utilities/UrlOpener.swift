@@ -19,9 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DesignSystem
 import Factory
 import SafariServices
-import UIComponents
 import UIKit
 
 final class UrlOpener {

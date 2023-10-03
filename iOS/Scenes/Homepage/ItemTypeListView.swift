@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
-import UIComponents
 
 struct ItemTypeListView: View {
     @StateObject private var viewModel: ItemTypeListViewModel
@@ -68,7 +68,6 @@ struct ItemTypeListView: View {
                            descriptionLineLimit: 2,
                            secondaryTitle: secondaryTitle(for: type),
                            secondaryTitleColor: secondaryTitleColor(for: type))
-                .frame(height: 72)
         })
         .buttonStyle(.plain)
     }

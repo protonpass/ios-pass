@@ -22,7 +22,7 @@
 
 import Client
 import Core
-import ProtonCore_Login
+import ProtonCoreLogin
 
 // sourcery: AutoMockable
 protocol UserSharingStatusUseCase: Sendable {

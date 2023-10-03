@@ -20,11 +20,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
 import Entities
 import Factory
-import ProtonCore_UIFoundations
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
-import UIComponents
 
 struct UserPermissionView: View {
     @Environment(\.dismiss) private var dismiss
@@ -145,7 +146,7 @@ private extension UserPermissionView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            DisablableCapsuleTextButton(title: "Continue".localized,
+            DisablableCapsuleTextButton(title: #localized("Continue"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNormMajor1,

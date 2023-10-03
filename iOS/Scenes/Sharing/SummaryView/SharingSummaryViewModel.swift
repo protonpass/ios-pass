@@ -50,17 +50,17 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 self.lastTask?.cancel()
                 self.lastTask = nil
             }
-            self.sendingInvite = true
+            sendingInvite = true
             do {
                 if Task.isCancelled {
                     return
                 }
-                _ = try await self.sendShareInvite(with: infos)
+                _ = try await sendShareInvite(with: infos)
                 if let vault = self.infos?.vault {
-                    self.router.present(for: .manageShareVault(vault, dismissBeforeShowing: true))
+                    router.present(for: .manageShareVault(vault, dismissBeforeShowing: true))
                 }
             } catch {
-                self.router.display(element: .displayErrorBanner(error))
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

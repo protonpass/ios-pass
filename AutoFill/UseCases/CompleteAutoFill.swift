@@ -94,19 +94,18 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                     } else {
                         try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
                     }
-                    self.logger
-                        .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugInformation)")
-                    try await self.complete(itemContent: itemContent,
-                                            itemRepository: itemRepository,
-                                            upgradeChecker: upgradeChecker,
-                                            serviceIdentifiers: serviceIdentifiers)
-                    await self.logManager.saveAllLogs()
+                    logger.info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugInformation)")
+                    try await complete(itemContent: itemContent,
+                                       itemRepository: itemRepository,
+                                       upgradeChecker: upgradeChecker,
+                                       serviceIdentifiers: serviceIdentifiers)
+                    await logManager.saveAllLogs()
                 } catch {
                     // Do nothing but only log the errors
-                    self.logger.error(error)
+                    logger.error(error)
                     // Repeat the "saveAllLogs" function instead of deferring
                     // because we can't "await" in defer block
-                    await self.logManager.saveAllLogs()
+                    await logManager.saveAllLogs()
                 }
             }
         }
@@ -121,7 +120,6 @@ private extension CompleteAutoFill {
         try await copyTotpTokenAndNotify(itemContent: itemContent,
                                          clipboardManager: clipboardManager,
                                          upgradeChecker: upgradeChecker)
-
         logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
         try await itemRepository.update(item: itemContent,
                                         lastUseTime: Date().timeIntervalSince1970)
