@@ -138,7 +138,7 @@ private extension ManageSharedVaultView {
 
     func userCell(for user: ShareUser) -> some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(user.email.initialsRemovingEmojis()),
+            SquircleThumbnail(data: .initials(user.email.initials()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
