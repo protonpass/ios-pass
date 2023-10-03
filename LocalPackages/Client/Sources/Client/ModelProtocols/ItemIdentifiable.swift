@@ -48,9 +48,9 @@ public extension ItemThumbnailable {
     func thumbnailData() -> ItemThumbnailData {
         switch type {
         case .login:
-            let initials = title.initialsRemovingEmojis()
+            let initials = title.initials()
             if let url {
-                return .favIcon(type: type, url: url, initials: title.initialsRemovingEmojis())
+                return .favIcon(type: type, url: url, initials: initials)
             } else {
                 return .initials(type: type, initials: initials)
             }
