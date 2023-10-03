@@ -97,6 +97,11 @@ class BaseItemDetailViewModel: ObservableObject {
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
     }
 
+    func share() {
+        guard let vault else { return }
+        router.present(for: .shareVaultFromItemDetail(vault))
+    }
+
     func refresh() {
         Task { @MainActor [weak self] in
             guard let self else { return }
