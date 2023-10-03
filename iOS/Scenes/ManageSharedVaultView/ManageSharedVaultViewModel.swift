@@ -25,6 +25,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 import ProtonCoreNetworking
 
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
@@ -182,6 +183,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             do {
                 try await transferVaultOwnership(newOwnerID: userSharedId, shareId: self.vault.shareId)
                 fetchShareInformation()
+                router.display(element: .successMessage(#localized("Vault has been transferred"), config: nil))
                 syncEventLoop.forceSync()
             } catch {
                 display(error: error)
