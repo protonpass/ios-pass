@@ -13693,6 +13693,9 @@
         }
       }
     },
+    "Create a new vault to share" : {
+
+    },
     "Create a note" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -41419,6 +41422,9 @@
         }
       }
     },
+    "Share this vault" : {
+
+    },
     "Share Vault" : {
       "comment" : "Vault sharing: Summary page before making the share request",
       "extractionState" : "manual",
@@ -50251,6 +50257,9 @@
           }
         }
       }
+    },
+    "Use vaults to share this item with another person" : {
+
     },
     "User" : {
       "localizations" : {
