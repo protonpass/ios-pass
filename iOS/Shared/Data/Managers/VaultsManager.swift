@@ -382,7 +382,9 @@ extension VaultsManager {
     func getSelectedShareId() -> String? {
         switch vaultSelection {
         case .all, .trash:
-            getPrimaryVault()?.shareId
+            // TODO: return oldest or latest used vault
+//            getPrimaryVault()?.shareId
+            nil
         case let .precise(vault):
             vault.shareId
         }

@@ -45,9 +45,9 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         Task { [weak self] in
             guard let self else { return }
             do {
-                logger.trace("Refreshing features fags for user \(repository.userId)")
+                logger.trace("Refreshing features fags for user")
                 try await repository.refreshFlags()
-                logger.trace("Finished updating local flags for user \(repository.userId).")
+                logger.trace("Finished updating local flags for user.")
             } catch {
                 logger.error(error)
             }

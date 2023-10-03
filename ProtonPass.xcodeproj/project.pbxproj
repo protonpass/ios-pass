@@ -1702,7 +1702,6 @@
 				355C138829DB71D800264CD0 /* HomepageTabbarView.swift */,
 				35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */,
 				357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */,
-				3569B29A29B76BF60070830B /* VaultsManager.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
 				356650D72AAF606500BFF4F3 /* Full Sync Progress */,
 				3565622529BA760800C43F72 /* Item Detail */,
@@ -1899,6 +1898,7 @@
 		5B503FE02A4D6D0700E6681C /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				5BE733ED2ACB1D890016AFEA /* Managers */,
 				5B1453A42A69660E0048B022 /* Sharing */,
 				5BB2B6E82A444E34005E831C /* Network */,
 				5B503FD72A4C82BF00E6681C /* Repositories */,
@@ -2062,6 +2062,14 @@
 				5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */,
 			);
 			path = "Bug Report";
+			sourceTree = "<group>";
+		};
+		5BE733ED2ACB1D890016AFEA /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				3569B29A29B76BF60070830B /* VaultsManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */ = {
