@@ -54,7 +54,9 @@ private extension CreditCardDetailView {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: 0) {
-                    ItemDetailTitleView(itemContent: viewModel.itemContent, vault: viewModel.vault)
+                    ItemDetailTitleView(itemContent: viewModel.itemContent,
+                                        vault: viewModel.vault,
+                                        shouldShowVault: viewModel.shouldShowVault)
                         .padding(.bottom, 40)
 
                     detailSection

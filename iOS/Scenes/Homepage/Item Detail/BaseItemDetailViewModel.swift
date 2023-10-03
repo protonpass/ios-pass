@@ -50,9 +50,11 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
-    let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
+    let vault: Vault?
+    let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -62,13 +64,16 @@ class BaseItemDetailViewModel: ObservableObject {
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?) {
+         upgradeChecker: UpgradeCheckerProtocol) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
-        self.vault = vault
+
+        let allVaults = vaultsManager.getAllVaults()
+        vault = allVaults.first { $0.shareId == itemContent.shareId }
+        shouldShowVault = allVaults.count > 1
+
         bindValues()
         checkIfFreeUser()
     }
@@ -117,9 +122,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToAnotherVault() {
-        guard let vault else {
-            return
-        }
+        guard let vault else { return }
         router.present(for: .moveItemsBetweenVaults(currentVault: vault, singleItemToMove: itemContent))
     }
 
