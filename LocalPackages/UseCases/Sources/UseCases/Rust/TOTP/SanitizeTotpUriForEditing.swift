@@ -1,5 +1,5 @@
 //
-// SanitizeTotpUriForEditingTests.swift
+// SanitizeTotpUriForEditing.swift
 // Proton Pass - Created on 15/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,11 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import UseCases
-import XCTest
+@preconcurrency import PassRustCore
 
-final class SanitizeTotpUriForEditingTests: XCTestCase {
-    func testFunction() {
-        XCTAssertTrue(true)
+public protocol SanitizeTotpUriForEditingUseCase: Sendable {
+    func execute(_ uri: String) -> String
+}
+
+public extension SanitizeTotpUriForEditingUseCase {
+    func callAsFunction(_ uri: String) -> String {
+        execute(uri)
+    }
+}
+
+public final class SanitizeTotpUriForEditing: SanitizeTotpUriForEditingUseCase {
+    public init() {}
+
+    public func execute(_ uri: String) -> String {
+        TotpUriSanitizer().uriForEditing(originalUri: uri)
     }
 }

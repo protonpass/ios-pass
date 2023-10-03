@@ -31,7 +31,6 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 }
 
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
-    @Published var showingAliasAlert = false
     @Published private(set) var isAllowedToShare = false
     @Published private(set) var loading = false
     @Published private(set) var state = VaultManagerState.loading
@@ -41,7 +40,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let getFeatureFlagStatus = resolve(\UseCasesContainer.getFeatureFlagStatus)
-    private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -116,12 +114,7 @@ extension EditableVaultListViewModel {
 
     func share(vault: Vault) {
         setShareInviteVault(with: vault)
-        numberOfAliasForSharedVault = getVaultItemCount(for: vault, and: .alias)
-        if numberOfAliasForSharedVault > 0 {
-            showingAliasAlert = true
-        } else {
-            router.present(for: .sharingFlow)
-        }
+        router.present(for: .sharingFlow)
     }
 
     func leaveVault(vault: Vault) {

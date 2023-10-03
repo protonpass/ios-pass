@@ -24,6 +24,7 @@ public struct UserShareInfos: Codable, Hashable {
     public let shareID: String
     public let userName: String
     public let userEmail: String
+    public let owner: Bool
     public let targetType: Int
     public let targetID: String
     public let permission: Int

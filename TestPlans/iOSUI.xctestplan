@@ -27,7 +27,8 @@
   "testTargets" : [
     {
       "skippedTests" : [
-        "SettingsTests\/testTelemetrySettings()"
+        "SettingsTests\/testTelemetrySettings()",
+        "SubscriptionTests"
       ],
       "target" : {
         "containerPath" : "container:ProtonPass.xcodeproj",

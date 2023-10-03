@@ -123,16 +123,6 @@ final class AppCoordinator {
         }
     }
 
-    func showLoadingHud() {
-        guard let view = window.rootViewController?.view else { return }
-        MBProgressHUD.showAdded(to: view, animated: true)
-    }
-
-    func hideLoadingHud() {
-        guard let view = window.rootViewController?.view else { return }
-        MBProgressHUD.hide(for: view, animated: true)
-    }
-
     private func showWelcomeScene(reason: LogOutReason) {
         let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
                                                     preferences: preferences)

@@ -124,8 +124,6 @@ private extension UserEmailView {
     }
 }
 
-struct UserEmailView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserEmailView()
-    }
+#Preview("UserEmailView Preview") {
+    UserEmailView()
 }
