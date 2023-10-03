@@ -26,6 +26,7 @@ import SwiftUI
 struct ItemDetailTitleView: View {
     let itemContent: ItemContent
     let vault: Vault?
+    let shouldShowVault: Bool
 
     var body: some View {
         HStack(spacing: kItemDetailSectionPadding) {
@@ -40,10 +41,10 @@ struct ItemDetailTitleView: View {
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
 
                 if let vault {
-                    if !vault.shared {
-                        VaultLabel(vault: vault)
-                    } else {
+                    if vault.shared {
                         VaultButton(vault: vault)
+                    } else if shouldShowVault {
+                        VaultLabel(vault: vault)
                     }
                 }
             }
