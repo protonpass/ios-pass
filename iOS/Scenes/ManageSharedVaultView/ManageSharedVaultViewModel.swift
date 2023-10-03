@@ -25,6 +25,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 import ProtonCoreNetworking
 
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
@@ -86,18 +87,18 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 return
             }
             if displayFetchingLoader {
-                self.fetching = true
+                fetching = true
             }
-            defer { self.fetching = false }
+            defer { fetching = false }
             do {
-                self.itemsNumber = self.getVaultItemCount(for: vault)
+                itemsNumber = getVaultItemCount(for: vault)
                 if Task.isCancelled {
                     return
                 }
-                self.users = try await self.fetchVaultContent(for: vault)
+                users = try await fetchVaultContent(for: vault)
             } catch {
-                self.display(error: error)
-                self.logger.error(message: "Failed to fetch the current share informations", error: error)
+                display(error: error)
+                logger.error(message: "Failed to fetch the current share informations", error: error)
             }
         }
     }
@@ -117,15 +118,15 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             guard let self else {
                 return
             }
-            self.loading = true
-            defer { self.loading = false }
+            loading = true
+            defer { loading = false }
             do {
-                try await self.revokeInvitation(with: self.vault.shareId, and: inviteId)
-                self.fetchShareInformation()
-                self.syncEventLoop.forceSync()
+                try await revokeInvitation(with: vault.shareId, and: inviteId)
+                fetchShareInformation()
+                syncEventLoop.forceSync()
             } catch {
-                self.display(error: error)
-                self.logger.error(message: "Failed to revoke the invite \(inviteId)", error: error)
+                display(error: error)
+                logger.error(message: "Failed to revoke the invite \(inviteId)", error: error)
             }
         }
     }
@@ -138,15 +139,15 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             guard let self else {
                 return
             }
-            self.loading = true
-            defer { self.loading = false }
+            loading = true
+            defer { loading = false }
             do {
-                try await self.revokeUserShareAccess(with: userShareId, and: self.vault.shareId)
-                self.fetchShareInformation()
-                self.syncEventLoop.forceSync()
+                try await revokeUserShareAccess(with: userShareId, and: vault.shareId)
+                fetchShareInformation()
+                syncEventLoop.forceSync()
             } catch {
-                self.display(error: error)
-                self.logger.error(message: "Failed to revoke the share access \(userShareId)", error: error)
+                display(error: error)
+                logger.error(message: "Failed to revoke the share access \(userShareId)", error: error)
             }
         }
     }
@@ -160,11 +161,11 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 return
             }
             do {
-                try await self.sendInviteReminder(with: self.vault.shareId, and: inviteId)
-                self.fetchShareInformation()
+                try await sendInviteReminder(with: vault.shareId, and: inviteId)
+                fetchShareInformation()
             } catch {
-                self.display(error: error)
-                self.logger.error(message: "Failed send invite reminder \(inviteId)", error: error)
+                display(error: error)
+                logger.error(message: "Failed send invite reminder \(inviteId)", error: error)
             }
         }
     }
@@ -177,13 +178,16 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             guard let self else {
                 return
             }
-            self.loading = true
+            defer { loading = false }
+            loading = true
             do {
-                try await self.transferVaultOwnership(newOwnerID: userSharedId, shareId: self.vault.shareId)
-                self.syncEventLoop.forceSync()
+                try await transferVaultOwnership(newOwnerID: userSharedId, shareId: self.vault.shareId)
+                fetchShareInformation()
+                router.display(element: .successMessage(#localized("Vault has been transferred"), config: nil))
+                syncEventLoop.forceSync()
             } catch {
-                self.display(error: error)
-                self.logger
+                display(error: error)
+                logger
                     .error(message: "Failed to transfer ownership of vault \(self.vault.shareId) to \(userSharedId)",
                            error: error)
             }
@@ -243,16 +247,16 @@ private extension ManageSharedVaultViewModel {
             guard let self else {
                 return
             }
-            self.loading = true
-            defer { self.loading = false }
+            loading = true
+            defer { loading = false }
             do {
-                try await self.updateUserShareRole(userShareId: userSharedId,
-                                                   shareId: vault.shareId,
-                                                   shareRole: role)
-                self.fetchShareInformation()
+                try await updateUserShareRole(userShareId: userSharedId,
+                                              shareId: vault.shareId,
+                                              shareRole: role)
+                fetchShareInformation()
             } catch {
-                self.display(error: error)
-                self.logger.error(message: "Failed update user role with \(role)", error: error)
+                display(error: error)
+                logger.error(message: "Failed update user role with \(role)", error: error)
             }
         }
     }

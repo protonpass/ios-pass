@@ -270,10 +270,6 @@ struct ProfileTabView: View {
 
     private var aboutSection: some View {
         VStack(spacing: 0) {
-            /*
-             TextOptionRow(title: "Acknowledgments", action: viewModel.showAcknowledgments)
-             PassSectionDivider()
-             */
             TextOptionRow(title: #localized("Privacy policy"), action: viewModel.showPrivacyPolicy)
             PassSectionDivider()
             TextOptionRow(title: #localized("Terms of service"), action: viewModel.showTermsOfService)
