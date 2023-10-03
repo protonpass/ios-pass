@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "2405B7C6-8629-444E-9BD2-3B0301AF3AD4",
+      "id" : "98BC3E00-2A2C-4D55-9783-A8B9B23920AA",
       "name" : "Configuration 1",
       "options" : {
 
@@ -9,26 +9,24 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false,
     "environmentVariableEntries" : [
       {
         "key" : "DYNAMIC_DOMAIN",
         "value" : "${DYNAMIC_DOMAIN}"
       }
     ],
-    "language" : "en",
-    "region" : "US",
     "targetForVariableExpansion" : {
       "containerPath" : "container:ProtonPass.xcodeproj",
       "identifier" : "35E5063A286F819F00A3F6EA",
       "name" : "iOS"
-    }
+    },
+    "testTimeoutsEnabled" : true
   },
   "testTargets" : [
     {
-      "skippedTests" : [
-        "SettingsTests\/testTelemetrySettings()",
-        "SubscriptionTests"
+      "selectedTests" : [
+        "SubscriptionTests\/testUpgradeAccountFromFreeToPlus()",
+        "SubscriptionTests\/testUpgradeAccountFromFreeToUnlimited()"
       ],
       "target" : {
         "containerPath" : "container:ProtonPass.xcodeproj",
