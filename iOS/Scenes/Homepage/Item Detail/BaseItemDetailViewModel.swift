@@ -50,7 +50,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
-    let vault: Vault?
+    let vault: VaultListUiModel?
     let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -70,8 +70,10 @@ class BaseItemDetailViewModel: ObservableObject {
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
 
-        let allVaults = vaultsManager.getAllVaults()
-        vault = allVaults.first { $0.shareId == itemContent.shareId }
+        let allVaults = vaultsManager.getAllVaultContents()
+        vault = allVaults
+            .first { $0.vault.shareId == itemContent.shareId }
+            .map { VaultListUiModel(vaultContent: $0) }
         shouldShowVault = allVaults.count > 1
 
         bindValues()
@@ -128,7 +130,8 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func moveToAnotherVault() {
         guard let vault else { return }
-        router.present(for: .moveItemsBetweenVaults(currentVault: vault, singleItemToMove: itemContent))
+        router.present(for: .moveItemsBetweenVaults(currentVault: vault.vault,
+                                                    singleItemToMove: itemContent))
     }
 
     func copyNoteContent() {
