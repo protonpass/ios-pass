@@ -66,7 +66,7 @@ struct NoteDetailView: View {
                         .foregroundColor(PassColor.textNorm)
 
                     HStack {
-                        if let vault = viewModel.vault {
+                        if let vault = viewModel.vault?.vault {
                             if !vault.shared {
                                 VaultLabel(vault: vault)
                                     .padding(.top, 4)

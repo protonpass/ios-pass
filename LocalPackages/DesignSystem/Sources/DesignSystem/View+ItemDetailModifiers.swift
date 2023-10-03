@@ -26,11 +26,11 @@ public extension View {
             .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1))
     }
 
-    func roundedEditableSection() -> some View {
+    func roundedEditableSection(borderColor: UIColor = PassColor.inputBorderNorm) -> some View {
         background(Color(uiColor: PassColor.inputBackgroundNorm))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(RoundedRectangle(cornerRadius: 16)
-                .stroke(Color(uiColor: PassColor.inputBorderNorm), lineWidth: 1))
+                .stroke(borderColor.toColor, lineWidth: 1))
     }
 }
 

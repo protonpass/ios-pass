@@ -225,6 +225,7 @@
 		356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830B29C3359A0084488A /* EmptySearchView.swift */; };
 		356B830E29C339110084488A /* SortTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830D29C339110084488A /* SortTypeButton.swift */; };
 		356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830F29C343F70084488A /* NoSearchResultsViews.swift */; };
+		356BBB712ACC539E005A10DB /* ShareOrCreateNewVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BBB702ACC539E005A10DB /* ShareOrCreateNewVaultView.swift */; };
 		356BC35029D6C57100F03497 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC34F29D6C57100F03497 /* SettingsView.swift */; };
 		356BC35229D6C5B400F03497 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35129D6C5B400F03497 /* SettingsViewModel.swift */; };
 		356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */; };
@@ -745,6 +746,7 @@
 		356B830B29C3359A0084488A /* EmptySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySearchView.swift; sourceTree = "<group>"; };
 		356B830D29C339110084488A /* SortTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTypeButton.swift; sourceTree = "<group>"; };
 		356B830F29C343F70084488A /* NoSearchResultsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSearchResultsViews.swift; sourceTree = "<group>"; };
+		356BBB702ACC539E005A10DB /* ShareOrCreateNewVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareOrCreateNewVaultView.swift; sourceTree = "<group>"; };
 		356BC34F29D6C57100F03497 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		356BC35129D6C5B400F03497 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDefaultBrowserView.swift; sourceTree = "<group>"; };
@@ -1732,6 +1734,7 @@
 				5B1453AE2A69814C0048B022 /* SummaryView */,
 				5B1453962A69382E0048B022 /* UserPermissionView */,
 				5B1453912A68321B0048B022 /* UserEmailView */,
+				356BBB702ACC539E005A10DB /* ShareOrCreateNewVaultView.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -2864,6 +2867,7 @@
 				353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */,
 				356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */,
 				356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */,
+				356BBB712ACC539E005A10DB /* ShareOrCreateNewVaultView.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
 				35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */,
 				3567DF4D2A49C7950025BD88 /* UpsellableDetailText.swift in Sources */,

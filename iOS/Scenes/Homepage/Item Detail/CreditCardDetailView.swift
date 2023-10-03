@@ -55,7 +55,7 @@ private extension CreditCardDetailView {
             ScrollView {
                 VStack(spacing: 0) {
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
-                                        vault: viewModel.vault,
+                                        vault: viewModel.vault?.vault,
                                         shouldShowVault: viewModel.shouldShowVault)
                         .padding(.bottom, 40)
 
@@ -63,7 +63,7 @@ private extension CreditCardDetailView {
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
-                                          vault: viewModel.vault)
+                                          vault: viewModel.vault?.vault)
                             .padding(.top, 8)
                     }
 
