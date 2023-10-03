@@ -28,7 +28,6 @@ final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var shouldUpgrade = false
 
-    private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     let suffixSelection: SuffixSelection

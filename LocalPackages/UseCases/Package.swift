@@ -20,10 +20,10 @@ let package = Package(name: "UseCases",
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
-                          .package(name: "Client", path: "../Client"),
-                          .package(name: "Core", path: "../Core"),
                           .package(name: "Entities", path: "../Entities"),
-                          .package(name: "PassRustCore", path: "../PassRustCore")
+                          .package(name: "Core", path: "../Core"),
+                          .package(name: "Client", path: "../Client"),
+                          .package(url: "https://github.com/protonpass/ios-pass-rust-core", exact: "0.1.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -32,9 +32,10 @@ let package = Package(name: "UseCases",
                           // package depends on.
                           .target(name: "UseCases",
                                   dependencies: [
-                                      "PassRustCore",
-                                      "Client",
-                                      "Core"
+                                      .product(name: "Entities", package: "Entities"),
+                                      .product(name: "Client", package: "Client"),
+                                      .product(name: "Core", package: "Core"),
+                                      .product(name: "PassRustCore", package: "ios-pass-rust-core")
                                   ],
                                   resources: []),
                           .testTarget(name: "UseCasesTests",

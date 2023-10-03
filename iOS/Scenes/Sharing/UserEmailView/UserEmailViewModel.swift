@@ -23,6 +23,7 @@
 import Combine
 import Factory
 import Foundation
+import Macro
 import ProtonCoreHumanVerification
 
 @MainActor
@@ -64,7 +65,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
-                self.error = "You cannot share \(vaultName) vault with this email"
+                self.error = #localized("You can not share « %@ » vault with this email", vaultName)
             }
         }
     }

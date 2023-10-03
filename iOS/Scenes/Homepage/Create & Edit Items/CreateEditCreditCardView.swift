@@ -27,7 +27,6 @@ struct CreateEditCreditCardView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditCreditCardViewModel
     @FocusState private var focusedField: Field?
-    @State private var selectedNumber = 0
     @State private var isShowingDiscardAlert = false
 
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
