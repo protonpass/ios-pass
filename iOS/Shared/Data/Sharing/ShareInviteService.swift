@@ -21,14 +21,14 @@
 import Client
 import Entities
 
-public protocol ShareInviteServiceProtocol {
-    var currentSelectedVault: Vault? { get }
+protocol ShareInviteServiceProtocol {
+    var currentSelectedVault: SharingVault? { get }
     var currentSelectedVaultItems: Int? { get }
     var currentDestinationUserEmail: String? { get }
     var currentUserRole: ShareRole? { get }
     var receiverPublicKeys: [PublicKey]? { get }
 
-    func setCurrentSelectedVault(with vault: Vault)
+    func setCurrentSelectedVault(with vault: SharingVault)
     func setCurrentSelectedVaultItem(with itemNum: Int)
     func setCurrentDestinationUserEmail(with email: String)
     func setCurrentUserRole(with role: ShareRole)
@@ -37,13 +37,13 @@ public protocol ShareInviteServiceProtocol {
 }
 
 final class ShareInviteService: ShareInviteServiceProtocol {
-    private(set) var currentSelectedVault: Vault?
+    private(set) var currentSelectedVault: SharingVault?
     private(set) var currentSelectedVaultItems: Int?
     private(set) var currentDestinationUserEmail: String?
     private(set) var currentUserRole: ShareRole?
     private(set) var receiverPublicKeys: [PublicKey]?
 
-    public func setCurrentSelectedVault(with vault: Vault) {
+    public func setCurrentSelectedVault(with vault: SharingVault) {
         currentSelectedVault = vault
     }
 

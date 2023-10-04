@@ -26,4 +26,6 @@ public enum SharingError: LocalizedError {
     case noPublicKeyAssociatedWithEmail
     case invalidKeyOrAddress
     case cannotDecode
+    case failedToCreateNewVault(Error?)
+    case failedToInvite
 }
