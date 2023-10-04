@@ -80,6 +80,10 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         vault.isOwner && isCurrentUser(with: user)
     }
 
+    func shareWithMorePeople() {
+        router.present(for: .sharingFlow)
+    }
+
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
         fetchingTask?.cancel()
         fetchingTask = Task { @MainActor [weak self] in
