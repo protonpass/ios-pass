@@ -123,7 +123,7 @@ extension EditableVaultListViewModel {
     }
 
     func share(vault: Vault) {
-        setShareInviteVault(with: vault)
+        setShareInviteVault(with: .created(vault))
         router.present(for: .sharingFlow)
     }
 

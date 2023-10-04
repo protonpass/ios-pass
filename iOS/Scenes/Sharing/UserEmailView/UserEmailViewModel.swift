@@ -73,7 +73,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
 
 private extension UserEmailViewModel {
     func setUp() {
-        vaultName = getShareInviteInfos().vault?.name ?? ""
+        vaultName = getShareInviteInfos().vaultName
         assert(getShareInviteInfos().vault != nil, "Vault is not set")
 
         $email

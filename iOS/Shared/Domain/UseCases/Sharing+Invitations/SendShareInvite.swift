@@ -27,39 +27,44 @@ import Entities
 import ProtonCoreCrypto
 import ProtonCoreLogin
 
+/// Make an invitation and return the shared `Vault`
 protocol SendVaultShareInviteUseCase: Sendable {
-    func execute(with infos: SharingInfos) async throws -> Bool
+    func execute(with infos: SharingInfos) async throws -> Vault
 }
 
 extension SendVaultShareInviteUseCase {
-    func callAsFunction(with infos: SharingInfos) async throws -> Bool {
+    func callAsFunction(with infos: SharingInfos) async throws -> Vault {
         try await execute(with: infos)
     }
 }
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
+    private let createVault: CreateVaultUseCase
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
     private let syncEventLoop: SyncEventLoopProtocol
 
-    init(passKeyManager: PassKeyManagerProtocol,
+    init(createVault: CreateVaultUseCase,
+         passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
          syncEventLoop: SyncEventLoopProtocol) {
+        self.createVault = createVault
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userData = userData
         self.syncEventLoop = syncEventLoop
     }
 
-    func execute(with infos: SharingInfos) async throws -> Bool {
-        guard let vault = infos.vault,
-              let email = infos.email,
+    func execute(with infos: SharingInfos) async throws -> Vault {
+        guard let email = infos.email,
               let role = infos.role,
               let publicReceiverKeys = infos.receiverPublicKeys else {
             throw SharingError.incompleteInformation
         }
+
+        let vault = try await createVaultIfNeccessary(infos: infos)
 
         let sharedKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
 
@@ -72,14 +77,18 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
                                          userData: userData,
                                          vaultKey: sharedKey)
 
-        let result = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
-                                                                keys: [signedKeys],
-                                                                email: email,
-                                                                targetType: .vault,
-                                                                shareRole: role)
-        syncEventLoop.forceSync()
+        let invited = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
+                                                                 keys: [signedKeys],
+                                                                 email: email,
+                                                                 targetType: .vault,
+                                                                 shareRole: role)
 
-        return result
+        if invited {
+            syncEventLoop.forceSync()
+            return vault
+        }
+
+        throw SharingError.failedToInvite
     }
 }
 
@@ -106,5 +115,26 @@ private extension SendVaultShareInvite {
             .unArmor().value.base64EncodedString()
 
         return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
+    }
+
+    func createVaultIfNeccessary(infos: SharingInfos) async throws -> Vault {
+        guard let sharedVault = infos.vault else {
+            throw SharingError.incompleteInformation
+        }
+
+        switch sharedVault {
+        case let .created(vault):
+            return vault
+        case let .toBeCreated(vaultProtobuf):
+            do {
+                if let vault = try await createVault(with: vaultProtobuf) {
+                    return vault
+                } else {
+                    throw SharingError.failedToCreateNewVault(nil)
+                }
+            } catch {
+                throw SharingError.failedToCreateNewVault(error)
+            }
+        }
     }
 }
