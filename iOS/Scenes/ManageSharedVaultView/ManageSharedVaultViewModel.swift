@@ -211,7 +211,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
 
 private extension ManageSharedVaultViewModel {
     func setUp() {
-        setShareInviteVault(with: vault)
+        setShareInviteVault(with: .created(vault))
         $userRole
             .sink { [weak self] role in
                 guard let self,
