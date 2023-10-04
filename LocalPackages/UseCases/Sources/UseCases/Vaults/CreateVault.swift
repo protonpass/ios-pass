@@ -24,12 +24,12 @@ import Client
 
 public protocol CreateVaultUseCase: Sendable {
     @discardableResult
-    func execute(with vault: VaultProtobuf) async throws -> Share
+    func execute(with vault: VaultProtobuf) async throws -> Vault?
 }
 
 public extension CreateVaultUseCase {
     @discardableResult
-    func callAsFunction(with vault: VaultProtobuf) async throws -> Share {
+    func callAsFunction(with vault: VaultProtobuf) async throws -> Vault? {
         try await execute(with: vault)
     }
 }
@@ -44,10 +44,10 @@ public final class CreateVault: CreateVaultUseCase {
         self.repository = repository
     }
 
-    public func execute(with vault: VaultProtobuf) async throws -> Share {
+    func execute(with vault: VaultProtobuf) async throws -> Vault? {
         let share = try await repository.createVault(vault)
         vaultsManager.refresh()
 
-        return share
+        return try await repository.getVaults().first { $0.shareId == share.shareID }
     }
 }

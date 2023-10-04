@@ -478,7 +478,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             dismissTopMostViewController { [weak self] in
                 guard let self else { return }
-                setShareInviteVault(with: vault.vault)
+                setShareInviteVault(with: .created(vault.vault))
                 router.present(for: .sharingFlow)
             }
         }

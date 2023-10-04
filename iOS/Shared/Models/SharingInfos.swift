@@ -21,10 +21,46 @@
 import Client
 import Entities
 
+enum SharingVault {
+    case created(Vault)
+    case toBeCreated(VaultProtobuf)
+}
+
 struct SharingInfos {
-    let vault: Vault?
+    let vault: SharingVault?
     let email: String?
     let role: ShareRole?
     let receiverPublicKeys: [PublicKey]?
     let itemsNum: Int?
+
+    var vaultName: String {
+        switch vault {
+        case let .created(vault):
+            vault.name
+        case let .toBeCreated(vault):
+            vault.name
+        default:
+            ""
+        }
+    }
+
+    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
+        switch vault {
+        case let .created(vault):
+            vault.displayPreferences
+        case let .toBeCreated(vault):
+            vault.display
+        default:
+            .init()
+        }
+    }
+
+    var shared: Bool {
+        switch vault {
+        case let .created(vault):
+            vault.isShared
+        default:
+            false
+        }
+    }
 }
