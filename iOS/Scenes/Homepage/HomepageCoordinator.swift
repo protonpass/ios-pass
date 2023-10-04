@@ -283,7 +283,7 @@ private extension HomepageCoordinator {
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault):
                     if vault.vault.shared {
-                        break
+                        presentManageShareVault(with: vault.vault, dismissPrevious: false)
                     } else {
                         presentShareOrCreateNewVaultView(for: vault)
                     }
