@@ -44,6 +44,7 @@ final class SendShareInviteTests: XCTestCase {
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
         sut = SendVaultShareInvite(createVault: CreateVaultUseCaseMock(),
+                                   shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
                                    shareInviteRepository: shareInviteRepository,
                                    userData: UserData.mock,
