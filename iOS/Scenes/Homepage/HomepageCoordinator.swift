@@ -928,11 +928,10 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
-        let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
-        let viewController = UIHostingController(rootView: view)
+    func settingsViewModelWantsToEditDefaultBrowser() {
+        let viewController = UIHostingController(rootView: EditDefaultBrowserView())
 
-        let customHeight = Int(OptionRowHeight.compact.value) * supportedBrowsers.count + 140
+        let customHeight = Int(OptionRowHeight.compact.value) * Browser.allCases.count + 100
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 

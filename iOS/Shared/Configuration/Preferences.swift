@@ -72,7 +72,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     var theme: Theme = .dark
 
     @AppStorage(Key.browser.rawValue, store: kSharedUserDefaults)
-    var browser: Browser = .safari
+    var browser: Browser = .systemDefault
 
     @AppStorage(Key.telemetryThreshold.rawValue, store: kSharedUserDefaults)
     var telemetryThreshold: TimeInterval?
