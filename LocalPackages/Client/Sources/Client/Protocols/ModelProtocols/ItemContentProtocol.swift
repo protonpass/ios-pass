@@ -20,15 +20,8 @@
 
 import Core
 import CryptoKit
+import Entities
 import Foundation
-
-// RawValue is used for telemetry, we need to know the item type of the actions
-public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
-    case login = 0
-    case alias = 1
-    case note = 2
-    case creditCard = 3
-}
 
 extension ItemContentType: CustomDebugStringConvertible {
     public var debugDescription: String {
