@@ -40,17 +40,20 @@ extension SendVaultShareInviteUseCase {
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
     private let createVault: CreateVaultUseCase
+    private let shareInviteService: ShareInviteServiceProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
     private let syncEventLoop: SyncEventLoopProtocol
 
     init(createVault: CreateVaultUseCase,
+         shareInviteService: ShareInviteServiceProtocol,
          passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
          syncEventLoop: SyncEventLoopProtocol) {
         self.createVault = createVault
+        self.shareInviteService = shareInviteService
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userData = userData
@@ -85,6 +88,7 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
 
         if invited {
             syncEventLoop.forceSync()
+            shareInviteService.resetShareInviteInformations()
             return vault
         }
 
