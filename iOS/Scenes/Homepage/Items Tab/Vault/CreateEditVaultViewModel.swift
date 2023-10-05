@@ -52,6 +52,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     @Published var selectedIcon: VaultIcon
     @Published var title: String
     @Published private(set) var loading = false
+    @Published private(set) var finishSaving = false
 
     private let mode: VaultMode
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -60,6 +61,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
+    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -168,7 +170,8 @@ extension CreateEditVaultViewModel {
         case let .editCreatedVault(vault):
             editVault(vault)
         case .editToBeCreatedVault:
-            break
+            shareInviteService.setCurrentSelectedVault(with: .toBeCreated(generateVaultProtobuf()))
+            finishSaving = true
         }
     }
 
