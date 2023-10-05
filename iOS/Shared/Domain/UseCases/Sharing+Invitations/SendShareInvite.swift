@@ -130,10 +130,10 @@ private extension SendVaultShareInvite {
                 if let vault = try await createVault(with: vaultProtobuf) {
                     return vault
                 } else {
-                    throw SharingError.failedToCreateNewVault(nil)
+                    throw SharingError.failedToCreateNewVault
                 }
             } catch {
-                throw SharingError.failedToCreateNewVault(error)
+                throw SharingError.failedToCreateNewVault
             }
         }
     }
