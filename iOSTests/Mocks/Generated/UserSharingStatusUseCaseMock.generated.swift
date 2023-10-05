@@ -19,22 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 // swiftlint:disable all
 
-@testable import Proton_Pass
-import Client
-import Core
-import ProtonCoreLogin
-
-final class UserSharingStatusUseCaseMock: @unchecked Sendable, UserSharingStatusUseCase {
-    // MARK: - execute
-    var closureExecute: () -> () = {}
-    var invokedExecute = false
-    var invokedExecuteCount = 0
-    var stubbedExecuteResult: Bool!
-
-    func execute() async -> Bool {
-        invokedExecute = true
-        invokedExecuteCount += 1
-        closureExecute()
-        return stubbedExecuteResult
-    }
-}
+//@testable import Proton_Pass
+//import Client
+//import Core
+//import ProtonCoreLogin
+//
+//final class UserSharingStatusUseCaseMock: @unchecked Sendable, UserSharingStatusUseCase {
+//    // MARK: - execute
+//    var closureExecute: () -> () = {}
+//    var invokedExecute = false
+//    var invokedExecuteCount = 0
+//    var stubbedExecuteResult: Bool!
+//
+//    func execute() async -> Bool {
+//        invokedExecute = true
+//        invokedExecuteCount += 1
+//        closureExecute()
+//        return stubbedExecuteResult
+//    }
+//}
