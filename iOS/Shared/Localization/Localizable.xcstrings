@@ -15615,6 +15615,10 @@
         }
       }
     },
+    "Customize" : {
+      "comment" : "Customize a default value e.g customize default shared vault's information",
+      "extractionState" : "manual"
+    },
     "Dark" : {
       "extractionState" : "manual",
       "localizations" : {
