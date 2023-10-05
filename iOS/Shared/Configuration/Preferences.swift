@@ -128,7 +128,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
         pinCode = nil
         appLockTime = .twoMinutes
         theme = .dark
-        browser = .safari
+        browser = .systemDefault
         clipboardExpiration = .oneMinute
         shareClipboard = false
         telemetryThreshold = nil
