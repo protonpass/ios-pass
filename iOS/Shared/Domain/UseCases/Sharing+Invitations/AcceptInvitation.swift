@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 import Entities
 import ProtonCoreCrypto
 
@@ -83,10 +84,13 @@ private extension AcceptInvitation {
 
         let armoredEncryptedKeyData = try CryptoUtils.armorMessage(decodeKey)
         let armorMessage = ArmoredMessage(value: armoredEncryptedKeyData)
+        let context = VerificationContext(value: Constants.existingUserSharingSignatureContext,
+                                          required: .always)
 
         let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: addressKeys,
                                                                   value: armorMessage,
-                                                                  verificationKeys: armoredInviterPublicKeys)
+                                                                  verificationKeys: armoredInviterPublicKeys,
+                                                                  verificationContext: context)
 
         guard let userKey = userData.user.keys.first else {
             throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
