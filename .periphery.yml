@@ -8,7 +8,7 @@ schemes:
 - iOS
 targets:
 - iOS
-- iOSTests
+#- iOSTests
 - AutoFill
 verbose: false
 skip_build: false
