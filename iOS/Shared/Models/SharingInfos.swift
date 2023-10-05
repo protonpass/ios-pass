@@ -27,8 +27,8 @@ enum SharingVault {
     case toBeCreated(VaultProtobuf)
 }
 
-private extension SharingVault {
-    var vaultName: String {
+extension SharingVault {
+    var name: String {
         switch self {
         case let .created(vault):
             vault.name
@@ -74,7 +74,7 @@ struct SharingInfos {
     let itemsNum: Int?
 
     var vaultName: String? {
-        vault?.vaultName
+        vault?.name
     }
 
     var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
