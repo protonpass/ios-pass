@@ -28,10 +28,10 @@ final class SetShareInviteVaultUseCaseMock: @unchecked Sendable, SetShareInviteV
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var invokedExecuteParameters: (vault: Vault, Void)?
-    var invokedExecuteParametersList = [(vault: Vault, Void)]()
+    var invokedExecuteParameters: (vault: SharingVault, Void)?
+    var invokedExecuteParametersList = [(vault: SharingVault, Void)]()
 
-    func execute(with vault: Vault) {
+    func execute(with vault: SharingVault) {
         invokedExecute = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (vault, ())
