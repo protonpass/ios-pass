@@ -21,25 +21,26 @@
 //
 
 import Client
+import Entities
 
-protocol GetVaultItemCountUseCase: Sendable {
+public protocol GetVaultItemCountUseCase: Sendable {
     func execute(for vault: Vault, and type: ItemContentType?) -> Int
 }
 
-extension GetVaultItemCountUseCase {
+public extension GetVaultItemCountUseCase {
     func callAsFunction(for vault: Vault, and type: ItemContentType? = nil) -> Int {
         execute(for: vault, and: type)
     }
 }
 
-final class GetVaultItemCount: @unchecked Sendable, GetVaultItemCountUseCase {
-    private let vaultsManager: VaultsManager
+public final class GetVaultItemCount: @unchecked Sendable, GetVaultItemCountUseCase {
+    private let vaultsManager: VaultsManagerProtocol
 
-    init(vaultsManager: VaultsManager) {
+    public init(vaultsManager: VaultsManagerProtocol) {
         self.vaultsManager = vaultsManager
     }
 
-    func execute(for vault: Vault, and type: ItemContentType?) -> Int {
+    public func execute(for vault: Vault, and type: ItemContentType?) -> Int {
         if let type {
             return vaultsManager.getItems(for: vault).filter { $0.type == type }.count
         }

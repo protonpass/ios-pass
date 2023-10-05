@@ -1,6 +1,6 @@
 //
-// GetFeatureFlagEndpoint.swift
-// Proton Pass - Created on 31/05/2023.
+// ItemContentType.swift
+// Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,7 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-    case passSharingV1 = "PassSharingV1"
-    case passRemovePrimaryVault = "PassRemovePrimaryVault"
+import Foundation
+
+public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
+    case login = 0
+    case alias = 1
+    case note = 2
+    case creditCard = 3
 }

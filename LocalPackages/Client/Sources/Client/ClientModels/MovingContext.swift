@@ -1,6 +1,6 @@
 //
-// VaultListUiModel.swift
-// Proton Pass - Created on 29/03/2023.
+// MovingContext.swift
+// Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
+import Foundation
 
-struct VaultListUiModel: Hashable {
-    let vault: Vault
-    let itemCount: Int
-}
-
-extension VaultListUiModel: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.vault.shareId == rhs.vault.shareId
-    }
-}
-
-extension VaultListUiModel {
-    init(vaultContent: VaultContentUiModel) {
-        vault = vaultContent.vault
-        itemCount = vaultContent.items.count
-    }
+public enum MovingContext {
+    case item(ItemIdentifiable, newShareId: String)
+    case vault(String, newShareId: String)
 }

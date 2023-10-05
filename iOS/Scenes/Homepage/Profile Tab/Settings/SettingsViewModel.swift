@@ -38,7 +38,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     let isShownAsSheet: Bool
     private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
-    private let getFeatureFlagStatus = resolve(\UseCasesContainer.getFeatureFlagStatus)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)

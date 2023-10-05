@@ -105,6 +105,7 @@ extension SharedUseCasesContainer {
                                   credentialManager: self.credentialManager,
                                   preferences: self.preferences,
                                   mapLoginItem: self.mapLoginItem(),
+                                  getfeatureFlagStatus: self.getFeatureFlagStatus(),
                                   logManager: self.logManager) }
     }
 
@@ -118,6 +119,31 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var processVaultSyncEvent: Factory<ProcessVaultSyncEventUseCase> {
         self { ProcessVaultSyncEvent() }
+    }
+
+    var getMainVault: Factory<GetMainVaultUseCase> {
+        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                            featuresFlags: self.getFeatureFlagStatus()) }
+    }
+}
+
+// MARK: - Shares
+
+extension SharedUseCasesContainer {
+    var getCurrentSelectedShareId: Factory<GetCurrentSelectedShareIdUseCase> {
+        self { GetCurrentSelectedShareId(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                                         getMainVault: self.getMainVault()) }
+    }
+}
+
+// MARK: - Feature Flags
+
+extension SharedUseCasesContainer {
+    var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
+        self {
+            GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 logManager: SharedToolingContainer.shared.logManager())
+        }
     }
 }
 

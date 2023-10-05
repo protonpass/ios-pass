@@ -28,6 +28,7 @@ struct VaultSelectorView: View {
     var body: some View {
         NavigationView {
             VStack {
+                // TODO: should maybe remove this as now you can have 2 vaults as a free
                 if viewModel.isFreeUser {
                     LimitedVaultOperationsBanner(onUpgrade: viewModel.upgrade)
                         .padding([.horizontal, .top])
@@ -70,6 +71,6 @@ struct VaultSelectorView: View {
                 .padding(.horizontal)
         })
         .buttonStyle(.plain)
-        .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)
+        .opacityReduced(viewModel.shouldReduceOpacity(for: vault.vault))
     }
 }
