@@ -20,18 +20,18 @@
 
 import Core
 import DesignSystem
+import Factory
 import SwiftUI
 
 struct EditDefaultBrowserView: View {
     @Environment(\.dismiss) private var dismiss
-    let supportedBrowsers: [Browser]
-    let preferences: Preferences
+    private let preferences = resolve(\SharedToolingContainer.preferences)
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 0) {
-                    ForEach(supportedBrowsers, id: \.rawValue) { browser in
+                    ForEach(Browser.allCases, id: \.rawValue) { browser in
                         SelectableOptionRow(action: { preferences.browser = browser; dismiss() },
                                             height: .compact,
                                             content: {
@@ -42,10 +42,6 @@ struct EditDefaultBrowserView: View {
 
                         PassDivider()
                     }
-
-                    Text("This preference will fallback to Safari if the browser of choice is uninstalled")
-                        .sectionTitleText()
-                        .padding(.vertical)
                 }
                 .padding(.horizontal)
             }
