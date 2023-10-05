@@ -137,8 +137,10 @@ private extension UserEmailView {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         action: dismiss.callAsFunction)
+                         backgroundColor: PassColor.interactionNormMinor1) {
+                viewModel.resetShareInviteInformation()
+                dismiss()
+            }
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
