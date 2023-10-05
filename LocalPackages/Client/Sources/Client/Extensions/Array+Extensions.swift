@@ -19,20 +19,21 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public extension [Vault] {
-    var twoOldestVaults: (oldest: Vault?, secondOldest: Vault?) {
+    var twoOldestVaults: (oldestOwned: Vault?, secondOldest: Vault?) {
         if self.isEmpty {
-            return (oldest: nil, secondOldest: nil)
+            return (oldestOwned: nil, secondOldest: nil)
         }
-        var oldest: Vault?
+        var oldestOwned: Vault?
         var secondOldest: Vault?
         for vault in self {
-            if oldest == nil {
-                oldest = vault
+            if oldestOwned == nil, vault.isOwner {
+                oldestOwned = vault
             } else {
-                if var oldest,
-                   oldest.createTime > vault.createTime {
-                    secondOldest = oldest
-                    oldest = vault
+                if var oldestOwned,
+                   vault.isOwner,
+                   oldestOwned.createTime > vault.createTime {
+                    secondOldest = oldestOwned
+                    oldestOwned = vault
                 } else {
                     if secondOldest == nil {
                         secondOldest = vault
@@ -43,6 +44,6 @@ public extension [Vault] {
                 }
             }
         }
-        return (oldest: oldest, secondOldest: secondOldest)
+        return (oldestOwned: oldestOwned, secondOldest: secondOldest)
     }
 }
