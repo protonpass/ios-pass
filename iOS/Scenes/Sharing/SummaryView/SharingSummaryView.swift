@@ -92,7 +92,7 @@ private extension SharingSummaryView {
                                           backgroundColor: infos.displayPreferences.color.color.color
                                               .withAlphaComponent(0.16))
                          },
-                         title: infos.vaultName,
+                         title: infos.vaultName ?? "",
                          itemCount: viewModel.infos?.itemsNum ?? 0,
                          isShared: infos.shared,
                          isSelected: false,

@@ -27,6 +27,35 @@ enum SharingVault {
     case toBeCreated(VaultProtobuf)
 }
 
+private extension SharingVault {
+    var vaultName: String {
+        switch self {
+        case let .created(vault):
+            vault.name
+        case let .toBeCreated(vault):
+            vault.name
+        }
+    }
+
+    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
+        switch self {
+        case let .created(vault):
+            vault.displayPreferences
+        case let .toBeCreated(vault):
+            vault.display
+        }
+    }
+
+    var shared: Bool {
+        switch self {
+        case let .created(vault):
+            vault.isShared
+        default:
+            false
+        }
+    }
+}
+
 extension VaultProtobuf {
     static var defaultNewSharedVault: Self {
         var vault = VaultProtobuf()
@@ -44,34 +73,15 @@ struct SharingInfos {
     let receiverPublicKeys: [PublicKey]?
     let itemsNum: Int?
 
-    var vaultName: String {
-        switch vault {
-        case let .created(vault):
-            vault.name
-        case let .toBeCreated(vault):
-            vault.name
-        default:
-            ""
-        }
+    var vaultName: String? {
+        vault?.vaultName
     }
 
     var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
-        switch vault {
-        case let .created(vault):
-            vault.displayPreferences
-        case let .toBeCreated(vault):
-            vault.display
-        default:
-            .init()
-        }
+        vault?.displayPreferences ?? .init()
     }
 
     var shared: Bool {
-        switch vault {
-        case let .created(vault):
-            vault.isShared
-        default:
-            false
-        }
+        vault?.shared ?? false
     }
 }

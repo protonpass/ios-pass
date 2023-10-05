@@ -51,7 +51,7 @@ private extension UserPermissionViewModel {
         selectedUserRole = infos.role ?? .read
         setShareInviteRole(with: selectedUserRole)
         canContinue = true
-        vaultName = infos.vaultName
+        vaultName = infos.vaultName ?? ""
         email = infos.email ?? ""
     }
 }

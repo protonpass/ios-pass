@@ -31,7 +31,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
-    @Published private(set) var vaultName = ""
+    @Published private(set) var infos: SharingInfos?
     @Published private(set) var error: String?
     @Published private(set) var isChecking = false
 
@@ -65,7 +65,8 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
-                self.error = #localized("You can not share « %@ » vault with this email", vaultName)
+                self.error = #localized("You can not share « %@ » vault with this email",
+                                        infos?.vaultName ?? "")
             }
         }
     }
@@ -73,8 +74,8 @@ final class UserEmailViewModel: ObservableObject, Sendable {
 
 private extension UserEmailViewModel {
     func setUp() {
-        vaultName = getShareInviteInfos().vaultName
-        assert(getShareInviteInfos().vault != nil, "Vault is not set")
+        infos = getShareInviteInfos()
+        assert(infos?.vault != nil, "Vault is not set")
 
         $email
             .removeDuplicates()
