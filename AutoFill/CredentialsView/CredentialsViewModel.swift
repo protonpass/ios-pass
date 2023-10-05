@@ -390,7 +390,8 @@ private extension CredentialsViewModel {
 
                 let vault = vaults.first { $0.shareId == encryptedItem.shareId }
                 assert(vault != nil, "Must have at least 1 vault")
-                let shouldTakeIntoAccount = await shouldTakeIntoAccount(vaults: vaults, vault: vault,
+                let shouldTakeIntoAccount = await shouldTakeIntoAccount(vaults: vaults,
+                                                                        vault: vault,
                                                                         withPlan: plan)
 
                 if case let .login(data) = decryptedItemContent.contentData {
