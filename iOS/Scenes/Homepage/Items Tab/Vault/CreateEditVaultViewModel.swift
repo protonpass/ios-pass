@@ -38,7 +38,8 @@ enum VaultColorIcon {
 
 enum VaultMode {
     case create
-    case edit(Vault)
+    case editCreatedVault(Vault)
+    case editToBeCreatedVault(VaultProtobuf)
 }
 
 protocol CreateEditVaultViewModelDelegate: AnyObject {
@@ -66,8 +67,10 @@ final class CreateEditVaultViewModel: ObservableObject {
         switch mode {
         case .create:
             #localized("Create vault")
-        case .edit:
+        case .editCreatedVault:
             #localized("Save")
+        case .editToBeCreatedVault:
+            #localized("Update vault")
         }
     }
 
@@ -78,9 +81,13 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedColor = .color1
             selectedIcon = .icon1
             title = ""
-        case let .edit(vault):
+        case let .editCreatedVault(vault):
             selectedColor = vault.displayPreferences.color.color
             selectedIcon = vault.displayPreferences.icon.icon
+            title = vault.name
+        case let .editToBeCreatedVault(vault):
+            selectedColor = vault.display.color.color
+            selectedIcon = vault.display.icon.icon
             title = vault.name
         }
         verifyLimitation()
@@ -95,9 +102,8 @@ private extension CreateEditVaultViewModel {
             guard let self else { return }
             do {
                 // Primary vault can always be edited
-                let mainVault = await getMainVault()
-                if case let .edit(vault) = mode, vault == mainVault {
-                    canCreateOrEdit = true
+                if case let .editCreatedVault(vault) = self.mode, vault.isPrimary {
+                    self.canCreateOrEdit = true
                 } else {
                     canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
                 }
@@ -157,10 +163,12 @@ private extension CreateEditVaultViewModel {
 extension CreateEditVaultViewModel {
     func save() {
         switch mode {
-        case let .edit(vault):
-            editVault(vault)
         case .create:
             createVault()
+        case let .editCreatedVault(vault):
+            editVault(vault)
+        case .editToBeCreatedVault:
+            break
         }
     }
 

@@ -49189,6 +49189,10 @@
         }
       }
     },
+    "Update vault" : {
+      "comment" : "The title for the save button when editing vault",
+      "extractionState" : "manual"
+    },
     "Upgrade" : {
       "localizations" : {
         "be" : {

@@ -39,6 +39,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var checkTask: Task<Void, Never>?
 
     init() {
@@ -75,7 +76,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
         guard case let .toBeCreated(vault) = infos?.vault else {
             return
         }
-        print(#function)
+        router.present(for: .customizeToBeCreatedVault(vault))
     }
 }
 
