@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import DesignSystem
 import Factory
 import Macro
@@ -37,6 +38,10 @@ struct UserEmailView: View {
             headerView
 
             emailTextField
+
+            if case let .toBeCreated(vault) = viewModel.infos?.vault {
+                vaultRow(vault)
+            }
 
             Spacer()
         }
@@ -95,6 +100,34 @@ private extension UserEmailView {
                     .foregroundColor(PassColor.textWeak.toColor)
             }
         }
+    }
+}
+
+private extension UserEmailView {
+    func vaultRow(_ vault: VaultProtobuf) -> some View {
+        HStack {
+            VaultRow(thumbnail: {
+                         CircleButton(icon: vault.display.icon.icon.bigImage,
+                                      iconColor: vault.display.color.color.color,
+                                      backgroundColor: vault.display.color.color.color
+                                          .withAlphaComponent(0.16))
+                     },
+                     title: vault.name,
+                     itemCount: -1, // Hide item counter
+                     isShared: false,
+                     isSelected: false,
+                     height: 74)
+
+            Spacer()
+
+            CapsuleTextButton(title: #localized("Customize"),
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              action: { viewModel.customizeVault() })
+                .fixedSize(horizontal: true, vertical: true)
+        }
+        .padding(.horizontal, 16)
+        .roundedEditableSection()
     }
 }
 

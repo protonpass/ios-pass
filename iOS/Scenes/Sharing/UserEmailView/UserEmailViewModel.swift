@@ -70,6 +70,13 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             }
         }
     }
+
+    func customizeVault() {
+        guard case let .toBeCreated(vault) = infos?.vault else {
+            return
+        }
+        print(#function)
+    }
 }
 
 private extension UserEmailViewModel {
