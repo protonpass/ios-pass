@@ -23,7 +23,7 @@ let package = Package(name: "UseCases",
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Client", path: "../Client"),
-                          .package(url: "https://github.com/protonpass/ios-pass-rust-core", exact: "0.1.0")
+                          .package(url: "https://github.com/protonpass/ios-pass-rust-core", exact: "0.1.1")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
