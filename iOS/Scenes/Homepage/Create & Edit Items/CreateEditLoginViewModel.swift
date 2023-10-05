@@ -23,6 +23,7 @@ import Client
 import CodeScanner
 import Combine
 import Core
+import Entities
 import Factory
 import Macro
 import SwiftUI
