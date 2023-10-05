@@ -14933,6 +14933,10 @@
         }
       }
     },
+    "System default" : {
+      "comment" : "An option in \"Default browser\" settings menu. We have 3 options: \"Safari\", \"In-App Safari\" & \"System default\". This option means using the whatever current default browser of the system to open URLs.",
+      "extractionState" : "manual"
+    },
     "Tap **Password Options**" : {
       "localizations" : {
         "de" : {
@@ -15265,46 +15269,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ამას შეიძლება რამდენიმე წუთი დასჭირდეს."
-          }
-        }
-      }
-    },
-    "This preference will fallback to Safari if the browser of choice is uninstalled" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mit dieser Einstellung wird auf Safari zurückgegriffen, falls der festgelegte Browser deinstalliert wurde."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta preferencia se revertirá a Safari si el navegador elegido es desinstalado."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta preferencia se revertirá a Safari si el navegador elegido es desinstalado"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cette préférence permet de revenir à Safari si le navigateur choisi est désinstallé."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Questa preferenza tornerà a Safari se il browser scelto viene disinstallato"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "არჩეული ბრაუზერის წაშლის შემთხვევაში ეს პარამეტრი თვითონ გადართავს Safari-ზე"
           }
         }
       }
