@@ -82,6 +82,8 @@ class BaseCreateEditItemViewModel {
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -112,9 +114,7 @@ class BaseCreateEditItemViewModel {
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
         bindValues()
-        checkIfFreeUser()
-        pickPrimaryVaultIfApplicable()
-        checkIfAbleToAddMoreCustomFields()
+        setUp()
     }
 
     func bindValues() {}
@@ -147,45 +147,28 @@ class BaseCreateEditItemViewModel {
 // MARK: - Private APIs
 
 private extension BaseCreateEditItemViewModel {
-    func checkIfFreeUser() {
+    func setUp() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
-            } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-
-    /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
-    func pickPrimaryVaultIfApplicable() {
-        guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let isFreeUser = try await self.upgradeChecker.isFreeUser()
-                if isFreeUser, let primaryVault = self.vaults.first(where: { $0.isPrimary }) {
-                    self.selectedVault = primaryVault
+                isFreeUser = try await upgradeChecker.isFreeUser()
+                canAddMoreCustomFields = !isFreeUser
+                if isFreeUser, case .create = mode, vaults.count > 1 {
+                    await setMainVault()
                 }
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
 
-    func checkIfAbleToAddMoreCustomFields() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let isFreeUser = try await self.upgradeChecker.isFreeUser()
-                self.canAddMoreCustomFields = !isFreeUser
-            } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
-            }
+    func setMainVault() async {
+        if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault),
+           let mainVault = await getMainVault() {
+            selectedVault = mainVault
+        } else if !selectedVault.isPrimary, let primaryVault = vaults.first(where: { $0.isPrimary }) {
+            selectedVault = primaryVault
         }
     }
 
