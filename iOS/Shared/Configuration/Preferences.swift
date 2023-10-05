@@ -72,7 +72,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     var theme: Theme = .dark
 
     @AppStorage(Key.browser.rawValue, store: kSharedUserDefaults)
-    var browser: Browser = .safari
+    var browser: Browser = .systemDefault
 
     @AppStorage(Key.telemetryThreshold.rawValue, store: kSharedUserDefaults)
     var telemetryThreshold: TimeInterval?
@@ -128,7 +128,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
         pinCode = nil
         appLockTime = .twoMinutes
         theme = .dark
-        browser = .safari
+        browser = .systemDefault
         clipboardExpiration = .oneMinute
         shareClipboard = false
         telemetryThreshold = nil
