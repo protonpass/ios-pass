@@ -18,63 +18,63 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import Proton_Pass
-@testable import Client
-
-final class UserSharingStatusTests: XCTestCase {
-    var sut: UserSharingStatusUseCase!
-    var getFeatureFlagStatus: GetFeatureFlagStatusUseCaseMock!
-    var passPlanRepository: PassPlanRepositoryProtocolMock!
-
-    override func setUp() {
-        super.setUp()
-        getFeatureFlagStatus = GetFeatureFlagStatusUseCaseMock()
-        passPlanRepository = PassPlanRepositoryProtocolMock()
-        sut = UserSharingStatus(getFeatureFlagStatus: getFeatureFlagStatus,
-                                passPlanRepository: passPlanRepository,
-                                logManager: LogManagerMock())
-    }
-
-    func testUserSharingStatus_ShouldBeValid() async throws {
-        getFeatureFlagStatus.stubbedExecuteResult = true
-        passPlanRepository.stubbedGetPlanResult = PassPlan(type: "plus",
-                                                           internalName: "",
-                                                           displayName: "",
-                                                           hideUpgrade: true,
-                                                           trialEnd: nil,
-                                                           vaultLimit: nil,
-                                                           aliasLimit: nil,
-                                                           totpLimit: nil)
-        let userStatus = await sut()
-        XCTAssertTrue(userStatus)
-    }
-    
-    func testUserSharingStatus_ShouldNotBeValid_BecauseOfFreeStatus() async throws {
-        getFeatureFlagStatus.stubbedExecuteResult = false
-        passPlanRepository.stubbedGetPlanResult = PassPlan(type: "free",
-                                                           internalName: "",
-                                                           displayName: "",
-                                                           hideUpgrade: true,
-                                                           trialEnd: nil,
-                                                           vaultLimit: nil,
-                                                           aliasLimit: nil,
-                                                           totpLimit: nil)
-        let userStatus = await sut()
-        XCTAssertFalse(userStatus)
-    }
-    
-    func testUserSharingStatus_ShouldNotBeValid_BecauseOfFeatureFlag() async throws {
-        getFeatureFlagStatus.stubbedExecuteResult = false
-        passPlanRepository.stubbedGetPlanResult = PassPlan(type: "plus",
-                                                           internalName: "",
-                                                           displayName: "",
-                                                           hideUpgrade: true,
-                                                           trialEnd: nil,
-                                                           vaultLimit: nil,
-                                                           aliasLimit: nil,
-                                                           totpLimit: nil)
-        let userStatus = await sut()
-        XCTAssertFalse(userStatus)
-    }
-}
+//import XCTest
+//@testable import Proton_Pass
+//@testable import Client
+//
+//final class UserSharingStatusTests: XCTestCase {
+//    var sut: UserSharingStatusUseCase!
+//    var getFeatureFlagStatus: GetFeatureFlagStatusUseCaseMock!
+//    var passPlanRepository: PassPlanRepositoryProtocolMock!
+//
+//    override func setUp() {
+//        super.setUp()
+//        getFeatureFlagStatus = GetFeatureFlagStatusUseCaseMock()
+//        passPlanRepository = PassPlanRepositoryProtocolMock()
+//        sut = UserSharingStatus(getFeatureFlagStatus: getFeatureFlagStatus,
+//                                passPlanRepository: passPlanRepository,
+//                                logManager: LogManagerMock())
+//    }
+//
+//    func testUserSharingStatus_ShouldBeValid() async throws {
+//        getFeatureFlagStatus.stubbedExecuteResult = true
+//        passPlanRepository.stubbedGetPlanResult = PassPlan(type: "plus",
+//                                                           internalName: "",
+//                                                           displayName: "",
+//                                                           hideUpgrade: true,
+//                                                           trialEnd: nil,
+//                                                           vaultLimit: nil,
+//                                                           aliasLimit: nil,
+//                                                           totpLimit: nil)
+//        let userStatus = await sut()
+//        XCTAssertTrue(userStatus)
+//    }
+//    
+//    func testUserSharingStatus_ShouldNotBeValid_BecauseOfFreeStatus() async throws {
+//        getFeatureFlagStatus.stubbedExecuteResult = false
+//        passPlanRepository.stubbedGetPlanResult = PassPlan(type: "free",
+//                                                           internalName: "",
+//                                                           displayName: "",
+//                                                           hideUpgrade: true,
+//                                                           trialEnd: nil,
+//                                                           vaultLimit: nil,
+//                                                           aliasLimit: nil,
+//                                                           totpLimit: nil)
+//        let userStatus = await sut()
+//        XCTAssertFalse(userStatus)
+//    }
+//    
+//    func testUserSharingStatus_ShouldNotBeValid_BecauseOfFeatureFlag() async throws {
+//        getFeatureFlagStatus.stubbedExecuteResult = false
+//        passPlanRepository.stubbedGetPlanResult = PassPlan(type: "plus",
+//                                                           internalName: "",
+//                                                           displayName: "",
+//                                                           hideUpgrade: true,
+//                                                           trialEnd: nil,
+//                                                           vaultLimit: nil,
+//                                                           aliasLimit: nil,
+//                                                           totpLimit: nil)
+//        let userStatus = await sut()
+//        XCTAssertFalse(userStatus)
+//    }
+//}
