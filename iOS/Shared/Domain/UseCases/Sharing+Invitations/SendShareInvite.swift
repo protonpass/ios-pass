@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 import CryptoKit
 import Entities
 import ProtonCoreCrypto
@@ -95,10 +96,13 @@ private extension SendVaultShareInvite {
         let publicKey = ArmoredKey(value: publicReceiverKey)
         let signerKey = SigningKey(privateKey: addressKey.privateKey,
                                    passphrase: addressKey.passphrase)
+        let context = SignatureContext(value: Constants.existingUserSharingSignatureContext,
+                                       isCritical: true)
 
         let encryptedVaultKeyString = try Encryptor.encrypt(publicKey: publicKey,
                                                             clearData: vaultKey.keyData,
-                                                            signerKey: signerKey)
+                                                            signerKey: signerKey,
+                                                            signatureContext: context)
             .unArmor().value.base64EncodedString()
 
         return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
