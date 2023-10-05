@@ -77,6 +77,10 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             router.present(for: .customizeToBeCreatedVault(vault))
         }
     }
+
+    func resetShareInviteInformation() {
+        shareInviteService.resetShareInviteInformations()
+    }
 }
 
 private extension UserEmailViewModel {
