@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import Entities
 import Factory
 import Foundation
 import Macro
@@ -31,51 +32,6 @@ enum VaultManagerState {
     case loading
     case loaded(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel])
     case error(Error)
-}
-
-enum VaultSelection {
-    case all
-    case precise(Vault)
-    case trash
-
-    var searchBarPlacehoder: String {
-        switch self {
-        case .all:
-            #localized("Search in all vaults...")
-        case let .precise(vault):
-            #localized("Search in %@...", vault.name)
-        case .trash:
-            #localized("Search in Trash...")
-        }
-    }
-
-    var shared: Bool {
-        if case let .precise(vault) = self {
-            return vault.shared
-        }
-        return false
-    }
-}
-
-protocol VaultsManagerProtocol: Sendable {
-    var currentVaults: CurrentValueSubject<[Vault], Never> { get }
-
-    func refresh()
-    func fullSync() async throws
-    func select(_ selection: VaultSelection)
-    func isSelected(_ selection: VaultSelection) -> Bool
-    func getItems(for vault: Vault) -> [ItemUiModel]
-    func getItemCount(for selection: Vault) -> Int
-    func getItemCount(for selection: VaultSelection) -> Int
-    func getAllVaultContents() -> [VaultContentUiModel]
-    func getAllVaults() -> [Vault]
-    func vaultHasTrashedItems(_ vault: Vault) -> Bool
-    func delete(vault: Vault) async throws
-    func restoreAllTrashedItems() async throws
-    func permanentlyDeleteAllTrashedItems() async throws
-    func getPrimaryVault() -> Vault?
-    func getSelectedShareId() -> String?
-    func getFilteredItems() -> [ItemUiModel]
 }
 
 final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {
@@ -373,21 +329,17 @@ extension VaultsManager {
         logger.info("Permanently deleted all trashed items")
     }
 
+    // Should disappear once we remove the remove primary vault feature flag
     func getPrimaryVault() -> Vault? {
         guard case let .loaded(uiModels, _) = state else { return nil }
         let vaults = uiModels.map(\.vault)
         return vaults.first(where: { $0.isPrimary }) ?? vaults.first
     }
 
-    func getSelectedShareId() -> String? {
-        switch vaultSelection {
-        case .all, .trash:
-            // TODO: return oldest or latest used vault
-//            getPrimaryVault()?.shareId
-            nil
-        case let .precise(vault):
-            vault.shareId
-        }
+    func getOldestOwnedVault() -> Vault? {
+        guard case let .loaded(uiModels, _) = state else { return nil }
+        let vaults = uiModels.map(\.vault)
+        return vaults.filter(\.isOwner).min(by: { $0.createTime < $1.createTime })
     }
 
     func getFilteredItems() -> [ItemUiModel] {
@@ -459,19 +411,6 @@ extension VaultManagerState: Equatable {
                 lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
         case let (.error(lhsError), .error(rhsError)):
             lhsError.localizedDescription == rhsError.localizedDescription
-        default:
-            false
-        }
-    }
-}
-
-extension VaultSelection: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.all, .all), (.trash, .trash):
-            true
-        case let (.precise(lhsVault), .precise(rhsVault)):
-            lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
         default:
             false
         }

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching

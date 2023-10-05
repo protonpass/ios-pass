@@ -1,6 +1,7 @@
 //
-// VaultListUiModel.swift
-// Proton Pass - Created on 29/03/2023.
+//
+// GetVaultContentForVault.swift
+// Proton Pass - Created on 13/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,23 +18,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Client
 
-struct VaultListUiModel: Hashable {
-    let vault: Vault
-    let itemCount: Int
+public protocol GetVaultContentForVaultUseCase: Sendable {
+    func execute(for vault: Vault) -> VaultContentUiModel
 }
 
-extension VaultListUiModel: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.vault.shareId == rhs.vault.shareId
+public extension GetVaultContentForVaultUseCase {
+    func callAsFunction(for vault: Vault) -> VaultContentUiModel {
+        execute(for: vault)
     }
 }
 
-extension VaultListUiModel {
-    init(vaultContent: VaultContentUiModel) {
-        vault = vaultContent.vault
-        itemCount = vaultContent.items.count
+public final class GetVaultContentForVault: GetVaultContentForVaultUseCase {
+    private let vaultsManager: VaultsManagerProtocol
+
+    public init(vaultsManager: VaultsManagerProtocol) {
+        self.vaultsManager = vaultsManager
+    }
+
+    public func execute(for vault: Vault) -> VaultContentUiModel {
+        VaultContentUiModel(vault: vault,
+                            items: vaultsManager.getItems(for: vault))
     }
 }

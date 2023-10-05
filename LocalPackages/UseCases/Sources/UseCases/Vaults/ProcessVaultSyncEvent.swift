@@ -21,23 +21,23 @@
 import Client
 
 /// Process an event and map the current array of progresses
-protocol ProcessVaultSyncEventUseCase: Sendable {
+public protocol ProcessVaultSyncEventUseCase: Sendable {
     func execute(_ event: VaultSyncProgressEvent,
                  with progresses: [VaultSyncProgress]) -> [VaultSyncProgress]
 }
 
-extension ProcessVaultSyncEventUseCase {
+public extension ProcessVaultSyncEventUseCase {
     func callAsFunction(_ event: VaultSyncProgressEvent,
                         with progresses: [VaultSyncProgress]) -> [VaultSyncProgress] {
         execute(event, with: progresses)
     }
 }
 
-final class ProcessVaultSyncEvent: Sendable, ProcessVaultSyncEventUseCase {
-    init() {}
+public final class ProcessVaultSyncEvent: Sendable, ProcessVaultSyncEventUseCase {
+    public init() {}
 
-    func execute(_ event: VaultSyncProgressEvent,
-                 with progresses: [VaultSyncProgress]) -> [VaultSyncProgress] {
+    public func execute(_ event: VaultSyncProgressEvent,
+                        with progresses: [VaultSyncProgress]) -> [VaultSyncProgress] {
         switch event {
         case .done, .initialization, .started:
             progresses
