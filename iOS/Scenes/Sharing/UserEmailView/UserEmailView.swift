@@ -69,7 +69,7 @@ private extension UserEmailView {
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
 
-            Text("This user will receive an invitation to join your ‘\(viewModel.vaultName)’ vault")
+            Text("This user will receive an invitation to join your ‘\(viewModel.infos?.vaultName ?? "")’ vault")
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
         }
