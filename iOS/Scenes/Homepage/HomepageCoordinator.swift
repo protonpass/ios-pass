@@ -474,25 +474,26 @@ private extension HomepageCoordinator {
     }
 
     func presentShareOrCreateNewVaultView(for vault: VaultListUiModel) {
-        let handleShareVaultAction: () -> Void = { [weak self] in
+        let handleAction: (VaultProtobuf?) -> Void = { [weak self] vaultProtobuf in
             guard let self else { return }
             dismissTopMostViewController { [weak self] in
                 guard let self else { return }
-                setShareInviteVault(with: .created(vault.vault))
+                if let vaultProtobuf {
+                    setShareInviteVault(with: .toBeCreated(vaultProtobuf))
+                } else {
+                    setShareInviteVault(with: .created(vault.vault))
+                }
                 router.present(for: .sharingFlow)
             }
         }
 
-        let handleCreateNewVaultAction: () -> Void = {
-            print(#function)
-        }
-
         let view = ShareOrCreateNewVaultView(vault: vault,
-                                             onShareVault: handleShareVaultAction,
-                                             onCreateNewVault: handleCreateNewVaultAction)
+                                             onShareVault: { handleAction(nil) },
+                                             onCreateNewVault: { handleAction(.defaultNewSharedVault) })
         let viewController = UIHostingController(rootView: view)
         viewController.setDetentType(.custom(310),
                                      parentViewController: rootViewController)
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
     }

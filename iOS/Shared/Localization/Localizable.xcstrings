@@ -41831,6 +41831,10 @@
         }
       }
     },
+    "Shared vault" : {
+      "comment" : "Used in sharing vault flow. The user has the option to create a new vault and share that new vault. This string is the default name for the vault.",
+      "extractionState" : "manual"
+    },
     "Shared vault invitation" : {
       "extractionState" : "manual",
       "localizations" : {
