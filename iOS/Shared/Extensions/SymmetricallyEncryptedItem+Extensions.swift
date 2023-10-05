@@ -1,7 +1,7 @@
 //
-// ItemUiModel.swift
-// Proton Pass - Created on 20/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// SymmetricallyEncryptedItem+Extensions.swift
+// Proton Pass - Created on 04/10/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,36 +21,6 @@
 import Client
 import CryptoKit
 import Entities
-import Foundation
-
-struct ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable, Hashable, Equatable {
-    let itemId: String
-    let shareId: String
-    let type: ItemContentType
-    let aliasEmail: String?
-    let title: String
-    let description: String
-    let url: String?
-    let isAlias: Bool
-    let hasTotpUri: Bool
-    let lastUseTime: Int64
-    let modifyTime: Int64
-    let state: ItemState
-}
-
-extension ItemUiModel: Identifiable {
-    var id: String { itemId + shareId }
-}
-
-extension ItemUiModel: DateSortable {
-    var dateForSorting: Date {
-        Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
-    }
-}
-
-extension ItemUiModel: AlphabeticalSortable {
-    var alphabeticalSortableString: String { title }
-}
 
 extension SymmetricallyEncryptedItem {
     func toItemUiModel(_ symmetricKey: SymmetricKey) throws -> ItemUiModel {

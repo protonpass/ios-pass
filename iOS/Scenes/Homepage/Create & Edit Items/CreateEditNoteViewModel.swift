@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import DocScanner
+import Entities
 import ProtonCoreLogin
 import SwiftUI
 

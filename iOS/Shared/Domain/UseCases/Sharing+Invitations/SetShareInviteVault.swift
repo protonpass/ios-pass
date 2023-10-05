@@ -21,6 +21,7 @@
 //
 
 import Client
+import UseCases
 
 // sourcery: AutoMockable
 protocol SetShareInviteVaultUseCase {

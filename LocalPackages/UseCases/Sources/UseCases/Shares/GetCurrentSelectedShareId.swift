@@ -1,7 +1,7 @@
 //
 //
-// CreateVault.swift
-// Proton Pass - Created on 14/09/2023.
+// GetCurrentSelectedShareId.swift
+// Proton Pass - Created on 04/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,32 +22,32 @@
 
 import Client
 
-protocol CreateVaultUseCase: Sendable {
-    @discardableResult
-    func execute(with vault: VaultProtobuf) async throws -> Share
+public protocol GetCurrentSelectedShareIdUseCase: Sendable {
+    func execute() async -> String?
 }
 
-extension CreateVaultUseCase {
-    @discardableResult
-    func callAsFunction(with vault: VaultProtobuf) async throws -> Share {
-        try await execute(with: vault)
+public extension GetCurrentSelectedShareIdUseCase {
+    func callAsFunction() async -> String? {
+        await execute()
     }
 }
 
-final class CreateVault: CreateVaultUseCase {
+public final class GetCurrentSelectedShareId: GetCurrentSelectedShareIdUseCase {
     private let vaultsManager: VaultsManagerProtocol
-    private let repository: ShareRepositoryProtocol
+    private let getMainVault: GetMainVaultUseCase
 
-    init(vaultsManager: VaultsManagerProtocol,
-         repository: ShareRepositoryProtocol) {
+    public init(vaultsManager: VaultsManagerProtocol,
+                getMainVault: GetMainVaultUseCase) {
         self.vaultsManager = vaultsManager
-        self.repository = repository
+        self.getMainVault = getMainVault
     }
 
-    func execute(with vault: VaultProtobuf) async throws -> Share {
-        let share = try await repository.createVault(vault)
-        vaultsManager.refresh()
-
-        return share
+    public func execute() async -> String? {
+        switch vaultsManager.vaultSelection {
+        case .all, .trash:
+            await getMainVault()?.shareId
+        case let .precise(vault):
+            vault.shareId
+        }
     }
 }

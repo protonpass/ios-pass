@@ -23,6 +23,7 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import Entities
 import Factory
 import Macro
 import SwiftUI
@@ -97,6 +98,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
 
     let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
@@ -131,6 +133,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
             return URL(string: id)
         }
 
+        // TODO: Why syncloop init here and not with use case ?
         syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
                               userId: userId,
                               shareRepository: shareRepository,
@@ -269,9 +272,8 @@ extension CredentialsViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let vaults = try await self.shareRepository.getVaults()
-                guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
-                self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
+                guard let mainVault = await getMainVault() else { return }
+                self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: mainVault.shareId,
                                                                           url: self.urls.first)
             } catch {
                 self.logger.error(error)

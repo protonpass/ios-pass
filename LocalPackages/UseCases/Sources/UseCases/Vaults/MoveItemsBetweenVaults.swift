@@ -22,29 +22,24 @@
 
 import Client
 
-enum MovingContext {
-    case item(ItemIdentifiable, newShareId: String)
-    case vault(String, newShareId: String)
-}
-
-protocol MoveItemsBetweenVaultsUseCase: Sendable {
+public protocol MoveItemsBetweenVaultsUseCase: Sendable {
     func execute(movingContext: MovingContext) async throws
 }
 
-extension MoveItemsBetweenVaultsUseCase {
+public extension MoveItemsBetweenVaultsUseCase {
     func callAsFunction(movingContext: MovingContext) async throws {
         try await execute(movingContext: movingContext)
     }
 }
 
-final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
+public final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
     private let repository: ItemRepositoryProtocol
 
-    init(repository: ItemRepositoryProtocol) {
+    public init(repository: ItemRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute(movingContext: MovingContext) async throws {
+    public func execute(movingContext: MovingContext) async throws {
         switch movingContext {
         case let .item(itemToMove, newShareId):
             try await repository.move(item: itemToMove, toShareId: newShareId)

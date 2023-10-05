@@ -1,7 +1,7 @@
 //
 //
-// GetVaultContentForVault.swift
-// Proton Pass - Created on 13/09/2023.
+// GetVaultInfos.swift
+// Proton Pass - Created on 08/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,26 +21,28 @@
 //
 
 import Client
+import Combine
 
-protocol GetVaultContentForVaultUseCase: Sendable {
-    func execute(for vault: Vault) -> VaultContentUiModel
+public protocol GetVaultInfosUseCase: Sendable {
+    func execute(for id: String) -> AnyPublisher<Vault?, Never>
 }
 
-extension GetVaultContentForVaultUseCase {
-    func callAsFunction(for vault: Vault) -> VaultContentUiModel {
-        execute(for: vault)
+public extension GetVaultInfosUseCase {
+    func callAsFunction(for id: String) -> AnyPublisher<Vault?, Never> {
+        execute(for: id)
     }
 }
 
-final class GetVaultContentForVault: GetVaultContentForVaultUseCase {
+public final class GetVaultInfos: GetVaultInfosUseCase {
     private let vaultsManager: VaultsManagerProtocol
 
-    init(vaultsManager: VaultsManagerProtocol) {
+    public init(vaultsManager: VaultsManagerProtocol) {
         self.vaultsManager = vaultsManager
     }
 
-    func execute(for vault: Vault) -> VaultContentUiModel {
-        VaultContentUiModel(vault: vault,
-                            items: vaultsManager.getItems(for: vault))
+    public func execute(for id: String) -> AnyPublisher<Vault?, Never> {
+        vaultsManager.currentVaults
+            .map { $0.first(where: { $0.shareId == id }) }
+            .eraseToAnyPublisher()
     }
 }

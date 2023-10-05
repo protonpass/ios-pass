@@ -1,7 +1,7 @@
 //
 //
-// TransferVaultOwnership.swift
-// Proton Pass - Created on 07/09/2023.
+// CreateVault.swift
+// Proton Pass - Created on 14/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,27 +21,33 @@
 //
 
 import Client
-import Entities
 
-protocol TransferVaultOwnershipUseCase: Sendable {
-    func execute(newOwnerID: String, shareId: String) async throws
+public protocol CreateVaultUseCase: Sendable {
+    @discardableResult
+    func execute(with vault: VaultProtobuf) async throws -> Share
 }
 
-extension TransferVaultOwnershipUseCase {
-    func callAsFunction(newOwnerID: String, shareId: String) async throws {
-        try await execute(newOwnerID: newOwnerID, shareId: shareId)
+public extension CreateVaultUseCase {
+    @discardableResult
+    func callAsFunction(with vault: VaultProtobuf) async throws -> Share {
+        try await execute(with: vault)
     }
 }
 
-final class TransferVaultOwnership: TransferVaultOwnershipUseCase {
+public final class CreateVault: CreateVaultUseCase {
+    private let vaultsManager: VaultsManagerProtocol
     private let repository: ShareRepositoryProtocol
 
-    init(repository: ShareRepositoryProtocol) {
+    public init(vaultsManager: VaultsManagerProtocol,
+                repository: ShareRepositoryProtocol) {
+        self.vaultsManager = vaultsManager
         self.repository = repository
     }
 
-    func execute(newOwnerID: String, shareId: String) async throws {
-        try await repository.transferVaultOwnership(vaultShareId: shareId,
-                                                    newOwnerShareId: newOwnerID)
+    public func execute(with vault: VaultProtobuf) async throws -> Share {
+        let share = try await repository.createVault(vault)
+        vaultsManager.refresh()
+
+        return share
     }
 }

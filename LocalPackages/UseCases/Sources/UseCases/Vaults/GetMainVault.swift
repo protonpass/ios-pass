@@ -1,7 +1,7 @@
 //
 //
-// GetVaultInfos.swift
-// Proton Pass - Created on 08/09/2023.
+// GetMainVault.swift
+// Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,28 +21,29 @@
 //
 
 import Client
-import Combine
 
-protocol GetVaultInfosUseCase: Sendable {
-    func execute(for id: String) -> AnyPublisher<Vault?, Never>
+public protocol GetMainVaultUseCase: Sendable {
+    func execute() async -> Vault?
 }
 
-extension GetVaultInfosUseCase {
-    func callAsFunction(for id: String) -> AnyPublisher<Vault?, Never> {
-        execute(for: id)
+public extension GetMainVaultUseCase {
+    func callAsFunction() async -> Vault? {
+        await execute()
     }
 }
 
-final class GetVaultInfos: GetVaultInfosUseCase {
+public final class GetMainVault: GetMainVaultUseCase {
     private let vaultsManager: VaultsManagerProtocol
+    private let featuresFlags: GetFeatureFlagStatusUseCase
 
-    init(vaultsManager: VaultsManagerProtocol) {
+    public init(vaultsManager: VaultsManagerProtocol,
+                featuresFlags: GetFeatureFlagStatusUseCase) {
         self.vaultsManager = vaultsManager
+        self.featuresFlags = featuresFlags
     }
 
-    func execute(for id: String) -> AnyPublisher<Vault?, Never> {
-        vaultsManager.currentVaults
-            .map { $0.first(where: { $0.shareId == id }) }
-            .eraseToAnyPublisher()
+    public func execute() async -> Vault? {
+        let isPrimaryVaultRemoved = await featuresFlags(with: FeatureFlagType.passRemovePrimaryVault)
+        return isPrimaryVaultRemoved ? vaultsManager.getOldestOwnedVault() : vaultsManager.getPrimaryVault()
     }
 }
