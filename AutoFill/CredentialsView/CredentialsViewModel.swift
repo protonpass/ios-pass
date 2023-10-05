@@ -99,6 +99,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
@@ -133,7 +134,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
             return URL(string: id)
         }
 
-        // TODO: Why syncloop init here and not with use case ?
         syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
                               userId: userId,
                               shareRepository: shareRepository,
@@ -270,15 +270,9 @@ extension CredentialsViewModel {
     func createLoginItem() {
         guard case .idle = state else { return }
         Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                guard let mainVault = await getMainVault() else { return }
-                self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: mainVault.shareId,
-                                                                          url: self.urls.first)
-            } catch {
-                self.logger.error(error)
-                self.display(error: error)
-            }
+            guard let self, let mainVault = await getMainVault() else { return }
+            self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: mainVault.shareId,
+                                                                      url: self.urls.first)
         }
     }
 
@@ -396,7 +390,8 @@ private extension CredentialsViewModel {
 
                 let vault = vaults.first { $0.shareId == encryptedItem.shareId }
                 assert(vault != nil, "Must have at least 1 vault")
-                let shouldTakeIntoAccount = shouldTakeIntoAccount(vault: vault, withPlan: plan)
+                let shouldTakeIntoAccount = await shouldTakeIntoAccount(vaults: vaults, vault: vault,
+                                                                        withPlan: plan)
 
                 if case let .login(data) = decryptedItemContent.contentData {
                     if shouldTakeIntoAccount {
@@ -466,11 +461,16 @@ private extension CredentialsViewModel {
 
     /// When in free plan, only take primary vault into account (suggestions & search)
     /// Otherwise take everything into account
-    func shouldTakeIntoAccount(vault: Vault?, withPlan plan: PassPlan) -> Bool {
+    func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: PassPlan) async -> Bool {
         guard let vault else { return true }
         switch plan.planType {
         case .free:
-            return vault.isPrimary
+            if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
+                let oldestVaults = vaults.twoOldestVaults
+                return vault == oldestVaults.oldest || vault == oldestVaults.secondOldest
+            } else {
+                return vault.isPrimary
+            }
         default:
             return true
         }
