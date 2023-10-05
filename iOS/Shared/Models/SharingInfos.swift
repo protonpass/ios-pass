@@ -20,10 +20,21 @@
 
 import Client
 import Entities
+import Macro
 
 enum SharingVault {
     case created(Vault)
     case toBeCreated(VaultProtobuf)
+}
+
+extension VaultProtobuf {
+    static var defaultNewSharedVault: Self {
+        var vault = VaultProtobuf()
+        vault.name = #localized("Shared vault")
+        vault.display.color = .color3
+        vault.display.icon = .icon9
+        return vault
+    }
 }
 
 struct SharingInfos {
