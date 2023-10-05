@@ -39,7 +39,7 @@ struct UserEmailView: View {
 
             emailTextField
 
-            if case let .toBeCreated(vault) = viewModel.infos?.vault {
+            if case let .toBeCreated(vault) = viewModel.vault {
                 vaultRow(vault)
             }
 
@@ -74,7 +74,7 @@ private extension UserEmailView {
                 .fontWeight(.bold)
                 .foregroundColor(PassColor.textNorm.toColor)
 
-            Text("This user will receive an invitation to join your ‘\(viewModel.infos?.vaultName ?? "")’ vault")
+            Text("This user will receive an invitation to join your ‘\(viewModel.vault?.name ?? "")’ vault")
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
         }

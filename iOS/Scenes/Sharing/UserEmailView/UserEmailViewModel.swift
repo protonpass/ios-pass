@@ -31,13 +31,13 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
-    @Published private(set) var infos: SharingInfos?
+    @Published private(set) var vault: SharingVault?
     @Published private(set) var error: String?
     @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
+    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
-    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var checkTask: Task<Void, Never>?
@@ -67,24 +67,20 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 goToNextStep = true
             } catch {
                 self.error = #localized("You can not share « %@ » vault with this email",
-                                        infos?.vaultName ?? "")
+                                        vault?.name ?? "")
             }
         }
     }
 
     func customizeVault() {
-        guard case let .toBeCreated(vault) = infos?.vault else {
-            return
+        if case let .toBeCreated(vault) = vault {
+            router.present(for: .customizeToBeCreatedVault(vault))
         }
-        router.present(for: .customizeToBeCreatedVault(vault))
     }
 }
 
 private extension UserEmailViewModel {
     func setUp() {
-        infos = getShareInviteInfos()
-        assert(infos?.vault != nil, "Vault is not set")
-
         $email
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -95,6 +91,15 @@ private extension UserEmailViewModel {
                     error = nil
                 }
                 canContinue = newValue.isValidEmail()
+            }
+            .store(in: &cancellables)
+
+        shareInviteService
+            .currentSelectedVault
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] currentVault in
+                guard let self else { return }
+                vault = currentVault
             }
             .store(in: &cancellables)
     }
