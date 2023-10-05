@@ -288,6 +288,8 @@ private extension HomepageCoordinator {
                     } else {
                         presentShareOrCreateNewVaultView(for: vault)
                     }
+                case let .customizeToBeCreatedVault(vault):
+                    presentCreateEditVaultView(mode: .editToBeCreatedVault(vault))
                 }
             }
             .store(in: &cancellables)
@@ -324,7 +326,7 @@ private extension HomepageCoordinator {
 
     func createEditVaultView(vault: Vault?) {
         if let vault {
-            presentCreateEditVaultView(mode: .edit(vault))
+            presentCreateEditVaultView(mode: .editCreatedVault(vault))
         } else {
             presentCreateEditVaultView(mode: .create)
         }

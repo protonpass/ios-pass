@@ -67,6 +67,7 @@ enum SheetDestination: Equatable, Hashable {
     case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
     case fullSync
     case shareVaultFromItemDetail(VaultListUiModel)
+    case customizeToBeCreatedVault(VaultProtobuf)
 }
 
 enum UIElementDisplay {
