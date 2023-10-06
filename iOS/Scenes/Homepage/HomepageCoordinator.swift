@@ -258,8 +258,8 @@ private extension HomepageCoordinator {
                 switch destination {
                 case .sharingFlow:
                     presentSharingFlow()
-                case let .manageShareVault(vault, dismissPrevious):
-                    presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
+                case let .manageShareVault(vault, dismissal):
+                    presentManageShareVault(with: vault, dismissal: dismissal)
                 case .filterItems:
                     presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
@@ -282,14 +282,14 @@ private extension HomepageCoordinator {
                     itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
-                case let .shareVaultFromItemDetail(vault):
+                case let .shareVaultFromItemDetail(vault, itemContent):
                     if vault.vault.shared {
-                        presentManageShareVault(with: vault.vault, dismissPrevious: false)
+                        presentManageShareVault(with: vault.vault, dismissal: .none)
                     } else {
-                        presentShareOrCreateNewVaultView(for: vault)
+                        presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
                     }
-                case let .customizeToBeCreatedVault(vault):
-                    presentCreateEditVaultView(mode: .editToBeCreatedVault(vault))
+                case let .customizeNewVault(vault, itemContent):
+                    presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
                 }
             }
             .store(in: &cancellables)
@@ -332,24 +332,29 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
+    func presentManageShareVault(with vault: Vault, dismissal: Dismissal) {
         let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
 
-        if dismissPrevious {
-            dismissTopMostViewController { [weak self] in
-                guard let self else {
-                    return
-                }
-                if let host = rootViewController
-                    .topMostViewController as? UIHostingController<ManageSharedVaultView> {
-                    /// Updating share data circumventing the onAppear not being called after a sheet presentation
-                    host.rootView.refresh()
-                    return
-                }
-                present(manageShareVaultView)
+        let completion: () -> Void = { [weak self] in
+            guard let self else {
+                return
             }
-        } else {
+            if let host = rootViewController
+                .topMostViewController as? UIHostingController<ManageSharedVaultView> {
+                /// Updating share data circumventing the onAppear not being called after a sheet presentation
+                host.rootView.refresh()
+                return
+            }
             present(manageShareVaultView)
+        }
+
+        switch dismissal {
+        case .none:
+            present(manageShareVaultView)
+        case .topMostSheet:
+            dismissTopMostViewController(animated: true, completion: completion)
+        case .allSheets:
+            dismissAllViewControllers(animated: true, completion: completion)
         }
     }
 
@@ -475,13 +480,13 @@ private extension HomepageCoordinator {
         present(view)
     }
 
-    func presentShareOrCreateNewVaultView(for vault: VaultListUiModel) {
+    func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
         let handleAction: (VaultProtobuf?) -> Void = { [weak self] vaultProtobuf in
             guard let self else { return }
             dismissTopMostViewController { [weak self] in
                 guard let self else { return }
                 if let vaultProtobuf {
-                    setShareInviteVault(with: .toBeCreated(vaultProtobuf))
+                    setShareInviteVault(with: .new(vaultProtobuf, itemContent))
                 } else {
                     setShareInviteVault(with: .created(vault.vault))
                 }

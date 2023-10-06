@@ -39,7 +39,7 @@ struct UserEmailView: View {
 
             emailTextField
 
-            if case let .toBeCreated(vault) = viewModel.vault {
+            if case let .new(vault, _) = viewModel.vault {
                 vaultRow(vault)
             }
 
@@ -113,7 +113,7 @@ private extension UserEmailView {
                                           .withAlphaComponent(0.16))
                      },
                      title: vault.name,
-                     itemCount: -1, // Hide item counter
+                     itemCount: 1,
                      isShared: false,
                      isSelected: false,
                      height: 74)

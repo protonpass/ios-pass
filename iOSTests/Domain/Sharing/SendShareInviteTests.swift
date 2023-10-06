@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import XCTest
 import ProtonCoreLogin
 import Entities
@@ -28,6 +29,31 @@ private struct CreateVaultUseCaseMock: CreateVaultUseCase {
     func execute(with vault: VaultProtobuf) async throws -> Vault? {
         .random()
     }
+}
+
+private struct VaultsManagerProtocolMock: VaultsManagerProtocol {
+    var currentVaults = CurrentValueSubject<[Vault], Never>([])
+
+    func refresh() {}
+    func fullSync() async throws {}
+    func select(_ selection: VaultSelection) {}
+    func isSelected(_ selection: VaultSelection) -> Bool { false }
+    func getItems(for vault: Vault) -> [ItemUiModel] { [] }
+    func getItemCount(for selection: Vault) -> Int { 0 }
+    func getItemCount(for selection: VaultSelection) -> Int { 0 }
+    func getAllVaultContents() -> [VaultContentUiModel] { [] }
+    func getAllVaults() -> [Vault] { [] }
+    func vaultHasTrashedItems(_ vault: Vault) -> Bool { false }
+    func delete(vault: Vault) async throws {}
+    func restoreAllTrashedItems() async throws {}
+    func permanentlyDeleteAllTrashedItems() async throws {}
+    func getPrimaryVault() -> Vault? { nil }
+    func getSelectedShareId() -> String? { nil }
+    func getFilteredItems() -> [ItemUiModel] { [] }
+
+}
+private struct MoveItemsBetweenVaultsMock: MoveItemsBetweenVaultsUseCase {
+    func execute(movingContext: MovingContext) async throws {}
 }
 
 final class SendShareInviteTests: XCTestCase {
@@ -44,6 +70,8 @@ final class SendShareInviteTests: XCTestCase {
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
         sut = SendVaultShareInvite(createVault: CreateVaultUseCaseMock(),
+                                   moveItemsBetweenVaults: MoveItemsBetweenVaultsMock(),
+                                   vaultsManager: VaultsManagerProtocolMock(),
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
                                    shareInviteRepository: shareInviteRepository,

@@ -39,7 +39,7 @@ enum VaultColorIcon {
 enum VaultMode {
     case create
     case editCreatedVault(Vault)
-    case editToBeCreatedVault(VaultProtobuf)
+    case editNewVault(VaultProtobuf, ItemContent)
 }
 
 protocol CreateEditVaultViewModelDelegate: AnyObject {
@@ -71,7 +71,7 @@ final class CreateEditVaultViewModel: ObservableObject {
             #localized("Create vault")
         case .editCreatedVault:
             #localized("Save")
-        case .editToBeCreatedVault:
+        case .editNewVault:
             #localized("Update vault")
         }
     }
@@ -87,7 +87,7 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedColor = vault.displayPreferences.color.color
             selectedIcon = vault.displayPreferences.icon.icon
             title = vault.name
-        case let .editToBeCreatedVault(vault):
+        case let .editNewVault(vault, _):
             selectedColor = vault.display.color.color
             selectedIcon = vault.display.icon.icon
             title = vault.name
@@ -169,8 +169,8 @@ extension CreateEditVaultViewModel {
             createVault()
         case let .editCreatedVault(vault):
             editVault(vault)
-        case .editToBeCreatedVault:
-            shareInviteService.setCurrentSelectedVault(with: .toBeCreated(generateVaultProtobuf()))
+        case let .editNewVault(_, itemContent):
+            shareInviteService.setCurrentSelectedVault(with: .new(generateVaultProtobuf(), itemContent))
             finishSaving = true
         }
     }
