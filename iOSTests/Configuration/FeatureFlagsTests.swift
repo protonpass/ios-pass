@@ -1,7 +1,7 @@
 //
-// Browser.swift
-// Proton Pass - Created on 25/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// FeatureFlagsTests.swift
+// Proton Pass - Created on 26/9/23.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,30 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Macro
+import XCTest
+import ProtonCoreFeatureSwitch
 
-public enum Browser: Int, CaseIterable, Codable, CustomStringConvertible {
-    case safari = 0
-    case inAppSafari = 1
-    case systemDefault = 2
+final class FeatureFlagsTests: XCTestCase {
 
-    public var description: String {
-        switch self {
-        case .safari:
-            "Safari"
-        case .inAppSafari:
-            "In-App Safari"
-        case .systemDefault:
-            #localized("System default")
-        }
-    }
-
-    public var appScheme: String? {
-        switch self {
-        case .safari:
-            "com-apple-mobilesafari-tab://"
-        default:
-            nil
-        }
+    func testDefaultForDynamicPlansIsOff() {
+        XCTAssertFalse(FeatureFactory.shared.isEnabled(.dynamicPlans))
     }
 }

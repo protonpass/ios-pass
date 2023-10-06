@@ -26,7 +26,7 @@ import SwiftUI
 
 protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToGoBack()
-    func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser])
+    func settingsViewModelWantsToEditDefaultBrowser()
     func settingsViewModelWantsToEditTheme()
     func settingsViewModelWantsToEditClipboardExpiration()
     func settingsViewModelWantsToEdit(primaryVault: Vault)
@@ -46,7 +46,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
-    let supportedBrowsers: [Browser]
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
@@ -68,28 +67,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
-
-        let installedBrowsers = Browser.thirdPartyBrowsers.filter { browser in
-            guard let appScheme = browser.appScheme,
-                  let testUrl = URL(string: appScheme + "proton.me") else {
-                return false
-            }
-            return UIApplication.shared.canOpenURL(testUrl)
-        }
-
-        switch preferences.browser {
-        case .inAppSafari, .safari:
-            selectedBrowser = preferences.browser
-        default:
-            if installedBrowsers.contains(preferences.browser) {
-                selectedBrowser = preferences.browser
-            } else {
-                selectedBrowser = .safari
-            }
-        }
-
-        supportedBrowsers = [.safari, .inAppSafari] + installedBrowsers
-
+        selectedBrowser = preferences.browser
         selectedTheme = preferences.theme
         selectedClipboardExpiration = preferences.clipboardExpiration
         displayFavIcons = preferences.displayFavIcons
@@ -107,7 +85,7 @@ extension SettingsViewModel {
     }
 
     func editDefaultBrowser() {
-        delegate?.settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: supportedBrowsers)
+        delegate?.settingsViewModelWantsToEditDefaultBrowser()
     }
 
     func editTheme() {
