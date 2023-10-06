@@ -30,6 +30,7 @@ import Factory
 import Macro
 import MBProgressHUD
 import ProtonCoreAccountDeletion
+import ProtonCoreFeatureSwitch
 import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUIFoundations
@@ -52,6 +53,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
+    private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
@@ -462,17 +464,22 @@ private extension HomepageCoordinator {
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            paymentsManager.upgradeSubscription { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(inAppPurchasePlan):
-                    if inAppPurchasePlan != nil {
-                        refreshPlan()
-                    } else {
-                        logger.debug("Payment is done but no plan is purchased")
+            if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+                paymentsUI.showUpgradePlan(presentationType: .modal,
+                                           backendFetch: true) { _ in }
+            } else {
+                paymentsManager.upgradeSubscription { [weak self] result in
+                    guard let self else { return }
+                    switch result {
+                    case let .success(inAppPurchasePlan):
+                        if inAppPurchasePlan != nil {
+                            refreshPlan()
+                        } else {
+                            logger.debug("Payment is done but no plan is purchased")
+                        }
+                    case let .failure(error):
+                        bannerManager.displayTopErrorMessage(error)
                     }
-                case let .failure(error):
-                    bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
