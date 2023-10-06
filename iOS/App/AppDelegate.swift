@@ -22,6 +22,7 @@ import Core
 import Factory
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreCryptoGoInterface
+import ProtonCoreFeatureSwitch
 import Sentry
 import UIKit
 
@@ -30,6 +31,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         injectDefaultCryptoImplementation()
+        setUpCoreFeatureSwitches()
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
         return true
@@ -79,5 +81,9 @@ private extension AppDelegate {
                 kSharedUserDefaults.setValue(envName, forKey: "pref_scientist_env_name")
             }
         }
+    }
+
+    func setUpCoreFeatureSwitches() {
+        FeatureFactory.shared.disable(&.dynamicPlans)
     }
 }
