@@ -105,6 +105,8 @@ extension UseCasesContainer {
 
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
         self { SendVaultShareInvite(createVault: self.createVault(),
+                                    moveItemsBetweenVaults: self.moveItemsBetweenVaults(),
+                                    vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                                     shareInviteService: self.shareInviteService,
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared

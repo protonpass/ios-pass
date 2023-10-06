@@ -39,11 +39,10 @@ struct VaultRow<Thumbnail: View>: View {
                 Text(title)
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
 
-                // Do not show item count when passing negative count value
                 if itemCount == 0 {
                     Text("Empty")
                         .placeholderText()
-                } else if itemCount > 1 {
+                } else {
                     Text("\(itemCount) item(s)")
                         .font(.callout)
                         .foregroundColor(Color(uiColor: PassColor.textWeak))

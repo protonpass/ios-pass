@@ -40,6 +40,8 @@ extension SendVaultShareInviteUseCase {
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
     private let createVault: CreateVaultUseCase
+    private let moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase
+    private let vaultsManager: VaultsManagerProtocol
     private let shareInviteService: ShareInviteServiceProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
@@ -47,12 +49,16 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     private let syncEventLoop: SyncEventLoopProtocol
 
     init(createVault: CreateVaultUseCase,
+         moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase,
+         vaultsManager: VaultsManagerProtocol,
          shareInviteService: ShareInviteServiceProtocol,
          passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
          syncEventLoop: SyncEventLoopProtocol) {
         self.createVault = createVault
+        self.moveItemsBetweenVaults = moveItemsBetweenVaults
+        self.vaultsManager = vaultsManager
         self.shareInviteService = shareInviteService
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
@@ -129,9 +135,12 @@ private extension SendVaultShareInvite {
         switch sharedVault {
         case let .created(vault):
             return vault
-        case let .toBeCreated(vaultProtobuf):
+        case let .new(vaultProtobuf, itemContent):
             do {
                 if let vault = try await createVault(with: vaultProtobuf) {
+                    try await moveItemsBetweenVaults(movingContext: .item(itemContent,
+                                                                          newShareId: vault.shareId))
+                    vaultsManager.refresh()
                     return vault
                 } else {
                     throw SharingError.failedToCreateNewVault

@@ -73,8 +73,8 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func customizeVault() {
-        if case let .toBeCreated(vault) = vault {
-            router.present(for: .customizeToBeCreatedVault(vault))
+        if case let .new(vault, itemContent) = vault {
+            router.present(for: .customizeNewVault(vault, itemContent))
         }
     }
 
