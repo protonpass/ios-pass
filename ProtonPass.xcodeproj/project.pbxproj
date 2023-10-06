@@ -375,6 +375,7 @@
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */; };
 		5179844D85D43BF233B6DA2B /* SyncEventLoopProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */; };
+		575543F92AC30D3700565C19 /* FeatureFlagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575543F82AC30D3700565C19 /* FeatureFlagsTests.swift */; };
 		5A505CC575D99C2B28D00648 /* ExtractLogsToFileUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */; };
 		5B083A802AAA10B900D1FF18 /* TransferVaultOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B083A7F2AAA10B900D1FF18 /* TransferVaultOwnership.swift */; };
 		5B083A842AAB145E00D1FF18 /* GetVaultInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B083A832AAB145E00D1FF18 /* GetVaultInfos.swift */; };
@@ -863,6 +864,7 @@
 		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
 		37BE836F29954C6000E42C89 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		526CC5CA408FFC5207B1928D /* FeatureFlagsRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = FeatureFlagsRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
+		575543F82AC30D3700565C19 /* FeatureFlagsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsTests.swift; sourceTree = "<group>"; };
 		58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = ExtractLogsToFileUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		5B083A7F2AAA10B900D1FF18 /* TransferVaultOwnership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferVaultOwnership.swift; sourceTree = "<group>"; };
 		5B083A832AAB145E00D1FF18 /* GetVaultInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVaultInfos.swift; sourceTree = "<group>"; };
@@ -1288,6 +1290,7 @@
 			isa = PBXGroup;
 			children = (
 				3567E46329B0C93C00511D62 /* PreferencesTests.swift */,
+				575543F82AC30D3700565C19 /* FeatureFlagsTests.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -2812,6 +2815,7 @@
 				03533AC82F5409923B22B587 /* UserSharingStatusUseCaseMock.generated.swift in Sources */,
 				E0475AFB1A5D9E16038813DC /* FeatureFlagsRepositoryProtocolMock.generated.swift in Sources */,
 				9888D9D21FFC53C849C70726 /* PassPlanRepositoryProtocolMock.generated.swift in Sources */,
+				575543F92AC30D3700565C19 /* FeatureFlagsTests.swift in Sources */,
 				233B8DF9F3C2171097E3F584 /* ShareInviteRepositoryProtocolMock.generated.swift in Sources */,
 				38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */,
 				259F729CCBEEEE2AFB240FB5 /* PublicKeyRepositoryProtocolMock.generated.swift in Sources */,
