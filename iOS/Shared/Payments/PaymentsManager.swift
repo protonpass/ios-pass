@@ -21,6 +21,7 @@
 import Core
 import Factory
 import Foundation
+import ProtonCoreFeatureSwitch
 import ProtonCorePayments
 import ProtonCorePaymentsUI
 import ProtonCoreServices
@@ -63,6 +64,8 @@ final class PaymentsManager {
     }
 
     private func initializePaymentsStack() {
+        guard !FeatureFactory.shared.isEnabled(.dynamicPlans) else { return }
+
         switch payments.planService {
         case let .left(service):
             service.currentSubscriptionChangeDelegate = self
