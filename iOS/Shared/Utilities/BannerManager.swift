@@ -46,13 +46,16 @@ extension BannerDisplayProtocol {
 }
 
 final class BannerManager: BannerDisplayProtocol {
-    private weak var container: UIViewController!
+    private weak var container: UIViewController?
 
     init(container: UIViewController) {
         self.container = container
     }
 
     private func display(message: String, at position: PMBannerPosition, style: PMBannerNewStyle) {
+        guard let container else {
+            return
+        }
         let banner = PMBanner(message: message, style: style)
         banner.show(at: position, on: container.topMostViewController)
     }
@@ -64,6 +67,9 @@ final class BannerManager: BannerDisplayProtocol {
     func displayBottomInfoMessage(_ message: String,
                                   dismissButtonTitle: String,
                                   onDismiss: @escaping ((PMBanner) -> Void)) {
+        guard let container else {
+            return
+        }
         let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
         banner.addButton(text: dismissButtonTitle, handler: onDismiss)
         banner.show(at: .bottom, on: container.topMostViewController)
@@ -76,6 +82,9 @@ final class BannerManager: BannerDisplayProtocol {
     func displayTopErrorMessage(_ message: String,
                                 dismissButtonTitle: String = #localized("OK"),
                                 onDismiss: ((PMBanner) -> Void)? = nil) {
+        guard let container else {
+            return
+        }
         let dismissClosure = onDismiss ?? { banner in banner.dismiss() }
         let banner = PMBanner(message: message, style: PMBannerNewStyle.error)
         banner.addButton(text: dismissButtonTitle, handler: dismissClosure)
