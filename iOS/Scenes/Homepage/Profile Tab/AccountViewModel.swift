@@ -22,6 +22,7 @@ import Client
 import Combine
 import Core
 import Factory
+import ProtonCoreFeatureSwitch
 
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
@@ -35,7 +36,9 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let paymentsManager = resolve(\ServiceContainer.paymentManager)
+    private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
+    private let payments = resolve(\ServiceContainer.payments)
+    private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     let isShownAsSheet: Bool
     @Published private(set) var plan: PassPlan?
 
@@ -69,16 +72,26 @@ extension AccountViewModel {
     }
 
     func manageSubscription() {
-        paymentsManager.manageSubscription { [weak self] result in
-            guard let self else { return }
-            handlePaymentsResult(result: result)
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            paymentsUI.showCurrentPlan(presentationType: .modal,
+                                       backendFetch: true) { _ in }
+        } else {
+            paymentsManager.manageSubscription { [weak self] result in
+                guard let self else { return }
+                handlePaymentsResult(result: result)
+            }
         }
     }
 
     func upgradeSubscription() {
-        paymentsManager.upgradeSubscription { [weak self] result in
-            guard let self else { return }
-            handlePaymentsResult(result: result)
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            paymentsUI.showUpgradePlan(presentationType: .modal,
+                                       backendFetch: true) { _ in }
+        } else {
+            paymentsManager.upgradeSubscription { [weak self] result in
+                guard let self else { return }
+                handlePaymentsResult(result: result)
+            }
         }
     }
 
@@ -90,7 +103,6 @@ extension AccountViewModel {
             } else {
                 logger.debug("Payment is done but no plan is purchased")
             }
-
         case let .failure(error):
             logger.error(error)
         }
