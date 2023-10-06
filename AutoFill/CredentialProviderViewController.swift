@@ -25,6 +25,7 @@ import ProtonCoreCryptoGoInterface
 
 final class CredentialProviderViewController: ASCredentialProviderViewController {
     private lazy var coordinator: CredentialProviderCoordinator = .init(rootViewController: self)
+    private let resetFactory = ResetFactory()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        release()
+        resetFactory()
     }
 
     /*
@@ -70,14 +71,5 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func prepareInterfaceForExtensionConfiguration() {
         coordinator.configureExtension()
-    }
-
-    func release() {
-        SharedDataContainer.shared.reset()
-        SharedViewContainer.shared.reset()
-        SharedToolingContainer.shared.resetCache()
-        SharedRepositoryContainer.shared.reset()
-        SharedServiceContainer.shared.reset()
-        SharedViewContainer.shared.reset()
     }
 }
