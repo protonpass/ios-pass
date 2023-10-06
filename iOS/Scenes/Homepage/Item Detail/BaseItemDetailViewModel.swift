@@ -101,7 +101,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func share() {
         guard let vault else { return }
-        router.present(for: .shareVaultFromItemDetail(vault))
+        router.present(for: .shareVaultFromItemDetail(vault, itemContent))
     }
 
     func refresh() {
