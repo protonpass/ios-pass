@@ -20,6 +20,8 @@
 
 import Core
 import Factory
+import ProtonCorePayments
+import ProtonCorePaymentsUI
 
 final class ServiceContainer: SharedContainer, AutoRegistering {
     static let shared = ServiceContainer()
@@ -33,6 +35,24 @@ final class ServiceContainer: SharedContainer, AutoRegistering {
 extension ServiceContainer {
     var paymentManager: Factory<PaymentsManager> {
         self { .init(storage: kSharedUserDefaults) }
+    }
+
+    var payments: Factory<Payments> {
+        self {
+            .init(inAppPurchaseIdentifiers: [],
+                  apiService: SharedToolingContainer.shared.apiManager().apiService,
+                  localStorage: UserDefaultsServicePlanDataStorage(storage: kSharedUserDefaults),
+                  reportBugAlertHandler: nil)
+        }
+    }
+
+    var paymentsUI: Factory<PaymentsUI> {
+        self { .init(payments: self.payments(),
+                     clientApp: .pass,
+                     shownPlanNames: [],
+                     customization: .init(inAppTheme: {
+                         SharedToolingContainer.shared.preferences().theme.inAppTheme
+                     }, customPlansDescription: [:])) }
     }
 
     var shareInviteService: Factory<ShareInviteServiceProtocol> {
