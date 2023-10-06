@@ -58,18 +58,21 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
     private let indexAllLoginItems: IndexAllLoginItemsUseCase
+    private let resetFactory: ResetFactoryUseCase
 
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
          clipboardManager: ClipboardManager,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
-         indexAllLoginItems: IndexAllLoginItemsUseCase) {
+         indexAllLoginItems: IndexAllLoginItemsUseCase,
+         resetFactory: ResetFactoryUseCase = ResetFactory()) {
         self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
         self.indexAllLoginItems = indexAllLoginItems
+        self.resetFactory = resetFactory
     }
 
     /*
@@ -88,6 +91,9 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
         context.completeRequest(withSelectedCredential: credential) { _ in
             Task(priority: .high) { [weak self] in
                 guard let self else { return }
+                defer {
+                    resetFactory()
+                }
                 do {
                     if quickTypeBar {
                         try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
