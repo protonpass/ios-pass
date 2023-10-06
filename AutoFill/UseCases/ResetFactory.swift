@@ -1,7 +1,8 @@
 //
-// Browser.swift
-// Proton Pass - Created on 25/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+//
+// ResetFactory.swift
+// Proton Pass - Created on 06/10/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,31 +18,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Macro
+import Factory
 
-public enum Browser: Int, CaseIterable, Codable, CustomStringConvertible {
-    case safari = 0
-    case inAppSafari = 1
-    case systemDefault = 2
+protocol ResetFactoryUseCase: Sendable {
+    func execute()
+}
 
-    public var description: String {
-        switch self {
-        case .safari:
-            "Safari"
-        case .inAppSafari:
-            "In-App Safari"
-        case .systemDefault:
-            #localized("System default")
-        }
+extension ResetFactoryUseCase {
+    func callAsFunction() {
+        execute()
     }
+}
 
-    public var appScheme: String? {
-        switch self {
-        case .safari:
-            "com-apple-mobilesafari-tab://"
-        default:
-            nil
-        }
+final class ResetFactory: ResetFactoryUseCase {
+    init() {}
+
+    func execute() {
+        SharedDataContainer.shared.reset()
+        SharedViewContainer.shared.reset()
+        SharedToolingContainer.shared.resetCache()
+        SharedRepositoryContainer.shared.reset()
+        SharedServiceContainer.shared.reset()
+        SharedViewContainer.shared.reset()
     }
 }
