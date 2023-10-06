@@ -24,7 +24,7 @@ import Macro
 
 enum SharingVault {
     case created(Vault)
-    case toBeCreated(VaultProtobuf)
+    case new(VaultProtobuf, ItemContent)
 }
 
 extension SharingVault {
@@ -32,7 +32,7 @@ extension SharingVault {
         switch self {
         case let .created(vault):
             vault.name
-        case let .toBeCreated(vault):
+        case let .new(vault, _):
             vault.name
         }
     }
@@ -41,7 +41,7 @@ extension SharingVault {
         switch self {
         case let .created(vault):
             vault.displayPreferences
-        case let .toBeCreated(vault):
+        case let .new(vault, _):
             vault.display
         }
     }
