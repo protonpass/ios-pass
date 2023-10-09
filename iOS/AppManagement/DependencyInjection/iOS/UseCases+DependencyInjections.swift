@@ -189,11 +189,6 @@ extension UseCasesContainer {
 // MARK: - Flags
 
 extension UseCasesContainer {
-//    var sharingFlagStatus: Factory<SharingFlagStatusUseCase> {
-//        self { SharingFlagStatus(getFeatureFlagStatus: self.getFeatureFlagStatus(),
-//                                 logManager: SharedToolingContainer.shared.logManager()) }
-//    }
-
     var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                                    logManager: self.logManager) }
