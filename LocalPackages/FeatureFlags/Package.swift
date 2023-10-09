@@ -30,5 +30,6 @@ let package = Package(name: "FeatureFlags",
                                       .product(name: "ProtonCoreServices", package: "protoncore_ios")
                                   ]),
                           .testTarget(name: "FeatureFlagsTests",
-                                      dependencies: ["FeatureFlags"])
+                                      dependencies: ["FeatureFlags"],
+                                      resources: [.process("Query")])
                       ])
