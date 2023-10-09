@@ -220,7 +220,6 @@
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
-		356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */; };
 		356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */; };
 		356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830B29C3359A0084488A /* EmptySearchView.swift */; };
 		356B830E29C339110084488A /* SortTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830D29C339110084488A /* SortTypeButton.swift */; };
@@ -2731,7 +2730,6 @@
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				5BFFB5142A5D431A00C2D1F9 /* CheckCameraPermission.swift in Sources */,
 				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,
-				356B69792949DECF00868771 /* BaseItemDetailViewModel.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */,
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,

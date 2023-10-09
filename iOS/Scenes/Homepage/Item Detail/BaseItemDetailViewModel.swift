@@ -25,8 +25,6 @@ import Factory
 import Macro
 import UIKit
 
-let kItemDetailSectionPadding: CGFloat = 16
-
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
@@ -36,6 +34,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 }
 
 class BaseItemDetailViewModel: ObservableObject {
+    @Published private(set) var isAllowedToShare = false
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
@@ -55,6 +54,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -75,6 +75,11 @@ class BaseItemDetailViewModel: ObservableObject {
             .first { $0.vault.shareId == itemContent.shareId }
             .map { VaultListUiModel(vaultContent: $0) }
         shouldShowVault = allVaults.count > 1
+
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            isAllowedToShare = await userSharingStatus()
+        }
 
         bindValues()
         checkIfFreeUser()
