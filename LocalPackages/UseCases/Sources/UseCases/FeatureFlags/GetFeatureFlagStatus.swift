@@ -36,17 +36,20 @@ public extension GetFeatureFlagStatusUseCase {
 
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
+    private let userInformations: UserInformationProtocol
     private let logger: Logger
 
     public init(repository: FeatureFlagsRepositoryProtocol,
+                userInfos: UserInformationProtocol,
                 logManager: LogManagerProtocol) {
         featureFlagsRepository = repository
+        userInformations = userInfos
         logger = .init(manager: logManager)
     }
 
     public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
         do {
-            logger.trace("Getting feature flags for user")
+            logger.trace("Getting feature flags for user \(userInformations.userId)")
             let flags = try await featureFlagsRepository.getFlags()
             logger.trace("Found local feature flags for user")
             return flags.isFlagEnable(for: flag)
