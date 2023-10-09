@@ -26,7 +26,7 @@ enum FeatureFlagError: Error {
 }
 
 public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalDatasourceProtocol,
-    LocalFeatureFlagsProtocol /* LocalFeatureFlagsDatasourceProtocol */ {
+    LocalFeatureFlagsProtocol {
     public func getFeatureFlags(userId: String) async throws -> FeatureFlags? {
         let taskContext = newTaskContext(type: .fetch)
 
@@ -53,7 +53,20 @@ public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalDatasource
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    public func cleanAllFlags() async {}
+    public func cleanAllFlags() async {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
+        _ = try? await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                               context: taskContext)
+    }
 
-    public func cleanFlags(for userId: String) async {}
+    public func cleanFlags(for userId: String) async {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId)
+        ])
+        _ = try? await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                               context: taskContext)
+    }
 }

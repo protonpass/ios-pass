@@ -142,6 +142,7 @@ extension SharedUseCasesContainer {
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 userInfos: SharedDataContainer.shared.userData(),
                                  logManager: SharedToolingContainer.shared.logManager())
         }
     }

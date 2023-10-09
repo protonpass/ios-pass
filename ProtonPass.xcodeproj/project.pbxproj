@@ -414,6 +414,8 @@
 		5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		5B3AD4302ACDB8B100E1A07D /* SymmetricallyEncryptedItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42C2ACDB81E00E1A07D /* SymmetricallyEncryptedItem+Extensions.swift */; };
 		5B3AD4322AD019B800E1A07D /* ResetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4312AD019B800E1A07D /* ResetFactory.swift */; };
+		5B3AD4342AD44D3400E1A07D /* UserData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */; };
+		5B3AD4352AD44DAC00E1A07D /* UserData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */; };
 		5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */; };
 		5B503FD82A4C82D700E6681C /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
@@ -879,6 +881,7 @@
 		5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemUiModel+Extensions.swift"; sourceTree = "<group>"; };
 		5B3AD42C2ACDB81E00E1A07D /* SymmetricallyEncryptedItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SymmetricallyEncryptedItem+Extensions.swift"; sourceTree = "<group>"; };
 		5B3AD4312AD019B800E1A07D /* ResetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetFactory.swift; sourceTree = "<group>"; };
+		5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Extensions.swift"; sourceTree = "<group>"; };
 		5B3E2FFF2AAF01A30002289A /* TestPlans */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestPlans; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1786,13 +1789,6 @@
 			path = Sharing;
 			sourceTree = "<group>";
 		};
-		5B1453AB2A696C5B0048B022 /* Vault */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Vault;
-			sourceTree = "<group>";
-		};
 		5B1453AE2A69814C0048B022 /* SummaryView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1826,6 +1822,7 @@
 				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 				5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */,
 				5B3AD42C2ACDB81E00E1A07D /* SymmetricallyEncryptedItem+Extensions.swift */,
+				5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1895,7 +1892,6 @@
 			isa = PBXGroup;
 			children = (
 				35C281522A7BD2F40077030C /* AutoFill */,
-				5B1453AB2A696C5B0048B022 /* Vault */,
 				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
 				5BFFB5082A5BF58B00C2D1F9 /* Camera */,
 				35CEA8CC2A603FFE00343A4E /* Local Authentication */,
@@ -2717,6 +2713,7 @@
 				35AC9A5D2A0BDB7D00FBCEEC /* EditCustomFieldSections.swift in Sources */,
 				352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */,
 				3559BAA22A5B32600020E172 /* Browser.swift in Sources */,
+				5B3AD4352AD44DAC00E1A07D /* UserData+Extensions.swift in Sources */,
 				5B229A662A863F6D0009103E /* MainRouter.swift in Sources */,
 				354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */,
 				5B1F5CED2A5ED7A600A6C3ED /* CustomFieldTypes.swift in Sources */,
@@ -2925,6 +2922,7 @@
 				35CEA8D72A60675900343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+ScannerSheet.swift in Sources */,
 				5B503FEA2A4D7AFE00E6681C /* SendUserFeedBack.swift in Sources */,
+				5B3AD4342AD44D3400E1A07D /* UserData+Extensions.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				356B831029C343F70084488A /* NoSearchResultsViews.swift in Sources */,
 				3572E51B299399AD00775FAC /* PPError.swift in Sources */,

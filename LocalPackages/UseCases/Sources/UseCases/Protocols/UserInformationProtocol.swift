@@ -1,6 +1,6 @@
 //
-// ItemContentType.swift
-// Proton Pass - Created on 03/10/2023.
+// UserInformationProtocol.swift
+// Proton Pass - Created on 09/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,10 +20,6 @@
 
 import Foundation
 
-/// Use the raw values for any telemetry monitoring
-public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
-    case login = 0
-    case alias = 1
-    case note = 2
-    case creditCard = 3
+public protocol UserInformationProtocol {
+    var userId: String { get }
 }

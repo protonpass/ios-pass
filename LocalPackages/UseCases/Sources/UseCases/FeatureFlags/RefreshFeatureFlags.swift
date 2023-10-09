@@ -33,11 +33,14 @@ public extension RefreshFeatureFlagsUseCase {
 
 public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase {
     private let repository: FeatureFlagsRepositoryProtocol
+    private let userInformations: UserInformationProtocol
     private let logger: Logger
 
     public init(repository: FeatureFlagsRepositoryProtocol,
+                userInfos: UserInformationProtocol,
                 logManager: LogManagerProtocol) {
         self.repository = repository
+        userInformations = userInfos
         logger = .init(manager: logManager)
     }
 
@@ -45,7 +48,7 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         Task { [weak self] in
             guard let self else { return }
             do {
-                logger.trace("Refreshing features fags for user")
+                logger.trace("Refreshing features fags for user \(userInformations.userId)")
                 try await repository.refreshFlags()
                 logger.trace("Finished updating local flags for user.")
             } catch {
