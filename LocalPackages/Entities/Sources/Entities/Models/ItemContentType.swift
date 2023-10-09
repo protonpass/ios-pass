@@ -20,6 +20,7 @@
 
 import Foundation
 
+/// Use the raw values for any telemetry monitoring
 public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
     case login = 0
     case alias = 1

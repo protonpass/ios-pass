@@ -191,6 +191,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   userInfos: SharedDataContainer.shared.userData(),
                                    logManager: self.logManager) }
     }
 }

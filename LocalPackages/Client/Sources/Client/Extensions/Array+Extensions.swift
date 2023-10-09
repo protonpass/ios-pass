@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public extension [Vault] {
-    
     /// This return the 2 oldest vaults to witch the users has write value.
     /// The first vault always belongs the the current user
     var twoOldestVaults: (oldestOwned: Vault?, secondOldest: Vault?) {
