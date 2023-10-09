@@ -26,7 +26,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemDetailToolbar: ToolbarContent {
-    let viewModel: BaseItemDetailViewModel
+    @ObservedObject var viewModel: BaseItemDetailViewModel
 
     private var itemContentType: ItemContentType {
         viewModel.itemContent.type
@@ -50,10 +50,12 @@ struct ItemDetailToolbar: ToolbarContent {
                                        backgroundColor: itemContentType.normMajor1Color,
                                        action: viewModel.edit)
 
-                    CircleButton(icon: IconProvider.usersPlus,
-                                 iconColor: itemContentType.normMajor2Color,
-                                 backgroundColor: itemContentType.normMinor1Color,
-                                 action: viewModel.share)
+                    if viewModel.isAllowedToShare {
+                        CircleButton(icon: IconProvider.usersPlus,
+                                     iconColor: itemContentType.normMajor2Color,
+                                     backgroundColor: itemContentType.normMinor1Color,
+                                     action: viewModel.share)
+                    }
 
                     Menu(content: {
                         Button(action: viewModel.moveToAnotherVault,
