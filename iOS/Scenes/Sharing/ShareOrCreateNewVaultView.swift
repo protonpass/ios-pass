@@ -43,9 +43,14 @@ struct ShareOrCreateNewVaultView: View {
             Spacer()
 
             currentVault
-                .padding(.bottom, 12)
 
             createNewVaultButton
+                .padding(.vertical, 12)
+
+            Text("The item will be moved to the new vault")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .foregroundColor(PassColor.textWeak.toColor)
+                .font(.callout)
 
             Spacer()
         }
