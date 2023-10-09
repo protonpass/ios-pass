@@ -1,4 +1,4 @@
-//  
+//
 // RemoteResourceMock.swift
 // Proton Pass - Created on 06/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
