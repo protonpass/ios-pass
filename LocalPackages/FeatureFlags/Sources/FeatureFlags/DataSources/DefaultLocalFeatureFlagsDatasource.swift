@@ -36,7 +36,7 @@ public actor DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsProtocol {
     }
 
     public func cleanAllFlags() async {
-        currentFlags = [:]
+        currentFlags.removeAll()
     }
 
     public func cleanFlags(for userId: String) async {
