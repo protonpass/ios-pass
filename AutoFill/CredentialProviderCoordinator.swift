@@ -278,6 +278,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 }
 
 private extension CredentialProviderCoordinator {
+    // swiftlint:disable cyclomatic_complexity
     func setUpRouting() {
         router
             .newSheetDestination
@@ -319,6 +320,7 @@ private extension CredentialProviderCoordinator {
             }
             .store(in: &cancellables)
     }
+    // swiftlint:enable cyclomatic_complexity
 }
 
 private extension CredentialProviderCoordinator {
