@@ -21,12 +21,12 @@
 import Client
 import Entities
 
-enum SharingVault {
+enum SharingVaultData {
     case existing(Vault)
     case new(VaultProtobuf, ItemContent)
 }
 
-extension SharingVault {
+extension SharingVaultData {
     var name: String {
         switch self {
         case let .existing(vault):
@@ -56,7 +56,7 @@ extension SharingVault {
 }
 
 struct SharingInfos {
-    let vault: SharingVault?
+    let vault: SharingVaultData?
     let email: String?
     let role: ShareRole?
     let receiverPublicKeys: [PublicKey]?

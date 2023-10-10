@@ -23,13 +23,13 @@ import Combine
 import Entities
 
 protocol ShareInviteServiceProtocol {
-    var currentSelectedVault: CurrentValueSubject<SharingVault?, Never> { get }
+    var currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> { get }
     var currentSelectedVaultItems: Int? { get }
     var currentDestinationUserEmail: String? { get }
     var currentUserRole: ShareRole? { get }
     var receiverPublicKeys: [PublicKey]? { get }
 
-    func setCurrentSelectedVault(with vault: SharingVault)
+    func setCurrentSelectedVault(with vault: SharingVaultData)
     func setCurrentSelectedVaultItem(with itemNum: Int)
     func setCurrentDestinationUserEmail(with email: String)
     func setCurrentUserRole(with role: ShareRole)
@@ -38,13 +38,13 @@ protocol ShareInviteServiceProtocol {
 }
 
 final class ShareInviteService: ShareInviteServiceProtocol {
-    private(set) var currentSelectedVault = CurrentValueSubject<SharingVault?, Never>(nil)
+    private(set) var currentSelectedVault = CurrentValueSubject<SharingVaultData?, Never>(nil)
     private(set) var currentSelectedVaultItems: Int?
     private(set) var currentDestinationUserEmail: String?
     private(set) var currentUserRole: ShareRole?
     private(set) var receiverPublicKeys: [PublicKey]?
 
-    public func setCurrentSelectedVault(with vault: SharingVault) {
+    public func setCurrentSelectedVault(with vault: SharingVaultData) {
         currentSelectedVault.send(vault)
     }
 
