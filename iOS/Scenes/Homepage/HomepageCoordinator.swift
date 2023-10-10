@@ -326,7 +326,7 @@ private extension HomepageCoordinator {
 
     func createEditVaultView(vault: Vault?) {
         if let vault {
-            presentCreateEditVaultView(mode: .editCreatedVault(vault))
+            presentCreateEditVaultView(mode: .editExistingVault(vault))
         } else {
             presentCreateEditVaultView(mode: .create)
         }
