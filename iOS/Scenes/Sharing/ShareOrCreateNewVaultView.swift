@@ -25,9 +25,11 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ShareOrCreateNewVaultView: View {
-    let vault: VaultListUiModel
-    let onShareVault: () -> Void
-    let onCreateNewVault: () -> Void
+    private let viewModel: ShareOrCreateNewVaultViewModel
+
+    init(vault: VaultListUiModel, itemContent: ItemContent) {
+        viewModel = .init(vault: vault, itemContent: itemContent)
+    }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -64,6 +66,7 @@ struct ShareOrCreateNewVaultView: View {
 private extension ShareOrCreateNewVaultView {
     var currentVault: some View {
         HStack {
+            let vault = viewModel.vault
             VaultRow(thumbnail: {
                          CircleButton(icon: vault.vault.displayPreferences.icon.icon.bigImage,
                                       iconColor: vault.vault.displayPreferences.color.color.color,
@@ -82,7 +85,7 @@ private extension ShareOrCreateNewVaultView {
             CapsuleTextButton(title: #localized("Share this vault"),
                               titleColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1,
-                              action: onShareVault)
+                              action: viewModel.shareVault)
                 .fixedSize(horizontal: true, vertical: true)
         }
         .padding(.horizontal)
@@ -92,7 +95,7 @@ private extension ShareOrCreateNewVaultView {
 
 private extension ShareOrCreateNewVaultView {
     var createNewVaultButton: some View {
-        Button(action: onCreateNewVault) {
+        Button(action: viewModel.createNewVault) {
             Label(title: {
                 Text("Create a new vault to share")
                     .foregroundColor(PassColor.textNorm.toColor)
