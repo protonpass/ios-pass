@@ -60,12 +60,12 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 case .created:
                     // When sharing a created vault, we want to keep the context
                     // by only dismsising the top most sheet (which is share vault sheet)
-                    router.present(for: .manageShareVault(sharedVault, .topMostSheet))
+                    router.present(for: .manageShareVault(sharedVault, .topMost))
                 case .new:
                     // When sharing a new vault from item detail page,
                     // as the item is moved to the new vault, the last item detail sheet is stale
                     // so we dismiss all sheets
-                    router.present(for: .manageShareVault(sharedVault, .allSheets))
+                    router.present(for: .manageShareVault(sharedVault, .all))
                 default:
                     break
                 }

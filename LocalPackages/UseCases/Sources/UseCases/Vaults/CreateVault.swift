@@ -44,7 +44,7 @@ public final class CreateVault: CreateVaultUseCase {
         self.repository = repository
     }
 
-    func execute(with vault: VaultProtobuf) async throws -> Vault? {
+    public func execute(with vault: VaultProtobuf) async throws -> Vault? {
         let share = try await repository.createVault(vault)
         vaultsManager.refresh()
 

@@ -26,6 +26,7 @@ import CryptoKit
 import Entities
 import ProtonCoreCrypto
 import ProtonCoreLogin
+import UseCases
 
 /// Make an invitation and return the shared `Vault`
 protocol SendVaultShareInviteUseCase: Sendable {
