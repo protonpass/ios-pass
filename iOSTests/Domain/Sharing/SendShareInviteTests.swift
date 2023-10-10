@@ -26,36 +26,9 @@ import UseCases
 @testable import Proton_Pass
 @testable import Client
 
-private struct CreateVaultUseCaseMock: CreateVaultUseCase {
-    func execute(with vault: VaultProtobuf) async throws -> Vault? {
-        .random()
-    }
-}
-
-private struct VaultsManagerProtocolMock: VaultsManagerProtocol {
-    var currentVaults = CurrentValueSubject<[Vault], Never>([])
-    var vaultSelection: VaultSelection = .all
-
-    func refresh() {}
-    func fullSync() async throws {}
-    func getItems(for vault: Vault) -> [ItemUiModel] { [] }
-    func getItemCount(for selection: Vault) -> Int { 0 }
-    func getAllVaults() -> [Vault] { [] }
-    func vaultHasTrashedItems(_ vault: Vault) -> Bool { false }
-    func delete(vault: Vault) async throws {}
-    func restoreAllTrashedItems() async throws {}
-    func permanentlyDeleteAllTrashedItems() async throws {}
-    func getPrimaryVault() -> Vault? { nil }
-    func getOldestOwnedVault() -> Vault? { nil }
-    func getFilteredItems() -> [ItemUiModel] { [] }
-
-}
-private struct MoveItemsBetweenVaultsMock: MoveItemsBetweenVaultsUseCase {
-    func execute(movingContext: MovingContext) async throws {}
-}
-
 final class SendShareInviteTests: XCTestCase {
     var sut: SendVaultShareInviteUseCase!
+    var createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock!
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
@@ -63,13 +36,12 @@ final class SendShareInviteTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        createAndMoveItemToNewVault = CreateAndMoveItemToNewVaultUseCaseMock()
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
-        sut = SendVaultShareInvite(createVault: CreateVaultUseCaseMock(),
-                                   moveItemsBetweenVaults: MoveItemsBetweenVaultsMock(),
-                                   vaultsManager: VaultsManagerProtocolMock(),
+        sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
                                    shareInviteRepository: shareInviteRepository,
