@@ -65,4 +65,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.shared = shared
         self.createTime = createTime
     }
+
+    public var canEdit: Bool {
+        shareRole != .read
+    }
 }

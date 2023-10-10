@@ -102,9 +102,7 @@ private extension IndexAllLoginItems {
         let vaults = try await shareRepository.getVaults()
         if await getfeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
             let oldestVaults = vaults.twoOldestVaults
-            return items.filter { $0.shareId == oldestVaults.oldestOwned?.shareId
-                || $0.shareId == oldestVaults.secondOldest?.shareId
-            }
+            return items.filter { oldestVaults.isOneOf(shareId: $0.shareId) }
         } else {
             let primaryVault = vaults.first { $0.isPrimary }
             return items.filter { $0.shareId == primaryVault?.shareId }

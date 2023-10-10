@@ -83,10 +83,11 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
     }
 
     func shouldReduceOpacity(for vault: Vault) -> Bool {
-        guard !isPrimaryVaultRemoved else {
-            return false
+        if isPrimaryVaultRemoved {
+            !vault.canEdit
+        } else {
+            isFreeUser && !vault.isPrimary
         }
-        return isFreeUser && !vault.isPrimary
     }
 }
 

@@ -468,7 +468,7 @@ private extension CredentialsViewModel {
         case .free:
             if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
                 let oldestVaults = vaults.twoOldestVaults
-                return vault == oldestVaults.oldestOwned || vault == oldestVaults.secondOldest
+                return oldestVaults.isOneOf(shareId: vault.shareId)
             } else {
                 return vault.isPrimary
             }
