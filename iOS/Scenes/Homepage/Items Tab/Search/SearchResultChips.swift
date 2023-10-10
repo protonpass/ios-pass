@@ -75,7 +75,7 @@ private struct ItemCountChip: View {
                     Text(title)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
 
-                    Text(" \(count)")
+                    Text(verbatim: " \(count)")
                         .font(.caption)
                         .foregroundColor(Color(uiColor: PassColor.textNorm))
                 }
