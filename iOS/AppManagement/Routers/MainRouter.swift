@@ -72,6 +72,7 @@ enum SheetDestination: Equatable, Hashable {
     case fullSync
     case shareVaultFromItemDetail(VaultListUiModel, ItemContent)
     case customizeNewVault(VaultProtobuf, ItemContent)
+    case vaultSelection
 }
 
 enum UIElementDisplay {
