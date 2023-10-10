@@ -25,8 +25,6 @@ import Factory
 import Macro
 import UIKit
 
-let kItemDetailSectionPadding: CGFloat = 16
-
 protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
@@ -36,6 +34,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 }
 
 class BaseItemDetailViewModel: ObservableObject {
+    @Published private(set) var isAllowedToShare = false
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
@@ -50,9 +49,12 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
-    let vault: Vault? // Nullable because we only show vault when there're more than 1 vault
+    let vault: VaultListUiModel?
+    let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -62,13 +64,23 @@ class BaseItemDetailViewModel: ObservableObject {
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
-         upgradeChecker: UpgradeCheckerProtocol,
-         vault: Vault?) {
+         upgradeChecker: UpgradeCheckerProtocol) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
-        self.vault = vault
+
+        let allVaults = vaultsManager.getAllVaultContents()
+        vault = allVaults
+            .first { $0.vault.shareId == itemContent.shareId }
+            .map { VaultListUiModel(vaultContent: $0) }
+        shouldShowVault = allVaults.count > 1
+
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            isAllowedToShare = await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
+        }
+
         bindValues()
         checkIfFreeUser()
     }
@@ -90,6 +102,11 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func edit() {
         delegate?.itemDetailViewModelWantsToEditItem(itemContent)
+    }
+
+    func share() {
+        guard let vault else { return }
+        router.present(for: .shareVaultFromItemDetail(vault, itemContent))
     }
 
     func refresh() {
@@ -117,10 +134,9 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToAnotherVault() {
-        guard let vault else {
-            return
-        }
-        router.present(for: .moveItemsBetweenVaults(currentVault: vault, singleItemToMove: itemContent))
+        guard let vault else { return }
+        router.present(for: .moveItemsBetweenVaults(currentVault: vault.vault,
+                                                    singleItemToMove: itemContent))
     }
 
     func copyNoteContent() {

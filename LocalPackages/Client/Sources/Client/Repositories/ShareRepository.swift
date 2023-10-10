@@ -64,6 +64,9 @@ public protocol ShareRepositoryProtocol: Sendable {
     /// Get all local vaults
     func getVaults() async throws -> [Vault]
 
+    /// Get local vault by ID
+    func getVault(shareId: String) async throws -> Vault?
+
     @discardableResult
     func createVault(_ vault: VaultProtobuf) async throws -> Share
 
@@ -262,6 +265,16 @@ public extension ShareRepository {
         let vaults = try shares.compactMap { try $0.toVault(symmetricKey: symmetricKey) }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
+    }
+
+    func getVault(shareId: String) async throws -> Vault? {
+        logger.trace("Getting local vault with shareID \(shareId) for user \(userId)")
+        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
+            logger.trace("Found no local vault with shareID \(shareId) for user \(userId)")
+            return nil
+        }
+        logger.trace("Got local vault with shareID \(shareId) for user \(userId)")
+        return try share.toVault(symmetricKey: symmetricKey)
     }
 
     func createVault(_ vault: VaultProtobuf) async throws -> Share {

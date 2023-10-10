@@ -21,21 +21,28 @@
 
 @testable import Proton_Pass
 import Client
+import Entities
 import UseCases
 
-final class SetShareInviteVaultUseCaseMock: @unchecked Sendable, SetShareInviteVaultUseCase {
+final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, CreateAndMoveItemToNewVaultUseCase {
     // MARK: - execute
+    var executeVaultItemContentThrowableError: Error?
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var invokedExecuteParameters: (vault: SharingVaultData, Void)?
-    var invokedExecuteParametersList = [(vault: SharingVaultData, Void)]()
+    var invokedExecuteParameters: (vault: VaultProtobuf, itemContent: ItemContent)?
+    var invokedExecuteParametersList = [(vault: VaultProtobuf, itemContent: ItemContent)]()
+    var stubbedExecuteResult: Vault!
 
-    func execute(with vault: SharingVaultData) {
+    func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         invokedExecute = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (vault, ())
-        invokedExecuteParametersList.append((vault, ()))
+        invokedExecuteParameters = (vault, itemContent)
+        invokedExecuteParametersList.append((vault, itemContent))
+        if let error = executeVaultItemContentThrowableError {
+            throw error
+        }
         closureExecute()
+        return stubbedExecuteResult
     }
 }
