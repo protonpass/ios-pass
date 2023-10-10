@@ -144,7 +144,7 @@ struct EditableVaultListView: View {
 
             if vault.shared {
                 Button(action: {
-                    viewModel.router.present(for: .manageShareVault(vault, dismissBeforeShowing: false))
+                    viewModel.router.present(for: .manageShareVault(vault, .none))
                 }, label: {
                     Label(title: {
                         Text(vault.isAdmin ? "Manage access" : "View members")
