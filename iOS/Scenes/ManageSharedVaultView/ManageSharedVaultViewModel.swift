@@ -81,7 +81,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func shareWithMorePeople() {
-        router.present(for: .sharingFlow)
+        router.present(for: .sharingFlow(.none))
     }
 
     func fetchShareInformation(displayFetchingLoader: Bool = false) {

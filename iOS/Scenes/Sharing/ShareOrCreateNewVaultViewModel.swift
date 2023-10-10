@@ -20,8 +20,10 @@
 
 import Client
 import Factory
+import Foundation
+import Macro
 
-final class ShareOrCreateNewVaultViewModel {
+final class ShareOrCreateNewVaultViewModel: ObservableObject {
     let vault: VaultListUiModel
     let itemContent: ItemContent
 
@@ -34,12 +36,25 @@ final class ShareOrCreateNewVaultViewModel {
     }
 
     func shareVault() {
-        setShareInviteVault(with: .existing(vault.vault))
-        router.present(for: .sharingFlow)
+        complete(with: .existing(vault.vault))
     }
 
     func createNewVault() {
-        setShareInviteVault(with: .new(.defaultNewSharedVault, itemContent))
-        router.present(for: .sharingFlow)
+        complete(with: .new(.defaultNewSharedVault, itemContent))
+    }
+
+    private func complete(with vault: SharingVault) {
+        setShareInviteVault(with: vault)
+        router.present(for: .sharingFlow(.topMost))
+    }
+}
+
+private extension VaultProtobuf {
+    static var defaultNewSharedVault: Self {
+        var vault = VaultProtobuf()
+        vault.name = #localized("Shared vault")
+        vault.display.color = .color3
+        vault.display.icon = .icon9
+        return vault
     }
 }

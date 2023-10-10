@@ -61,7 +61,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
-    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
+    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -170,7 +170,7 @@ extension CreateEditVaultViewModel {
         case let .editExistingVault(vault):
             editVault(vault)
         case let .editNewVault(_, itemContent):
-            shareInviteService.setCurrentSelectedVault(with: .new(generateVaultProtobuf(), itemContent))
+            setShareInviteVault(with: .new(generateVaultProtobuf(), itemContent))
             finishSaving = true
         }
     }
