@@ -54,7 +54,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -78,7 +78,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            isAllowedToShare = await userSharingStatus()
+            isAllowedToShare = await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
         }
 
         bindValues()

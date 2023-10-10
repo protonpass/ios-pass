@@ -332,7 +332,7 @@ private extension HomepageCoordinator {
         }
     }
 
-    func presentManageShareVault(with vault: Vault, dismissal: Dismissal) {
+    func presentManageShareVault(with vault: Vault, dismissal: SheetDismissal) {
         let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
 
         let completion: () -> Void = { [weak self] in
@@ -351,9 +351,9 @@ private extension HomepageCoordinator {
         switch dismissal {
         case .none:
             present(manageShareVaultView)
-        case .topMostSheet:
+        case .topMost:
             dismissTopMostViewController(animated: true, completion: completion)
-        case .allSheets:
+        case .all:
             dismissAllViewControllers(animated: true, completion: completion)
         }
     }
