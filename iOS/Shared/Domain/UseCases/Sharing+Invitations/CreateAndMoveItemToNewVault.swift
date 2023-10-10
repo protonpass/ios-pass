@@ -22,6 +22,7 @@ import Client
 import Entities
 import UseCases
 
+// sourcery: AutoMockable
 protocol CreateAndMoveItemToNewVaultUseCase: Sendable {
     func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault
 }

@@ -22,6 +22,7 @@
 
 import Client
 
+// sourcery: AutoMockable
 public protocol CreateVaultUseCase: Sendable {
     @discardableResult
     func execute(with vault: VaultProtobuf) async throws -> Vault?
