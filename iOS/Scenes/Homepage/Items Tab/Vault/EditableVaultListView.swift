@@ -130,7 +130,7 @@ struct EditableVaultListView: View {
                 })
             }
 
-            if !vault.isPrimary, vault.isOwner, viewModel.isAllowedToShare, !vault.shared {
+            if viewModel.canShare(vault: vault) {
                 Button(action: {
                     viewModel.share(vault: vault)
                 }, label: {

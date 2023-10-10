@@ -400,12 +400,17 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
-        do {
-            let coordinator = makeCreateEditItemCoordinator()
-            try coordinator.presentCreateItemView(for: itemType)
-        } catch {
-            logger.error(error)
-            bannerManager.displayTopErrorMessage(error)
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let coordinator = makeCreateEditItemCoordinator()
+                try await coordinator.presentCreateItemView(for: itemType)
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 

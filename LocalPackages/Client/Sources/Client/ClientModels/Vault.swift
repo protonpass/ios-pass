@@ -38,6 +38,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
 
     public let shared: Bool
 
+    public let createTime: Int64
+
     public init(id: String,
                 shareId: String,
                 addressId: String,
@@ -48,7 +50,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
                 isOwner: Bool,
                 shareRole: ShareRole,
                 members: Int,
-                shared: Bool) {
+                shared: Bool,
+                createTime: Int64) {
         self.id = id
         self.shareId = shareId
         self.name = name
@@ -60,5 +63,10 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.shareRole = shareRole
         self.members = members
         self.shared = shared
+        self.createTime = createTime
+    }
+
+    public var canEdit: Bool {
+        shareRole != .read
     }
 }
