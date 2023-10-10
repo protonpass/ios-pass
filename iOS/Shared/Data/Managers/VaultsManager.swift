@@ -281,6 +281,10 @@ extension VaultsManager {
         return vaults
     }
 
+    func getAllEditableVaultContents() -> [VaultContentUiModel] {
+        getAllVaultContents().filter(\.vault.canEdit)
+    }
+
     func getAllVaults() -> [Vault] {
         guard case let .loaded(vaults, _) = state else { return [] }
         return vaults.map(\.vault)

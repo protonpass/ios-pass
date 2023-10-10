@@ -42,6 +42,13 @@ public enum VaultSelection {
         }
         return false
     }
+
+    public var preciseVault: Vault? {
+        if case let .precise(vault) = self {
+            return vault
+        }
+        return nil
+    }
 }
 
 extension VaultSelection: Equatable {
