@@ -11520,6 +11520,18 @@
         }
       }
     },
+    "Continue item creation" : {
+      "comment" : "Title for a button in alert when user is trying to create a new item and wants to proceed with creation",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue item creation"
+          }
+        }
+      }
+    },
     "Control what lands in your inbox" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -30099,6 +30111,18 @@
         }
       }
     },
+    "Non editable vault" : {
+      "comment" : "Alert title explaining that the current selected vault is not editable",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non editable vault"
+          }
+        }
+      }
+    },
     "Not now" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -43038,6 +43062,18 @@
         }
       }
     },
+    "Stop item creation process" : {
+      "comment" : "Title for a button in alert when user is trying to create a new item and wants to cancel the creation",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop item creation process"
+          }
+        }
+      }
+    },
     "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -54800,6 +54836,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You currently have no login items"
+          }
+        }
+      }
+    },
+    "You didn't have editable clearance on the selected vault, we have chosen a new one for you" : {
+      "comment" : "The message in the alert explaining why the current vault for the item creation has been changed atomatically",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
           }
         }
       }
