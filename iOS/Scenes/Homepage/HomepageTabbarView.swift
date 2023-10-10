@@ -86,8 +86,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
 
-    private var cancellables = Set<AnyCancellable>()
-
     init(itemsTabView: ItemsTabView, profileTabView: ProfileTabView) {
         self.itemsTabView = itemsTabView
         self.profileTabView = profileTabView

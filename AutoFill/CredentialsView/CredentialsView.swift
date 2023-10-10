@@ -163,7 +163,7 @@ private extension CredentialsView {
                             .font(.callout)
                             .fontWeight(.bold)
                             .foregroundColor(Color(uiColor: PassColor.textNorm)) +
-                            Text(" (\(results.notMatchedItems.count))")
+                            Text(verbatim: " (\(results.notMatchedItems.count))")
                             .font(.callout)
                             .foregroundColor(Color(uiColor: PassColor.textWeak))
 

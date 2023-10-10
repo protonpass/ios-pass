@@ -45,11 +45,8 @@ public extension String {
     }
 
     /// All capitalized. Maximum 2 characters.
-    func initialsRemovingEmojis() -> String {
-        let noEmojisString = String(unicodeScalars.filter { !$0.properties.isEmoji })
-
-        let first2Words = noEmojisString
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+    func initials() -> String {
+        let first2Words = trimmingCharacters(in: .whitespacesAndNewlines)
             .components(separatedBy: " ")
             .prefix(2)
 

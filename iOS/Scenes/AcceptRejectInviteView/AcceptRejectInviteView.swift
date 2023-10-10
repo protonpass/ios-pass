@@ -114,10 +114,8 @@ private extension AcceptRejectInviteView {
     }
 }
 
-struct AcceptRejectInviteView_Previews: PreviewProvider {
-    static var previews: some View {
-        AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: UserInvite.mocked))
-    }
+#Preview("AcceptRejectInviteView Preview") {
+    AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: UserInvite.mocked))
 }
 
 private extension UserInvite {

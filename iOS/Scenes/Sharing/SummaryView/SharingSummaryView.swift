@@ -110,7 +110,7 @@ private extension SharingSummaryView {
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             HStack(spacing: kItemDetailSectionPadding) {
-                SquircleThumbnail(data: .initials(viewModel.infos?.email?.initialsRemovingEmojis() ?? ""),
+                SquircleThumbnail(data: .initials(viewModel.infos?.email?.initials() ?? ""),
                                   tintColor: ItemType.login.tintColor,
                                   backgroundColor: ItemType.login.backgroundColor)
                 VStack(alignment: .leading, spacing: 4) {
@@ -172,8 +172,6 @@ private extension SharingSummaryView {
     }
 }
 
-struct SharingSummaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        SharingSummaryView()
-    }
+#Preview("SharingSummaryView Preview") {
+    SharingSummaryView()
 }

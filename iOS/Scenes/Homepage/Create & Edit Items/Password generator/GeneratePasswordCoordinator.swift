@@ -76,8 +76,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
 
         generatePasswordViewModel = viewModel
         sheetPresentationController = viewController.sheetPresentationController
-        updateSheetHeight(passwordType: viewModel.type,
-                          isShowingAdvancedOptions: viewModel.isShowingAdvancedOptions)
+        updateSheetHeight(isShowingAdvancedOptions: viewModel.isShowingAdvancedOptions)
 
         delegate.generatePasswordCoordinatorWantsToPresent(viewController: viewController)
     }
@@ -86,7 +85,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
 // MARK: - Private APIs
 
 extension GeneratePasswordCoordinator {
-    func updateSheetHeight(passwordType: PasswordType, isShowingAdvancedOptions: Bool) {
+    func updateSheetHeight(isShowingAdvancedOptions: Bool) {
         guard let sheetPresentationController else {
             assertionFailure("sheetPresentationController is null. Coordinator is not yet started.")
             return
@@ -123,9 +122,8 @@ extension GeneratePasswordCoordinator {
 // MARK: - GeneratePasswordViewModelUiDelegate
 
 extension GeneratePasswordCoordinator: GeneratePasswordViewModelUiDelegate {
-    func generatePasswordViewModelWantsToUpdateSheetHeight(passwordType: PasswordType,
-                                                           isShowingAdvancedOptions: Bool) {
-        updateSheetHeight(passwordType: passwordType, isShowingAdvancedOptions: isShowingAdvancedOptions)
+    func generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: Bool) {
+        updateSheetHeight(isShowingAdvancedOptions: isShowingAdvancedOptions)
     }
 }
 

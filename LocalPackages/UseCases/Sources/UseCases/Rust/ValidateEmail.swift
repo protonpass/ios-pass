@@ -1,6 +1,7 @@
 //
-// SanitizeTotpUriForEditingTests.swift
-// Proton Pass - Created on 15/09/2023.
+//
+// ValidateEmail.swift
+// Proton Pass - Created on 28/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,12 +18,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import UseCases
-import XCTest
+@preconcurrency import PassRustCore
 
-final class SanitizeTotpUriForEditingTests: XCTestCase {
-    func testFunction() {
-        XCTAssertTrue(true)
+public protocol ValidateEmailUseCase: Sendable {
+    func execute(email: String) -> Bool
+}
+
+public extension ValidateEmailUseCase {
+    func callAsFunction(email: String) -> Bool {
+        execute(email: email)
+    }
+}
+
+public final class ValidateEmail: ValidateEmailUseCase {
+    private let validator: EmailValidatorProtocol
+
+    public init(validator: EmailValidatorProtocol = EmailValidator()) {
+        self.validator = validator
+    }
+
+    public func execute(email: String) -> Bool {
+        validator.isEmailValid(email: email)
     }
 }

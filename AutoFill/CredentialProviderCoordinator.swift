@@ -40,7 +40,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let appData = resolve(\SharedDataContainer.appData)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -60,7 +59,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
-    @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
 
     /// Derived properties
@@ -243,26 +241,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         }
     }
 
-    final class WeakLimitationCounter: LimitationCounterProtocol {
-        weak var actualCounter: LimitationCounterProtocol?
-
-        init(actualCounter: LimitationCounterProtocol? = nil) {
-            self.actualCounter = actualCounter
-        }
-
-        func getAliasCount() -> Int {
-            actualCounter?.getAliasCount() ?? 0
-        }
-
-        func getVaultCount() -> Int {
-            actualCounter?.getVaultCount() ?? 0
-        }
-
-        func getTOTPCount() -> Int {
-            actualCounter?.getTOTPCount() ?? 0
-        }
-    }
-
     private func makeSymmetricKeyAndRepositories() {
         guard let userData = appData.userData,
               let symmetricKey = try? appData.getSymmetricKey() else { return }
@@ -418,10 +396,7 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    // swiftlint:disable:next function_parameter_count
     func showCreateLoginView(shareId: String,
-                             itemRepository: ItemRepositoryProtocol,
-                             aliasRepository: AliasRepositoryProtocol,
                              upgradeChecker: UpgradeCheckerProtocol,
                              vaults: [Vault],
                              url: URL?) {
@@ -488,7 +463,7 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func present(_ view: some View, animated: Bool = true, dismissible: Bool = false) {
+    func present(_ view: some View) {
         let viewController = UIHostingController(rootView: view)
         present(viewController)
     }
@@ -559,14 +534,11 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
         guard let itemRepository,
-              let aliasRepository,
               let shareRepository,
               let upgradeChecker,
               let symmetricKey else { return }
         if let vaultListUiModels {
             showCreateLoginView(shareId: shareId,
-                                itemRepository: itemRepository,
-                                aliasRepository: aliasRepository,
                                 upgradeChecker: upgradeChecker,
                                 vaults: vaultListUiModels.map(\.vault),
                                 url: url)
@@ -679,9 +651,6 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
 
     // Not applicable
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType) {}
-
-    // Not applicable
-    func createEditItemViewModelDidTrashItem(_ item: ItemIdentifiable, type: ItemContentType) {}
 }
 
 // MARK: - CreateEditLoginViewModelDelegate

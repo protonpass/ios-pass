@@ -23,15 +23,16 @@ import XCTest
 
 final class StringExtensionTests: XCTestCase {
     func testGenerateInitials() {
-        XCTAssertEqual("John doe wick".initialsRemovingEmojis(), "JD")
-        XCTAssertEqual("john doe wick".initialsRemovingEmojis(), "JD")
-        XCTAssertEqual("john-doe wick".initialsRemovingEmojis(), "JW")
-        XCTAssertEqual("   john wick doe".initialsRemovingEmojis(), "JW")
-        XCTAssertEqual("😊john↑doe".initialsRemovingEmojis(), "JO")
-        XCTAssertEqual("😊j😊ohndoe".initialsRemovingEmojis(), "JO")
-        XCTAssertEqual("😊john 😊😊😊😊wick".initialsRemovingEmojis(), "JW")
-        XCTAssertEqual("j".initialsRemovingEmojis(), "J")
-        XCTAssertEqual("".initialsRemovingEmojis(), "")
+        XCTAssertEqual("John doe wick".initials(), "JD")
+        XCTAssertEqual("john doe wick".initials(), "JD")
+        XCTAssertEqual("john-doe wick".initials(), "JW")
+        XCTAssertEqual("   john wick doe".initials(), "JW")
+        XCTAssertEqual("john↑doe".initials(), "JO")
+        XCTAssertEqual("johndoe".initials(), "JO")
+        XCTAssertEqual("john wick".initials(), "JW")
+        XCTAssertEqual("j".initials(), "J")
+        XCTAssertEqual("".initials(), "")
+        XCTAssertEqual("012".initials(), "01")
     }
 
     func testCharacterCount() {
