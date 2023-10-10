@@ -55,7 +55,7 @@ private extension SharingSummaryView {
     @ViewBuilder
     var headerView: some View {
         let email = attributedText(for: viewModel.infos?.email ?? "")
-        let vaultName = attributedText(for: #localized("%@ vault", viewModel.infos?.vault?.name ?? ""))
+        let vaultName = attributedText(for: #localized("%@ vault", viewModel.infos?.vaultName ?? ""))
         let itemCount = attributedText(for: #localized("%lld item(s)", viewModel.infos?.itemsNum ?? 0))
         let permission = attributedText(for: viewModel.infos?.role?.summary ?? "")
         VStack(alignment: .leading, spacing: 11) {
@@ -85,16 +85,16 @@ private extension SharingSummaryView {
                 .font(.body)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
-            if let vault = viewModel.infos?.vault {
+            if let infos = viewModel.infos {
                 VaultRow(thumbnail: {
-                             CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                                          iconColor: vault.displayPreferences.color.color.color,
-                                          backgroundColor: vault.displayPreferences.color.color.color
+                             CircleButton(icon: infos.displayPreferences.icon.icon.bigImage,
+                                          iconColor: infos.displayPreferences.color.color.color,
+                                          backgroundColor: infos.displayPreferences.color.color.color
                                               .withAlphaComponent(0.16))
                          },
-                         title: vault.name,
+                         title: infos.vaultName ?? "",
                          itemCount: viewModel.infos?.itemsNum ?? 0,
-                         isShared: vault.shared,
+                         isShared: infos.shared,
                          isSelected: false,
                          height: 60)
             }

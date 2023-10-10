@@ -26,39 +26,54 @@ import CryptoKit
 import Entities
 import ProtonCoreCrypto
 import ProtonCoreLogin
+import UseCases
 
+/// Make an invitation and return the shared `Vault`
 protocol SendVaultShareInviteUseCase: Sendable {
-    func execute(with infos: SharingInfos) async throws -> Bool
+    func execute(with infos: SharingInfos) async throws -> Vault
 }
 
 extension SendVaultShareInviteUseCase {
-    func callAsFunction(with infos: SharingInfos) async throws -> Bool {
+    func callAsFunction(with infos: SharingInfos) async throws -> Vault {
         try await execute(with: infos)
     }
 }
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
+    private let createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase
+    private let shareInviteService: ShareInviteServiceProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
     private let syncEventLoop: SyncEventLoopProtocol
 
-    init(passKeyManager: PassKeyManagerProtocol,
+    init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
+         shareInviteService: ShareInviteServiceProtocol,
+         passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
          syncEventLoop: SyncEventLoopProtocol) {
+        self.createAndMoveItemToNewVault = createAndMoveItemToNewVault
+        self.shareInviteService = shareInviteService
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userData = userData
         self.syncEventLoop = syncEventLoop
     }
 
-    func execute(with infos: SharingInfos) async throws -> Bool {
-        guard let vault = infos.vault,
+    func execute(with infos: SharingInfos) async throws -> Vault {
+        guard let sharingVault = infos.vault,
               let email = infos.email,
               let role = infos.role,
               let publicReceiverKeys = infos.receiverPublicKeys else {
             throw SharingError.incompleteInformation
+        }
+
+        let vault = switch sharingVault {
+        case let .existing(vault):
+            vault
+        case let .new(vaultProtobuf, itemContent):
+            try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
         }
 
         let sharedKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
@@ -72,14 +87,19 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
                                          userData: userData,
                                          vaultKey: sharedKey)
 
-        let result = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
-                                                                keys: [signedKeys],
-                                                                email: email,
-                                                                targetType: .vault,
-                                                                shareRole: role)
-        syncEventLoop.forceSync()
+        let invited = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
+                                                                 keys: [signedKeys],
+                                                                 email: email,
+                                                                 targetType: .vault,
+                                                                 shareRole: role)
 
-        return result
+        if invited {
+            syncEventLoop.forceSync()
+            shareInviteService.resetShareInviteInformations()
+            return vault
+        }
+
+        throw SharingError.failedToInvite
     }
 }
 
