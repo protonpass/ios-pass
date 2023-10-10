@@ -11520,6 +11520,17 @@
         }
       }
     },
+    "Continue item creation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue item creation"
+          }
+        }
+      }
+    },
     "Control what lands in your inbox" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -30092,6 +30103,17 @@
         }
       }
     },
+    "Non editable vault" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non editable vault"
+          }
+        }
+      }
+    },
     "Not now" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -43024,6 +43046,17 @@
         }
       }
     },
+    "Stop item creation process" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop item creation process"
+          }
+        }
+      }
+    },
     "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -54775,6 +54808,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You currently have no login items"
+          }
+        }
+      }
+    },
+    "You didn't have editable clearance on the selected vault, we have chosen a new one for you" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You didn't have editable clearance on the selected vault, we have chosen a new one for you"
           }
         }
       }

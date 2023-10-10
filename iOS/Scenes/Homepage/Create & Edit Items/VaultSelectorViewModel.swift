@@ -23,10 +23,6 @@ import Combine
 import Core
 import Factory
 
-protocol VaultSelectorViewModelDelegate: AnyObject {
-    func vaultSelectorViewModelDidSelect(vault: Vault)
-}
-
 final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -35,25 +31,24 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     let allVaults: [VaultListUiModel]
 
-    @Published private(set) var selectedVault: Vault
+    @Published private(set) var selectedVault: Vault?
     @Published private(set) var isFreeUser = false
-
-    weak var delegate: VaultSelectorViewModelDelegate?
 
     private var isPrimaryVaultRemoved = false
 
-    init(allVaults: [VaultListUiModel], selectedVault: Vault) {
-        self.allVaults = allVaults
-        self.selectedVault = selectedVault
+    init() {
+        allVaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
+        selectedVault = vaultsManager.vaultSelection.preciseVault
 
         setup()
     }
 
     func select(vault: Vault) {
-        delegate?.vaultSelectorViewModelDidSelect(vault: vault)
+        vaultsManager.select(.precise(vault))
     }
 
     func upgrade() {

@@ -44,16 +44,16 @@ public extension [Vault] {
             if oldestOwned == nil, vault.isOwner {
                 oldestOwned = vault
             } else {
-                if var oldestOwned,
+                if let previousOldestOwned = oldestOwned,
                    vault.isOwner,
-                   oldestOwned.createTime > vault.createTime {
+                   previousOldestOwned.createTime > vault.createTime {
                     secondOldest = oldestOwned
                     oldestOwned = vault
                 } else {
                     if secondOldest == nil {
                         secondOldest = vault
-                    } else if var secondOldest,
-                              secondOldest.createTime > vault.createTime {
+                    } else if let previousSecondOldest = secondOldest,
+                              previousSecondOldest.createTime > vault.createTime {
                         secondOldest = vault
                     }
                 }
