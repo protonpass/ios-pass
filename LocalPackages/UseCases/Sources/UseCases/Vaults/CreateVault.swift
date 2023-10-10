@@ -48,6 +48,6 @@ public final class CreateVault: CreateVaultUseCase {
         let share = try await repository.createVault(vault)
         vaultsManager.refresh()
 
-        return try await repository.getVaults().first { $0.shareId == share.shareID }
+        return try await repository.getVault(shareId: share.shareID)
     }
 }
