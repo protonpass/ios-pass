@@ -49,8 +49,6 @@ enum ItemMode {
             false
         }
     }
-
-    var isCreateMode: Bool { !isEditMode }
 }
 
 enum ItemCreationType {
@@ -118,12 +116,6 @@ class BaseCreateEditItemViewModel {
         checkIfAbleToAddMoreCustomFields()
     }
 
-    /// To be overridden by subclasses
-    var isSaveable: Bool { false }
-
-    /// To be overridden by subclasses
-    var interpretor: ScanInterpreting { ScanInterpreter() }
-
     func bindValues() {}
 
     // swiftlint:disable:next unavailable_function
@@ -132,7 +124,7 @@ class BaseCreateEditItemViewModel {
     }
 
     // swiftlint:disable:next unavailable_function
-    func generateItemContent() -> ItemContentProtobuf {
+    func generateItemContent() throws -> ItemContentProtobuf {
         fatalError("Must be overridden by subclasses")
     }
 
@@ -198,7 +190,7 @@ private extension BaseCreateEditItemViewModel {
 
     func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
         let shareId = selectedVault.shareId
-        let itemContent = generateItemContent()
+        let itemContent = try generateItemContent()
 
         switch type {
         case .alias:
@@ -238,7 +230,7 @@ private extension BaseCreateEditItemViewModel {
                                                              itemId: itemId) else {
             throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
         }
-        let newItemContent = generateItemContent()
+        let newItemContent = try generateItemContent()
         try await itemRepository.updateItem(oldItem: oldItem.item,
                                             newItemContent: newItemContent,
                                             shareId: oldItem.shareId)
