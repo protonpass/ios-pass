@@ -1,6 +1,6 @@
 //
-// SharingError.swift
-// Proton Pass - Created on 25/07/2023.
+// Constants.swift
+// Proton Pass - Created on 09/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,12 +20,4 @@
 
 import Foundation
 
-public enum SharingError: LocalizedError, Equatable {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-    case noPublicKeyAssociatedWithEmail
-    case invalidKeyOrAddress
-    case cannotDecode
-    case failedToCreateNewVault
-    case failedToInvite
-}
+public let kItemDetailSectionPadding: CGFloat = 16
