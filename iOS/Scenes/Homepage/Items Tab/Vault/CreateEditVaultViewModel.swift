@@ -38,7 +38,7 @@ enum VaultColorIcon {
 
 enum VaultMode {
     case create
-    case editCreatedVault(Vault)
+    case editExistingVault(Vault)
     case editNewVault(VaultProtobuf, ItemContent)
 }
 
@@ -69,7 +69,7 @@ final class CreateEditVaultViewModel: ObservableObject {
         switch mode {
         case .create:
             #localized("Create vault")
-        case .editCreatedVault:
+        case .editExistingVault:
             #localized("Save")
         case .editNewVault:
             #localized("Update vault")
@@ -83,7 +83,7 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedColor = .color1
             selectedIcon = .icon1
             title = ""
-        case let .editCreatedVault(vault):
+        case let .editExistingVault(vault):
             selectedColor = vault.displayPreferences.color.color
             selectedIcon = vault.displayPreferences.icon.icon
             title = vault.name
@@ -104,7 +104,7 @@ private extension CreateEditVaultViewModel {
             guard let self else { return }
             do {
                 // Primary vault can always be edited
-                if case let .editCreatedVault(vault) = self.mode, vault.isPrimary {
+                if case let .editExistingVault(vault) = self.mode, vault.isPrimary {
                     self.canCreateOrEdit = true
                 } else {
                     canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
@@ -167,7 +167,7 @@ extension CreateEditVaultViewModel {
         switch mode {
         case .create:
             createVault()
-        case let .editCreatedVault(vault):
+        case let .editExistingVault(vault):
             editVault(vault)
         case let .editNewVault(_, itemContent):
             shareInviteService.setCurrentSelectedVault(with: .new(generateVaultProtobuf(), itemContent))
