@@ -18,12 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+public struct WritableOldestVaults {
+    public let owned: Vault?
+    public let other: Vault?
+
+    static var empty: WritableOldestVaults {
+        WritableOldestVaults(owned: nil, other: nil)
+    }
+
+    public func isOneOf(shareId: String) -> Bool {
+        shareId == owned?.shareId || shareId == other?.shareId
+    }
+}
+
 public extension [Vault] {
     /// This return the 2 oldest vaults to witch the users has write value.
     /// The first vault always belongs the the current user
-    var twoOldestVaults: (oldestOwned: Vault?, secondOldest: Vault?) {
+    var twoOldestVaults: WritableOldestVaults {
         if self.isEmpty {
-            return (oldestOwned: nil, secondOldest: nil)
+            return WritableOldestVaults.empty
         }
         var oldestOwned: Vault?
         var secondOldest: Vault?
@@ -46,6 +59,6 @@ public extension [Vault] {
                 }
             }
         }
-        return (oldestOwned: oldestOwned, secondOldest: secondOldest)
+        return WritableOldestVaults(owned: oldestOwned, other: secondOldest)
     }
 }
