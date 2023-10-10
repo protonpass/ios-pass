@@ -38,6 +38,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     let isShownAsSheet: Bool
     private let favIconRepository = resolve(\SharedRepositoryContainer.favIconRepository)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let syncEventLoop: SyncEventLoopActionProtocol = resolve(\SharedServiceContainer.syncEventLoop)
@@ -48,6 +49,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
+    @Published private(set) var primaryVaultRemoved = false
+
     @Published var displayFavIcons: Bool {
         didSet {
             preferences.displayFavIcons = displayFavIcons
@@ -70,21 +73,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         displayFavIcons = preferences.displayFavIcons
         shareClipboard = preferences.shareClipboard
 
-        preferences
-            .objectWillChange
-            .sink { [weak self] in
-                guard let self else {
-                    return
-                }
-                // These options are changed in other pages by passing a references
-                // of Preferences. So we listen to changes and update here.
-                selectedBrowser = preferences.browser
-                selectedTheme = preferences.theme
-                selectedClipboardExpiration = preferences.clipboardExpiration
-            }
-            .store(in: &cancellables)
-
-        vaultsManager.attach(to: self, storeIn: &cancellables)
+        setup()
     }
 }
 
@@ -145,6 +134,29 @@ extension SettingsViewModel {
 // MARK: - Private APIs
 
 private extension SettingsViewModel {
+    func setup() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            primaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
+        }
+
+        preferences
+            .objectWillChange
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
+                // These options are changed in other pages by passing a references
+                // of Preferences. So we listen to changes and update here.
+                selectedBrowser = preferences.browser
+                selectedTheme = preferences.theme
+                selectedClipboardExpiration = preferences.clipboardExpiration
+            }
+            .store(in: &cancellables)
+
+        vaultsManager.attach(to: self, storeIn: &cancellables)
+    }
+
     func emptyFavIconCache() {
         Task { [weak self] in
             guard let self else { return }
