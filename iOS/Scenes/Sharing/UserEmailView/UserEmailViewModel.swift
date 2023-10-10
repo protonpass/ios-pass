@@ -31,7 +31,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
-    @Published private(set) var vault: SharingVault?
+    @Published private(set) var vault: SharingVaultData?
     @Published private(set) var error: String?
     @Published private(set) var isChecking = false
 
