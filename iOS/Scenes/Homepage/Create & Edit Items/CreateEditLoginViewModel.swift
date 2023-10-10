@@ -128,7 +128,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func generateItemContent() throws -> ItemContentProtobuf {
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
-        let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri, editedUri: totpUri)
+        let sanitizedTotpUri = if totpUri.isEmpty {
+            ""
+        } else {
+            try sanitizeTotpUriForSaving(originalUri: originalTotpUri, editedUri: totpUri)
+        }
+
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
                                                     totpUri: sanitizedTotpUri,
