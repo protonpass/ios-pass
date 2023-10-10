@@ -43,7 +43,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         complete(with: .new(.defaultNewSharedVault, itemContent))
     }
 
-    private func complete(with vault: SharingVault) {
+    private func complete(with vault: SharingVaultData) {
         setShareInviteVault(with: vault)
         router.present(for: .sharingFlow(.topMost))
     }
