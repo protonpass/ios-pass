@@ -24,12 +24,11 @@ import Core
 import DocScanner
 import Entities
 import Factory
+import Foundation
 import Macro
 import ProtonCoreLogin
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
-                                                   delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate)
@@ -64,6 +63,8 @@ class BaseCreateEditItemViewModel {
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var recentlyAddedOrEditedField: CustomFieldUiModel?
+    @Published var isShowingNonEditableAlert = false
+
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
             didEditSomething = true
@@ -84,6 +85,7 @@ class BaseCreateEditItemViewModel {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -109,7 +111,16 @@ class BaseCreateEditItemViewModel {
         guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
             throw PPError.vault(.vaultNotFound(vaultShareId))
         }
-        selectedVault = vault
+
+        if vault.canEdit {
+            selectedVault = vault
+        } else {
+            guard let vault = vaults.twoOldestVaults.owned ?? vaults.first else {
+                throw PPError.vault(.vaultNotFound(vaultShareId))
+            }
+            isShowingNonEditableAlert = true
+            selectedVault = vault
+        }
         self.mode = mode
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
@@ -161,6 +172,19 @@ private extension BaseCreateEditItemViewModel {
                 router.display(element: .displayErrorBanner(error))
             }
         }
+
+        vaultsManager.$vaultSelection
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] selection in
+                guard let self,
+                      let newSelectedVault = selection.preciseVault,
+                      newSelectedVault != selectedVault else {
+                    return
+                }
+                selectedVault = newSelectedVault
+            }
+            .store(in: &cancellables)
     }
 
     func setMainVault() async {
@@ -290,15 +314,7 @@ extension BaseCreateEditItemViewModel {
     }
 
     func changeVault() {
-        delegate?.createEditItemViewModelWantsToChangeVault(selectedVault: selectedVault, delegate: self)
-    }
-}
-
-// MARK: - VaultSelectorViewModelDelegate
-
-extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
-    func vaultSelectorViewModelDidSelect(vault: Vault) {
-        selectedVault = vault
+        router.present(for: .vaultSelection)
     }
 }
 

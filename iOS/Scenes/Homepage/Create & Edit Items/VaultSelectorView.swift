@@ -65,7 +65,7 @@ struct VaultSelectorView: View {
                      title: vault.vault.name,
                      itemCount: vault.itemCount,
                      isShared: vault.vault.shared,
-                     isSelected: vault.vault.shareId == viewModel.selectedVault.shareId,
+                     isSelected: vault.vault.shareId == viewModel.selectedVault?.shareId,
                      height: 74)
                 .padding(.horizontal)
         })

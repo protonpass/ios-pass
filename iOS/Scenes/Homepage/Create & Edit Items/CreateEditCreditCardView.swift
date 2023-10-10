@@ -46,6 +46,8 @@ struct CreateEditCreditCardView: View {
         .navigationViewStyle(.stack)
         .obsoleteItemAlert(isPresented: $viewModel.isObsolete, onAction: dismiss.callAsFunction)
         .discardChangesAlert(isPresented: $isShowingDiscardAlert, onDiscard: dismiss.callAsFunction)
+        .nonEditableVaultAlert(isPresented: $viewModel.isShowingNonEditableAlert,
+                               onDiscard: dismiss.callAsFunction)
     }
 }
 

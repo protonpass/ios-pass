@@ -281,6 +281,8 @@ private extension HomepageCoordinator {
                     itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
+                case .vaultSelection:
+                    createEditItemViewModelWantsToChangeVault()
                 }
             }
             .store(in: &cancellables)
@@ -1013,12 +1015,8 @@ extension HomepageCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
-                                                   delegate: VaultSelectorViewModelDelegate) {
-        let vaultContents = vaultsManager.getAllVaultContents()
-        let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
-                                               selectedVault: selectedVault)
-        viewModel.delegate = delegate
+    func createEditItemViewModelWantsToChangeVault() {
+        let viewModel = VaultSelectorViewModel()
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 

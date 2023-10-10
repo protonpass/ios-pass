@@ -291,6 +291,8 @@ private extension CredentialProviderCoordinator {
                     createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
                 case let .mailboxView(mailboxSelection, _):
                     createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
+                case .vaultSelection:
+                    createEditItemViewModelWantsToChangeVault()
                 default:
                     break
                 }
@@ -594,12 +596,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
-                                                   delegate: VaultSelectorViewModelDelegate) {
+    func createEditItemViewModelWantsToChangeVault() {
         guard let vaultListUiModels, let rootViewController else { return }
-        let viewModel = VaultSelectorViewModel(allVaults: vaultListUiModels,
-                                               selectedVault: selectedVault)
-        viewModel.delegate = delegate
+        let viewModel = VaultSelectorViewModel()
+
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
