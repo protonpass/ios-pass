@@ -255,8 +255,8 @@ private extension HomepageCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case .sharingFlow:
-                    presentSharingFlow()
+                case let .sharingFlow(dismissal):
+                    presentSharingFlow(dismissal: dismissal)
                 case let .manageShareVault(vault, dismissal):
                     presentManageShareVault(with: vault, dismissal: dismissal)
                 case .filterItems:
@@ -318,9 +318,20 @@ private extension HomepageCoordinator {
 
     // MARK: - UI view presenting functions
 
-    func presentSharingFlow() {
-        let userEmailView = UserEmailView()
-        present(userEmailView)
+    func presentSharingFlow(dismissal: SheetDismissal) {
+        let completion: () -> Void = { [weak self] in
+            guard let self else { return }
+            present(UserEmailView())
+        }
+
+        switch dismissal {
+        case .none:
+            completion()
+        case .topMost:
+            dismissTopMostViewController(animated: true, completion: completion)
+        case .all:
+            dismissAllViewControllers(animated: true, completion: completion)
+        }
     }
 
     func createEditVaultView(vault: Vault?) {
