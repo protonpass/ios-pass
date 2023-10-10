@@ -22,6 +22,7 @@
 
 import Client
 
+// sourcery: AutoMockable
 public protocol MoveItemsBetweenVaultsUseCase: Sendable {
     func execute(movingContext: MovingContext) async throws
 }
