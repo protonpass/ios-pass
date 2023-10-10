@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 import CryptoKit
 import Entities
 import ProtonCoreCrypto
@@ -65,10 +66,13 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
 
         let vaultKeyArmorMessage = ArmoredMessage(value: armoredEncryptedVaultKeyData)
         let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
+        let context = VerificationContext(value: Constants.existingUserSharingSignatureContext,
+                                          required: .always)
 
         let decode: VerifiedData = try Decryptor.decryptAndVerify(decryptionKeys: invitedAddressKeys,
                                                                   value: vaultKeyArmorMessage,
-                                                                  verificationKeys: armoredInviterPublicKeys)
+                                                                  verificationKeys: armoredInviterPublicKeys,
+                                                                  verificationContext: context)
 
         guard let content = try vaultData.content.base64Decode() else {
             throw SharingError.cannotDecode

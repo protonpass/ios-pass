@@ -1,6 +1,7 @@
 //
-// SanitizeTotpUriForEditing.swift
-// Proton Pass - Created on 15/09/2023.
+//
+// GetRustLibraryVersion.swift
+// Proton Pass - Created on 28/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,25 +18,24 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import PassRustCore
 
-/// Check if the given URI has default parameters (SHA1, 6 digits, 30 seconds) or not.
-/// If yes, return only the secret
-/// If no, return the URI as it is
-/// This is to make it easier for users because most of the time, TOTP URIs contain default parameters
-public protocol SanitizeTotpUriForEditingUseCase: Sendable {
-    func execute(_ uri: String) -> String
+public protocol GetRustLibraryVersionUseCase: Sendable {
+    func execute() -> String
 }
 
-extension SanitizeTotpUriForEditingUseCase {
-    func callAsFunction(_ uri: String) -> String {
-        execute(uri)
+public extension GetRustLibraryVersionUseCase {
+    func callAsFunction() -> String {
+        execute()
     }
 }
 
-public final class SanitizeTotpUriForEditing: SanitizeTotpUriForEditingUseCase {
+public final class GetRustLibraryVersion: GetRustLibraryVersionUseCase {
     public init() {}
 
-    public func execute(_ uri: String) -> String { "" }
+    public func execute() -> String {
+        libraryVersion()
+    }
 }

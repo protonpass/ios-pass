@@ -1,6 +1,6 @@
 //
-// SuffixSelectionViewModel.swift
-// Proton Pass - Created on 03/05/2023.
+// TOTP.swift
+// Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,27 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Combine
-import Core
-import Factory
+import Foundation
 
-final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
+public enum TotpAlgorithm {
+    case sha1, sha256, sha512
+}
 
-    @Published private(set) var shouldUpgrade = false
+public struct TotpComponents {
+    public let secret: String
+    public let label: String?
+    public let issuer: String?
+    public let algorithm: TotpAlgorithm
+    public let digits: Int
+    public let period: Int
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
-    let suffixSelection: SuffixSelection
-    private var cancellables = Set<AnyCancellable>()
-
-    init(suffixSelection: SuffixSelection) {
-        self.suffixSelection = suffixSelection
-        suffixSelection.attach(to: self, storeIn: &cancellables)
-    }
-
-    func upgrade() {
-        router.present(for: .upgradeFlow)
+    public init(secret: String,
+                label: String?,
+                issuer: String?,
+                algorithm: TotpAlgorithm,
+                digits: Int,
+                period: Int) {
+        self.secret = secret
+        self.label = label
+        self.issuer = issuer
+        self.algorithm = algorithm
+        self.digits = digits
+        self.period = period
     }
 }

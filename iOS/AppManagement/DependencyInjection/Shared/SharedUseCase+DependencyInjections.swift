@@ -23,6 +23,7 @@ import Core
 import CryptoKit
 import Factory
 import LocalAuthentication
+import UseCases
 
 final class SharedUseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = SharedUseCasesContainer()
@@ -117,5 +118,17 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var processVaultSyncEvent: Factory<ProcessVaultSyncEventUseCase> {
         self { ProcessVaultSyncEvent() }
+    }
+}
+
+// MARK: TOTP
+
+extension SharedUseCasesContainer {
+    var sanitizeTotpUriForEditing: Factory<SanitizeTotpUriForEditingUseCase> {
+        self { SanitizeTotpUriForEditing() }
+    }
+
+    var sanitizeTotpUriForSaving: Factory<SanitizeTotpUriForSavingUseCase> {
+        self { SanitizeTotpUriForSaving() }
     }
 }

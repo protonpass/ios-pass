@@ -30,6 +30,7 @@ import Factory
 import Macro
 import MBProgressHUD
 import ProtonCoreAccountDeletion
+import ProtonCoreFeatureSwitch
 import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUIFoundations
@@ -48,19 +49,16 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
+    private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
 
@@ -466,17 +464,22 @@ private extension HomepageCoordinator {
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            paymentsManager.upgradeSubscription { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(inAppPurchasePlan):
-                    if inAppPurchasePlan != nil {
-                        refreshPlan()
-                    } else {
-                        logger.debug("Payment is done but no plan is purchased")
+            if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+                paymentsUI.showUpgradePlan(presentationType: .modal,
+                                           backendFetch: true) { _ in }
+            } else {
+                paymentsManager.upgradeSubscription { [weak self] result in
+                    guard let self else { return }
+                    switch result {
+                    case let .success(inAppPurchasePlan):
+                        if inAppPurchasePlan != nil {
+                            refreshPlan()
+                        } else {
+                            logger.debug("Payment is done but no plan is purchased")
+                        }
+                    case let .failure(error):
+                        bannerManager.displayTopErrorMessage(error)
                     }
-                case let .failure(error):
-                    bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
@@ -833,10 +836,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         showView(view: view, asSheet: asSheet)
     }
 
-    func profileTabViewModelWantsToShowAcknowledgments() {
-        print(#function)
-    }
-
     func profileTabViewModelWantsToShowFeedback() {
         let view = FeedbackChannelsView { [weak self] selectedChannel in
             guard let self else { return }
@@ -936,11 +935,10 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func settingsViewModelWantsToEditDefaultBrowser(supportedBrowsers: [Browser]) {
-        let view = EditDefaultBrowserView(supportedBrowsers: supportedBrowsers, preferences: preferences)
-        let viewController = UIHostingController(rootView: view)
+    func settingsViewModelWantsToEditDefaultBrowser() {
+        let viewController = UIHostingController(rootView: EditDefaultBrowserView())
 
-        let customHeight = Int(OptionRowHeight.compact.value) * supportedBrowsers.count + 140
+        let customHeight = Int(OptionRowHeight.compact.value) * Browser.allCases.count + 100
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 

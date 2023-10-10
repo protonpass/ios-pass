@@ -1,6 +1,7 @@
 //
-// SuffixSelectionViewModel.swift
-// Proton Pass - Created on 03/05/2023.
+//
+// ValidateAliasPrefix.swift
+// Proton Pass - Created on 28/09/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,28 +18,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Client
-import Combine
-import Core
-import Factory
+@preconcurrency import PassRustCore
 
-final class SuffixSelectionViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
+public protocol ValidateAliasPrefixUseCase: Sendable {
+    func execute(prefix: String) throws
+}
 
-    @Published private(set) var shouldUpgrade = false
+public extension ValidateAliasPrefixUseCase {
+    func callAsFunction(prefix: String) throws {
+        try execute(prefix: prefix)
+    }
+}
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+public final class ValidateAliasPrefix: ValidateAliasPrefixUseCase {
+    private let validator: AliasPrefixValidatorProtocol
 
-    let suffixSelection: SuffixSelection
-    private var cancellables = Set<AnyCancellable>()
-
-    init(suffixSelection: SuffixSelection) {
-        self.suffixSelection = suffixSelection
-        suffixSelection.attach(to: self, storeIn: &cancellables)
+    public init(validator: AliasPrefixValidatorProtocol = AliasPrefixValidator()) {
+        self.validator = validator
     }
 
-    func upgrade() {
-        router.present(for: .upgradeFlow)
+    public func execute(prefix: String) throws {
+        try validator.validate(prefix: prefix)
     }
 }

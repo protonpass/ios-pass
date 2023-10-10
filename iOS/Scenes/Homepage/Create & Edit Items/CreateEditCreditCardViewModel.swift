@@ -38,7 +38,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override func itemContentType() -> ItemContentType { .creditCard }
 
-    override var isSaveable: Bool { !title.isEmpty }
+    var isSaveable: Bool { !title.isEmpty }
 
     var shouldUpgrade: Bool {
         // Free users can not create more credit cards but can only update
@@ -105,7 +105,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
             .store(in: &cancellables)
     }
 
-    override var interpretor: ScanInterpreting {
+    var interpretor: ScanInterpreting {
         ScanInterpreter(type: .card)
     }
 

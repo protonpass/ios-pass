@@ -1,3 +1,40 @@
+## Version 1.5.0
+Features:
+- Added support for Italian, Georgian, Spanish, Spanish (Latin America), Belarusian, Czech, Finnish, Greek, Japanese, Korean, Polish, Portuguese, Portuguese (Brazil), Romanian, Slovak, Swedish, Turkish, Ukrainian & Vietnamese languages
+
+Improvements:
+- Improved AutoFill extension’s reliability
+- Improved “Default browser” settings
+
+Others:
+- Only show secret when editing TOTP URI if the URI has default parameters
+- Fixed empty initials when item titles contain only numbers
+- Display a toast message after transferring ownership
+- Integrated Rust library
+- Added signature context when sharing vaults
+- Integrated “Dynamic plans” behind a core’s feature flag
+
+## Version 1.4.0
+Features:
+- Added support for German language
+- Display sync progress during login and full sync
+- Move items between vaults
+
+Improvements:
+- Able to quickly copy the content of notes
+
+Bug Fixes:
+- Corrected alphabetical sorting
+
+Others:
+- Migrated to SPM
+- Mitigated logout issue
+- Improved item creation sheet
+- Improved swipe-to-delete for items on the search page
+- Migrated to String Catalogs
+- Swift 5.9 adapation
+- Make use of Macro
+
 ## Version 1.3.0
 Features:
 - Added support for the French language

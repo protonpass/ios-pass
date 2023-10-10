@@ -116,10 +116,8 @@ private extension InfoBannerView {
     }
 }
 
-struct MissionView_Previews: PreviewProvider {
-    static var previews: some View {
-        InfoBannerView(banner: InfoBanner.autofill,
-                       dismiss: {},
-                       action: {})
-    }
+#Preview("InfoBannerView Preview") {
+    InfoBannerView(banner: InfoBanner.autofill,
+                   dismiss: {},
+                   action: {})
 }

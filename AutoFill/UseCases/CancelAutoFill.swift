@@ -36,16 +36,20 @@ extension CancelAutoFillUseCase {
 final class CancelAutoFill: @unchecked Sendable, CancelAutoFillUseCase {
     private let context: ASCredentialProviderExtensionContext
     private let saveAllLogs: SaveAllLogsUseCase
+    private let resetFactory: ResetFactoryUseCase
 
     init(context: ASCredentialProviderExtensionContext,
-         saveAllLogs: SaveAllLogsUseCase) {
+         saveAllLogs: SaveAllLogsUseCase,
+         resetFactory: ResetFactoryUseCase = ResetFactory()) {
         self.context = context
         self.saveAllLogs = saveAllLogs
+        self.resetFactory = resetFactory
     }
 
     func execute(reason: ASExtensionError.Code) {
         let error = NSError(domain: ASExtensionErrorDomain, code: reason.rawValue)
         context.cancelRequest(withError: error)
         saveAllLogs()
+        resetFactory()
     }
 }

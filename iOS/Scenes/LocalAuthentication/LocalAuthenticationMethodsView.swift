@@ -23,7 +23,6 @@ import Factory
 import SwiftUI
 
 struct LocalAuthenticationMethodsView: View {
-    @Environment(\.dismiss) private var dismiss
     private let selectedMethod: LocalAuthenticationMethod
     private let uiModels: [LocalAuthenticationMethodUiModel]
     private let onSelect: (LocalAuthenticationMethodUiModel) -> Void

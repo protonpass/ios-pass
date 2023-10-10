@@ -155,17 +155,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.theme, .dark)
     }
 
-    func testBrowserIsSafariByDefault() {
-        XCTAssertEqual(sut.browser, .safari)
+    func testBrowserIsSystemDefaultByDefault() {
+        XCTAssertEqual(sut.browser, .systemDefault)
     }
 
-    func testBrowserIsSafariAfterResetting() {
-        sut.browser = .brave
-        XCTAssertEqual(sut.browser, .brave)
-        sut.browser = .duckDuckGo
-        XCTAssertEqual(sut.browser, .duckDuckGo)
-        sut.reset()
+    func testBrowserIsSystemDefaultAfterResetting() {
+        sut.browser = .inAppSafari
+        XCTAssertEqual(sut.browser, .inAppSafari)
+        sut.browser = .safari
         XCTAssertEqual(sut.browser, .safari)
+        sut.reset()
+        XCTAssertEqual(sut.browser, .systemDefault)
     }
 
     func testClipboardExpiresAfterOneMinuteByDefault() {
