@@ -249,6 +249,7 @@
 		35704EBB2AD574D700044716 /* CreateAndMoveItemToNewVaultUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35704EB72AD574D700044716 /* CreateAndMoveItemToNewVaultUseCaseMock.generated.swift */; };
 		35704EBC2AD574D700044716 /* MoveItemsBetweenVaultsUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35704EB82AD574D700044716 /* MoveItemsBetweenVaultsUseCaseMock.generated.swift */; };
 		35704EBD2AD574D700044716 /* VaultsManagerProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35704EB92AD574D700044716 /* VaultsManagerProtocolMock.generated.swift */; };
+		35704EBF2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35704EBE2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift */; };
 		3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */; };
 		3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20229C1F14D00805445 /* SearchResultChips.swift */; };
 		3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20629C20A7E00805445 /* SearchResultsView.swift */; };
@@ -773,6 +774,7 @@
 		35704EB72AD574D700044716 /* CreateAndMoveItemToNewVaultUseCaseMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAndMoveItemToNewVaultUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		35704EB82AD574D700044716 /* MoveItemsBetweenVaultsUseCaseMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveItemsBetweenVaultsUseCaseMock.generated.swift; sourceTree = "<group>"; };
 		35704EB92AD574D700044716 /* VaultsManagerProtocolMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultsManagerProtocolMock.generated.swift; sourceTree = "<group>"; };
+		35704EBE2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareOrCreateNewVaultViewModel.swift; sourceTree = "<group>"; };
 		3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemContextMenus.swift"; sourceTree = "<group>"; };
 		3570D20229C1F14D00805445 /* SearchResultChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultChips.swift; sourceTree = "<group>"; };
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
@@ -1748,6 +1750,7 @@
 				5B1453962A69382E0048B022 /* UserPermissionView */,
 				5B1453912A68321B0048B022 /* UserEmailView */,
 				356BBB702ACC539E005A10DB /* ShareOrCreateNewVaultView.swift */,
+				35704EBE2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -2929,6 +2932,7 @@
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
 				3559BAA02A5B32550020E172 /* Preferences.swift in Sources */,
+				35704EBF2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				5B653AF32A78EE0700D6869A /* UpdateCachedInvitations.swift in Sources */,

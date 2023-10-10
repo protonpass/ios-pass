@@ -69,7 +69,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
@@ -481,22 +480,7 @@ private extension HomepageCoordinator {
     }
 
     func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
-        let handleAction: (VaultProtobuf?) -> Void = { [weak self] vaultProtobuf in
-            guard let self else { return }
-            dismissTopMostViewController { [weak self] in
-                guard let self else { return }
-                if let vaultProtobuf {
-                    setShareInviteVault(with: .new(vaultProtobuf, itemContent))
-                } else {
-                    setShareInviteVault(with: .existing(vault.vault))
-                }
-                router.present(for: .sharingFlow)
-            }
-        }
-
-        let view = ShareOrCreateNewVaultView(vault: vault,
-                                             onShareVault: { handleAction(nil) },
-                                             onCreateNewVault: { handleAction(.defaultNewSharedVault) })
+        let view = ShareOrCreateNewVaultView(vault: vault, itemContent: itemContent)
         let viewController = UIHostingController(rootView: view)
         viewController.setDetentType(.custom(310),
                                      parentViewController: rootViewController)
