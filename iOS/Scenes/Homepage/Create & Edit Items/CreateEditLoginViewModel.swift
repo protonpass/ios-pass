@@ -42,6 +42,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
+    private var originalTotpUri = ""
     @Published var totpUri = ""
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
@@ -57,30 +58,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    /// The original associated alias item
-    private var aliasItem: SymmetricallyEncryptedItem?
-
     private var aliasOptions: AliasOptions?
     @Published private var aliasCreationLiteInfo: AliasCreationLiteInfo?
     var isAlias: Bool { aliasCreationLiteInfo != nil }
 
     weak var createEditLoginViewModelDelegate: CreateEditLoginViewModelDelegate?
 
-    private var hasNoUrls: Bool {
-        urls.isEmpty || (urls.count == 1 && urls[0].value.isEmpty)
-    }
-
-    var isAutoFilling: Bool {
-        if case let .create(_, type) = mode,
-           case let .login(_, _, autofill) = type {
-            return autofill
-        }
-        return false
-    }
-
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
+    private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
+    private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
 
-    override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+    var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
@@ -125,7 +113,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 title = itemContent.name
                 username = data.username
                 password = data.password
-                totpUri = data.totpUri
+                originalTotpUri = data.totpUri
+                totpUri = sanitizeTotpUriForEditing(data.totpUri)
                 if !data.urls.isEmpty {
                     urls = data.urls.map { .init(value: $0) }
                 }
@@ -161,11 +150,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return #localized("Create & AutoFill")
     }
 
-    override func generateItemContent() -> ItemContentProtobuf {
+    override func generateItemContent() throws -> ItemContentProtobuf {
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
+        let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri, editedUri: totpUri)
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
-                                                    totpUri: totpUri,
+                                                    totpUri: sanitizedTotpUri,
                                                     urls: sanitizedUrls))
         return ItemContentProtobuf(name: title,
                                    note: note,

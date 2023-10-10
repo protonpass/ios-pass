@@ -138,7 +138,7 @@ private extension ManageSharedVaultView {
 
     func userCell(for user: ShareUser) -> some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(user.email.initialsRemovingEmojis()),
+            SquircleThumbnail(data: .initials(user.email.initials()),
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
@@ -164,7 +164,7 @@ private extension ManageSharedVaultView {
             }
 
             Spacer()
-            if viewModel.vault.isAdmin, !viewModel.isOwnerAndCurrentUser(with: user) {
+            if viewModel.vault.isAdmin, !user.isOwner {
                 vaultTrailingView(user: user)
                     .onTapGesture {
                         viewModel.setCurrentRole(for: user)
@@ -249,22 +249,6 @@ private extension ManageSharedVaultView {
             .frame(width: 24, height: 24)
             .foregroundColor(Color(uiColor: PassColor.textWeak))
         })
-    }
-
-    func attributedText(for text: String) -> AttributedString {
-        var result = AttributedString(text)
-        result.font = .body.bold()
-        result.foregroundColor = PassColor.textNorm
-        return result
-    }
-
-    func attributedSubText(for text: String) -> AttributedString {
-        var result = AttributedString(text)
-        result.font = .body
-        result.foregroundColor = PassColor.textWeak
-        result.underlineColor = PassColor.textWeak
-        result.strikethroughColor = PassColor.textWeak
-        return result
     }
 }
 
