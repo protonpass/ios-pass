@@ -13704,6 +13704,9 @@
         }
       }
     },
+    "Create a new vault to share" : {
+
+    },
     "Create a note" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -15622,6 +15625,10 @@
           }
         }
       }
+    },
+    "Customize" : {
+      "comment" : "Customize a default value e.g customize default shared vault's information",
+      "extractionState" : "manual"
     },
     "Dark" : {
       "extractionState" : "manual",
@@ -41441,6 +41448,9 @@
         }
       }
     },
+    "Share this vault" : {
+
+    },
     "Share Vault" : {
       "comment" : "Vault sharing: Summary page before making the share request",
       "extractionState" : "manual",
@@ -41846,6 +41856,10 @@
           }
         }
       }
+    },
+    "Shared vault" : {
+      "comment" : "Used in sharing vault flow. The user has the option to create a new vault and share that new vault. This string is the default name for the vault.",
+      "extractionState" : "manual"
     },
     "Shared vault invitation" : {
       "extractionState" : "manual",
@@ -44794,6 +44808,10 @@
           }
         }
       }
+    },
+    "The item will be moved to the new vault" : {
+      "comment" : "Used in share from item detail page flow. The users are offered the option to create a new vault on the fly and share that new vault. This message makes it clear that once the new vault is created, the current item will be migrated to that new vault.",
+      "extractionState" : "manual"
     },
     "Theme" : {
       "localizations" : {
@@ -49208,6 +49226,10 @@
         }
       }
     },
+    "Update vault" : {
+      "comment" : "The title for the save button when editing vault",
+      "extractionState" : "manual"
+    },
     "Upgrade" : {
       "localizations" : {
         "be" : {
@@ -50284,6 +50306,9 @@
           }
         }
       }
+    },
+    "Use vaults to share this item with another person" : {
+
     },
     "User" : {
       "localizations" : {

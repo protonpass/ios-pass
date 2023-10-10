@@ -85,6 +85,12 @@ extension UseCasesContainer {
 // MARK: - Sharing
 
 extension UseCasesContainer {
+    var createAndMoveItemToNewVault: Factory<CreateAndMoveItemToNewVaultUseCase> {
+        self { CreateAndMoveItemToNewVault(createVault: self.createVault(),
+                                           moveItemsBetweenVaults: self.moveItemsBetweenVaults(),
+                                           vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+
     var getCurrentShareInviteInformations: Factory<GetCurrentShareInviteInformationsUseCase> {
         self { GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
         }
@@ -104,7 +110,9 @@ extension UseCasesContainer {
     }
 
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
-        self { SendVaultShareInvite(passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+        self { SendVaultShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
+                                    shareInviteService: self.shareInviteService,
+                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
                                     userData: SharedDataContainer.shared.userData(),

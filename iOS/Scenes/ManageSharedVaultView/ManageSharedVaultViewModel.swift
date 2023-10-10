@@ -80,6 +80,10 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         vault.isOwner && isCurrentUser(with: user)
     }
 
+    func shareWithMorePeople() {
+        router.present(for: .sharingFlow(.none))
+    }
+
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
         fetchingTask?.cancel()
         fetchingTask = Task { @MainActor [weak self] in
@@ -207,7 +211,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
 
 private extension ManageSharedVaultViewModel {
     func setUp() {
-        setShareInviteVault(with: vault)
+        setShareInviteVault(with: .existing(vault))
         $userRole
             .sink { [weak self] role in
                 guard let self,
