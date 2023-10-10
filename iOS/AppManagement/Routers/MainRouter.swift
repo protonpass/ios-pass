@@ -51,15 +51,15 @@ enum RouterDestination: Hashable {
     case openSettings
 }
 
-enum Dismissal {
+enum SheetDismissal {
     case none
-    case topMostSheet
-    case allSheets
+    case topMost
+    case all
 }
 
 enum SheetDestination: Equatable, Hashable {
     case sharingFlow
-    case manageShareVault(Vault, Dismissal)
+    case manageShareVault(Vault, SheetDismissal)
     case filterItems
     case acceptRejectInvite(UserInvite)
     case vaultCreateEdit(vault: Vault?)
