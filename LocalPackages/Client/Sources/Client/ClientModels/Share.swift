@@ -115,7 +115,8 @@ public extension Share {
                               isOwner: owner,
                               shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
                               members: Int(targetMembers),
-                              shared: shared)
+                              shared: shared,
+                              createTime: createTime)
             return .vault(vault)
         case .item:
             return .item

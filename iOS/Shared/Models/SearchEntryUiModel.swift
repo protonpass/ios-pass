@@ -20,6 +20,7 @@
 
 import Client
 import CryptoKit
+import Entities
 
 struct SearchEntryUiModel: ItemIdentifiable {
     let itemId: String

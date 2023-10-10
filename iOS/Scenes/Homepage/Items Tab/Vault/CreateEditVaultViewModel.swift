@@ -58,6 +58,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
+    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -94,14 +95,15 @@ private extension CreateEditVaultViewModel {
             guard let self else { return }
             do {
                 // Primary vault can always be edited
-                if case let .edit(vault) = self.mode, vault.isPrimary {
-                    self.canCreateOrEdit = true
+                let mainVault = await getMainVault()
+                if case let .edit(vault) = mode, vault == mainVault {
+                    canCreateOrEdit = true
                 } else {
-                    self.canCreateOrEdit = try await self.upgradeChecker.canCreateMoreVaults()
+                    canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
                 }
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

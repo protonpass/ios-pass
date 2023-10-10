@@ -31,7 +31,6 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
 }
 
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
-    @Published private(set) var isAllowedToShare = false
     @Published private(set) var loading = false
     @Published private(set) var state = VaultManagerState.loading
 
@@ -39,12 +38,14 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let userSharingStatus = resolve(\UseCasesContainer.userSharingStatus)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private var cancellables = Set<AnyCancellable>()
+    private var isAllowedToShare = false
+    private var isPrimaryVaultRemoved = false
 
     var hasTrashItems: Bool {
         vaultsManager.getItemCount(for: .trash) > 0
@@ -65,6 +66,14 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     func isSelected(_ selection: VaultSelection) -> Bool {
         vaultsManager.isSelected(selection)
     }
+
+    func canShare(vault: Vault) -> Bool {
+        if isPrimaryVaultRemoved {
+            isAllowedToShare && !vault.shared && vault.shareRole == .admin
+        } else {
+            isAllowedToShare && !vault.shared && vault.shareRole == .admin && !vault.isPrimary
+        }
+    }
 }
 
 // MARK: - Private APIs
@@ -80,7 +89,8 @@ private extension EditableVaultListViewModel {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            isAllowedToShare = await userSharingStatus()
+            isAllowedToShare = await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
+            isPrimaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
         }
     }
 

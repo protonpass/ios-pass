@@ -70,6 +70,6 @@ struct VaultSelectorView: View {
                 .padding(.horizontal)
         })
         .buttonStyle(.plain)
-        .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)
+        .opacityReduced(viewModel.shouldReduceOpacity(for: vault.vault))
     }
 }

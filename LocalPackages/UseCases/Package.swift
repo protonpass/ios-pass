@@ -21,6 +21,8 @@ let package = Package(name: "UseCases",
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
                           .package(name: "Entities", path: "../Entities"),
+                          .package(name: "Core", path: "../Core"),
+                          .package(name: "Client", path: "../Client"),
                           .package(url: "https://github.com/protonpass/ios-pass-rust-core", exact: "0.1.1")
                       ],
                       targets: [
@@ -31,6 +33,8 @@ let package = Package(name: "UseCases",
                           .target(name: "UseCases",
                                   dependencies: [
                                       .product(name: "Entities", package: "Entities"),
+                                      .product(name: "Client", package: "Client"),
+                                      .product(name: "Core", package: "Core"),
                                       .product(name: "PassRustCore", package: "ios-pass-rust-core")
                                   ],
                                   resources: []),
