@@ -18,14 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import XCTest
 import ProtonCoreLogin
 import Entities
+import UseCases
 @testable import Proton_Pass
 @testable import Client
 
 final class SendShareInviteTests: XCTestCase {
     var sut: SendVaultShareInviteUseCase!
+    var createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock!
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
@@ -33,12 +36,15 @@ final class SendShareInviteTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        createAndMoveItemToNewVault = CreateAndMoveItemToNewVaultUseCaseMock()
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
-        sut = SendVaultShareInvite(passKeyManager: passKeyManager,
-                              shareInviteRepository: shareInviteRepository,
+        sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
+                                   shareInviteService: ShareInviteService(),
+                                   passKeyManager: passKeyManager,
+                                   shareInviteRepository: shareInviteRepository,
                                    userData: UserData.mock,
                                    syncEventLoop: syncEventLoop)
     }
@@ -56,24 +62,33 @@ final class SendShareInviteTests: XCTestCase {
     func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
-        let vault = Vault(id: "uhppq5QrsteiLDPAogeigTxEthMQ695gHXCiUdGgzWfwA6O4Ac9M9EDmR4CbM45SfAyhpLWqsSoU9RdSrxGAhA",
-                          shareId: "y3f09sYakL5JFBA_7sNFZv0Xut6y-rvwTn-RMGWVOyuoKqb04RkiQGRjt5ULy-5-SlO-Ly2sfcijLcW1dqAdRA==",
-                          addressId: "fANeSjpLbBu4DCGmPpsNMq5roCKQZNqNFDTSFnasuQX_g4imqjQ2imcEhoONECMEd-ruB10N9XWdD9WL-ciXnw==",
-                          name: "Bear",
-                          description: "",
-                          displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences(),
-                          isPrimary: false,
-                          isOwner: true,
-                          shareRole: .read,
-                          members: 2,
-                          shared: true, 
-                          createTime: 1236576)
-        var infos = SharingInfos(vault: vault, email: "Test@test.com", role: .read, receiverPublicKeys: [PublicKey(value: "")], itemsNum: 100)
+        let infos = SharingInfos(vault: .existing(.random()),
+                                 email: "Test@test.com",
+                                 role: .read,
+                                 receiverPublicKeys: [PublicKey(value: "")],
+                                 itemsNum: 100)
         do {
             _ = try await sut(with: infos)
             XCTFail("Error needs to be thrown")
         } catch {
             XCTAssertTrue(error is PPClientError)
         }
+    }
+}
+
+extension Vault {
+    static func random() -> Self {
+        .init(id: .random(),
+              shareId: .random(),
+              addressId: .random(),
+              name: .random(),
+              description: .random(),
+              displayPreferences: .init(),
+              isPrimary: false,
+              isOwner: false,
+              shareRole: .read,
+              members: 0,
+              shared: false,
+              createTime: 0)
     }
 }

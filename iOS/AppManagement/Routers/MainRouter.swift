@@ -51,11 +51,15 @@ enum RouterDestination: Hashable {
     case openSettings
 }
 
+enum SheetDismissal {
+    case none
+    case topMost
+    case all
+}
+
 enum SheetDestination: Equatable, Hashable {
-    case sharingFlow
-    ///  The boolean helps to know if we should dismiss the previous sheet or not as the route if used in different
-    /// context
-    case manageShareVault(Vault, dismissBeforeShowing: Bool)
+    case sharingFlow(SheetDismissal)
+    case manageShareVault(Vault, SheetDismissal)
     case filterItems
     case acceptRejectInvite(UserInvite)
     case vaultCreateEdit(vault: Vault?)
@@ -66,6 +70,8 @@ enum SheetDestination: Equatable, Hashable {
     case autoFillInstructions
     case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
     case fullSync
+    case shareVaultFromItemDetail(VaultListUiModel, ItemContent)
+    case customizeNewVault(VaultProtobuf, ItemContent)
 }
 
 enum UIElementDisplay {
