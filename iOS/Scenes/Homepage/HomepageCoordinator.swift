@@ -523,7 +523,7 @@ private extension HomepageCoordinator {
     }
 
     func itemMoveBetweenVault(currentVault: Vault, itemToMove: ItemContent?) {
-        let allVaults = vaultsManager.getAllVaultContents()
+        let allVaults = vaultsManager.getAllEditableVaultContents()
         guard !allVaults.isEmpty else {
             return
         }
