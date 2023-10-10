@@ -22,6 +22,7 @@ import Combine
 import XCTest
 import ProtonCoreLogin
 import Entities
+import UseCases
 @testable import Proton_Pass
 @testable import Client
 
@@ -33,22 +34,19 @@ private struct CreateVaultUseCaseMock: CreateVaultUseCase {
 
 private struct VaultsManagerProtocolMock: VaultsManagerProtocol {
     var currentVaults = CurrentValueSubject<[Vault], Never>([])
+    var vaultSelection: VaultSelection = .all
 
     func refresh() {}
     func fullSync() async throws {}
-    func select(_ selection: VaultSelection) {}
-    func isSelected(_ selection: VaultSelection) -> Bool { false }
     func getItems(for vault: Vault) -> [ItemUiModel] { [] }
     func getItemCount(for selection: Vault) -> Int { 0 }
-    func getItemCount(for selection: VaultSelection) -> Int { 0 }
-    func getAllVaultContents() -> [VaultContentUiModel] { [] }
     func getAllVaults() -> [Vault] { [] }
     func vaultHasTrashedItems(_ vault: Vault) -> Bool { false }
     func delete(vault: Vault) async throws {}
     func restoreAllTrashedItems() async throws {}
     func permanentlyDeleteAllTrashedItems() async throws {}
     func getPrimaryVault() -> Vault? { nil }
-    func getSelectedShareId() -> String? { nil }
+    func getOldestOwnedVault() -> Vault? { nil }
     func getFilteredItems() -> [ItemUiModel] { [] }
 
 }
@@ -92,7 +90,7 @@ final class SendShareInviteTests: XCTestCase {
     func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
-        let infos = SharingInfos(vault: .created(.random()),
+        let infos = SharingInfos(vault: .existing(.random()),
                                  email: "Test@test.com",
                                  role: .read,
                                  receiverPublicKeys: [PublicKey(value: "")],
@@ -109,15 +107,16 @@ final class SendShareInviteTests: XCTestCase {
 extension Vault {
     static func random() -> Self {
         .init(id: .random(),
-                     shareId: .random(),
-                     addressId: .random(),
-                     name: .random(),
-                     description: .random(),
-                     displayPreferences: .init(),
-                     isPrimary: false,
-                     isOwner: false,
-                     shareRole: .read,
-                     members: 0,
-                     shared: false)
+              shareId: .random(),
+              addressId: .random(),
+              name: .random(),
+              description: .random(),
+              displayPreferences: .init(),
+              isPrimary: false,
+              isOwner: false,
+              shareRole: .read,
+              members: 0,
+              shared: false,
+              createTime: 0)
     }
 }

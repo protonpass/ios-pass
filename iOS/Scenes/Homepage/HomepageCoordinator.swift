@@ -488,7 +488,7 @@ private extension HomepageCoordinator {
                 if let vaultProtobuf {
                     setShareInviteVault(with: .new(vaultProtobuf, itemContent))
                 } else {
-                    setShareInviteVault(with: .created(vault.vault))
+                    setShareInviteVault(with: .existing(vault.vault))
                 }
                 router.present(for: .sharingFlow)
             }

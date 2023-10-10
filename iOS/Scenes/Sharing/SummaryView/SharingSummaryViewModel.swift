@@ -57,7 +57,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 }
                 let sharedVault = try await sendShareInvite(with: infos)
                 switch infos.vault {
-                case .created:
+                case .existing:
                     // When sharing a created vault, we want to keep the context
                     // by only dismsising the top most sheet (which is share vault sheet)
                     router.present(for: .manageShareVault(sharedVault, .topMost))
