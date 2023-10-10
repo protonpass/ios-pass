@@ -23,14 +23,14 @@ import Entities
 import Macro
 
 enum SharingVault {
-    case created(Vault)
+    case existing(Vault)
     case new(VaultProtobuf, ItemContent)
 }
 
 extension SharingVault {
     var name: String {
         switch self {
-        case let .created(vault):
+        case let .existing(vault):
             vault.name
         case let .new(vault, _):
             vault.name
@@ -39,7 +39,7 @@ extension SharingVault {
 
     var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
         switch self {
-        case let .created(vault):
+        case let .existing(vault):
             vault.displayPreferences
         case let .new(vault, _):
             vault.display
@@ -48,7 +48,7 @@ extension SharingVault {
 
     var shared: Bool {
         switch self {
-        case let .created(vault):
+        case let .existing(vault):
             vault.isShared
         default:
             false

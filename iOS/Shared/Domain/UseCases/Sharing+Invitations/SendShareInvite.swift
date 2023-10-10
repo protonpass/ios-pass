@@ -134,7 +134,7 @@ private extension SendVaultShareInvite {
         }
 
         switch sharedVault {
-        case let .created(vault):
+        case let .existing(vault):
             return vault
         case let .new(vaultProtobuf, itemContent):
             do {
