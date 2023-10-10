@@ -40,26 +40,20 @@ extension SendVaultShareInviteUseCase {
 }
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
-    private let createVault: CreateVaultUseCase
-    private let moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase
-    private let vaultsManager: VaultsManagerProtocol
+    private let createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase
     private let shareInviteService: ShareInviteServiceProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userData: UserData
     private let syncEventLoop: SyncEventLoopProtocol
 
-    init(createVault: CreateVaultUseCase,
-         moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase,
-         vaultsManager: VaultsManagerProtocol,
+    init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
          shareInviteService: ShareInviteServiceProtocol,
          passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
          syncEventLoop: SyncEventLoopProtocol) {
-        self.createVault = createVault
-        self.moveItemsBetweenVaults = moveItemsBetweenVaults
-        self.vaultsManager = vaultsManager
+        self.createAndMoveItemToNewVault = createAndMoveItemToNewVault
         self.shareInviteService = shareInviteService
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
@@ -68,13 +62,19 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     }
 
     func execute(with infos: SharingInfos) async throws -> Vault {
-        guard let email = infos.email,
+        guard let sharingVault = infos.vault,
+              let email = infos.email,
               let role = infos.role,
               let publicReceiverKeys = infos.receiverPublicKeys else {
             throw SharingError.incompleteInformation
         }
 
-        let vault = try await createVaultIfNeccessary(infos: infos)
+        let vault = switch sharingVault {
+        case let .existing(vault):
+            vault
+        case let .new(vaultProtobuf, itemContent):
+            try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
+        }
 
         let sharedKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
 
@@ -126,29 +126,5 @@ private extension SendVaultShareInvite {
             .unArmor().value.base64EncodedString()
 
         return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
-    }
-
-    func createVaultIfNeccessary(infos: SharingInfos) async throws -> Vault {
-        guard let sharedVault = infos.vault else {
-            throw SharingError.incompleteInformation
-        }
-
-        switch sharedVault {
-        case let .existing(vault):
-            return vault
-        case let .new(vaultProtobuf, itemContent):
-            do {
-                if let vault = try await createVault(with: vaultProtobuf) {
-                    try await moveItemsBetweenVaults(movingContext: .item(itemContent,
-                                                                          newShareId: vault.shareId))
-                    vaultsManager.refresh()
-                    return vault
-                } else {
-                    throw SharingError.failedToCreateNewVault
-                }
-            } catch {
-                throw SharingError.failedToCreateNewVault
-            }
-        }
     }
 }
