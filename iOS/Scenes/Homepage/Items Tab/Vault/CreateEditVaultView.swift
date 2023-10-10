@@ -54,6 +54,9 @@ struct CreateEditVaultView: View {
         .onChange(of: viewModel.selectedColor) { _ in
             isFocusedOnTitle = false
         }
+        .onChange(of: viewModel.finishSaving) { _ in
+            dismiss()
+        }
     }
 
     @ToolbarContentBuilder

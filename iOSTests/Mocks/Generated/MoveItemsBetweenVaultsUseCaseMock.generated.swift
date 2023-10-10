@@ -19,23 +19,26 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 // swiftlint:disable all
 
-@testable import Proton_Pass
+@testable import UseCases
 import Client
-import UseCases
 
-final class SetShareInviteVaultUseCaseMock: @unchecked Sendable, SetShareInviteVaultUseCase {
+final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveItemsBetweenVaultsUseCase {
     // MARK: - execute
+    var executeMovingContextThrowableError: Error?
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var invokedExecuteParameters: (vault: SharingVaultData, Void)?
-    var invokedExecuteParametersList = [(vault: SharingVaultData, Void)]()
+    var invokedExecuteParameters: (movingContext: MovingContext, Void)?
+    var invokedExecuteParametersList = [(movingContext: MovingContext, Void)]()
 
-    func execute(with vault: SharingVaultData) {
+    func execute(movingContext: MovingContext) async throws {
         invokedExecute = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (vault, ())
-        invokedExecuteParametersList.append((vault, ()))
+        invokedExecuteParameters = (movingContext, ())
+        invokedExecuteParametersList.append((movingContext, ()))
+        if let error = executeMovingContextThrowableError {
+            throw error
+        }
         closureExecute()
     }
 }

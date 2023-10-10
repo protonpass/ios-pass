@@ -21,6 +21,7 @@
 import Combine
 import Entities
 
+// sourcery: AutoMockable
 public protocol VaultsManagerProtocol: Sendable {
     var currentVaults: CurrentValueSubject<[Vault], Never> { get }
     var vaultSelection: VaultSelection { get }
