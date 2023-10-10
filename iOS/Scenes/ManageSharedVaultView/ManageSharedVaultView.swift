@@ -36,11 +36,13 @@ struct ManageSharedVaultView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             mainContainer
+                .padding(.bottom, viewModel.vault.isAdmin ? 60 : 0) // Avoid the bottom button
+
             if viewModel.vault.isAdmin {
                 CapsuleTextButton(title: #localized("Share with more people"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
-                                  action: { router.present(for: .sharingFlow) })
+                                  action: viewModel.shareWithMorePeople)
             }
         }
         .onAppear {
@@ -80,9 +82,9 @@ private extension ManageSharedVaultView {
                 }
             } else {
                 userList
-                    .background(PassColor.backgroundNorm.toColor)
             }
         }
+        .animation(.default, value: viewModel.fetching)
     }
 }
 
@@ -117,21 +119,15 @@ private extension ManageSharedVaultView {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.users, id: \.self) { user in
-                    VStack {
-                        userCell(for: user)
-                            .padding(16)
-                        if !viewModel.isLast(info: user) {
-                            Divider()
-                        }
+                    userCell(for: user)
+                        .padding(16)
+                    if !viewModel.isLast(info: user) {
+                        Divider()
                     }
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets())
-                    .listRowBackground(Color.white.opacity(0.04))
                 }
+                .listRowSeparator(.hidden)
             }
-            .background(.white.opacity(0.04))
-            .cornerRadius(16)
-            .roundedDetailSection()
+            .roundedEditableSection()
         }
         .animation(.default, value: viewModel.users.count)
     }
