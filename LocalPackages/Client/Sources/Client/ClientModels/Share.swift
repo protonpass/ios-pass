@@ -54,6 +54,10 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
     public let targetMembers: Int64
 
+    public let targetMaxMembers: Int64
+
+    public let newUserInvitesWaiting: Int64
+
     /// Whether this vault is primary for this user
     public let primary: Bool
 
@@ -115,6 +119,8 @@ public extension Share {
                               isOwner: owner,
                               shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
                               members: Int(targetMembers),
+                              maxMembers: Int(targetMaxMembers),
+                              newUserPendingInvites: Int(newUserInvitesWaiting),
                               shared: shared,
                               createTime: createTime)
             return .vault(vault)
@@ -132,6 +138,8 @@ public extension Share {
               permission: permission,
               shareRoleID: shareRoleID,
               targetMembers: targetMembers,
+              targetMaxMembers: targetMaxMembers,
+              newUserInvitesWaiting: newUserInvitesWaiting,
               primary: isPrimary,
               owner: owner,
               shared: shared,
