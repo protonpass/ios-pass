@@ -36,6 +36,10 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
     /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
     public let members: Int
 
+    public let maxMembers: Int
+
+    public let newUserPendingInvites: Int
+
     public let shared: Bool
 
     public let createTime: Int64
@@ -50,6 +54,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
                 isOwner: Bool,
                 shareRole: ShareRole,
                 members: Int,
+                maxMembers: Int,
+                newUserPendingInvites: Int,
                 shared: Bool,
                 createTime: Int64) {
         self.id = id
@@ -62,6 +68,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.isOwner = isOwner
         self.shareRole = shareRole
         self.members = members
+        self.maxMembers = maxMembers
+        self.newUserPendingInvites = newUserPendingInvites
         self.shared = shared
         self.createTime = createTime
     }

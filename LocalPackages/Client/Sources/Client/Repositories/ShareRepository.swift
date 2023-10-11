@@ -415,6 +415,8 @@ private extension SymmetricallyEncryptedShare {
                      isOwner: share.owner,
                      shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
                      members: Int(share.targetMembers),
+                     maxMembers: Int(share.targetMaxMembers),
+                     newUserPendingInvites: Int(share.newUserInvitesWaiting),
                      shared: share.shared,
                      createTime: share.createTime)
     }
