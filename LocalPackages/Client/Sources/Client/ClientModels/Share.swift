@@ -54,8 +54,10 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
     public let targetMembers: Int64
 
+    /// Max members allowed for the target of this share
     public let targetMaxMembers: Int64
 
+    /// How many new user invites are waiting for an admin to create the proper invite
     public let newUserInvitesWaiting: Int64
 
     /// Whether this vault is primary for this user
@@ -64,6 +66,7 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// Whether the user is owner of this vault
     public let owner: Bool
 
+    /// Whether this share is shared or not
     public let shared: Bool
 
     /// Base64 encoded encrypted content of the share. Can be null for item shares
