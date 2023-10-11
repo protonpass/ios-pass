@@ -20,7 +20,14 @@ This repository contains the source code for the Proton Pass iOS application.
 
 # Installation
 
-The app targets iOS 15 and above. Make sure you have Xcode 15+ installed, check out the repo and open `ProtonPass.xcodeproj` to run the project.
+The app targets iOS 15 and above. Make sure you have Xcode 15+ installed and follow these steps:
+
+- Checkout the repo
+- Install/update Rust package by running 
+```bash
+./scripts/public/download_rust_package.sh
+```
+- Open `ProtonPass.xcodeproj` to run the project
 
 # Technical Choices
 
