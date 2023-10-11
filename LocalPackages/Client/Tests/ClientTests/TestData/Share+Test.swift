@@ -31,6 +31,8 @@ extension Share {
               permission: .random(in: 0...10),
               shareRoleID: "1",
               targetMembers: .random(in: 0...10),
+              targetMaxMembers: .random(in: 0...10),
+              newUserInvitesWaiting: .random(in: 0...5),
               primary: .random(),
               owner: .random(),
               shared: true,

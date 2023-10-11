@@ -32,6 +32,8 @@ final class ShareTests: XCTestCase {
                                permission: .random(in: 100...200),
                                shareRoleID: "1",
                                targetMembers: 2,
+                               targetMaxMembers: 10,
+                               newUserInvitesWaiting: 0,
                                primary: false,
                                owner: .random(),
                                shared: true,
