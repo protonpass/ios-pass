@@ -5,9 +5,9 @@ set -e
 SCRIPT_DIR="$(dirname "$0")"
 TMP_DIR_PATH="${SCRIPT_DIR}/../../tmp"
 
-VERSION="0.2.1"
+VERSION="0.2.2"
 URL="https://github.com/protonpass/proton-pass-common/releases/download/${VERSION}/PassRustCode.swift.zip"
-HASH="fe689cece6628a4194bc77b531ff0bfcd276cf92888ab1d8b10eee8e9183dedb"
+HASH="4fe7113c63275c9eef9aa84ffb36dc829d4dd11a33c45039c88ec74783eba9a9"
 
 if ! command -v wget &> /dev/null; then
     echo "wget is not installed, installing via Homebrew"
