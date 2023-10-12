@@ -29,7 +29,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToCopy(text: String, bannerMessage: String)
-    func itemDetailViewModelWantsToShowFullScreen(_ text: String)
+    func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData)
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
 }
 
@@ -129,8 +129,8 @@ class BaseItemDetailViewModel: ObservableObject {
         }
     }
 
-    func showLarge(_ text: String) {
-        delegate?.itemDetailViewModelWantsToShowFullScreen(text)
+    func showLarge(_ data: FullScreenData) {
+        delegate?.itemDetailViewModelWantsToShowFullScreen(data)
     }
 
     func moveToAnotherVault() {
