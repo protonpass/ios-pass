@@ -1,5 +1,5 @@
 //
-// ModifiedCopyMacro.swift
+// CopyableMacro.swift
 // Proton Pass - Created on 12/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -24,7 +24,7 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-enum ModifiedCopyDiagnostic: DiagnosticMessage {
+enum CopyableDiagnostic: DiagnosticMessage {
     case notAStruct
     case propertyTypeProblem(PatternBindingListSyntax.Element)
 
@@ -54,12 +54,12 @@ enum ModifiedCopyDiagnostic: DiagnosticMessage {
     }
 }
 
-public struct ModifiedCopyMacro: MemberMacro {
+public struct CopyableMacro: MemberMacro {
     public static func expansion(of node: AttributeSyntax,
                                  providingMembersOf declaration: some DeclGroupSyntax,
                                  in context: some MacroExpansionContext) throws -> [DeclSyntax] {
         guard let structDeclSyntax = declaration as? StructDeclSyntax else {
-            let diagnostic = Diagnostic(node: node, message: ModifiedCopyDiagnostic.notAStruct)
+            let diagnostic = Diagnostic(node: node, message: CopyableDiagnostic.notAStruct)
             context.diagnose(diagnostic)
             return []
         }
@@ -71,7 +71,7 @@ public struct ModifiedCopyMacro: MemberMacro {
             let propertyName = binding.pattern
             guard let typeName = binding.typeAnnotation?.type else {
                 let diagnostic = Diagnostic(node: node,
-                                            message: ModifiedCopyDiagnostic.propertyTypeProblem(binding))
+                                            message: CopyableDiagnostic.propertyTypeProblem(binding))
                 context.diagnose(diagnostic)
                 return nil
             }
