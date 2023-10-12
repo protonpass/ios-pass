@@ -127,7 +127,7 @@ private extension CreditCardDetailView {
                 }
 
                 Button(action: {
-                    viewModel.showLarge(viewModel.cardholderName)
+                    viewModel.showLarge(.text(viewModel.cardholderName))
                 }, label: {
                     Text("Show large")
                 })

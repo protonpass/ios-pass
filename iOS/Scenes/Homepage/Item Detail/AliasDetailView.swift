@@ -110,7 +110,7 @@ struct AliasDetailView: View {
             }
 
             Button(action: {
-                viewModel.showLarge(viewModel.aliasEmail)
+                viewModel.showLarge(.text(viewModel.aliasEmail))
             }, label: {
                 Text("Show large")
             })
@@ -140,7 +140,7 @@ struct AliasDetailView: View {
                                 })
 
                                 Button(action: {
-                                    viewModel.showLarge(mailbox.email)
+                                    viewModel.showLarge(.text(mailbox.email))
                                 }, label: {
                                     Text("Show large")
                                 })
