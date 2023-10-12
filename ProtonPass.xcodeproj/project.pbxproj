@@ -116,7 +116,6 @@
 		35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BC029D618B800EC58DE /* AccountViewModel.swift */; };
 		3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */; };
 		3553C22D296575560087518A /* LoggerManager+Initializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Initializer.swift */; };
-		3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3555801528F04F5C009C3B88 /* NoCredentialsView.swift */; };
 		3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */; };
 		3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3556949E29D46001005DD2EB /* MoveVaultListViewModel.swift */; };
 		355694A229D466C9005DD2EB /* VaultRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355694A129D466C9005DD2EB /* VaultRow.swift */; };
@@ -681,7 +680,6 @@
 		3555800D28F04D30009C3B88 /* AutoFill-Debug-QA.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-QA.xcconfig"; sourceTree = "<group>"; };
 		3555801128F04DB6009C3B88 /* AutoFill-Release-QA.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-QA.xcconfig"; sourceTree = "<group>"; };
 		3555801328F04DE3009C3B88 /* AutoFill-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release.xcconfig"; sourceTree = "<group>"; };
-		3555801528F04F5C009C3B88 /* NoCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCredentialsView.swift; sourceTree = "<group>"; };
 		3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Release-Beta.xcconfig"; sourceTree = "<group>"; };
 		3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveVaultListView.swift; sourceTree = "<group>"; };
 		3556949E29D46001005DD2EB /* MoveVaultListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveVaultListViewModel.swift; sourceTree = "<group>"; };
@@ -1169,7 +1167,6 @@
 				3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */,
 				355751F42907FB3200268116 /* LockedCredentialView.swift */,
 				355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */,
-				3555801528F04F5C009C3B88 /* NoCredentialsView.swift */,
 				3520F36028E31AF20053A606 /* NotLoggedInView.swift */,
 				3544F5E528E2341900834CA4 /* MainInterface.storyboard */,
 				3544F5E828E2341900834CA4 /* Info.plist */,
@@ -2682,7 +2679,6 @@
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
 				354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
-				3555801628F04F5C009C3B88 /* NoCredentialsView.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
 				5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */,
 				5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,

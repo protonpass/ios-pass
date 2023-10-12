@@ -98,11 +98,11 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
+    private var vaults = [Vault]()
 
     weak var delegate: CredentialsViewModelDelegate?
 
@@ -270,7 +270,8 @@ extension CredentialsViewModel {
     func createLoginItem() {
         guard case .idle = state else { return }
         Task { @MainActor [weak self] in
-            guard let self, let mainVault = await getMainVault() else { return }
+            guard let self,
+                  let mainVault = vaults.oldestOwned else { return }
             self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: mainVault.shareId,
                                                                       url: self.urls.first)
         }
@@ -377,7 +378,7 @@ private extension CredentialsViewModel {
                 throw PPError.CredentialProviderFailureReason.generic
             }
 
-            let vaults = try await shareRepository.getVaults()
+            vaults = try await shareRepository.getVaults()
             let encryptedItems = try await itemRepository.getActiveLogInItems()
             logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
@@ -470,8 +471,11 @@ private extension CredentialsViewModel {
                 let oldestVaults = vaults.twoOldestVaults
                 return oldestVaults.isOneOf(shareId: vault.shareId)
             } else {
-                let mainVault = await getMainVault()
-                return vault == mainVault
+                if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
+                    return vaults.oldestOwned == vault
+                } else {
+                    return vault.isPrimary
+                }
             }
         default:
             return true
