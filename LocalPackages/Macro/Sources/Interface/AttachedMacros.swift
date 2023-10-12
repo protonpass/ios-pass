@@ -24,4 +24,4 @@ import Foundation
 /// Each `copy` function returns a copy of the struct that the macro is attached on, but one property can be set to
 /// a differnet value.
 @attached(member, names: named(copy))
-public macro Copyable() = #externalMacro(module: "MacroImplementation", type: "ModifiedCopyMacro")
+public macro Copyable() = #externalMacro(module: "MacroImplementation", type: "CopyableMacro")
