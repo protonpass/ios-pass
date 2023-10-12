@@ -1,5 +1,5 @@
 //
-// ModifiedCopyTests.swift
+// CopyableMacroTests.swift
 // Proton Pass - Created on 12/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -25,7 +25,7 @@ import SwiftSyntaxMacrosTestSupport
 import XCTest
 
 let testMacros: [String: Macro.Type] = [
-    "Copyable": ModifiedCopyMacro.self
+    "Copyable": CopyableMacro.self
 ]
 
 @Copyable
@@ -56,7 +56,7 @@ struct Person: Equatable {
     }
 }
 
-final class ModifiedCopyTests: XCTestCase {
+final class CopyableMacroTests: XCTestCase {
     func testMacroExpansion() {
         assertMacroExpansion(#"""
                              @Copyable

@@ -25,6 +25,6 @@ import SwiftSyntaxMacros
 struct MacroPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         LocalizedMacro.self,
-        ModifiedCopyMacro.self
+        CopyableMacro.self
     ]
 }
