@@ -38,9 +38,12 @@ struct ShareOrCreateNewVaultView: View {
                 .foregroundColor(PassColor.textNorm.toColor)
 
             Text("Use vaults to share this item with another person")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .padding(.top, 8)
                 .padding(.bottom, 16)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
 
@@ -51,13 +54,16 @@ struct ShareOrCreateNewVaultView: View {
 
             Text("The item will be moved to the new vault")
                 .frame(maxWidth: .infinity, alignment: .center)
+                .multilineTextAlignment(.center)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .font(.callout)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.vertical, 32)
+        .padding(.top, 44)
+        .padding(.bottom, 32)
         .padding(.horizontal, 16)
         .background(PassColor.backgroundNorm.toColor)
     }
