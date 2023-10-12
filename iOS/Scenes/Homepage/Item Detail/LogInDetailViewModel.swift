@@ -141,7 +141,7 @@ extension LogInDetailViewModel {
     }
 
     func showLargePassword() {
-        showLarge(password)
+        showLarge(.password(password))
     }
 
     func showAliasDetail() {
