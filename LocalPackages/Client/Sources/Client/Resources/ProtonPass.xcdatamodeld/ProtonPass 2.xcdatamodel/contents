@@ -80,7 +80,7 @@
         <attribute name="shareRoleID" optional="YES" attributeType="String"/>
         <attribute name="symmetricallyEncryptedContent" optional="YES" attributeType="String"/>
         <attribute name="targetID" attributeType="String" defaultValueString=""/>
-        <attribute name="targetMaxMembers" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="targetMaxMembers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetMembers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
