@@ -35,7 +35,10 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 31) {
-            headerView
+            Text("Share with")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(PassColor.textNorm.toColor)
 
             emailTextField
 
@@ -63,21 +66,6 @@ struct UserEmailView: View {
         .toolbar { toolbarContent }
         .ignoresSafeArea(.keyboard)
         .navigationModifier()
-    }
-}
-
-private extension UserEmailView {
-    var headerView: some View {
-        VStack(alignment: .leading, spacing: 11) {
-            Text("Share with")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
-
-            Text("This user will receive an invitation to join your ‘\(viewModel.vault?.name ?? "")’ vault")
-                .font(.body)
-                .foregroundColor(PassColor.textWeak.toColor)
-        }
     }
 }
 
