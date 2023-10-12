@@ -10,7 +10,7 @@ SCRIPT_DIR="$(dirname "$0")"
 source "${SCRIPT_DIR}/../../.rust-package"
 
 TMP_DIR_PATH="${SCRIPT_DIR}/../../tmp"
-LOCAL_PACKAGE_PATH="LocalPackages/PassRustCore"
+LOCAL_PACKAGE_PATH="$SCRIPT_DIR/../../LocalPackages/PassRustCore"
 
 URL="https://github.com/protonpass/proton-pass-common/releases/download/${VERSION}/PassRustCode.swift.zip"
 

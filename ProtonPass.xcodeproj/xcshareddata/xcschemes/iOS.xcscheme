@@ -22,6 +22,22 @@
                </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Download Rust package"
+               scriptText = "$SRCROOT/scripts/public/download_rust_package.sh&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "35E5063A286F819F00A3F6EA"
+                     BuildableName = "Proton Pass.app"
+                     BlueprintName = "iOS"
+                     ReferencedContainer = "container:ProtonPass.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
       </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
