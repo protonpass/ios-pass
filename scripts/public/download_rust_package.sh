@@ -2,22 +2,42 @@
 
 set -e
 
-SCRIPT_DIR="$(dirname "$0")"
-TMP_DIR_PATH="${SCRIPT_DIR}/../../tmp"
+export PATH="/opt/homebrew/bin:$PATH"
 
-VERSION="0.2.2"
+SCRIPT_DIR="$(dirname "$0")"
+
+# Get VERSION & HASH variables from .rust-package file
+source "${SCRIPT_DIR}/../../.rust-package"
+
+TMP_DIR_PATH="${SCRIPT_DIR}/../../tmp"
+LOCAL_PACKAGE_PATH="$SCRIPT_DIR/../../LocalPackages/PassRustCore"
+
 URL="https://github.com/protonpass/proton-pass-common/releases/download/${VERSION}/PassRustCode.swift.zip"
-HASH="4fe7113c63275c9eef9aa84ffb36dc829d4dd11a33c45039c88ec74783eba9a9"
 
 if ! command -v wget &> /dev/null; then
     echo "wget is not installed, installing via Homebrew"
     brew install wget
 fi
 
-echo -e "Creating tmp directory if not exist\n"
+# Check if the current local package is using the right version
+LOCAL_VERSION_PATH="${LOCAL_PACKAGE_PATH}/VERSION"
+if [ -e "$LOCAL_VERSION_PATH" ]; then
+    LOCAL_VERSION=$(cat $LOCAL_VERSION_PATH)
+    if [ "$VERSION" = "$LOCAL_VERSION" ]; then
+        echo "Correct local Rust package version $LOCAL_VERSION. Skipped download."
+        true
+        exit 0
+    else
+        echo "Not matched local Rust package version $LOCAL_VERSION, getting the right one $VERSION."
+    fi
+else
+    echo "No local package found. Downdoading Rust package version $VERSION..."
+fi
+
+echo "Creating tmp directory if not exist"
 mkdir -p $TMP_DIR_PATH
 
-echo "Downloading artifact"
+echo -e "Downloading artifact\n"
 wget -N -P $TMP_DIR_PATH $URL
 
 ARTIFACT_PATH="${TMP_DIR_PATH}/PassRustCode.swift.zip"
@@ -25,19 +45,18 @@ ARTIFACT_PATH="${TMP_DIR_PATH}/PassRustCode.swift.zip"
 echo "Checksum verification for artifact"
 echo -n "${HASH}  ${ARTIFACT_PATH}" | shasum -a 256 -c
 
-echo "Unzipping artifact"
+echo -e "\nUnzipping artifact"
 unzip -o $ARTIFACT_PATH -d $TMP_DIR_PATH
 
-UNZIPPED_PACKAGE_PATH="${TMP_DIR_PATH}/builds/proton/clients/pass/proton-pass-common/proton-pass-mobile/iOS/PassRustCore/*"
-LOCAL_PACKAGE_PATH="LocalPackages/PassRustCore"
-
-rm -fr $LOCAL_PACKAGE_PATH
+rm -rf $LOCAL_PACKAGE_PATH
 mkdir $LOCAL_PACKAGE_PATH
 
-echo "Copying unzipped package to local package directory"
+UNZIPPED_PACKAGE_PATH="${TMP_DIR_PATH}/builds/proton/clients/pass/proton-pass-common/proton-pass-mobile/iOS/PassRustCore/*"
+
+echo -e "\nCopying unzipped package to local package directory"
 mv -f $UNZIPPED_PACKAGE_PATH $LOCAL_PACKAGE_PATH
 
-echo "Removing unzipped package"
-rm -rf "${TMP_DIR_PATH}/builds"
+echo "Removing tmp directory"
+rm -rf $TMP_DIR_PATH
 
 echo "Done! You may need to restart Xcode and clean build folder if you encounter building issues."
