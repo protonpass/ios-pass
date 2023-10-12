@@ -58,7 +58,8 @@ public extension TOTPData {
             // "otpauth" as protocol, parse information
             let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
             if otpComponents.type == .totp,
-               let secretData = PTNBase32Codec.data(from: otpComponents.secret) {
+               let secretData = PTNBase32Codec.data(from: otpComponents.secret),
+               !otpComponents.secret.spacesRemoved.isEmpty {
                 username = otpComponents.label
                 issuer = otpComponents.issuer
                 timeInterval = Double(otpComponents.period)
@@ -68,7 +69,8 @@ public extension TOTPData {
                                                digits: otpComponents.digits)
             }
         } else if let secretData =
-            PTNBase32Codec.data(from: uri.spacesRemoved) {
+            PTNBase32Codec.data(from: uri.spacesRemoved),
+            !uri.spacesRemoved.isEmpty {
             // Treat the whole string as secret
             tokenGenerator = try Generator(secret: secretData)
         }
@@ -150,6 +152,10 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
                 let otpComponents = try URLUtils.OTPParser.parse(urlString: uri)
                 if otpComponents.type == .totp,
                    let secretData = PTNBase32Codec.data(from: otpComponents.secret) {
+                    if otpComponents.secret.spacesRemoved.isEmpty {
+                        state = .empty
+                        return
+                    }
                     username = otpComponents.label
                     issuer = otpComponents.issuer
                     timeInterval = Double(otpComponents.period)
@@ -159,6 +165,10 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
                                                    digits: otpComponents.digits)
                 }
             } else if let secretData = PTNBase32Codec.data(from: uri.spacesRemoved) {
+                if uri.spacesRemoved.isEmpty {
+                    state = .empty
+                    return
+                }
                 // Treat the whole string as secret
                 tokenGenerator = try Generator(secret: secretData)
             }
