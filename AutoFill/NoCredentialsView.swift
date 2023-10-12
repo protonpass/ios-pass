@@ -35,21 +35,10 @@ struct NoCredentialsView: View {
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
                     .padding()
 
-                VStack {
-                    Spacer()
-                    CreateLoginButton(onCreate: onCreate)
-                }
-                .padding()
+                Spacer()
+                    .padding()
             }
-            .background(Color(uiColor: PassColor.backgroundNorm))
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    CircleButton(icon: IconProvider.cross,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: PassColor.interactionNormMinor1,
-                                 action: onCancel)
-                }
-            }
+            .background(PassColor.backgroundNorm.toColor)
         }
         .navigationViewStyle(.stack)
     }
