@@ -36,12 +36,19 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
     /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
     public let members: Int
 
+    /// Max members allowed for the target of this vault
     public let maxMembers: Int
 
+    /// How many invites are pending of acceptance
+    public let currentPendingInvites: Int
+
+    /// How many new user invites are waiting for an admin to create the proper invite
     public let newUserPendingInvites: Int
 
+    /// Whether this share is shared or not
     public let shared: Bool
 
+    /// Time of creation of this vault
     public let createTime: Int64
 
     public init(id: String,
@@ -55,6 +62,7 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
                 shareRole: ShareRole,
                 members: Int,
                 maxMembers: Int,
+                currentPendingInvites: Int,
                 newUserPendingInvites: Int,
                 shared: Bool,
                 createTime: Int64) {
@@ -69,6 +77,7 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.shareRole = shareRole
         self.members = members
         self.maxMembers = maxMembers
+        self.currentPendingInvites = currentPendingInvites
         self.newUserPendingInvites = newUserPendingInvites
         self.shared = shared
         self.createTime = createTime
@@ -76,5 +85,9 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
 
     public var canEdit: Bool {
         shareRole != .read
+    }
+
+    public var reachedSharingLimit: Bool {
+        maxMembers <= members + currentPendingInvites
     }
 }
