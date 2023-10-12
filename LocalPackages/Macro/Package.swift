@@ -10,7 +10,7 @@ let package = Package(name: "Macro",
                           // Products define the executables and libraries a package produces, making them visible
                           // to other packages.
                           .library(name: "Macro",
-                                   targets: ["Macro"])
+                                   targets: ["Macro"]),
                       ],
                       dependencies: [
                           // Depend on the Swift 5.9 release of SwiftSyntax
@@ -29,11 +29,12 @@ let package = Package(name: "Macro",
 
                           // Library that exposes a macro as part of its API, which is used in client programs.
                           .target(name: "Macro", dependencies: ["MacroImplementation"], path: "Sources/Interface"),
-
+            
                           // A test target used to develop the macro implementation.
                           .testTarget(name: "MacroTests",
                                       dependencies: [
                                           "MacroImplementation",
+                                          "Macro",
                                           .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
                                       ],
                                       path: "Tests")
