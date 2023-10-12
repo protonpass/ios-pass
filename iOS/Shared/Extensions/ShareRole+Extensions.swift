@@ -22,17 +22,6 @@ import Entities
 import Macro
 
 extension ShareRole {
-    var role: String {
-        switch self {
-        case .admin:
-            #localized("admin")
-        case .write:
-            #localized("edit")
-        case .read:
-            #localized("read")
-        }
-    }
-
     var title: String {
         switch self {
         case .read:
