@@ -33,7 +33,7 @@ extension Share {
               targetMembers: .random(in: 0...10),
               targetMaxMembers: .random(in: 0...10), 
               pendingInvites: .random(in: 0...4),
-              newUserInvitesWaiting: .random(in: 0...5),
+              newUserInvitesReady: .random(in: 0...5),
               primary: .random(),
               owner: .random(),
               shared: true,
