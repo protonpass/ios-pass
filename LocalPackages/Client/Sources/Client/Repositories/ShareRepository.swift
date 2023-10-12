@@ -325,7 +325,7 @@ public extension ShareRepository {
         }
 
         let updatedShares = shares.map { share in
-            let clonedShare = share.share.clone(isPrimary: share.share.shareID == shareId)
+            let clonedShare = share.share.copy(primary: share.share.shareID == shareId)
             return SymmetricallyEncryptedShare(encryptedContent: share.encryptedContent,
                                                share: clonedShare)
         }
@@ -415,6 +415,9 @@ private extension SymmetricallyEncryptedShare {
                      isOwner: share.owner,
                      shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
                      members: Int(share.targetMembers),
+                     maxMembers: Int(share.targetMaxMembers),
+                     pendingInvites: Int(share.pendingInvites),
+                     newUserInvitesReady: Int(share.newUserInvitesReady),
                      shared: share.shared,
                      createTime: share.createTime)
     }
