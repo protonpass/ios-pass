@@ -94,8 +94,14 @@ private extension CredentialsView {
                 }
                 if let results = viewModel.results {
                     if results.isEmpty {
-                        NoCredentialsView(onCancel: viewModel.cancel,
-                                          onCreate: viewModel.createLoginItem)
+                        VStack {
+                            Spacer()
+                            Text("You currently have no login items")
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(PassColor.textNorm.toColor)
+                                .padding()
+                            Spacer()
+                        }
                     } else {
                         itemList(results: results)
                     }
@@ -120,7 +126,11 @@ private extension CredentialsView {
 
             Spacer()
 
-            CreateLoginButton(onCreate: viewModel.createLoginItem)
+            CapsuleTextButton(title: #localized("Create login"),
+                              titleColor: PassColor.loginInteractionNormMajor2,
+                              backgroundColor: PassColor.loginInteractionNormMinor1,
+                              height: 52,
+                              action: viewModel.createLoginItem)
                 .padding(.horizontal)
                 .padding(.vertical, 8)
         }
@@ -142,13 +152,13 @@ private extension CredentialsView {
                         Text("No suggestions")
                             .font(.callout.italic())
                             .padding(.horizontal)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .foregroundColor(PassColor.textWeak.toColor)
                             .plainListRow()
                     }, header: {
                         Text(matchedItemsHeaderTitle)
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm))
+                            .foregroundColor(PassColor.textNorm.toColor)
                     })
                 } else {
                     section(for: results.matchedItems,
@@ -162,10 +172,10 @@ private extension CredentialsView {
                         Text("Other items")
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                            .foregroundColor(PassColor.textNorm.toColor) +
                             Text(verbatim: " (\(results.notMatchedItems.count))")
                             .font(.callout)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
+                            .foregroundColor(PassColor.textWeak.toColor)
 
                         Spacer()
 
@@ -196,14 +206,14 @@ private extension CredentialsView {
     var primaryVaultOnlyMessage: some View {
         ZStack {
             Text("Your plan only allows to use items in your primary vault for autofill purposes.")
-                .foregroundColor(Color(uiColor: PassColor.textNorm)) +
+                .foregroundColor(PassColor.textNorm.toColor) +
                 Text(verbatim: " ") +
                 Text("Upgrade now")
-                .underline(color: Color(uiColor: PassColor.interactionNormMajor1))
-                .foregroundColor(Color(uiColor: PassColor.interactionNormMajor1))
+                .underline(color: PassColor.interactionNormMajor1.toColor)
+                .foregroundColor(PassColor.interactionNormMajor1.toColor)
         }
         .padding()
-        .background(Color(uiColor: PassColor.interactionNormMinor1))
+        .background(PassColor.interactionNormMinor1.toColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.upgrade)
     }
@@ -230,7 +240,7 @@ private extension CredentialsView {
                 Text(headerTitle)
                     .font(.callout)
                     .fontWeight(headerFontWeight)
-                    .foregroundColor(Color(uiColor: headerColor))
+                    .foregroundColor(headerColor.toColor)
             })
         }
     }
