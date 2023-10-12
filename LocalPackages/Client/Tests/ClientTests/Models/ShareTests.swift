@@ -34,7 +34,7 @@ final class ShareTests: XCTestCase {
                                targetMembers: 2,
                                targetMaxMembers: 10, 
                                pendingInvites: 3,
-                               newUserInvitesWaiting: 0,
+                               newUserInvitesReady: 0,
                                primary: false,
                                owner: .random(),
                                shared: true,
