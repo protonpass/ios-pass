@@ -54,15 +54,4 @@ extension ShareRole {
             #localized("Can grant and revoke access to this vault")
         }
     }
-
-    var summary: String {
-        switch self {
-        case .read:
-            #localized("only view items")
-        case .write:
-            #localized("create, edit, delete and export items")
-        case .admin:
-            #localized("grant and revoke access")
-        }
-    }
 }
