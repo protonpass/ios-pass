@@ -1162,8 +1162,8 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
 
-    func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
+        showFullScreen(data: data, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
