@@ -343,7 +343,7 @@ extension VaultsManager {
     func getOldestOwnedVault() -> Vault? {
         guard case let .loaded(uiModels, _) = state else { return nil }
         let vaults = uiModels.map(\.vault)
-        return vaults.filter(\.isOwner).min(by: { $0.createTime < $1.createTime })
+        return vaults.oldestOwned
     }
 
     func getFilteredItems() -> [ItemUiModel] {
