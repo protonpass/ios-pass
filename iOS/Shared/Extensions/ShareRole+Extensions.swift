@@ -36,11 +36,11 @@ extension ShareRole {
     var title: String {
         switch self {
         case .read:
-            #localized("Can View")
+            #localized("Viewer")
         case .write:
-            #localized("Can Edit")
+            #localized("Editor")
         case .admin:
-            #localized("Can Manage")
+            #localized("Admin")
         }
     }
 
