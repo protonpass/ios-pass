@@ -51,7 +51,7 @@ extension ShareEntity {
     @NSManaged var targetMembers: Int64
     @NSManaged var targetMaxMembers: Int64
     @NSManaged var pendingInvites: Int64
-    @NSManaged var newUserInvitesWaiting: Int64
+    @NSManaged var newUserInvitesReady: Int64
     @NSManaged var shared: Bool
 }
 
@@ -68,7 +68,7 @@ extension ShareEntity {
                            targetMembers: targetMembers,
                            targetMaxMembers: targetMaxMembers,
                            pendingInvites: pendingInvites,
-                           newUserInvitesWaiting: newUserInvitesWaiting,
+                           newUserInvitesReady: newUserInvitesReady,
                            primary: primary,
                            owner: owner,
                            shared: shared,
@@ -100,7 +100,7 @@ extension ShareEntity {
         targetMembers = share.targetMembers
         targetMaxMembers = share.targetMaxMembers
         pendingInvites = share.pendingInvites
-        newUserInvitesWaiting = share.newUserInvitesWaiting
+        newUserInvitesReady = share.newUserInvitesReady
         shared = share.shared
     }
 }
