@@ -21,6 +21,7 @@
 import Core
 import CryptoKit
 import Entities
+import Macro
 import ProtonCoreCrypto
 import ProtonCoreLogin
 
@@ -29,6 +30,7 @@ public enum ShareContent {
     case item // Not handled yet
 }
 
+@Copyable
 public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// ID of the share
     public let shareID: String
@@ -56,6 +58,9 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
 
     /// Max members allowed for the target of this share
     public let targetMaxMembers: Int64
+
+    /// How many invites are pending of acceptance
+    public let pendingInvites: Int64
 
     /// How many new user invites are waiting for an admin to create the proper invite
     public let newUserInvitesWaiting: Int64
@@ -123,6 +128,7 @@ public extension Share {
                               shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
                               members: Int(targetMembers),
                               maxMembers: Int(targetMaxMembers),
+                              currentPendingInvites: Int(pendingInvites),
                               newUserPendingInvites: Int(newUserInvitesWaiting),
                               shared: shared,
                               createTime: createTime)
@@ -130,26 +136,5 @@ public extension Share {
         case .item:
             return .item
         }
-    }
-
-    func clone(isPrimary: Bool) -> Share {
-        .init(shareID: shareID,
-              vaultID: vaultID,
-              addressID: addressID,
-              targetType: targetType,
-              targetID: targetID,
-              permission: permission,
-              shareRoleID: shareRoleID,
-              targetMembers: targetMembers,
-              targetMaxMembers: targetMaxMembers,
-              newUserInvitesWaiting: newUserInvitesWaiting,
-              primary: isPrimary,
-              owner: owner,
-              shared: shared,
-              content: content,
-              contentKeyRotation: contentKeyRotation,
-              contentFormatVersion: contentFormatVersion,
-              expireTime: expireTime,
-              createTime: createTime)
     }
 }
