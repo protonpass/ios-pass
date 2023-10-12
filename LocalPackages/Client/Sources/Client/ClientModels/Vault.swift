@@ -40,10 +40,10 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
     public let maxMembers: Int
 
     /// How many invites are pending of acceptance
-    public let currentPendingInvites: Int
+    public let pendingInvites: Int
 
     /// How many new user invites are waiting for an admin to create the proper invite
-    public let newUserPendingInvites: Int
+    public let newUserInvitesReady: Int
 
     /// Whether this share is shared or not
     public let shared: Bool
@@ -62,8 +62,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
                 shareRole: ShareRole,
                 members: Int,
                 maxMembers: Int,
-                currentPendingInvites: Int,
-                newUserPendingInvites: Int,
+                pendingInvites: Int,
+                newUserInvitesReady: Int,
                 shared: Bool,
                 createTime: Int64) {
         self.id = id
@@ -77,8 +77,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.shareRole = shareRole
         self.members = members
         self.maxMembers = maxMembers
-        self.currentPendingInvites = currentPendingInvites
-        self.newUserPendingInvites = newUserPendingInvites
+        self.pendingInvites = pendingInvites
+        self.newUserInvitesReady = newUserInvitesReady
         self.shared = shared
         self.createTime = createTime
     }
@@ -88,6 +88,6 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
     }
 
     public var reachedSharingLimit: Bool {
-        maxMembers <= members + currentPendingInvites
+        maxMembers <= members + pendingInvites
     }
 }

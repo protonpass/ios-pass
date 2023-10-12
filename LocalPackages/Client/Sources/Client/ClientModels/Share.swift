@@ -63,7 +63,7 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     public let pendingInvites: Int64
 
     /// How many new user invites are waiting for an admin to create the proper invite
-    public let newUserInvitesWaiting: Int64
+    public let newUserInvitesReady: Int64
 
     /// Whether this vault is primary for this user
     public let primary: Bool
@@ -128,8 +128,8 @@ public extension Share {
                               shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
                               members: Int(targetMembers),
                               maxMembers: Int(targetMaxMembers),
-                              currentPendingInvites: Int(pendingInvites),
-                              newUserPendingInvites: Int(newUserInvitesWaiting),
+                              pendingInvites: Int(pendingInvites),
+                              newUserInvitesReady: Int(newUserInvitesReady),
                               shared: shared,
                               createTime: createTime)
             return .vault(vault)
