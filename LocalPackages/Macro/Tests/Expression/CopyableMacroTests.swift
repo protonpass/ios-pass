@@ -19,10 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import MacroImplementation
+import Macro
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import XCTest
-import Macro
 
 let testMacros: [String: Macro.Type] = [
     "Copyable": CopyableMacro.self
