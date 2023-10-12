@@ -61,4 +61,11 @@ public extension [Vault] {
         }
         return WritableOldestVaults(owned: oldestOwned, other: secondOldest)
     }
+
+    var oldestOwned: Vault? {
+        if self.isEmpty {
+            return nil
+        }
+        return self.filter(\.isOwner).min(by: { $0.createTime < $1.createTime })
+    }
 }
