@@ -2296,7 +2296,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35E5064C286F819F00A3F6EA /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
-				35313E3F2AD6F61F00BDE4AF /* Download Rust package */,
 				5BB2B6F02A4479F3005E831C /* SwiftFormat */,
 				35E50637286F819F00A3F6EA /* Sources */,
 				35E50638286F819F00A3F6EA /* Frameworks */,
@@ -2554,25 +2553,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		35313E3F2AD6F61F00BDE4AF /* Download Rust package */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Download Rust package";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "scripts/public/download_rust_package.sh\n";
-		};
 		35610BC22A41C75B0065710D /* Update git commit hash */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
