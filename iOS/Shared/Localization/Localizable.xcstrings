@@ -6853,144 +6853,6 @@
         }
       }
     },
-    "Are sure you want to transfer your ownership to %@" : {
-      "comment" : "Vault ownership transfer",
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вы сапраўды хочаце перадаць свае правы ўласнасці %@?"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jste si jisti, že chcete převést své vlastnictví na %@"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bist du dir sicher, dass du den Besitzer zu %@ ändern willst?"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Είστε βέβαιοι ότι θέλετε να μεταβιβάσετε την ιδιοκτησία σας στο %@;"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are sure you want to transfer your ownership to %@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Estás seguro de que deseas transferir tu propriedad a %@?"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Está seguro de que quiere transferir su propiedad a %@?"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haluatko varmasti siirtää omistajuuden käyttäjälle %@"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voulez-vous vraiment transférer la propriété à %@ ?"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sei sicuro di voler trasferire la tua proprietà a %@?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "所有権を %@ に譲渡してもよろしいですか"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "დარწმუნებული ბრძანდებით, რომ მფლობელობის %@-სთვის გადაცემა, გნებავთ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 님에게 소유권을 이전하시겠습니까?"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Czy na pewno chcesz zmienić właściciela na %@?"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tem a certeza de que pretende transferir a sua propriedade para %@"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tem certeza de que deseja transferir sua propriedade para %@"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sigur doriți să transferați drepturile către %@?"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skutočne chcete previesť vlastníctvo na %@"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Är säker på att du vill överföra ditt ägarskap till %@?"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sahipliği %@ üzerine aktarmak istediğinize emin misiniz"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ви впевнені, що хочете передати право власності %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are sure you want to transfer your ownership to %@"
-          }
-        }
-      }
-    },
     "Associate and autofill" : {
       "localizations" : {
         "be" : {
@@ -8855,6 +8717,10 @@
           }
         }
       }
+    },
+    "Cancel invitation" : {
+      "comment" : "Used in sharing context, the title of the button to cancel an invitation",
+      "extractionState" : "manual"
     },
     "Capital letters" : {
       "extractionState" : "manual",
@@ -23095,6 +22961,10 @@
         }
       }
     },
+    "Invitation sent" : {
+      "comment" : "Subtitle below an email address in manage sharing access page, indicating that the invitation is made but the invitee has not yet accepted.",
+      "extractionState" : "manual"
+    },
     "Item moved to vault « %@ »" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -32347,8 +32217,9 @@
         }
       }
     },
-    "owner" : {
-
+    "Owner" : {
+      "comment" : "Share access level",
+      "extractionState" : "manual"
     },
     "Password" : {
       "localizations" : {
@@ -32743,143 +32614,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paste from clipboard"
-          }
-        }
-      }
-    },
-    "pending" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "у чаканні"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "čeká na vyřízení"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ausstehend"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "σε εκκρεμότητα"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pending"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pendiente"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pendiente"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "odottaa"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En attente"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "in attesa"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保留中"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "რიგში"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "보류 중"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "oczekujące"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pendente"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pendente"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "în așteptare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "prebieha spracovanie"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "väntande"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "bekliyor"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "на розгляді"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pending"
           }
         }
       }
@@ -36517,136 +36251,6 @@
         }
       }
     },
-    "Remove access" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выдаліць доступ"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odebrat přístup"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zugriff entfernen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αφαίρεση πρόσβασης"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar el acceso"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar el acceso"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mitätöi käyttöoikeus"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprimer l'accès"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rimuovi accesso"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アクセス権の削除"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "წვდომის გაუქმება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "접근 제거"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usuń dostęp"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remover o acesso"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remover o acesso"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminare acces"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odstrániť prístup"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ta bort åtkomst"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erişimi kaldır"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вилучити доступ"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Xóa quyền truy cập"
-          }
-        }
-      }
-    },
     "Remove alias" : {
       "localizations" : {
         "be" : {
@@ -37974,6 +37578,10 @@
     },
     "Review and share" : {
       "comment" : "Used in sharing context, the title of the summary page to let users review sharing details (email, access level, vault) before sharing.",
+      "extractionState" : "manual"
+    },
+    "Revoke access" : {
+      "comment" : "Used in sharing context, the title of the button to revoke access of a user to a shared vault",
       "extractionState" : "manual"
     },
     "Save" : {
@@ -45499,6 +45107,10 @@
           }
         }
       }
+    },
+    "Transfer ownership of this vault to %@?" : {
+      "comment" : "Used in sharing context, the description of the confirmation dialog when transferring ownership of a vault",
+      "extractionState" : "manual"
     },
     "Trash" : {
       "localizations" : {

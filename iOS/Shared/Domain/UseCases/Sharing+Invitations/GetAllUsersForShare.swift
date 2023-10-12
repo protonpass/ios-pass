@@ -69,12 +69,12 @@ struct ShareUser: Equatable, Hashable, Identifiable {
 
     var permission: String {
         if isOwner {
-            return #localized("owner")
+            return #localized("Owner")
         }
         if let shareRole {
-            return shareRole.role
+            return shareRole.title
         }
-        return #localized("pending")
+        return #localized("Invitation sent")
     }
 
     var isAdmin: Bool {
