@@ -33,13 +33,14 @@ struct UserPermissionView: View {
     @StateObject private var viewModel = UserPermissionViewModel()
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                headerView
-                emailDisplayView
-                roleList
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Set access level")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(PassColor.textNorm.toColor)
+            emailDisplayView
+            roleList
+            Spacer()
         }
         .navigate(isActive: $viewModel.goToNextStep, destination: router.navigate(to: .shareSummary))
         .navigationBarBackButtonHidden(true)
@@ -58,20 +59,6 @@ struct UserPermissionView: View {
                 .frame(width: 15, height: 15)
         } else {
             EmptyView()
-        }
-    }
-}
-
-private extension UserPermissionView {
-    var headerView: some View {
-        VStack(alignment: .leading, spacing: 11) {
-            Text("Set permissions")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
-            Text("Select the level of access this user will gain when they join your ‘\(viewModel.vaultName)’ vault")
-                .font(.body)
-                .foregroundColor(PassColor.textWeak.toColor)
         }
     }
 }
