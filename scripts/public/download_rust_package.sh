@@ -56,7 +56,7 @@ UNZIPPED_PACKAGE_PATH="${TMP_DIR_PATH}/builds/proton/clients/pass/proton-pass-co
 echo -e "\nCopying unzipped package to local package directory"
 mv -f $UNZIPPED_PACKAGE_PATH $LOCAL_PACKAGE_PATH
 
-echo "Removing unzipped package"
-rm -rf "${TMP_DIR_PATH}/builds"
+echo "Removing tmp directory"
+rm -rf $TMP_DIR_PATH
 
 echo "Done! You may need to restart Xcode and clean build folder if you encounter building issues."
