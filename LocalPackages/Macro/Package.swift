@@ -10,7 +10,7 @@ let package = Package(name: "Macro",
                           // Products define the executables and libraries a package produces, making them visible
                           // to other packages.
                           .library(name: "Macro",
-                                   targets: ["Macro"]),
+                                   targets: ["Macro"])
                       ],
                       dependencies: [
                           // Depend on the Swift 5.9 release of SwiftSyntax
