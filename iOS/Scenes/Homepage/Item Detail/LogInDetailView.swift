@@ -165,7 +165,7 @@ struct LogInDetailView: View {
             }
 
             Button(action: {
-                viewModel.showLarge(viewModel.username)
+                viewModel.showLarge(.text(viewModel.username))
             }, label: {
                 Text("Show large")
             })
