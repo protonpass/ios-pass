@@ -72,6 +72,7 @@
         <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="newUserInvitesWaiting" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="pendingInvites" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="permission" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="primary" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="shared" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
