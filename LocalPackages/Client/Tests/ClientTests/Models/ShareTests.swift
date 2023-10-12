@@ -32,6 +32,9 @@ final class ShareTests: XCTestCase {
                                permission: .random(in: 100...200),
                                shareRoleID: "1",
                                targetMembers: 2,
+                               targetMaxMembers: 10, 
+                               pendingInvites: 3,
+                               newUserInvitesReady: 0,
                                primary: false,
                                owner: .random(),
                                shared: true,
@@ -42,7 +45,7 @@ final class ShareTests: XCTestCase {
                                createTime: .random(in: 100...200))
 
         // When
-        let clonedShare = givenShare.clone(isPrimary: true)
+        let clonedShare = givenShare.copy(primary: true)
 
         // Then
         XCTAssertEqual(givenShare.shareID, clonedShare.shareID)

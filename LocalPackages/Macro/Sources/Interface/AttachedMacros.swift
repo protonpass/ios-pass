@@ -1,6 +1,6 @@
 //
-// Plugin.swift
-// Proton Pass - Created on 25/09/2023.
+// AttachedMacros.swift
+// Proton Pass - Created on 12/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,13 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import SwiftCompilerPlugin
-import SwiftSyntaxMacros
+import Foundation
 
-@main
-struct MacroPlugin: CompilerPlugin {
-    let providingMacros: [Macro.Type] = [
-        LocalizedMacro.self,
-        CopyableMacro.self
-    ]
-}
+/// A macro that adds a `copy` function to a struct for each stored property that the struct contains.
+/// Each `copy` function returns a copy of the struct that the macro is attached on, but one property can be set to
+/// a differnet value.
+@attached(member, names: named(copy))
+public macro Copyable() = #externalMacro(module: "MacroImplementation", type: "CopyableMacro")
