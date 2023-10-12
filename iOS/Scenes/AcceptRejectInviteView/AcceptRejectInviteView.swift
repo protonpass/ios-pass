@@ -64,8 +64,9 @@ struct AcceptRejectInviteView: View {
 private extension AcceptRejectInviteView {
     var senderEmailInfo: some View {
         VStack {
-            Text("Invitation from")
             Text(viewModel.userInvite.inviterEmail)
+                .fontWeight(.bold)
+            Text("invites you to access items in")
         }
         .font(.body)
         .foregroundColor(PassColor.textNorm.toColor)
