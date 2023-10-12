@@ -89,8 +89,8 @@ extension Vault {
               shareRole: .read,
               members: 0,
               maxMembers: 10, 
-              currentPendingInvites: 3,
-              newUserPendingInvites: 0,
+              pendingInvites: 3,
+              newUserInvitesReady: 0,
               shared: false,
               createTime: 0)
     }
