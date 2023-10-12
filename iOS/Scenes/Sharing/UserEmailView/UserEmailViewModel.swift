@@ -66,6 +66,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
+                canContinue = false
                 self.error = #localized("You can not share « %@ » vault with this email",
                                         vault?.name ?? "")
             }
