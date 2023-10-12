@@ -69,8 +69,8 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                   backgroundColor: PassColor.signalSuccess.toColor,
                   foregroundColor: PassColor.textInvert.toColor)
         case .invite:
-            .init(title: #localized("Shared vault invitation"),
-                  description: #localized("You've been invited to a vault. Tap here to see the invitation."),
+            .init(title: #localized("Vault shared with you"),
+                  description: #localized("You're invited to a shared vault. Tap for details."),
                   icon: PassIcon.inviteBannerIcon,
                   ctaTitle: nil,
                   backgroundColor: PassColor.backgroundMedium.toColor,

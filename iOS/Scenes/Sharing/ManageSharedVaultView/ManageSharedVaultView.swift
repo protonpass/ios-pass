@@ -56,7 +56,7 @@ struct ManageSharedVaultView: View {
         .showSpinner(viewModel.loading)
         .alert(item: $viewModel.newOwner) { user in
             Alert(title: Text("Transfer ownership"),
-                  message: Text("Are sure you want to transfer your ownership to \(user.email)"),
+                  message: Text("Transfer ownership of this vault to \(user.email)?"),
                   primaryButton: .default(Text("Confirm")) {
                       viewModel.transferOwnership(to: user)
                   },
@@ -138,13 +138,23 @@ private extension ManageSharedVaultView {
                               tintColor: ItemType.login.tintColor,
                               backgroundColor: ItemType.login.backgroundColor)
             VStack(alignment: .leading, spacing: 4) {
-                Text(user.email)
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .lineLimit(viewModel.isExpanded(email: user.email) ? nil : 1)
-                    .onTapGesture {
-                        viewModel.expand(email: user.email)
+                Label(title: {
+                    Text(user.email)
+                        .font(user.isPending ? .body.italic() : .body)
+                        .foregroundColor(PassColor.textNorm.toColor)
+                        .lineLimit(viewModel.isExpanded(email: user.email) ? nil : 1)
+                        .onTapGesture {
+                            viewModel.expand(email: user.email)
+                        }
+                        .animation(.default, value: viewModel.expandedEmails)
+                }, icon: {
+                    if user.isPending {
+                        Image(systemName: "questionmark.circle")
+                            .foregroundColor(PassColor.textWeak.toColor)
+                            .font(.callout)
                     }
-                    .animation(.default, value: viewModel.expandedEmails)
+                })
+
                 HStack {
                     if viewModel.isCurrentUser(with: user) {
                         Text("You")
@@ -231,7 +241,7 @@ private extension ManageSharedVaultView {
                     }
                 }, label: {
                     Label(title: {
-                        Text("Remove access")
+                        Text(user.isPending ? "Cancel invitation" : "Revoke access")
                     }, icon: {
                         Image(uiImage: IconProvider.circleSlash)
                             .renderingMode(.template)
