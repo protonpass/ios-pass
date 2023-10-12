@@ -32,14 +32,15 @@ struct SharingSummaryView: View {
     @StateObject private var viewModel = SharingSummaryViewModel()
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 26) {
-                headerView
-                vaultInfo
-                emailInfo
-                permissionInfo
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 26) {
+            Text("Review and share")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(PassColor.textNorm.toColor)
+            emailInfo
+            vaultInfo
+            permissionInfo
+            Spacer()
         }
         .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -52,37 +53,10 @@ struct SharingSummaryView: View {
 }
 
 private extension SharingSummaryView {
-    @ViewBuilder
-    var headerView: some View {
-        let email = attributedText(for: viewModel.infos?.email ?? "")
-        let vaultName = attributedText(for: #localized("%@ vault", viewModel.infos?.vaultName ?? ""))
-        let itemCount = attributedText(for: #localized("%lld item(s)", viewModel.infos?.itemsNum ?? 0))
-        let permission = attributedText(for: viewModel.infos?.role?.summary ?? "")
-        VStack(alignment: .leading, spacing: 11) {
-            Text("Summary")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
-            // swiftlint:disable:next line_length
-            Text("You are about to invite \(email) into your \(vaultName). They will gain access to \(itemCount) and they will be able to \(permission) in this vault.")
-                .font(.body)
-                .foregroundColor(PassColor.textWeak.toColor)
-        }
-    }
-
-    func attributedText(for text: String) -> AttributedString {
-        var result = AttributedString(text)
-        result.font = .body.bold()
-        result.foregroundColor = PassColor.textNorm
-        return result
-    }
-}
-
-private extension SharingSummaryView {
     var vaultInfo: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Vault")
-                .font(.body)
+                .font(.callout)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             if let infos = viewModel.infos {
@@ -105,8 +79,8 @@ private extension SharingSummaryView {
 private extension SharingSummaryView {
     var emailInfo: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("User")
-                .font(.body)
+            Text("Share with")
+                .font(.callout)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             HStack(spacing: kItemDetailSectionPadding) {
@@ -126,8 +100,8 @@ private extension SharingSummaryView {
 private extension SharingSummaryView {
     var permissionInfo: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Permissions")
-                .font(.body)
+            Text("Access level")
+                .font(.callout)
                 .foregroundColor(PassColor.textWeak.toColor)
                 .frame(height: 20)
             if let role = viewModel.infos?.role {
