@@ -390,16 +390,16 @@ private extension CredentialsViewModel {
 
                 let vault = vaults.first { $0.shareId == encryptedItem.shareId }
                 assert(vault != nil, "Must have at least 1 vault")
-                let shouldTakeIntoAccount = await shouldTakeIntoAccount(vaults: vaults,
-                                                                        vault: vault,
-                                                                        withPlan: plan)
+                guard await shouldTakeIntoAccount(vaults: vaults,
+                                                  vault: vault,
+                                                  withPlan: plan) else {
+                    continue
+                }
 
                 if case let .login(data) = decryptedItemContent.contentData {
-                    if shouldTakeIntoAccount {
-                        try searchableItems.append(SearchableItem(from: encryptedItem,
-                                                                  symmetricKey: symmetricKey,
-                                                                  allVaults: vaults))
-                    }
+                    try searchableItems.append(SearchableItem(from: encryptedItem,
+                                                              symmetricKey: symmetricKey,
+                                                              allVaults: vaults))
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()
@@ -412,7 +412,7 @@ private extension CredentialsViewModel {
                         }
                     }
 
-                    if matchResults.isEmpty || !shouldTakeIntoAccount {
+                    if matchResults.isEmpty {
                         notMatchedEncryptedItems.append(encryptedItem)
                     } else {
                         let totalScore = matchResults.reduce(into: 0) { partialResult, next in
@@ -432,10 +432,10 @@ private extension CredentialsViewModel {
             logger.debug("Mapped \(encryptedItems.count) encrypted items.")
             logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
             logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-            return .init(vaults: vaults,
-                         searchableItems: searchableItems,
-                         matchedItems: matchedItems,
-                         notMatchedItems: notMatchedItems)
+            return CredentialsFetchResult(vaults: vaults,
+                                          searchableItems: searchableItems,
+                                          matchedItems: matchedItems,
+                                          notMatchedItems: notMatchedItems)
         }
     }
 
@@ -466,11 +466,12 @@ private extension CredentialsViewModel {
         guard let vault else { return true }
         switch plan.planType {
         case .free:
-            if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
+            if await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1) {
                 let oldestVaults = vaults.twoOldestVaults
                 return oldestVaults.isOneOf(shareId: vault.shareId)
             } else {
-                return vault.isPrimary
+                let mainVault = await getMainVault()
+                return vault == mainVault
             }
         default:
             return true
