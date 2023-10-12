@@ -25,13 +25,27 @@ import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
+enum FullScreenData {
+    case password(String)
+    case text(String)
+
+    var text: String {
+        switch self {
+        case let .password(password):
+            password
+        case let .text(text):
+            text
+        }
+    }
+}
+
 struct FullScreenView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var mode: Mode = .text
     @State private var originalBrightness: CGFloat = 0.5
     @State private var percentage: Double = 0.5
     private let theme = resolve(\SharedToolingContainer.theme)
-    let text: String
+    let data: FullScreenData
 
     enum Mode {
         case text, qr
@@ -66,9 +80,9 @@ struct FullScreenView: View {
                     case .text:
                         FullScreenTextView(originalBrightness: $originalBrightness,
                                            percentage: $percentage,
-                                           text: text)
+                                           data: data)
                     case .qr:
-                        QrCodeView(text: text)
+                        QrCodeView(text: data.text)
                     }
                 }
                 .padding()
@@ -111,14 +125,23 @@ struct FullScreenView: View {
 private struct FullScreenTextView: View {
     @Binding var originalBrightness: CGFloat
     @Binding var percentage: Double
-    let text: String
+    let data: FullScreenData
 
     var body: some View {
         VStack {
             Spacer()
-            Text(verbatim: text)
-                .font(.system(size: (percentage + 1) * 24))
-                .fontWeight(.semibold)
+
+            switch data {
+            case let .password(password):
+                Text(PasswordUtils.generateColoredPasswords(password))
+                    .font(.system(size: (percentage + 1) * 24))
+                    .fontWeight(.semibold)
+            case let .text(text):
+                Text(verbatim: text)
+                    .font(.system(size: (percentage + 1) * 24))
+                    .fontWeight(.semibold)
+            }
+
             Spacer()
             HStack {
                 Text(verbatim: "A")
