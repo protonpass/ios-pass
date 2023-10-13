@@ -20,8 +20,8 @@
 // swiftlint:disable all
 
 @testable import UseCases
-import Client
 import Core
+import ProtonCoreFeatureFlags
 
 final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     // MARK: - execute
