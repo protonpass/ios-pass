@@ -21,6 +21,7 @@
 import Core
 import Factory
 import ProtonCoreServices
+import UseCases
 
 final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
@@ -84,6 +85,12 @@ extension UseCasesContainer {
 // MARK: - Sharing
 
 extension UseCasesContainer {
+    var createAndMoveItemToNewVault: Factory<CreateAndMoveItemToNewVaultUseCase> {
+        self { CreateAndMoveItemToNewVault(createVault: self.createVault(),
+                                           moveItemsBetweenVaults: self.moveItemsBetweenVaults(),
+                                           vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+
     var getCurrentShareInviteInformations: Factory<GetCurrentShareInviteInformationsUseCase> {
         self { GetCurrentShareInviteInformations(shareInviteService: self.shareInviteService)
         }
@@ -103,7 +110,9 @@ extension UseCasesContainer {
     }
 
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
-        self { SendVaultShareInvite(passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+        self { SendVaultShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
+                                    shareInviteService: self.shareInviteService,
+                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
                                     userData: SharedDataContainer.shared.userData(),
@@ -153,7 +162,7 @@ extension UseCasesContainer {
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
         self { RefreshInvitations(inviteRepository: RepositoryContainer.shared.inviteRepository(),
                                   passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
-                                  getFeatureFlagStatus: self.getFeatureFlagStatus()) }
+                                  getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus()) }
     }
 
     var rejectInvitation: Factory<RejectInvitationUseCase> {
@@ -188,16 +197,10 @@ extension UseCasesContainer {
 // MARK: - Flags
 
 extension UseCasesContainer {
-    var userSharingStatus: Factory<UserSharingStatusUseCase> {
-        self { UserSharingStatus(getFeatureFlagStatus: self.getFeatureFlagStatus(),
-                                 passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
-                                 logManager: SharedToolingContainer.shared.logManager()) }
-    }
-
-    var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
-        self {
-            GetFeatureFlagStatus(featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository())
-        }
+    var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
+        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   userInfos: SharedDataContainer.shared.userData(),
+                                   logManager: self.logManager) }
     }
 }
 
@@ -235,10 +238,5 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
         self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
-    }
-
-    var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
-        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   logManager: self.logManager) }
     }
 }

@@ -52,7 +52,9 @@ struct NoteDetailView: View {
                         // no idea why it only happens to this specific note detail view
                         // tried adding a dummy `Text` but no help.
                         // Only `ItemDetailTitleView` works
-                        ItemDetailTitleView(itemContent: viewModel.itemContent, vault: nil)
+                        ItemDetailTitleView(itemContent: viewModel.itemContent,
+                                            vault: nil,
+                                            shouldShowVault: false)
                             .frame(height: 0)
                             .opacity(0)
                     }
@@ -64,7 +66,7 @@ struct NoteDetailView: View {
                         .foregroundColor(PassColor.textNorm)
 
                     HStack {
-                        if let vault = viewModel.vault {
+                        if let vault = viewModel.vault?.vault {
                             if !vault.shared {
                                 VaultLabel(vault: vault)
                                     .padding(.top, 4)

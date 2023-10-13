@@ -21,6 +21,8 @@
 
 @testable import Client
 import Core
+import Client
+import FeatureFlags
 
 final class FeatureFlagsRepositoryProtocolMock: @unchecked Sendable, FeatureFlagsRepositoryProtocol {
     // MARK: - getFlags
@@ -54,5 +56,21 @@ final class FeatureFlagsRepositoryProtocolMock: @unchecked Sendable, FeatureFlag
         }
         closureRefreshFlags()
         return stubbedRefreshFlagsResult
+    }
+    
+    func getFlag(for key: any FeatureFlagTypeProtocol) async -> FeatureFlag? {
+        stubbedRefreshFlagsResult.flags.first { $0.name == key.rawValue }
+    }
+    
+    func isFlagEnable(for key: any FeatureFlagTypeProtocol) async -> Bool {
+        stubbedRefreshFlagsResult.flags.first { $0.name == key.rawValue }?.enabled ?? false
+    }
+    
+    func resetFlags() async {
+        
+    }
+    
+    func resetFlags(for userId: String) async {
+        
     }
 }

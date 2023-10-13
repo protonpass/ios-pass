@@ -48,7 +48,7 @@ final class GetCurrentShareInviteInformations: GetCurrentShareInviteInformations
         let receiverPublicKeys = shareInviteService.receiverPublicKeys
         let itemNum = shareInviteService.currentSelectedVaultItems
 
-        return SharingInfos(vault: vault,
+        return SharingInfos(vault: vault.value,
                             email: email,
                             role: role,
                             receiverPublicKeys: receiverPublicKeys,

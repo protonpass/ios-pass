@@ -21,6 +21,7 @@
 import Client
 import Core
 import Foundation
+import UseCases
 
 /// Empty credential database and index all existing login items
 /// We only index if user enabled "QuickType bar" option but in case when
@@ -43,6 +44,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
     private let mapLoginItem: MapLoginItemUseCase
+    private let getfeatureFlagStatus: GetFeatureFlagStatusUseCase
     private let logger: Logger
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -51,6 +53,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
          credentialManager: CredentialManagerProtocol,
          preferences: Preferences,
          mapLoginItem: MapLoginItemUseCase,
+         getfeatureFlagStatus: GetFeatureFlagStatusUseCase,
          logManager: LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
@@ -58,6 +61,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
         self.preferences = preferences
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
+        self.getfeatureFlagStatus = getfeatureFlagStatus
         logger = .init(manager: logManager)
     }
 
@@ -76,18 +80,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
         }
 
         try await credentialManager.removeAllCredentials()
-
-        var items = try await itemRepository.getActiveLogInItems()
-        logger.trace("Found \(items.count) active login items")
-
-        let plan = try await passPlanRepository.getPlan()
-        if plan.isFreeUser {
-            // Only index items in primary vault for free users
-            let vaults = try await shareRepository.getVaults()
-            let primaryVault = vaults.first { $0.isPrimary }
-            items = items.filter { $0.shareId == primaryVault?.shareId }
-            logger.trace("Filtered \(items.count) active login items")
-        }
+        let items = try await filterItems()
 
         let credentials = try items.flatMap(mapLoginItem.execute)
         try await credentialManager.insert(credentials: credentials)
@@ -95,5 +88,24 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
         let time = Date().timeIntervalSince1970 - start.timeIntervalSince1970
         let priority = Task.currentPriority.debugDescription
         logger.info("Indexed \(items.count) login items in \(time) seconds with priority \(priority)")
+    }
+}
+
+private extension IndexAllLoginItems {
+    func filterItems() async throws -> [SymmetricallyEncryptedItem] {
+        let plan = try await passPlanRepository.getPlan()
+        let items = try await itemRepository.getActiveLogInItems()
+        logger.trace("Found \(items.count) active login items")
+        if !plan.isFreeUser {
+            return items
+        }
+        let vaults = try await shareRepository.getVaults()
+        if await getfeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
+            let oldestVaults = vaults.twoOldestVaults
+            return items.filter { oldestVaults.isOneOf(shareId: $0.shareId) }
+        } else {
+            let primaryVault = vaults.first { $0.isPrimary }
+            return items.filter { $0.shareId == primaryVault?.shareId }
+        }
     }
 }

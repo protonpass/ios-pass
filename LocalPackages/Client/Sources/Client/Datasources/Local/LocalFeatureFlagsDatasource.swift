@@ -19,18 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+@_exported import FeatureFlags
 
 enum FeatureFlagError: Error {
     case couldNotEncodeFlags
 }
 
-public protocol LocalFeatureFlagsDatasourceProtocol: LocalDatasourceProtocol {
-    func getFeatureFlags(userId: String) async throws -> FeatureFlags?
-    func upsertFlags(_ flags: FeatureFlags, userId: String) async throws
-}
-
-public extension LocalFeatureFlagsDatasourceProtocol {
-    func getFeatureFlags(userId: String) async throws -> FeatureFlags? {
+public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalDatasourceProtocol,
+    LocalFeatureFlagsProtocol {
+    public func getFeatureFlags(userId: String) async throws -> FeatureFlags? {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = FeatureFlagsEntity.fetchRequest()
@@ -40,7 +37,7 @@ public extension LocalFeatureFlagsDatasourceProtocol {
         return entities.compactMap { $0.toFeatureFlags() }.first
     }
 
-    func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
+    public func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
         let encoder = JSONEncoder()
         guard let flagsData = try? encoder.encode(flags.flags) else {
             throw FeatureFlagError.couldNotEncodeFlags
@@ -55,6 +52,21 @@ public extension LocalFeatureFlagsDatasourceProtocol {
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
-}
 
-public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalFeatureFlagsDatasourceProtocol {}
+    public func cleanAllFlags() async {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
+        _ = try? await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                               context: taskContext)
+    }
+
+    public func cleanFlags(for userId: String) async {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId)
+        ])
+        _ = try? await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                               context: taskContext)
+    }
+}

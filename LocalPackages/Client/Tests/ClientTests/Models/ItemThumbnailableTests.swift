@@ -20,6 +20,7 @@
 
 @testable import Client
 import XCTest
+import Entities
 
 final class ItemThumbnailableTests: XCTestCase {
     struct DummyItem: ItemThumbnailable {

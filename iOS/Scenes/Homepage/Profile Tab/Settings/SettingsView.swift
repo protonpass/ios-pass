@@ -46,7 +46,8 @@ struct SettingsView: View {
                 untitledSection
                 clipboardSection
                     .padding(.vertical)
-                if let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
+                if !viewModel.primaryVaultRemoved,
+                   let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
                     primaryVaultSection(vault: primaryVault)
                         .padding(.bottom)
                 }

@@ -22,13 +22,13 @@ import Client
 import Combine
 import Core
 import DocScanner
+import Entities
 import Factory
+import Foundation
 import Macro
 import ProtonCoreLogin
 
 protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
-                                                   delegate: VaultSelectorViewModelDelegate)
     func createEditItemViewModelWantsToAddCustomField(delegate: CustomFieldAdditionDelegate)
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: CustomFieldEditionDelegate)
@@ -63,6 +63,8 @@ class BaseCreateEditItemViewModel {
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var recentlyAddedOrEditedField: CustomFieldUiModel?
+    @Published var isShowingNonEditableAlert = false
+
     @Published var customFieldUiModels = [CustomFieldUiModel]() {
         didSet {
             didEditSomething = true
@@ -81,6 +83,9 @@ class BaseCreateEditItemViewModel {
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -106,14 +111,21 @@ class BaseCreateEditItemViewModel {
         guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
             throw PPError.vault(.vaultNotFound(vaultShareId))
         }
-        selectedVault = vault
+
+        if vault.canEdit {
+            selectedVault = vault
+        } else {
+            guard let vault = vaults.twoOldestVaults.owned ?? vaults.first else {
+                throw PPError.vault(.vaultNotFound(vaultShareId))
+            }
+            isShowingNonEditableAlert = true
+            selectedVault = vault
+        }
         self.mode = mode
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
         bindValues()
-        checkIfFreeUser()
-        pickPrimaryVaultIfApplicable()
-        checkIfAbleToAddMoreCustomFields()
+        setUp()
     }
 
     func bindValues() {}
@@ -146,45 +158,41 @@ class BaseCreateEditItemViewModel {
 // MARK: - Private APIs
 
 private extension BaseCreateEditItemViewModel {
-    func checkIfFreeUser() {
+    func setUp() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
-            } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-
-    /// Automatically switch to primary vault if free user. They won't be able to select other vaults anyway.
-    func pickPrimaryVaultIfApplicable() {
-        guard case .create = mode, vaults.count > 1, !selectedVault.isPrimary else { return }
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let isFreeUser = try await self.upgradeChecker.isFreeUser()
-                if isFreeUser, let primaryVault = self.vaults.first(where: { $0.isPrimary }) {
-                    self.selectedVault = primaryVault
+                isFreeUser = try await upgradeChecker.isFreeUser()
+                canAddMoreCustomFields = !isFreeUser
+                if isFreeUser, case .create = mode, vaults.count > 1 {
+                    await setMainVault()
                 }
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
+
+        vaultsManager.$vaultSelection
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] selection in
+                guard let self,
+                      let newSelectedVault = selection.preciseVault,
+                      newSelectedVault != selectedVault else {
+                    return
+                }
+                selectedVault = newSelectedVault
+            }
+            .store(in: &cancellables)
     }
 
-    func checkIfAbleToAddMoreCustomFields() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let isFreeUser = try await self.upgradeChecker.isFreeUser()
-                self.canAddMoreCustomFields = !isFreeUser
-            } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
-            }
+    func setMainVault() async {
+        if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault),
+           let mainVault = await getMainVault() {
+            selectedVault = mainVault
+        } else if !selectedVault.isPrimary, let primaryVault = vaults.first(where: { $0.isPrimary }) {
+            selectedVault = primaryVault
         }
     }
 
@@ -306,15 +314,7 @@ extension BaseCreateEditItemViewModel {
     }
 
     func changeVault() {
-        delegate?.createEditItemViewModelWantsToChangeVault(selectedVault: selectedVault, delegate: self)
-    }
-}
-
-// MARK: - VaultSelectorViewModelDelegate
-
-extension BaseCreateEditItemViewModel: VaultSelectorViewModelDelegate {
-    func vaultSelectorViewModelDidSelect(vault: Vault) {
-        selectedVault = vault
+        router.present(for: .vaultSelection)
     }
 }
 

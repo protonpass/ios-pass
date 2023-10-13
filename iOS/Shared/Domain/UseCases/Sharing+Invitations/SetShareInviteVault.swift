@@ -21,14 +21,15 @@
 //
 
 import Client
+import UseCases
 
 // sourcery: AutoMockable
 protocol SetShareInviteVaultUseCase {
-    func execute(with vault: Vault)
+    func execute(with vault: SharingVaultData)
 }
 
 extension SetShareInviteVaultUseCase {
-    func callAsFunction(with vault: Vault) {
+    func callAsFunction(with vault: SharingVaultData) {
         execute(with: vault)
     }
 }
@@ -43,8 +44,13 @@ final class SetShareInviteVault: SetShareInviteVaultUseCase {
         self.getVaultItemCount = getVaultItemCount
     }
 
-    func execute(with vault: Vault) {
+    func execute(with vault: SharingVaultData) {
         shareInviteService.setCurrentSelectedVault(with: vault)
-        shareInviteService.setCurrentSelectedVaultItem(with: getVaultItemCount(for: vault))
+        switch vault {
+        case let .existing(createdVault):
+            shareInviteService.setCurrentSelectedVaultItem(with: getVaultItemCount(for: createdVault))
+        case .new:
+            shareInviteService.setCurrentSelectedVaultItem(with: 1)
+        }
     }
 }

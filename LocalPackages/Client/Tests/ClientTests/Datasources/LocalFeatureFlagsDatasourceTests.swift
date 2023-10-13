@@ -20,6 +20,7 @@
 
 @testable import Client
 import XCTest
+import FeatureFlags
 
 final class LocalFeatureFlagsDatasourceTests: XCTestCase {
     var sut: LocalFeatureFlagsDatasource!
@@ -49,6 +50,6 @@ extension LocalFeatureFlagsDatasourceTests {
 
         // Then
         XCTAssertEqual(flags, givenFlags)
-        XCTAssertTrue(flags.isFlagEnable(for: .passSharingV1))
+        XCTAssertTrue(flags.isFlagEnable(for: FeatureFlagType.passSharingV1))
     }
 }
