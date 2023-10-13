@@ -64,6 +64,9 @@ public protocol ShareRepositoryProtocol: Sendable {
     /// Get all local vaults
     func getVaults() async throws -> [Vault]
 
+    /// Get local vault by ID
+    func getVault(shareId: String) async throws -> Vault?
+
     @discardableResult
     func createVault(_ vault: VaultProtobuf) async throws -> Share
 
@@ -264,6 +267,16 @@ public extension ShareRepository {
         return vaults
     }
 
+    func getVault(shareId: String) async throws -> Vault? {
+        logger.trace("Getting local vault with shareID \(shareId) for user \(userId)")
+        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
+            logger.trace("Found no local vault with shareID \(shareId) for user \(userId)")
+            return nil
+        }
+        logger.trace("Got local vault with shareID \(shareId) for user \(userId)")
+        return try share.toVault(symmetricKey: symmetricKey)
+    }
+
     func createVault(_ vault: VaultProtobuf) async throws -> Share {
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
@@ -312,7 +325,7 @@ public extension ShareRepository {
         }
 
         let updatedShares = shares.map { share in
-            let clonedShare = share.share.clone(isPrimary: share.share.shareID == shareId)
+            let clonedShare = share.share.copy(primary: share.share.shareID == shareId)
             return SymmetricallyEncryptedShare(encryptedContent: share.encryptedContent,
                                                share: clonedShare)
         }
@@ -402,6 +415,10 @@ private extension SymmetricallyEncryptedShare {
                      isOwner: share.owner,
                      shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
                      members: Int(share.targetMembers),
-                     shared: share.shared)
+                     maxMembers: Int(share.targetMaxMembers),
+                     pendingInvites: Int(share.pendingInvites),
+                     newUserInvitesReady: Int(share.newUserInvitesReady),
+                     shared: share.shared,
+                     createTime: share.createTime)
     }
 }

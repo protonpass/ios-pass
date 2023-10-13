@@ -31,14 +31,15 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
-    @Published private(set) var vaultName = ""
+    @Published private(set) var vault: SharingVaultData?
     @Published private(set) var error: String?
     @Published private(set) var isChecking = false
 
     private var cancellables = Set<AnyCancellable>()
+    private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
-    private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
     private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var checkTask: Task<Void, Never>?
 
     init() {
@@ -65,17 +66,26 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
-                self.error = #localized("You can not share « %@ » vault with this email", vaultName)
+                canContinue = false
+                self.error = #localized("You can not share « %@ » vault with this email",
+                                        vault?.name ?? "")
             }
         }
+    }
+
+    func customizeVault() {
+        if case let .new(vault, itemContent) = vault {
+            router.present(for: .customizeNewVault(vault, itemContent))
+        }
+    }
+
+    func resetShareInviteInformation() {
+        shareInviteService.resetShareInviteInformations()
     }
 }
 
 private extension UserEmailViewModel {
     func setUp() {
-        vaultName = getShareInviteInfos().vault?.name ?? ""
-        assert(getShareInviteInfos().vault != nil, "Vault is not set")
-
         $email
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -86,6 +96,15 @@ private extension UserEmailViewModel {
                     error = nil
                 }
                 canContinue = newValue.isValidEmail()
+            }
+            .store(in: &cancellables)
+
+        shareInviteService
+            .currentSelectedVault
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] currentVault in
+                guard let self else { return }
+                vault = currentVault
             }
             .store(in: &cancellables)
     }

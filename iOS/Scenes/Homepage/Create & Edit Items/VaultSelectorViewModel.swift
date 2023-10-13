@@ -23,47 +23,62 @@ import Combine
 import Core
 import Factory
 
-protocol VaultSelectorViewModelDelegate: AnyObject {
-    func vaultSelectorViewModelDidSelect(vault: Vault)
-}
-
 final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+
     let allVaults: [VaultListUiModel]
 
-    @Published private(set) var selectedVault: Vault
+    @Published private(set) var selectedVault: Vault?
     @Published private(set) var isFreeUser = false
 
-    weak var delegate: VaultSelectorViewModelDelegate?
+    private var isPrimaryVaultRemoved = false
 
-    init(allVaults: [VaultListUiModel], selectedVault: Vault) {
-        self.allVaults = allVaults
-        self.selectedVault = selectedVault
+    init() {
+        allVaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
+        selectedVault = vaultsManager.vaultSelection.preciseVault
 
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            guard self.allVaults.count > 1 else { return }
-            do {
-                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
-                if self.isFreeUser, let primaryVault = self.allVaults.first(where: { $0.vault.isPrimary }) {
-                    self.selectedVault = primaryVault.vault
-                }
-            } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
-            }
-        }
+        setup()
     }
 
     func select(vault: Vault) {
-        delegate?.vaultSelectorViewModelDidSelect(vault: vault)
+        vaultsManager.select(.precise(vault))
     }
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+
+    func shouldReduceOpacity(for vault: Vault) -> Bool {
+        if isPrimaryVaultRemoved {
+            !vault.canEdit
+        } else {
+            isFreeUser && !vault.isPrimary
+        }
+    }
+}
+
+private extension VaultSelectorViewModel {
+    func setup() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            isPrimaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
+            guard allVaults.count > 1 else { return }
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+                if isFreeUser, let mainVault = await getMainVault() {
+                    selectedVault = mainVault
+                }
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }

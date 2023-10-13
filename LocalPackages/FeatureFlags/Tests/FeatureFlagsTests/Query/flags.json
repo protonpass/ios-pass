@@ -1,0 +1,109 @@
+{
+    "code": 1000,
+    "toggles": [
+        {
+            "name": "PassRemovePrimaryVault",
+            "enabled": false,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "BlackFriday",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "ExternalSSO",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "EditEmailAddress",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "SignedInAccountRecovery",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "AutoReloadPage",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "WebMailPageSizeSetting",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "EmailForwarding",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "PassSharingV1",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        },
+        {
+            "name": "FirstTestFeatureFlag",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "testVariant",
+                "enabled": true,
+                "payload": {
+                    "type": "json",
+                    "value": "{ \"test\" : 19 }"
+                }
+            }
+        },
+        {
+            "name": "ScheduledSubscriptions",
+            "enabled": true,
+            "impressionData": false,
+            "variant": {
+                "name": "disabled",
+                "enabled": false
+            }
+        }
+    ]
+}
+

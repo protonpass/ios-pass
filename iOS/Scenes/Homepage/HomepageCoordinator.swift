@@ -255,10 +255,10 @@ private extension HomepageCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case .sharingFlow:
-                    presentSharingFlow()
-                case let .manageShareVault(vault, dismissPrevious):
-                    presentManageShareVault(with: vault, dismissPrevious: dismissPrevious)
+                case let .sharingFlow(dismissal):
+                    presentSharingFlow(dismissal: dismissal)
+                case let .manageShareVault(vault, dismissal):
+                    presentManageShareVault(with: vault, dismissal: dismissal)
                 case .filterItems:
                     presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
@@ -281,6 +281,16 @@ private extension HomepageCoordinator {
                     itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
+                case let .shareVaultFromItemDetail(vault, itemContent):
+                    if vault.vault.shared {
+                        presentManageShareVault(with: vault.vault, dismissal: .none)
+                    } else {
+                        presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
+                    }
+                case let .customizeNewVault(vault, itemContent):
+                    presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
+                case .vaultSelection:
+                    createEditItemViewModelWantsToChangeVault()
                 }
             }
             .store(in: &cancellables)
@@ -310,37 +320,53 @@ private extension HomepageCoordinator {
 
     // MARK: - UI view presenting functions
 
-    func presentSharingFlow() {
-        let userEmailView = UserEmailView()
-        present(userEmailView)
+    func presentSharingFlow(dismissal: SheetDismissal) {
+        let completion: () -> Void = { [weak self] in
+            guard let self else { return }
+            present(UserEmailView())
+        }
+
+        switch dismissal {
+        case .none:
+            completion()
+        case .topMost:
+            dismissTopMostViewController(animated: true, completion: completion)
+        case .all:
+            dismissAllViewControllers(animated: true, completion: completion)
+        }
     }
 
     func createEditVaultView(vault: Vault?) {
         if let vault {
-            presentCreateEditVaultView(mode: .edit(vault))
+            presentCreateEditVaultView(mode: .editExistingVault(vault))
         } else {
             presentCreateEditVaultView(mode: .create)
         }
     }
 
-    func presentManageShareVault(with vault: Vault, dismissPrevious: Bool) {
+    func presentManageShareVault(with vault: Vault, dismissal: SheetDismissal) {
         let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
 
-        if dismissPrevious {
-            dismissTopMostViewController { [weak self] in
-                guard let self else {
-                    return
-                }
-                if let host = rootViewController
-                    .topMostViewController as? UIHostingController<ManageSharedVaultView> {
-                    /// Updating share data circumventing the onAppear not being called after a sheet presentation
-                    host.rootView.refresh()
-                    return
-                }
-                present(manageShareVaultView)
+        let completion: () -> Void = { [weak self] in
+            guard let self else {
+                return
             }
-        } else {
+            if let host = rootViewController
+                .topMostViewController as? UIHostingController<ManageSharedVaultView> {
+                /// Updating share data circumventing the onAppear not being called after a sheet presentation
+                host.rootView.refresh()
+                return
+            }
             present(manageShareVaultView)
+        }
+
+        switch dismissal {
+        case .none:
+            present(manageShareVaultView)
+        case .topMost:
+            dismissTopMostViewController(animated: true, completion: completion)
+        case .all:
+            dismissAllViewControllers(animated: true, completion: completion)
         }
     }
 
@@ -400,12 +426,17 @@ private extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
-        do {
-            let coordinator = makeCreateEditItemCoordinator()
-            try coordinator.presentCreateItemView(for: itemType)
-        } catch {
-            logger.error(error)
-            bannerManager.displayTopErrorMessage(error)
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let coordinator = makeCreateEditItemCoordinator()
+                try await coordinator.presentCreateItemView(for: itemType)
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 
@@ -459,6 +490,16 @@ private extension HomepageCoordinator {
         viewModel.delegate = self
         let view = CreateEditVaultView(viewModel: viewModel)
         present(view)
+    }
+
+    func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
+        let view = ShareOrCreateNewVaultView(vault: vault, itemContent: itemContent)
+        let viewController = UIHostingController(rootView: view)
+        viewController.setDetentType(.custom(310),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController)
     }
 
     func startUpgradeFlow() {
@@ -516,7 +557,7 @@ private extension HomepageCoordinator {
     }
 
     func itemMoveBetweenVault(currentVault: Vault, itemToMove: ItemContent?) {
-        let allVaults = vaultsManager.getAllVaultContents()
+        let allVaults = vaultsManager.getAllEditableVaultContents()
         guard !allVaults.isEmpty else {
             return
         }
@@ -1008,12 +1049,8 @@ extension HomepageCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToChangeVault(selectedVault: Vault,
-                                                   delegate: VaultSelectorViewModelDelegate) {
-        let vaultContents = vaultsManager.getAllVaultContents()
-        let viewModel = VaultSelectorViewModel(allVaults: vaultContents.map { .init(vaultContent: $0) },
-                                               selectedVault: selectedVault)
-        viewModel.delegate = delegate
+    func createEditItemViewModelWantsToChangeVault() {
+        let viewModel = VaultSelectorViewModel()
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
@@ -1125,8 +1162,8 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         clipboardManager.copy(text: text, bannerMessage: bannerMessage)
     }
 
-    func itemDetailViewModelWantsToShowFullScreen(_ text: String) {
-        showFullScreen(text: text, userInterfaceStyle: preferences.theme.userInterfaceStyle)
+    func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
+        showFullScreen(data: data, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {

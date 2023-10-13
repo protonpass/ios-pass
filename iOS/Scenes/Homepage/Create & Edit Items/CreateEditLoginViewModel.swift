@@ -23,6 +23,7 @@ import Client
 import CodeScanner
 import Combine
 import Core
+import Entities
 import Factory
 import Macro
 import SwiftUI
@@ -78,32 +79,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
-        Publishers
-            .CombineLatest($title, $username)
-            .combineLatest($password)
-            .combineLatest($totpUri)
-            .combineLatest($urls)
-            .combineLatest($note)
-            .dropFirst(mode.isEditMode ? 1 : 3)
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-                didEditSomething = true
-            })
-            .store(in: &cancellables)
-
-        $selectedVault
-            .eraseToAnyPublisher()
-            .dropFirst()
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                if aliasOptions != nil {
-                    aliasOptions = nil
-                    aliasCreationLiteInfo = nil
-                    username = ""
-                }
-            }
-            .store(in: &cancellables)
+        setUp()
     }
 
     override func bindValues() {
@@ -152,7 +128,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func generateItemContent() throws -> ItemContentProtobuf {
         let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
-        let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri, editedUri: totpUri)
+        let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
+                                                            editedUri: totpUri)
         let logInData = ItemContentData.login(.init(username: username,
                                                     password: password,
                                                     totpUri: sanitizedTotpUri,
@@ -279,6 +256,40 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return nil
         }
         return invalidURLs.isEmpty
+    }
+}
+
+// MARK: - SetUP
+
+private extension CreateEditLoginViewModel {
+    func setUp() {
+        bindValues()
+        Publishers
+            .CombineLatest($title, $username)
+            .combineLatest($password)
+            .combineLatest($totpUri)
+            .combineLatest($urls)
+            .combineLatest($note)
+            .dropFirst(mode.isEditMode ? 1 : 3)
+            .sink(receiveValue: { [weak self] _ in
+                guard let self else { return }
+                didEditSomething = true
+            })
+            .store(in: &cancellables)
+
+        $selectedVault
+            .eraseToAnyPublisher()
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                if aliasOptions != nil {
+                    aliasOptions = nil
+                    aliasCreationLiteInfo = nil
+                    username = ""
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 

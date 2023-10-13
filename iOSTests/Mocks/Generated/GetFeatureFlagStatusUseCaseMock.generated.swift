@@ -19,28 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 // swiftlint:disable all
 
-@testable import Proton_Pass
+@testable import UseCases
 import Client
 import Core
 
 final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     // MARK: - execute
-    var executeWithThrowableError: Error?
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var invokedExecuteParameters: (flag: FeatureFlagType, Void)?
-    var invokedExecuteParametersList = [(flag: FeatureFlagType, Void)]()
+    var invokedExecuteParameters: (flag: any FeatureFlagTypeProtocol, Void)?
+    var invokedExecuteParametersList = [(flag: any FeatureFlagTypeProtocol, Void)]()
     var stubbedExecuteResult: Bool!
 
-    func execute(with flag: FeatureFlagType) async throws -> Bool {
+    func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
         invokedExecute = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (flag, ())
         invokedExecuteParametersList.append((flag, ()))
-        if let error = executeWithThrowableError {
-            throw error
-        }
         closureExecute()
         return stubbedExecuteResult
     }

@@ -22,25 +22,14 @@ import Entities
 import Macro
 
 extension ShareRole {
-    var role: String {
-        switch self {
-        case .admin:
-            #localized("admin")
-        case .write:
-            #localized("edit")
-        case .read:
-            #localized("read")
-        }
-    }
-
     var title: String {
         switch self {
         case .read:
-            #localized("Can View")
+            #localized("Viewer")
         case .write:
-            #localized("Can Edit")
+            #localized("Editor")
         case .admin:
-            #localized("Can Manage")
+            #localized("Admin")
         }
     }
 
@@ -52,17 +41,6 @@ extension ShareRole {
             #localized("Can create, edit, delete and export items in this vault")
         case .admin:
             #localized("Can grant and revoke access to this vault")
-        }
-    }
-
-    var summary: String {
-        switch self {
-        case .read:
-            #localized("only view items")
-        case .write:
-            #localized("create, edit, delete and export items")
-        case .admin:
-            #localized("grant and revoke access")
         }
     }
 }

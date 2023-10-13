@@ -49,6 +49,9 @@ extension ShareEntity {
     @NSManaged var userID: String
     @NSManaged var shareRoleID: String
     @NSManaged var targetMembers: Int64
+    @NSManaged var targetMaxMembers: Int64
+    @NSManaged var pendingInvites: Int64
+    @NSManaged var newUserInvitesReady: Int64
     @NSManaged var shared: Bool
 }
 
@@ -63,6 +66,9 @@ extension ShareEntity {
                            permission: permission,
                            shareRoleID: shareRoleID,
                            targetMembers: targetMembers,
+                           targetMaxMembers: targetMaxMembers,
+                           pendingInvites: pendingInvites,
+                           newUserInvitesReady: newUserInvitesReady,
                            primary: primary,
                            owner: owner,
                            shared: shared,
@@ -92,6 +98,9 @@ extension ShareEntity {
         userID = userId
         shareRoleID = share.shareRoleID
         targetMembers = share.targetMembers
+        targetMaxMembers = share.targetMaxMembers
+        pendingInvites = share.pendingInvites
+        newUserInvitesReady = share.newUserInvitesReady
         shared = share.shared
     }
 }

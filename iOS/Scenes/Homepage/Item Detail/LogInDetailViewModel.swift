@@ -60,14 +60,12 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
-                  upgradeChecker: UpgradeCheckerProtocol,
-                  vault: Vault?) {
+                  upgradeChecker: UpgradeCheckerProtocol) {
         let logManager = resolve(\SharedToolingContainer.logManager)
         totpManager = .init(logManager: logManager)
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
-                   upgradeChecker: upgradeChecker,
-                   vault: vault)
+                   upgradeChecker: upgradeChecker)
         totpManager.attach(to: self, storeIn: &cancellables)
     }
 
@@ -143,7 +141,7 @@ extension LogInDetailViewModel {
     }
 
     func showLargePassword() {
-        showLarge(password)
+        showLarge(.password(password))
     }
 
     func showAliasDetail() {

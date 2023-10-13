@@ -65,11 +65,11 @@ struct VaultSelectorView: View {
                      title: vault.vault.name,
                      itemCount: vault.itemCount,
                      isShared: vault.vault.shared,
-                     isSelected: vault.vault.shareId == viewModel.selectedVault.shareId,
+                     isSelected: vault.vault.shareId == viewModel.selectedVault?.shareId,
                      height: 74)
                 .padding(.horizontal)
         })
         .buttonStyle(.plain)
-        .opacityReduced(viewModel.isFreeUser && !vault.vault.isPrimary)
+        .opacityReduced(viewModel.shouldReduceOpacity(for: vault.vault))
     }
 }

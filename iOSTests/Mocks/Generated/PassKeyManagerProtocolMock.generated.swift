@@ -22,6 +22,7 @@
 @testable import Client
 import Core
 import CryptoKit
+import Foundation
 import ProtonCoreLogin
 
 final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManagerProtocol {

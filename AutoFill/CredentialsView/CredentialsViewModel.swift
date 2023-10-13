@@ -23,6 +23,7 @@ import Client
 import Combine
 import Core
 import CryptoKit
+import Entities
 import Factory
 import Macro
 import SwiftUI
@@ -97,9 +98,11 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let logManager = resolve(\SharedToolingContainer.logManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
+    private var vaults = [Vault]()
 
     weak var delegate: CredentialsViewModelDelegate?
 
@@ -267,16 +270,10 @@ extension CredentialsViewModel {
     func createLoginItem() {
         guard case .idle = state else { return }
         Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let vaults = try await self.shareRepository.getVaults()
-                guard let primaryVault = vaults.first(where: { $0.isPrimary }) ?? vaults.first else { return }
-                self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: primaryVault.shareId,
-                                                                          url: self.urls.first)
-            } catch {
-                self.logger.error(error)
-                self.display(error: error)
-            }
+            guard let self,
+                  let mainVault = vaults.oldestOwned else { return }
+            self.delegate?.credentialsViewModelWantsToCreateLoginItem(shareId: mainVault.shareId,
+                                                                      url: self.urls.first)
         }
     }
 
@@ -381,7 +378,7 @@ private extension CredentialsViewModel {
                 throw PPError.CredentialProviderFailureReason.generic
             }
 
-            let vaults = try await shareRepository.getVaults()
+            vaults = try await shareRepository.getVaults()
             let encryptedItems = try await itemRepository.getActiveLogInItems()
             logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
@@ -394,14 +391,16 @@ private extension CredentialsViewModel {
 
                 let vault = vaults.first { $0.shareId == encryptedItem.shareId }
                 assert(vault != nil, "Must have at least 1 vault")
-                let shouldTakeIntoAccount = shouldTakeIntoAccount(vault: vault, withPlan: plan)
+                guard await shouldTakeIntoAccount(vaults: vaults,
+                                                  vault: vault,
+                                                  withPlan: plan) else {
+                    continue
+                }
 
                 if case let .login(data) = decryptedItemContent.contentData {
-                    if shouldTakeIntoAccount {
-                        try searchableItems.append(SearchableItem(from: encryptedItem,
-                                                                  symmetricKey: symmetricKey,
-                                                                  allVaults: vaults))
-                    }
+                    try searchableItems.append(SearchableItem(from: encryptedItem,
+                                                              symmetricKey: symmetricKey,
+                                                              allVaults: vaults))
 
                     let itemUrls = data.urls.compactMap { URL(string: $0) }
                     var matchResults = [URLUtils.Matcher.MatchResult]()
@@ -414,7 +413,7 @@ private extension CredentialsViewModel {
                         }
                     }
 
-                    if matchResults.isEmpty || !shouldTakeIntoAccount {
+                    if matchResults.isEmpty {
                         notMatchedEncryptedItems.append(encryptedItem)
                     } else {
                         let totalScore = matchResults.reduce(into: 0) { partialResult, next in
@@ -434,10 +433,10 @@ private extension CredentialsViewModel {
             logger.debug("Mapped \(encryptedItems.count) encrypted items.")
             logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
             logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-            return .init(vaults: vaults,
-                         searchableItems: searchableItems,
-                         matchedItems: matchedItems,
-                         notMatchedItems: notMatchedItems)
+            return CredentialsFetchResult(vaults: vaults,
+                                          searchableItems: searchableItems,
+                                          matchedItems: matchedItems,
+                                          notMatchedItems: notMatchedItems)
         }
     }
 
@@ -464,11 +463,20 @@ private extension CredentialsViewModel {
 
     /// When in free plan, only take primary vault into account (suggestions & search)
     /// Otherwise take everything into account
-    func shouldTakeIntoAccount(vault: Vault?, withPlan plan: PassPlan) -> Bool {
+    func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: PassPlan) async -> Bool {
         guard let vault else { return true }
         switch plan.planType {
         case .free:
-            return vault.isPrimary
+            if await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1) {
+                let oldestVaults = vaults.twoOldestVaults
+                return oldestVaults.isOneOf(shareId: vault.shareId)
+            } else {
+                if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
+                    return vaults.oldestOwned == vault
+                } else {
+                    return vault.isPrimary
+                }
+            }
         default:
             return true
         }

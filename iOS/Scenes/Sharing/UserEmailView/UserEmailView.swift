@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import DesignSystem
 import Factory
 import Macro
@@ -34,9 +35,16 @@ struct UserEmailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 31) {
-            headerView
+            Text("Share with")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(PassColor.textNorm.toColor)
 
             emailTextField
+
+            if case let .new(vault, _) = viewModel.vault {
+                vaultRow(vault)
+            }
 
             Spacer()
         }
@@ -58,21 +66,6 @@ struct UserEmailView: View {
         .toolbar { toolbarContent }
         .ignoresSafeArea(.keyboard)
         .navigationModifier()
-    }
-}
-
-private extension UserEmailView {
-    var headerView: some View {
-        VStack(alignment: .leading, spacing: 11) {
-            Text("Share with")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(PassColor.textNorm.toColor)
-
-            Text("This user will receive an invitation to join your ‘\(viewModel.vaultName)’ vault")
-                .font(.body)
-                .foregroundColor(PassColor.textWeak.toColor)
-        }
     }
 }
 
@@ -99,13 +92,43 @@ private extension UserEmailView {
 }
 
 private extension UserEmailView {
+    func vaultRow(_ vault: VaultProtobuf) -> some View {
+        HStack {
+            VaultRow(thumbnail: {
+                         CircleButton(icon: vault.display.icon.icon.bigImage,
+                                      iconColor: vault.display.color.color.color,
+                                      backgroundColor: vault.display.color.color.color
+                                          .withAlphaComponent(0.16))
+                     },
+                     title: vault.name,
+                     itemCount: 1,
+                     isShared: false,
+                     isSelected: false,
+                     height: 74)
+
+            Spacer()
+
+            CapsuleTextButton(title: #localized("Customize"),
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              action: { viewModel.customizeVault() })
+                .fixedSize(horizontal: true, vertical: true)
+        }
+        .padding(.horizontal, 16)
+        .roundedEditableSection()
+    }
+}
+
+private extension UserEmailView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         action: dismiss.callAsFunction)
+                         backgroundColor: PassColor.interactionNormMinor1) {
+                viewModel.resetShareInviteInformation()
+                dismiss()
+            }
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {

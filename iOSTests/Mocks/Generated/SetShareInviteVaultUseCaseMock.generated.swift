@@ -21,16 +21,17 @@
 
 @testable import Proton_Pass
 import Client
+import UseCases
 
 final class SetShareInviteVaultUseCaseMock: @unchecked Sendable, SetShareInviteVaultUseCase {
     // MARK: - execute
     var closureExecute: () -> () = {}
     var invokedExecute = false
     var invokedExecuteCount = 0
-    var invokedExecuteParameters: (vault: Vault, Void)?
-    var invokedExecuteParametersList = [(vault: Vault, Void)]()
+    var invokedExecuteParameters: (vault: SharingVaultData, Void)?
+    var invokedExecuteParametersList = [(vault: SharingVaultData, Void)]()
 
-    func execute(with vault: Vault) {
+    func execute(with vault: SharingVaultData) {
         invokedExecute = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (vault, ())
