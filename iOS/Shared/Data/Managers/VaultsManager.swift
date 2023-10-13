@@ -61,6 +61,10 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     init() {
         setUp()
     }
+
+    var hasOnlyOneOwnedVault: Bool {
+        getAllVaults().numberOfOwnedVault <= 1
+    }
 }
 
 // MARK: - Private APIs
