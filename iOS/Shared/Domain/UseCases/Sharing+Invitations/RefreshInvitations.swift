@@ -21,6 +21,7 @@
 //
 
 import Client
+import UseCases
 
 protocol RefreshInvitationsUseCase: Sendable {
     func execute() async throws

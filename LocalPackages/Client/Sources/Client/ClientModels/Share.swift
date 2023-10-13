@@ -21,6 +21,7 @@
 import Core
 import CryptoKit
 import Entities
+import Macro
 import ProtonCoreCrypto
 import ProtonCoreLogin
 
@@ -29,6 +30,7 @@ public enum ShareContent {
     case item // Not handled yet
 }
 
+@Copyable
 public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// ID of the share
     public let shareID: String
@@ -54,12 +56,22 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
     public let targetMembers: Int64
 
+    /// Max members allowed for the target of this share
+    public let targetMaxMembers: Int64
+
+    /// How many invites are pending of acceptance
+    public let pendingInvites: Int64
+
+    /// How many new user invites are waiting for an admin to create the proper invite
+    public let newUserInvitesReady: Int64
+
     /// Whether this vault is primary for this user
     public let primary: Bool
 
     /// Whether the user is owner of this vault
     public let owner: Bool
 
+    /// Whether this share is shared or not
     public let shared: Bool
 
     /// Base64 encoded encrypted content of the share. Can be null for item shares
@@ -115,29 +127,14 @@ public extension Share {
                               isOwner: owner,
                               shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
                               members: Int(targetMembers),
-                              shared: shared)
+                              maxMembers: Int(targetMaxMembers),
+                              pendingInvites: Int(pendingInvites),
+                              newUserInvitesReady: Int(newUserInvitesReady),
+                              shared: shared,
+                              createTime: createTime)
             return .vault(vault)
         case .item:
             return .item
         }
-    }
-
-    func clone(isPrimary: Bool) -> Share {
-        .init(shareID: shareID,
-              vaultID: vaultID,
-              addressID: addressID,
-              targetType: targetType,
-              targetID: targetID,
-              permission: permission,
-              shareRoleID: shareRoleID,
-              targetMembers: targetMembers,
-              primary: isPrimary,
-              owner: owner,
-              shared: shared,
-              content: content,
-              contentKeyRotation: contentKeyRotation,
-              contentFormatVersion: contentFormatVersion,
-              expireTime: expireTime,
-              createTime: createTime)
     }
 }
