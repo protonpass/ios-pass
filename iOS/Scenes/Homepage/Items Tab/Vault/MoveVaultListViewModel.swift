@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Entities
 import Factory
 import Macro
 
@@ -32,11 +33,13 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
     private let getVaultContentForVault = resolve(\UseCasesContainer.getVaultContentForVault)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @Published private(set) var isFreeUser = false
     @Published var selectedVault: VaultContentUiModel
 
     let allVaults: [VaultContentUiModel]
+    private var isPrimaryVaultRemoved = false
     private let currentVault: VaultContentUiModel
     private let itemContent: ItemContent?
 
@@ -49,10 +52,11 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
+                isFreeUser = try await upgradeChecker.isFreeUser()
+                isPrimaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -66,15 +70,23 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.router.display(element: .globalLoading(shouldShow: true))
-                try await self.moveItemsBetweenVaults(movingContext: movingContext)
+                router.display(element: .globalLoading(shouldShow: true))
+                try await moveItemsBetweenVaults(movingContext: movingContext)
                 router.display(element: self.createMoveSuccessMessage)
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
+        }
+    }
+
+    func shouldReduceOpacity(for vault: Vault) -> Bool {
+        if isPrimaryVaultRemoved {
+            !vault.canEdit
+        } else {
+            isFreeUser && !vault.isPrimary
         }
     }
 }

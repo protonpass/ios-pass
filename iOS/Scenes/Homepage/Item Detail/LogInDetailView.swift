@@ -51,7 +51,9 @@ struct LogInDetailView: View {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
-                        ItemDetailTitleView(itemContent: viewModel.itemContent, vault: viewModel.vault)
+                        ItemDetailTitleView(itemContent: viewModel.itemContent,
+                                            vault: viewModel.vault?.vault,
+                                            shouldShowVault: viewModel.shouldShowVault)
                             .padding(.bottom, 40)
 
                         usernamePassword2FaSection
@@ -63,7 +65,7 @@ struct LogInDetailView: View {
 
                         if !viewModel.itemContent.note.isEmpty {
                             NoteDetailSection(itemContent: viewModel.itemContent,
-                                              vault: viewModel.vault)
+                                              vault: viewModel.vault?.vault)
                                 .padding(.top, 8)
                         }
 
@@ -163,7 +165,7 @@ struct LogInDetailView: View {
             }
 
             Button(action: {
-                viewModel.showLarge(viewModel.username)
+                viewModel.showLarge(.text(viewModel.username))
             }, label: {
                 Text("Show large")
             })

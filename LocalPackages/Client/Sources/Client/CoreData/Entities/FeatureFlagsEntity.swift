@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import FeatureFlags
 
 @objc(FeatureFlagsEntity)
 public class FeatureFlagsEntity: NSManagedObject {}

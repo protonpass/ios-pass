@@ -54,14 +54,16 @@ private extension CreditCardDetailView {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: 0) {
-                    ItemDetailTitleView(itemContent: viewModel.itemContent, vault: viewModel.vault)
+                    ItemDetailTitleView(itemContent: viewModel.itemContent,
+                                        vault: viewModel.vault?.vault,
+                                        shouldShowVault: viewModel.shouldShowVault)
                         .padding(.bottom, 40)
 
                     detailSection
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
-                                          vault: viewModel.vault)
+                                          vault: viewModel.vault?.vault)
                             .padding(.top, 8)
                     }
 
@@ -125,7 +127,7 @@ private extension CreditCardDetailView {
                 }
 
                 Button(action: {
-                    viewModel.showLarge(viewModel.cardholderName)
+                    viewModel.showLarge(.text(viewModel.cardholderName))
                 }, label: {
                     Text("Show large")
                 })
