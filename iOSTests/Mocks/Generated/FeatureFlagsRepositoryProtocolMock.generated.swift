@@ -22,7 +22,7 @@
 @testable import Client
 import Core
 import Client
-import FeatureFlags
+import ProtonCoreFeatureFlags
 
 final class FeatureFlagsRepositoryProtocolMock: @unchecked Sendable, FeatureFlagsRepositoryProtocol {
     // MARK: - getFlags
