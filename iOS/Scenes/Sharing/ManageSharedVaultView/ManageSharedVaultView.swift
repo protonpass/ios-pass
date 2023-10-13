@@ -218,7 +218,7 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            if viewModel.vault.isOwner, !user.isPending, user.isAdmin, !isOwnerAndCurrentUser {
+            if viewModel.canTransferOwnership(to: user) {
                 Button(action: {
                     viewModel.newOwner = user
                 }, label: {
