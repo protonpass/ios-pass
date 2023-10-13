@@ -1,3 +1,15 @@
+## Version 1.5.1
+Bug fixes:
+- Fixed TOTP URI automatically added to login items
+
+Others:
+- Share from item detail pages
+- No more primary vault behind a feature flag
+- Improved Rust library integration
+- Improved copy for share flow
+- Passwords showed with colors in full screen mode
+- Removed non main vault items from autofill list for free users
+
 ## Version 1.5.0
 Features:
 - Added support for Italian, Georgian, Spanish, Spanish (Latin America), Belarusian, Czech, Finnish, Greek, Japanese, Korean, Polish, Portuguese, Portuguese (Brazil), Romanian, Slovak, Swedish, Turkish, Ukrainian & Vietnamese languages
