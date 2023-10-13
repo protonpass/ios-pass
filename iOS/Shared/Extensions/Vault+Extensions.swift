@@ -41,16 +41,4 @@ extension Vault {
     var smallImage: Image {
         displayPreferences.icon.icon.smallImage.toImage
     }
-
-    var isAdmin: Bool {
-        shareRole == ShareRole.admin
-    }
-
-    var canEdit: Bool {
-        shareRole != ShareRole.read
-    }
-
-    var isShared: Bool {
-        members > 1
-    }
 }
