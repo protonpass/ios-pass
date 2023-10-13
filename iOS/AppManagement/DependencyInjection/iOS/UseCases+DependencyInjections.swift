@@ -192,6 +192,10 @@ extension UseCasesContainer {
         self { SendInviteReminder(shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository())
         }
     }
+
+    var canUserTransferVaultOwnership: Factory<CanUserTransferVaultOwnershipUseCase> {
+        self { CanUserTransferVaultOwnership(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
 }
 
 // MARK: - Flags
