@@ -20,10 +20,12 @@
 
 import Foundation
 
-public enum SharingError: LocalizedError {
+public enum SharingError: LocalizedError, Equatable {
     case incompleteInformation
     case failedEncryptionKeysFetching
     case noPublicKeyAssociatedWithEmail
     case invalidKeyOrAddress
     case cannotDecode
+    case failedToCreateNewVault
+    case failedToInvite
 }

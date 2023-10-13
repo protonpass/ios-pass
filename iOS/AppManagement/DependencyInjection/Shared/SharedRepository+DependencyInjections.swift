@@ -174,10 +174,10 @@ extension SharedRepositoryContainer {
 
     var featureFlagsRepository: Factory<FeatureFlagsRepositoryProtocol> {
         self {
-            FeatureFlagsRepository(localDatasource: LocalFeatureFlagsDatasource(container: self.container),
-                                   remoteDatasource: RemoteFeatureFlagsDatasource(apiService: self.apiService),
-                                   userId: self.userData.user.ID,
-                                   logManager: self.logManager)
+            FeatureFlagsRepository(configuration: FeatureFlagsConfiguration(userId: self.userData.user.ID,
+                                                                            currentBUFlags: FeatureFlagType.self),
+                                   localDatasource: LocalFeatureFlagsDatasource(container: self.container),
+                                   remoteDatasource: DefaultRemoteDatasource(apiService: self.apiService))
         }
     }
 

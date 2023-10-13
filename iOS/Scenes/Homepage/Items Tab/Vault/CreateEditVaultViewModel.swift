@@ -38,7 +38,8 @@ enum VaultColorIcon {
 
 enum VaultMode {
     case create
-    case edit(Vault)
+    case editExistingVault(Vault)
+    case editNewVault(VaultProtobuf, ItemContent)
 }
 
 protocol CreateEditVaultViewModelDelegate: AnyObject {
@@ -51,6 +52,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     @Published var selectedIcon: VaultIcon
     @Published var title: String
     @Published private(set) var loading = false
+    @Published private(set) var finishSaving = false
 
     private let mode: VaultMode
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -58,6 +60,8 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
+    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
+    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
 
@@ -65,8 +69,10 @@ final class CreateEditVaultViewModel: ObservableObject {
         switch mode {
         case .create:
             #localized("Create vault")
-        case .edit:
+        case .editExistingVault:
             #localized("Save")
+        case .editNewVault:
+            #localized("Update vault")
         }
     }
 
@@ -77,9 +83,13 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedColor = .color1
             selectedIcon = .icon1
             title = ""
-        case let .edit(vault):
+        case let .editExistingVault(vault):
             selectedColor = vault.displayPreferences.color.color
             selectedIcon = vault.displayPreferences.icon.icon
+            title = vault.name
+        case let .editNewVault(vault, _):
+            selectedColor = vault.display.color.color
+            selectedIcon = vault.display.icon.icon
             title = vault.name
         }
         verifyLimitation()
@@ -94,14 +104,14 @@ private extension CreateEditVaultViewModel {
             guard let self else { return }
             do {
                 // Primary vault can always be edited
-                if case let .edit(vault) = self.mode, vault.isPrimary {
+                if case let .editExistingVault(vault) = self.mode, vault.isPrimary {
                     self.canCreateOrEdit = true
                 } else {
-                    self.canCreateOrEdit = try await self.upgradeChecker.canCreateMoreVaults()
+                    canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
                 }
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -155,10 +165,13 @@ private extension CreateEditVaultViewModel {
 extension CreateEditVaultViewModel {
     func save() {
         switch mode {
-        case let .edit(vault):
-            editVault(vault)
         case .create:
             createVault()
+        case let .editExistingVault(vault):
+            editVault(vault)
+        case let .editNewVault(_, itemContent):
+            setShareInviteVault(with: .new(generateVaultProtobuf(), itemContent))
+            finishSaving = true
         }
     }
 

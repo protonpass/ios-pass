@@ -30,3 +30,10 @@ extension VaultListUiModel: Equatable {
         lhs.vault.shareId == rhs.vault.shareId
     }
 }
+
+extension VaultListUiModel {
+    init(vaultContent: VaultContentUiModel) {
+        vault = vaultContent.vault
+        itemCount = vaultContent.items.count
+    }
+}

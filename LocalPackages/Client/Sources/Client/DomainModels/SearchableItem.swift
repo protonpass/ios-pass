@@ -20,6 +20,7 @@
 
 import Core
 import CryptoKit
+import Entities
 
 /// Items that live in memory for search purpose
 public struct SearchableItem: ItemTypeIdentifiable, Equatable {
