@@ -20,7 +20,7 @@
 
 @testable import Client
 import XCTest
-import FeatureFlags
+import ProtonCoreFeatureFlags
 
 final class LocalFeatureFlagsDatasourceTests: XCTestCase {
     var sut: LocalFeatureFlagsDatasource!

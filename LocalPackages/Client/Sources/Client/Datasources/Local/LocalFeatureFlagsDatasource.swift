@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-@_exported import FeatureFlags
+@_exported import ProtonCoreFeatureFlags
 
 enum FeatureFlagError: Error {
     case couldNotEncodeFlags
