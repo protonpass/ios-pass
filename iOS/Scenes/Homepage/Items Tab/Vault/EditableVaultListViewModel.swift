@@ -69,9 +69,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     func canShare(vault: Vault) -> Bool {
         if isPrimaryVaultRemoved {
-            isAllowedToShare && !vault.shared && vault.shareRole == .admin
+            isAllowedToShare && !vault.shared && vault.canShareVaultWithMorePeople
         } else {
-            isAllowedToShare && !vault.shared && vault.shareRole == .admin && !vault.isPrimary
+            isAllowedToShare && !vault.shared && vault.canShareVaultWithMorePeople && !vault.isPrimary
         }
     }
 }
