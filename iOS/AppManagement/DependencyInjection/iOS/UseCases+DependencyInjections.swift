@@ -111,6 +111,8 @@ extension UseCasesContainer {
 
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
         self { SendVaultShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
+                                    makeUnsignedSignatureForVaultSharing: self
+                                        .makeUnsignedSignatureForVaultSharing(),
                                     shareInviteService: self.shareInviteService,
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
@@ -211,6 +213,9 @@ extension UseCasesContainer {
 
     var canUserTransferVaultOwnership: Factory<CanUserTransferVaultOwnershipUseCase> {
         self { CanUserTransferVaultOwnership(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+        
+    var makeUnsignedSignatureForVaultSharing: Factory<MakeUnsignedSignatureForVaultSharingUseCase> {
+        self { MakeUnsignedSignatureForVaultSharing() }
     }
 }
 

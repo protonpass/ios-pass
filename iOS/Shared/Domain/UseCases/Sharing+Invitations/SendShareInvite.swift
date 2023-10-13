@@ -41,6 +41,7 @@ extension SendVaultShareInviteUseCase {
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
     private let createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase
+    private let makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase
     private let shareInviteService: ShareInviteServiceProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
@@ -48,12 +49,14 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     private let syncEventLoop: SyncEventLoopProtocol
 
     init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
+         makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase,
          shareInviteService: ShareInviteServiceProtocol,
          passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
          syncEventLoop: SyncEventLoopProtocol) {
         self.createAndMoveItemToNewVault = createAndMoveItemToNewVault
+        self.makeUnsignedSignatureForVaultSharing = makeUnsignedSignatureForVaultSharing
         self.shareInviteService = shareInviteService
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
@@ -110,7 +113,9 @@ private extension SendVaultShareInvite {
                                             vaultKey: vaultKey)
             return .proton(email: email, keys: [signedKey])
         } else {
-            let signature = try createAndSignSignature(vaultKey: vaultKey, email: email)
+            let signature = try createAndSignSignature(addressId: vault.addressId,
+                                                       vaultKey: vaultKey,
+                                                       email: email)
             return .external(email: email, signature: signature)
         }
     }
@@ -139,7 +144,24 @@ private extension SendVaultShareInvite {
         return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
     }
 
-    func createAndSignSignature(vaultKey: DecryptedShareKey, email: String) throws -> String {
-        ""
+    func createAndSignSignature(addressId: String,
+                                vaultKey: DecryptedShareKey,
+                                email: String) throws -> String {
+        guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
+                                                                 userData: userData).first else {
+            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
+        }
+
+        let signerKey = SigningKey(privateKey: addressKey.privateKey,
+                                   passphrase: addressKey.passphrase)
+        let unsignedSignature = makeUnsignedSignatureForVaultSharing(email: email,
+                                                                     vaultKey: vaultKey.keyData)
+        let context = SignatureContext(value: Constants.newUserSharingSignatureContext,
+                                       isCritical: true)
+
+        return try Sign.signDetached(signingKey: signerKey,
+                                     plainData: unsignedSignature,
+                                     signatureContext: context)
+            .unArmor().value.base64EncodedString()
     }
 }
