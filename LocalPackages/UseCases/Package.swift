@@ -23,7 +23,8 @@ let package = Package(name: "UseCases",
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Client", path: "../Client"),
-                          .package(name: "PassRustCore", path: "../PassRustCore")
+                          .package(name: "PassRustCore", path: "../PassRustCore"),
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "12.2.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -35,7 +36,8 @@ let package = Package(name: "UseCases",
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "Client", package: "Client"),
                                       .product(name: "Core", package: "Core"),
-                                      .product(name: "PassRustCore", package: "PassRustCore")
+                                      .product(name: "PassRustCore", package: "PassRustCore"),
+                                      .product(name: "ProtonCoreFeatureFlags", package: "protoncore_ios")
                                   ],
                                   resources: []),
                           .testTarget(name: "UseCasesTests",
