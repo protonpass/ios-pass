@@ -83,11 +83,31 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.createTime = createTime
     }
 
-    public var canEdit: Bool {
-        shareRole != .read
+}
+
+// MARK: - Computed properties
+public extension Vault {
+     var totalOverallMembers: Int {
+        members + pendingInvites
     }
 
-    public var reachedSharingLimit: Bool {
-        maxMembers <= members + pendingInvites
+     var reachedSharingLimit: Bool {
+        maxMembers < members + pendingInvites
+    }
+    
+     var isAdmin: Bool {
+        shareRole == ShareRole.admin
+    }
+
+     var canEdit: Bool {
+        shareRole != ShareRole.read
+    }
+
+     var isShared: Bool {
+        members > 1
+    }
+
+     var canShareVaultWithMorePeople: Bool {
+        isAdmin && !reachedSharingLimit
     }
 }
