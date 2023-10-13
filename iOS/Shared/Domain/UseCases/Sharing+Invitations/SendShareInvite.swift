@@ -62,34 +62,15 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     }
 
     func execute(with infos: SharingInfos) async throws -> Vault {
-        guard let sharingVault = infos.vault,
-              let email = infos.email,
-              let role = infos.role,
-              let publicReceiverKeys = infos.receiverPublicKeys else {
+        guard let role = infos.role else {
             throw SharingError.incompleteInformation
         }
 
-        let vault = switch sharingVault {
-        case let .existing(vault):
-            vault
-        case let .new(vaultProtobuf, itemContent):
-            try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
-        }
-
-        let sharedKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
-
-        guard let publicReceiverKey = publicReceiverKeys.first?.value else {
-            throw SharingError.failedEncryptionKeysFetching
-        }
-
-        let signedKeys = try encryptKeys(addressId: vault.addressId,
-                                         publicReceiverKey: publicReceiverKey,
-                                         userData: userData,
-                                         vaultKey: sharedKey)
-
+        let vault = try await getVault(from: infos)
+        let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
+        let inviteeData = try generateInviteeData(from: infos, vault: vault, vaultKey: vaultKey)
         let invited = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
-                                                                 keys: [signedKeys],
-                                                                 email: email,
+                                                                 inviteeData: inviteeData,
                                                                  targetType: .vault,
                                                                  shareRole: role)
 
@@ -104,6 +85,36 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
 }
 
 private extension SendVaultShareInvite {
+    func getVault(from info: SharingInfos) async throws -> Vault {
+        switch info.vault {
+        case let .existing(vault):
+            vault
+        case let .new(vaultProtobuf, itemContent):
+            try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
+        default:
+            throw SharingError.incompleteInformation
+        }
+    }
+
+    func generateInviteeData(from info: SharingInfos,
+                             vault: Vault,
+                             vaultKey: DecryptedShareKey) throws -> InviteeData {
+        guard let email = info.email else {
+            throw SharingError.incompleteInformation
+        }
+
+        if let key = info.receiverPublicKeys?.first {
+            let signedKey = try encryptKeys(addressId: vault.addressId,
+                                            publicReceiverKey: key.value,
+                                            userData: userData,
+                                            vaultKey: vaultKey)
+            return .proton(email: email, keys: [signedKey])
+        } else {
+            let signature = try createAndSignSignature(vaultKey: vaultKey, email: email)
+            return .external(email: email, signature: signature)
+        }
+    }
+
     func encryptKeys(addressId: String,
                      publicReceiverKey: String,
                      userData: UserData,
@@ -126,5 +137,9 @@ private extension SendVaultShareInvite {
             .unArmor().value.base64EncodedString()
 
         return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
+    }
+
+    func createAndSignSignature(vaultKey: DecryptedShareKey, email: String) throws -> String {
+        ""
     }
 }

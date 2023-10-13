@@ -23,13 +23,17 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
+public enum InviteeData {
+    case proton(email: String, keys: [ItemKey])
+    case external(email: String, signature: String)
+}
+
 // sourcery: AutoMockable
 public protocol ShareInviteRepositoryProtocol {
     func getAllPendingInvites(shareId: String) async throws -> [ShareInvite]
 
     func sendInvite(shareId: String,
-                    keys: [ItemKey],
-                    email: String,
+                    inviteeData: InviteeData,
                     targetType: TargetType,
                     shareRole: ShareRole) async throws -> Bool
 
@@ -67,22 +71,22 @@ public extension ShareInviteRepository {
     }
 
     func sendInvite(shareId: String,
-                    keys: [ItemKey],
-                    email: String,
+                    inviteeData: InviteeData,
                     targetType: TargetType,
                     shareRole: ShareRole) async throws -> Bool {
-        logger.trace("Inviting \(email) to share \(shareId)")
-        do {
-            let request = InviteUserToShareRequest(keys: keys,
-                                                   email: email,
-                                                   targetType: targetType,
-                                                   shareRole: shareRole)
-            let inviteStatus = try await remoteDataSource.inviteUser(shareId: shareId, request: request)
-            logger.info("Invited \(email) to \(shareId)")
-            return inviteStatus
-        } catch {
-            logger.error(message: "Failed to invite \(email) to share \(shareId)", error: error)
-            throw error
+        switch inviteeData {
+        case let .proton(email, keys):
+            try await sendProtonInvite(shareId: shareId,
+                                       email: email,
+                                       keys: keys,
+                                       targetType: targetType,
+                                       shareRole: shareRole)
+        case let .external(email, signature):
+            try await sendExternalInvite(shareId: shareId,
+                                         email: email,
+                                         signature: signature,
+                                         targetType: targetType,
+                                         shareRole: shareRole)
         }
     }
 
@@ -109,6 +113,52 @@ public extension ShareInviteRepository {
             return deleted
         } catch {
             logger.error(message: "Failed to delete invite \(inviteId) for share \(shareId)",
+                         error: error)
+            throw error
+        }
+    }
+}
+
+private extension ShareInviteRepository {
+    func sendProtonInvite(shareId: String,
+                          email: String,
+                          keys: [ItemKey],
+                          targetType: TargetType,
+                          shareRole: ShareRole) async throws -> Bool {
+        logger.trace("Inviting Proton user \(email) to share \(shareId)")
+        do {
+            let request = InviteUserToShareRequest(keys: keys,
+                                                   email: email,
+                                                   targetType: targetType,
+                                                   shareRole: shareRole)
+            let inviteStatus = try await remoteDataSource.inviteProtonUser(shareId: shareId,
+                                                                           request: request)
+            logger.info("Invited Proton user \(email) to \(shareId)")
+            return inviteStatus
+        } catch {
+            logger.error(message: "Failed to invite Proton user \(email) to share \(shareId)",
+                         error: error)
+            throw error
+        }
+    }
+
+    func sendExternalInvite(shareId: String,
+                            email: String,
+                            signature: String,
+                            targetType: TargetType,
+                            shareRole: ShareRole) async throws -> Bool {
+        logger.trace("Inviting external user \(email) to share \(shareId)")
+        do {
+            let request = InviteNewUserToShareRequest(email: email,
+                                                      targetType: targetType,
+                                                      signature: signature,
+                                                      shareRole: shareRole)
+            let inviteStatus = try await remoteDataSource.inviteExternalUser(shareId: shareId,
+                                                                             request: request)
+            logger.info("Invited external user \(email) to \(shareId)")
+            return inviteStatus
+        } catch {
+            logger.error(message: "Failed to invite external user \(email) to share \(shareId)",
                          error: error)
             throw error
         }
