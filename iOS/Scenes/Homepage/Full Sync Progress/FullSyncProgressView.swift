@@ -69,8 +69,6 @@ private extension FullSyncProgressView {
             Spacer()
             overallProgressView
             if isShowingDetail {
-                PassDivider()
-                    .padding(.horizontal)
                 allProgressesView
             } else {
                 Spacer()
@@ -86,9 +84,7 @@ private extension FullSyncProgressView {
 private extension FullSyncProgressView {
     var overallProgressView: some View {
         VStack(alignment: .center) {
-            Image(uiImage: PassIcon.fullSyncInProgress)
-                .resizable()
-                .scaledToFit()
+            FullSyncInProgressView()
                 .frame(width: 80)
 
             Text("Syncing items...")
