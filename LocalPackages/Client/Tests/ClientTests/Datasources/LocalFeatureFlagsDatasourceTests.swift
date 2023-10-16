@@ -20,7 +20,7 @@
 
 @testable import Client
 import XCTest
-import FeatureFlags
+import ProtonCoreFeatureFlags
 
 final class LocalFeatureFlagsDatasourceTests: XCTestCase {
     var sut: LocalFeatureFlagsDatasource!
@@ -50,6 +50,6 @@ extension LocalFeatureFlagsDatasourceTests {
 
         // Then
         XCTAssertEqual(flags, givenFlags)
-        XCTAssertTrue(flags.isFlagEnable(for: FeatureFlagType.passSharingV1))
+        XCTAssertTrue(flags.isFlagEnabled(for: FeatureFlagType.passSharingV1))
     }
 }
