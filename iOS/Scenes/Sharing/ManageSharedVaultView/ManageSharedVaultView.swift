@@ -38,7 +38,7 @@ struct ManageSharedVaultView: View {
             mainContainer
                 .padding(.bottom, viewModel.vault.isAdmin ? 60 : 0) // Avoid the bottom button
 
-            if viewModel.vault.canShareVaultWithMorePeople {
+            if viewModel.canShare {
                 CapsuleTextButton(title: #localized("Share with more people"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
