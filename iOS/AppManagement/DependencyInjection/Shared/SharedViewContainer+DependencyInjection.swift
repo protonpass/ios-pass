@@ -49,7 +49,7 @@ extension SharedViewContainer {
         self { BannerManager(container: self.rootViewController()) }
     }
 
-    var rootViewController: Factory<UIViewController> {
-        self { fatalError("container not registered") }
+    var rootViewController: Factory<UIViewController?> {
+        self { nil }
     }
 }
