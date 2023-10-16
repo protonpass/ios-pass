@@ -34,7 +34,6 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 }
 
 class BaseItemDetailViewModel: ObservableObject {
-    @Published private(set) var isAllowedToShare = false
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
@@ -54,9 +53,16 @@ class BaseItemDetailViewModel: ObservableObject {
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
+
+    var isAllowedToShare: Bool {
+        guard let vault else {
+            return false
+        }
+        return canUserShareVault(for: vault.vault)
+    }
 
     weak var delegate: ItemDetailViewModelDelegate?
 
@@ -75,11 +81,6 @@ class BaseItemDetailViewModel: ObservableObject {
             .first { $0.vault.shareId == itemContent.shareId }
             .map { VaultListUiModel(vaultContent: $0) }
         shouldShowVault = allVaults.count > 1
-
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            isAllowedToShare = await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
-        }
 
         bindValues()
         checkIfFreeUser()

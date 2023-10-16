@@ -52,6 +52,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
     private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
     private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
+    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
@@ -60,6 +61,10 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
+
+    var canShare: Bool {
+        canUserShareVault(for: vault)
+    }
 
     init(vault: Vault) {
         self.vault = vault
