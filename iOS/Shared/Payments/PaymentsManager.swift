@@ -64,17 +64,17 @@ final class PaymentsManager {
     }
 
     private func initializePaymentsStack() {
-        guard !FeatureFactory.shared.isEnabled(.dynamicPlans) else { return }
+//        guard !FeatureFactory.shared.isEnabled(.dynamicPlans) else { return }
+
+        payments.storeKitManager.delegate = self
 
         switch payments.planService {
         case let .left(service):
             service.currentSubscriptionChangeDelegate = self
-        default:
-            break
-        }
-        payments.storeKitManager.delegate = self
-        payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
-            guard let self else { return }
+            payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
+                guard let self else { return }
+            }
+        case .right:
             payments.storeKitManager.subscribeToPaymentQueue()
         }
     }
@@ -97,9 +97,11 @@ final class PaymentsManager {
         let paymentsUI = createPaymentsUI()
         // keep reference to avoid being deallocated
         self.paymentsUI = paymentsUI
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] result in
+        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
             guard let self else { return }
-            handlePaymentsResponse(result: result, completion: completion)
+            print("VJL Reason: \(reason)")
+
+            handlePaymentsResponse(result: reason, completion: completion)
         }
     }
 

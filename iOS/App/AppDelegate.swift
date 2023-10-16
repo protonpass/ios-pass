@@ -90,6 +90,6 @@ private extension AppDelegate {
     }
 
     func setUpCoreFeatureSwitches() {
-        FeatureFactory.shared.disable(&.dynamicPlans)
+        FeatureFactory.shared.enable(&.dynamicPlans)
     }
 }
