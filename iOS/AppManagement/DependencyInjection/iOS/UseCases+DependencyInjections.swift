@@ -240,3 +240,9 @@ extension UseCasesContainer {
         self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
     }
 }
+
+extension UseCasesContainer {
+    var getRustLibraryVersion: Factory<GetRustLibraryVersionUseCase> {
+        self { GetRustLibraryVersion() }
+    }
+}

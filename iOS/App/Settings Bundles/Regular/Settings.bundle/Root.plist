@@ -18,6 +18,16 @@
 			<key>DefaultValue</key>
 			<string>-</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Rust version</string>
+			<key>Key</key>
+			<string>pref_rust_version</string>
+			<key>DefaultValue</key>
+			<string>-</string>
+		</dict>
 	</array>
 </dict>
 </plist>
