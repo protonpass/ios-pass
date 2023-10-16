@@ -29,7 +29,7 @@ public extension LocalAccessDatasourceProtocol {
     func getPassPlan(userId: String) async throws -> PassPlan? {
         let taskContext = newTaskContext(type: .fetch)
 
-        let fetchRequest = PassPlanEntity.fetchRequest()
+        let fetchRequest = AccessEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return entities.compactMap { $0.toPassPlan() }.first
@@ -39,9 +39,9 @@ public extension LocalAccessDatasourceProtocol {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-            newBatchInsertRequest(entity: PassPlanEntity.entity(context: taskContext),
+            newBatchInsertRequest(entity: AccessEntity.entity(context: taskContext),
                                   sourceItems: [passPlan]) { managedObject, passPlan in
-                (managedObject as? PassPlanEntity)?.hydrate(from: passPlan, userId: userId)
+                (managedObject as? AccessEntity)?.hydrate(from: passPlan, userId: userId)
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
