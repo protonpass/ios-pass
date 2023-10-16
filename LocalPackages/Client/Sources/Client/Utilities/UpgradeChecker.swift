@@ -26,7 +26,7 @@ public struct AliasLimitation: Sendable {
 }
 
 public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
-    var passPlanRepository: PassPlanRepositoryProtocol { get }
+    var accessRepository: AccessRepositoryProtocol { get }
     var counter: LimitationCounterProtocol { get }
     var totpChecker: TOTPCheckerProtocol { get }
 
@@ -40,7 +40,7 @@ public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
 
 public extension UpgradeCheckerProtocol {
     func aliasLimitation() async throws -> AliasLimitation? {
-        let plan = try await passPlanRepository.getPlan()
+        let plan = try await accessRepository.getPlan()
         if let aliasLimit = plan.aliasLimit {
             return .init(count: counter.getAliasCount(), limit: aliasLimit)
         }
@@ -48,7 +48,7 @@ public extension UpgradeCheckerProtocol {
     }
 
     func canCreateMoreVaults() async throws -> Bool {
-        let plan = try await passPlanRepository.getPlan()
+        let plan = try await accessRepository.getPlan()
         if let vaultLimit = plan.vaultLimit {
             let vaultCount = counter.getVaultCount()
             return vaultCount < vaultLimit
@@ -57,13 +57,13 @@ public extension UpgradeCheckerProtocol {
     }
 
     func canHaveMoreLoginsWith2FA() async throws -> Bool {
-        let plan = try await passPlanRepository.getPlan()
+        let plan = try await accessRepository.getPlan()
         guard let totpLimit = plan.totpLimit else { return true }
         return counter.getTOTPCount() < totpLimit
     }
 
     func canShowTOTPToken(creationDate: Int64) async throws -> Bool {
-        let plan = try await passPlanRepository.getPlan()
+        let plan = try await accessRepository.getPlan()
         guard let totpLimit = plan.totpLimit else { return true }
 
         if let threshold = try await totpChecker.totpCreationDateThreshold(numberOfTotp: totpLimit) {
@@ -73,7 +73,7 @@ public extension UpgradeCheckerProtocol {
     }
 
     func isFreeUser() async throws -> Bool {
-        let plan = try await passPlanRepository.getPlan()
+        let plan = try await accessRepository.getPlan()
         return plan.isFreeUser
     }
 }
@@ -91,14 +91,14 @@ public protocol TOTPCheckerProtocol: Sendable {
 }
 
 public final class UpgradeChecker: UpgradeCheckerProtocol {
-    public let passPlanRepository: PassPlanRepositoryProtocol
+    public let accessRepository: AccessRepositoryProtocol
     public let counter: LimitationCounterProtocol
     public let totpChecker: TOTPCheckerProtocol
 
-    public init(passPlanRepository: PassPlanRepositoryProtocol,
+    public init(accessRepository: AccessRepositoryProtocol,
                 counter: LimitationCounterProtocol,
                 totpChecker: TOTPCheckerProtocol) {
-        self.passPlanRepository = passPlanRepository
+        self.accessRepository = accessRepository
         self.counter = counter
         self.totpChecker = totpChecker
     }

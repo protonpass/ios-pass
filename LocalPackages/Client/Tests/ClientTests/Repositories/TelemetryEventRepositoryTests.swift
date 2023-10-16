@@ -52,10 +52,10 @@ private final class MockedTelemetryOffUserSettingsDatasource: RemoteUserSettings
 }
 
 private final class MockedFreePlanRepository: PassPlanRepositoryProtocol {
-    var localDatasource: LocalPassPlanDatasourceProtocol =
+    var localDatasource: LocalAccessDatasourceProtocol =
         LocalPassPlanDatasource(container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
 
-    var remoteDatasource: RemotePassPlanDatasourceProtocol =
+    var remoteDatasource: RemoteAccessDatasourceProtocol =
         RemotePassPlanDatasource(apiService: PMAPIService.dummyService())
 
     weak var delegate: Client.PassPlanRepositoryDelegate?
