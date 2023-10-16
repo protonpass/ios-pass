@@ -1,5 +1,5 @@
 //
-//  
+//
 // CanUserShareVault.swift
 // Proton Pass - Created on 13/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
@@ -22,49 +22,80 @@
 
 import Client
 
-protocol CanUserShareVaultUseCase: Sendable {
-   // func execute() async throws
+public protocol CanUserShareVaultUseCase: Sendable {
+    func execute(for vault: Vault) -> Bool
 }
 
-extension CanUserShareVaultUseCase {
-    func callAsFunction() {
-      // execute()
+public extension CanUserShareVaultUseCase {
+    func callAsFunction(for vault: Vault) -> Bool {
+        execute(for: vault)
     }
 }
 
-final class CanUserShareVault: CanUserShareVaultUseCase {
+public final class CanUserShareVault: @unchecked Sendable, CanUserShareVaultUseCase {
     private let planRepository: PassPlanRepositoryProtocol
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    // TODO add the sharing feature flag check
-    init(private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-        planRepository: PassPlanRepositoryProtocol) {
+    private let getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase
+    private var isFreeUser = true
+    private var sharingFeatureFlagIsOpen = false
+    private var isPrimaryVaultRemoved = false
+
+    public init(getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase,
+                planRepository: PassPlanRepositoryProtocol) {
         self.planRepository = planRepository
+        self.getFeatureFlagStatusUseCase = getFeatureFlagStatusUseCase
+        setUp()
     }
-    
-    func execute(for vault: Vault) async throws -> Bool {
-        guard vault.isAdmin else {
+
+    public func execute(for vault: Vault) -> Bool {
+        guard sharingFeatureFlagIsOpen,
+              vault.isAdmin else {
             return false
         }
-        if try await planRepository.getPlan().isFreeUser {
-            isFreeUserAllowedToShare(for: vault)
+
+        if isFreeUser {
+            return isFreeUserAllowedToShare(for: vault)
         } else {
-            isPaidUserAllowedToShare(for: vault)
+            return isPaidUserAllowedToShare(for: vault)
         }
     }
 }
 
 private extension CanUserShareVault {
+    func setUp() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+
+            async let isFreeUserCheck = try? await planRepository.getPlan().isFreeUser
+            async let isPrimaryRemoved = await getFeatureFlagStatusUseCase(with: FeatureFlagType
+                .passRemovePrimaryVault)
+            async let featureFlags = await getFeatureFlagStatusUseCase(with: FeatureFlagType.passSharingV1)
+            isFreeUser = await isFreeUserCheck ?? true
+            sharingFeatureFlagIsOpen = await featureFlags
+            isPrimaryVaultRemoved = await isPrimaryRemoved
+        }
+    }
+
     func isFreeUserAllowedToShare(for vault: Vault) -> Bool {
         guard vault.totalOverallMembers < 3 else {
             return false
         }
-        return true
+        return finalCheck(for: vault)
     }
-    
+
     func isPaidUserAllowedToShare(for vault: Vault) -> Bool {
         guard vault.totalOverallMembers < 10 else {
             return false
         }
-        return true
+        return finalCheck(for: vault)
+    }
+
+    func finalCheck(for vault: Vault) -> Bool {
+        if isPrimaryVaultRemoved {
+            vault.canShareVaultWithMorePeople
+        } else {
+            vault.canShareVaultWithMorePeople && !vault.isPrimary
+        }
     }
 }

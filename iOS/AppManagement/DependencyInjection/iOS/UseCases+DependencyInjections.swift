@@ -150,6 +150,13 @@ extension UseCasesContainer {
     var revokeUserShareAccess: Factory<RevokeUserShareAccessUseCase> {
         self { RevokeUserShareAccess(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
+
+    var canUserShareVault: Factory<CanUserShareVaultUseCase> {
+        self {
+            CanUserShareVault(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
+                              planRepository: SharedRepositoryContainer.shared.passPlanRepository())
+        }
+    }
 }
 
 // MARK: - Invites
