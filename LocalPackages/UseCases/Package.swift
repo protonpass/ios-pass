@@ -41,5 +41,6 @@ let package = Package(name: "UseCases",
                                   ],
                                   resources: []),
                           .testTarget(name: "UseCasesTests",
-                                      dependencies: ["UseCases"])
+                                      dependencies: ["UseCases"],
+                                      path: "Tests")
                       ])
