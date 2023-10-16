@@ -41092,6 +41092,9 @@
         }
       }
     },
+    "Search in oldest 2 vaults" : {
+
+    },
     "Search in primary vault" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -56118,135 +56121,8 @@
       "comment" : "The description of the banner when the user has a pending invitation to join a vault",
       "extractionState" : "manual"
     },
-    "Your plan only allows to use items in your primary vault for autofill purposes." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваш тарыфны план прадугледжвае толькі элементы ў асноўным сховішчы для аўтазапаўнення."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Váš tarif umožňuje používat pouze položky v primárním trezoru pro účely automatického vyplňování."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dein Abonnement erlaubt nur die Verwendung von Einträgen in deinem primären Tresor für das automatische Ausfüllen."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Το πλάνο σας επιτρέπει τη χρήση στοιχείων στην κύρια κρύπτη μόνο για σκοπούς αυτόματης συμπλήρωσης."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tu plan solo permite utilizar los elementos en tu bóveda principal para la función de rellenado automático."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Su plan solo permite usar los elementos en su bóveda principal para propósitos de completado automático."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tilauksesi sallii vain ensisijaisen holvisi kohteiden automaattitäytön."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre abonnement vous permet d'utiliser uniquement les éléments de votre coffre-fort principal pour la fonction de remplissage automatique."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il tuo piano consente di usare solamente gli elementi nella tua cassaforte principale per scopi di compilazione automatica."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "あなたのプランでは、プライマリー保存庫内のアイテムのみを自動入力に使用できます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "თქვენი სატარიფო გეგმა საშუალებას გაძლევთ ავტომატური შევსებისთვის ელემენტები, მხოლოდ, ძირითადი საცავიდან გამოიყენოთ."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용자의 요금제에서 오직 개인 금고 내의 항목에서만 자동 완성이 가능합니다."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Twój plan pozwala na autouzupełnianie elementów tylko z sejfu głównego."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O seu plano permite apenas a utilização de itens do seu cofre principal para o preenchimento automático."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seu plano permite apenas o uso de itens do seu cofre principal para preenchimento automático."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Planul actual vă permite să folosiți autocompletări doar din seiful principal."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Váš plán umožňuje používať položky vo vašom primárnom trezore iba na účely automatického dopĺňania."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ditt paket tillåter endast att använda objekt i ditt primära valv för autofyllsändamål."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarifeniz otomatik doldurma için yalnızca birincil kasanızdaki ögelerin kullanılmasına izin veriyor."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваш план дозволяє використовувати елементи в основному сховищі лише для автозаповнення."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gói của bạn chỉ cho phép sử dụng các nội dung trong kho lưu trữ chính để tự động điền."
-          }
-        }
-      }
+    "Your plan only allows to use items from your first vaults for autofill purposes." : {
+
     },
     "Your vault is empty" : {
       "comment" : "Empty vault page",

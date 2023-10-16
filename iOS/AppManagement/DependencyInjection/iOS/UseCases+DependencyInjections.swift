@@ -157,6 +157,13 @@ extension UseCasesContainer {
                               planRepository: SharedRepositoryContainer.shared.passPlanRepository())
         }
     }
+
+    var canUserPerformActionOnVault: Factory<CanUserPerformActionOnVaultUseCase> {
+        self {
+            CanUserPerformActionOnVault(planRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                        vaultsManager: SharedServiceContainer.shared.vaultsManager())
+        }
+    }
 }
 
 // MARK: - Invites
