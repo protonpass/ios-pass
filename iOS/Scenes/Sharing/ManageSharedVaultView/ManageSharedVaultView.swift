@@ -117,8 +117,28 @@ private extension ManageSharedVaultView {
 private extension ManageSharedVaultView {
     var userList: some View {
         ScrollView {
+            VStack(spacing: 32) {
+                if !viewModel.invitations.isEmpty {
+                    usersSection(viewModel.invitations, title: #localized("Invitations"))
+                }
+
+                if !viewModel.members.isEmpty {
+                    usersSection(viewModel.members, title: #localized("Members"))
+                }
+            }
+        }
+        .animation(.default, value: viewModel.invitations)
+        .animation(.default, value: viewModel.members)
+    }
+
+    func usersSection(_ users: [ShareUser], title: String) -> some View {
+        VStack {
+            Text(title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(PassColor.textWeak.toColor)
+
             LazyVStack {
-                ForEach(viewModel.users, id: \.self) { user in
+                ForEach(users, id: \.self) { user in
                     userCell(for: user)
                         .padding(16)
                     if !viewModel.isLast(info: user) {
@@ -129,7 +149,6 @@ private extension ManageSharedVaultView {
             }
             .roundedEditableSection()
         }
-        .animation(.default, value: viewModel.users.count)
     }
 
     func userCell(for user: ShareUser) -> some View {

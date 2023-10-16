@@ -140,11 +140,6 @@ extension UseCasesContainer {
         }
     }
 
-    var getAllUsersForShare: Factory<GetAllUsersForShareUseCase> {
-        self { GetAllUsersForShare(getUsersLinkedToShare: self.getUsersLinkedToShare(),
-                                   getPendingInvitationsForShare: self.getPendingInvitationsForShare()) }
-    }
-
     var updateUserShareRole: Factory<UpdateUserShareRoleUseCase> {
         self { UpdateUserShareRole(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
