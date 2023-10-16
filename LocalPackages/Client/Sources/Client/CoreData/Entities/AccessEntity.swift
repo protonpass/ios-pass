@@ -1,5 +1,5 @@
 //
-// PassPlanEntity.swift
+// AccessEntity.swift
 // Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,15 +21,15 @@
 import CoreData
 import Entities
 
-@objc(PassPlanEntity)
-public class PassPlanEntity: NSManagedObject {}
+@objc(AccessEntity)
+public class AccessEntity: NSManagedObject {}
 
-extension PassPlanEntity: Identifiable {}
+extension AccessEntity: Identifiable {}
 
-extension PassPlanEntity {
+extension AccessEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<PassPlanEntity> {
-        NSFetchRequest<PassPlanEntity>(entityName: "PassPlanEntity")
+    public class func fetchRequest() -> NSFetchRequest<AccessEntity> {
+        NSFetchRequest<AccessEntity>(entityName: "AccessEntity")
     }
 
     @NSManaged var displayName: String
@@ -45,7 +45,7 @@ extension PassPlanEntity {
     @NSManaged var vaultLimit: Int64
 }
 
-extension PassPlanEntity {
+extension AccessEntity {
     func toPassPlan() -> PassPlan {
         .init(type: type,
               internalName: internalName,
