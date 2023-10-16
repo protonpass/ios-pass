@@ -39,6 +39,24 @@
             </ActionContent>
          </ExecutionAction>
       </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "$SRCROOT/scripts/public/update_git_commit_hash.sh&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "35E5063A286F819F00A3F6EA"
+                     BuildableName = "Proton Pass.app"
+                     BlueprintName = "iOS"
+                     ReferencedContainer = "container:ProtonPass.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
