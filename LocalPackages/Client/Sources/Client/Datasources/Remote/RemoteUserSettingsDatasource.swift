@@ -18,16 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteUserSettingsDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteUserSettingsDatasourceProtocol {
     func getUserSettings() async throws -> UserSettings
 }
 
-public extension RemoteUserSettingsDatasourceProtocol {
-    func getUserSettings() async throws -> UserSettings {
+public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol {
+    public func getUserSettings() async throws -> UserSettings {
         let endpoint = GetUserSettingsEndpoint()
         let response = try await apiService.exec(endpoint: endpoint)
         return response.userSettings
     }
 }
-
-public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol {}

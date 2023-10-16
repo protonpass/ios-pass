@@ -124,14 +124,30 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
             return stubbedDelegate
         }
     }
+    // MARK: - getAccess
+    var getAccessThrowableError: Error?
+    var closureGetAccess: () -> () = {}
+    var invokedGetAccess = false
+    var invokedGetAccessCount = 0
+    var stubbedGetAccessResult: Access!
+
+    func getAccess() async throws -> Access {
+        invokedGetAccess = true
+        invokedGetAccessCount += 1
+        if let error = getAccessThrowableError {
+            throw error
+        }
+        closureGetAccess()
+        return stubbedGetAccessResult
+    }
     // MARK: - getPlan
     var getPlanThrowableError: Error?
     var closureGetPlan: () -> () = {}
     var invokedGetPlan = false
     var invokedGetPlanCount = 0
-    var stubbedGetPlanResult: PassPlan!
+    var stubbedGetPlanResult: Plan!
 
-    func getPlan() async throws -> PassPlan {
+    func getPlan() async throws -> Plan {
         invokedGetPlan = true
         invokedGetPlanCount += 1
         if let error = getPlanThrowableError {
@@ -140,20 +156,20 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
         closureGetPlan()
         return stubbedGetPlanResult
     }
-    // MARK: - refreshPlan
-    var refreshPlanThrowableError: Error?
-    var closureRefreshPlan: () -> () = {}
-    var invokedRefreshPlan = false
-    var invokedRefreshPlanCount = 0
-    var stubbedRefreshPlanResult: PassPlan!
+    // MARK: - refreshAccess
+    var refreshAccessThrowableError: Error?
+    var closureRefreshAccess: () -> () = {}
+    var invokedRefreshAccess = false
+    var invokedRefreshAccessCount = 0
+    var stubbedRefreshAccessResult: Access!
 
-    func refreshPlan() async throws -> PassPlan {
-        invokedRefreshPlan = true
-        invokedRefreshPlanCount += 1
-        if let error = refreshPlanThrowableError {
+    func refreshAccess() async throws -> Access {
+        invokedRefreshAccess = true
+        invokedRefreshAccessCount += 1
+        if let error = refreshAccessThrowableError {
             throw error
         }
-        closureRefreshPlan()
-        return stubbedRefreshPlanResult
+        closureRefreshAccess()
+        return stubbedRefreshAccessResult
     }
 }
