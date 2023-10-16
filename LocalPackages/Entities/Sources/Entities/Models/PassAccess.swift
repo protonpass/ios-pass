@@ -21,6 +21,14 @@
 
 import Foundation
 
-public struct PassAccess: Decodable {
+public struct PassAccess: Decodable, Equatable {
     public let plan: PassPlan
+    public let pendingInvites: Int
+    public let waitingNewUserInvites: Int
+
+    public init(plan: PassPlan, pendingInvites: Int, waitingNewUserInvites: Int) {
+        self.plan = plan
+        self.pendingInvites = pendingInvites
+        self.waitingNewUserInvites = waitingNewUserInvites
+    }
 }
