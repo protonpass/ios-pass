@@ -18,15 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import ProtonCoreNetworking
 
 public struct CheckAccessAndPlanResponse: Decodable {
     public let code: Int
     public let access: PassAccess
-}
-
-public struct PassAccess: Decodable {
-    public let plan: PassPlan
 }
 
 public struct CheckAccessAndPlanEndpoint: Endpoint {
