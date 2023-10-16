@@ -31,7 +31,8 @@ import ProtonCoreNetworking
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private(set) var vault: Vault
     @Published private(set) var itemsNumber = 0
-    @Published private(set) var users: [ShareUser] = []
+    @Published private(set) var invitations: [ShareUser] = []
+    @Published private(set) var members: [ShareUser] = []
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published private(set) var expandedEmails: [String] = []
@@ -42,9 +43,8 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let getVaultInfos = resolve(\UseCasesContainer.getVaultInfos)
-    private let getUsersLinkedToShare: GetUsersLinkedToShareUseCase = resolve(\UseCasesContainer
-        .getUsersLinkedToShare)
-    private let getAllUsersForShare = resolve(\UseCasesContainer.getAllUsersForShare)
+    private let getUsersLinkedToShare = resolve(\UseCasesContainer.getUsersLinkedToShare)
+    private let getPendingInvitationsForShare = resolve(\UseCasesContainer.getPendingInvitationsForShare)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let revokeInvitation = resolve(\UseCasesContainer.revokeInvitation)
     private let sendInviteReminder = resolve(\UseCasesContainer.sendInviteReminder)
@@ -72,7 +72,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func isLast(info: ShareUser) -> Bool {
-        users.last == info
+        members.last == info
     }
 
     func isCurrentUser(with user: ShareUser) -> Bool {
@@ -105,7 +105,11 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 if Task.isCancelled {
                     return
                 }
-                users = try await fetchVaultContent(for: vault)
+                let shareId = vault.shareId
+                if vault.isAdmin {
+                    invitations = try await getPendingInvitationsForShare(with: shareId).map(\.toShareUser)
+                }
+                members = try await getUsersLinkedToShare(with: shareId).map(\.toShareUser)
             } catch {
                 display(error: error)
                 logger.error(message: "Failed to fetch the current share informations", error: error)
@@ -252,13 +256,6 @@ private extension ManageSharedVaultViewModel {
             .store(in: &cancellables)
     }
 
-    func fetchVaultContent(for vault: Vault) async throws -> [ShareUser] {
-        vault.isAdmin ? try await getAllUsersForShare(with: vault.shareId)
-            .sorted { $0.email < $1.email } : try await getUsersLinkedToShare(with: vault.shareId)
-            .map(\.toShareUser)
-            .sorted { $0.email < $1.email }
-    }
-
     func updateRole(userSharedId: String, role: ShareRole) {
         updateShareTask?.cancel()
         updateShareTask = Task { @MainActor [weak self] in
@@ -281,5 +278,17 @@ private extension ManageSharedVaultViewModel {
 
     func display(error: Error) {
         router.display(element: .displayErrorBanner(error))
+    }
+}
+
+extension ShareUser {
+    var permission: String {
+        if isOwner {
+            return #localized("Owner")
+        }
+        if let shareRole {
+            return shareRole.title
+        }
+        return #localized("Invitation sent")
     }
 }
