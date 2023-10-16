@@ -21,6 +21,7 @@
 
 @testable import Client
 import Core
+import Entities
 
 final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryProtocol {
     // MARK: - localDatasource
