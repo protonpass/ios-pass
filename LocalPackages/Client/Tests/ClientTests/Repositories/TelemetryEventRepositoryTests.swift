@@ -25,8 +25,6 @@ import ProtonCoreServices
 import XCTest
 
 private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtocol {
-    let apiService = PMAPIService.dummyService()
-
     func send(events: [EventInfo]) async throws {}
 }
 
@@ -37,8 +35,6 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
 }
 
 private final class MockedTelemetryOnUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol {
-    let apiService = PMAPIService.dummyService()
-
     func getUserSettings() async throws -> UserSettings {
         .init(telemetry: true)
     }
@@ -56,26 +52,33 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
     var localDatasource: LocalAccessDatasourceProtocol =
         LocalAccessDatasource(container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
 
-    var remoteDatasource: RemoteAccessDatasourceProtocol =
-        RemoteAccessDatasource(apiService: PMAPIService.dummyService())
+    var remoteDatasource: RemoteAccessDatasourceProtocol = MockedRemoteAccessDatasource()
 
     weak var delegate: AccessRepositoryDelegate?
 
     var userId: String = ""
     let logger = Logger.dummyLogger()
 
-    var freePlan = PassPlan(type: "free",
-                            internalName: .random(),
-                            displayName: .random(),
-                            hideUpgrade: false,
-                            trialEnd: .random(in: 1...100),
-                            vaultLimit: .random(in: 1...100),
-                            aliasLimit: .random(in: 1...100),
-                            totpLimit: .random(in: 1...100))
+    static let freePlan = Plan(type: "free",
+                               internalName: .random(),
+                               displayName: .random(),
+                               hideUpgrade: false,
+                               trialEnd: .random(in: 1...100),
+                               vaultLimit: .random(in: 1...100),
+                               aliasLimit: .random(in: 1...100),
+                               totpLimit: .random(in: 1...100))
 
-    func getPlan() async throws -> PassPlan { freePlan }
+    func getPlan() async throws -> Plan { Self.freePlan }
 
-    func refreshPlan() async throws -> PassPlan { freePlan }
+    func refreshPlan() async throws -> Plan { Self.freePlan }
+
+    private final class MockedRemoteAccessDatasource: RemoteAccessDatasourceProtocol {
+        func getAccess() async throws -> Access {
+            .init(plan: MockedFreePlanRepository.freePlan,
+                  pendingInvites: 1,
+                  waitingNewUserInvites: 2)
+        }
+    }
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {

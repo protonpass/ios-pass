@@ -41,36 +41,40 @@ extension LocalAccessDatasourceTests {
     func testUpsertAndGetPlans() async throws {
         // Given
         let givenUserId = String.random()
-        let givenFreePlan = PassPlan(type: "free",
-                                     internalName: "test",
-                                     displayName: "test",
-                                     hideUpgrade: false,
-                                     trialEnd: .random(in: 1...100),
-                                     vaultLimit: .random(in: 1...100),
-                                     aliasLimit: .random(in: 1...100),
-                                     totpLimit: .random(in: 1...100))
+        let givenAccess = Access(plan: .init(type: "free",
+                                             internalName: "test",
+                                             displayName: "test",
+                                             hideUpgrade: false,
+                                             trialEnd: .random(in: 1...100),
+                                             vaultLimit: .random(in: 1...100),
+                                             aliasLimit: .random(in: 1...100),
+                                             totpLimit: .random(in: 1...100)),
+                                 pendingInvites: 1,
+                                 waitingNewUserInvites: 2)
         // When
-        try await sut.upsert(passPlan: givenFreePlan, userId: givenUserId)
-        let freePlan = try await sut.getPassPlan(userId: givenUserId)
+        try await sut.upsert(access: givenAccess, userId: givenUserId)
+        let retrievedAccess1 = try await sut.getAccess(userId: givenUserId)
 
         // Then
-        XCTAssertEqual(freePlan, givenFreePlan)
+        XCTAssertEqual(retrievedAccess1, givenAccess)
 
         // Given
-        let givenPaidPlan = PassPlan(type: "plus",
-                                     internalName: "test",
-                                     displayName: "test",
-                                     hideUpgrade: true,
-                                     trialEnd: nil,
-                                     vaultLimit: nil,
-                                     aliasLimit: nil,
-                                     totpLimit: nil)
+        let updatedAccess = Access(plan: .init(type: "plus",
+                                               internalName: "test",
+                                               displayName: "test",
+                                               hideUpgrade: true,
+                                               trialEnd: nil,
+                                               vaultLimit: nil,
+                                               aliasLimit: nil,
+                                               totpLimit: nil),
+                                   pendingInvites: 3,
+                                   waitingNewUserInvites: 4)
 
         // When
-        try await sut.upsert(passPlan: givenPaidPlan, userId: givenUserId)
-        let paidPlan = try await sut.getPassPlan(userId: givenUserId)
+        try await sut.upsert(access: updatedAccess, userId: givenUserId)
+        let retrievedAccess2 = try await sut.getAccess(userId: givenUserId)
 
         // Then
-        XCTAssertEqual(paidPlan, givenPaidPlan)
+        XCTAssertEqual(retrievedAccess2, updatedAccess)
     }
 }
