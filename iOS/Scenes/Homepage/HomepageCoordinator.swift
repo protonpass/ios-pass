@@ -94,7 +94,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         vaultsManager.refresh()
         start()
         eventLoop.start()
-        refreshPlan()
+        refreshAccess()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
     }
@@ -140,7 +140,7 @@ private extension HomepageCoordinator {
                 sendAllEventsIfApplicable()
                 eventLoop.start()
                 eventLoop.forceSync()
-                refreshPlan()
+                refreshAccess()
             }
             .store(in: &cancellables)
     }
@@ -184,11 +184,11 @@ private extension HomepageCoordinator {
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
     }
 
-    func refreshPlan() {
+    func refreshAccess() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await accessRepository.refreshPlan()
+                try await accessRepository.refreshAccess()
             } catch {
                 logger.error(error)
             }
@@ -514,7 +514,7 @@ private extension HomepageCoordinator {
                     switch result {
                     case let .success(inAppPurchasePlan):
                         if inAppPurchasePlan != nil {
-                            refreshPlan()
+                            refreshAccess()
                         } else {
                             logger.debug("Payment is done but no plan is purchased")
                         }

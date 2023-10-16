@@ -40,7 +40,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let payments = resolve(\ServiceContainer.payments)
     private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     let isShownAsSheet: Bool
-    @Published private(set) var plan: PassPlan?
+    @Published private(set) var plan: Plan?
 
     weak var delegate: AccountViewModelDelegate?
 
@@ -58,7 +58,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
                 // First get local plan to optimistically display it
                 // and then try to refresh the plan to have it updated
                 self.plan = try await self.accessRepository.getPlan()
-                self.plan = try await self.accessRepository.refreshPlan()
+                self.plan = try await self.accessRepository.refreshAccess().plan
             } catch {
                 self.logger.error(error)
             }

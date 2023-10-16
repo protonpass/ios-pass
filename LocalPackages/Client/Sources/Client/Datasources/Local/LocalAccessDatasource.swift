@@ -21,27 +21,27 @@
 import Entities
 
 public protocol LocalAccessDatasourceProtocol: LocalDatasourceProtocol {
-    func getPassPlan(userId: String) async throws -> PassPlan?
-    func upsert(passPlan: PassPlan, userId: String) async throws
+    func getAccess(userId: String) async throws -> Access?
+    func upsert(access: Access, userId: String) async throws
 }
 
 public extension LocalAccessDatasourceProtocol {
-    func getPassPlan(userId: String) async throws -> PassPlan? {
+    func getAccess(userId: String) async throws -> Access? {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = AccessEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return entities.compactMap { $0.toPassPlan() }.first
+        return entities.compactMap { $0.toAccess() }.first
     }
 
-    func upsert(passPlan: PassPlan, userId: String) async throws {
+    func upsert(access: Access, userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
             newBatchInsertRequest(entity: AccessEntity.entity(context: taskContext),
-                                  sourceItems: [passPlan]) { managedObject, passPlan in
-                (managedObject as? AccessEntity)?.hydrate(from: passPlan, userId: userId)
+                                  sourceItems: [access]) { managedObject, access in
+                (managedObject as? AccessEntity)?.hydrate(from: access, userId: userId)
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }

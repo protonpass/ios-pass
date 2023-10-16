@@ -23,7 +23,7 @@ import ProtonCoreNetworking
 
 public struct CheckAccessResponse: Decodable, Equatable {
     public let code: Int
-    public let access: PassAccess
+    public let access: Access
 }
 
 public struct CheckAccessEndpoint: Endpoint {

@@ -47,17 +47,17 @@ final class CheckAccessResponseTests: XCTestCase {
 """
         let expectedResult =
         CheckAccessResponse(code: 1000,
-                            access: PassAccess(plan: .init(type: "free",
-                                                           internalName: "bundle2022",
-                                                           displayName: "Unlimited",
-                                                           hideUpgrade: true,
-                                                           trialEnd: 163823923,
-                                                           vaultLimit: 1,
-                                                           aliasLimit: 10,
-                                                           totpLimit: 3),
-                                               pendingInvites: 3,
-                                               waitingNewUserInvites: 0))
-
+                            access: Access(plan: .init(type: "free",
+                                                       internalName: "bundle2022",
+                                                       displayName: "Unlimited",
+                                                       hideUpgrade: true,
+                                                       trialEnd: 163823923,
+                                                       vaultLimit: 1,
+                                                       aliasLimit: 10,
+                                                       totpLimit: 3),
+                                           pendingInvites: 3,
+                                           waitingNewUserInvites: 0))
+        
         // When
         let sut = try CheckAccessResponse.decode(from: string)
 
