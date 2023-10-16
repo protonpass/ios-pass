@@ -45,10 +45,10 @@ extension BannerDisplayProtocol {
     }
 }
 
-final class BannerManager: BannerDisplayProtocol {
+final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
     private weak var container: UIViewController?
 
-    init(container: UIViewController) {
+    init(container: UIViewController?) {
         self.container = container
     }
 
