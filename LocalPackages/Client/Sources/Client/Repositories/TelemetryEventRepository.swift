@@ -74,8 +74,8 @@ public extension TelemetryEventRepositoryProtocol {
             return .thresholdReachedButTelemetryOff
         }
 
-        logger.trace("Telemetry enabled, refreshing user plan.")
-        let plan = try await accessRepository.refreshPlan()
+        logger.trace("Telemetry enabled, refreshing user access.")
+        let plan = try await accessRepository.refreshAccess().plan
 
         while true {
             let events = try await localDatasource.getOldestEvents(count: eventCount,
