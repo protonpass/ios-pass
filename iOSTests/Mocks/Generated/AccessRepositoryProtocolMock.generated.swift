@@ -22,16 +22,16 @@
 @testable import Client
 import Core
 
-final class PassPlanRepositoryProtocolMock: @unchecked Sendable, PassPlanRepositoryProtocol {
+final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryProtocol {
     // MARK: - localDatasource
     var invokedLocalDatasourceSetter = false
     var invokedLocalDatasourceSetterCount = 0
-    var invokedLocalDatasource: LocalPassPlanDatasourceProtocol?
-    var invokedLocalDatasourceList = [LocalPassPlanDatasourceProtocol?]()
+    var invokedLocalDatasource: LocalAccessDatasourceProtocol?
+    var invokedLocalDatasourceList = [LocalAccessDatasourceProtocol?]()
     var invokedLocalDatasourceGetter = false
     var invokedLocalDatasourceGetterCount = 0
-    var stubbedLocalDatasource: LocalPassPlanDatasourceProtocol!
-    var localDatasource: LocalPassPlanDatasourceProtocol {
+    var stubbedLocalDatasource: LocalAccessDatasourceProtocol!
+    var localDatasource: LocalAccessDatasourceProtocol {
         set {
             invokedLocalDatasourceSetter = true
             invokedLocalDatasourceSetterCount += 1
@@ -46,12 +46,12 @@ final class PassPlanRepositoryProtocolMock: @unchecked Sendable, PassPlanReposit
     // MARK: - remoteDatasource
     var invokedRemoteDatasourceSetter = false
     var invokedRemoteDatasourceSetterCount = 0
-    var invokedRemoteDatasource: RemotePassPlanDatasourceProtocol?
-    var invokedRemoteDatasourceList = [RemotePassPlanDatasourceProtocol?]()
+    var invokedRemoteDatasource: RemoteAccessDatasourceProtocol?
+    var invokedRemoteDatasourceList = [RemoteAccessDatasourceProtocol?]()
     var invokedRemoteDatasourceGetter = false
     var invokedRemoteDatasourceGetterCount = 0
-    var stubbedRemoteDatasource: RemotePassPlanDatasourceProtocol!
-    var remoteDatasource: RemotePassPlanDatasourceProtocol {
+    var stubbedRemoteDatasource: RemoteAccessDatasourceProtocol!
+    var remoteDatasource: RemoteAccessDatasourceProtocol {
         set {
             invokedRemoteDatasourceSetter = true
             invokedRemoteDatasourceSetterCount += 1
@@ -106,12 +106,12 @@ final class PassPlanRepositoryProtocolMock: @unchecked Sendable, PassPlanReposit
     // MARK: - delegate
     var invokedDelegateSetter = false
     var invokedDelegateSetterCount = 0
-    var invokedDelegate: PassPlanRepositoryDelegate?
-    var invokedDelegateList = [PassPlanRepositoryDelegate?]()
+    var invokedDelegate: AccessRepositoryDelegate?
+    var invokedDelegateList = [AccessRepositoryDelegate?]()
     var invokedDelegateGetter = false
     var invokedDelegateGetterCount = 0
-    var stubbedDelegate: PassPlanRepositoryDelegate!
-    var delegate: PassPlanRepositoryDelegate? {
+    var stubbedDelegate: AccessRepositoryDelegate!
+    var delegate: AccessRepositoryDelegate? {
         set {
             invokedDelegateSetter = true
             invokedDelegateSetterCount += 1

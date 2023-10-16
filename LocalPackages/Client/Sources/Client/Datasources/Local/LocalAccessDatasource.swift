@@ -1,5 +1,5 @@
 //
-// LocalPassPlanDatasource.swift
+// LocalAccessDatasource.swift
 // Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,12 +20,12 @@
 
 import Foundation
 
-public protocol LocalPassPlanDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalAccessDatasourceProtocol: LocalDatasourceProtocol {
     func getPassPlan(userId: String) async throws -> PassPlan?
     func upsert(passPlan: PassPlan, userId: String) async throws
 }
 
-public extension LocalPassPlanDatasourceProtocol {
+public extension LocalAccessDatasourceProtocol {
     func getPassPlan(userId: String) async throws -> PassPlan? {
         let taskContext = newTaskContext(type: .fetch)
 
@@ -47,4 +47,4 @@ public extension LocalPassPlanDatasourceProtocol {
     }
 }
 
-public final class LocalPassPlanDatasource: LocalDatasource, LocalPassPlanDatasourceProtocol {}
+public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol {}

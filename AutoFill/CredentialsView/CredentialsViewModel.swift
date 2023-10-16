@@ -164,7 +164,7 @@ extension CredentialsViewModel {
                 if case .error = self.state {
                     self.state = .loading
                 }
-                let plan = try await self.upgradeChecker.passPlanRepository.getPlan()
+                let plan = try await self.upgradeChecker.accessRepository.getPlan()
                 self.planType = plan.planType
 
                 self.results = try await self.fetchCredentialsTask(plan: plan).value
