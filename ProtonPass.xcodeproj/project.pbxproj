@@ -502,7 +502,6 @@
 		5BA663EE2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */; };
 		5BA663F22A7BDC6D0049EA68 /* LeaveShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */; };
 		5BA663F62A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */; };
-		5BA663F82A7BF1F70049EA68 /* GetAllUsersForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */; };
 		5BA663FA2A7CFD8A0049EA68 /* RevokeInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */; };
 		5BA663FC2A7D00AB0049EA68 /* SendInviteReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */; };
 		5BA663FE2A7D04D50049EA68 /* UpdateUserShareRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */; };
@@ -931,7 +930,6 @@
 		5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUsersLinkedToShare.swift; sourceTree = "<group>"; };
 		5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveShare.swift; sourceTree = "<group>"; };
 		5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPendingInvitationsForShare.swift; sourceTree = "<group>"; };
-		5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAllUsersForShare.swift; sourceTree = "<group>"; };
 		5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeInvitation.swift; sourceTree = "<group>"; };
 		5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendInviteReminder.swift; sourceTree = "<group>"; };
 		5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserShareRole.swift; sourceTree = "<group>"; };
@@ -1798,7 +1796,6 @@
 				5BA663ED2A7AAFE10049EA68 /* GetUsersLinkedToShare.swift */,
 				5BA663F12A7BDC6D0049EA68 /* LeaveShare.swift */,
 				5BA663F52A7BEB9F0049EA68 /* GetPendingInvitationsForShare.swift */,
-				5BA663F72A7BF1F70049EA68 /* GetAllUsersForShare.swift */,
 				5BA663F92A7CFD8A0049EA68 /* RevokeInvitation.swift */,
 				5BA663FB2A7D00AB0049EA68 /* SendInviteReminder.swift */,
 				5BA663FD2A7D04D50049EA68 /* UpdateUserShareRole.swift */,
@@ -3122,7 +3119,6 @@
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
-				5BA663F82A7BF1F70049EA68 /* GetAllUsersForShare.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */,
 				35C2815A2A7BED2B0077030C /* IndexAllLoginItems.swift in Sources */,
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,

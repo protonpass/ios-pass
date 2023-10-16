@@ -25537,6 +25537,10 @@
       "comment" : "Subtitle below an email address in manage sharing access page, indicating that the invitation is made but the invitee has not yet accepted.",
       "extractionState" : "manual"
     },
+    "Invitations" : {
+      "comment" : "Title of the section which shows the list of pending invitations",
+      "extractionState" : "manual"
+    },
     "invites you to access items in" : {
       "comment" : "The description of the sheet to reject/accept invitation. This is prefixed by the inviter's email. E.g \"john.doe@example.com invites you to access items in\". Below this phrase are the vault's details like name and number of items.",
       "extractionState" : "manual"
@@ -29728,6 +29732,10 @@
           }
         }
       }
+    },
+    "Members" : {
+      "comment" : "Title of the section which shows the list of members",
+      "extractionState" : "manual"
     },
     "Memorable Password" : {
       "extractionState" : "manual",
