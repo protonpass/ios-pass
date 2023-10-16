@@ -150,7 +150,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@%% decrypted..."
+            "value" : "%@%% dešifrováno..."
           }
         },
         "de" : {
@@ -270,7 +270,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@%% decrypted..."
+            "value" : "đã giải mã %@%%..."
           }
         }
       }
@@ -287,7 +287,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@%% downloaded..."
+            "value" : "%@%% staženo..."
           }
         },
         "de" : {
@@ -407,7 +407,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@%% downloaded..."
+            "value" : "đã tải %@%%..."
           }
         }
       }
@@ -438,6 +438,66 @@
     "%lld item(s)" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položky"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položek"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položka"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položek"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -451,6 +511,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld Einträge"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld στοιχείο"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld στοιχεία"
                 }
               }
             }
@@ -480,6 +558,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementos"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementos"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kohde"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kohdetta"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -497,12 +629,330 @@
               }
             }
           }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementi"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 項目"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d개 항목"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld itens"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld itens"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld articole"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld articol"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld articole"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položky"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položiek"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položka"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položiek"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld öge"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld öge"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld nội dung"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld member(s)" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнік"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікаў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členové"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členů"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členů"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -516,6 +966,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld Mitglieder"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld μέλος"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld μέλη"
                 }
               }
             }
@@ -539,6 +1007,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembros"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembros"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld jäsen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld jäsentä"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -556,12 +1078,330 @@
               }
             }
           }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membri"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 人のメンバー"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წევრი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წევრი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d명 회원"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld użytkowników"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld użytkowników"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld użytkownik"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld użytkowników"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membros"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membros"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membri"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membru"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld de membri"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členovia"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členov"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlem"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlemmar"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld üye"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld üye"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасники"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасника"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасник"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасника"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld thành viên"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld remaining attempt(s)" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталося %lld спробы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталося %lld спроб"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталася 1 спроба"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Засталося %lld спроб"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zbývají %lld pokusy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zbývá %lld pokusů"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zbývá 1 pokus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zbývá %lld pokusů"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -575,6 +1415,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld Versuche verbleibend"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Μία προσπάθεια απομένει"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld προσπάθειες απομένουν"
                 }
               }
             }
@@ -598,6 +1456,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "1 intento restante"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld intentos restantes"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "1 intento restante"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld intentos restantes"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Yksi jäljellä oleva yritys"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld yritystä jäljellä"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -615,12 +1527,330 @@
               }
             }
           }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Un tentativo rimanente"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tentativi rimanenti"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "残りの試行回数は %lld 回です"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ერთი დარჩენილი ცდა"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld დარჩენილი ცდა"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d회 남은 시도"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostały %lld próby"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostało %lld prób"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostała 1 próba"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostało %lld prób"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uma tentativa restante"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tentativas restantes"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uma tentativa restante"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tentativas restantes"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mai aveți %lld încercări"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mai aveți o încercare"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mai aveți %lld de încercări"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zostávajú %lld pokusy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zostáva %lld pokusov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zostáva ešte jeden pokus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zostáva %lld pokusov"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ett återstående försök"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld återstående försök"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bir deneme hakkı kaldı"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld deneme hakkı kaldı"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld спроби"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld спроби"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилась одна спроба"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld спроби"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lần thử còn lại"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld search result(s)" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "вынікі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "вынікаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "вынік"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "вынікаў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledků"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledků"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledek"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledky"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -643,6 +1873,24 @@
                       "value" : "Ergebnisse"
                     }
                   }
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "αποτέλεσμα"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "αποτελέσματα"
                 }
               }
             }
@@ -675,6 +1923,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultados"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultados"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "tulos"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "tulosta"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -701,12 +2003,330 @@
               }
             }
           }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "risultato"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "risultati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "結果"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "შედეგი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "შედეგი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "결과"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "wyniki"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "wyników"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "wynik"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "wyników"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultados"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultados"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "rezultate"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "rezultat"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "de rezultate"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledky"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledkov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledok"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "výsledkov"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultat"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "resultat"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "sonuç"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "sonuçlar"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "результати"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "результатів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "результат"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "результатів"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "kết quả"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld time(s)" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld разы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld разоў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "1 раз"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld разоў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%dkrát"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%dkrát"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Jednou"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%dkrát"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -720,6 +2340,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld Mal"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Μία φορά"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld φορές"
                 }
               }
             }
@@ -743,6 +2381,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Una vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld veces"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Una vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld veces"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kerran"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kertaa"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -760,12 +2452,330 @@
               }
             }
           }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Una volta"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld volte"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 回"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ერთხელ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d-ჯერ"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d회"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld razy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld razy"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "1 raz"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld razy"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uma vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vezes"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Uma vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vezes"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "de %lld ori"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "O dată"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "de %lld de ori"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld -krát"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld -krát"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Raz"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld -krát"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "En gång"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld gånger"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bir kez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kez"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld разів"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld рази"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Один раз"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld рази"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lần"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld trial day(s) left" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дні"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Да завяршэння выпрабавальнага перыяду застаўся 1 дзень"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konce zkušebního období zbývají %lld dny"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konce zkušebního období zbývá %lld dnů"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konce zkušebního období zbývá 1 den"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konce zkušebního období zbývá %lld dnů"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -779,6 +2789,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Deine kostenlose Testphase läuft noch %lld Tage."
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Μία ημέρα απομένει στη δοκιμαστική σας περίοδο"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Απομένουν %lld ημέρες στη δοκιμαστική περίοδο σας"
                 }
               }
             }
@@ -802,6 +2830,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "1 día restante en tu periodo de prueba"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld días restantes en tu periodo de prueba"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Un día restante en su periodo de prueba"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld días restantes en su periodo de prueba"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kokeilujaksoasi on jäljellä yksi päivä"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kokeilujaksoasi on jäljellä %lld päivää"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -819,12 +2901,330 @@
               }
             }
           }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Manca un giorno al termine del periodo di prova"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld giorni rimanenti al termine del periodo di prova"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "試用期間は残り %lld 日です"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია ერთი დღე"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია %lld დღე"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "무료 체험이 %d일 남았습니다"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostały %lld dni wersji próbnej"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostało %lld dni wersji próbnej"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostał 1 dzień wersji próbnej"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pozostało %lld dnia wersji próbnej"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Resta um dia no seu período experimental"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ainda tem %lld dias de teste gratuito."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Um dia restante em seu período de avaliação gratuita"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld dias restantes em seu período de avaliação gratuita"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Au mai rămas %lld zile de încercare."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "A mai rămas o zi de încercare."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Au mai rămas %lld de zile de încercare."
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konca skúšobného obdobia zostávajú %lld dni"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konca skúšobného obdobia zostáva %lld dní"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konca skúšobného obdobia zostáva jeden deň"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Do konca skúšobného obdobia zostáva %lld dní"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "1 dag kvar av din provperiod"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld dagar kvar av din provperiod"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deneme sürenizin bitmesine 1 gün kaldı"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deneme sürenizin bitmesine %lld gün kaldı"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "До закінчення пробного періоду залишилося %lld дні"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "До закінчення пробного періоду залишилося %lld днів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "До закінчення пробного періоду залишився 1 день"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "До закінчення пробного періоду залишилося %lld днів"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Thời gian dùng thử còn %lld ngày"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld word(s)" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld словы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слоў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слова"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слоў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slova"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slovo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slov"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -838,6 +3238,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld Wörter"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld λέξη"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld λέξεις"
                 }
               }
             }
@@ -861,6 +3279,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palabra"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palabras"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palabra"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palabras"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sana"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sanaa"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -874,6 +3346,264 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld mots"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld parola"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld parole"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 語"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სიტყვა"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld სიტყვა"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 단어"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld słowa"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld słów"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld słowo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld słów"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palavra"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palavras"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palavra"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld palavras"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld cuvinte"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld cuvânt"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld de cuvinte"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slová"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slovo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld slov"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ord"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ord"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sözcük"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sözcük"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слів"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слово"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слів"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld từ"
                 }
               }
             }
@@ -1419,7 +4149,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs."
+            "value" : "Protokol je typ souboru, který nám ukazuje akce, které jste provedli a které vedly k chybě. Budeme je vždy používat pouze k tomu, abychom pomohli našim inženýrům opravit chyby."
           }
         },
         "de" : {
@@ -1533,7 +4263,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs."
+            "value" : "Tệp nhật ký là một loại tệp cho chúng tôi biết những hành động mà bạn thực hiện đã dẫn đến lỗi. Chúng tôi chỉ sử dụng chúng để giúp các kỹ sư của mình sửa lỗi."
           }
         }
       }
@@ -1951,7 +4681,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add a prefix"
+            "value" : "Přidat předponu"
           }
         },
         "de" : {
@@ -2065,7 +4795,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add a prefix"
+            "value" : "Thêm tiền tố"
           }
         }
       }
@@ -3026,7 +5756,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "After 1 hour"
+            "value" : "Po 1 hodině"
           }
         },
         "de" : {
@@ -4282,7 +7012,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" will stop forwarding emails to your mailbox"
+            "value" : "Alias \"%@\" přestane přeposílat e-maily do vaší schránky"
           }
         },
         "de" : {
@@ -4402,7 +7132,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias \"%@\" will stop forwarding emails to your mailbox"
+            "value" : "Bí danh \"%@\" sẽ dừng chuyển tiếp email đến hộp thư đến của bạn"
           }
         }
       }
@@ -4550,7 +7280,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias address copied"
+            "value" : "Alias adresa zkopírována"
           }
         },
         "de" : {
@@ -4670,7 +7400,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias address copied"
+            "value" : "Đã sao chép địa chỉ bí danh"
           }
         }
       }
@@ -4687,7 +7417,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias can not contain 2 consecutive dots (..)"
+            "value" : "Alias nesmí obsahovat 2 po sobě jdoucí tečky (..)"
           }
         },
         "de" : {
@@ -4807,7 +7537,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias can not contain 2 consecutive dots (..)"
+            "value" : "Bí danh không thể chứa 2 dấu chấm liên tiếp (..)"
           }
         }
       }
@@ -5098,7 +7828,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias of login item \"%@\""
+            "value" : "Alias přihlašovací položky \"%@\""
           }
         },
         "de" : {
@@ -5218,7 +7948,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias of login item \"%@\""
+            "value" : "Bí danh cho nội dung đăng nhập \"%@\""
           }
         }
       }
@@ -5355,7 +8085,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias permanently deleted"
+            "value" : "Đã xóa vĩnh viễn bí danh"
           }
         }
       }
@@ -5372,7 +8102,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias restored"
+            "value" : "Alias obnoven"
           }
         },
         "de" : {
@@ -5492,7 +8222,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias restored"
+            "value" : "Đã khôi phục bí danh"
           }
         }
       }
@@ -5509,7 +8239,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias updated"
+            "value" : "Alias aktualizován"
           }
         },
         "de" : {
@@ -5629,7 +8359,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias updated"
+            "value" : "Đã cập nhật bí danh"
           }
         }
       }
@@ -5912,7 +8642,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All items in trash will be permanently deleted"
+            "value" : "Všechny položky v koši budou trvale smazány"
           }
         },
         "de" : {
@@ -6032,7 +8762,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All items in trash will be permanently deleted"
+            "value" : "Tất cả nội dung trong thùng rác sẽ bị xóa vĩnh viễn"
           }
         }
       }
@@ -6049,7 +8779,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All items permanently deleted"
+            "value" : "Všechny položky trvale smazány"
           }
         },
         "de" : {
@@ -6169,7 +8899,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All items permanently deleted"
+            "value" : "Tất cả nội dung đã được xóa"
           }
         }
       }
@@ -6186,7 +8916,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All items restored"
+            "value" : "Všechny položky obnoveny"
           }
         },
         "de" : {
@@ -6306,7 +9036,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All items restored"
+            "value" : "Đã khôi phục tất cả nội dung"
           }
         }
       }
@@ -6323,7 +9053,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All logs cleared"
+            "value" : "Všechny protokoly vymazány"
           }
         },
         "de" : {
@@ -6443,7 +9173,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All logs cleared"
+            "value" : "Đã xóa tất cả nhật ký"
           }
         }
       }
@@ -6864,7 +9594,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associate and autofill"
+            "value" : "Přidružení a automatické vyplňování"
           }
         },
         "de" : {
@@ -6978,7 +9708,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associate and autofill"
+            "value" : "Kết hợp và tự động điền"
           }
         }
       }
@@ -6994,7 +9724,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associate URL?"
+            "value" : "Přidružit adresu URL?"
           }
         },
         "de" : {
@@ -7108,7 +9838,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Associate URL?"
+            "value" : "Liên kết địa chỉ URL?"
           }
         }
       }
@@ -7262,7 +9992,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill"
+            "value" : "Automatické vyplňování"
           }
         },
         "de" : {
@@ -7376,7 +10106,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill"
+            "value" : "Tự động điền"
           }
         }
       }
@@ -7392,7 +10122,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill disabled"
+            "value" : "Automatické vyplňování zakázáno"
           }
         },
         "de" : {
@@ -7410,7 +10140,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorellenar ha sido desactivado."
+            "value" : "Autorrellenar ha sido desactivado."
           }
         },
         "es-419" : {
@@ -7506,7 +10236,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill disabled"
+            "value" : "Đã tắt Tự động Điền"
           }
         }
       }
@@ -7523,7 +10253,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill extension logs"
+            "value" : "Protokoly rozšíření AutoFill"
           }
         },
         "de" : {
@@ -7643,7 +10373,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill extension logs"
+            "value" : "Nhật ký phần mở rộng Tự động Điền"
           }
         }
       }
@@ -7659,7 +10389,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill on apps and websites by enabling Proton Pass AutoFill"
+            "value" : "Automatické vyplňování v aplikacích a na webových stránkách povolením funkce Proton Pass AutoFill"
           }
         },
         "de" : {
@@ -7773,7 +10503,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "AutoFill on apps and websites by enabling Proton Pass AutoFill"
+            "value" : "Tự động điền trên ứng dụng và các trang web bằng việc kích hoạt Tự động điền trên Proton Pass"
           }
         }
       }
@@ -8361,7 +11091,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voi myöntää ja mitätöidä holvin käyttöoikeuksia"
+            "value" : "Voi myöntää ja mitätöidä holvin käyttöoikeuksia."
           }
         },
         "fr" : {
@@ -8734,7 +11464,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Capital letters"
+            "value" : "Velká písmena"
           }
         },
         "de" : {
@@ -8854,7 +11584,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Capital letters"
+            "value" : "Chữ in hoa"
           }
         }
       }
@@ -9138,7 +11868,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Card number copied"
+            "value" : "Číslo karty zkopírováno"
           }
         },
         "de" : {
@@ -9258,7 +11988,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Card number copied"
+            "value" : "Đã sao chép số thẻ"
           }
         }
       }
@@ -9406,7 +12136,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cardholder name copied"
+            "value" : "Jméno držitele karty zkopírováno"
           }
         },
         "de" : {
@@ -9526,7 +12256,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cardholder name copied"
+            "value" : "Đã sao chép tên chủ thẻ"
           }
         }
       }
@@ -9939,7 +12669,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clear all logs"
+            "value" : "Vymazat všechny protokoly"
           }
         },
         "de" : {
@@ -10053,7 +12783,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clear all logs"
+            "value" : "Xóa tất cả nhật ký"
           }
         }
       }
@@ -10596,7 +13326,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Conceal"
+            "value" : "Skrýt"
           }
         },
         "de" : {
@@ -10710,7 +13440,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Conceal"
+            "value" : "Ẩn"
           }
         }
       }
@@ -11272,7 +14002,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy 2FA code"
+            "value" : "Zkopírovat 2FA kód"
           }
         },
         "de" : {
@@ -11386,7 +14116,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy 2FA code"
+            "value" : "Sao chép mã 2FA"
           }
         }
       }
@@ -11403,7 +14133,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy alias address"
+            "value" : "Kopírovat alias adresy"
           }
         },
         "de" : {
@@ -11523,7 +14253,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy alias address"
+            "value" : "Sao chép địa chỉ email bí danh"
           }
         }
       }
@@ -11677,7 +14407,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy note content"
+            "value" : "Zkpírovat obsah poznámky"
           }
         },
         "de" : {
@@ -11797,7 +14527,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy note content"
+            "value" : "Sao chép nội dung ghi chú"
           }
         }
       }
@@ -12089,7 +14819,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ »"
+            "value" : "Nepodařilo se najít « %@ »"
           }
         },
         "de" : {
@@ -12209,7 +14939,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ »"
+            "value" : "Không thể tìm thấy « %@ »"
           }
         }
       }
@@ -12226,7 +14956,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ » in %@"
+            "value" : "Nepodařilo se najít « %@ » v %@"
           }
         },
         "de" : {
@@ -12346,7 +15076,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ » in %@"
+            "value" : "Không thể tìm thấy « %@ » trong %@"
           }
         }
       }
@@ -12363,7 +15093,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ » in Trash"
+            "value" : "Nepodařilo se najít « %@ » v Koši"
           }
         },
         "de" : {
@@ -12483,7 +15213,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Couldn't find « %@ » in Trash"
+            "value" : "Không thể tìm thấy « %@ » trong Thùng rác"
           }
         }
       }
@@ -12631,7 +15361,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create & AutoFill"
+            "value" : "Vytvořit & AutoFill"
           }
         },
         "de" : {
@@ -12751,7 +15481,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create & AutoFill"
+            "value" : "Tạo & Tự động Điền"
           }
         }
       }
@@ -14262,7 +16992,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit card permanently deleted"
+            "value" : "Đã xóa thẻ vĩnh viễn"
           }
         }
       }
@@ -14279,7 +17009,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit card restored"
+            "value" : "Platební karta obnovena"
           }
         },
         "de" : {
@@ -14399,7 +17129,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit card restored"
+            "value" : "Đã khôi phục thẻ"
           }
         }
       }
@@ -14416,7 +17146,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit card updated"
+            "value" : "Platební karta aktualizována"
           }
         },
         "de" : {
@@ -14536,7 +17266,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit card updated"
+            "value" : "Đã cập nhật thẻ"
           }
         }
       }
@@ -14553,7 +17283,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit cards"
+            "value" : "Platební karty"
           }
         },
         "de" : {
@@ -14673,7 +17403,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit cards"
+            "value" : "Thẻ tín dụng"
           }
         }
       }
@@ -14690,7 +17420,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Custom field title"
+            "value" : "Vlastní název pole"
           }
         },
         "de" : {
@@ -14810,7 +17540,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Custom field title"
+            "value" : "Tên trường tùy chọn"
           }
         }
       }
@@ -16433,7 +19163,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Download all your items again to make sure you are in sync"
+            "value" : "Znovu si stáhněte všechny položky, abyste se ujistili, že jste synchronizováni"
           }
         },
         "de" : {
@@ -16547,7 +19277,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Download all your items again to make sure you are in sync"
+            "value" : "Tải lại các nội dung của bạn một lần nữa để đảm vào bạn đã được đồng bộ"
           }
         }
       }
@@ -16831,7 +19561,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit alias"
+            "value" : "Upravit alias"
           }
         },
         "de" : {
@@ -16945,7 +19675,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit alias"
+            "value" : "Chỉnh sửa bí danh"
           }
         }
       }
@@ -17225,7 +19955,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Empty"
+            "value" : "Prázdný"
           }
         },
         "de" : {
@@ -17261,13 +19991,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vider"
+            "value" : "Vide"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vuoto"
+            "value" : "Vuota"
           }
         },
         "ja" : {
@@ -17291,7 +20021,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opróżnij"
+            "value" : "Sejf jest pusty"
           }
         },
         "pt" : {
@@ -17339,7 +20069,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Empty"
+            "value" : "Trống"
           }
         }
       }
@@ -17616,7 +20346,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enable AutoFill"
+            "value" : "Povolit automatické vyplňování"
           }
         },
         "de" : {
@@ -17730,7 +20460,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enable AutoFill"
+            "value" : "Kích hoạt Tự động Điền"
           }
         }
       }
@@ -17867,7 +20597,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enable Face ID"
+            "value" : "Kích hoạt Face ID"
           }
         }
       }
@@ -18004,7 +20734,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enable Touch ID"
+            "value" : "Kích hoạt Touch ID"
           }
         }
       }
@@ -18290,7 +21020,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter a title for your custom field"
+            "value" : "Zadejte název vlastního pole"
           }
         },
         "de" : {
@@ -18410,7 +21140,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter a title for your custom field"
+            "value" : "Nhập tiêu đề cho trường tùy chỉnh của bạn"
           }
         }
       }
@@ -18427,7 +21157,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter new title for « %@ »"
+            "value" : "Zadejte nový název pro « %@ »"
           }
         },
         "de" : {
@@ -18547,7 +21277,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter new title for « %@ »"
+            "value" : "Nhập tiêu đề mới cho « %@ »"
           }
         }
       }
@@ -18564,7 +21294,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose a PIN code"
+            "value" : "Zvolte PIN kód"
           }
         },
         "de" : {
@@ -18684,7 +21414,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose a PIN code"
+            "value" : "Chọn một mã PIN"
           }
         }
       }
@@ -19218,7 +21948,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Face ID enabled"
+            "value" : "Đã kích hoạt Face ID"
           }
         }
       }
@@ -19501,7 +22231,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filter by"
+            "value" : "Filtrovat podle"
           }
         },
         "de" : {
@@ -19615,7 +22345,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filter by"
+            "value" : "Lọc"
           }
         }
       }
@@ -19632,7 +22362,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Find an alias, login, or note"
+            "value" : "Vyhledání aliasu, přihlašovacího jména nebo poznámky"
           }
         },
         "de" : {
@@ -19746,7 +22476,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Find an alias, login, or note"
+            "value" : "Tìm một bí danh, đăng nhập hoặc ghi chú"
           }
         }
       }
@@ -19762,7 +22492,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Follow these simple steps to get the best experience:"
+            "value" : "Postupujte podle následujících jednoduchých kroků, abyste měli co nejlepší zážitek:"
           }
         },
         "de" : {
@@ -19876,7 +22606,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Follow these simple steps to get the best experience:"
+            "value" : "Hãy làm theo các bước đơn giản sau đây để có được trải nghiệm tốt nhất:"
           }
         }
       }
@@ -20421,7 +23151,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free trial"
+            "value" : "Zkusit zdarma"
           }
         },
         "de" : {
@@ -20541,7 +23271,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free trial"
+            "value" : "Dùng thử miễn phí"
           }
         }
       }
@@ -21215,7 +23945,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Go to Settings"
+            "value" : "Vào cài đặt"
           }
         }
       }
@@ -21499,7 +24229,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hidden text copied"
+            "value" : "Skrytý text zkopírován"
           }
         },
         "de" : {
@@ -21619,7 +24349,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hidden text copied"
+            "value" : "Đã sao chép văn bản được ẩn"
           }
         }
       }
@@ -21766,7 +24496,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How to import to Proton Pass"
+            "value" : "Jak importovat do aplikace Proton Pass"
           }
         },
         "de" : {
@@ -21886,7 +24616,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How to import to Proton Pass"
+            "value" : "Cách nhập dữ liệu vào Proton Pass"
           }
         }
       }
@@ -22040,7 +24770,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "I want to report a problem with..."
+            "value" : "Chci nahlásit problém s..."
           }
         },
         "de" : {
@@ -22154,7 +24884,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "I want to report a problem with..."
+            "value" : "Mình muốn báo cáo một vấn đề với..."
           }
         }
       }
@@ -22308,7 +25038,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zahrnout čísla"
+            "value" : "Včetně číslic"
           }
         },
         "de" : {
@@ -22444,7 +25174,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Incorrect PIN code."
+            "value" : "Nesprávný kód PIN."
           }
         },
         "de" : {
@@ -22558,7 +25288,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Incorrect PIN code."
+            "value" : "Mã PIN không chính xác."
           }
         }
       }
@@ -22711,7 +25441,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invalid TOTP URI"
+            "value" : "Neplatná TOTP URI"
           }
         },
         "de" : {
@@ -22825,7 +25555,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invalid TOTP URI"
+            "value" : "URI TOTP không hợp lệ"
           }
         }
       }
@@ -22850,7 +25580,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item moved to vault « %@ »"
+            "value" : "Položka přesunuta do trezoru « %@ »"
           }
         },
         "de" : {
@@ -22970,7 +25700,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item moved to vault « %@ »"
+            "value" : "Nội dung đã được dời vào kho lưu trữ « %@ »"
           }
         }
       }
@@ -23100,7 +25830,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Items"
+            "value" : "Nội dung"
           }
         }
       }
@@ -23117,7 +25847,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Items from « %@ » moved to vault « %@ »"
+            "value" : "Položka z « %@ » přesunuta do trezoru « %@ »"
           }
         },
         "de" : {
@@ -23237,7 +25967,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Items from « %@ » moved to vault « %@ »"
+            "value" : "Các nội dung từ « %@ » đã chuyển tới kho lưu trữ « %@ »"
           }
         }
       }
@@ -23373,7 +26103,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deleted items will be moved here first"
+            "value" : "Các nội dung bị xóa sẽ chuyển đến đây trước"
           }
         }
       }
@@ -23551,7 +26281,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anotar un PIN, un código o una nota para sí mismo"
+            "value" : "Anota un PIN, un código o una nota para ti mismo"
           }
         },
         "es-419" : {
@@ -23663,7 +26393,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Just autofill"
+            "value" : "Pouze automatické vyplňování"
           }
         },
         "de" : {
@@ -23777,7 +26507,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Just autofill"
+            "value" : "Chỉ tự động điền"
           }
         }
       }
@@ -23914,7 +26644,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keep Editing"
+            "value" : "Tiếp tục chỉnh sửa"
           }
         }
       }
@@ -25012,7 +27742,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Let's get started by creating your first item"
+            "value" : "Začněte tím, že vytvoříte první položku"
           }
         },
         "de" : {
@@ -25126,7 +27856,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Let's get started by creating your first item"
+            "value" : "Bắt đầu bằng việc tạo nội dung đầu tiên của bạn"
           }
         }
       }
@@ -25512,7 +28242,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Logga in"
+            "value" : "Inloggning"
           }
         },
         "tr" : {
@@ -25944,7 +28674,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login permanently deleted"
+            "value" : "Đã xóa vĩnh viễn đăng nhập"
           }
         }
       }
@@ -25962,7 +28692,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login restored"
+            "value" : "Přihlášení obnoveno"
           }
         },
         "de" : {
@@ -26082,7 +28812,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login restored"
+            "value" : "Đã khôi phục đăng nhập"
           }
         }
       }
@@ -26100,7 +28830,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login updated"
+            "value" : "Přihlašovací údaje aktualizovány"
           }
         },
         "de" : {
@@ -26220,7 +28950,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login updated"
+            "value" : "Đã cập nhật đăng nhập"
           }
         }
       }
@@ -26504,7 +29234,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mailbox copied"
+            "value" : "Poštovní schránka zkopírována"
           }
         },
         "de" : {
@@ -26624,7 +29354,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mailbox copied"
+            "value" : "Đã sao chép địa chỉ hộp thư đến"
           }
         }
       }
@@ -27579,7 +30309,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "More than 90 days"
+            "value" : "Více než 90 dní"
           }
         },
         "de" : {
@@ -27699,7 +30429,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "More than 90 days"
+            "value" : "Hơn 90 ngày"
           }
         }
       }
@@ -27853,7 +30583,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move all items to another vault"
+            "value" : "Přesunout všechny položky do jiného trezoru"
           }
         },
         "de" : {
@@ -27967,7 +30697,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move all items to another vault"
+            "value" : "Chuyển tất cả nội dung sang kho lưu trữ khác"
           }
         }
       }
@@ -28381,7 +31111,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "New title"
+            "value" : "Nový název"
           }
         },
         "de" : {
@@ -28501,7 +31231,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "New title"
+            "value" : "Tiêu đề mới"
           }
         }
       }
@@ -28703,7 +31433,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Successiva"
+            "value" : "Avanti"
           }
         },
         "ja" : {
@@ -28905,7 +31635,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No logs"
+            "value" : "Không có nhật ký"
           }
         }
       }
@@ -28924,7 +31654,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No suggestions"
+            "value" : "Žádné návrhy"
           }
         },
         "de" : {
@@ -29038,7 +31768,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No suggestions"
+            "value" : "Không có đề xuất nào"
           }
         }
       }
@@ -29332,6 +32062,66 @@
     "not shared %lld alias(es)" : {
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Гэта сховішча змяшчае %lld псеўданімы. Абагуленне псеўданімаў у дадзены момант не падтрымліваецца і яны не будуць абагулены."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Гэта сховішча змяшчае %lld псеўданімаў. Абагуленне псеўданімаў у дадзены момант не падтрымліваецца і яны не будуць абагулены."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Гэта сховішча змяшчае 1 псеўданім. Абагуленне псеўданімаў у дадзены момант не падтрымліваецца і яны не будуць абагулены."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Гэта сховішча змяшчае %lld псеўданімаў. Абагуленне псеўданімаў у дадзены момант не падтрымліваецца і яны не будуць абагулены."
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje %lld aliasy. Sdílení aliasů není v současné době podporováno a nebudou sdíleny."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje %lld aliasů. Sdílení aliasů není v současné době podporováno a nebudou sdíleny."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje jeden alias. Sdílení aliasů není v současné době podporováno a nebudou sdíleny."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje %lld aliasů. Sdílení aliasů není v současné době podporováno a nebudou sdíleny."
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -29345,6 +32135,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Dieser Tresor enthält %lld Aliasse. Das Teilen von Aliassen wird derzeit nicht unterstützt und sie werden nicht geteilt."
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Αυτή η κρύπτη περιέχει ένα ψευδώνυμο. Η κοινή χρήση ψευδωνύμων δεν υποστηρίζεται προς το παρόν και δε θα κοινοποιηθούν."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Αυτή η κρύπτη περιέχει %lld ψευδώνυμα. Η κοινή χρήση ψευδωνύμων δεν υποστηρίζεται προς το παρόν και δε θα κοινοποιηθούν."
                 }
               }
             }
@@ -29368,6 +32176,60 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Esta bóveda contiene un alias. No es posible compartir alias por el momento: el alias no se compartirá."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Esta bóveda contiene %lld alias. No es posible compartir alias por el momento: los alias no se compartirán."
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Esta bóveda contiene un alias. No es posible compartir alias por el momento: el alias no se compartirá."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Esta bóveda contiene %lld alias. No es posible compartir alias por el momento: los alias no se compartirán."
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Holvi sisältää yhden aliaksen. Aliasten jakamista ei tällä hetkellä tueta, eikä niitä jaeta."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Holvi sisältää %lld aliasta. Aliasten jakamista ei tällä hetkellä tueta, eikä niitä jaeta."
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -29381,6 +32243,264 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Ce coffre-fort contient %lld alias. Le partage d'alias n'est pas possible pour le moment : les alias ne seront pas partagés."
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Questa cassaforte contiene un alias. La condivisione degli alias non è attualmente supportata e non verranno condivisi."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Questa cassaforte contiene %lld alias. La condivisione degli alias non è attualmente supportata e non verranno condivisi."
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "この保管庫には %lld 個のエイリアスが含まれています。 エイリアスの共有は現在サポートされていないため、共有されません。"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ეს საცავი ერთ ფსევდონიმს შეიცავს. ფსევდონიმის გაზიარება ამჟამად მხარდაჭერლი არაა და ისინი არ გაზიარდება."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ეს საცავი %lld ფსევდონიმს შეიცავს. ფსევდონიმის გაზიარება ამჟამად მხარდაჭერლი არაა და ისინი არ გაზიარდება."
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "이 금고는 %d개 별명을 포함합니다. 별명 공유가 현재 지원되지 않으며 공유되지 않습니다."
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sejf zawiera %lld aliasy, które nie zostaną udostępnione, ponieważ udostępnianie aliasów nie jest obsługiwane."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sejf zawiera %lld aliasów, które nie zostaną udostępnione, ponieważ udostępnianie aliasów nie jest obsługiwane."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sejf zawiera 1 alias, który nie zostanie udostępniony, ponieważ udostępnianie aliasów nie jest obsługiwane."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sejf zawiera %lld aliasów, które nie zostaną udostępnione, ponieważ udostępnianie aliasów nie jest obsługiwane."
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Este cofre contém um 'alias'. Atualmente, a partilha de 'aliases' não é suportada e eles não serão partilhados."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Este cofre contém %lld 'aliases'. Atualmente, a partilha de 'aliases' não é suportada e eles não serão partilhados."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Este cofre contém um alias. No momento, o compartilhamento de alias não é suportado e ele não será compartilhado."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Este cofre contém %lld alias. No momento, o compartilhamento de alias não é suportado e eles não serão compartilhados."
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Acest seif conține %lld aliasuri. Partajarea aliasurilor nu este încă suportată și acestea nu vor fi partajate."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Acest seif conține un alias. Partajarea aliasurilor nu este încă suportată și acesta nu va fi partajat."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Acest seif conține %lld de aliasuri. Partajarea aliasurilor nu este încă suportată și acestea nu vor fi partajate."
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje %lld aliasy. Zdieľanie aliasov v súčasnosti nie je podporované a preto nebudú zdieľané."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje %lld aliasov. Zdieľanie aliasov v súčasnosti nie je podporované a preto nebudú zdieľané."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje jeden alias. Zdieľanie aliasov v súčasnosti nie je podporované a preto nebudú zdieľané."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tento trezor obsahuje %lld aliasov. Zdieľanie aliasov v súčasnosti nie je podporované a preto nebudú zdieľané."
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Detta valv innehåller ett alias. Delning av alias stöds för närvarande inte och de kommer inte att delas."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Detta valv innehåller %lld alias. Delning av alias stöds för närvarande inte och de kommer inte att delas."
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bu kasada bir takma ad var. Takma adların paylaşılması şu anda desteklenmediğinden bu paylaşılmayacak."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bu kasada %lld takma ad var. Takma adların paylaşılması şu anda desteklenmediğinden bunlar paylaşılmayacak."
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується і ними не можна поділитись."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується і ними не можна поділитись."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Це сховище містить один псевдонім. Спільний доступ до псевдоніма наразі не підтримується і ним не можна поділитись."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується і ними не можна поділитись."
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kho lưu trữ này chứa %lld bí danh. Chia sẽ bí danh hiện chưa được hỗ trợ và chúng sẽ không được chia sẻ."
                 }
               }
             }
@@ -29530,7 +32650,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note content copied"
+            "value" : "Obsah poznámek byl zkopírován"
           }
         },
         "de" : {
@@ -29650,7 +32770,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note content copied"
+            "value" : "Đã sao chép nội dung ghi chú"
           }
         }
       }
@@ -30061,7 +33181,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note permanently deleted"
+            "value" : "Đã xóa vĩnh viễn ghi chú"
           }
         }
       }
@@ -30078,7 +33198,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note restored"
+            "value" : "Poznámka obnovena"
           }
         },
         "de" : {
@@ -30198,7 +33318,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note restored"
+            "value" : "Đã khôi phục ghi chú"
           }
         }
       }
@@ -30215,7 +33335,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note updated"
+            "value" : "Poznámka aktualizována"
           }
         },
         "de" : {
@@ -30335,7 +33455,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note updated"
+            "value" : "Đã cập nhật ghi chú"
           }
         }
       }
@@ -30489,7 +33609,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Now you can unlock Proton Pass only when you need it⏤quickly and securely"
+            "value" : "Nyní můžete Proton Pass odemknout pouze tehdy, když ho potřebujete⏤rychle a bezpečně"
           }
         },
         "de" : {
@@ -30609,7 +33729,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Now you can unlock Proton Pass only when you need it⏤quickly and securely"
+            "value" : "Bây giờ bạn có thể mở khóa Proton Pass chỉ khi bạn cần nó⏤nhanh chóng và an toàn"
           }
         }
       }
@@ -30626,7 +33746,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Čísla"
+            "value" : "Číslice"
           }
         },
         "de" : {
@@ -30763,7 +33883,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Čísla a symboly"
+            "value" : "Číslice a symboly"
           }
         },
         "de" : {
@@ -31040,7 +34160,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "One tap and⏤presto!⏤your username and password are filled in instantly"
+            "value" : "Stačí jedno klepnutí a⏤presto!⏤vaše uživatelské jméno a heslo jsou okamžitě vyplněny"
           }
         },
         "de" : {
@@ -31160,7 +34280,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "One tap and⏤presto!⏤your username and password are filled in instantly"
+            "value" : "Chỉ một chạm và—pốc!—tên đăng nhập và mật khẩu của bạn được điền vào ngay lập tức"
           }
         }
       }
@@ -31307,7 +34427,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otevřete **Nastavení** v knihovně aplikací"
+            "value" : "Otevřete **Nastavení** v aplikaci"
           }
         },
         "de" : {
@@ -31421,7 +34541,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open **Settings** app"
+            "value" : "Mở ứng dụng **Cài đặt**"
           }
         }
       }
@@ -31437,7 +34557,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open camera"
+            "value" : "Otevřít kameru"
           }
         },
         "de" : {
@@ -31551,7 +34671,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open camera"
+            "value" : "Mở máy ảnh"
           }
         }
       }
@@ -31698,7 +34818,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open System Settings → Passwords → Password Options"
+            "value" : "Otevřete Nastavení systému → Hesla → Možnosti hesel"
           }
         },
         "de" : {
@@ -31818,7 +34938,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open System Settings → Passwords → Password Options"
+            "value" : "Mở Cài đặt Hệ thông → Mật khẩu → Tùy chọn mật khẩu"
           }
         }
       }
@@ -31971,7 +35091,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Other items"
+            "value" : "Ostatní položky"
           }
         },
         "de" : {
@@ -32085,7 +35205,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Other items"
+            "value" : "Nội dung khác"
           }
         }
       }
@@ -32372,7 +35492,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paste from clipboard"
+            "value" : "Vložit ze schránky"
           }
         },
         "de" : {
@@ -32486,7 +35606,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paste from clipboard"
+            "value" : "Dán từ bộ nhớ tạm"
           }
         }
       }
@@ -32763,7 +35883,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN Code"
+            "value" : "Mã PIN"
           }
         }
       }
@@ -32780,7 +35900,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN code set"
+            "value" : "PIN kód nastaven"
           }
         },
         "de" : {
@@ -32900,7 +36020,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN code set"
+            "value" : "Đã đặt mã PIN"
           }
         }
       }
@@ -33047,7 +36167,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PINs not matched"
+            "value" : "PIN kódy se neshodují"
           }
         },
         "de" : {
@@ -33167,7 +36287,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PINs not matched"
+            "value" : "Mã PINs không khớp"
           }
         }
       }
@@ -33183,7 +36303,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please allow camera access in Settings"
+            "value" : "Povolte přístup ke kameře v Nastavení"
           }
         },
         "de" : {
@@ -33297,7 +36417,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please allow camera access in Settings"
+            "value" : "Vui lòng cho phép quyền truy cập máy ảnh trong Cài đặt"
           }
         }
       }
@@ -33314,7 +36434,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please authenticate"
+            "value" : "Ověřte prosím pravost"
           }
         },
         "de" : {
@@ -33434,7 +36554,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please authenticate"
+            "value" : "Vui lòng xác thực"
           }
         }
       }
@@ -33587,7 +36707,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please keep the app open."
+            "value" : "Aplikaci nechte otevřenou prosím."
           }
         },
         "de" : {
@@ -33701,7 +36821,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please keep the app open."
+            "value" : "Vui lòng giữ úng dụng mở."
           }
         }
       }
@@ -33717,7 +36837,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please log in in order to use Proton Pass AutoFill extension"
+            "value" : "Pro použití rozšíření Proton Pass AutoFill se prosím přihlaste"
           }
         },
         "de" : {
@@ -33831,7 +36951,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Please log in in order to use Proton Pass AutoFill extension"
+            "value" : "Vui lòng đăng nhập để sử dụng trình mở rộng tự động điền Proton Pass"
           }
         }
       }
@@ -33978,7 +37098,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix can not be empty"
+            "value" : "Předpona nemůže být prázdná"
           }
         },
         "de" : {
@@ -34098,7 +37218,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix can not be empty"
+            "value" : "Tiền tố không thể để trống"
           }
         }
       }
@@ -34115,7 +37235,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix can not contain 2 consecutive dots (..)"
+            "value" : "Předpona nesmí obsahovat 2 po sobě jdoucí tečky (..)"
           }
         },
         "de" : {
@@ -34235,7 +37355,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix can not contain 2 consecutive dots (..)"
+            "value" : "Tiền tố không thể chứa 2 dấu chấm liên tiếp (..)"
           }
         }
       }
@@ -34252,7 +37372,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)"
+            "value" : "Předpona musí obsahovat pouze malá písmena a číslice (a-z, 0-9), tečku (.), pomlčku (-) a podtržítko (_)"
           }
         },
         "de" : {
@@ -34372,7 +37492,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix must contain only lowercase alphanumeric (a-z, 0-9), dot (.), hyphen (-) & underscore (_)"
+            "value" : "Tiền tố chỉ chứa các ký tự chữ thường và số (a-z, 0-9), dấu chấm (.), dấu gạch ngang (-) và dấu gạch dưới (_)."
           }
         }
       }
@@ -34389,7 +37509,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing..."
+            "value" : "Připravuje se…"
           }
         },
         "de" : {
@@ -34509,7 +37629,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing..."
+            "value" : "Đang chuẩn bị..."
           }
         }
       }
@@ -34656,7 +37776,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Primary vault updated"
+            "value" : "Primární trezor aktualizován"
           }
         },
         "de" : {
@@ -34776,7 +37896,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Primary vault updated"
+            "value" : "Đã cập nhật kho lưu trữ chính"
           }
         }
       }
@@ -35061,7 +38181,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protect your inbox against spams and phishings"
+            "value" : "Chraňte svou schránku před spamy a phishingem"
           }
         },
         "de" : {
@@ -35181,7 +38301,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protect your inbox against spams and phishings"
+            "value" : "Bảo vệ hộp thư đến của bạn khỏi thư rác và lừa đảo"
           }
         }
       }
@@ -35334,7 +38454,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quickly pick a login item from suggestions above the keyboard"
+            "value" : "Rychlý výběr přihlašovací položky z návrhů nad klávesnicí"
           }
         },
         "de" : {
@@ -35448,7 +38568,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quickly pick a login item from suggestions above the keyboard"
+            "value" : "Nhanh chóng chọn một mục đăng nhập từ những gợi ý trên bàn phím"
           }
         }
       }
@@ -35464,7 +38584,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QuickType bar suggestions"
+            "value" : "Návrhy panelu QuickType"
           }
         },
         "de" : {
@@ -35578,7 +38698,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QuickType bar suggestions"
+            "value" : "Gợi ý trên thanh QuickType"
           }
         }
       }
@@ -36249,7 +39369,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remove alias"
+            "value" : "Xóa bí danh"
           }
         }
       }
@@ -36664,7 +39784,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Report successfully sent"
+            "value" : "Hlášení bylo úspěšně odesláno"
           }
         },
         "de" : {
@@ -36784,7 +39904,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Report successfully sent"
+            "value" : "Đã gửi báo cáo thành công"
           }
         }
       }
@@ -36804,7 +39924,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restart Proton Pass"
+            "value" : "Restartovat Proton Pass"
           }
         },
         "de" : {
@@ -36924,7 +40044,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restart Proton Pass"
+            "value" : "Khởi động lại Proton Pass"
           }
         }
       }
@@ -37200,7 +40320,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Results"
+            "value" : "Výsledky"
           }
         },
         "de" : {
@@ -37314,7 +40434,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Results"
+            "value" : "Kết quả"
           }
         }
       }
@@ -37330,7 +40450,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reveal"
+            "value" : "Odhalit"
           }
         },
         "de" : {
@@ -37444,7 +40564,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reveal"
+            "value" : "Hiển thị"
           }
         }
       }
@@ -37994,7 +41114,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Search in all vaults..."
+            "value" : "Tìm trong tất cả kho lưu trữ..."
           }
         }
       }
@@ -38011,7 +41131,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Search in primary vault"
+            "value" : "Hledání v primárním trezoru"
           }
         },
         "de" : {
@@ -38406,7 +41526,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Secure password manager and more"
+            "value" : "Trình quản lý mật khẩu bảo mật và hơn thế nữa"
           }
         }
       }
@@ -38804,7 +41924,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select **Proton Pass**"
+            "value" : "Chọn **Proton Pass**"
           }
         }
       }
@@ -38820,7 +41940,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select a vault"
+            "value" : "Vybrat trezor"
           }
         },
         "de" : {
@@ -38934,7 +42054,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select a vault"
+            "value" : "Chọn một kho lưu trữ"
           }
         }
       }
@@ -38950,7 +42070,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send logs"
+            "value" : "Poslat protokoly"
           }
         },
         "de" : {
@@ -39064,7 +42184,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send logs"
+            "value" : "Gửi nhật ký"
           }
         }
       }
@@ -39222,7 +42342,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Set Proton Pass to unlock with your face or fingerprint so only you have access"
+            "value" : "Nastavte Proton Pass na odemykání obličejem nebo otiskem prstu, abyste měli přístup jen vy"
           }
         },
         "de" : {
@@ -39342,7 +42462,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Set Proton Pass to unlock with your face or fingerprint so only you have access"
+            "value" : "Thiết lập mở khóa Proton Pass với khuôn mặt hoặc vân tay để chỉ có bạn mới có thể truy cập vào"
           }
         }
       }
@@ -39618,7 +42738,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share clipboard between devices"
+            "value" : "Sdílet schránku mezi zařízeními"
           }
         },
         "de" : {
@@ -39732,7 +42852,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share clipboard between devices"
+            "value" : "Chia sẽ bảng nhớ tạm giữa các thiết bị"
           }
         }
       }
@@ -39873,7 +42993,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share Vault"
+            "value" : "Chia sẽ kho lưu trữ"
           }
         }
       }
@@ -40275,7 +43395,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show large"
+            "value" : "Hiển thị lớn"
           }
         }
       }
@@ -40291,7 +43411,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show me how"
+            "value" : "Ukažte mi jak"
           }
         },
         "de" : {
@@ -40405,7 +43525,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show me how"
+            "value" : "Hãy chỉ cho tôi"
           }
         }
       }
@@ -40535,7 +43655,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show website thumbnails"
+            "value" : "Hiển thị ảnh thu nhỏ của trang web"
           }
         }
       }
@@ -40796,7 +43916,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sort by"
+            "value" : "Sắp xếp theo"
           }
         }
       }
@@ -41070,7 +44190,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Special characters"
+            "value" : "Ký tự đặc biệt"
           }
         }
       }
@@ -41236,7 +44356,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive."
+            "value" : "Přestaňte sdílet svou skutečnou e-mailovou adresu. Místo toho ji skryjte pomocí e-mailových aliasů⏤exkluzivní služba Proton Pass."
           }
         },
         "de" : {
@@ -41356,7 +44476,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stop sharing your real email address. Instead hide it with email aliases⏤a Proton Pass exclusive."
+            "value" : "Ngừng chia sẻ địa chỉ email thật của bạn. Thay vào đó hãy giấu nó bằng các email bí danh⏤độc quyền trên Proton Pass."
           }
         }
       }
@@ -41776,7 +44896,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sync complete"
+            "value" : "Synchronizace dokončena"
           }
         },
         "de" : {
@@ -41890,7 +45010,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sync complete"
+            "value" : "Đồng bộ hoàn tất"
           }
         }
       }
@@ -42044,7 +45164,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Syncing items..."
+            "value" : "Synchronizace položek…..."
           }
         },
         "de" : {
@@ -42158,7 +45278,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Syncing items..."
+            "value" : "Đang đồng bộ nội dung..."
           }
         }
       }
@@ -42292,7 +45412,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tap **Password Options**"
+            "value" : "Chọn **Tùy chọn mật khẩu**"
           }
         }
       }
@@ -42422,7 +45542,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tap **Passwords**"
+            "value" : "Chọn **Mật khẩu**"
           }
         }
       }
@@ -42713,7 +45833,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The app is now ready to use"
+            "value" : "Aplikace je nyní připravena k použití"
           }
         },
         "de" : {
@@ -42827,7 +45947,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The app is now ready to use"
+            "value" : "Ứng dụng sẵn sàng sử dụng"
           }
         }
       }
@@ -42978,7 +46098,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This is your last attempt. You will be logged out after failing to authenticate again."
+            "value" : "Toto je váš poslední pokus. Po neúspěšném opakovaném ověření budete odhlášeni."
           }
         },
         "de" : {
@@ -43092,7 +46212,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This is your last attempt. You will be logged out after failing to authenticate again."
+            "value" : "Đây là lần thử cuối cùng của bạn. Bạn sẽ bị đăng xuất sau khi xác thực thất bại một lần nữa."
           }
         }
       }
@@ -43108,7 +46228,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This might take a few minutes."
+            "value" : "Může to trvat několik minut"
           }
         },
         "de" : {
@@ -43222,7 +46342,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This might take a few minutes."
+            "value" : "Điều này có thể mất một vài phút."
           }
         }
       }
@@ -43239,7 +46359,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
+            "value" : "Toto trvale smaže trezor « %@ » a veškerý jeho obsah. Zadejte název trezoru pro potvrzení smazání."
           }
         },
         "de" : {
@@ -43359,7 +46479,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion."
+            "value" : "Điều này sẽ xóa vĩnh viễn kho lưu trữ « %@ » và tất cả nội dung của nó. Nhập tên của kho để xác nhận xóa."
           }
         }
       }
@@ -43375,7 +46495,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This will permanently delete your Proton account and all of its data, including email, calendars and data stored in Drive. You will not be able to reactivate this account."
+            "value" : "Tím dojde k trvalému odstranění účtu Proton a všech jeho dat, včetně e-mailů, kalendářů a dat uložených na Disku. Tento účet nebude možné znovu aktivovat."
           }
         },
         "de" : {
@@ -43489,7 +46609,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This will permanently delete your Proton account and all of its data, including email, calendars and data stored in Drive. You will not be able to reactivate this account."
+            "value" : "Điều này sẽ xóa vĩnh viễn tài khoản Proton của bạn và tất cả dữ liệu của nó, bao gồm email, lịch và dữ liệu được lưu trong Drive. Bạn sẽ không thể kích hoạt lại tài khoản này."
           }
         }
       }
@@ -43910,7 +47030,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Title of the custom field"
+            "value" : "Název vlastního pole"
           }
         },
         "de" : {
@@ -44030,7 +47150,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Title of the custom field"
+            "value" : "Tên của trường tùy chỉnh"
           }
         }
       }
@@ -44708,7 +47828,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Touch ID enabled"
+            "value" : "Đã kích hoạt Touch ID"
           }
         }
       }
@@ -45250,7 +48370,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Try searching using different spelling or keywords"
+            "value" : "Zkuste hledat pomocí jiného pravopisu nebo klíčových slov"
           }
         },
         "de" : {
@@ -45364,7 +48484,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Try searching using different spelling or keywords"
+            "value" : "Thử tìm kiếm bằng cách sử dụng cách viết hoặc từ khóa khác"
           }
         }
       }
@@ -45398,7 +48518,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activa **Autorellenar contraseñas**"
+            "value" : "Activa **Autorrellenar contraseñas**"
           }
         },
         "es-419" : {
@@ -45494,7 +48614,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turn on **Autofill Passwords**"
+            "value" : "Mở **Tự động điền mật khẩu**"
           }
         }
       }
@@ -45511,7 +48631,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turn on AutoFill"
+            "value" : "Zapnout automatické vyplňování"
           }
         },
         "de" : {
@@ -45631,7 +48751,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turn on AutoFill"
+            "value" : "Bật Tự đồng Điền"
           }
         }
       }
@@ -45648,7 +48768,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turn on AutoFill Passwords and allow filling from Proton Pass"
+            "value" : "Zapnutí funkce automatického vyplňování hesel a povolení vyplňování z aplikace Proton Pass"
           }
         },
         "de" : {
@@ -45672,7 +48792,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activa Autorellenar contraseñas y permite el rellenado desde Proton Pass."
+            "value" : "Activa Autorrellenar contraseñas y permite el rellenado desde Proton Pass."
           }
         },
         "es-419" : {
@@ -45768,7 +48888,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turn on AutoFill Passwords and allow filling from Proton Pass"
+            "value" : "Bật Tự động điền mật khẩu và cho phép điền từ Proton Pass"
           }
         }
       }
@@ -45786,7 +48906,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours"
+            "value" : "Zapnutím funkce AutoFill necháte Proton Pass vyplnit přihlašovací údaje za vás⏤10 sekund, které vám ušetří hodiny."
           }
         },
         "de" : {
@@ -45906,7 +49026,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Turn on AutoFill to let Proton Pass fill in login details for you⏤10 seconds that will save you hours"
+            "value" : "Bật Tự động điền để Proton Pass điền thông tin cho bạn⏤10 giây sẽ giúp bạn tiết kiệm hàng giờ đó"
           }
         }
       }
@@ -46053,7 +49173,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Type your PIN again to confirm"
+            "value" : "Pro potvrzení zadejte znovu kód PIN"
           }
         },
         "de" : {
@@ -46173,7 +49293,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Type your PIN again to confirm"
+            "value" : "Nhập lại mã PIN của bạn để xác nhận"
           }
         }
       }
@@ -47404,7 +50524,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upgrade to add custom fields"
+            "value" : "Navyšte tarif pro přidání vlastních polí"
           }
         },
         "de" : {
@@ -47518,7 +50638,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upgrade to add custom fields"
+            "value" : "Nâng cấp để thêm các trường tùy chỉnh"
           }
         }
       }
@@ -47805,7 +50925,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use email aliases"
+            "value" : "Použít e-mailové aliasy"
           }
         },
         "de" : {
@@ -47925,7 +51045,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use email aliases"
+            "value" : "Sử dụng email bí danh"
           }
         }
       }
@@ -47942,7 +51062,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use system passcode when Face ID fails"
+            "value" : "Použít systémové heslo při selhání Face ID"
           }
         },
         "de" : {
@@ -48062,7 +51182,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use system passcode when Face ID fails"
+            "value" : "Sử dụng mật khẩu thiết bị khi Face ID thất bại"
           }
         }
       }
@@ -48079,7 +51199,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use system passcode when Touch ID fails"
+            "value" : "Použít systémové heslo při selhání Touch ID"
           }
         },
         "de" : {
@@ -48199,7 +51319,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use system passcode when Touch ID fails"
+            "value" : "Sử dụng mật khẩu thiết bị khi Touch ID thất bại"
           }
         }
       }
@@ -48743,143 +51863,6 @@
         }
       }
     },
-    "Vault « %@ » deleted" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховішча « %@ » выдалена"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault « %@ » deleted"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tresor \"%@\" gelöscht"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Η κρύπτη « %@ » διαγράφηκε"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault « %@ » deleted"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La bóveda \"%@\" ha sido eliminada."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La bóveda \"%@\" fue eliminada."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Holvi \"%@\" poistettiin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le coffre-fort « %@ » a été supprimé."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cassaforte « %@ » eliminata"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保管庫« %@ » が削除されました"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "საცავი „%@“ წაიშალა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "금고 « %@ »가 삭제되었습니다."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sejf « %@ » został usunięty"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cofre « %@ » eliminado"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O cofre « %@ » foi excluído"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seiful „%@” a fost șters."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor « %@ » bol odstránený"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valv « %@ » borttaget"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "« %@ » kasası silindi"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховище « %@ » видалено"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault « %@ » deleted"
-          }
-        }
-      }
-    },
     "Vault created" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -49173,7 +52156,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vault updated"
+            "value" : "Trezor aktualizován"
           }
         },
         "de" : {
@@ -49293,7 +52276,144 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vault updated"
+            "value" : "Đã cập nhật kho lưu trữ"
+          }
+        }
+      }
+    },
+    "Vault « %@ » deleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховішча « %@ » выдалена"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » smazán"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tresor \"%@\" gelöscht"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η κρύπτη « %@ » διαγράφηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault « %@ » deleted"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La bóveda \"%@\" ha sido eliminada."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La bóveda \"%@\" fue eliminada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holvi \"%@\" poistettiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le coffre-fort « %@ » a été supprimé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte « %@ » eliminata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫« %@ » が削除されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავი „%@“ წაიშალა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고 « %@ »가 삭제되었습니다."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sejf « %@ » został usunięty"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre « %@ » eliminado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O cofre « %@ » foi excluído"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seiful „%@” a fost șters."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » bol odstránený"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valv « %@ » borttaget"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » kasası silindi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховище « %@ » видалено"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xóa kho lưu trữ « %@ »"
           }
         }
       }
@@ -49570,7 +52690,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verification number copied"
+            "value" : "Číslo pro ověření zkopírováno"
           }
         },
         "de" : {
@@ -49690,7 +52810,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verification number copied"
+            "value" : "Đã sao chép số CVV"
           }
         }
       }
@@ -49820,7 +52940,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Version %@"
+            "value" : "Phiên bản %@"
           }
         }
       }
@@ -50096,7 +53216,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "View and edit details for this alias on the separate alias page."
+            "value" : "Podrobnosti o tomto aliasu můžete zobrazit a upravit na samostatné stránce aliasu."
           }
         },
         "de" : {
@@ -50210,7 +53330,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "View and edit details for this alias on the separate alias page."
+            "value" : "Xem và chỉnh sửa thông tin của bí danh này trên trang bí danh riêng biệt."
           }
         }
       }
@@ -50497,7 +53617,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We are downloading and decrypting your items."
+            "value" : "Stahujeme a dešifrujeme vaše položky."
           }
         },
         "de" : {
@@ -50611,7 +53731,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We are downloading and decrypting your items."
+            "value" : "Chúng tôi đang tải xuống và giải mã nội dung của bạn."
           }
         }
       }
@@ -51032,7 +54152,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details"
+            "value" : "Při přihlašování k webu nebo službě klepněte na ikonu Proton Pass a automaticky vyplňte své přihlašovací údaje"
           }
         },
         "de" : {
@@ -51104,7 +54224,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Podczas logowania do witryny lub usługi dotknij ikony Proton Pass, aby automatycznie wprowadzić dane logowania."
+            "value" : "Podczas logowania do strony internetowej lub usługi kliknij ikonę Proton Pass, aby automatycznie uzupełnić dane logowania"
           }
         },
         "pt" : {
@@ -51152,7 +54272,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When logging in to a site or service, tap the Proton Pass icon to automatically fill in your login details"
+            "value" : "Khi đăng nhập vào một trang web hoặc một dịch vụ, nhần vào biểu tượng Proton Pass để tự động điền các thông tin đăng nhập của bạn"
           }
         }
       }
@@ -51299,7 +54419,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Would you want to associate « %@ » with « %@ »?"
+            "value" : "Chcete přiřadit « %@ » k « %@ »?"
           }
         },
         "de" : {
@@ -51419,7 +54539,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Would you want to associate « %@ » with « %@ »?"
+            "value" : "Bạn có muốn liên kết « %@ » với « %@ » không?"
           }
         }
       }
@@ -51572,7 +54692,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yes, sign me out"
+            "value" : "Ano, odhlásit se"
           }
         },
         "de" : {
@@ -51686,7 +54806,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yes, sign me out"
+            "value" : "Có, đăng xuất tôi"
           }
         }
       }
@@ -52100,7 +55220,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You are going to delete the item irreversibly, are you sure?"
+            "value" : "Chystáte se položku nevratně smazat, jste si jisti?"
           }
         },
         "de" : {
@@ -52214,7 +55334,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You are going to delete the item irreversibly, are you sure?"
+            "value" : "Bạn sẽ xóa nội dung này mà không thể quay lại được, bạn chắc chứ?"
           }
         }
       }
@@ -52230,7 +55350,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can not delete a primary vault"
+            "value" : "Primární trezor nelze smazat"
           }
         },
         "de" : {
@@ -52344,7 +55464,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can not delete a primary vault"
+            "value" : "Bạn không thể xóa một kho lưu trữ chính"
           }
         }
       }
@@ -52363,7 +55483,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You currently have no login items"
+            "value" : "V současné době nemáte žádné přihlašovací položky"
           }
         },
         "de" : {
@@ -52477,7 +55597,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You currently have no login items"
+            "value" : "Bạn hiện tại không có nội dung đăng nhập nào"
           }
         }
       }
@@ -52902,7 +56022,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You will be signed out"
+            "value" : "Budete odhlášeni"
           }
         },
         "de" : {
@@ -53016,7 +56136,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You will be signed out"
+            "value" : "Bạn sẽ bị đăng xuất"
           }
         }
       }
