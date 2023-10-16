@@ -35,41 +35,48 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     var delegate: AccessRepositoryDelegate? { get set }
 
     /// Get from local, refresh if not exist
-    func getPlan() async throws -> PassPlan
+    func getAccess() async throws -> Access
+
+    /// Conveniently get the plan of current access
+    func getPlan() async throws -> Plan
 
     @discardableResult
-    func refreshPlan() async throws -> PassPlan
+    func refreshAccess() async throws -> Access
 }
 
 public extension AccessRepositoryProtocol {
-    func getPlan() async throws -> PassPlan {
-        logger.trace("Getting plan for user \(userId)")
-        if let passPlan = try await localDatasource.getPassPlan(userId: userId) {
-            logger.trace("Found local plan for user \(userId)")
-            return passPlan
+    func getAccess() async throws -> Access {
+        logger.trace("Getting access for user \(userId)")
+        if let localAccess = try await localDatasource.getAccess(userId: userId) {
+            logger.trace("Found local access for user \(userId)")
+            return localAccess
         }
 
-        logger.trace("No local plan found for user \(userId). Refreshing...")
-        let refreshedPassPlan = try await refreshPlan()
-        return refreshedPassPlan
+        logger.trace("No local access found for user \(userId). Refreshing...")
+        return try await refreshAccess()
+    }
+
+    func getPlan() async throws -> Plan {
+        logger.trace("Getting plan for user \(userId)")
+        return try await getAccess().plan
     }
 
     @discardableResult
-    func refreshPlan() async throws -> PassPlan {
-        logger.trace("Refreshing plan for user \(userId)")
-        let passPlan = try await remoteDatasource.getPassPlan()
+    func refreshAccess() async throws -> Access {
+        logger.trace("Refreshing access for user \(userId)")
+        let remoteAccess = try await remoteDatasource.getAccess()
 
-        if let currentLocalPlan = try await localDatasource.getPassPlan(userId: userId),
-           currentLocalPlan != passPlan {
+        if let localAccess = try await localDatasource.getAccess(userId: userId),
+           localAccess.plan != remoteAccess.plan {
             logger.info("New plan found")
             delegate?.accessRepositoryDidUpdateToNewPlan()
         }
 
-        logger.trace("Upserting plan for user \(userId)")
-        try await localDatasource.upsert(passPlan: passPlan, userId: userId)
+        logger.trace("Upserting access for user \(userId)")
+        try await localDatasource.upsert(access: remoteAccess, userId: userId)
 
-        logger.info("Refreshed plan for user \(userId)")
-        return passPlan
+        logger.info("Refreshed access for user \(userId)")
+        return remoteAccess
     }
 }
 

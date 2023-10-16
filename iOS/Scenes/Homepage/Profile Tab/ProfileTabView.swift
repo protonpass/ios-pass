@@ -319,7 +319,7 @@ private struct AssociatedPlanInfo {
     let tintColor: UIColor
 }
 
-private extension PassPlan {
+private extension Plan {
     var associatedPlanInfo: AssociatedPlanInfo? {
         switch planType {
         case .free:
@@ -330,6 +330,7 @@ private extension PassPlan {
                   icon: PassIcon.badgeTrial,
                   iconWidth: 12,
                   tintColor: PassColor.interactionNormMajor2)
+
         case .plus:
             .init(title: displayName,
                   icon: PassIcon.badgePaid,

@@ -1,5 +1,5 @@
 //
-// PassPlan.swift
+// Access.swift
 // Proton Pass - Created on 16/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,7 +21,19 @@
 
 import Foundation
 
-public struct PassPlan: Decodable, Equatable, Sendable {
+public struct Access: Decodable, Equatable {
+    public let plan: Plan
+    public let pendingInvites: Int
+    public let waitingNewUserInvites: Int
+
+    public init(plan: Plan, pendingInvites: Int, waitingNewUserInvites: Int) {
+        self.plan = plan
+        self.pendingInvites = pendingInvites
+        self.waitingNewUserInvites = waitingNewUserInvites
+    }
+}
+
+public struct Plan: Decodable, Equatable, Sendable {
     /// ⚠️ Use `planType` instead
     /// Possible values: `free`, `plus`
     public let type: String

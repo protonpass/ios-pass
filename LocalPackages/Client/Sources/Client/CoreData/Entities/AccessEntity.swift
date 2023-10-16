@@ -43,29 +43,39 @@ extension AccessEntity {
     @NSManaged var totpLimit: Int64
     @NSManaged var trialEnd: Int64
     @NSManaged var vaultLimit: Int64
+
+    @NSManaged var pendingInvites: Int64
+    @NSManaged var waitingNewUserInvites: Int64
 }
 
 extension AccessEntity {
-    func toPassPlan() -> PassPlan {
-        .init(type: type,
-              internalName: internalName,
-              displayName: displayName,
-              hideUpgrade: hideUpgrade,
-              trialEnd: trialEnd == -1 ? nil : Int(trialEnd),
-              vaultLimit: vaultLimit == -1 ? nil : Int(vaultLimit),
-              aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
-              totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
+    func toAccess() -> Access {
+        let plan = Plan(type: type,
+                        internalName: internalName,
+                        displayName: displayName,
+                        hideUpgrade: hideUpgrade,
+                        trialEnd: trialEnd == -1 ? nil : Int(trialEnd),
+                        vaultLimit: vaultLimit == -1 ? nil : Int(vaultLimit),
+                        aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
+                        totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
+        return .init(plan: plan,
+                     pendingInvites: Int(pendingInvites),
+                     waitingNewUserInvites: Int(waitingNewUserInvites))
     }
 
-    func hydrate(from passPlan: PassPlan, userId: String) {
-        displayName = passPlan.displayName
-        internalName = passPlan.internalName
-        hideUpgrade = passPlan.hideUpgrade
-        type = passPlan.type
+    func hydrate(from access: Access, userId: String) {
+        let plan = access.plan
+        displayName = plan.displayName
+        internalName = plan.internalName
+        hideUpgrade = plan.hideUpgrade
+        type = plan.type
         userID = userId
-        aliasLimit = Int64(passPlan.aliasLimit ?? -1)
-        totpLimit = Int64(passPlan.totpLimit ?? -1)
-        trialEnd = Int64(passPlan.trialEnd ?? -1)
-        vaultLimit = Int64(passPlan.vaultLimit ?? -1)
+        aliasLimit = Int64(plan.aliasLimit ?? -1)
+        totpLimit = Int64(plan.totpLimit ?? -1)
+        trialEnd = Int64(plan.trialEnd ?? -1)
+        vaultLimit = Int64(plan.vaultLimit ?? -1)
+
+        pendingInvites = Int64(access.pendingInvites)
+        waitingNewUserInvites = Int64(access.waitingNewUserInvites)
     }
 }

@@ -72,7 +72,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published private(set) var loading = false
-    @Published private(set) var plan: PassPlan?
+    @Published private(set) var plan: Plan?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
@@ -121,7 +121,7 @@ extension ProfileTabViewModel {
                 // First get local plan to optimistically display it
                 // and then try to refresh the plan to have it updated
                 self.plan = try await self.accessRepository.getPlan()
-                self.plan = try await self.accessRepository.refreshPlan()
+                self.plan = try await self.accessRepository.refreshAccess().plan
             } catch {
                 self.logger.error(error)
                 self.router.display(element: .displayErrorBanner(error))

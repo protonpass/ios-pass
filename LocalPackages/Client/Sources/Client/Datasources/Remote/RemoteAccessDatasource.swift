@@ -21,14 +21,14 @@
 import Entities
 
 public protocol RemoteAccessDatasourceProtocol: RemoteDatasourceProtocol {
-    func getPassPlan() async throws -> PassPlan
+    func getAccess() async throws -> Access
 }
 
 public extension RemoteAccessDatasourceProtocol {
-    func getPassPlan() async throws -> PassPlan {
+    func getAccess() async throws -> Access {
         let endpoint = CheckAccessEndpoint()
         let response = try await apiService.exec(endpoint: endpoint)
-        return response.access.plan
+        return response.access
     }
 }
 
