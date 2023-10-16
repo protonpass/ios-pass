@@ -1797,25 +1797,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "вынікі"
+                  "value" : "%lld вынікі"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "вынікаў"
+                  "value" : "%lld вынікаў"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "вынік"
+                  "value" : "%lld вынік"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "вынікаў"
+                  "value" : "%lld вынікаў"
                 }
               }
             }
@@ -1827,52 +1827,43 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledků"
+                  "value" : "%lld výsledků"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledků"
+                  "value" : "%lld výsledků"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledek"
+                  "value" : "%lld výsledek"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledky"
+                  "value" : "%lld výsledky"
                 }
               }
             }
           }
         },
         "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@VARIABLE@"
-          },
-          "substitutions" : {
-            "VARIABLE" : {
-              "formatSpecifier" : "d",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Ergebnis"
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Ergebnisse"
-                    }
-                  }
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Ergebnis"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Ergebnisse"
                 }
               }
             }
@@ -1884,40 +1875,31 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "αποτέλεσμα"
+                  "value" : "%lld αποτέλεσμα"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "αποτελέσματα"
+                  "value" : "%lld αποτελέσματα"
                 }
               }
             }
           }
         },
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@VARIABLE@"
-          },
-          "substitutions" : {
-            "VARIABLE" : {
-              "formatSpecifier" : "d",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "result"
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "results"
-                    }
-                  }
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld result"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld results"
                 }
               }
             }
@@ -1929,13 +1911,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultado"
+                  "value" : "%lld resultado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultados"
+                  "value" : "%lld resultados"
                 }
               }
             }
@@ -1947,13 +1929,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultado"
+                  "value" : "%lld resultado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultados"
+                  "value" : "%lld resultados"
                 }
               }
             }
@@ -1965,40 +1947,31 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "tulos"
+                  "value" : "%lld tulos"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "tulosta"
+                  "value" : "%lld tulosta"
                 }
               }
             }
           }
         },
         "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@VARIABLE@"
-          },
-          "substitutions" : {
-            "VARIABLE" : {
-              "formatSpecifier" : "d",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "résultat"
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "résultats"
-                    }
-                  }
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld résultat"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld résultats"
                 }
               }
             }
@@ -2010,13 +1983,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "risultato"
+                  "value" : "%lld risultato"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "risultati"
+                  "value" : "%lld risultati"
                 }
               }
             }
@@ -2028,7 +2001,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "結果"
+                  "value" : "%lld 結果"
                 }
               }
             }
@@ -2040,13 +2013,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "შედეგი"
+                  "value" : "%lld შედეგი"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "შედეგი"
+                  "value" : "%lld შედეგი"
                 }
               }
             }
@@ -2058,7 +2031,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "결과"
+                  "value" : "%lld 결과"
                 }
               }
             }
@@ -2070,25 +2043,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "wyniki"
+                  "value" : "%lld wyniki"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "wyników"
+                  "value" : "%lld wyników"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "wynik"
+                  "value" : "%lld wynik"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "wyników"
+                  "value" : "%lld wyników"
                 }
               }
             }
@@ -2100,13 +2073,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultado"
+                  "value" : "%lld resultado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultados"
+                  "value" : "%lld resultados"
                 }
               }
             }
@@ -2118,13 +2091,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultado"
+                  "value" : "%lld resultado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultados"
+                  "value" : "%lld resultados"
                 }
               }
             }
@@ -2136,19 +2109,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "rezultate"
+                  "value" : "%lld rezultate"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "rezultat"
+                  "value" : "%lld rezultat"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "de rezultate"
+                  "value" : "%lld de rezultate"
                 }
               }
             }
@@ -2160,25 +2133,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledky"
+                  "value" : "%lld výsledky"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledkov"
+                  "value" : "%lld výsledkov"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledok"
+                  "value" : "%lld výsledok"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "výsledkov"
+                  "value" : "%lld výsledkov"
                 }
               }
             }
@@ -2190,13 +2163,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultat"
+                  "value" : "%lld resultat"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "resultat"
+                  "value" : "%lld resultat"
                 }
               }
             }
@@ -2208,13 +2181,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "sonuç"
+                  "value" : "%lld sonuç"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "sonuçlar"
+                  "value" : "%lld sonuçlar"
                 }
               }
             }
@@ -2226,25 +2199,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "результати"
+                  "value" : "%lld результати"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "результатів"
+                  "value" : "%lld результатів"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "результат"
+                  "value" : "%lld результат"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "результатів"
+                  "value" : "%lld результатів"
                 }
               }
             }
@@ -2256,7 +2229,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "kết quả"
+                  "value" : "%lld kết quả"
                 }
               }
             }
