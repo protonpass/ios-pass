@@ -1,5 +1,5 @@
 //
-// LocalPassPlanDatasourceTests.swift
+// LocalAccessDatasourceTests.swift
 // Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,8 +21,8 @@
 @testable import Client
 import XCTest
 
-final class LocalPassPlanDatasourceTests: XCTestCase {
-    var sut: LocalPassPlanDatasource!
+final class LocalAccessDatasourceTests: XCTestCase {
+    var sut: LocalAccessDatasource!
 
     override func setUp() {
         super.setUp()
@@ -36,7 +36,7 @@ final class LocalPassPlanDatasourceTests: XCTestCase {
     }
 }
 
-extension LocalPassPlanDatasourceTests {
+extension LocalAccessDatasourceTests {
     func testUpsertAndGetPlans() async throws {
         // Given
         let givenUserId = String.random()
