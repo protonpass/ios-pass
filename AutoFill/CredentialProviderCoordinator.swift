@@ -168,6 +168,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                                      serviceIdentifiers: [credentialIdentity.serviceIdentifier])
                         } else {
                             logger.error("Failed to autofill. Not log in item.")
+                            cancelAutoFill(reason: .credentialIdentityNotFound)
                         }
                     } else {
                         logger.warning("Failed to autofill. Item not found.")
