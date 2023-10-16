@@ -74,7 +74,11 @@ extension AccountViewModel {
     func manageSubscription() {
         if FeatureFactory.shared.isEnabled(.dynamicPlans) {
             paymentsUI.showCurrentPlan(presentationType: .modal,
-                                       backendFetch: true) { _ in }
+                                       backendFetch: true) { [weak self] reason in
+                guard let self else { return }
+                print("VJL Reason \(#function): \(reason)")
+                refreshUserPlan()
+            }
         } else {
             paymentsManager.manageSubscription { [weak self] result in
                 guard let self else { return }
@@ -86,7 +90,10 @@ extension AccountViewModel {
     func upgradeSubscription() {
         if FeatureFactory.shared.isEnabled(.dynamicPlans) {
             paymentsUI.showUpgradePlan(presentationType: .modal,
-                                       backendFetch: true) { _ in }
+                                       backendFetch: true) { [weak self] reason in
+                print("VJL Reason \(#function): \(reason)")
+                self?.refreshUserPlan()
+            }
         } else {
             paymentsManager.upgradeSubscription { [weak self] result in
                 guard let self else { return }

@@ -509,7 +509,11 @@ private extension HomepageCoordinator {
             guard let self else { return }
             if FeatureFactory.shared.isEnabled(.dynamicPlans) {
                 paymentsUI.showUpgradePlan(presentationType: .modal,
-                                           backendFetch: true) { _ in }
+                                           backendFetch: true) { [weak self] reason in
+                    guard let self else { return }
+                    print("VJL Reason \(#function): \(reason)")
+                    refreshPlan()
+                }
             } else {
                 paymentsManager.upgradeSubscription { [weak self] result in
                     guard let self else { return }
