@@ -1,5 +1,5 @@
 //
-// RemotePassPlanDatasource.swift
+// RemoteAccessDatasource.swift
 // Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,11 +20,11 @@
 
 import Foundation
 
-public protocol RemotePassPlanDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteAccessDatasourceProtocol: RemoteDatasourceProtocol {
     func getPassPlan() async throws -> PassPlan
 }
 
-public extension RemotePassPlanDatasourceProtocol {
+public extension RemoteAccessDatasourceProtocol {
     func getPassPlan() async throws -> PassPlan {
         let endpoint = CheckAccessAndPlanEndpoint()
         let response = try await apiService.exec(endpoint: endpoint)
@@ -32,4 +32,4 @@ public extension RemotePassPlanDatasourceProtocol {
     }
 }
 
-public final class RemotePassPlanDatasource: RemoteDatasource, RemotePassPlanDatasourceProtocol {}
+public final class RemoteAccessDatasource: RemoteDatasource, RemoteAccessDatasourceProtocol {}

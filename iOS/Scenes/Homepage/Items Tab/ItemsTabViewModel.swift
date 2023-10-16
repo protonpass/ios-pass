@@ -54,7 +54,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var showingPermanentDeletionAlert = false
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
@@ -134,7 +134,7 @@ private extension ItemsTabViewModel {
                 var shouldShow = true
                 switch banner {
                 case .trial:
-                    let plan = try await passPlanRepository.getPlan()
+                    let plan = try await accessRepository.getPlan()
                     shouldShow = plan.isInTrial
 
                 case .autofill:
