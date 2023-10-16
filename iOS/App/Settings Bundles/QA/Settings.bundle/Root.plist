@@ -20,6 +20,16 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Rust version</string>
+			<key>Key</key>
+			<string>pref_rust_version</string>
+			<key>DefaultValue</key>
+			<string>-</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>FooterText</key>
 			<string>&quot;Automatic&quot; points to black in debug mode &amp; points to prod in release mode. So it always points to prod if app is installed via TestFlight.</string>
