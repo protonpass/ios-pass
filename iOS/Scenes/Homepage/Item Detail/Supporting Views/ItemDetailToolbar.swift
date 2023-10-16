@@ -48,6 +48,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                        title: #localized("Edit"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: itemContentType.normMajor1Color,
+                                       isDisabled: !viewModel.isAllowedToEdit,
                                        action: viewModel.edit)
 
                     if viewModel.isAllowedToShare {
@@ -80,6 +81,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                      iconColor: itemContentType.normMajor2Color,
                                      backgroundColor: itemContentType.normMinor1Color)
                     })
+                    .disabled(!viewModel.isAllowedToEdit)
                 }
 
             case .trashed:

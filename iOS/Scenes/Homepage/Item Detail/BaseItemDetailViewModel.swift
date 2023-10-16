@@ -54,6 +54,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
+    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -62,6 +63,13 @@ class BaseItemDetailViewModel: ObservableObject {
             return false
         }
         return canUserShareVault(for: vault.vault)
+    }
+
+    var isAllowedToEdit: Bool {
+        guard let vault else {
+            return false
+        }
+        return canUserPerformActionOnVault(for: vault.vault)
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
