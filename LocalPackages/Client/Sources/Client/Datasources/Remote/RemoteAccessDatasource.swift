@@ -26,7 +26,7 @@ public protocol RemoteAccessDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteAccessDatasourceProtocol {
     func getPassPlan() async throws -> PassPlan {
-        let endpoint = CheckAccessAndPlanEndpoint()
+        let endpoint = CheckAccessEndpoint()
         let response = try await apiService.exec(endpoint: endpoint)
         return response.access.plan
     }

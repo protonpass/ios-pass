@@ -1,5 +1,5 @@
 //
-// CheckAccessAndPlanEndpoint.swift
+// CheckAccessEndpoint.swift
 // Proton Pass - Created on 20/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,14 +21,14 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct CheckAccessAndPlanResponse: Decodable {
+public struct CheckAccessResponse: Decodable, Equatable {
     public let code: Int
     public let access: PassAccess
 }
 
-public struct CheckAccessAndPlanEndpoint: Endpoint {
+public struct CheckAccessEndpoint: Endpoint {
     public typealias Body = EmptyRequest
-    public typealias Response = CheckAccessAndPlanResponse
+    public typealias Response = CheckAccessResponse
 
     public var debugDescription: String
     public var path: String

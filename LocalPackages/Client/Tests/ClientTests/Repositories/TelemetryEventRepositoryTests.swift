@@ -20,6 +20,7 @@
 
 @testable import Client
 import Core
+import Entities
 import ProtonCoreServices
 import XCTest
 
