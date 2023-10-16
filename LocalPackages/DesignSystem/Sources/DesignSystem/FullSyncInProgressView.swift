@@ -1,9 +1,9 @@
 //
-// FeatureFlagTypeProtocol.swift
-// Proton - Created on 29/09/2023.
+// FullSyncInProgressView.swift
+// Proton Pass - Created on 13/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
-// This file is part of Proton.
+// This file is part of Proton Pass.
 //
 // Proton Pass is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Lottie
+import SwiftUI
 
-public protocol FeatureFlagTypeProtocol: Sendable, RawRepresentable where RawValue == String {
-    static func isPresent(rawValue: String) -> Bool
-}
+public struct FullSyncInProgressView: View {
+    public init() {}
 
-public extension FeatureFlagTypeProtocol {
-    static func isPresent(rawValue: String) -> Bool {
-        Self(rawValue: rawValue) != nil
+    public var body: some View {
+        LottieView(animation: .named("FullSyncInProgress", bundle: .module))
+            .playing(loopMode: .loop)
     }
 }

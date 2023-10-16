@@ -25,8 +25,7 @@ let package = Package(name: "Client",
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro"),
-                          .package(name: "FeatureFlags", path: "../FeatureFlags"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "11.0.1")
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "12.2.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -42,13 +41,13 @@ let package = Package(name: "Client",
                                       .product(name: "ProtonCoreSettings", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreKeyManager", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreCryptoGoInterface", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreFeatureFlags", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreServices", package: "protoncore_ios"),
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "Reachability", package: "Reachability.swift"),
                                       .product(name: "SwiftProtobuf", package: "swift-protobuf"),
-                                      .product(name: "Macro", package: "Macro"),
-                                      .product(name: "FeatureFlags", package: "FeatureFlags")
+                                      .product(name: "Macro", package: "Macro")
                                   ],
                                   resources: [.process("Resources")]),
                           .testTarget(name: "ClientTests",
