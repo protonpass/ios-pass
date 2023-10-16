@@ -47,10 +47,7 @@ final class RefreshInvitations: RefreshInvitationsUseCase {
     }
 
     func execute() async throws {
-        let plan = try await passPlanRepository.getPlan()
-        guard !plan.isFreeUser else { return }
-        let sharingEnabled = try await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
-        guard sharingEnabled else { return }
+        guard await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1) else { return }
         await inviteRepository.refreshInvites()
     }
 }
