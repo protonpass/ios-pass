@@ -20,8 +20,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import Core
+import ProtonCoreFeatureFlags
 
 // sourcery: AutoMockable
 public protocol GetFeatureFlagStatusUseCase: Sendable {
@@ -52,7 +52,7 @@ public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStat
             logger.trace("Getting feature flags for user \(userInformations.userId)")
             let flags = try await featureFlagsRepository.getFlags()
             logger.trace("Found local feature flags for user")
-            return flags.isFlagEnable(for: flag)
+            return flags.isFlagEnabled(for: flag)
         } catch {
             logger.error(error)
             return false
