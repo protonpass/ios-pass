@@ -57,7 +57,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
@@ -108,7 +108,7 @@ private extension HomepageCoordinator {
     func finalizeInitialization() {
         eventLoop.delegate = self
         itemContextMenuHandler.delegate = self
-        passPlanRepository.delegate = self
+        accessRepository.delegate = self
         urlOpener.rootViewController = rootViewController
 
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
@@ -188,7 +188,7 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await passPlanRepository.refreshPlan()
+                try await accessRepository.refreshPlan()
             } catch {
                 logger.error(error)
             }
@@ -639,8 +639,8 @@ extension HomepageCoordinator {
 
 // MARK: - PassPlanRepositoryDelegate
 
-extension HomepageCoordinator: PassPlanRepositoryDelegate {
-    func passPlanRepositoryDidUpdateToNewPlan() {
+extension HomepageCoordinator: AccessRepositoryDelegate {
+    func accessRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
         homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
         profileTabViewModel?.refreshPlan()
@@ -803,7 +803,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
             do {
                 self.showLoadingHud()
 
-                let plan = try await self.upgradeChecker.passPlanRepository.getPlan()
+                let plan = try await self.upgradeChecker.accessRepository.getPlan()
                 guard let trialEnd = plan.trialEnd else { return }
                 let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
                 let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)

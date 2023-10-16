@@ -308,6 +308,7 @@
 		359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB88D2A20CFE0009588A9 /* InfoBannerViewStack.swift */; };
 		359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359EB8912A213A44009588A9 /* TrialDetailView.swift */; };
 		35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEE12958CDBC00A09623 /* UrlOpener.swift */; };
+		35A70A892ADD768000CF317F /* AccessRepositoryProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A70A882ADD768000CF317F /* AccessRepositoryProtocolMock.generated.swift */; };
 		35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
 		35ABE12A2AA08275001E20F9 /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 35ABE1292AA08275001E20F9 /* DocScanner */; };
 		35ABE12C2AA082BB001E20F9 /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 35ABE12B2AA082BB001E20F9 /* DocScanner */; };
@@ -547,7 +548,6 @@
 		75283C032946E49A006658A6 /* ExternalAccountsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75283C022946E49A006658A6 /* ExternalAccountsTests.swift */; };
 		752A68E72954945900DCC65E /* OnboardingRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A68E62954945900DCC65E /* OnboardingRobot.swift */; };
 		75F7578F297928C2008A43D7 /* TokenRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7578E297928C2008A43D7 /* TokenRefreshTests.swift */; };
-		9888D9D21FFC53C849C70726 /* PassPlanRepositoryProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDC794BB63195BC291133D5 /* PassPlanRepositoryProtocolMock.generated.swift */; };
 		A5914524D391C371AEB4FD57 /* CreateVaultUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35704EB62AD574D700044716 /* CreateVaultUseCaseMock.generated.swift */; };
 		EB5B5A7052FD60FFFEFC4E84 /* GetLogEntriesUseCaseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B167957087F76ED9866A81 /* GetLogEntriesUseCaseMock.generated.swift */; };
 		FAA718FF2A8E1F7C002B951E /* ProfileRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA718FE2A8E1F7C002B951E /* ProfileRobot.swift */; };
@@ -816,6 +816,7 @@
 		35A2F8B52AD6B2D80051C7AF /* PassRustCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PassRustCore; path = LocalPackages/PassRustCore; sourceTree = "<group>"; };
 		35A5EEDF2958B60200A09623 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		35A5EEE12958CDBC00A09623 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
+		35A70A882ADD768000CF317F /* AccessRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
 		35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCreateEditItemViewModel.swift; sourceTree = "<group>"; };
 		35AC9A532A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailCoordinator.swift; sourceTree = "<group>"; };
 		35AC9A552A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemCoordinator.swift; sourceTree = "<group>"; };
@@ -959,7 +960,6 @@
 		66CA927E29F9719800F2FC59 /* InMemoryTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryTokenStorage.swift; sourceTree = "<group>"; };
 		66CA928029F971CF00F2FC59 /* PaymentsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsConstants.swift; sourceTree = "<group>"; };
 		66E960D429F046C6004D96AF /* PassLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PassLaunchScreen.storyboard; path = iOS/App/PassLaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
-		6EDC794BB63195BC291133D5 /* PassPlanRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PassPlanRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
 		7412105340D89D3D20B0B89A /* PublicKeyRepositoryProtocolMock.generated.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = PublicKeyRepositoryProtocolMock.generated.swift; sourceTree = "<group>"; };
 		7513C54429A5E89B006F7160 /* AutoFillRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoFillRobot.swift; sourceTree = "<group>"; };
 		7513C54629A5F963006F7160 /* FaceIDRobot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceIDRobot.swift; sourceTree = "<group>"; };
@@ -2185,6 +2185,7 @@
 		84E10EABA5BC087B06289733 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				35A70A882ADD768000CF317F /* AccessRepositoryProtocolMock.generated.swift */,
 				35704EB72AD574D700044716 /* CreateAndMoveItemToNewVaultUseCaseMock.generated.swift */,
 				35704EB62AD574D700044716 /* CreateVaultUseCaseMock.generated.swift */,
 				58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */,
@@ -2193,7 +2194,6 @@
 				00B167957087F76ED9866A81 /* GetLogEntriesUseCaseMock.generated.swift */,
 				35704EB82AD574D700044716 /* MoveItemsBetweenVaultsUseCaseMock.generated.swift */,
 				B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */,
-				6EDC794BB63195BC291133D5 /* PassPlanRepositoryProtocolMock.generated.swift */,
 				7412105340D89D3D20B0B89A /* PublicKeyRepositoryProtocolMock.generated.swift */,
 				C568872206CABDC15BF60087 /* ReportRepositoryProtocolMock.generated.swift */,
 				5BA664032A8133C00049EA68 /* SetShareInviteVaultUseCaseMock.generated.swift */,
@@ -2826,12 +2826,12 @@
 				5BA664062A8133C00049EA68 /* SetShareInviteVaultUseCaseMock.generated.swift in Sources */,
 				5A505CC575D99C2B28D00648 /* ExtractLogsToFileUseCaseMock.generated.swift in Sources */,
 				35704EBD2AD574D700044716 /* VaultsManagerProtocolMock.generated.swift in Sources */,
-				9888D9D21FFC53C849C70726 /* PassPlanRepositoryProtocolMock.generated.swift in Sources */,
 				575543F92AC30D3700565C19 /* FeatureFlagsTests.swift in Sources */,
 				233B8DF9F3C2171097E3F584 /* ShareInviteRepositoryProtocolMock.generated.swift in Sources */,
 				38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */,
 				259F729CCBEEEE2AFB240FB5 /* PublicKeyRepositoryProtocolMock.generated.swift in Sources */,
 				5179844D85D43BF233B6DA2B /* SyncEventLoopProtocolMock.generated.swift in Sources */,
+				35A70A892ADD768000CF317F /* AccessRepositoryProtocolMock.generated.swift in Sources */,
 				259190BB067B27301D6F6A53 /* CreateVaultUseCaseMock.generated.swift in Sources */,
 				A5914524D391C371AEB4FD57 /* CreateVaultUseCaseMock.generated.swift in Sources */,
 				355D9E820E274CBC79877F8F /* MoveItemsBetweenVaultsUseCaseMock.generated.swift in Sources */,
