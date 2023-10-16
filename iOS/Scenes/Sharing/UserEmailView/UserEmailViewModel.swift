@@ -21,6 +21,7 @@
 //
 
 import Combine
+import Entities
 import Factory
 import Foundation
 import Macro
@@ -66,9 +67,14 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
-                canContinue = false
-                self.error = #localized("You can not share « %@ » vault with this email",
-                                        vault?.name ?? "")
+                if let sharingError = error as? SharingError,
+                   sharingError == .noPublicKeyAssociatedWithEmail {
+                    setShareInviteUserEmailAndKeys(with: email, and: nil)
+                    goToNextStep = true
+                } else {
+                    canContinue = false
+                    self.error = error.localizedDescription
+                }
             }
         }
     }
