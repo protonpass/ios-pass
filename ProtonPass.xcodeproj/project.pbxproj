@@ -2561,7 +2561,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "INFOPLIST_PATH=\"${TARGET_BUILD_DIR}/${EXECUTABLE_NAME}.app/Info.plist\"\n\n# Location of PlistBuddy\nPLISTBUDDY=\"/usr/libexec/PlistBuddy\"\n\n# Get the current git commmit hash (first 7 characters of the SHA)\nCOMMIT_HASH=$(git --git-dir=\"${PROJECT_DIR}/.git\" --work-tree=\"${PROJECT_DIR}\" rev-parse --short HEAD)\n\n# Set the Git hash in the info plist for reference\n$PLISTBUDDY -c \"Set :GIT_COMMIT_HASH $COMMIT_HASH\" \"${INFOPLIST_PATH}\"\n";
+			shellScript = "scripts/public/update_git_commit_hash.sh\n";
 		};
 		35C2162A29EA92A4001720FF /* Copy appropriate Settings.bundle base on configuration */ = {
 			isa = PBXShellScriptBuildPhase;
