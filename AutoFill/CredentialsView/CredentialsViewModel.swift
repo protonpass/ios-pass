@@ -78,7 +78,7 @@ extension ItemSearchResult: CredentialItem {
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
     @Published private(set) var results: CredentialsFetchResult?
-    @Published private(set) var planType: PassPlan.PlanType?
+    @Published private(set) var planType: Plan.PlanType?
     @Published var query = ""
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var isShowingConfirmationAlert = false
@@ -372,7 +372,7 @@ private extension CredentialsViewModel {
         }
     }
 
-    func fetchCredentialsTask(plan: PassPlan) -> Task<CredentialsFetchResult, Error> {
+    func fetchCredentialsTask(plan: Plan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PPError.CredentialProviderFailureReason.generic
@@ -463,7 +463,7 @@ private extension CredentialsViewModel {
 
     /// When in free plan, only take primary vault into account (suggestions & search)
     /// Otherwise take everything into account
-    func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: PassPlan) async -> Bool {
+    func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: Plan) async -> Bool {
         guard let vault else { return true }
         switch plan.planType {
         case .free:
@@ -548,7 +548,7 @@ extension CredentialsViewModel: SyncEventLoopDelegate {
     }
 }
 
-extension PassPlan.PlanType {
+extension Plan.PlanType {
     var searchBarPlaceholder: String {
         switch self {
         case .free:
