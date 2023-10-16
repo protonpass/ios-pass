@@ -1,5 +1,5 @@
 //
-// PassPlanRepository.swift
+// AccessRepository.swift
 // Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -20,18 +20,18 @@
 
 import Core
 
-public protocol PassPlanRepositoryDelegate: AnyObject {
-    func passPlanRepositoryDidUpdateToNewPlan()
+public protocol AccessRepositoryDelegate: AnyObject {
+    func accessRepositoryDidUpdateToNewPlan()
 }
 
 // sourcery: AutoMockable
-public protocol PassPlanRepositoryProtocol: AnyObject, Sendable {
-    var localDatasource: LocalPassPlanDatasourceProtocol { get }
-    var remoteDatasource: RemotePassPlanDatasourceProtocol { get }
+public protocol AccessRepositoryProtocol: AnyObject, Sendable {
+    var localDatasource: LocalAccessDatasourceProtocol { get }
+    var remoteDatasource: RemoteAccessDatasourceProtocol { get }
     var userId: String { get }
     var logger: Logger { get }
 
-    var delegate: PassPlanRepositoryDelegate? { get set }
+    var delegate: AccessRepositoryDelegate? { get set }
 
     /// Get from local, refresh if not exist
     func getPlan() async throws -> PassPlan
@@ -40,7 +40,7 @@ public protocol PassPlanRepositoryProtocol: AnyObject, Sendable {
     func refreshPlan() async throws -> PassPlan
 }
 
-public extension PassPlanRepositoryProtocol {
+public extension AccessRepositoryProtocol {
     func getPlan() async throws -> PassPlan {
         logger.trace("Getting plan for user \(userId)")
         if let passPlan = try await localDatasource.getPassPlan(userId: userId) {
@@ -61,7 +61,7 @@ public extension PassPlanRepositoryProtocol {
         if let currentLocalPlan = try await localDatasource.getPassPlan(userId: userId),
            currentLocalPlan != passPlan {
             logger.info("New plan found")
-            delegate?.passPlanRepositoryDidUpdateToNewPlan()
+            delegate?.accessRepositoryDidUpdateToNewPlan()
         }
 
         logger.trace("Upserting plan for user \(userId)")
@@ -72,16 +72,16 @@ public extension PassPlanRepositoryProtocol {
     }
 }
 
-public final class PassPlanRepository: PassPlanRepositoryProtocol {
-    public let localDatasource: LocalPassPlanDatasourceProtocol
-    public let remoteDatasource: RemotePassPlanDatasourceProtocol
+public final class AccessRepository: AccessRepositoryProtocol {
+    public let localDatasource: LocalAccessDatasourceProtocol
+    public let remoteDatasource: RemoteAccessDatasourceProtocol
     public let userId: String
     public let logger: Logger
 
-    public weak var delegate: PassPlanRepositoryDelegate?
+    public weak var delegate: AccessRepositoryDelegate?
 
-    public init(localDatasource: LocalPassPlanDatasourceProtocol,
-                remoteDatasource: RemotePassPlanDatasourceProtocol,
+    public init(localDatasource: LocalAccessDatasourceProtocol,
+                remoteDatasource: RemoteAccessDatasourceProtocol,
                 userId: String,
                 logManager: LogManagerProtocol) {
         self.localDatasource = localDatasource

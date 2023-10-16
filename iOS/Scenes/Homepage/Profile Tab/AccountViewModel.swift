@@ -33,7 +33,7 @@ protocol AccountViewModelDelegate: AnyObject {
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
@@ -57,8 +57,8 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             do {
                 // First get local plan to optimistically display it
                 // and then try to refresh the plan to have it updated
-                self.plan = try await self.passPlanRepository.getPlan()
-                self.plan = try await self.passPlanRepository.refreshPlan()
+                self.plan = try await self.accessRepository.getPlan()
+                self.plan = try await self.accessRepository.refreshPlan()
             } catch {
                 self.logger.error(error)
             }

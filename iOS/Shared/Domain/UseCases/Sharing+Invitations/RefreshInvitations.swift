@@ -35,14 +35,14 @@ extension RefreshInvitationsUseCase {
 
 final class RefreshInvitations: RefreshInvitationsUseCase {
     private let inviteRepository: InviteRepositoryProtocol
-    private let passPlanRepository: PassPlanRepositoryProtocol
+    private let accessRepository: AccessRepositoryProtocol
     private let getFeatureFlagStatus: GetFeatureFlagStatusUseCase
 
     init(inviteRepository: InviteRepositoryProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol,
+         accessRepository: AccessRepositoryProtocol,
          getFeatureFlagStatus: GetFeatureFlagStatusUseCase) {
         self.inviteRepository = inviteRepository
-        self.passPlanRepository = passPlanRepository
+        self.accessRepository = accessRepository
         self.getFeatureFlagStatus = getFeatureFlagStatus
     }
 

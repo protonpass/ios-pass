@@ -126,12 +126,12 @@ extension SharedRepositoryContainer {
         }
     }
 
-    var passPlanRepository: Factory<PassPlanRepositoryProtocol> {
+    var accessRepository: Factory<AccessRepositoryProtocol> {
         self {
-            PassPlanRepository(localDatasource: LocalPassPlanDatasource(container: self.container),
-                               remoteDatasource: RemotePassPlanDatasource(apiService: self.apiService),
-                               userId: self.userData.user.ID,
-                               logManager: self.logManager)
+            AccessRepository(localDatasource: LocalAccessDatasource(container: self.container),
+                             remoteDatasource: RemoteAccessDatasource(apiService: self.apiService),
+                             userId: self.userData.user.ID,
+                             logManager: self.logManager)
         }
     }
 
@@ -164,7 +164,7 @@ extension SharedRepositoryContainer {
                 remoteDatasource: RemoteTelemetryEventDatasource(apiService: self.apiService),
                 remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: self
                     .apiService),
-                passPlanRepository: self.passPlanRepository(),
+                accessRepository: self.accessRepository(),
                 logManager: self.logManager,
                 scheduler: TelemetryScheduler(currentDateProvider: self.currentDateProvider,
                                               thresholdProvider: self.preferences),
