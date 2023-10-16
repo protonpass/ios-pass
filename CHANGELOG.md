@@ -1,3 +1,11 @@
+## Version 1.5.2
+Improvements:
+- Improved AutoFill extension's reliability
+
+Others:
+- Bump core from 11.0.1 to 12.2.0
+- Full sync animation
+
 ## Version 1.5.1
 Bug fixes:
 - Fixed TOTP URI automatically added to login items
