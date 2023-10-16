@@ -29,6 +29,7 @@ public struct CapsuleLabelButton: View {
     let height: CGFloat
     let maxWidth: CGFloat?
     let action: () -> Void
+    let isDisabled: Bool
 
     public init(icon: UIImage,
                 title: String,
@@ -36,6 +37,7 @@ public struct CapsuleLabelButton: View {
                 backgroundColor: UIColor,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
+                isDisabled: Bool = false,
                 action: @escaping () -> Void) {
         self.icon = icon
         self.title = title
@@ -44,6 +46,7 @@ public struct CapsuleLabelButton: View {
         self.height = height
         self.maxWidth = maxWidth
         self.action = action
+        self.isDisabled = isDisabled
     }
 
     public var body: some View {
@@ -58,12 +61,13 @@ public struct CapsuleLabelButton: View {
                     .font(.callout)
             }
             .padding(.horizontal)
-            .foregroundColor(Color(uiColor: titleColor))
+            .foregroundColor(titleColor.toColor)
             .frame(height: height)
             .frame(maxWidth: maxWidth)
-            .background(Color(uiColor: backgroundColor))
+            .background(isDisabled ? backgroundColor.toColor.opacity(0.4) : backgroundColor.toColor)
             .clipShape(Capsule())
             .contentShape(Rectangle())
         }
+        .disabled(isDisabled)
     }
 }
