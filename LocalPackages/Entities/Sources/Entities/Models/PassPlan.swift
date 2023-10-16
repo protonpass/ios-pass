@@ -1,6 +1,6 @@
 //
 // PassPlan.swift
-// Proton Pass - Created on 04/05/2023.
+// Proton Pass - Created on 16/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,6 +17,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
@@ -61,4 +62,22 @@ public struct PassPlan: Decodable, Equatable, Sendable {
     public var isFreeUser: Bool { planType == .free }
 
     public var isInTrial: Bool { planType == .trial }
+
+    public init(type: String,
+                internalName: String,
+                displayName: String,
+                hideUpgrade: Bool,
+                trialEnd: Int? = nil,
+                vaultLimit: Int? = nil,
+                aliasLimit: Int? = nil,
+                totpLimit: Int? = nil) {
+        self.type = type
+        self.internalName = internalName
+        self.displayName = displayName
+        self.hideUpgrade = hideUpgrade
+        self.trialEnd = trialEnd
+        self.vaultLimit = vaultLimit
+        self.aliasLimit = aliasLimit
+        self.totpLimit = totpLimit
+    }
 }
