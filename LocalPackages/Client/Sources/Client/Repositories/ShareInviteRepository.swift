@@ -30,7 +30,7 @@ public enum InviteeData {
 
 // sourcery: AutoMockable
 public protocol ShareInviteRepositoryProtocol {
-    func getAllPendingInvites(shareId: String) async throws -> [ShareInvite]
+    func getAllPendingInvites(shareId: String) async throws -> ShareInvites
 
     func sendInvite(shareId: String,
                     inviteeData: InviteeData,
@@ -58,11 +58,13 @@ public final class ShareInviteRepository: ShareInviteRepositoryProtocol {
 // MARK: - Share Invites
 
 public extension ShareInviteRepository {
-    func getAllPendingInvites(shareId: String) async throws -> [ShareInvite] {
+    func getAllPendingInvites(shareId: String) async throws -> ShareInvites {
         logger.trace("Getting all pending invites for share \(shareId)")
         do {
             let invites = try await remoteDataSource.getPendingInvites(sharedId: shareId)
-            logger.trace("Got \(invites.count) pending invites for \(shareId)")
+            let existingCount = "\(invites.exisingInvites.count) exising user invites"
+            let newCount = "\(invites.newInvites.count) new user invites"
+            logger.trace("Got \(existingCount), \(newCount) for \(shareId)")
             return invites
         } catch {
             logger.error(message: "Failed to get pending invites for share \(shareId)", error: error)
