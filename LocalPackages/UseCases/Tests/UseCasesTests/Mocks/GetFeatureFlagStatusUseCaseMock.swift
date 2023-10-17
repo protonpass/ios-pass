@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreFeatureFlags
+import UseCases
 
 final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     var activeFlags = true
