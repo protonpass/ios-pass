@@ -22,9 +22,10 @@ import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetPendingInvitesforShareResponse: Decodable {
+public struct GetPendingInvitesforShareResponse: Decodable, Equatable {
     let code: Int
-    let invites: [ShareInvite]
+    let invites: [ShareExisingUserInvite]
+    let newUserInvites: [ShareNewUserInvite]
 }
 
 public struct GetPendingInvitesforShareEndpoint: Endpoint {

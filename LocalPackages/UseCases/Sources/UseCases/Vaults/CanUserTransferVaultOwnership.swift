@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol CanUserTransferVaultOwnershipUseCase: Sendable {
-    func execute(for vault: Vault, to user: ShareUser) -> Bool
+    func execute(for vault: Vault, to invitee: any ShareInvitee) -> Bool
 }
 
 public extension CanUserTransferVaultOwnershipUseCase {
-    func callAsFunction(for vault: Vault, to user: ShareUser) -> Bool {
-        execute(for: vault, to: user)
+    func callAsFunction(for vault: Vault, to invitee: any ShareInvitee) -> Bool {
+        execute(for: vault, to: invitee)
     }
 }
 
@@ -40,7 +40,7 @@ public final class CanUserTransferVaultOwnership: CanUserTransferVaultOwnershipU
         self.vaultsManager = vaultsManager
     }
 
-    public func execute(for vault: Vault, to user: ShareUser) -> Bool {
-        vault.isOwner && !user.isPending && user.isAdmin && !vaultsManager.hasOnlyOneOwnedVault
+    public func execute(for vault: Vault, to invitee: any ShareInvitee) -> Bool {
+        vault.isOwner && !invitee.isPending && invitee.isAdmin && !vaultsManager.hasOnlyOneOwnedVault
     }
 }

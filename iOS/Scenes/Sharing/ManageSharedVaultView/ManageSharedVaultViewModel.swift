@@ -31,15 +31,12 @@ import ProtonCoreNetworking
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private(set) var vault: Vault
     @Published private(set) var itemsNumber = 0
-    @Published private(set) var invitations: [ShareUser] = []
-    @Published private(set) var members: [ShareUser] = []
+    @Published private(set) var invitations = ShareInvites.default
+    @Published private(set) var members: [UserShareInfos] = []
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published private(set) var expandedEmails: [String] = []
-    @Published var userRole: ShareRole = .read
-    @Published var newOwner: ShareUser?
-
-    private var currentSelectedUser: ShareUser?
+    @Published var newOwner: NewOwner?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
     private let getVaultInfos = resolve(\UseCasesContainer.getVaultInfos)
@@ -71,19 +68,12 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         setUp()
     }
 
-    func isLast(info: ShareUser) -> Bool {
-        members.last == info
+    func isCurrentUser(_ invitee: any ShareInvitee) -> Bool {
+        userData.user.email == invitee.email
     }
 
-    func isCurrentUser(with user: ShareUser) -> Bool {
-        guard let email = userData.user.email else {
-            return false
-        }
-        return user.email == email
-    }
-
-    func isOwnerAndCurrentUser(with user: ShareUser) -> Bool {
-        vault.isOwner && isCurrentUser(with: user)
+    func isOwnerAndCurrentUser(_ invitee: any ShareInvitee) -> Bool {
+        vault.isOwner && isCurrentUser(invitee)
     }
 
     func shareWithMorePeople() {
@@ -107,9 +97,9 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 }
                 let shareId = vault.shareId
                 if vault.isAdmin {
-                    invitations = try await getPendingInvitationsForShare(with: shareId).map(\.toShareUser)
+                    invitations = try await getPendingInvitationsForShare(with: shareId)
                 }
-                members = try await getUsersLinkedToShare(with: shareId).map(\.toShareUser)
+                members = try await getUsersLinkedToShare(with: shareId)
             } catch {
                 display(error: error)
                 logger.error(message: "Failed to fetch the current share informations", error: error)
@@ -117,17 +107,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         }
     }
 
-    func setCurrentRole(for user: ShareUser) {
-        currentSelectedUser = user
-        if userRole != user.shareRole {
-            userRole = user.shareRole ?? .read
-        }
-    }
-
-    func revokeInvite(for user: ShareUser) {
-        guard let inviteId = user.inviteID else {
-            return
-        }
+    func revokeInvite(inviteId: String) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -145,10 +125,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         }
     }
 
-    func revokeShareAccess(for user: ShareUser) {
-        guard let userShareId = user.shareID else {
-            return
-        }
+    func revokeShareAccess(shareId: String) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -156,20 +133,17 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             loading = true
             defer { loading = false }
             do {
-                try await revokeUserShareAccess(with: userShareId, and: vault.shareId)
+                try await revokeUserShareAccess(with: shareId, and: vault.shareId)
                 fetchShareInformation()
                 syncEventLoop.forceSync()
             } catch {
                 display(error: error)
-                logger.error(message: "Failed to revoke the share access \(userShareId)", error: error)
+                logger.error(message: "Failed to revoke the share access \(shareId)", error: error)
             }
         }
     }
 
-    func sendInviteReminder(for user: ShareUser) {
-        guard let inviteId = user.inviteID else {
-            return
-        }
+    func sendInviteReminder(inviteId: String) {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
@@ -182,78 +156,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 logger.error(message: "Failed send invite reminder \(inviteId)", error: error)
             }
         }
-    }
-
-    func isExpanded(email: String) -> Bool {
-        expandedEmails.contains(email)
-    }
-
-    func expand(email: String) {
-        if !expandedEmails.contains(email) {
-            expandedEmails.append(email)
-        }
-    }
-}
-
-// MARK: - Transfer vault Ownership
-
-extension ManageSharedVaultViewModel {
-    func canTransferOwnership(to user: ShareUser) -> Bool {
-        canUserTransferVaultOwnership(for: vault, to: user)
-    }
-
-    func transferOwnership(to user: ShareUser) {
-        guard let userSharedId = user.shareID else {
-            return
-        }
-        Task { @MainActor [weak self] in
-            guard let self else {
-                return
-            }
-            defer { loading = false }
-            loading = true
-            do {
-                try await transferVaultOwnership(newOwnerID: userSharedId, shareId: self.vault.shareId)
-                fetchShareInformation()
-                router.display(element: .successMessage(#localized("Vault has been transferred"), config: nil))
-                syncEventLoop.forceSync()
-            } catch {
-                display(error: error)
-                logger
-                    .error(message: "Failed to transfer ownership of vault \(self.vault.shareId) to \(userSharedId)",
-                           error: error)
-            }
-        }
-    }
-}
-
-private extension ManageSharedVaultViewModel {
-    func setUp() {
-        setShareInviteVault(with: .existing(vault))
-        $userRole
-            .sink { [weak self] role in
-                guard let self,
-                      let selectedUser = currentSelectedUser,
-                      let userSharedId = selectedUser.shareID,
-                      role != selectedUser.shareRole else {
-                    return
-                }
-                updateRole(userSharedId: userSharedId, role: role)
-            }
-            .store(in: &cancellables)
-
-        getVaultInfos(for: vault.id)
-            .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] vaultInfos in
-                guard let self, vaultInfos != vault else {
-                    return
-                }
-                vault = vaultInfos
-                fetchShareInformation()
-                loading = false
-            }
-            .store(in: &cancellables)
     }
 
     func updateRole(userSharedId: String, role: ShareRole) {
@@ -276,19 +178,179 @@ private extension ManageSharedVaultViewModel {
         }
     }
 
+    func isExpanded(email: String) -> Bool {
+        expandedEmails.contains(email)
+    }
+
+    func expand(email: String) {
+        if !expandedEmails.contains(email) {
+            expandedEmails.append(email)
+        }
+    }
+}
+
+// MARK: - Transfer vault Ownership
+
+extension ManageSharedVaultViewModel {
+    func canTransferOwnership(to invitee: any ShareInvitee) -> Bool {
+        canUserTransferVaultOwnership(for: vault, to: invitee)
+    }
+
+    func transferOwnership() {
+        Task { @MainActor [weak self] in
+            guard let self, let newOwner else {
+                return
+            }
+            defer { loading = false }
+            loading = true
+            do {
+                try await transferVaultOwnership(newOwnerID: newOwner.shareId,
+                                                 shareId: vault.shareId)
+                fetchShareInformation()
+                router.display(element: .successMessage(#localized("Vault has been transferred"), config: nil))
+                syncEventLoop.forceSync()
+            } catch {
+                display(error: error)
+                logger
+                    .error(message: "Failed to transfer ownership of vault \(vault.shareId) to \(newOwner.shareId)",
+                           error: error)
+            }
+        }
+    }
+}
+
+private extension ManageSharedVaultViewModel {
+    func setUp() {
+        setShareInviteVault(with: .existing(vault))
+
+        getVaultInfos(for: vault.id)
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] vaultInfos in
+                guard let self, vaultInfos != vault else {
+                    return
+                }
+                vault = vaultInfos
+                fetchShareInformation()
+                loading = false
+            }
+            .store(in: &cancellables)
+    }
+
     func display(error: Error) {
         router.display(element: .displayErrorBanner(error))
     }
 }
 
-extension ShareUser {
-    var permission: String {
-        if isOwner {
-            return #localized("Owner")
+extension ShareInvites {
+    var invitees: [any ShareInvitee] {
+        exisingInvites + newInvites
+    }
+}
+
+// MARK: Conformances to ShareInvitee
+
+extension UserShareInfos: ShareInvitee {
+    public var email: String {
+        userEmail
+    }
+
+    public var subtitle: String {
+        if owner {
+            #localized("Owner")
+        } else {
+            shareRole.title
         }
-        if let shareRole {
-            return shareRole.title
+    }
+
+    public var showConfirmAccessButton: Bool {
+        false
+    }
+
+    public var isPending: Bool {
+        false
+    }
+
+    public var isAdmin: Bool {
+        shareRole == .admin
+    }
+
+    public var options: [ShareEntryOption] {
+        [
+            .updateRole(shareId: shareID, role: shareRole),
+            .transferOwnership(.init(email: userEmail, shareId: shareID)),
+            .revokeAccess(shareId: shareID)
+        ]
+    }
+}
+
+extension ShareExisingUserInvite: ShareInvitee {
+    public var email: String {
+        invitedEmail
+    }
+
+    public var subtitle: String {
+        #localized("Invitation sent")
+    }
+
+    public var showConfirmAccessButton: Bool {
+        false
+    }
+
+    public var isPending: Bool {
+        true
+    }
+
+    public var isAdmin: Bool {
+        // swiftlint:disable:next todo
+        // TODO: wait for ShareRoleID exposure
+        false
+    }
+
+    public var options: [ShareEntryOption] {
+        [
+            .resendInvitation(inviteId: inviteID),
+            .cancelInvitation(inviteId: inviteID)
+        ]
+    }
+}
+
+extension ShareNewUserInvite: ShareInvitee {
+    public var email: String {
+        invitedEmail
+    }
+
+    public var subtitle: String {
+        switch inviteState {
+        case .waitingForAccountCreation:
+            #localized("Pending account creation")
+        case .accountCreated:
+            shareRole.title
         }
-        return #localized("Invitation sent")
+    }
+
+    public var showConfirmAccessButton: Bool {
+        inviteState == .accountCreated
+    }
+
+    public var isPending: Bool {
+        true
+    }
+
+    public var isAdmin: Bool {
+        shareRole == .admin
+    }
+
+    public var options: [ShareEntryOption] {
+        switch inviteState {
+        case .waitingForAccountCreation:
+            [
+                .resendInvitation(inviteId: newUserInviteID),
+                .cancelInvitation(inviteId: newUserInviteID)
+            ]
+
+        case .accountCreated:
+            [.cancelInvitation(inviteId: newUserInviteID)]
+        }
     }
 }

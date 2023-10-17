@@ -151,13 +151,13 @@ extension UseCasesContainer {
     var canUserShareVault: Factory<CanUserShareVaultUseCase> {
         self {
             CanUserShareVault(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
-                              planRepository: SharedRepositoryContainer.shared.passPlanRepository())
+                              accessRepository: SharedRepositoryContainer.shared.accessRepository())
         }
     }
 
     var canUserPerformActionOnVault: Factory<CanUserPerformActionOnVaultUseCase> {
         self {
-            CanUserPerformActionOnVault(planRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+            CanUserPerformActionOnVault(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                         vaultsManager: SharedServiceContainer.shared.vaultsManager())
         }
     }
@@ -208,7 +208,8 @@ extension UseCasesContainer {
 
     var canUserTransferVaultOwnership: Factory<CanUserTransferVaultOwnershipUseCase> {
         self { CanUserTransferVaultOwnership(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
-        
+    }
+
     var makeUnsignedSignatureForVaultSharing: Factory<MakeUnsignedSignatureForVaultSharingUseCase> {
         self { MakeUnsignedSignatureForVaultSharing() }
     }
