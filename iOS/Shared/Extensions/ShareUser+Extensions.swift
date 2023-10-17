@@ -1,6 +1,6 @@
 //
-// Vault+Extensions.swift
-// Proton Pass - Created on 02/08/2023.
+// ShareUser+Extensions.swift
+// Proton Pass - Created on 13/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,27 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import DesignSystem
 import Entities
-import SwiftUI
+import Macro
 
-// MARK: - UI helpers
-
-extension Vault {
-    var mainColor: Color {
-        displayPreferences.color.color.color.toColor
-    }
-
-    var backgroundColor: Color {
-        mainColor.opacity(0.16)
-    }
-
-    var bigImage: Image {
-        displayPreferences.icon.icon.bigImage.toImage
-    }
-
-    var smallImage: Image {
-        displayPreferences.icon.icon.smallImage.toImage
+extension ShareUser {
+    var permission: String {
+        if isOwner {
+            return #localized("Owner")
+        }
+        if let shareRole {
+            return shareRole.title
+        }
+        return #localized("Invitation sent")
     }
 }

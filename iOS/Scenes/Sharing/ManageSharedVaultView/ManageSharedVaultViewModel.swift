@@ -51,6 +51,8 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let updateUserShareRole = resolve(\UseCasesContainer.updateUserShareRole)
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
     private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
+    private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
+    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
@@ -59,6 +61,10 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private var fetchingTask: Task<Void, Never>?
     private var updateShareTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
+
+    var canShare: Bool {
+        canUserShareVault(for: vault)
+    }
 
     init(vault: Vault) {
         self.vault = vault
@@ -174,6 +180,24 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         }
     }
 
+    func isExpanded(email: String) -> Bool {
+        expandedEmails.contains(email)
+    }
+
+    func expand(email: String) {
+        if !expandedEmails.contains(email) {
+            expandedEmails.append(email)
+        }
+    }
+}
+
+// MARK: - Transfer vault Ownership
+
+extension ManageSharedVaultViewModel {
+    func canTransferOwnership(to user: ShareUser) -> Bool {
+        canUserTransferVaultOwnership(for: vault, to: user)
+    }
+
     func transferOwnership(to user: ShareUser) {
         guard let userSharedId = user.shareID else {
             return
@@ -195,16 +219,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                     .error(message: "Failed to transfer ownership of vault \(self.vault.shareId) to \(userSharedId)",
                            error: error)
             }
-        }
-    }
-
-    func isExpanded(email: String) -> Bool {
-        expandedEmails.contains(email)
-    }
-
-    func expand(email: String) {
-        if !expandedEmails.contains(email) {
-            expandedEmails.append(email)
         }
     }
 }
