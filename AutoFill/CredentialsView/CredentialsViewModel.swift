@@ -552,7 +552,7 @@ extension PassPlan.PlanType {
     var searchBarPlaceholder: String {
         switch self {
         case .free:
-            #localized("Search in primary vault")
+            #localized("Search in oldest 2 vaults")
         default:
             #localized("Search in all vaults")
         }

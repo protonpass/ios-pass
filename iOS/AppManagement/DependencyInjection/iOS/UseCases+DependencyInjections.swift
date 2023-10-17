@@ -150,6 +150,20 @@ extension UseCasesContainer {
     var revokeUserShareAccess: Factory<RevokeUserShareAccessUseCase> {
         self { RevokeUserShareAccess(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
+
+    var canUserShareVault: Factory<CanUserShareVaultUseCase> {
+        self {
+            CanUserShareVault(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
+                              planRepository: SharedRepositoryContainer.shared.passPlanRepository())
+        }
+    }
+
+    var canUserPerformActionOnVault: Factory<CanUserPerformActionOnVaultUseCase> {
+        self {
+            CanUserPerformActionOnVault(planRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                        vaultsManager: SharedServiceContainer.shared.vaultsManager())
+        }
+    }
 }
 
 // MARK: - Invites
@@ -191,6 +205,10 @@ extension UseCasesContainer {
     var sendInviteReminder: Factory<SendInviteReminderUseCase> {
         self { SendInviteReminder(shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository())
         }
+    }
+
+    var canUserTransferVaultOwnership: Factory<CanUserTransferVaultOwnershipUseCase> {
+        self { CanUserTransferVaultOwnership(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
 }
 
