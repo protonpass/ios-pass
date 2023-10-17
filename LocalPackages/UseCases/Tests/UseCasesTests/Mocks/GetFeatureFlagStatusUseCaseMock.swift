@@ -1,6 +1,6 @@
 //
-// Vault+Extensions.swift
-// Proton Pass - Created on 02/08/2023.
+// GetFeatureFlagStatusUseCaseMock.swift
+// Proton Pass - Created on 17/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,27 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import DesignSystem
-import Entities
-import SwiftUI
+import Foundation
+import ProtonCoreFeatureFlags
+import UseCases
 
-// MARK: - UI helpers
+final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
+    var activeFlags = true
 
-extension Vault {
-    var mainColor: Color {
-        displayPreferences.color.color.color.toColor
-    }
-
-    var backgroundColor: Color {
-        mainColor.opacity(0.16)
-    }
-
-    var bigImage: Image {
-        displayPreferences.icon.icon.bigImage.toImage
-    }
-
-    var smallImage: Image {
-        displayPreferences.icon.icon.smallImage.toImage
+    func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
+        activeFlags
     }
 }
