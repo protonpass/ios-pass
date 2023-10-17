@@ -48,9 +48,10 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
     }
 
     func execute(with userInvite: UserInvite) async throws -> VaultProtobuf {
-        guard let vaultData = userInvite.vaultData, let intermediateVaultKey = userInvite.keys
-            .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),
-            let invitedAddress = userData.addresses.first(where: { $0.email == userInvite.invitedEmail }) else {
+        guard let vaultData = userInvite.vaultData,
+              let intermediateVaultKey = userInvite.keys
+              .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),
+              let invitedAddress = userData.addresses.first(where: { $0.email == userInvite.invitedEmail }) else {
             throw SharingError.invalidKeyOrAddress
         }
 

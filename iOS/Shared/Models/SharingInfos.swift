@@ -48,7 +48,7 @@ extension SharingVaultData {
     var shared: Bool {
         switch self {
         case let .existing(vault):
-            vault.isShared
+            vault.shared
         default:
             false
         }

@@ -38,7 +38,7 @@ struct ManageSharedVaultView: View {
             mainContainer
                 .padding(.bottom, viewModel.vault.isAdmin ? 60 : 0) // Avoid the bottom button
 
-            if viewModel.vault.isAdmin {
+            if viewModel.canShare {
                 CapsuleTextButton(title: #localized("Share with more people"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
@@ -218,7 +218,7 @@ private extension ManageSharedVaultView {
                 })
             }
 
-            if viewModel.vault.isOwner, !user.isPending, user.isAdmin, !isOwnerAndCurrentUser {
+            if viewModel.canTransferOwnership(to: user) {
                 Button(action: {
                     viewModel.newOwner = user
                 }, label: {
