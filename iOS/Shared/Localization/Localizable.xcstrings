@@ -35592,6 +35592,10 @@
         }
       }
     },
+    "Pending account creation" : {
+      "comment" : "The subtitle to indicate the state of an invitation. In this case the invitation is made to a non Proton email and we're waiting for the owner of this email to create a Proton account.",
+      "extractionState" : "manual"
+    },
     "Periods" : {
       "extractionState" : "manual",
       "localizations" : {
