@@ -24,6 +24,8 @@ import Combine
 import Entities
 
 final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtocol {
+    var hasOnlyOneOwnedVault = false
+    
     // MARK: - currentVaults
     var invokedCurrentVaultsSetter = false
     var invokedCurrentVaultsSetterCount = 0
