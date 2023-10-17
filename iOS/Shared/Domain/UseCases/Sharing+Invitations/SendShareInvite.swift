@@ -111,12 +111,12 @@ private extension SendVaultShareInvite {
                                             publicReceiverKey: key.value,
                                             userData: userData,
                                             vaultKey: vaultKey)
-            return .proton(email: email, keys: [signedKey])
+            return .existing(email: email, keys: [signedKey])
         } else {
             let signature = try createAndSignSignature(addressId: vault.addressId,
                                                        vaultKey: vaultKey,
                                                        email: email)
-            return .external(email: email, signature: signature)
+            return .new(email: email, signature: signature)
         }
     }
 
