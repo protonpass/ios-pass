@@ -24,8 +24,8 @@ import Foundation
 import ProtonCoreLogin
 
 public enum InviteeData {
-    case proton(email: String, keys: [ItemKey])
-    case external(email: String, signature: String)
+    case existing(email: String, keys: [ItemKey])
+    case new(email: String, signature: String)
 }
 
 // sourcery: AutoMockable
@@ -75,13 +75,13 @@ public extension ShareInviteRepository {
                     targetType: TargetType,
                     shareRole: ShareRole) async throws -> Bool {
         switch inviteeData {
-        case let .proton(email, keys):
+        case let .existing(email, keys):
             try await sendProtonInvite(shareId: shareId,
                                        email: email,
                                        keys: keys,
                                        targetType: targetType,
                                        shareRole: shareRole)
-        case let .external(email, signature):
+        case let .new(email, signature):
             try await sendExternalInvite(shareId: shareId,
                                          email: email,
                                          signature: signature,
