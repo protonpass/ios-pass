@@ -41093,7 +41093,8 @@
       }
     },
     "Search in oldest 2 vaults" : {
-
+      "comment" : "Displayed to free user while searching in autofill",
+      "extractionState" : "manual"
     },
     "Search in primary vault" : {
       "extractionState" : "manual",
@@ -56122,7 +56123,8 @@
       "extractionState" : "manual"
     },
     "Your plan only allows to use items from your first vaults for autofill purposes." : {
-
+      "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
+      "extractionState" : "manual"
     },
     "Your vault is empty" : {
       "comment" : "Empty vault page",
