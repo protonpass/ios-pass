@@ -64,7 +64,7 @@ public struct CapsuleLabelButton: View {
             .foregroundColor(titleColor.toColor)
             .frame(height: height)
             .frame(maxWidth: maxWidth)
-            .background(isDisabled ? backgroundColor.toColor.opacity(0.4) : backgroundColor.toColor)
+            .background(backgroundColor.toColor.opacity(isDisabled ? 0.4 : 1.0))
             .clipShape(Capsule())
             .contentShape(Rectangle())
         }
