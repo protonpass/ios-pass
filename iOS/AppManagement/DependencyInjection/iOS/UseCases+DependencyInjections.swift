@@ -201,6 +201,13 @@ extension UseCasesContainer {
         self { RevokeInvitation(shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository()) }
     }
 
+    var revokeNewUserInvitation: Factory<RevokeNewUserInvitationUseCase> {
+        self {
+            RevokeNewUserInvitation(shareInviteRepository: SharedRepositoryContainer.shared
+                .shareInviteRepository())
+        }
+    }
+
     var sendInviteReminder: Factory<SendInviteReminderUseCase> {
         self { SendInviteReminder(shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository())
         }
