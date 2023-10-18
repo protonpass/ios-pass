@@ -42,6 +42,9 @@ public protocol ShareInviteRepositoryProtocol {
 
     @discardableResult
     func deleteInvite(shareId: String, inviteId: String) async throws -> Bool
+
+    @discardableResult
+    func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool
 }
 
 public final class ShareInviteRepository: ShareInviteRepositoryProtocol {
@@ -115,6 +118,20 @@ public extension ShareInviteRepository {
             return deleted
         } catch {
             logger.error(message: "Failed to delete invite \(inviteId) for share \(shareId)",
+                         error: error)
+            throw error
+        }
+    }
+
+    func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool {
+        logger.trace("Deleting new user invite \(inviteId) for share \(shareId)")
+        do {
+            let deleted = try await remoteDataSource.deleteShareNewUserInvite(shareId: shareId,
+                                                                              inviteId: inviteId)
+            logger.info("Deleted ne user \(deleted) for share \(shareId) invite \(inviteId)")
+            return deleted
+        } catch {
+            logger.error(message: "Failed to delete new user invite \(inviteId) for share \(shareId)",
                          error: error)
             throw error
         }
