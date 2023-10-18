@@ -37,6 +37,10 @@ public protocol ShareInviteRepositoryProtocol {
                     targetType: TargetType,
                     shareRole: ShareRole) async throws -> Bool
 
+    func promoteNewUserInvite(shareId: String,
+                              inviteId: String,
+                              keys: [ItemKey]) async throws -> Bool
+
     @discardableResult
     func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
 
@@ -92,6 +96,23 @@ public extension ShareInviteRepository {
                                          signature: signature,
                                          targetType: targetType,
                                          shareRole: shareRole)
+        }
+    }
+
+    func promoteNewUserInvite(shareId: String,
+                              inviteId: String,
+                              keys: [ItemKey]) async throws -> Bool {
+        logger.trace("Promoting new user invite \(inviteId) for share \(shareId)")
+        do {
+            let promoted = try await remoteDataSource.promoteNewUserInvite(shareId: shareId,
+                                                                           inviteId: inviteId,
+                                                                           keys: keys)
+            logger.info("Promoted \(promoted) new user invite \(inviteId) for share \(shareId)")
+            return promoted
+        } catch {
+            logger.error(message: "Failed to promote new user invite \(inviteId) for share \(shareId)",
+                         error: error)
+            throw error
         }
     }
 
