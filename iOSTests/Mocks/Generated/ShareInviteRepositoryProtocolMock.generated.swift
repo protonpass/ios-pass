@@ -33,9 +33,9 @@ final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, ShareInviteR
     var invokedGetAllPendingInvitesCount = 0
     var invokedGetAllPendingInvitesParameters: (shareId: String, Void)?
     var invokedGetAllPendingInvitesParametersList = [(shareId: String, Void)]()
-    var stubbedGetAllPendingInvitesResult: [ShareInvite]!
+    var stubbedGetAllPendingInvitesResult: ShareInvites!
 
-    func getAllPendingInvites(shareId: String) async throws -> [ShareInvite] {
+    func getAllPendingInvites(shareId: String) async throws -> ShareInvites {
         invokedGetAllPendingInvites = true
         invokedGetAllPendingInvitesCount += 1
         invokedGetAllPendingInvitesParameters = (shareId, ())

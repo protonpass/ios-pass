@@ -27,34 +27,36 @@ public protocol ShareInvitee: Identifiable {
     var subtitle: String { get }
     var isPending: Bool { get }
     var isAdmin: Bool { get }
-    var showConfirmAccessButton: Bool { get }
-    var options: [ShareEntryOption] { get }
+    var options: [ShareInviteeOption] { get }
 }
 
-public enum ShareEntryOption: Identifiable {
-    case resendInvitation(inviteId: String)
-    case cancelInvitation(inviteId: String)
+public enum ShareInviteeOption: Identifiable {
+    case remindExistingUserInvitation(inviteId: String)
+    case cancelExistingUserInvitation(inviteId: String)
+    case cancelNewUserInvitation(inviteId: String)
+    case confirmAccess(inviteId: String)
     case updateRole(shareId: String, role: ShareRole)
     case revokeAccess(shareId: String)
+    /// Display an alert to ask for confirmation before transferring
+    case confirmTransferOwnership(NewOwner)
+    /// Do the transfer
     case transferOwnership(NewOwner)
 
     public var id: String {
-        switch self {
-        case let .resendInvitation(id):
-            "resendInvitation" + id
-        case let .cancelInvitation(id):
-            "cancelInvitation" + id
-        case let .updateRole(id, _):
-            "updateRole" + id
-        case let .revokeAccess(id):
-            "revokeAccess" + id
-        case let .transferOwnership(owner):
-            "transferOwnership" + owner.shareId
+        UUID().uuidString
+    }
+
+    /// To show "Confirm access" button or not
+    public var inviteIdToBeConfirmed: String? {
+        if case let .confirmAccess(inviteId) = self {
+            inviteId
+        } else {
+            nil
         }
     }
 }
 
-public struct NewOwner: Identifiable {
+public struct NewOwner: Sendable, Identifiable {
     public let email: String
     public let shareId: String
 

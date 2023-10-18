@@ -13548,6 +13548,10 @@
         }
       }
     },
+    "Confirm access" : {
+      "comment" : "Confirm the invitation of a new user",
+      "extractionState" : "manual"
+    },
     "Continue" : {
       "extractionState" : "manual",
       "localizations" : {
