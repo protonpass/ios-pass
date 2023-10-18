@@ -33,13 +33,13 @@ struct ShareInviteeView: View {
     let onSelect: (ShareInviteeOption) -> Void
 
     var body: some View {
-        if let inviteId = invitee.options.compactMap(\.inviteIdToBeConfirmed).first {
+        if let pendingAccess = invitee.options.compactMap(\.pendingAccess).first {
             VStack {
                 content
                 CapsuleTextButton(title: #localized("Confirm access"),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
-                                  action: { onSelect(.confirmAccess(inviteId: inviteId)) })
+                                  action: { onSelect(.confirmAccess(pendingAccess)) })
             }
         } else {
             content
