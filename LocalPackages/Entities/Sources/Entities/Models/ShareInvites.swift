@@ -38,13 +38,17 @@ public struct ShareInvites: Equatable {
 }
 
 public struct ShareExisingUserInvite: Decodable, Equatable, Identifiable {
-    public let inviteID, invitedEmail, inviterEmail: String
+    public let inviteID, invitedEmail, inviterEmail, shareRoleID: String
     public let targetType: Int
     public let targetID: String
     public let remindersSent, createTime, modifyTime: Int
 
     public var shareType: TargetType {
         .init(rawValue: Int64(targetType)) ?? .unknown
+    }
+
+    public var shareRole: ShareRole {
+        .init(rawValue: shareRoleID) ?? .read
     }
 
     public var id: String {
@@ -54,6 +58,7 @@ public struct ShareExisingUserInvite: Decodable, Equatable, Identifiable {
     public init(inviteID: String,
                 invitedEmail: String,
                 inviterEmail: String,
+                shareRoleID: String,
                 targetType: Int,
                 targetID: String,
                 remindersSent: Int,
@@ -62,6 +67,7 @@ public struct ShareExisingUserInvite: Decodable, Equatable, Identifiable {
         self.inviteID = inviteID
         self.invitedEmail = invitedEmail
         self.inviterEmail = inviterEmail
+        self.shareRoleID = shareRoleID
         self.targetType = targetType
         self.targetID = targetID
         self.remindersSent = remindersSent
