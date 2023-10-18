@@ -2481,7 +2481,7 @@
 				35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */,
 				5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
 				5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
-				5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */,
+				5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */,
 				5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */,
 			);
 			productRefGroup = 35E5063C286F819F00A3F6EA /* Products */;
@@ -5080,9 +5080,9 @@
 				version = 8.11.0;
 			};
 		};
-		5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */ = {
+		5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
+			repositoryURL = "https://gitlab.protontech.ch/apple/shared/protoncore.git";
 			requirement = {
 				kind = exactVersion;
 				version = 12.2.0;
@@ -5182,127 +5182,127 @@
 		};
 		5B8D20692AA7461900457CA3 /* ProtonCoreAccountDeletion */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreAccountDeletion;
 		};
 		5B8D206B2AA7461900457CA3 /* ProtonCoreAuthentication */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreAuthentication;
 		};
 		5B8D206D2AA7461900457CA3 /* ProtonCoreChallenge */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreChallenge;
 		};
 		5B8D206F2AA7461900457CA3 /* ProtonCoreCrypto */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreCrypto;
 		};
 		5B8D20712AA7461900457CA3 /* ProtonCoreCryptoGoImplementation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreCryptoGoImplementation;
 		};
 		5B8D20732AA7461900457CA3 /* ProtonCoreCryptoGoInterface */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreCryptoGoInterface;
 		};
 		5B8D20752AA7461900457CA3 /* ProtonCoreDataModel */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreDataModel;
 		};
 		5B8D20772AA7461900457CA3 /* ProtonCoreDoh */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreDoh;
 		};
 		5B8D20792AA7461900457CA3 /* ProtonCoreEnvironment */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreEnvironment;
 		};
 		5B8D207B2AA7461900457CA3 /* ProtonCoreFeatureSwitch */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreFeatureSwitch;
 		};
 		5B8D207D2AA7461900457CA3 /* ProtonCoreForceUpgrade */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreForceUpgrade;
 		};
 		5B8D207F2AA7461900457CA3 /* ProtonCoreFoundations */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreFoundations;
 		};
 		5B8D20812AA7461900457CA3 /* ProtonCoreHumanVerification */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreHumanVerification;
 		};
 		5B8D20832AA7461900457CA3 /* ProtonCoreKeymaker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreKeymaker;
 		};
 		5B8D20852AA7461900457CA3 /* ProtonCoreLogin */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreLogin;
 		};
 		5B8D20872AA7461900457CA3 /* ProtonCoreLoginUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreLoginUI;
 		};
 		5B8D20892AA7461900457CA3 /* ProtonCoreNetworking */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreNetworking;
 		};
 		5B8D208B2AA7461900457CA3 /* ProtonCoreObservability */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreObservability;
 		};
 		5B8D208D2AA7461900457CA3 /* ProtonCorePayments */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCorePayments;
 		};
 		5B8D208F2AA7461900457CA3 /* ProtonCorePaymentsUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCorePaymentsUI;
 		};
 		5B8D20912AA7461A00457CA3 /* ProtonCoreServices */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreServices;
 		};
 		5B8D20932AA7461A00457CA3 /* ProtonCoreSettings */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreSettings;
 		};
 		5B8D20952AA7461A00457CA3 /* ProtonCoreUIFoundations */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreUIFoundations;
 		};
 		5B8D20972AA7461A00457CA3 /* ProtonCoreUtilities */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreUtilities;
 		};
 		5B8D20992AA7466600457CA3 /* ProtonCoreCryptoGoImplementation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreCryptoGoImplementation;
 		};
 		5B8D209C2AA748ED00457CA3 /* Client */ = {
@@ -5348,27 +5348,27 @@
 		};
 		5B8D20B22AA7529400457CA3 /* ProtonCoreChallenge */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreChallenge;
 		};
 		5B8D20B42AA752A700457CA3 /* ProtonCoreForceUpgrade */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreForceUpgrade;
 		};
 		5B8D20B62AA752BB00457CA3 /* ProtonCoreHumanVerification */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreHumanVerification;
 		};
 		5B8D20B82AA75E4000457CA3 /* ProtonCoreTestingToolkitUnitTestsCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreTestingToolkitUnitTestsCore;
 		};
 		5B8D20BA2AA75E7E00457CA3 /* ProtonCoreTestingToolkitUnitTestsCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreTestingToolkitUnitTestsCore;
 		};
 		5B8D20BD2AA7639E00457CA3 /* fusion */ = {
@@ -5378,22 +5378,22 @@
 		};
 		5B8D20BF2AA7642700457CA3 /* ProtonCoreQuarkCommands */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreQuarkCommands;
 		};
 		5B8D20C12AA7658B00457CA3 /* ProtonCoreTestingToolkitUITestsCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreTestingToolkitUITestsCore;
 		};
 		5B8D20C52AA7666800457CA3 /* ProtonCoreTestingToolkitUITestsLogin */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreTestingToolkitUITestsLogin;
 		};
 		5B8D20C72AA7677B00457CA3 /* ProtonCoreTestingToolkitUITestsPaymentsUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			package = 5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreTestingToolkitUITestsPaymentsUI;
 		};
 /* End XCSwiftPackageProductDependency section */
