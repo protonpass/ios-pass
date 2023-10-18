@@ -58,7 +58,7 @@ struct ManageSharedVaultView: View {
             Alert(title: Text("Transfer ownership"),
                   message: Text("Transfer ownership of this vault to \(newOwner.email)?"),
                   primaryButton: .default(Text("Confirm"),
-                                          action: viewModel.transferOwnership),
+                                          action: { viewModel.handle(option: .transferOwnership(newOwner)) }),
                   secondaryButton: .cancel())
         }
         .navigationModifier()
@@ -80,7 +80,7 @@ private extension ManageSharedVaultView {
                     Spacer()
                 }
             } else {
-                userList
+                inviteeList
             }
         }
         .animation(.default, value: viewModel.fetching)
@@ -114,15 +114,15 @@ private extension ManageSharedVaultView {
 }
 
 private extension ManageSharedVaultView {
-    var userList: some View {
+    var inviteeList: some View {
         ScrollView {
             VStack(spacing: 32) {
                 if !viewModel.invitations.isEmpty {
-                    entriesSection(for: viewModel.invitations.invitees, title: #localized("Invitations"))
+                    inviteesSection(for: viewModel.invitations.invitees, title: "Invitations")
                 }
 
                 if !viewModel.members.isEmpty {
-                    entriesSection(for: viewModel.members, title: #localized("Members"))
+                    inviteesSection(for: viewModel.members, title: "Members")
                 }
             }
         }
@@ -130,7 +130,7 @@ private extension ManageSharedVaultView {
         .animation(.default, value: viewModel.members)
     }
 
-    func entriesSection(for invitees: [any ShareInvitee], title: String) -> some View {
+    func inviteesSection(for invitees: [any ShareInvitee], title: LocalizedStringKey) -> some View {
         VStack {
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -138,7 +138,11 @@ private extension ManageSharedVaultView {
 
             LazyVStack {
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
-                    entryCell(for: invitee)
+                    ShareInviteeView(invitee: invitee,
+                                     isAdmin: viewModel.vault.isAdmin,
+                                     isCurrentUser: viewModel.isCurrentUser(invitee),
+                                     canTransferOwnership: viewModel.canTransferOwnership(to: invitee),
+                                     onSelect: viewModel.handle(option:))
                         .padding(16)
                     if index != invitees.count - 1 {
                         PassDivider()
@@ -148,124 +152,6 @@ private extension ManageSharedVaultView {
             }
             .roundedEditableSection()
         }
-    }
-
-    func entryCell(for invitee: any ShareInvitee) -> some View {
-        HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(invitee.email.initials()),
-                              tintColor: ItemType.login.tintColor,
-                              backgroundColor: ItemType.login.backgroundColor)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(invitee.email)
-                    .foregroundColor(PassColor.textNorm.toColor)
-                    .lineLimit(viewModel.isExpanded(email: invitee.email) ? nil : 1)
-                    .onTapGesture {
-                        viewModel.expand(email: invitee.email)
-                    }
-                    .animation(.default, value: viewModel.expandedEmails)
-
-                HStack {
-                    if viewModel.isCurrentUser(invitee) {
-                        Text("You")
-                            .font(.body)
-                            .foregroundColor(PassColor.textNorm.toColor)
-                            .padding(.vertical, 2)
-                            .padding(.horizontal, 8)
-                            .background(Capsule().fill(PassColor.interactionNorm.toColor))
-                    }
-                    Text(invitee.subtitle)
-                        .foregroundColor(PassColor.textWeak.toColor)
-                }
-            }
-
-            Spacer()
-
-            if viewModel.vault.isAdmin, !viewModel.isCurrentUser(invitee) {
-                entryCellTrailingView(for: invitee)
-            }
-        }
-    }
-
-    @ViewBuilder
-    func entryCellTrailingView(for invitee: any ShareInvitee) -> some View {
-        Menu(content: {
-            ForEach(invitee.options) { option in
-                switch option {
-                case let .resendInvitation(inviteId):
-                    Button(action: {
-                        viewModel.sendInviteReminder(inviteId: inviteId)
-                    }, label: {
-                        Label(title: {
-                            Text("Resend invitation")
-                        }, icon: {
-                            Image(uiImage: IconProvider.paperPlane)
-                                .renderingMode(.template)
-                                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                        })
-                    })
-
-                case let .cancelInvitation(inviteId):
-                    Button(action: {
-                        viewModel.revokeInvite(inviteId: inviteId)
-                    }, label: {
-                        Label(title: {
-                            Text("Cancel invitation")
-                        }, icon: {
-                            Image(uiImage: IconProvider.circleSlash)
-                                .renderingMode(.template)
-                                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                        })
-                    })
-
-                case let .updateRole(shareId, currentRole):
-                    ForEach(ShareRole.allCases, id: \.self) { role in
-                        Label(title: {
-                            Button(action: {
-                                viewModel.updateRole(userSharedId: shareId, role: role)
-                            }, label: {
-                                Text(role.title)
-                                Text(role.description)
-                            })
-                        }, icon: {
-                            if currentRole == role {
-                                Image(systemName: "checkmark")
-                            }
-                        })
-                    }
-
-                case let .revokeAccess(shareId):
-                    Button(action: {
-                        viewModel.revokeShareAccess(shareId: shareId)
-                    }, label: {
-                        Label(title: {
-                            Text("Revoke access")
-                        }, icon: {
-                            Image(uiImage: IconProvider.circleSlash)
-                                .renderingMode(.template)
-                                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                        })
-                    })
-
-                case let .transferOwnership(newOwner):
-                    Button(action: {
-                        viewModel.newOwner = newOwner
-                    }, label: {
-                        Label(title: {
-                            Text("Transfer ownership")
-                        }, icon: {
-                            Image(uiImage: IconProvider.shieldHalfFilled)
-                                .renderingMode(.template)
-                                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                        })
-                    })
-                }
-            }
-        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 24, height: 24)
-            .foregroundColor(Color(uiColor: PassColor.textWeak))
-        })
     }
 }
 
