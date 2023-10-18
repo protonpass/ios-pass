@@ -106,4 +106,24 @@ final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, ShareInviteR
         closureDeleteInvite()
         return stubbedDeleteInviteResult
     }
+    // MARK: - deleteNewUserInvite
+    var deleteNewUserInviteShareIdInviteIdThrowableError: Error?
+    var closureDeleteNewUserInvite: () -> () = {}
+    var invokedDeleteNewUserInvite = false
+    var invokedDeleteNewUserInviteCount = 0
+    var invokedDeleteNewUserInviteParameters: (shareId: String, inviteId: String)?
+    var invokedDeleteNewUserInviteParametersList = [(shareId: String, inviteId: String)]()
+    var stubbedDeleteNewUserInviteResult: Bool!
+
+    func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool {
+        invokedDeleteNewUserInvite = true
+        invokedDeleteNewUserInviteCount += 1
+        invokedDeleteNewUserInviteParameters = (shareId, inviteId)
+        invokedDeleteNewUserInviteParametersList.append((shareId, inviteId))
+        if let error = deleteNewUserInviteShareIdInviteIdThrowableError {
+            throw error
+        }
+        closureDeleteNewUserInvite()
+        return stubbedDeleteNewUserInviteResult
+    }
 }
