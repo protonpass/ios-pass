@@ -121,6 +121,14 @@ extension UseCasesContainer {
                                     syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 
+    var promoteNewUserInvite: Factory<PromoteNewUserInviteUseCase> {
+        self { PromoteNewUserInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
+                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                                    shareInviteRepository: SharedRepositoryContainer.shared
+                                        .shareInviteRepository(),
+                                    userData: SharedDataContainer.shared.userData()) }
+    }
+
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
         self { GetEmailPublicKey(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository()) }
     }

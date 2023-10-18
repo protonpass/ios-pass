@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Foundation
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
@@ -117,5 +118,29 @@ public enum CryptoUtils {
     public static func unlockKey(_ armoredKey: String,
                                  passphrase: String) throws -> ProtonCoreCrypto.DecryptionKey {
         DecryptionKey(privateKey: .init(value: armoredKey), passphrase: .init(value: passphrase))
+    }
+
+    public static func encryptKeyForSharing(addressId: String,
+                                            publicReceiverKey: PublicKey,
+                                            userData: UserData,
+                                            vaultKey: DecryptedShareKey) throws -> ItemKey {
+        guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
+                                                                 userData: userData).first else {
+            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
+        }
+
+        let publicKey = ArmoredKey(value: publicReceiverKey.value)
+        let signerKey = SigningKey(privateKey: addressKey.privateKey,
+                                   passphrase: addressKey.passphrase)
+        let context = SignatureContext(value: Constants.existingUserSharingSignatureContext,
+                                       isCritical: true)
+
+        let encryptedVaultKeyString = try Encryptor.encrypt(publicKey: publicKey,
+                                                            clearData: vaultKey.keyData,
+                                                            signerKey: signerKey,
+                                                            signatureContext: context)
+            .unArmor().value.base64EncodedString()
+
+        return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
     }
 }

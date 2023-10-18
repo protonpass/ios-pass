@@ -19,6 +19,7 @@
 		350CF79E2A6FC4F2004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */; };
 		35116E792A82847300CAD616 /* View+ItemDetailSetUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */; };
 		351533CD2AE03384001C0957 /* RevokeNewUserInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351533CC2AE03384001C0957 /* RevokeNewUserInvitation.swift */; };
+		351533CF2AE05941001C0957 /* PromoteNewUserInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351533CE2AE05941001C0957 /* PromoteNewUserInvite.swift */; };
 		3520F36128E31AF20053A606 /* NotLoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36028E31AF20053A606 /* NotLoggedInView.swift */; };
 		3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36228E325900053A606 /* CredentialsViewModel.swift */; };
 		35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4F2927B55D002F5B84 /* FullScreenView.swift */; };
@@ -611,6 +612,7 @@
 		350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataContainer+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailSetUp.swift"; sourceTree = "<group>"; };
 		351533CC2AE03384001C0957 /* RevokeNewUserInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevokeNewUserInvitation.swift; sourceTree = "<group>"; };
+		351533CE2AE05941001C0957 /* PromoteNewUserInvite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoteNewUserInvite.swift; sourceTree = "<group>"; };
 		3520F36028E31AF20053A606 /* NotLoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedInView.swift; sourceTree = "<group>"; };
 		3520F36228E325900053A606 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
 		35283E4F2927B55D002F5B84 /* FullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenView.swift; sourceTree = "<group>"; };
@@ -1791,6 +1793,7 @@
 				5B653AEA2A77DF0B00D6869A /* RefreshInvitations.swift */,
 				5B653AEC2A77E09F00D6869A /* RejectInvitation.swift */,
 				5B1453B82A6ACE160048B022 /* SendShareInvite.swift */,
+				351533CE2AE05941001C0957 /* PromoteNewUserInvite.swift */,
 				5B1453A22A69655E0048B022 /* SetShareInviteRole.swift */,
 				5B1453A02A69654A0048B022 /* SetShareInviteUserEmail.swift */,
 				5B14539E2A69652D0048B022 /* SetShareInviteVault.swift */,
@@ -2904,6 +2907,7 @@
 				356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */,
 				356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */,
 				351533CD2AE03384001C0957 /* RevokeNewUserInvitation.swift in Sources */,
+				351533CF2AE05941001C0957 /* PromoteNewUserInvite.swift in Sources */,
 				356BBB712ACC539E005A10DB /* ShareOrCreateNewVaultView.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
 				35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */,

@@ -34,7 +34,7 @@ public enum ShareInviteeOption: Identifiable {
     case remindExistingUserInvitation(inviteId: String)
     case cancelExistingUserInvitation(inviteId: String)
     case cancelNewUserInvitation(inviteId: String)
-    case confirmAccess(inviteId: String)
+    case confirmAccess(PendingAccess)
     case updateRole(shareId: String, role: ShareRole)
     case revokeAccess(shareId: String)
     /// Display an alert to ask for confirmation before transferring
@@ -47,9 +47,9 @@ public enum ShareInviteeOption: Identifiable {
     }
 
     /// To show "Confirm access" button or not
-    public var inviteIdToBeConfirmed: String? {
-        if case let .confirmAccess(inviteId) = self {
-            inviteId
+    public var pendingAccess: PendingAccess? {
+        if case let .confirmAccess(access) = self {
+            access
         } else {
             nil
         }
@@ -67,5 +67,16 @@ public struct NewOwner: Sendable, Identifiable {
     public init(email: String, shareId: String) {
         self.email = email
         self.shareId = shareId
+    }
+}
+
+/// Invitation to be confirmed (promoted)
+public struct PendingAccess: Sendable {
+    public let inviteId: String
+    public let email: String
+
+    public init(inviteId: String, email: String) {
+        self.inviteId = inviteId
+        self.email = email
     }
 }

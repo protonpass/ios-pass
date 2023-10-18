@@ -107,10 +107,10 @@ private extension SendVaultShareInvite {
         }
 
         if let key = info.receiverPublicKeys?.first {
-            let signedKey = try encryptKeys(addressId: vault.addressId,
-                                            publicReceiverKey: key.value,
-                                            userData: userData,
-                                            vaultKey: vaultKey)
+            let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,
+                                                                 publicReceiverKey: key,
+                                                                 userData: userData,
+                                                                 vaultKey: vaultKey)
             return .existing(email: email, keys: [signedKey])
         } else {
             let signature = try createAndSignSignature(addressId: vault.addressId,
@@ -118,30 +118,6 @@ private extension SendVaultShareInvite {
                                                        email: email)
             return .new(email: email, signature: signature)
         }
-    }
-
-    func encryptKeys(addressId: String,
-                     publicReceiverKey: String,
-                     userData: UserData,
-                     vaultKey: DecryptedShareKey) throws -> ItemKey {
-        guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
-                                                                 userData: userData).first else {
-            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
-        }
-
-        let publicKey = ArmoredKey(value: publicReceiverKey)
-        let signerKey = SigningKey(privateKey: addressKey.privateKey,
-                                   passphrase: addressKey.passphrase)
-        let context = SignatureContext(value: Constants.existingUserSharingSignatureContext,
-                                       isCritical: true)
-
-        let encryptedVaultKeyString = try Encryptor.encrypt(publicKey: publicKey,
-                                                            clearData: vaultKey.keyData,
-                                                            signerKey: signerKey,
-                                                            signatureContext: context)
-            .unArmor().value.base64EncodedString()
-
-        return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
     }
 
     func createAndSignSignature(addressId: String,
