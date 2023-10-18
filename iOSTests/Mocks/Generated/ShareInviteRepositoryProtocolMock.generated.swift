@@ -66,6 +66,26 @@ final class ShareInviteRepositoryProtocolMock: @unchecked Sendable, ShareInviteR
         closureSendInvite()
         return stubbedSendInviteResult
     }
+    // MARK: - promoteNewUserInvite
+    var promoteNewUserInviteShareIdInviteIdKeysThrowableError: Error?
+    var closurePromoteNewUserInvite: () -> () = {}
+    var invokedPromoteNewUserInvite = false
+    var invokedPromoteNewUserInviteCount = 0
+    var invokedPromoteNewUserInviteParameters: (shareId: String, inviteId: String, keys: [ItemKey])?
+    var invokedPromoteNewUserInviteParametersList = [(shareId: String, inviteId: String, keys: [ItemKey])]()
+    var stubbedPromoteNewUserInviteResult: Bool!
+
+    func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
+        invokedPromoteNewUserInvite = true
+        invokedPromoteNewUserInviteCount += 1
+        invokedPromoteNewUserInviteParameters = (shareId, inviteId, keys)
+        invokedPromoteNewUserInviteParametersList.append((shareId, inviteId, keys))
+        if let error = promoteNewUserInviteShareIdInviteIdKeysThrowableError {
+            throw error
+        }
+        closurePromoteNewUserInvite()
+        return stubbedPromoteNewUserInviteResult
+    }
     // MARK: - sendInviteReminder
     var sendInviteReminderShareIdInviteIdThrowableError: Error?
     var closureSendInviteReminder: () -> () = {}
