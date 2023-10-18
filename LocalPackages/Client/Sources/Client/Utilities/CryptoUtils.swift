@@ -90,12 +90,9 @@ public enum CryptoUtils {
         return sessionKey
     }
 
-    public static func unlockAddressKeys(addressID: String,
+    public static func unlockAddressKeys(address: Address,
                                          userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
-        guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
-            throw PPClientError.crypto(.addressNotFound(addressID: addressID))
-        }
-        return firstAddress.keys.compactMap { key -> DecryptionKey? in
+        address.keys.compactMap { key -> DecryptionKey? in
             let binKeys = userData.user.keys.map(\.privateKey).compactMap(\.unArmor)
             for passphrase in userData.passphrases {
                 if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: binKeys,
@@ -106,6 +103,15 @@ public enum CryptoUtils {
             }
             return nil
         }
+    }
+
+    public static func unlockAddressKeys(addressID: String,
+                                         userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
+        guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
+            throw PPClientError.crypto(.addressNotFound(addressID: addressID))
+        }
+
+        return try CryptoUtils.unlockAddressKeys(address: firstAddress, userData: userData)
     }
 
     public static func unlockKey(_ armoredKey: String,

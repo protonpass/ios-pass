@@ -186,12 +186,14 @@ extension UseCasesContainer {
     var acceptInvitation: Factory<AcceptInvitationUseCase> {
         self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
                                 userData: SharedDataContainer.shared.userData(),
-                                getEmailPublicKey: self.getEmailPublicKey()) }
+                                getEmailPublicKey: self.getEmailPublicKey(),
+                                updateUserAddresses: self.updateUserAddresses()) }
     }
 
     var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
         self { DecodeShareVaultInformation(userData: SharedDataContainer.shared.userData(),
-                                           getEmailPublicKey: self.getEmailPublicKey()) }
+                                           getEmailPublicKey: self.getEmailPublicKey(),
+                                           updateUserAddresses: self.updateUserAddresses()) }
     }
 
     var updateCachedInvitations: Factory<UpdateCachedInvitationsUseCase> {
@@ -256,6 +258,11 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
         self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
+    }
+
+    var updateUserAddresses: Factory<UpdateUserAddressesUseCase> {
+        self { UpdateUserAddresses(sharedDataContainer: SharedDataContainer.shared,
+                                   authenticator: ServiceContainer.shared.authenticator()) }
     }
 }
 
