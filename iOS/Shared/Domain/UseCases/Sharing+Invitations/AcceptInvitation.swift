@@ -23,7 +23,10 @@
 import Client
 import Core
 import Entities
+import ProtonCoreAuthentication
 import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 @preconcurrency import ProtonCoreLogin
 
@@ -41,13 +44,16 @@ final class AcceptInvitation: AcceptInvitationUseCase {
     private let repository: InviteRepositoryProtocol
     private let userData: UserData
     private let getEmailPublicKey: GetEmailPublicKeyUseCase
+    private let updateUserAddresses: UpdateUserAddressesUseCase
 
     init(repository: InviteRepositoryProtocol,
          userData: UserData,
-         getEmailPublicKey: GetEmailPublicKeyUseCase) {
+         getEmailPublicKey: GetEmailPublicKeyUseCase,
+         updateUserAddresses: UpdateUserAddressesUseCase) {
         self.repository = repository
         self.userData = userData
         self.getEmailPublicKey = getEmailPublicKey
+        self.updateUserAddresses = updateUserAddresses
     }
 
     func execute(with userInvite: UserInvite) async throws -> Bool {
@@ -58,14 +64,14 @@ final class AcceptInvitation: AcceptInvitationUseCase {
 
 private extension AcceptInvitation {
     func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
-        let keys = userInvite.keys
-        guard let address = userData.addresses.first(where: { $0.email == userInvite.invitedEmail }) else {
+        guard let address = try await fetchInvitedAddress(with: userInvite) else {
             throw SharingError.invalidKeyOrAddress
         }
-        let addressKeys = try CryptoUtils.unlockAddressKeys(addressID: address.addressID,
+        let addressKeys = try CryptoUtils.unlockAddressKeys(address: address,
                                                             userData: userData)
         let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
         let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
+        let keys = userInvite.keys
 
         let reencrytedKeys: [ItemKey] = try keys.map { key in
             try transformKey(key: key,
@@ -112,5 +118,17 @@ private extension AcceptInvitation {
 
         return ItemKey(key: encryptedVaultKeyDataString,
                        keyRotation: key.keyRotation)
+    }
+}
+
+private extension AcceptInvitation {
+    func fetchInvitedAddress(with userInvite: UserInvite) async throws -> Address? {
+        let invitedAddress = userData.addresses.first(where: { $0.email == userInvite.invitedEmail })
+        if invitedAddress == nil {
+            return try await updateUserAddresses()?
+                .first(where: { $0.email == userInvite.invitedEmail })
+        } else {
+            return invitedAddress
+        }
     }
 }
