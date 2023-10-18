@@ -50,6 +50,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
     private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
     private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
+    private let promoteNewUserInvite = resolve(\UseCasesContainer.promoteNewUserInvite)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
@@ -110,85 +111,78 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         canUserTransferVaultOwnership(for: vault, to: invitee)
     }
 
+    // swiftformat:disable all
+    // swiftformat is confused when an async function takes an async autoclosure
     func handle(option: ShareInviteeOption) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
                 switch option {
                 case let .remindExistingUserInvitation(inviteId):
-                    try await remindExistingUserInvitation(inviteId: inviteId)
+                    try await execute(await sendInviteReminder(with: vault.shareId,
+                                                               and: inviteId),
+                                      shouldForceSync: false)
+
                 case let .cancelExistingUserInvitation(inviteId):
-                    try await cancelExistingUserInvitation(inviteId: inviteId)
+                    try await execute(await revokeInvitation(with: vault.shareId,
+                                                             and: inviteId))
+
                 case let .cancelNewUserInvitation(inviteId):
-                    try await cancelNewUserInvitation(inviteId: inviteId)
-                case let .confirmAccess(inviteId):
-                    try await confirmAccess(inviteId: inviteId)
+                    try await execute(await revokeNewUserInvitation(with: vault.shareId,
+                                                                    and: inviteId))
+
+                case let .confirmAccess(access):
+                    try await execute(await promoteNewUserInvite(vault: vault,
+                                                                 inviteId: access.inviteId,
+                                                                 email: access.email))
+
                 case let .updateRole(shareId, role):
-                    try await updateRole(sharedId: shareId, role: role)
+                    try await execute(await updateUserShareRole(userShareId: shareId,
+                                                                shareId: vault.shareId,
+                                                                shareRole: role),
+                                      shouldForceSync: false)
+
                 case let .revokeAccess(shareId):
-                    try await revokeAccess(shareId: shareId)
+                    try await execute(await revokeUserShareAccess(with: shareId,
+                                                                  and: vault.shareId))
+
                 case let .confirmTransferOwnership(newOwner):
                     self.newOwner = newOwner
+
                 case let .transferOwnership(newOwner):
-                    try await transferOwnership(newOwner: newOwner)
+                    let element = UIElementDisplay.successMessage(
+                        #localized("Vault has been transferred"),
+                        config: nil)
+                    try await execute(
+                        await transferVaultOwnership(newOwnerID: newOwner.shareId,
+                                                     shareId: vault.shareId),
+                        elementDisplay: element)
                 }
             } catch {
                 display(error: error)
             }
         }
     }
+    // swiftformat:enable all
 }
 
 private extension ManageSharedVaultViewModel {
-    func cancelExistingUserInvitation(inviteId: String) async throws {
+    func execute(_ action: @Sendable @autoclosure () async throws -> Void,
+                 shouldForceSync: Bool = true,
+                 elementDisplay: UIElementDisplay? = nil) async throws {
         defer { loading = false }
         loading = true
-        try await revokeInvitation(with: vault.shareId, and: inviteId)
-        fetchShareInformation()
-        syncEventLoop.forceSync()
-    }
 
-    func cancelNewUserInvitation(inviteId: String) async throws {
-        defer { loading = false }
-        loading = true
-        try await revokeNewUserInvitation(with: vault.shareId, and: inviteId)
+        try await action()
         fetchShareInformation()
-        syncEventLoop.forceSync()
-    }
 
-    func revokeAccess(shareId: String) async throws {
-        defer { loading = false }
-        loading = true
-        try await revokeUserShareAccess(with: shareId, and: vault.shareId)
-        fetchShareInformation()
-        syncEventLoop.forceSync()
-    }
+        if let elementDisplay {
+            router.display(element: elementDisplay)
+        }
 
-    func remindExistingUserInvitation(inviteId: String) async throws {
-        try await sendInviteReminder(with: vault.shareId, and: inviteId)
-        fetchShareInformation()
-    }
-
-    func confirmAccess(inviteId: String) async throws {
-        print(#function)
-    }
-
-    func updateRole(sharedId: String, role: ShareRole) async throws {
-        defer { loading = false }
-        loading = true
-        try await updateUserShareRole(userShareId: sharedId,
-                                      shareId: vault.shareId,
-                                      shareRole: role)
-        fetchShareInformation()
-    }
-
-    func transferOwnership(newOwner: NewOwner) async throws {
-        defer { loading = false }
-        loading = true
-        try await transferVaultOwnership(newOwnerID: newOwner.shareId, shareId: vault.shareId)
-        fetchShareInformation()
-        router.display(element: .successMessage(#localized("Vault has been transferred"), config: nil))
-        syncEventLoop.forceSync()
+        if shouldForceSync {
+            syncEventLoop.forceSync()
+        }
     }
 }
 
@@ -310,7 +304,7 @@ extension ShareNewUserInvite: ShareInvitee {
         case .accountCreated:
             [
                 .cancelNewUserInvitation(inviteId: newUserInviteID),
-                .confirmAccess(inviteId: newUserInviteID)
+                .confirmAccess(.init(inviteId: newUserInviteID, email: invitedEmail))
             ]
         }
     }
