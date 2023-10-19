@@ -38,12 +38,9 @@ struct ManageSharedVaultView: View {
             mainContainer
                 .padding(.bottom, viewModel.vault.isAdmin ? 60 : 0) // Avoid the bottom button
 
-            if viewModel.canShare {
-                CapsuleTextButton(title: #localized("Share with more people"),
-                                  titleColor: PassColor.textInvert,
-                                  backgroundColor: PassColor.interactionNorm,
-                                  action: viewModel.shareWithMorePeople)
-            }
+//            if viewModel.canShare {
+            shareButtonAndInfos
+//            }
         }
         .onAppear {
             viewModel.fetchShareInformation(displayFetchingLoader: true)
@@ -255,6 +252,54 @@ private extension ManageSharedVaultView {
             .frame(width: 24, height: 24)
             .foregroundColor(Color(uiColor: PassColor.textWeak))
         })
+    }
+}
+
+private extension ManageSharedVaultView {
+    var shareButtonAndInfos: some View {
+        VStack {
+            DisablableCapsuleTextButton(title: #localized("Share with more people"),
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textInvert,
+                                        backgroundColor: PassColor.interactionNorm,
+                                        disableBackgroundColor: PassColor.interactionNorm
+                                            .withAlphaComponent(0.5),
+                                        disabled: !viewModel.canShare,
+                                        action: viewModel.shareWithMorePeople)
+
+            primaryVaultOnlyMessage
+
+            Label(title: {
+                Text("1 invite remaining")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+            }, icon: {
+                IconProvider.questionCircle.toImage
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16)
+                    .foregroundColor(Color(uiColor: PassColor.textWeak))
+            })
+        }
+    }
+}
+
+private extension ManageSharedVaultView {
+    var primaryVaultOnlyMessage: some View {
+        ZStack {
+            Text("Your plan only allows to use items from your first vaults for autofill purposes.")
+                .foregroundColor(PassColor.textNorm.toColor) +
+                Text(verbatim: " ") +
+                Text("Upgrade now")
+                .underline(color: PassColor.interactionNormMajor1.toColor)
+                .foregroundColor(PassColor.interactionNormMajor1.toColor)
+        }
+        .padding()
+        .background(PassColor.interactionNormMinor1.toColor)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .frame(maxWidth: .infinity)
+        .onTapGesture(perform: viewModel.upgrade)
     }
 }
 
