@@ -23,6 +23,8 @@
 		35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4F2927B55D002F5B84 /* FullScreenView.swift */; };
 		352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */; };
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
+		353518292AE14FB700574991 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 353518282AE14FB700574991 /* Screens */; };
+		3535182B2AE14FBD00574991 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 3535182A2AE14FBD00574991 /* Screens */; };
 		353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */; };
 		353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E229EAE9D900A3255E /* QAFeaturesView.swift */; };
 		353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E629EAEE6F00A3255E /* OnboardSection.swift */; };
@@ -999,6 +1001,7 @@
 				5B8D20AD2AA74B6600457CA3 /* DesignSystem in Frameworks */,
 				35ABE12C2AA082BB001E20F9 /* DocScanner in Frameworks */,
 				5B8D209F2AA748F700457CA3 /* Client in Frameworks */,
+				3535182B2AE14FBD00574991 /* Screens in Frameworks */,
 				354192862AC1CB9F001F2996 /* Macro in Frameworks */,
 				5B8D20A62AA74A5700457CA3 /* Core in Frameworks */,
 				5B8D209A2AA7466600457CA3 /* ProtonCoreCryptoGoImplementation in Frameworks */,
@@ -1052,6 +1055,7 @@
 				5B8D20902AA7461900457CA3 /* ProtonCorePaymentsUI in Frameworks */,
 				5B8D20822AA7461900457CA3 /* ProtonCoreHumanVerification in Frameworks */,
 				5B8D20A42AA74A4600457CA3 /* Core in Frameworks */,
+				353518292AE14FB700574991 /* Screens in Frameworks */,
 				356A34C82978630100969BA2 /* CodeScanner in Frameworks */,
 				5B8D20672AA7456200457CA3 /* Sentry in Frameworks */,
 				5B1453672A6033F60048B022 /* Entities in Frameworks */,
@@ -2238,6 +2242,7 @@
 				5B8D20B62AA752BB00457CA3 /* ProtonCoreHumanVerification */,
 				354192852AC1CB9F001F2996 /* Macro */,
 				35855C122AC8744A00794DB4 /* UseCases */,
+				3535182A2AE14FBD00574991 /* Screens */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -2344,6 +2349,7 @@
 				5B8D20AA2AA74B5E00457CA3 /* DesignSystem */,
 				354192832AC1CB9B001F2996 /* Macro */,
 				35855C102AC8743F00794DB4 /* UseCases */,
+				353518282AE14FB700574991 /* Screens */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -5079,6 +5085,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		353518282AE14FB700574991 /* Screens */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Screens;
+		};
+		3535182A2AE14FBD00574991 /* Screens */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Screens;
+		};
 		354192832AC1CB9B001F2996 /* Macro */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Macro;
