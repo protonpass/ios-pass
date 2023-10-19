@@ -168,6 +168,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
 }
 
 private extension ManageSharedVaultViewModel {
+    @MainActor
     func execute(_ action: @Sendable @autoclosure () async throws -> Void,
                  shouldForceSync: Bool = true,
                  elementDisplay: UIElementDisplay? = nil) async throws {
@@ -186,6 +187,7 @@ private extension ManageSharedVaultViewModel {
         }
     }
 
+    @MainActor
     func doFetchShareInformation() async throws {
         itemsNumber = getVaultItemCount(for: vault)
         if Task.isCancelled {
