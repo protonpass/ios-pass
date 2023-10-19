@@ -29,6 +29,7 @@ struct VaultRow<Thumbnail: View>: View {
     let itemCount: Int
     let isShared: Bool
     let isSelected: Bool
+    var showBadge = false
     var height: CGFloat = 70
 
     var body: some View {
@@ -52,11 +53,21 @@ struct VaultRow<Thumbnail: View>: View {
             Spacer()
 
             if isShared {
-                Image(uiImage: IconProvider.users)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(PassColor.textWeak.toColor)
-                    .frame(maxHeight: 20)
+                HStack(spacing: 0) {
+                    Image(uiImage: IconProvider.users)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(PassColor.textWeak.toColor)
+                        .frame(maxHeight: 20)
+                    if showBadge {
+                        Image(uiImage: IconProvider.exclamationCircleFilled)
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(PassColor.signalDanger.toColor)
+                            .frame(maxHeight: 16)
+                            .offset(y: -10)
+                    }
+                }
             }
 
             if isSelected {

@@ -49,6 +49,14 @@ public enum VaultSelection {
         }
         return nil
     }
+
+    public var showBadge: Bool {
+        if case let .precise(vault) = self {
+            vault.newUserInvitesReady > 0
+        } else {
+            false
+        }
+    }
 }
 
 extension VaultSelection: Equatable {

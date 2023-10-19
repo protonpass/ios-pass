@@ -88,18 +88,18 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             }
             if displayFetchingLoader {
                 fetching = true
+            } else {
+                loading = true
             }
-            defer { fetching = false }
+            defer {
+                if displayFetchingLoader {
+                    fetching = false
+                } else {
+                    loading = false
+                }
+            }
             do {
-                itemsNumber = getVaultItemCount(for: vault)
-                if Task.isCancelled {
-                    return
-                }
-                let shareId = vault.shareId
-                if vault.isAdmin {
-                    invitations = try await getPendingInvitationsForShare(with: shareId)
-                }
-                members = try await getUsersLinkedToShare(with: shareId)
+                try await doFetchShareInformation()
             } catch {
                 display(error: error)
                 logger.error(message: "Failed to fetch the current share informations", error: error)
@@ -159,6 +159,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                         elementDisplay: element)
                 }
             } catch {
+                logger.error(error)
                 display(error: error)
             }
         }
@@ -174,7 +175,7 @@ private extension ManageSharedVaultViewModel {
         loading = true
 
         try await action()
-        fetchShareInformation()
+        try await doFetchShareInformation()
 
         if let elementDisplay {
             router.display(element: elementDisplay)
@@ -183,6 +184,18 @@ private extension ManageSharedVaultViewModel {
         if shouldForceSync {
             syncEventLoop.forceSync()
         }
+    }
+
+    func doFetchShareInformation() async throws {
+        itemsNumber = getVaultItemCount(for: vault)
+        if Task.isCancelled {
+            return
+        }
+        let shareId = vault.shareId
+        if vault.isAdmin {
+            invitations = try await getPendingInvitationsForShare(with: shareId)
+        }
+        members = try await getUsersLinkedToShare(with: shareId)
     }
 }
 
