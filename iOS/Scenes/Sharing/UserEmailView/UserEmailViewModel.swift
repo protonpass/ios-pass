@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Combine
 import Entities
 import Factory
@@ -40,41 +41,41 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     private let shareInviteService = resolve(\ServiceContainer.shareInviteService)
     private let setShareInviteUserEmailAndKeys = resolve(\UseCasesContainer.setShareInviteUserEmailAndKeys)
     private let getEmailPublicKey = resolve(\UseCasesContainer.getEmailPublicKey)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private var checkTask: Task<Void, Never>?
 
     init() {
         setUp()
     }
 
     func saveEmail() {
-        checkTask?.cancel()
-        checkTask = Task { [weak self] in
+        Task { [weak self] in
             guard let self else {
                 return
             }
             defer {
-                self.isChecking = false
-                self.checkTask?.cancel()
-                self.checkTask = nil
+                isChecking = false
             }
             do {
-                if Task.isCancelled {
-                    return
-                }
                 isChecking = true
                 let receiverPublicKeys = try await getEmailPublicKey(with: email)
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
+                #if DEBUG
+                setShareInviteUserEmailAndKeys(with: email, and: nil)
+                goToNextStep = true
+                #else
                 if let sharingError = error as? SharingError,
-                   sharingError == .noPublicKeyAssociatedWithEmail {
+                   sharingError == .noPublicKeyAssociatedWithEmail,
+                   await getFeatureFlagStatus(with: FeatureFlagType.passSharingNewUsers) {
                     setShareInviteUserEmailAndKeys(with: email, and: nil)
                     goToNextStep = true
                 } else {
                     canContinue = false
                     self.error = error.localizedDescription
                 }
+                #endif
             }
         }
     }
@@ -98,10 +99,13 @@ private extension UserEmailViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
-                if error != nil {
-                    error = nil
-                }
+                error = nil
+                // Allow invitation to non-existant black emails when in debug mode
+                #if DEBUG
+                canContinue = true
+                #else
                 canContinue = newValue.isValidEmail()
+                #endif
             }
             .store(in: &cancellables)
 
