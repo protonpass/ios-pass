@@ -3,14 +3,16 @@
 
 import PackageDescription
 
+var platforms: [SupportedPlatform] = [
+    .macOS(.v12),
+    .iOS(.v15),
+    .tvOS(.v15),
+    .watchOS(.v8)
+]
+
 let package = Package(name: "Entities",
                       defaultLocalization: "en",
-                      platforms: [
-                          .iOS(.v15),
-                          .macOS(.v12),
-                          .tvOS(.v16),
-                          .watchOS(.v9)
-                      ],
+                      platforms: platforms,
                       products: [
                           // Products define the executables and libraries a package produces, and make them
                           // visible to other packages.
