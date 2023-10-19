@@ -938,6 +938,7 @@
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5BE5BDEC2A4C75B3007CBE1B /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
+		5BFD5D052AE145E70025185B /* Screens */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Screens; path = LocalPackages/Screens; sourceTree = "<group>"; };
 		5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialSearchResultView.swift; sourceTree = "<group>"; };
 		5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCredentialItemRow.swift; sourceTree = "<group>"; };
 		5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
@@ -1583,6 +1584,7 @@
 				3569AE402A695E070026B780 /* Entities */,
 				357ED8C42AC1C6F20019A0E9 /* Macro */,
 				35A2F8B52AD6B2D80051C7AF /* PassRustCore */,
+				5BFD5D052AE145E70025185B /* Screens */,
 				359F80B42AB48C70007AC0F4 /* UseCases */,
 			);
 			sourceTree = "<group>";
@@ -2461,8 +2463,8 @@
 				356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 				5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */,
 				35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */,
-				5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD.git" */,
-				5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa.git" */,
+				5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
+				5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				5B8D20682AA7461900457CA3 /* XCRemoteSwiftPackageReference "protoncore_ios" */,
 				5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */,
 			);
@@ -5042,7 +5044,7 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD.git" */ = {
+		5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jdg/MBProgressHUD.git";
 			requirement = {
@@ -5050,7 +5052,7 @@
 				version = 1.2.0;
 			};
 		};
-		5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa.git" */ = {
+		5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
 			requirement = {
@@ -5142,12 +5144,12 @@
 		};
 		5B8D20632AA7454400457CA3 /* MBProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD.git" */;
+			package = 5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
 			productName = MBProgressHUD;
 		};
 		5B8D20662AA7456200457CA3 /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa.git" */;
+			package = 5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
 			productName = Sentry;
 		};
 		5B8D20692AA7461900457CA3 /* ProtonCoreAccountDeletion */ = {
@@ -5313,7 +5315,7 @@
 		};
 		5B8D20B02AA751AF00457CA3 /* MBProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD.git" */;
+			package = 5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
 			productName = MBProgressHUD;
 		};
 		5B8D20B22AA7529400457CA3 /* ProtonCoreChallenge */ = {
