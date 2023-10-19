@@ -69,7 +69,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func canShare(vault: Vault) -> Bool {
-        canUserShareVault(for: vault) && !vault.shared
+        canUserShareVault(for: vault) != .cantShare && !vault.shared
     }
 
     func canEdit(vault: Vault) -> Bool {
@@ -122,8 +122,12 @@ extension EditableVaultListViewModel {
     }
 
     func share(vault: Vault) {
-        setShareInviteVault(with: .existing(vault))
-        router.present(for: .sharingFlow(.none))
+        if canUserShareVault(for: vault) == .canShare {
+            setShareInviteVault(with: .existing(vault))
+            router.present(for: .sharingFlow(.none))
+        } else {
+            router.present(for: .upselling)
+        }
     }
 
     func leaveVault(vault: Vault) {
