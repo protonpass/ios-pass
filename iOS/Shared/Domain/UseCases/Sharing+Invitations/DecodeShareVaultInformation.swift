@@ -55,7 +55,7 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
         guard let vaultData = userInvite.vaultData,
               let intermediateVaultKey = userInvite.keys
               .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),
-              let invitedAddress = try await fetchInvitedAddress(with: userInvite) else {
+              let invitedAddress = try await address(for: userInvite) else {
             throw SharingError.invalidKeyOrAddress
         }
 
@@ -93,13 +93,11 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
 }
 
 private extension DecodeShareVaultInformation {
-    func fetchInvitedAddress(with userInvite: UserInvite) async throws -> Address? {
-        let invitedAddress = userData.addresses.first(where: { $0.email == userInvite.invitedEmail })
-        if invitedAddress == nil {
+    func address(for userInvite: UserInvite) async throws -> Address? {
+        guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
             return try await updateUserAddresses()?
                 .first(where: { $0.email == userInvite.invitedEmail })
-        } else {
-            return invitedAddress
         }
+        return invitedAddress
     }
 }

@@ -71,9 +71,8 @@ private extension AcceptInvitation {
                                                             userData: userData)
         let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
         let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
-        let keys = userInvite.keys
 
-        let reencrytedKeys: [ItemKey] = try keys.map { key in
+        let reencrytedKeys: [ItemKey] = try userInvite.keys.map { key in
             try transformKey(key: key,
                              addressKeys: addressKeys,
                              armoredInviterPublicKeys: armoredInviterPublicKeys)
@@ -123,12 +122,10 @@ private extension AcceptInvitation {
 
 private extension AcceptInvitation {
     func fetchInvitedAddress(with userInvite: UserInvite) async throws -> Address? {
-        let invitedAddress = userData.addresses.first(where: { $0.email == userInvite.invitedEmail })
-        if invitedAddress == nil {
+        guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
             return try await updateUserAddresses()?
                 .first(where: { $0.email == userInvite.invitedEmail })
-        } else {
-            return invitedAddress
         }
+        return invitedAddress
     }
 }
