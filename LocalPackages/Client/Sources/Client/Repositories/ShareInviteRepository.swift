@@ -69,8 +69,8 @@ public extension ShareInviteRepository {
         logger.trace("Getting all pending invites for share \(shareId)")
         do {
             let invites = try await remoteDataSource.getPendingInvites(sharedId: shareId)
-            let existingCount = "\(invites.exisingInvites.count) exising user invites"
-            let newCount = "\(invites.newInvites.count) new user invites"
+            let existingCount = "\(invites.exisingUserInvites.count) exising user invites"
+            let newCount = "\(invites.newUserInvites.count) new user invites"
             logger.trace("Got \(existingCount), \(newCount) for \(shareId)")
             return invites
         } catch {

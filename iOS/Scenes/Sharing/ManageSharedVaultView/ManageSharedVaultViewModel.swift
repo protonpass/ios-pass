@@ -224,7 +224,7 @@ private extension ManageSharedVaultViewModel {
 
 extension ShareInvites {
     var invitees: [any ShareInvitee] {
-        exisingInvites + newInvites
+        exisingUserInvites + newUserInvites
     }
 }
 
