@@ -92,7 +92,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
-    private let upgradeChecker: UpgradeCheckerProtocol
+    private let accessRepository: AccessRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -114,7 +114,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          shareRepository: ShareRepositoryProtocol,
          shareEventIDRepository: ShareEventIDRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
+         accessRepository: AccessRepositoryProtocol,
          shareKeyRepository: ShareKeyRepositoryProtocol,
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
          favIconRepository: FavIconRepositoryProtocol,
@@ -122,7 +122,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
-        self.upgradeChecker = upgradeChecker
+        self.accessRepository = accessRepository
         self.favIconRepository = favIconRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
@@ -164,7 +164,7 @@ extension CredentialsViewModel {
                 if case .error = self.state {
                     self.state = .loading
                 }
-                let plan = try await self.upgradeChecker.accessRepository.getPlan()
+                let plan = try await self.accessRepository.getPlan()
                 self.planType = plan.planType
 
                 self.results = try await self.fetchCredentialsTask(plan: plan).value

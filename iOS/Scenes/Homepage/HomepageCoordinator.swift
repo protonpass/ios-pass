@@ -59,7 +59,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let manualLogIn = resolve(\SharedDataContainer.manualLogIn)
@@ -837,7 +836,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
             do {
                 self.showLoadingHud()
 
-                let plan = try await self.upgradeChecker.accessRepository.getPlan()
+                let plan = try await self.accessRepository.getPlan()
                 guard let trialEnd = plan.trialEnd else { return }
                 let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
                 let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)

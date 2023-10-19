@@ -27,10 +27,6 @@ public struct AliasLimitation: Sendable {
 }
 
 public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
-    var accessRepository: AccessRepositoryProtocol { get }
-    var counter: LimitationCounterProtocol { get }
-    var totpChecker: TOTPCheckerProtocol { get }
-
     /// Return `null` when there's no limitation (unlimited aliases)
     func aliasLimitation() async throws -> AliasLimitation?
     func canCreateMoreVaults() async throws -> Bool
@@ -39,7 +35,21 @@ public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
     func isFreeUser() async throws -> Bool
 }
 
-public extension UpgradeCheckerProtocol {
+public final class UpgradeChecker: UpgradeCheckerProtocol {
+    public let accessRepository: AccessRepositoryProtocol
+    public let counter: LimitationCounterProtocol
+    public let totpChecker: TOTPCheckerProtocol
+
+    public init(accessRepository: AccessRepositoryProtocol,
+                counter: LimitationCounterProtocol,
+                totpChecker: TOTPCheckerProtocol) {
+        self.accessRepository = accessRepository
+        self.counter = counter
+        self.totpChecker = totpChecker
+    }
+}
+
+public extension UpgradeChecker {
     func aliasLimitation() async throws -> AliasLimitation? {
         let plan = try await accessRepository.getPlan()
         if let aliasLimit = plan.aliasLimit {
@@ -89,18 +99,4 @@ public protocol TOTPCheckerProtocol: Sendable {
     /// Get the maximum creation date of items that are allowed to display 2FA token
     /// If the creation date of a given login is less than this max creation date, we don't calculate the 2FA token
     func totpCreationDateThreshold(numberOfTotp: Int) async throws -> Int64?
-}
-
-public final class UpgradeChecker: UpgradeCheckerProtocol {
-    public let accessRepository: AccessRepositoryProtocol
-    public let counter: LimitationCounterProtocol
-    public let totpChecker: TOTPCheckerProtocol
-
-    public init(accessRepository: AccessRepositoryProtocol,
-                counter: LimitationCounterProtocol,
-                totpChecker: TOTPCheckerProtocol) {
-        self.accessRepository = accessRepository
-        self.counter = counter
-        self.totpChecker = totpChecker
-    }
 }
