@@ -63,7 +63,11 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private var cancellables = Set<AnyCancellable>()
 
     var canShare: Bool {
-        canUserShareVault(for: vault)
+        canUserShareVault(for: vault) != .cantShare
+    }
+
+    var reachedLimit: Bool {
+        vault.maxMembers <= users.count
     }
 
     init(vault: Vault) {
@@ -87,7 +91,11 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func shareWithMorePeople() {
-        router.present(for: .sharingFlow(.none))
+        if canUserShareVault(for: vault) == .canShare {
+            router.present(for: .sharingFlow(.none))
+        } else {
+            router.present(for: .upselling)
+        }
     }
 
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
@@ -188,6 +196,10 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         if !expandedEmails.contains(email) {
             expandedEmails.append(email)
         }
+    }
+
+    func upgrade() {
+        router.present(for: .upgradeFlow)
     }
 }
 
