@@ -34,6 +34,7 @@ import ProtonCoreFeatureSwitch
 import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUIFoundations
+import Screens
 import StoreKit
 import SwiftUI
 import UIKit
@@ -61,6 +62,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
+    private let manualLogIn = resolve(\SharedDataContainer.manualLogIn)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -628,12 +630,44 @@ private extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        if preferences.onboarded { return }
-        let onboardingView = OnboardingView()
-        let onboardingViewController = UIHostingController(rootView: onboardingView)
-        onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
-        onboardingViewController.isModalInPresentation = true
-        topMostViewController.present(onboardingViewController, animated: true)
+        guard manualLogIn else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            if let access = try? await accessRepository.getAccess(),
+               access.waitingNewUserInvites > 0 {
+                // New user just registered after an invitation
+                presentAwaitAccessConfirmationView()
+            } else {
+                presentOnboardView(forced: false)
+            }
+        }
+    }
+}
+
+// MARK: - Onboard
+
+private extension HomepageCoordinator {
+    func presentAwaitAccessConfirmationView() {
+        let view = AwaitAccessConfirmationView { [weak self] in
+            guard let self else { return }
+            dismissAllViewControllers(animated: true) { [weak self] in
+                guard let self else { return }
+                presentOnboardView(forced: true)
+            }
+        }
+        .theme(preferences.theme)
+        let vc = UIHostingController(rootView: view)
+        vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+        vc.isModalInPresentation = true
+        topMostViewController.present(vc, animated: true)
+    }
+
+    func presentOnboardView(forced: Bool) {
+        guard forced || !preferences.onboarded else { return }
+        let vc = UIHostingController(rootView: OnboardingView())
+        vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+        vc.isModalInPresentation = true
+        topMostViewController.present(vc, animated: true)
     }
 }
 
