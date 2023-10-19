@@ -62,7 +62,7 @@ class BaseItemDetailViewModel: ObservableObject {
         guard let vault else {
             return false
         }
-        return canUserShareVault(for: vault.vault)
+        return canUserShareVault(for: vault.vault) != .cantShare
     }
 
     var isAllowedToEdit: Bool {
@@ -115,7 +115,11 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func share() {
         guard let vault else { return }
-        router.present(for: .shareVaultFromItemDetail(vault, itemContent))
+        if canUserShareVault(for: vault.vault) == .canShare {
+            router.present(for: .shareVaultFromItemDetail(vault, itemContent))
+        } else {
+            router.present(for: .upselling)
+        }
     }
 
     func refresh() {

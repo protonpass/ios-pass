@@ -23,13 +23,19 @@
 import Client
 
 public protocol CanUserShareVaultUseCase: Sendable {
-    func execute(for vault: Vault) -> Bool
+    func execute(for vault: Vault) -> UserShareStatus
 }
 
 public extension CanUserShareVaultUseCase {
-    func callAsFunction(for vault: Vault) -> Bool {
+    func callAsFunction(for vault: Vault) -> UserShareStatus {
         execute(for: vault)
     }
+}
+
+public enum UserShareStatus {
+    case canShare
+    case cantShare
+    case upsell
 }
 
 public final class CanUserShareVault: @unchecked Sendable, CanUserShareVaultUseCase {
@@ -46,10 +52,10 @@ public final class CanUserShareVault: @unchecked Sendable, CanUserShareVaultUseC
         setUp()
     }
 
-    public func execute(for vault: Vault) -> Bool {
+    public func execute(for vault: Vault) -> UserShareStatus {
         guard sharingFeatureFlagIsOpen,
-              vault.isAdmin else {
-            return false
+              vault.isAdmin || vault.isOwner else {
+            return .cantShare
         }
 
         if isFreeUser {
@@ -77,18 +83,19 @@ private extension CanUserShareVault {
         }
     }
 
-    func isFreeUserAllowedToShare(for vault: Vault) -> Bool {
+    func isFreeUserAllowedToShare(for vault: Vault) -> UserShareStatus {
         guard vault.totalOverallMembers < 3 else {
-            return false
+            return .upsell
         }
-        return finalCheck(for: vault)
+
+        return finalCheck(for: vault) ? .canShare : .upsell
     }
 
-    func isPaidUserAllowedToShare(for vault: Vault) -> Bool {
+    func isPaidUserAllowedToShare(for vault: Vault) -> UserShareStatus {
         guard vault.totalOverallMembers < 10 else {
-            return false
+            return .cantShare
         }
-        return finalCheck(for: vault)
+        return finalCheck(for: vault) ? .canShare : .cantShare
     }
 
     func finalCheck(for vault: Vault) -> Bool {
