@@ -24,7 +24,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct PromoteNewUserInviteEndpoint: Endpoint {
-    public typealias Body = InviteUserToShareRequest
+    public typealias Body = PromoteNewUserInviteRequest
     public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
