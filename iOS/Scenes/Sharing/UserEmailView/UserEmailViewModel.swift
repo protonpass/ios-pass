@@ -62,12 +62,8 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
-                #if DEBUG
-                setShareInviteUserEmailAndKeys(with: email, and: nil)
-                goToNextStep = true
-                #else
                 if let sharingError = error as? SharingError,
-                   sharingError == .noPublicKeyAssociatedWithEmail,
+                   sharingError == .notProtonAddress,
                    await getFeatureFlagStatus(with: FeatureFlagType.passSharingNewUsers) {
                     setShareInviteUserEmailAndKeys(with: email, and: nil)
                     goToNextStep = true
@@ -75,7 +71,6 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                     canContinue = false
                     self.error = error.localizedDescription
                 }
-                #endif
             }
         }
     }
@@ -100,12 +95,7 @@ private extension UserEmailViewModel {
             .sink { [weak self] newValue in
                 guard let self else { return }
                 error = nil
-                // Allow invitation to non-existant black emails when in debug mode
-                #if DEBUG
-                canContinue = true
-                #else
                 canContinue = newValue.isValidEmail()
-                #endif
             }
             .store(in: &cancellables)
 
