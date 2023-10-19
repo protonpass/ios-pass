@@ -19,13 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct ShareInvites: Equatable {
-    public let exisingInvites: [ShareExisingUserInvite]
-    public let newInvites: [ShareNewUserInvite]
+    public let exisingUserInvites: [ShareExisingUserInvite]
+    public let newUserInvites: [ShareNewUserInvite]
 
     public init(exisingInvites: [ShareExisingUserInvite],
                 newInvites: [ShareNewUserInvite]) {
-        self.exisingInvites = exisingInvites
-        self.newInvites = newInvites
+        exisingUserInvites = exisingInvites
+        newUserInvites = newInvites
     }
 
     public static var `default`: Self {
@@ -33,7 +33,7 @@ public struct ShareInvites: Equatable {
     }
 
     public var isEmpty: Bool {
-        exisingInvites.isEmpty && newInvites.isEmpty
+        exisingUserInvites.isEmpty && newUserInvites.isEmpty
     }
 }
 
