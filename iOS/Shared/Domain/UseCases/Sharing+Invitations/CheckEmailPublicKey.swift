@@ -22,6 +22,7 @@
 
 import Client
 import Entities
+import ProtonCoreNetworking
 
 protocol GetEmailPublicKeyUseCase: Sendable {
     func execute(with email: String) async throws -> [PublicKey]
@@ -41,10 +42,19 @@ final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseCase {
     }
 
     func execute(with email: String) async throws -> [PublicKey] {
-        let keys = try await publicKeyRepository.getPublicKeys(email: email)
-        guard !keys.isEmpty else {
-            throw SharingError.noPublicKeyAssociatedWithEmail
+        do {
+            let keys = try await publicKeyRepository.getPublicKeys(email: email)
+            guard !keys.isEmpty else {
+                throw SharingError.noPublicKeyAssociatedWithEmail
+            }
+            return keys
+        } catch {
+            if let networkError = error as? ProtonCoreNetworking.ResponseError,
+               networkError.httpCode == 422, networkError.responseCode == 33_102 {
+                throw SharingError.notProtonAddress
+            } else {
+                throw error
+            }
         }
-        return keys
     }
 }
