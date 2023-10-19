@@ -27,11 +27,6 @@ public protocol AccessRepositoryDelegate: AnyObject {
 
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
-    var localDatasource: LocalAccessDatasourceProtocol { get }
-    var remoteDatasource: RemoteAccessDatasourceProtocol { get }
-    var userId: String { get }
-    var logger: Logger { get }
-
     var delegate: AccessRepositoryDelegate? { get set }
 
     /// Get from local, refresh if not exist
@@ -44,7 +39,26 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     func refreshAccess() async throws -> Access
 }
 
-public extension AccessRepositoryProtocol {
+public final class AccessRepository: AccessRepositoryProtocol {
+    public let localDatasource: LocalAccessDatasourceProtocol
+    public let remoteDatasource: RemoteAccessDatasourceProtocol
+    public let userId: String
+    public let logger: Logger
+
+    public weak var delegate: AccessRepositoryDelegate?
+
+    public init(localDatasource: LocalAccessDatasourceProtocol,
+                remoteDatasource: RemoteAccessDatasourceProtocol,
+                userId: String,
+                logManager: LogManagerProtocol) {
+        self.localDatasource = localDatasource
+        self.remoteDatasource = remoteDatasource
+        self.userId = userId
+        logger = .init(manager: logManager)
+    }
+}
+
+public extension AccessRepository {
     func getAccess() async throws -> Access {
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
@@ -77,24 +91,5 @@ public extension AccessRepositoryProtocol {
 
         logger.info("Refreshed access for user \(userId)")
         return remoteAccess
-    }
-}
-
-public final class AccessRepository: AccessRepositoryProtocol {
-    public let localDatasource: LocalAccessDatasourceProtocol
-    public let remoteDatasource: RemoteAccessDatasourceProtocol
-    public let userId: String
-    public let logger: Logger
-
-    public weak var delegate: AccessRepositoryDelegate?
-
-    public init(localDatasource: LocalAccessDatasourceProtocol,
-                remoteDatasource: RemoteAccessDatasourceProtocol,
-                userId: String,
-                logManager: LogManagerProtocol) {
-        self.localDatasource = localDatasource
-        self.remoteDatasource = remoteDatasource
-        self.userId = userId
-        logger = .init(manager: logManager)
     }
 }
