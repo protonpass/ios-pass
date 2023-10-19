@@ -12,12 +12,22 @@ var platforms: [SupportedPlatform] = [
 
 let package = Package(
     name: "Screens",
+    defaultLocalization: "en",
     platforms: platforms,
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "Screens",
             targets: ["Screens"]),
+    ],
+    dependencies: [
+        .package(name: "Core", path: "../Core"),
+        .package(name: "Client", path: "../Client"),
+        .package(name: "Entities", path: "../Entities"),
+        .package(name: "UseCases", path: "../UseCases"),
+        .package(name: "DesignSystem", path: "../DesignSystem"),
+        .package(name: "Macro", path: "../Macro"),
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "12.2.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
