@@ -88,6 +88,7 @@ struct EditableVaultListView: View {
                          itemCount: itemCount,
                          isShared: selection.shared,
                          isSelected: viewModel.isSelected(selection),
+                         showBadge: selection.showBadge,
                          height: 74)
             })
             .buttonStyle(.plain)
