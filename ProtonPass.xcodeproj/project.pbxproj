@@ -5077,7 +5077,7 @@
 			repositoryURL = "https://gitlab.protontech.ch/apple/shared/protoncore.git";
 			requirement = {
 				kind = exactVersion;
-				version = 12.2.0;
+				version = 14.0.1;
 			};
 		};
 		5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */ = {
