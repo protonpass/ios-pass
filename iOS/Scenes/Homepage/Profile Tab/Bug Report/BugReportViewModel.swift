@@ -55,7 +55,7 @@ final class BugReportViewModel: ObservableObject {
 
     var cantSend: Bool { object == nil || description.count < 10 }
 
-    private let planRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let sendUserBugReport = resolve(\UseCasesContainer.sendUserBugReport)
 
     enum SendError: Error {
@@ -70,7 +70,7 @@ final class BugReportViewModel: ObservableObject {
             guard let self else { return }
             isSending = true
             do {
-                let plan = try await planRepository.getPlan()
+                let plan = try await accessRepository.getPlan()
                 let planName = plan.type.capitalized
                 let objectDescription = object?.description ?? ""
                 let title = "[\(planName)] iOS Proton Pass: \(objectDescription)"

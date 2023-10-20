@@ -40,7 +40,7 @@ extension IndexAllLoginItemsUseCase {
 final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
     private let itemRepository: ItemRepositoryProtocol
     private let shareRepository: ShareRepositoryProtocol
-    private let passPlanRepository: PassPlanRepositoryProtocol
+    private let accessRepository: AccessRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
     private let mapLoginItem: MapLoginItemUseCase
@@ -49,7 +49,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
 
     init(itemRepository: ItemRepositoryProtocol,
          shareRepository: ShareRepositoryProtocol,
-         passPlanRepository: PassPlanRepositoryProtocol,
+         accessRepository: AccessRepositoryProtocol,
          credentialManager: CredentialManagerProtocol,
          preferences: Preferences,
          mapLoginItem: MapLoginItemUseCase,
@@ -57,7 +57,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
          logManager: LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        self.passPlanRepository = passPlanRepository
+        self.accessRepository = accessRepository
         self.preferences = preferences
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
@@ -93,7 +93,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
 
 private extension IndexAllLoginItems {
     func filterItems() async throws -> [SymmetricallyEncryptedItem] {
-        let plan = try await passPlanRepository.getPlan()
+        let plan = try await accessRepository.getPlan()
         let items = try await itemRepository.getActiveLogInItems()
         logger.trace("Found \(items.count) active login items")
         if !plan.isFreeUser {
