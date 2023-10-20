@@ -515,14 +515,14 @@ private extension HomepageCoordinator {
                     refreshPlan()
                 }
             } else {
-            paymentsManager.upgradeSubscription { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(inAppPurchasePlan):
-                    if inAppPurchasePlan != nil {
-                        refreshPlan()
-                    } else {
-                        logger.debug("Payment is done but no plan is purchased")
+                paymentsManager.upgradeSubscription { [weak self] result in
+                    guard let self else { return }
+                    switch result {
+                    case let .success(inAppPurchasePlan):
+                        if inAppPurchasePlan != nil {
+                            refreshPlan()
+                        } else {
+                            logger.debug("Payment is done but no plan is purchased")
                         }
                     case let .failure(error):
                         bannerManager.displayTopErrorMessage(error)
