@@ -86,6 +86,7 @@ class BaseCreateEditItemViewModel {
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -153,6 +154,8 @@ class BaseCreateEditItemViewModel {
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
+
+    func telemetryEventTypes() -> [TelemetryEventType] { [] }
 }
 
 // MARK: - Private APIs
@@ -286,6 +289,8 @@ extension BaseCreateEditItemViewModel {
                     self.logger.info("Edited \(oldItemContent.debugInformation)")
                     self.delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
                 }
+
+                addTelemetryEvent(with: telemetryEventTypes())
             } catch {
                 self.logger.error(error)
                 self.router.display(element: .displayErrorBanner(error))
