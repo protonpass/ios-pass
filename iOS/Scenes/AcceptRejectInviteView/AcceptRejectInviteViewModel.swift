@@ -25,6 +25,7 @@ import Combine
 import Entities
 import Factory
 import Foundation
+import Macro
 
 final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var userInvite: UserInvite
