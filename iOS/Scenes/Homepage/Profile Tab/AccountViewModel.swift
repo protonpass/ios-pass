@@ -18,9 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Combine
 import Core
+import Entities
 import Factory
 import ProtonCoreFeatureSwitch
 
@@ -33,14 +33,14 @@ protocol AccountViewModelDelegate: AnyObject {
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     private let payments = resolve(\ServiceContainer.payments)
     private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     let isShownAsSheet: Bool
-    @Published private(set) var plan: PassPlan?
+    @Published private(set) var plan: Plan?
 
     weak var delegate: AccountViewModelDelegate?
 
@@ -57,8 +57,8 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             do {
                 // First get local plan to optimistically display it
                 // and then try to refresh the plan to have it updated
-                self.plan = try await self.passPlanRepository.getPlan()
-                self.plan = try await self.passPlanRepository.refreshPlan()
+                self.plan = try await self.accessRepository.getPlan()
+                self.plan = try await self.accessRepository.refreshAccess().plan
             } catch {
                 self.logger.error(error)
             }

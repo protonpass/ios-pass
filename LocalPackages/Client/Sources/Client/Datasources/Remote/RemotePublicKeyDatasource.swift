@@ -37,6 +37,6 @@ public struct RemotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol {
     public func getPublicKeys(email: String) async throws -> [PublicKey] {
         let endpoint = GetPublicKeysEndpoint(email: email)
         let response = try await apiService.exec(endpoint: endpoint)
-        return response.keys
+        return response.address.keys
     }
 }
