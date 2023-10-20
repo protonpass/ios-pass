@@ -22,14 +22,14 @@ public struct ShareInvites: Equatable {
     public let exisingUserInvites: [ShareExisingUserInvite]
     public let newUserInvites: [ShareNewUserInvite]
 
-    public init(exisingInvites: [ShareExisingUserInvite],
-                newInvites: [ShareNewUserInvite]) {
-        exisingUserInvites = exisingInvites
-        newUserInvites = newInvites
+    public init(exisingUserInvites: [ShareExisingUserInvite],
+                newUserInvites: [ShareNewUserInvite]) {
+        self.exisingUserInvites = exisingUserInvites
+        self.newUserInvites = newUserInvites
     }
 
     public static var `default`: Self {
-        .init(exisingInvites: [], newInvites: [])
+        .init(exisingUserInvites: [], newUserInvites: [])
     }
 
     public var isEmpty: Bool {
