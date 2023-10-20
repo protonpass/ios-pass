@@ -54,7 +54,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var showingPermanentDeletionAlert = false
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
@@ -113,9 +113,13 @@ private extension ItemsTabViewModel {
         inviteRefreshTask?.cancel()
         inviteRefreshTask = Task { @MainActor [weak self] in
             guard let self else { return }
-            self.banners.removeAll()
+            banners.removeAll()
             if let invites, !invites.isEmpty {
-                self.banners.append(invites.toInfoBanners)
+                if let newUserInvite = invites.first(where: { $0.fromNewUser }) {
+                    router.present(for: .acceptRejectInvite(newUserInvite))
+                } else {
+                    banners.append(invites.toInfoBanners)
+                }
             }
             if banners.isEmpty {
                 await fillLocalBanners()
@@ -134,7 +138,7 @@ private extension ItemsTabViewModel {
                 var shouldShow = true
                 switch banner {
                 case .trial:
-                    let plan = try await passPlanRepository.getPlan()
+                    let plan = try await accessRepository.getPlan()
                     shouldShow = plan.isInTrial
 
                 case .autofill:

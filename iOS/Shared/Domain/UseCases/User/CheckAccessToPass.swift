@@ -47,7 +47,7 @@ final class CheckAccessToPass: @unchecked Sendable, CheckAccessToPassUseCase {
             guard let self else { return }
             do {
                 logger.trace("Checking access to Pass")
-                let endpoint = CheckAccessAndPlanEndpoint()
+                let endpoint = CheckAccessEndpoint()
                 _ = try await apiService.exec(endpoint: endpoint)
                 logger.info("Checked access to Pass")
             } catch {

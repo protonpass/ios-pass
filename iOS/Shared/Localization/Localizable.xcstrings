@@ -13551,6 +13551,14 @@
         }
       }
     },
+    "Confirm access" : {
+      "comment" : "Confirm the invitation of a new user",
+      "extractionState" : "manual"
+    },
+    "Congratulations,\n your access has been confirmed" : {
+      "comment" : "When an admin confirmed access of a new user",
+      "extractionState" : "manual"
+    },
     "Continue" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -25540,6 +25548,10 @@
       "comment" : "Subtitle below an email address in manage sharing access page, indicating that the invitation is made but the invitee has not yet accepted.",
       "extractionState" : "manual"
     },
+    "Invitations" : {
+      "comment" : "Title of the section which shows the list of pending invitations",
+      "extractionState" : "manual"
+    },
     "invites you to access items in" : {
       "comment" : "The description of the sheet to reject/accept invitation. This is prefixed by the inviter's email. E.g \"john.doe@example.com invites you to access items in\". Below this phrase are the vault's details like name and number of items.",
       "extractionState" : "manual"
@@ -29731,6 +29743,10 @@
           }
         }
       }
+    },
+    "Members" : {
+      "comment" : "Title of the section which shows the list of members",
+      "extractionState" : "manual"
     },
     "Memorable Password" : {
       "extractionState" : "manual",
@@ -35586,6 +35602,10 @@
           }
         }
       }
+    },
+    "Pending account creation" : {
+      "comment" : "The subtitle to indicate the state of an invitation. In this case the invitation is made to a non Proton email and we're waiting for the owner of this email to create a Proton account.",
+      "extractionState" : "manual"
     },
     "Periods" : {
       "extractionState" : "manual",
@@ -41778,6 +41798,10 @@
           }
         }
       }
+    },
+    "See the shared vault" : {
+      "comment" : "New user accepts the invitation",
+      "extractionState" : "manual"
     },
     "Select **Proton Pass**" : {
       "localizations" : {
@@ -55451,9 +55475,6 @@
           }
         }
       }
-    },
-    "You can not share « %@ » vault with this email" : {
-
     },
     "You currently have no login items" : {
       "localizations" : {

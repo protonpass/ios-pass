@@ -33,13 +33,13 @@ public extension CanUserPerformActionOnVaultUseCase {
 }
 
 public final class CanUserPerformActionOnVault: @unchecked Sendable, CanUserPerformActionOnVaultUseCase {
-    private let planRepository: PassPlanRepositoryProtocol
+    private let accessRepository: AccessRepositoryProtocol
     private let vaultsManager: VaultsManagerProtocol
     private var isFreeUser = true
 
-    public init(planRepository: PassPlanRepositoryProtocol,
+    public init(accessRepository: AccessRepositoryProtocol,
                 vaultsManager: VaultsManagerProtocol) {
-        self.planRepository = planRepository
+        self.accessRepository = accessRepository
         self.vaultsManager = vaultsManager
         setUp()
     }
@@ -55,7 +55,7 @@ public final class CanUserPerformActionOnVault: @unchecked Sendable, CanUserPerf
 private extension CanUserPerformActionOnVault {
     func setUp() {
         Task { [weak self] in
-            guard let self, let userPlan = try? await planRepository.getPlan() else {
+            guard let self, let userPlan = try? await accessRepository.getPlan() else {
                 return
             }
 

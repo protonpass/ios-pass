@@ -29,6 +29,7 @@ import UseCases
 final class SendShareInviteTests: XCTestCase {
     var sut: SendVaultShareInviteUseCase!
     var createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock!
+    var makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase!
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
@@ -37,11 +38,13 @@ final class SendShareInviteTests: XCTestCase {
     override func setUp() {
         super.setUp()
         createAndMoveItemToNewVault = CreateAndMoveItemToNewVaultUseCaseMock()
+        makeUnsignedSignatureForVaultSharing = MakeUnsignedSignatureForVaultSharing()
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
         sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
+                                   makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
                                    shareInviteRepository: shareInviteRepository,

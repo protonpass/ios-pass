@@ -35,3 +35,7 @@ public struct PublicKey: Decodable, Sendable {
         case value = "publicKey"
     }
 }
+
+public struct PublicKeys: Decodable, Sendable {
+    public let keys: [PublicKey]
+}

@@ -33,6 +33,15 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "Screens")
+            name: "Screens",
+            dependencies: [
+                .product(name: "Core", package: "Core"),
+                .product(name: "Client", package: "Client"),
+                .product(name: "Entities", package: "Entities"),
+                .product(name: "UseCases", package: "UseCases"),
+                .product(name: "DesignSystem", package: "DesignSystem"),
+                .product(name: "Macro", package: "Macro"),
+                .product(name: "ProtonCoreLoginUI", package: "protoncore_ios")
+            ])
     ]
 )
