@@ -1,5 +1,5 @@
 //
-// ShareUser.swift
+// MakeUnsignedSignatureForVaultSharing.swift
 // Proton Pass - Created on 13/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -17,36 +17,25 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
+import PassRustCore
 
-public struct ShareUser: Equatable, Hashable, Identifiable {
-    public let email: String
-    public let shareRole: ShareRole?
-    public let isOwner: Bool
-    public let inviteID: String?
-    public let shareID: String?
-    public let userName: String?
+public protocol MakeUnsignedSignatureForVaultSharingUseCase: Sendable {
+    func execute(email: String, vaultKey: Data) -> Data
+}
 
-    public init(email: String, shareRole: ShareRole?, isOwner: Bool, inviteID: String?, shareID: String?,
-                userName: String?) {
-        self.email = email
-        self.shareRole = shareRole
-        self.isOwner = isOwner
-        self.inviteID = inviteID
-        self.shareID = shareID
-        self.userName = userName
+public extension MakeUnsignedSignatureForVaultSharingUseCase {
+    func callAsFunction(email: String, vaultKey: Data) -> Data {
+        execute(email: email, vaultKey: vaultKey)
     }
+}
 
-    public var id: Int {
-        hashValue
-    }
+public final class MakeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase {
+    public init() {}
 
-    public var isPending: Bool {
-        shareRole == nil
-    }
-
-    public var isAdmin: Bool {
-        shareRole == .admin
+    public func execute(email: String, vaultKey: Data) -> Data {
+        NewUserInviteCreator().createSignatureBody(email: email, vaultKey: vaultKey)
     }
 }

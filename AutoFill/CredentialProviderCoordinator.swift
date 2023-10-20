@@ -74,6 +74,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
     private var telemetryEventRepository: TelemetryEventRepositoryProtocol?
     private var upgradeChecker: UpgradeCheckerProtocol?
+    private var accessRepository: AccessRepositoryProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var vaultListUiModels: [VaultListUiModel]?
@@ -260,6 +261,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         remoteSyncEventsDatasource = SharedRepositoryContainer.shared.remoteSyncEventsDatasource()
         telemetryEventRepository = SharedRepositoryContainer.shared.telemetryEventRepository()
         upgradeChecker = SharedServiceContainer.shared.upgradeChecker()
+        accessRepository = SharedRepositoryContainer.shared.accessRepository()
     }
 
     func addNewEvent(type: TelemetryEventType) {
@@ -375,7 +377,7 @@ private extension CredentialProviderCoordinator {
         guard let shareRepository,
               let shareEventIDRepository,
               let itemRepository,
-              let upgradeChecker,
+              let accessRepository,
               let favIconRepository,
               let shareKeyRepository,
               let remoteSyncEventsDatasource else { return }
@@ -383,7 +385,7 @@ private extension CredentialProviderCoordinator {
                                              shareRepository: shareRepository,
                                              shareEventIDRepository: shareEventIDRepository,
                                              itemRepository: itemRepository,
-                                             upgradeChecker: upgradeChecker,
+                                             accessRepository: accessRepository,
                                              shareKeyRepository: shareKeyRepository,
                                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
                                              favIconRepository: favIconRepository,

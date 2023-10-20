@@ -1,5 +1,5 @@
 //
-// LocalPassPlanDatasource.swift
+// LocalAccessDatasource.swift
 // Proton Pass - Created on 04/05/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,33 +18,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
 
-public protocol LocalPassPlanDatasourceProtocol: LocalDatasourceProtocol {
-    func getPassPlan(userId: String) async throws -> PassPlan?
-    func upsert(passPlan: PassPlan, userId: String) async throws
+public protocol LocalAccessDatasourceProtocol: LocalDatasourceProtocol {
+    func getAccess(userId: String) async throws -> Access?
+    func upsert(access: Access, userId: String) async throws
 }
 
-public extension LocalPassPlanDatasourceProtocol {
-    func getPassPlan(userId: String) async throws -> PassPlan? {
+public extension LocalAccessDatasourceProtocol {
+    func getAccess(userId: String) async throws -> Access? {
         let taskContext = newTaskContext(type: .fetch)
 
-        let fetchRequest = PassPlanEntity.fetchRequest()
+        let fetchRequest = AccessEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return entities.compactMap { $0.toPassPlan() }.first
+        return entities.compactMap { $0.toAccess() }.first
     }
 
-    func upsert(passPlan: PassPlan, userId: String) async throws {
+    func upsert(access: Access, userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =
-            newBatchInsertRequest(entity: PassPlanEntity.entity(context: taskContext),
-                                  sourceItems: [passPlan]) { managedObject, passPlan in
-                (managedObject as? PassPlanEntity)?.hydrate(from: passPlan, userId: userId)
+            newBatchInsertRequest(entity: AccessEntity.entity(context: taskContext),
+                                  sourceItems: [access]) { managedObject, access in
+                (managedObject as? AccessEntity)?.hydrate(from: access, userId: userId)
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }
 
-public final class LocalPassPlanDatasource: LocalDatasource, LocalPassPlanDatasourceProtocol {}
+public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol {}

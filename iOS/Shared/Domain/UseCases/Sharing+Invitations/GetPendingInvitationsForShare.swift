@@ -24,11 +24,11 @@
 import Entities
 
 protocol GetPendingInvitationsForShareUseCase: Sendable {
-    func execute(with shareId: String) async throws -> [ShareInvite]
+    func execute(with shareId: String) async throws -> ShareInvites
 }
 
 extension GetPendingInvitationsForShareUseCase {
-    func callAsFunction(with shareId: String) async throws -> [ShareInvite] {
+    func callAsFunction(with shareId: String) async throws -> ShareInvites {
         try await execute(with: shareId)
     }
 }
@@ -40,7 +40,7 @@ final class GetPendingInvitationsForShare: GetPendingInvitationsForShareUseCase 
         self.repository = repository
     }
 
-    func execute(with shareId: String) async throws -> [ShareInvite] {
+    func execute(with shareId: String) async throws -> ShareInvites {
         try await repository.getAllPendingInvites(shareId: shareId)
     }
 }

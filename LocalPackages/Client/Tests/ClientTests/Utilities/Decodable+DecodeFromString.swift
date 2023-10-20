@@ -1,6 +1,6 @@
-//
-// ShareUser+Extensions.swift
-// Proton Pass - Created on 13/10/2023.
+//  
+// Decodable+DecodeFromString.swift
+// Proton Pass - Created on 16/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,18 +17,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Entities
-import Macro
+import Foundation
 
-extension ShareUser {
-    var permission: String {
-        if isOwner {
-            return #localized("Owner")
+extension Decodable {
+    static func decode(from string: String,
+                       decoder: JSONDecoder = .decapitalisingFirstLetter) throws -> Self {
+        guard let data = string.data(using: .utf8) else {
+            fatalError("Not UTF8 string")
         }
-        if let shareRole {
-            return shareRole.title
-        }
-        return #localized("Invitation sent")
+        return try decoder.decode(Self.self, from: data)
     }
 }
