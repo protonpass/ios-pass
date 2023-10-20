@@ -13552,6 +13552,10 @@
       "comment" : "Confirm the invitation of a new user",
       "extractionState" : "manual"
     },
+    "Congratulations,\n your access has been confirmed" : {
+      "comment" : "When an admin confirmed access of a new user",
+      "extractionState" : "manual"
+    },
     "Continue" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -41791,6 +41795,10 @@
           }
         }
       }
+    },
+    "See the shared vault" : {
+      "comment" : "New user accepts the invitation",
+      "extractionState" : "manual"
     },
     "Select **Proton Pass**" : {
       "localizations" : {
