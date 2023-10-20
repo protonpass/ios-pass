@@ -1,5 +1,5 @@
 //
-// DeleteShareNewInviteEndpoint.swift
+// DeleteShareNewUserInviteEndpoint.swift
 // Proton Pass - Created on 18/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
