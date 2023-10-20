@@ -95,7 +95,7 @@ extension AccountViewModel {
                     .debug("""
 Payment is done but no plan is purchased.
  Or purchase was cancelled.
- Or finished and sheet is being dismissed.
+ Or completed, and sheet is being dismissed.
 """)
             }
         case let .failure(error):
