@@ -168,6 +168,17 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
+    override func telemetryEventTypes() -> [TelemetryEventType] {
+        if originalTotpUri.isEmpty, !totpUri.isEmpty {
+            [.twoFaCreation]
+        } else if totpUri != sanitizeTotpUriForEditing(originalTotpUri) {
+            // The edited URI != the URI for editing
+            [.twoFaUpdate]
+        } else {
+            []
+        }
+    }
+
     func generateAlias() {
         if let aliasOptions, let aliasCreationLiteInfo {
             createEditLoginViewModelDelegate?
