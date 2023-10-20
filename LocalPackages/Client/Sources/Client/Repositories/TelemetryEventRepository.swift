@@ -35,7 +35,7 @@ public protocol TelemetryEventRepositoryProtocol {
     var localDatasource: LocalTelemetryEventDatasourceProtocol { get }
     var remoteDatasource: RemoteTelemetryEventDatasourceProtocol { get }
     var remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol { get }
-    var passPlanRepository: PassPlanRepositoryProtocol { get }
+    var accessRepository: AccessRepositoryProtocol { get }
     var eventCount: Int { get }
     var logger: Logger { get }
     var scheduler: TelemetrySchedulerProtocol { get }
@@ -74,8 +74,8 @@ public extension TelemetryEventRepositoryProtocol {
             return .thresholdReachedButTelemetryOff
         }
 
-        logger.trace("Telemetry enabled, refreshing user plan.")
-        let plan = try await passPlanRepository.refreshPlan()
+        logger.trace("Telemetry enabled, refreshing user access.")
+        let plan = try await accessRepository.refreshAccess().plan
 
         while true {
             let events = try await localDatasource.getOldestEvents(count: eventCount,
@@ -97,7 +97,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let localDatasource: LocalTelemetryEventDatasourceProtocol
     public let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
     public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
-    public let passPlanRepository: PassPlanRepositoryProtocol
+    public let accessRepository: AccessRepositoryProtocol
     public let eventCount: Int
     public let logger: Logger
     public let scheduler: TelemetrySchedulerProtocol
@@ -106,7 +106,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public init(localDatasource: LocalTelemetryEventDatasourceProtocol,
                 remoteDatasource: RemoteTelemetryEventDatasourceProtocol,
                 remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
-                passPlanRepository: PassPlanRepositoryProtocol,
+                accessRepository: AccessRepositoryProtocol,
                 logManager: LogManagerProtocol,
                 scheduler: TelemetrySchedulerProtocol,
                 userId: String,
@@ -114,7 +114,7 @@ public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
-        self.passPlanRepository = passPlanRepository
+        self.accessRepository = accessRepository
         self.eventCount = eventCount
         logger = .init(manager: logManager)
         self.scheduler = scheduler

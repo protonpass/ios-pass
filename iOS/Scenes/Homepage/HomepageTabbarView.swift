@@ -81,7 +81,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable {
     private let profileTabView: ProfileTabView
     private var profileTabViewController: UIViewController?
 
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
 
     weak var homepageTabBarControllerDelegate: HomepageTabBarControllerDelegate?
@@ -163,7 +163,7 @@ extension HomepageTabBarController {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let plan = try await self.passPlanRepository.getPlan()
+                let plan = try await self.accessRepository.getPlan()
 
                 let (image, selectedImage): (UIImage, UIImage) = switch plan.planType {
                 case .free:

@@ -23,7 +23,7 @@ import ProtonCoreNetworking
 
 public struct GetPublicKeysResponse: Decodable {
     public let code: Int
-    public let keys: [PublicKey]
+    public let address: PublicKeys
 }
 
 public struct GetPublicKeysEndpoint: Endpoint {
@@ -36,7 +36,7 @@ public struct GetPublicKeysEndpoint: Endpoint {
 
     init(email: String) {
         debugDescription = "Get public keys"
-        path = "/keys"
-        parameters = ["Email": email]
+        path = "/keys/all"
+        parameters = ["Email": email, "InternalOnly": 1]
     }
 }
