@@ -35,7 +35,8 @@ public extension RemoteShareInviteDatasourceProtocol {
     func getPendingInvites(sharedId: String) async throws -> ShareInvites {
         let endpoint = GetPendingInvitesforShareEndpoint(for: sharedId)
         let response = try await apiService.exec(endpoint: endpoint)
-        return .init(exisingInvites: response.invites, newInvites: response.newUserInvites)
+        return .init(exisingUserInvites: response.invites,
+                     newUserInvites: response.newUserInvites)
     }
 
     func inviteProtonUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool {

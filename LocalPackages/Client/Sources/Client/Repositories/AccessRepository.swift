@@ -40,10 +40,10 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
 }
 
 public final class AccessRepository: AccessRepositoryProtocol {
-    public let localDatasource: LocalAccessDatasourceProtocol
-    public let remoteDatasource: RemoteAccessDatasourceProtocol
-    public let userId: String
-    public let logger: Logger
+    private let localDatasource: LocalAccessDatasourceProtocol
+    private let remoteDatasource: RemoteAccessDatasourceProtocol
+    private let userId: String
+    private let logger: Logger
 
     public weak var delegate: AccessRepositoryDelegate?
 

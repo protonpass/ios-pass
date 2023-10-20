@@ -36,9 +36,9 @@ public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
 }
 
 public final class UpgradeChecker: UpgradeCheckerProtocol {
-    public let accessRepository: AccessRepositoryProtocol
-    public let counter: LimitationCounterProtocol
-    public let totpChecker: TOTPCheckerProtocol
+    private let accessRepository: AccessRepositoryProtocol
+    private let counter: LimitationCounterProtocol
+    private let totpChecker: TOTPCheckerProtocol
 
     public init(accessRepository: AccessRepositoryProtocol,
                 counter: LimitationCounterProtocol,
