@@ -49,36 +49,21 @@ private final class MockedTelemetryOffUserSettingsDatasource: RemoteUserSettings
 }
 
 private final class MockedFreePlanRepository: AccessRepositoryProtocol {
-    var localDatasource: LocalAccessDatasourceProtocol =
-        LocalAccessDatasource(container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
-
-    var remoteDatasource: RemoteAccessDatasourceProtocol = MockedRemoteAccessDatasource()
-
     weak var delegate: AccessRepositoryDelegate?
+    let access = Access(plan: .init(type: "free",
+                                    internalName: .random(),
+                                    displayName: .random(),
+                                    hideUpgrade: false,
+                                    trialEnd: .random(in: 1...100),
+                                    vaultLimit: .random(in: 1...100),
+                                    aliasLimit: .random(in: 1...100),
+                                    totpLimit: .random(in: 1...100)),
+                        pendingInvites: 1,
+                        waitingNewUserInvites: 1)
 
-    var userId: String = ""
-    let logger = Logger.dummyLogger()
-
-    static let freePlan = Plan(type: "free",
-                               internalName: .random(),
-                               displayName: .random(),
-                               hideUpgrade: false,
-                               trialEnd: .random(in: 1...100),
-                               vaultLimit: .random(in: 1...100),
-                               aliasLimit: .random(in: 1...100),
-                               totpLimit: .random(in: 1...100))
-
-    func getPlan() async throws -> Plan { Self.freePlan }
-
-    func refreshPlan() async throws -> Plan { Self.freePlan }
-
-    private final class MockedRemoteAccessDatasource: RemoteAccessDatasourceProtocol {
-        func getAccess() async throws -> Access {
-            .init(plan: MockedFreePlanRepository.freePlan,
-                  pendingInvites: 1,
-                  waitingNewUserInvites: 2)
-        }
-    }
+    func getAccess() async throws -> Access { access }
+    func getPlan() async throws -> Plan { access.plan }
+    func refreshAccess() async throws -> Access { access }
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {
