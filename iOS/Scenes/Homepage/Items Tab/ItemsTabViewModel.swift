@@ -113,6 +113,7 @@ private extension ItemsTabViewModel {
         inviteRefreshTask?.cancel()
         inviteRefreshTask = Task { @MainActor [weak self] in
             guard let self else { return }
+            banners.removeAll()
             if let invites, !invites.isEmpty {
                 if let newUserInvite = invites.first(where: { $0.fromNewUser }) {
                     router.present(for: .acceptRejectInvite(newUserInvite))
