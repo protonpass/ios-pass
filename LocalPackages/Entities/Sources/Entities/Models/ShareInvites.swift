@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct ShareInvites: Equatable {
+public struct ShareInvites: Equatable, Sendable {
     public let exisingUserInvites: [ShareExisingUserInvite]
     public let newUserInvites: [ShareNewUserInvite]
 
@@ -37,7 +37,7 @@ public struct ShareInvites: Equatable {
     }
 }
 
-public struct ShareExisingUserInvite: Decodable, Equatable, Identifiable {
+public struct ShareExisingUserInvite: Decodable, Equatable, Identifiable, Sendable {
     public let inviteID, invitedEmail, inviterEmail, shareRoleID: String
     public let targetType: Int
     public let targetID: String
@@ -76,12 +76,12 @@ public struct ShareExisingUserInvite: Decodable, Equatable, Identifiable {
     }
 }
 
-public enum NewShareInviteState {
+public enum NewShareInviteState: Sendable {
     case waitingForAccountCreation
     case accountCreated
 }
 
-public struct ShareNewUserInvite: Decodable, Equatable, Identifiable {
+public struct ShareNewUserInvite: Decodable, Equatable, Identifiable, Sendable {
     public let newUserInviteID: String
     public let state: Int
     public let targetType: Int

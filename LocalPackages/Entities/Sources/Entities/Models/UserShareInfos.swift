@@ -20,7 +20,7 @@
 
 // MARK: - User share informations & permissions
 
-public struct UserShareInfos: Codable, Hashable, Identifiable {
+public struct UserShareInfos: Codable, Hashable, Identifiable, Sendable {
     public let shareID: String
     public let userName: String
     public let userEmail: String
