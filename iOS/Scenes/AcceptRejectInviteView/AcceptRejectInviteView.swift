@@ -34,7 +34,15 @@ struct AcceptRejectInviteView: View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
                 VStack {
-                    senderEmailInfo
+                    if viewModel.userInvite.fromNewUser {
+                        Text("Congratulations,\n your access has been confirmed")
+                            .font(.title2.bold())
+                            .foregroundColor(PassColor.textNorm.toColor)
+                            .multilineTextAlignment(.center)
+                    } else {
+                        senderEmailInfo
+                    }
+
                     Spacer()
                     if let infos = viewModel.vaultInfos {
                         vaultInformation(infos: infos)
@@ -102,12 +110,12 @@ private extension AcceptRejectInviteView {
 private extension AcceptRejectInviteView {
     var actionButtons: some View {
         VStack {
-            CapsuleTextButton(title: #localized("Join shared vault"),
+            CapsuleTextButton(title: viewModel.userInvite.acceptButtonTitle,
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm,
                               action: viewModel.accept)
 
-            CapsuleTextButton(title: #localized("Reject invitation"),
+            CapsuleTextButton(title: viewModel.userInvite.rejectButtonTitle,
                               titleColor: PassColor.interactionNormMajor1,
                               backgroundColor: PassColor.interactionNormMinor1,
                               action: viewModel.reject)
@@ -120,6 +128,14 @@ private extension AcceptRejectInviteView {
 }
 
 private extension UserInvite {
+    var acceptButtonTitle: String {
+        fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault")
+    }
+
+    var rejectButtonTitle: String {
+        fromNewUser ? #localized("Close") : #localized("Reject invitation")
+    }
+
     var vaultsCountInfos: String {
         let itemsCount = #localized("%lld item(s)", vaultData?.itemCount ?? 0)
         let membersCount = #localized("%lld member(s)", vaultData?.memberCount ?? 0)
