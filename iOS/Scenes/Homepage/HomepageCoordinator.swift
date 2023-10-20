@@ -34,6 +34,7 @@ import ProtonCoreFeatureSwitch
 import ProtonCoreLogin
 import ProtonCoreServices
 import ProtonCoreUIFoundations
+import Screens
 import StoreKit
 import SwiftUI
 import UIKit
@@ -57,10 +58,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
+    private let manualLogIn = resolve(\SharedDataContainer.manualLogIn)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -94,7 +95,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         vaultsManager.refresh()
         start()
         eventLoop.start()
-        refreshPlan()
+        refreshAccess()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
     }
@@ -108,7 +109,7 @@ private extension HomepageCoordinator {
     func finalizeInitialization() {
         eventLoop.delegate = self
         itemContextMenuHandler.delegate = self
-        passPlanRepository.delegate = self
+        accessRepository.delegate = self
         urlOpener.rootViewController = rootViewController
 
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
@@ -140,7 +141,7 @@ private extension HomepageCoordinator {
                 sendAllEventsIfApplicable()
                 eventLoop.start()
                 eventLoop.forceSync()
-                refreshPlan()
+                refreshAccess()
             }
             .store(in: &cancellables)
     }
@@ -184,11 +185,11 @@ private extension HomepageCoordinator {
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
     }
 
-    func refreshPlan() {
+    func refreshAccess() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await passPlanRepository.refreshPlan()
+                try await accessRepository.refreshAccess()
             } catch {
                 logger.error(error)
             }
@@ -516,7 +517,7 @@ private extension HomepageCoordinator {
                     switch result {
                     case let .success(inAppPurchasePlan):
                         if inAppPurchasePlan != nil {
-                            refreshPlan()
+                            refreshAccess()
                         } else {
                             logger.debug("Payment is done but no plan is purchased")
                         }
@@ -644,19 +645,51 @@ private extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        if preferences.onboarded { return }
-        let onboardingView = OnboardingView()
-        let onboardingViewController = UIHostingController(rootView: onboardingView)
-        onboardingViewController.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
-        onboardingViewController.isModalInPresentation = true
-        topMostViewController.present(onboardingViewController, animated: true)
+        guard manualLogIn else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            if let access = try? await accessRepository.getAccess(),
+               access.waitingNewUserInvites > 0 {
+                // New user just registered after an invitation
+                presentAwaitAccessConfirmationView()
+            } else {
+                presentOnboardView(forced: false)
+            }
+        }
+    }
+}
+
+// MARK: - Onboard
+
+private extension HomepageCoordinator {
+    func presentAwaitAccessConfirmationView() {
+        let view = AwaitAccessConfirmationView { [weak self] in
+            guard let self else { return }
+            dismissAllViewControllers(animated: true) { [weak self] in
+                guard let self else { return }
+                presentOnboardView(forced: true)
+            }
+        }
+        .theme(preferences.theme)
+        let vc = UIHostingController(rootView: view)
+        vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+        vc.isModalInPresentation = true
+        topMostViewController.present(vc, animated: true)
+    }
+
+    func presentOnboardView(forced: Bool) {
+        guard forced || !preferences.onboarded else { return }
+        let vc = UIHostingController(rootView: OnboardingView())
+        vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
+        vc.isModalInPresentation = true
+        topMostViewController.present(vc, animated: true)
     }
 }
 
 // MARK: - PassPlanRepositoryDelegate
 
-extension HomepageCoordinator: PassPlanRepositoryDelegate {
-    func passPlanRepositoryDidUpdateToNewPlan() {
+extension HomepageCoordinator: AccessRepositoryDelegate {
+    func accessRepositoryDidUpdateToNewPlan() {
         logger.trace("Found new plan, refreshing credential database")
         homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
         profileTabViewModel?.refreshPlan()
@@ -819,7 +852,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
             do {
                 self.showLoadingHud()
 
-                let plan = try await self.upgradeChecker.passPlanRepository.getPlan()
+                let plan = try await self.accessRepository.getPlan()
                 guard let trialEnd = plan.trialEnd else { return }
                 let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
                 let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)

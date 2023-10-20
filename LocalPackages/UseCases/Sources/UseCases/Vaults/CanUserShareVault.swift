@@ -39,15 +39,15 @@ public enum UserShareStatus {
 }
 
 public final class CanUserShareVault: @unchecked Sendable, CanUserShareVaultUseCase {
-    private let planRepository: PassPlanRepositoryProtocol
+    private let accessRepository: AccessRepositoryProtocol
     private let getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase
     private var isFreeUser = true
     private var sharingFeatureFlagIsOpen = false
     private var isPrimaryVaultRemoved = false
 
     public init(getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase,
-                planRepository: PassPlanRepositoryProtocol) {
-        self.planRepository = planRepository
+                accessRepository: AccessRepositoryProtocol) {
+        self.accessRepository = accessRepository
         self.getFeatureFlagStatusUseCase = getFeatureFlagStatusUseCase
         setUp()
     }
@@ -73,7 +73,7 @@ private extension CanUserShareVault {
                 return
             }
 
-            async let isFreeUserCheck = try? await planRepository.getPlan().isFreeUser
+            async let isFreeUserCheck = try? await accessRepository.getPlan().isFreeUser
             async let isPrimaryRemoved = await getFeatureFlagStatusUseCase(with: FeatureFlagType
                 .passRemovePrimaryVault)
             async let featureFlags = await getFeatureFlagStatusUseCase(with: FeatureFlagType.passSharingV1)
