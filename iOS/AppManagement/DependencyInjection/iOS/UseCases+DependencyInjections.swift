@@ -111,12 +111,22 @@ extension UseCasesContainer {
 
     var sendVaultShareInvite: Factory<SendVaultShareInviteUseCase> {
         self { SendVaultShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
+                                    makeUnsignedSignatureForVaultSharing: self
+                                        .makeUnsignedSignatureForVaultSharing(),
                                     shareInviteService: self.shareInviteService,
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
                                     userData: SharedDataContainer.shared.userData(),
                                     syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
+    }
+
+    var promoteNewUserInvite: Factory<PromoteNewUserInviteUseCase> {
+        self { PromoteNewUserInvite(publicKeyRepository: SharedRepositoryContainer.shared.publicKeyRepository(),
+                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                                    shareInviteRepository: SharedRepositoryContainer.shared
+                                        .shareInviteRepository(),
+                                    userData: SharedDataContainer.shared.userData()) }
     }
 
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
@@ -138,11 +148,6 @@ extension UseCasesContainer {
         }
     }
 
-    var getAllUsersForShare: Factory<GetAllUsersForShareUseCase> {
-        self { GetAllUsersForShare(getUsersLinkedToShare: self.getUsersLinkedToShare(),
-                                   getPendingInvitationsForShare: self.getPendingInvitationsForShare()) }
-    }
-
     var updateUserShareRole: Factory<UpdateUserShareRoleUseCase> {
         self { UpdateUserShareRole(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
@@ -154,13 +159,13 @@ extension UseCasesContainer {
     var canUserShareVault: Factory<CanUserShareVaultUseCase> {
         self {
             CanUserShareVault(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
-                              planRepository: SharedRepositoryContainer.shared.passPlanRepository())
+                              accessRepository: SharedRepositoryContainer.shared.accessRepository())
         }
     }
 
     var canUserPerformActionOnVault: Factory<CanUserPerformActionOnVaultUseCase> {
         self {
-            CanUserPerformActionOnVault(planRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+            CanUserPerformActionOnVault(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                         vaultsManager: SharedServiceContainer.shared.vaultsManager())
         }
     }
@@ -175,7 +180,7 @@ extension UseCasesContainer {
 
     var refreshInvitations: Factory<RefreshInvitationsUseCase> {
         self { RefreshInvitations(inviteRepository: RepositoryContainer.shared.inviteRepository(),
-                                  passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                  accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                   getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus()) }
     }
 
@@ -204,6 +209,13 @@ extension UseCasesContainer {
         self { RevokeInvitation(shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository()) }
     }
 
+    var revokeNewUserInvitation: Factory<RevokeNewUserInvitationUseCase> {
+        self {
+            RevokeNewUserInvitation(shareInviteRepository: SharedRepositoryContainer.shared
+                .shareInviteRepository())
+        }
+    }
+
     var sendInviteReminder: Factory<SendInviteReminderUseCase> {
         self { SendInviteReminder(shareInviteRepository: SharedRepositoryContainer.shared.shareInviteRepository())
         }
@@ -211,6 +223,10 @@ extension UseCasesContainer {
 
     var canUserTransferVaultOwnership: Factory<CanUserTransferVaultOwnershipUseCase> {
         self { CanUserTransferVaultOwnership(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
+
+    var makeUnsignedSignatureForVaultSharing: Factory<MakeUnsignedSignatureForVaultSharingUseCase> {
+        self { MakeUnsignedSignatureForVaultSharing() }
     }
 }
 
