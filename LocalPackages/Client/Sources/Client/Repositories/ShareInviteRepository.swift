@@ -149,7 +149,7 @@ public extension ShareInviteRepository {
         do {
             let deleted = try await remoteDataSource.deleteShareNewUserInvite(shareId: shareId,
                                                                               inviteId: inviteId)
-            logger.info("Deleted ne user \(deleted) for share \(shareId) invite \(inviteId)")
+            logger.info("Deleted new user \(deleted) for share \(shareId) invite \(inviteId)")
             return deleted
         } catch {
             logger.error(message: "Failed to delete new user invite \(inviteId) for share \(shareId)",
