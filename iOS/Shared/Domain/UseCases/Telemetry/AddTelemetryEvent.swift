@@ -23,11 +23,16 @@ import Core
 
 protocol AddTelemetryEventUseCase: Sendable {
     func execute(with eventType: TelemetryEventType)
+    func execute(with eventTypes: [TelemetryEventType])
 }
 
 extension AddTelemetryEventUseCase {
     func callAsFunction(with eventType: TelemetryEventType) {
         execute(with: eventType)
+    }
+
+    func callAsFunction(with eventTypes: [TelemetryEventType]) {
+        execute(with: eventTypes)
     }
 }
 
@@ -46,6 +51,19 @@ final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
             guard let self else { return }
             do {
                 try await repository.addNewEvent(type: eventType)
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func execute(with eventTypes: [TelemetryEventType]) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                for event in eventTypes {
+                    try await repository.addNewEvent(type: event)
+                }
             } catch {
                 logger.error(error)
             }

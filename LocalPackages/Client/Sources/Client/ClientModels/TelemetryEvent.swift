@@ -37,6 +37,8 @@ public enum TelemetryEventType: Sendable {
     case autofillTriggeredFromApp // AutoFill manually from extension
     case searchTriggered
     case searchClick
+    case twoFaCreation
+    case twoFaUpdate
 
     public var rawValue: String {
         switch self {
@@ -58,6 +60,10 @@ public enum TelemetryEventType: Sendable {
             "search.triggered"
         case .searchClick:
             "search.click"
+        case .twoFaCreation:
+            "2fa.creation"
+        case .twoFaUpdate:
+            "2fa.update"
         }
     }
 
@@ -73,6 +79,10 @@ public enum TelemetryEventType: Sendable {
             self = .searchTriggered
         case "search.click":
             self = .searchClick
+        case "2fa.creation":
+            self = .twoFaCreation
+        case "2fa.update":
+            self = .twoFaUpdate
         default:
             if let crudEvent = Self.crudEvent(rawValue: rawValue) {
                 self = crudEvent
@@ -119,7 +129,9 @@ extension TelemetryEventType: Equatable {
              (.autofillTriggeredFromApp, .autofillTriggeredFromApp),
              (.autofillTriggeredFromSource, .autofillTriggeredFromSource),
              (.searchClick, .searchClick),
-             (.searchTriggered, .searchTriggered):
+             (.searchTriggered, .searchTriggered),
+             (.twoFaCreation, .twoFaCreation),
+             (.twoFaUpdate, .twoFaUpdate):
             true
         default:
             false
