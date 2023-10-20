@@ -27,10 +27,13 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable
     public let remindersSent: Int
     public let targetType: Int
     public let targetID, inviterEmail, invitedEmail: String
+    public let invitedAddressID: String?
     /// Share keys encrypted for the address key of the invitee and signed with the user keys of the inviter
     /// These are invite keys and not item keys these are the intermediate step
     public let keys: [ItemKey]
     public let vaultData: VaultData?
+    /// True if the invite comes from a NewUserInvite
+    public let fromNewUser: Bool
     public let createTime: Int
 
     public var id: String {
@@ -47,8 +50,10 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable
                 targetID: String,
                 inviterEmail: String,
                 invitedEmail: String,
+                invitedAddressID: String?,
                 keys: [ItemKey],
                 vaultData: VaultData?,
+                fromNewUser: Bool,
                 createTime: Int) {
         self.inviteToken = inviteToken
         self.remindersSent = remindersSent
@@ -56,8 +61,10 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable
         self.targetID = targetID
         self.inviterEmail = inviterEmail
         self.invitedEmail = invitedEmail
+        self.invitedAddressID = invitedAddressID
         self.keys = keys
         self.vaultData = vaultData
+        self.fromNewUser = fromNewUser
         self.createTime = createTime
     }
 }
@@ -70,8 +77,10 @@ public extension UserInvite {
                    targetID: "id",
                    inviterEmail: "inviterEmail@test.com",
                    invitedEmail: "invitedEmail@test.com",
+                   invitedAddressID: nil,
                    keys: [],
                    vaultData: VaultData.mocked,
+                   fromNewUser: false,
                    createTime: 1)
     }
 }

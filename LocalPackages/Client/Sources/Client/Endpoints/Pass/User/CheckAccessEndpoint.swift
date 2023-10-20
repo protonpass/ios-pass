@@ -1,7 +1,7 @@
 //
-// ShareInvite.swift
-// Proton Pass - Created on 15/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// CheckAccessEndpoint.swift
+// Proton Pass - Created on 20/04/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// MARK: - Invite
+import Entities
+import ProtonCoreNetworking
 
-public struct ShareInvite: Codable {
-    public let inviteID, invitedEmail, inviterEmail: String
-    public let targetType: Int
-    public let targetID: String
-    public let remindersSent, createTime, modifyTime: Int
+public struct CheckAccessResponse: Decodable, Equatable {
+    public let code: Int
+    public let access: Access
+}
 
-    public var shareType: TargetType {
-        .init(rawValue: Int64(targetType)) ?? .unknown
+public struct CheckAccessEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = CheckAccessResponse
+
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init() {
+        debugDescription = "Check access to Pass"
+        path = "/pass/v1/user/access"
+        method = .get
     }
 }

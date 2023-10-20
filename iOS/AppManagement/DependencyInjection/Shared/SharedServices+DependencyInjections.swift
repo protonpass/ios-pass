@@ -81,7 +81,7 @@ extension SharedServiceContainer {
     }
 
     var upgradeChecker: Factory<UpgradeCheckerProtocol> {
-        self { UpgradeChecker(passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+        self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                               counter: self.vaultsManager(),
                               totpChecker: SharedRepositoryContainer.shared.itemRepository()) }
     }

@@ -18,11 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
+import ProtonCoreDataModel
 import ProtonCoreLogin
 import UseCases
 
 extension UserData: UserInformationProtocol {
     public var userId: String {
         user.ID
+    }
+
+    func address(for email: String) -> Address? {
+        addresses.first(where: { $0.email == email })
     }
 }

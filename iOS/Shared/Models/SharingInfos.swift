@@ -59,6 +59,7 @@ struct SharingInfos {
     let vault: SharingVaultData?
     let email: String?
     let role: ShareRole?
+    /// No public keys means external user
     let receiverPublicKeys: [PublicKey]?
     let itemsNum: Int?
 

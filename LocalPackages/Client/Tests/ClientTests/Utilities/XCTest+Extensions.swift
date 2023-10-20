@@ -25,4 +25,13 @@ extension XCTestCase {
         let object = try await operation()
         return try XCTUnwrap(object)
     }
+
+    func assertEncodeCorrectly<T: Encodable>(_ object: T, _ expectedResult: String) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        let json = try JSONSerialization.jsonObject(with: encoder.encode(object))
+        let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+        let result = String(data: data, encoding: .utf8)
+        XCTAssertEqual(result, expectedResult)
+    }
 }
