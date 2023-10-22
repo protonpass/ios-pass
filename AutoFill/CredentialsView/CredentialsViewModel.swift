@@ -78,7 +78,7 @@ extension ItemSearchResult: CredentialItem {
 final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @Published private(set) var state = CredentialsViewState.loading
     @Published private(set) var results: CredentialsFetchResult?
-    @Published private(set) var planType: PassPlan.PlanType?
+    @Published private(set) var planType: Plan.PlanType?
     @Published var query = ""
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var isShowingConfirmationAlert = false
@@ -92,7 +92,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     private let shareRepository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
-    private let upgradeChecker: UpgradeCheckerProtocol
+    private let accessRepository: AccessRepositoryProtocol
     private let symmetricKey: SymmetricKey
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -114,7 +114,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          shareRepository: ShareRepositoryProtocol,
          shareEventIDRepository: ShareEventIDRepositoryProtocol,
          itemRepository: ItemRepositoryProtocol,
-         upgradeChecker: UpgradeCheckerProtocol,
+         accessRepository: AccessRepositoryProtocol,
          shareKeyRepository: ShareKeyRepositoryProtocol,
          remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
          favIconRepository: FavIconRepositoryProtocol,
@@ -122,7 +122,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
          serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
-        self.upgradeChecker = upgradeChecker
+        self.accessRepository = accessRepository
         self.favIconRepository = favIconRepository
         self.symmetricKey = symmetricKey
         self.serviceIdentifiers = serviceIdentifiers
@@ -164,7 +164,7 @@ extension CredentialsViewModel {
                 if case .error = self.state {
                     self.state = .loading
                 }
-                let plan = try await self.upgradeChecker.passPlanRepository.getPlan()
+                let plan = try await self.accessRepository.getPlan()
                 self.planType = plan.planType
 
                 self.results = try await self.fetchCredentialsTask(plan: plan).value
@@ -372,7 +372,7 @@ private extension CredentialsViewModel {
         }
     }
 
-    func fetchCredentialsTask(plan: PassPlan) -> Task<CredentialsFetchResult, Error> {
+    func fetchCredentialsTask(plan: Plan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
                 throw PPError.CredentialProviderFailureReason.generic
@@ -463,7 +463,7 @@ private extension CredentialsViewModel {
 
     /// When in free plan, only take primary vault into account (suggestions & search)
     /// Otherwise take everything into account
-    func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: PassPlan) async -> Bool {
+    func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: Plan) async -> Bool {
         guard let vault else { return true }
         switch plan.planType {
         case .free:
@@ -548,11 +548,11 @@ extension CredentialsViewModel: SyncEventLoopDelegate {
     }
 }
 
-extension PassPlan.PlanType {
+extension Plan.PlanType {
     var searchBarPlaceholder: String {
         switch self {
         case .free:
-            #localized("Search in primary vault")
+            #localized("Search in oldest 2 vaults")
         default:
             #localized("Search in all vaults")
         }

@@ -1,0 +1,17 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "For security reasons, your access needs to be confirmed" : {
+      "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
+      "extractionState" : "manual"
+    },
+    "Learn more about Pass" : {
+      "extractionState" : "manual"
+    },
+    "Pending access to the shared data" : {
+      "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
+      "extractionState" : "manual"
+    }
+  },
+  "version" : "1.0"
+}

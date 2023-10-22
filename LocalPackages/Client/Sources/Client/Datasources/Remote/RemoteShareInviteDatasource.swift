@@ -22,21 +22,37 @@ import Entities
 import Foundation
 
 public protocol RemoteShareInviteDatasourceProtocol: RemoteDatasourceProtocol {
-    func getPendingInvites(sharedId: String) async throws -> [ShareInvite]
-    func inviteUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool
+    func getPendingInvites(sharedId: String) async throws -> ShareInvites
+    func inviteProtonUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool
+    func inviteExternalUser(shareId: String, request: InviteNewUserToShareRequest) async throws -> Bool
+    func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool
     func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool
     func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool
+    func deleteShareNewUserInvite(shareId: String, inviteId: String) async throws -> Bool
 }
 
 public extension RemoteShareInviteDatasourceProtocol {
-    func getPendingInvites(sharedId: String) async throws -> [ShareInvite] {
-        let getSharesEndpoint = GetPendingInvitesforShareEndpoint(for: sharedId)
-        let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
-        return getSharesResponse.invites
+    func getPendingInvites(sharedId: String) async throws -> ShareInvites {
+        let endpoint = GetPendingInvitesforShareEndpoint(for: sharedId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return .init(exisingUserInvites: response.invites,
+                     newUserInvites: response.newUserInvites)
     }
 
-    func inviteUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool {
+    func inviteProtonUser(shareId: String, request: InviteUserToShareRequest) async throws -> Bool {
         let endpoint = InviteUserToShareEndpoint(shareId: shareId, request: request)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+
+    func promoteNewUserInvite(shareId: String, inviteId: String, keys: [ItemKey]) async throws -> Bool {
+        let endpoint = PromoteNewUserInviteEndpoint(shareId: shareId, inviteId: inviteId, keys: keys)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+
+    func inviteExternalUser(shareId: String, request: InviteNewUserToShareRequest) async throws -> Bool {
+        let endpoint = InviteNewUserToShareEndpoint(shareId: shareId, request: request)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
     }
@@ -49,6 +65,12 @@ public extension RemoteShareInviteDatasourceProtocol {
 
     func deleteShareInvite(shareId: String, inviteId: String) async throws -> Bool {
         let endpoint = DeleteShareInviteEndpoint(shareId: shareId, inviteId: inviteId)
+        let response = try await apiService.exec(endpoint: endpoint)
+        return response.isSuccessful
+    }
+
+    func deleteShareNewUserInvite(shareId: String, inviteId: String) async throws -> Bool {
+        let endpoint = DeleteShareNewUserInviteEndpoint(shareId: shareId, inviteId: inviteId)
         let response = try await apiService.exec(endpoint: endpoint)
         return response.isSuccessful
     }
