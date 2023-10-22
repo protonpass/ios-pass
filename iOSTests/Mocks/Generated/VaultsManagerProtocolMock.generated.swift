@@ -64,6 +64,26 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
             return stubbedVaultSelection
         }
     }
+    // MARK: - hasOnlyOneOwnedVault
+    var invokedHasOnlyOneOwnedVaultSetter = false
+    var invokedHasOnlyOneOwnedVaultSetterCount = 0
+    var invokedHasOnlyOneOwnedVault: Bool?
+    var invokedHasOnlyOneOwnedVaultList = [Bool?]()
+    var invokedHasOnlyOneOwnedVaultGetter = false
+    var invokedHasOnlyOneOwnedVaultGetterCount = 0
+    var stubbedHasOnlyOneOwnedVault: Bool!
+    var hasOnlyOneOwnedVault: Bool {
+        set {
+            invokedHasOnlyOneOwnedVaultSetter = true
+            invokedHasOnlyOneOwnedVaultSetterCount += 1
+            invokedHasOnlyOneOwnedVault = newValue
+            invokedHasOnlyOneOwnedVaultList.append(newValue)
+        } get {
+            invokedHasOnlyOneOwnedVaultGetter = true
+            invokedHasOnlyOneOwnedVaultGetterCount += 1
+            return stubbedHasOnlyOneOwnedVault
+        }
+    }
     // MARK: - refresh
     var closureRefresh: () -> () = {}
     var invokedRefresh = false

@@ -20,6 +20,7 @@
 
 import Core
 import Factory
+import ProtonCoreAuthentication
 import ProtonCorePayments
 import ProtonCorePaymentsUI
 
@@ -57,5 +58,9 @@ extension ServiceContainer {
 
     var shareInviteService: Factory<ShareInviteServiceProtocol> {
         self { ShareInviteService() }
+    }
+
+    var authenticator: Factory<AuthenticatorInterface> {
+        self { Authenticator(api: SharedToolingContainer.shared.apiManager().apiService) }
     }
 }

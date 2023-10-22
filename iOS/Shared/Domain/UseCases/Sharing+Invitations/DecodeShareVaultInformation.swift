@@ -25,6 +25,7 @@ import Core
 import CryptoKit
 import Entities
 import ProtonCoreCrypto
+import ProtonCoreDataModel
 import ProtonCoreLogin
 
 protocol DecodeShareVaultInformationUseCase: Sendable {
@@ -40,21 +41,25 @@ extension DecodeShareVaultInformationUseCase {
 final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultInformationUseCase {
     private let userData: UserData
     private let getEmailPublicKey: GetEmailPublicKeyUseCase
+    private let updateUserAddresses: UpdateUserAddressesUseCase
 
     init(userData: UserData,
-         getEmailPublicKey: GetEmailPublicKeyUseCase) {
+         getEmailPublicKey: GetEmailPublicKeyUseCase,
+         updateUserAddresses: UpdateUserAddressesUseCase) {
         self.userData = userData
         self.getEmailPublicKey = getEmailPublicKey
+        self.updateUserAddresses = updateUserAddresses
     }
 
     func execute(with userInvite: UserInvite) async throws -> VaultProtobuf {
-        guard let vaultData = userInvite.vaultData, let intermediateVaultKey = userInvite.keys
-            .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),
-            let invitedAddress = userData.addresses.first(where: { $0.email == userInvite.invitedEmail }) else {
+        guard let vaultData = userInvite.vaultData,
+              let intermediateVaultKey = userInvite.keys
+              .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),
+              let invitedAddress = try await address(for: userInvite) else {
             throw SharingError.invalidKeyOrAddress
         }
 
-        let invitedAddressKeys = try CryptoUtils.unlockAddressKeys(addressID: invitedAddress.addressID,
+        let invitedAddressKeys = try CryptoUtils.unlockAddressKeys(address: invitedAddress,
                                                                    userData: userData)
 
         guard let decodedIntermediateVaultKey = try intermediateVaultKey.key.base64Decode() else {
@@ -84,5 +89,15 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
         let vaultContent = try VaultProtobuf(data: decryptedContent)
 
         return vaultContent
+    }
+}
+
+private extension DecodeShareVaultInformation {
+    func address(for userInvite: UserInvite) async throws -> Address? {
+        guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
+            return try await updateUserAddresses()?
+                .first(where: { $0.email == userInvite.invitedEmail })
+        }
+        return invitedAddress
     }
 }

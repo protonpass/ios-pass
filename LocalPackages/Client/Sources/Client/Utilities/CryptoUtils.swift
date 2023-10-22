@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Foundation
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
@@ -90,12 +91,9 @@ public enum CryptoUtils {
         return sessionKey
     }
 
-    public static func unlockAddressKeys(addressID: String,
+    public static func unlockAddressKeys(address: Address,
                                          userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
-        guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
-            throw PPClientError.crypto(.addressNotFound(addressID: addressID))
-        }
-        return firstAddress.keys.compactMap { key -> DecryptionKey? in
+        address.keys.compactMap { key -> DecryptionKey? in
             let binKeys = userData.user.keys.map(\.privateKey).compactMap(\.unArmor)
             for passphrase in userData.passphrases {
                 if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: binKeys,
@@ -108,8 +106,41 @@ public enum CryptoUtils {
         }
     }
 
+    public static func unlockAddressKeys(addressID: String,
+                                         userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
+        guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
+            throw PPClientError.crypto(.addressNotFound(addressID: addressID))
+        }
+
+        return try CryptoUtils.unlockAddressKeys(address: firstAddress, userData: userData)
+    }
+
     public static func unlockKey(_ armoredKey: String,
                                  passphrase: String) throws -> ProtonCoreCrypto.DecryptionKey {
         DecryptionKey(privateKey: .init(value: armoredKey), passphrase: .init(value: passphrase))
+    }
+
+    public static func encryptKeyForSharing(addressId: String,
+                                            publicReceiverKey: PublicKey,
+                                            userData: UserData,
+                                            vaultKey: DecryptedShareKey) throws -> ItemKey {
+        guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
+                                                                 userData: userData).first else {
+            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
+        }
+
+        let publicKey = ArmoredKey(value: publicReceiverKey.value)
+        let signerKey = SigningKey(privateKey: addressKey.privateKey,
+                                   passphrase: addressKey.passphrase)
+        let context = SignatureContext(value: Constants.existingUserSharingSignatureContext,
+                                       isCritical: true)
+
+        let encryptedVaultKeyString = try Encryptor.encrypt(publicKey: publicKey,
+                                                            clearData: vaultKey.keyData,
+                                                            signerKey: signerKey,
+                                                            signatureContext: context)
+            .unArmor().value.base64EncodedString()
+
+        return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
     }
 }

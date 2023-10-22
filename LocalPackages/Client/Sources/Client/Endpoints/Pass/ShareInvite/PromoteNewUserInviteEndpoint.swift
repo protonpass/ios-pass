@@ -1,6 +1,6 @@
 //
-// GetPendingInvitesforShareEndpoint.swift
-// Proton Pass - Created on 11/07/2023.
+// PromoteNewUserInviteEndpoint.swift
+// Proton Pass - Created on 18/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,27 +17,33 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Entities
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-public struct GetPendingInvitesforShareResponse: Decodable {
-    let code: Int
-    let invites: [ShareInvite]
-}
-
-public struct GetPendingInvitesforShareEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = GetPendingInvitesforShareResponse
+public struct PromoteNewUserInviteEndpoint: Endpoint {
+    public typealias Body = PromoteNewUserInviteRequest
+    public typealias Response = CodeOnlyResponse
 
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
+    public var body: PromoteNewUserInviteRequest?
 
-    public init(for shareId: String) {
-        debugDescription = "Get pending invites for share"
-        path = "/pass/v1/share/\(shareId)/invite"
-        method = .get
+    public init(shareId: String, inviteId: String, keys: [ItemKey]) {
+        debugDescription = "Confirm new user invite"
+        path = "/pass/v1/share/\(shareId)/invite/new_user/\(inviteId)/keys"
+        method = .post
+        body = .init(keys: keys)
+    }
+}
+
+public struct PromoteNewUserInviteRequest: Encodable {
+    let keys: [ItemKey]
+
+    enum CodingKeys: String, CodingKey {
+        case keys = "Keys"
     }
 }

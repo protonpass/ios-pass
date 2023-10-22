@@ -18,9 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Combine
 import Core
+import Entities
 import Factory
 import ProtonCoreServices
 import SwiftUI
@@ -38,7 +38,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferences = resolve(\SharedToolingContainer.preferences)
-    private let passPlanRepository = resolve(\SharedRepositoryContainer.passPlanRepository)
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
@@ -72,7 +72,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     }
 
     @Published private(set) var loading = false
-    @Published private(set) var plan: PassPlan?
+    @Published private(set) var plan: Plan?
 
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: ProfileTabViewModelDelegate?
@@ -120,8 +120,8 @@ extension ProfileTabViewModel {
             do {
                 // First get local plan to optimistically display it
                 // and then try to refresh the plan to have it updated
-                self.plan = try await self.passPlanRepository.getPlan()
-                self.plan = try await self.passPlanRepository.refreshPlan()
+                self.plan = try await self.accessRepository.getPlan()
+                self.plan = try await self.accessRepository.refreshAccess().plan
             } catch {
                 self.logger.error(error)
                 self.router.display(element: .displayErrorBanner(error))

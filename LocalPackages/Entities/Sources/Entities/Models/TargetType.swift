@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum TargetType: Int64, Decodable {
+public enum TargetType: Int64, Decodable, Sendable {
     case unknown = 0
     case vault = 1
     case item = 2

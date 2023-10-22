@@ -88,6 +88,7 @@ struct EditableVaultListView: View {
                          itemCount: itemCount,
                          isShared: selection.shared,
                          isSelected: viewModel.isSelected(selection),
+                         showBadge: selection.showBadge,
                          height: 74)
             })
             .buttonStyle(.plain)
@@ -116,7 +117,7 @@ struct EditableVaultListView: View {
     @ViewBuilder
     private func vaultTrailingView(_ vault: Vault, haveItems: Bool) -> some View {
         Menu(content: {
-            if vault.isOwner {
+            if viewModel.canEdit(vault: vault) {
                 Button(action: {
                     viewModel.edit(vault: vault)
                 }, label: {
@@ -154,7 +155,7 @@ struct EditableVaultListView: View {
                 })
             }
 
-            if haveItems {
+            if viewModel.canMoveItems(vault: vault), haveItems {
                 Button(action: {
                     viewModel.router.present(for: .moveItemsBetweenVaults(currentVault: vault,
                                                                           singleItemToMove: nil))
