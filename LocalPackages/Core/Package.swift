@@ -20,7 +20,7 @@ let package = Package(name: "Core",
                       ],
                       dependencies: [
                           .package(url: "https://github.com/protonpass/OneTimePassword", exact: "0.1.1"),
-                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "12.2.0"),
+                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "14.0.1"),
                           .package(name: "Macro", path: "../Macro")
                       ],
                       targets: [
