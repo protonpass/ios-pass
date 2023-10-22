@@ -20,12 +20,11 @@
 
 @testable import Client
 import Core
+import Entities
 import ProtonCoreServices
 import XCTest
 
 private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtocol {
-    let apiService = PMAPIService.dummyService()
-
     func send(events: [EventInfo]) async throws {}
 }
 
@@ -36,8 +35,6 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
 }
 
 private final class MockedTelemetryOnUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol {
-    let apiService = PMAPIService.dummyService()
-
     func getUserSettings() async throws -> UserSettings {
         .init(telemetry: true)
     }
@@ -51,30 +48,22 @@ private final class MockedTelemetryOffUserSettingsDatasource: RemoteUserSettings
     }
 }
 
-private final class MockedFreePlanRepository: PassPlanRepositoryProtocol {
-    var localDatasource: LocalPassPlanDatasourceProtocol =
-        LocalPassPlanDatasource(container: .Builder.build(name: kProtonPassContainerName, inMemory: true))
+private final class MockedFreePlanRepository: AccessRepositoryProtocol {
+    weak var delegate: AccessRepositoryDelegate?
+    let access = Access(plan: .init(type: "free",
+                                    internalName: .random(),
+                                    displayName: .random(),
+                                    hideUpgrade: false,
+                                    trialEnd: .random(in: 1...100),
+                                    vaultLimit: .random(in: 1...100),
+                                    aliasLimit: .random(in: 1...100),
+                                    totpLimit: .random(in: 1...100)),
+                        pendingInvites: 1,
+                        waitingNewUserInvites: 1)
 
-    var remoteDatasource: RemotePassPlanDatasourceProtocol =
-        RemotePassPlanDatasource(apiService: PMAPIService.dummyService())
-
-    weak var delegate: Client.PassPlanRepositoryDelegate?
-
-    var userId: String = ""
-    let logger = Logger.dummyLogger()
-
-    var freePlan = PassPlan(type: "free",
-                            internalName: .random(),
-                            displayName: .random(),
-                            hideUpgrade: false,
-                            trialEnd: .random(in: 1...100),
-                            vaultLimit: .random(in: 1...100),
-                            aliasLimit: .random(in: 1...100),
-                            totpLimit: .random(in: 1...100))
-
-    func getPlan() async throws -> PassPlan { freePlan }
-
-    func refreshPlan() async throws -> PassPlan { freePlan }
+    func getAccess() async throws -> Access { access }
+    func getPlan() async throws -> Plan { access.plan }
+    func refreshAccess() async throws -> Access { access }
 }
 
 final class TelemetryEventRepositoryTests: XCTestCase {
@@ -106,7 +95,7 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
-                                       passPlanRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -134,7 +123,7 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
-                                       passPlanRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -162,7 +151,7 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
-                                       passPlanRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)
@@ -190,7 +179,7 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        remoteUserSettingsDatasource: MockedTelemetryOnUserSettingsDatasource(),
-                                       passPlanRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId,
@@ -231,7 +220,7 @@ extension TelemetryEventRepositoryTests {
         sut = TelemetryEventRepository(localDatasource: localDatasource,
                                        remoteDatasource: MockedRemoteDatasource(),
                                        remoteUserSettingsDatasource: MockedTelemetryOffUserSettingsDatasource(),
-                                       passPlanRepository: MockedFreePlanRepository(),
+                                       accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
                                        userId: givenUserId)

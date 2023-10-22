@@ -101,7 +101,7 @@ extension SharedUseCasesContainer {
     var indexAllLoginItems: Factory<IndexAllLoginItemsUseCase> {
         self { IndexAllLoginItems(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
-                                  passPlanRepository: SharedRepositoryContainer.shared.passPlanRepository(),
+                                  accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                   credentialManager: self.credentialManager,
                                   preferences: self.preferences,
                                   mapLoginItem: self.mapLoginItem(),

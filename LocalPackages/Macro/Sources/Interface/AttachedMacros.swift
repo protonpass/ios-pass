@@ -20,6 +20,8 @@
 
 import Foundation
 
+// @_exported import Spyable
+
 /// A macro that adds a `copy` function to a struct for each stored property that the struct contains.
 /// Each `copy` function returns a copy of the struct that the macro is attached on, but one property can be set to
 /// a differnet value.

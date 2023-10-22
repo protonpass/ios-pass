@@ -130,8 +130,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
-    func testPassPlanEntity() {
-        let sut = entity(byName: "PassPlanEntity")
+    func testAccessEntity() {
+        let sut = entity(byName: "AccessEntity")
         verifyAttribute(named: "aliasLimit", on: sut, hasType: .integer64)
         verifyAttribute(named: "displayName", on: sut, hasType: .string)
         verifyAttribute(named: "hideUpgrade", on: sut, hasType: .boolean)
@@ -141,6 +141,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "type", on: sut, hasType: .string)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "vaultLimit", on: sut, hasType: .integer64)
+        verifyAttribute(named: "pendingInvites", on: sut, hasType: .integer64)
+        verifyAttribute(named: "waitingNewUserInvites", on: sut, hasType: .integer64)
     }
 
     func testFeatureFlagsEntity() {

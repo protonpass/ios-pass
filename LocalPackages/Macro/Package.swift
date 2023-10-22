@@ -4,8 +4,15 @@
 import CompilerPluginSupport
 import PackageDescription
 
+var platforms: [SupportedPlatform] = [
+    .macOS(.v12),
+    .iOS(.v15),
+    .tvOS(.v15),
+    .watchOS(.v8)
+]
+
 let package = Package(name: "Macro",
-                      platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6), .macCatalyst(.v13)],
+                      platforms: platforms,
                       products: [
                           // Products define the executables and libraries a package produces, making them visible
                           // to other packages.
@@ -14,7 +21,8 @@ let package = Package(name: "Macro",
                       ],
                       dependencies: [
                           // Depend on the Swift 5.9 release of SwiftSyntax
-                          .package(url: "https://github.com/apple/swift-syntax.git", exact: "509.0.0")
+                          .package(url: "https://github.com/apple/swift-syntax.git", exact: "509.0.0"),
+//                          .package(url: "https://github.com/lukacs-m/swift-spyable.git", branch: "main")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,7 +36,9 @@ let package = Package(name: "Macro",
                                  path: "Sources/Implementation"),
 
                           // Library that exposes a macro as part of its API, which is used in client programs.
-                          .target(name: "Macro", dependencies: ["MacroImplementation"], path: "Sources/Interface"),
+                          .target(name: "Macro", dependencies: ["MacroImplementation",
+//                                                                .product(name: "Spyable", package: "swift-spyable")
+                                                               ], path: "Sources/Interface"),
             
                           // A test target used to develop the macro implementation.
                           .testTarget(name: "MacroTests",

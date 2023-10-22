@@ -18,15 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteTelemetryEventDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteTelemetryEventDatasourceProtocol {
     func send(events: [EventInfo]) async throws
 }
 
-public extension RemoteTelemetryEventDatasourceProtocol {
-    func send(events: [EventInfo]) async throws {
+public final class RemoteTelemetryEventDatasource: RemoteDatasource, RemoteTelemetryEventDatasourceProtocol {
+    public func send(events: [EventInfo]) async throws {
         let endpoint = SendEventsEndpoint(events: events)
         _ = try await apiService.exec(endpoint: endpoint)
     }
 }
-
-public final class RemoteTelemetryEventDatasource: RemoteDatasource, RemoteTelemetryEventDatasourceProtocol {}

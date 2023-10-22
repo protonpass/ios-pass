@@ -68,4 +68,8 @@ public extension [Vault] {
         }
         return self.filter(\.isOwner).min(by: { $0.createTime < $1.createTime })
     }
+
+    var numberOfOwnedVault: Int {
+        self.filter(\.isOwner).count
+    }
 }

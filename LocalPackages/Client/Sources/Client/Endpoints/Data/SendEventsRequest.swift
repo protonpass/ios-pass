@@ -90,6 +90,10 @@ private extension TelemetryEvent {
             "search.click"
         case .searchTriggered:
             "search.triggered"
+        case .twoFaCreation:
+            "2fa.creation"
+        case .twoFaUpdate:
+            "2fa.update"
         }
     }
 
@@ -103,29 +107,20 @@ private extension TelemetryEvent {
             itemContentType.dimensionType
         case let .delete(itemContentType):
             itemContentType.dimensionType
-        case .autofillDisplay,
-             .autofillTriggeredFromApp,
-             .autofillTriggeredFromSource,
-             .searchClick,
-             .searchTriggered:
+        case .twoFaCreation, .twoFaUpdate:
+            "login"
+        default:
             nil
         }
     }
 
     var dimensionLocation: String? {
         switch type {
-        case .autofillDisplay:
+        case .autofillDisplay, .autofillTriggeredFromApp:
             "app"
         case .autofillTriggeredFromSource:
             "source"
-        case .autofillTriggeredFromApp:
-            "app"
-        case .create,
-             .delete,
-             .read,
-             .searchClick,
-             .searchTriggered,
-             .update:
+        default:
             nil
         }
     }

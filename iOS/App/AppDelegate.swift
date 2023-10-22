@@ -28,6 +28,8 @@ import UIKit
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
+    private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
+
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         injectDefaultCryptoImplementation()
@@ -66,6 +68,10 @@ private extension AppDelegate {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])
         kSharedUserDefaults.set(Bundle.main.displayedAppVersion, forKey: appVersionKey)
+
+        let rustVersionKey = "pref_rust_version"
+        kSharedUserDefaults.register(defaults: [rustVersionKey: "-"])
+        kSharedUserDefaults.set(getRustLibraryVersion(), forKey: rustVersionKey)
 
         setUserDefaultsIfUITestsRunning()
     }

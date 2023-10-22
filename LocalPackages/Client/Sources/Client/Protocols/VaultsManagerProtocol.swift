@@ -25,6 +25,7 @@ import Entities
 public protocol VaultsManagerProtocol: Sendable {
     var currentVaults: CurrentValueSubject<[Vault], Never> { get }
     var vaultSelection: VaultSelection { get }
+    var hasOnlyOneOwnedVault: Bool { get }
 
     func refresh()
     func fullSync() async throws

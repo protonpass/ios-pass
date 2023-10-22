@@ -41,6 +41,7 @@ extension SendVaultShareInviteUseCase {
 
 final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
     private let createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase
+    private let makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase
     private let shareInviteService: ShareInviteServiceProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
@@ -48,12 +49,14 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     private let syncEventLoop: SyncEventLoopProtocol
 
     init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
+         makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase,
          shareInviteService: ShareInviteServiceProtocol,
          passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
          userData: UserData,
          syncEventLoop: SyncEventLoopProtocol) {
         self.createAndMoveItemToNewVault = createAndMoveItemToNewVault
+        self.makeUnsignedSignatureForVaultSharing = makeUnsignedSignatureForVaultSharing
         self.shareInviteService = shareInviteService
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
@@ -62,34 +65,15 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     }
 
     func execute(with infos: SharingInfos) async throws -> Vault {
-        guard let sharingVault = infos.vault,
-              let email = infos.email,
-              let role = infos.role,
-              let publicReceiverKeys = infos.receiverPublicKeys else {
+        guard let role = infos.role else {
             throw SharingError.incompleteInformation
         }
 
-        let vault = switch sharingVault {
-        case let .existing(vault):
-            vault
-        case let .new(vaultProtobuf, itemContent):
-            try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
-        }
-
-        let sharedKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
-
-        guard let publicReceiverKey = publicReceiverKeys.first?.value else {
-            throw SharingError.failedEncryptionKeysFetching
-        }
-
-        let signedKeys = try encryptKeys(addressId: vault.addressId,
-                                         publicReceiverKey: publicReceiverKey,
-                                         userData: userData,
-                                         vaultKey: sharedKey)
-
+        let vault = try await getVault(from: infos)
+        let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
+        let inviteeData = try generateInviteeData(from: infos, vault: vault, vaultKey: vaultKey)
         let invited = try await shareInviteRepository.sendInvite(shareId: vault.shareId,
-                                                                 keys: [signedKeys],
-                                                                 email: email,
+                                                                 inviteeData: inviteeData,
                                                                  targetType: .vault,
                                                                  shareRole: role)
 
@@ -104,27 +88,56 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
 }
 
 private extension SendVaultShareInvite {
-    func encryptKeys(addressId: String,
-                     publicReceiverKey: String,
-                     userData: UserData,
-                     vaultKey: DecryptedShareKey) throws -> ItemKey {
+    func getVault(from info: SharingInfos) async throws -> Vault {
+        switch info.vault {
+        case let .existing(vault):
+            vault
+        case let .new(vaultProtobuf, itemContent):
+            try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
+        default:
+            throw SharingError.incompleteInformation
+        }
+    }
+
+    func generateInviteeData(from info: SharingInfos,
+                             vault: Vault,
+                             vaultKey: DecryptedShareKey) throws -> InviteeData {
+        guard let email = info.email else {
+            throw SharingError.incompleteInformation
+        }
+
+        if let key = info.receiverPublicKeys?.first {
+            let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,
+                                                                 publicReceiverKey: key,
+                                                                 userData: userData,
+                                                                 vaultKey: vaultKey)
+            return .existing(email: email, keys: [signedKey])
+        } else {
+            let signature = try createAndSignSignature(addressId: vault.addressId,
+                                                       vaultKey: vaultKey,
+                                                       email: email)
+            return .new(email: email, signature: signature)
+        }
+    }
+
+    func createAndSignSignature(addressId: String,
+                                vaultKey: DecryptedShareKey,
+                                email: String) throws -> String {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
                                                                  userData: userData).first else {
             throw PPClientError.crypto(.addressNotFound(addressID: addressId))
         }
 
-        let publicKey = ArmoredKey(value: publicReceiverKey)
         let signerKey = SigningKey(privateKey: addressKey.privateKey,
                                    passphrase: addressKey.passphrase)
-        let context = SignatureContext(value: Constants.existingUserSharingSignatureContext,
+        let unsignedSignature = makeUnsignedSignatureForVaultSharing(email: email,
+                                                                     vaultKey: vaultKey.keyData)
+        let context = SignatureContext(value: Constants.newUserSharingSignatureContext,
                                        isCritical: true)
 
-        let encryptedVaultKeyString = try Encryptor.encrypt(publicKey: publicKey,
-                                                            clearData: vaultKey.keyData,
-                                                            signerKey: signerKey,
-                                                            signatureContext: context)
+        return try Sign.signDetached(signingKey: signerKey,
+                                     plainData: unsignedSignature,
+                                     signatureContext: context)
             .unArmor().value.base64EncodedString()
-
-        return ItemKey(key: encryptedVaultKeyString, keyRotation: vaultKey.keyRotation)
     }
 }
