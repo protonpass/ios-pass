@@ -28,4 +28,5 @@ public enum SharingError: LocalizedError, Equatable {
     case cannotDecode
     case failedToCreateNewVault
     case failedToInvite
+    case notProtonAddress
 }

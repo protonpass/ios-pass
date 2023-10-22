@@ -38,7 +38,7 @@ struct ManageSharedVaultView: View {
             mainContainer
                 .padding(.bottom, viewModel.vault.isAdmin ? 60 : 0) // Avoid the bottom button
 
-            if viewModel.vault.isAdmin {
+            if viewModel.canShare {
                 CapsuleTextButton(title: #localized("Share with more people"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNorm,
@@ -54,12 +54,11 @@ struct ManageSharedVaultView: View {
         .background(PassColor.backgroundNorm.toColor)
         .toolbar { toolbarContent }
         .showSpinner(viewModel.loading)
-        .alert(item: $viewModel.newOwner) { user in
+        .alert(item: $viewModel.newOwner) { newOwner in
             Alert(title: Text("Transfer ownership"),
-                  message: Text("Transfer ownership of this vault to \(user.email)?"),
-                  primaryButton: .default(Text("Confirm")) {
-                      viewModel.transferOwnership(to: user)
-                  },
+                  message: Text("Transfer ownership of this vault to \(newOwner.email)?"),
+                  primaryButton: .default(Text("Confirm"),
+                                          action: { viewModel.handle(option: .transferOwnership(newOwner)) }),
                   secondaryButton: .cancel())
         }
         .navigationModifier()
@@ -81,7 +80,7 @@ private extension ManageSharedVaultView {
                     Spacer()
                 }
             } else {
-                userList
+                inviteeList
             }
         }
         .animation(.default, value: viewModel.fetching)
@@ -115,146 +114,44 @@ private extension ManageSharedVaultView {
 }
 
 private extension ManageSharedVaultView {
-    var userList: some View {
+    var inviteeList: some View {
         ScrollView {
+            VStack(spacing: 32) {
+                if !viewModel.invitations.isEmpty {
+                    inviteesSection(for: viewModel.invitations.invitees, title: "Invitations")
+                }
+
+                if !viewModel.members.isEmpty {
+                    inviteesSection(for: viewModel.members, title: "Members")
+                }
+            }
+        }
+        .animation(.default, value: viewModel.invitations)
+        .animation(.default, value: viewModel.members)
+    }
+
+    func inviteesSection(for invitees: [any ShareInvitee], title: LocalizedStringKey) -> some View {
+        VStack {
+            Text(title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(PassColor.textWeak.toColor)
+
             LazyVStack {
-                ForEach(viewModel.users, id: \.self) { user in
-                    userCell(for: user)
+                ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
+                    ShareInviteeView(invitee: invitee,
+                                     isAdmin: viewModel.vault.isAdmin,
+                                     isCurrentUser: viewModel.isCurrentUser(invitee),
+                                     canTransferOwnership: viewModel.canTransferOwnership(to: invitee),
+                                     onSelect: viewModel.handle(option:))
                         .padding(16)
-                    if !viewModel.isLast(info: user) {
-                        Divider()
+                    if index != invitees.count - 1 {
+                        PassDivider()
                     }
                 }
                 .listRowSeparator(.hidden)
             }
             .roundedEditableSection()
         }
-        .animation(.default, value: viewModel.users.count)
-    }
-
-    func userCell(for user: ShareUser) -> some View {
-        HStack(spacing: kItemDetailSectionPadding) {
-            SquircleThumbnail(data: .initials(user.email.initials()),
-                              tintColor: ItemType.login.tintColor,
-                              backgroundColor: ItemType.login.backgroundColor)
-            VStack(alignment: .leading, spacing: 4) {
-                Label(title: {
-                    Text(user.email)
-                        .font(user.isPending ? .body.italic() : .body)
-                        .foregroundColor(PassColor.textNorm.toColor)
-                        .lineLimit(viewModel.isExpanded(email: user.email) ? nil : 1)
-                        .onTapGesture {
-                            viewModel.expand(email: user.email)
-                        }
-                        .animation(.default, value: viewModel.expandedEmails)
-                }, icon: {
-                    if user.isPending {
-                        Image(systemName: "questionmark.circle")
-                            .foregroundColor(PassColor.textWeak.toColor)
-                            .font(.callout)
-                    }
-                })
-
-                HStack {
-                    if viewModel.isCurrentUser(with: user) {
-                        Text("You")
-                            .font(.body)
-                            .foregroundColor(PassColor.textNorm.toColor)
-                            .padding(.vertical, 2)
-                            .padding(.horizontal, 8)
-                            .background(Capsule().fill(PassColor.interactionNorm.toColor))
-                    }
-                    Text(user.permission)
-                        .foregroundColor(PassColor.textWeak.toColor)
-                }
-            }
-
-            Spacer()
-            if viewModel.vault.isAdmin, !user.isOwner {
-                vaultTrailingView(user: user)
-                    .onTapGesture {
-                        viewModel.setCurrentRole(for: user)
-                    }
-            }
-        }
-    }
-}
-
-private extension ManageSharedVaultView {
-    @ViewBuilder
-    func vaultTrailingView(user: ShareUser) -> some View {
-        let isOwnerAndCurrentUser = viewModel.isOwnerAndCurrentUser(with: user)
-        Menu(content: {
-            if !isOwnerAndCurrentUser, !user.isPending {
-                ForEach(ShareRole.allCases, id: \.self) { role in
-                    Label(title: {
-                        Button(action: {
-                            if viewModel.userRole != role {
-                                viewModel.userRole = role
-                            }
-                        }, label: {
-                            Text(role.title)
-                            Text(role.description)
-                        })
-                    }, icon: {
-                        if viewModel.userRole == role {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                }
-            }
-
-            if user.isPending {
-                Button(action: {
-                    viewModel.sendInviteReminder(for: user)
-                }, label: {
-                    Label(title: {
-                        Text("Resend invitation")
-                    }, icon: {
-                        Image(uiImage: IconProvider.paperPlane)
-                            .renderingMode(.template)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    })
-                })
-            }
-
-            if viewModel.vault.isOwner, !user.isPending, user.isAdmin, !isOwnerAndCurrentUser {
-                Button(action: {
-                    viewModel.newOwner = user
-                }, label: {
-                    Label(title: {
-                        Text("Transfer ownership")
-                    }, icon: {
-                        Image(uiImage: IconProvider.shieldHalfFilled)
-                            .renderingMode(.template)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    })
-                })
-            }
-
-            if !isOwnerAndCurrentUser {
-                Button(action: {
-                    if user.isPending {
-                        viewModel.revokeInvite(for: user)
-                    } else {
-                        viewModel.revokeShareAccess(for: user)
-                    }
-                }, label: {
-                    Label(title: {
-                        Text(user.isPending ? "Cancel invitation" : "Revoke access")
-                    }, icon: {
-                        Image(uiImage: IconProvider.circleSlash)
-                            .renderingMode(.template)
-                            .foregroundColor(Color(uiColor: PassColor.textWeak))
-                    })
-                })
-            }
-        }, label: { Image(uiImage: IconProvider.threeDotsVertical)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 24, height: 24)
-            .foregroundColor(Color(uiColor: PassColor.textWeak))
-        })
     }
 }
 
