@@ -1,6 +1,6 @@
 //
-// RemotePassPlanDatasource.swift
-// Proton Pass - Created on 04/05/2023.
+// Access.swift
+// Proton Pass - Created on 16/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,19 +17,18 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public protocol RemotePassPlanDatasourceProtocol: RemoteDatasourceProtocol {
-    func getPassPlan() async throws -> PassPlan
-}
+public struct Access: Decodable, Equatable {
+    public let plan: Plan
+    public let pendingInvites: Int
+    public let waitingNewUserInvites: Int
 
-public extension RemotePassPlanDatasourceProtocol {
-    func getPassPlan() async throws -> PassPlan {
-        let endpoint = CheckAccessAndPlanEndpoint()
-        let response = try await apiService.exec(endpoint: endpoint)
-        return response.access.plan
+    public init(plan: Plan, pendingInvites: Int, waitingNewUserInvites: Int) {
+        self.plan = plan
+        self.pendingInvites = pendingInvites
+        self.waitingNewUserInvites = waitingNewUserInvites
     }
 }
-
-public final class RemotePassPlanDatasource: RemoteDatasource, RemotePassPlanDatasourceProtocol {}

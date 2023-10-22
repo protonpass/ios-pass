@@ -39,13 +39,14 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
+    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+
     private var cancellables = Set<AnyCancellable>()
-    private var isAllowedToShare = false
-    private var isPrimaryVaultRemoved = false
 
     var hasTrashItems: Bool {
         vaultsManager.getItemCount(for: .trash) > 0
@@ -68,11 +69,15 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func canShare(vault: Vault) -> Bool {
-        if isPrimaryVaultRemoved {
-            isAllowedToShare && !vault.shared && vault.shareRole == .admin
-        } else {
-            isAllowedToShare && !vault.shared && vault.shareRole == .admin && !vault.isPrimary
-        }
+        canUserShareVault(for: vault) && !vault.shared
+    }
+
+    func canEdit(vault: Vault) -> Bool {
+        canUserPerformActionOnVault(for: vault) && vault.isOwner
+    }
+
+    func canMoveItems(vault: Vault) -> Bool {
+        canUserPerformActionOnVault(for: vault)
     }
 }
 
@@ -86,12 +91,6 @@ private extension EditableVaultListViewModel {
                 guard let self else { return }
                 state = newState
             }.store(in: &cancellables)
-
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            isAllowedToShare = await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1)
-            isPrimaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
-        }
     }
 
     func doDelete(vault: Vault) {
