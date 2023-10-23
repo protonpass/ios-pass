@@ -36,11 +36,11 @@ struct ManageSharedVaultView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             mainContainer
-                .padding(.bottom, viewModel.vault.isAdmin ? 60 : 0) // Avoid the bottom button
+                .padding(.bottom, viewModel.vault.isAdmin ? 70 : 0) // Avoid the bottom button
 
-//            if viewModel.canShare {
-            shareButtonAndInfos
-//            }
+            if !viewModel.fetching, !viewModel.isViewOnly {
+                shareButtonAndInfos
+            }
         }
         .onAppear {
             viewModel.fetchShareInformation(displayFetchingLoader: true)
@@ -161,34 +161,38 @@ private extension ManageSharedVaultView {
                                         backgroundColor: PassColor.interactionNorm,
                                         disableBackgroundColor: PassColor.interactionNorm
                                             .withAlphaComponent(0.5),
-                                        disabled: !viewModel.canShare,
+                                        disabled: viewModel.reachedLimit,
                                         action: viewModel.shareWithMorePeople)
 
-            primaryVaultOnlyMessage
+            if viewModel.showVaultLimitMessage {
+                vaultLimitReachedMessage
+            }
 
-            Label(title: {
-                Text("1 invite remaining")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
-            }, icon: {
-                IconProvider.questionCircle.toImage
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16)
-                    .foregroundColor(Color(uiColor: PassColor.textWeak))
-            })
+            if viewModel.showInvitesLeft {
+                Label(title: {
+                    Text("\(viewModel.numberOfInvitesLeft) invite remaining")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                }, icon: {
+                    IconProvider.questionCircle.toImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16)
+                        .foregroundColor(Color(uiColor: PassColor.textWeak))
+                })
+            }
         }
     }
 }
 
 private extension ManageSharedVaultView {
-    var primaryVaultOnlyMessage: some View {
+    var vaultLimitReachedMessage: some View {
         ZStack {
-            Text("Your plan only allows to use items from your first vaults for autofill purposes.")
+            Text("You have reached the limit of users in this vault.")
                 .foregroundColor(PassColor.textNorm.toColor) +
                 Text(verbatim: " ") +
-                Text("Upgrade now")
+                Text("Upgrade now to share with more people")
                 .underline(color: PassColor.interactionNormMajor1.toColor)
                 .foregroundColor(PassColor.interactionNormMajor1.toColor)
         }
