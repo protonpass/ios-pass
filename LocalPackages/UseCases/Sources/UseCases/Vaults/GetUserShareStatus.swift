@@ -1,6 +1,6 @@
 //
 //
-// CanUserShareVault.swift
+// GetUserShareStatus.swift
 // Proton Pass - Created on 13/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,11 +22,11 @@
 
 import Client
 
-public protocol CanUserShareVaultUseCase: Sendable {
+public protocol GetUserShareStatusUseCase: Sendable {
     func execute(for vault: Vault) -> UserShareStatus
 }
 
-public extension CanUserShareVaultUseCase {
+public extension GetUserShareStatusUseCase {
     func callAsFunction(for vault: Vault) -> UserShareStatus {
         execute(for: vault)
     }
@@ -38,7 +38,7 @@ public enum UserShareStatus {
     case upsell
 }
 
-public final class CanUserShareVault: @unchecked Sendable, CanUserShareVaultUseCase {
+public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUseCase {
     private let accessRepository: AccessRepositoryProtocol
     private let getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase
     private var isFreeUser = true
@@ -66,7 +66,7 @@ public final class CanUserShareVault: @unchecked Sendable, CanUserShareVaultUseC
     }
 }
 
-private extension CanUserShareVault {
+private extension GetUserShareStatus {
     func setUp() {
         Task { [weak self] in
             guard let self else {
