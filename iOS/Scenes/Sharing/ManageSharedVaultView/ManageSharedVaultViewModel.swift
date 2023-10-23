@@ -36,8 +36,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
-    @Published var canShare = false
-
     @Published var newOwner: NewOwner?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
@@ -128,7 +126,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 } else {
                     loading = false
                 }
-                canShare = getUserShareStatus(for: vault) == .canShare
             }
             do {
                 try await doFetchShareInformation()
@@ -148,9 +145,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     func handle(option: ShareInviteeOption) {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer {
-                canShare = getUserShareStatus(for: vault) == .canShare
-            }
             do {
                 switch option {
                 case let .remindExistingUserInvitation(inviteId):
@@ -237,7 +231,6 @@ private extension ManageSharedVaultViewModel {
             invitations = try await getPendingInvitationsForShare(with: shareId)
         }
         members = try await getUsersLinkedToShare(with: shareId)
-        canShare = getUserShareStatus(for: vault) == .canShare
     }
 }
 
@@ -247,7 +240,6 @@ private extension ManageSharedVaultViewModel {
             guard let self else {
                 return
             }
-            canShare = getUserShareStatus(for: vault) == .canShare
             if let status = try? await accessRepository.getPlan().isFreeUser {
                 isFreeUser = status
             }
