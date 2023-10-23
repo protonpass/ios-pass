@@ -157,3 +157,11 @@ extension SharedUseCasesContainer {
         self { SanitizeTotpUriForSaving() }
     }
 }
+
+// MARK: Password generator
+
+extension SharedUseCasesContainer {
+    var generatePassword: Factory<GeneratePasswordUseCase> {
+        self { GeneratePassword() }
+    }
+}
