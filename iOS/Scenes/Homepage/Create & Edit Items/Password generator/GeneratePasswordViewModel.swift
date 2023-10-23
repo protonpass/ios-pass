@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Factory
 import SwiftUI
 
 protocol GeneratePasswordViewModelDelegate: AnyObject {
@@ -103,6 +104,9 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     private var cachedWords = [String]()
 
+    private let generatePassword = resolve(\SharedUseCasesContainer.generatePassword)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
     init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
         self.mode = mode
         self.wordProvider = wordProvider
@@ -114,11 +118,18 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
 extension GeneratePasswordViewModel {
     func regenerate(forceRefresh: Bool = true) {
-        switch type {
-        case .random:
-            regenerateRandomPassword()
-        case .memorable:
-            regenerateMemorablePassword(forceRefresh: forceRefresh)
+        do {
+            switch type {
+            case .random:
+                password = try generatePassword(length: Int(characterCount),
+                                                numbers: hasNumberCharacters,
+                                                uppercaseLetters: hasCapitalCharacters,
+                                                symbols: hasSpecialCharacters)
+            case .memorable:
+                regenerateMemorablePassword(forceRefresh: forceRefresh)
+            }
+        } catch {
+            router.display(element: .displayErrorBanner(error))
         }
     }
 
@@ -138,14 +149,6 @@ extension GeneratePasswordViewModel {
 // MARK: - Private APIs
 
 private extension GeneratePasswordViewModel {
-    func regenerateRandomPassword() {
-        var allowedCharacters: [AllowedCharacter] = [.lowercase]
-        if hasSpecialCharacters { allowedCharacters.append(.special) }
-        if hasCapitalCharacters { allowedCharacters.append(.uppercase) }
-        if hasNumberCharacters { allowedCharacters.append(.digit) }
-        password = .random(allowedCharacters: allowedCharacters, length: Int(characterCount))
-    }
-
     func regenerateMemorablePassword(forceRefresh: Bool) {
         if forceRefresh || cachedWords.isEmpty {
             cachedWords = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
