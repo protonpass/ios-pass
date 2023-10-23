@@ -80,6 +80,6 @@ struct MoveVaultListView: View {
                      isSelected: viewModel.selectedVault == vault)
         })
         .buttonStyle(.plain)
-        .opacityReduced(viewModel.shouldReduceOpacity(for: vault.vault))
+        .opacityReduced(!vault.vault.canEdit)
     }
 }

@@ -44,7 +44,6 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
     private let credentialManager: CredentialManagerProtocol
     private let preferences: Preferences
     private let mapLoginItem: MapLoginItemUseCase
-    private let getfeatureFlagStatus: GetFeatureFlagStatusUseCase
     private let logger: Logger
 
     init(itemRepository: ItemRepositoryProtocol,
@@ -53,7 +52,6 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
          credentialManager: CredentialManagerProtocol,
          preferences: Preferences,
          mapLoginItem: MapLoginItemUseCase,
-         getfeatureFlagStatus: GetFeatureFlagStatusUseCase,
          logManager: LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
@@ -61,7 +59,6 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
         self.preferences = preferences
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
-        self.getfeatureFlagStatus = getfeatureFlagStatus
         logger = .init(manager: logManager)
     }
 
@@ -100,12 +97,7 @@ private extension IndexAllLoginItems {
             return items
         }
         let vaults = try await shareRepository.getVaults()
-        if await getfeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
-            let oldestVaults = vaults.twoOldestVaults
-            return items.filter { oldestVaults.isOneOf(shareId: $0.shareId) }
-        } else {
-            let primaryVault = vaults.first { $0.isPrimary }
-            return items.filter { $0.shareId == primaryVault?.shareId }
-        }
+        let oldestVaults = vaults.twoOldestVaults
+        return items.filter { oldestVaults.isOneOf(shareId: $0.shareId) }
     }
 }

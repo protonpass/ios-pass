@@ -1062,21 +1062,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         present(viewController)
     }
 
-    func settingsViewModelWantsToEdit(primaryVault: Vault) {
-        let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
-        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults, primaryVault: primaryVault)
-        viewModel.delegate = self
-        let view = EditPrimaryVaultView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.medium.value) * vaultsManager.getVaultCount() + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func settingsViewModelWantsToClearLogs() {
         Task {
             let modules = PassModule.allCases.map(LogManager.init)
@@ -1263,18 +1248,6 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
             bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
-        }
-        vaultsManager.refresh()
-    }
-}
-
-// MARK: - EditPrimaryVaultViewModelDelegate
-
-extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
-    func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomSuccessMessage(#localized("Primary vault updated"))
         }
         vaultsManager.refresh()
     }

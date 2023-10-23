@@ -39,7 +39,6 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
     @Published var selectedVault: VaultContentUiModel
 
     let allVaults: [VaultContentUiModel]
-    private var isPrimaryVaultRemoved = false
     private let currentVault: VaultContentUiModel
     private let itemContent: ItemContent?
 
@@ -53,7 +52,6 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
-                isPrimaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -79,14 +77,6 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
             }
-        }
-    }
-
-    func shouldReduceOpacity(for vault: Vault) -> Bool {
-        if isPrimaryVaultRemoved {
-            !vault.canEdit
-        } else {
-            isFreeUser && !vault.isPrimary
         }
     }
 }

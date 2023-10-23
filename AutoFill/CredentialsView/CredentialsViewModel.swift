@@ -461,7 +461,7 @@ private extension CredentialsViewModel {
         }
     }
 
-    /// When in free plan, only take primary vault into account (suggestions & search)
+    /// When in free plan, only take 2 oldest vaults into account (suggestions & search)
     /// Otherwise take everything into account
     func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: Plan) async -> Bool {
         guard let vault else { return true }
@@ -471,11 +471,7 @@ private extension CredentialsViewModel {
                 let oldestVaults = vaults.twoOldestVaults
                 return oldestVaults.isOneOf(shareId: vault.shareId)
             } else {
-                if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
-                    return vaults.oldestOwned == vault
-                } else {
-                    return vault.isPrimary
-                }
+                return vaults.oldestOwned == vault
             }
         default:
             return true

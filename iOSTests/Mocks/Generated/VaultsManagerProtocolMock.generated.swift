@@ -214,18 +214,6 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         }
         closurePermanentlyDeleteAllTrashedItems()
     }
-    // MARK: - getPrimaryVault
-    var closureGetPrimaryVault: () -> () = {}
-    var invokedGetPrimaryVault = false
-    var invokedGetPrimaryVaultCount = 0
-    var stubbedGetPrimaryVaultResult: Vault?
-
-    func getPrimaryVault() -> Vault? {
-        invokedGetPrimaryVault = true
-        invokedGetPrimaryVaultCount += 1
-        closureGetPrimaryVault()
-        return stubbedGetPrimaryVaultResult
-    }
     // MARK: - getOldestOwnedVault
     var closureGetOldestOwnedVault: () -> () = {}
     var invokedGetOldestOwnedVault = false
