@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Entities
 import Factory
 import SwiftUI
 
@@ -52,7 +53,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     let mode: GeneratePasswordViewMode
-    let wordProvider: WordProviderProtocol
 
     @Published private(set) var password = ""
 
@@ -105,11 +105,12 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private var cachedWords = [String]()
 
     private let generatePassword = resolve(\SharedUseCasesContainer.generatePassword)
+    private let generateRandomWords = resolve(\SharedUseCasesContainer.generateRandomWords)
+    private let generatePassphrase = resolve(\SharedUseCasesContainer.generatePassphrase)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
+    init(mode: GeneratePasswordViewMode) {
         self.mode = mode
-        self.wordProvider = wordProvider
         regenerate()
     }
 }
@@ -126,7 +127,13 @@ extension GeneratePasswordViewModel {
                                                 uppercaseLetters: hasCapitalCharacters,
                                                 symbols: hasSpecialCharacters)
             case .memorable:
-                regenerateMemorablePassword(forceRefresh: forceRefresh)
+                if forceRefresh || cachedWords.isEmpty {
+                    cachedWords = try generateRandomWords(wordCount: Int(wordCount))
+                }
+                password = try generatePassphrase(words: cachedWords,
+                                                  separator: wordSeparator,
+                                                  capitalise: capitalizingWords,
+                                                  includeNumbers: includingNumbers)
             }
         } catch {
             router.display(element: .displayErrorBanner(error))
@@ -149,33 +156,6 @@ extension GeneratePasswordViewModel {
 // MARK: - Private APIs
 
 private extension GeneratePasswordViewModel {
-    func regenerateMemorablePassword(forceRefresh: Bool) {
-        if forceRefresh || cachedWords.isEmpty {
-            cachedWords = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
-        }
-
-        var words = cachedWords
-
-        if capitalizingWords { words = words.map(\.capitalized) }
-
-        if includingNumbers {
-            if let randomIndex = words.indices.randomElement(),
-               let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
-                words[randomIndex] += String(randomNumber)
-            }
-        }
-
-        var password = ""
-        for (index, word) in words.enumerated() {
-            password += word
-            if index != words.count - 1 {
-                password += wordSeparator.value
-            }
-        }
-
-        self.password = password
-    }
-
     func requestHeightUpdate() {
         uiDelegate?
             .generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: isShowingAdvancedOptions)
