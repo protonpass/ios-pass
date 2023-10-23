@@ -65,7 +65,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
          clipboardManager: ClipboardManager,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
          indexAllLoginItems: IndexAllLoginItemsUseCase,
-         resetFactory: ResetFactoryUseCase = ResetFactory()) {
+         resetFactory: ResetFactoryUseCase) {
         self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager

@@ -60,7 +60,8 @@ extension AutoFillUseCaseContainer {
 
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
         self { CancelAutoFill(context: self.context,
-                              saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs()) }
+                              saveAllLogs: SharedUseCasesContainer.shared.saveAllLogs(),
+                              resetFactory: self.resetFactory()) }
     }
 
     var completeAutoFill: Factory<CompleteAutoFillUseCase> {
@@ -68,6 +69,11 @@ extension AutoFillUseCaseContainer {
                                 logManager: self.logManager,
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
-                                indexAllLoginItems: SharedUseCasesContainer.shared.indexAllLoginItems()) }
+                                indexAllLoginItems: SharedUseCasesContainer.shared.indexAllLoginItems(),
+                                resetFactory: self.resetFactory()) }
+    }
+
+    var resetFactory: Factory<ResetFactoryUseCase> {
+        self { ResetFactory() }
     }
 }
