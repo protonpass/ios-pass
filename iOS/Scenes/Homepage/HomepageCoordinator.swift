@@ -266,6 +266,8 @@ private extension HomepageCoordinator {
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
                     startUpgradeFlow()
+                case .upselling:
+                    startUpsellingFlow()
                 case let .vaultCreateEdit(vault: vault):
                     createEditVaultView(vault: vault)
                 case let .logView(module: module):
@@ -524,6 +526,22 @@ private extension HomepageCoordinator {
                     }
                 }
             }
+        }
+    }
+
+    func startUpsellingFlow() {
+        dismissAllViewControllers(animated: true) { [weak self] in
+            guard let self else { return }
+            let view = UpsellingView { [weak self] in
+                guard let self else {
+                    return
+                }
+                startUpgradeFlow()
+            }
+            let viewController = UIHostingController(rootView: view)
+
+            viewController.sheetPresentationController?.prefersGrabberVisible = false
+            present(viewController)
         }
     }
 
