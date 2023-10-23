@@ -29,7 +29,6 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
