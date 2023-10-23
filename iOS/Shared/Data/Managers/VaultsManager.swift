@@ -110,20 +110,14 @@ private extension VaultsManager {
     }
 
     @MainActor
-    func createDefaultVault(isPrimary: Bool) async throws {
+    func createDefaultVault() async throws {
         logger.trace("Creating default vault for user")
-        let vault = VaultProtobuf(name: "Personal",
-                                  description: "Personal vault",
+        let vault = VaultProtobuf(name: #localized("Personal"),
+                                  description: #localized("Personal"),
                                   color: .color1,
                                   icon: .icon1)
         let createdShare = try await shareRepository.createVault(vault)
-        if isPrimary {
-            logger.trace("Created default vault. Setting as primary \(createdShare.shareID)")
-            _ = try await shareRepository.setPrimaryVault(shareId: createdShare.shareID)
-            logger.info("Created default primary vault for user")
-        } else {
-            logger.info("Created default vault for user")
-        }
+        logger.info("Created default vault for user")
     }
 
     @MainActor
@@ -230,18 +224,18 @@ extension VaultsManager {
 
         // 3. Create default vault if no vaults
         if remoteShares.isEmpty {
-            try await createDefaultVault(isPrimary: false)
+            try await createDefaultVault()
         }
 
         // 4. Load vaults and their contents
         var vaults = try await shareRepository.getVaults()
 
-        // 5. Check if in "forgot password" scenario. Create a new primary vault if applicable
+        // 5. Check if in "forgot password" scenario. Create a new default vault if applicable
         let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
         // We see that there are remote vaults but we can't decrypt any of them
         // => "forgot password" happened
         if hasRemoteVaults, vaults.isEmpty {
-            try await createDefaultVault(isPrimary: true)
+            try await createDefaultVault()
             vaults = try await shareRepository.getVaults()
         }
 
@@ -335,13 +329,6 @@ extension VaultsManager {
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
         logger.info("Permanently deleted all trashed items")
-    }
-
-    // Should disappear once we remove the remove primary vault feature flag
-    func getPrimaryVault() -> Vault? {
-        guard case let .loaded(uiModels, _) = state else { return nil }
-        let vaults = uiModels.map(\.vault)
-        return vaults.first(where: { $0.isPrimary }) ?? vaults.first
     }
 
     func getOldestOwnedVault() -> Vault? {
