@@ -532,7 +532,12 @@ private extension HomepageCoordinator {
     func startUpsellingFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            let view = Text("test")
+            let view = UpsellingView { [weak self] in
+                guard let self else {
+                    return
+                }
+                startUpgradeFlow()
+            }
             let viewController = UIHostingController(rootView: view)
 
             viewController.setDetentType(.large,

@@ -435,6 +435,9 @@
         }
       }
     },
+    "%lld invite remaining" : {
+
+    },
     "%lld item(s)" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3583,9 +3586,6 @@
           }
         }
       }
-    },
-    "1 invite remaining" : {
-
     },
     "2FA limit reached" : {
       "localizations" : {
@@ -45688,9 +45688,6 @@
         }
       }
     },
-    "test" : {
-
-    },
     "Text" : {
       "comment" : "Custom fields",
       "extractionState" : "manual",
@@ -50519,6 +50516,10 @@
           }
         }
       }
+    },
+    "Upgrade now to share with more people" : {
+      "comment" : "Message shown to user when they reach the limit of sharing when they are free",
+      "extractionState" : "manual"
     },
     "Upgrade to add custom fields" : {
       "localizations" : {
@@ -55747,6 +55748,10 @@
           }
         }
       }
+    },
+    "You have reached the limit of users in this vault." : {
+      "comment" : "Message shown to free user when they reach sharing limits",
+      "extractionState" : "manual"
     },
     "You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription." : {
       "localizations" : {

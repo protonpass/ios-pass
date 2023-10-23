@@ -35,6 +35,9 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     @Published private(set) var members: [UserShareInfos] = []
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
+    @Published private(set) var isFreeUser = true
+    @Published var canShare = false
+
     @Published var newOwner: NewOwner?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
@@ -55,16 +58,40 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-
+    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
+
     private var cancellables = Set<AnyCancellable>()
 
-    var canShare: Bool {
-        canUserShareVault(for: vault) != .cantShare
+    var reachedLimit: Bool {
+        numberOfInvitesLeft <= 0
     }
 
-    var reachedLimit: Bool {
-        vault.maxMembers <= members.count + invitations.totalNumberOfInvites
+    var isViewOnly: Bool {
+        !vault.isAdmin
+    }
+
+    var numberOfInvitesLeft: Int {
+        max(vault.maxMembers - (members.count + invitations.totalNumberOfInvites), 0)
+    }
+
+    var showInvitesLeft: Bool {
+        guard !fetching else {
+            return false
+        }
+        if isFreeUser {
+            return !reachedLimit
+        } else {
+            return reachedLimit
+        }
+    }
+
+    var showVaultLimitMessage: Bool {
+        guard !fetching, isFreeUser else {
+            return false
+        }
+
+        return reachedLimit
     }
 
     init(vault: Vault) {
@@ -81,11 +108,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func shareWithMorePeople() {
-        if canUserShareVault(for: vault) == .canShare {
-            router.present(for: .sharingFlow(.none))
-        } else {
-            router.present(for: .upselling)
-        }
+        router.present(for: .sharingFlow(.none))
     }
 
     func fetchShareInformation(displayFetchingLoader: Bool = false) {
@@ -105,6 +128,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 } else {
                     loading = false
                 }
+                canShare = canUserShareVault(for: vault) == .canShare
             }
             do {
                 try await doFetchShareInformation()
@@ -124,6 +148,9 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     func handle(option: ShareInviteeOption) {
         Task { @MainActor [weak self] in
             guard let self else { return }
+            defer {
+                canShare = canUserShareVault(for: vault) == .canShare
+            }
             do {
                 switch option {
                 case let .remindExistingUserInvitation(inviteId):
@@ -210,25 +237,22 @@ private extension ManageSharedVaultViewModel {
             invitations = try await getPendingInvitationsForShare(with: shareId)
         }
         members = try await getUsersLinkedToShare(with: shareId)
+        canShare = canUserShareVault(for: vault) == .canShare
     }
 }
 
 private extension ManageSharedVaultViewModel {
     func setUp() {
-        setShareInviteVault(with: .existing(vault))
-
-        getVaultInfos(for: vault.id)
-            .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] vaultInfos in
-                guard let self, vaultInfos != vault else {
-                    return
-                }
-                vault = vaultInfos
-                fetchShareInformation()
-                loading = false
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
             }
-            .store(in: &cancellables)
+            canShare = canUserShareVault(for: vault) == .canShare
+            if let status = try? await accessRepository.getPlan().isFreeUser {
+                isFreeUser = status
+            }
+        }
+        setShareInviteVault(with: .existing(vault))
     }
 
     func display(error: Error) {
