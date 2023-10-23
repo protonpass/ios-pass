@@ -1,3 +1,7 @@
+## Version 1.5.3
+- Added ability to share a vault to non-Proton users
+- Added 2FA telemetry
+
 ## Version 1.5.2
 Improvements:
 - Improved AutoFill extension's reliability

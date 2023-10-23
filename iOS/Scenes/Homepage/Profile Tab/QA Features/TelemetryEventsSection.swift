@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Entities
 import Factory
 import SwiftUI
 
@@ -149,6 +150,9 @@ private extension TelemetryEventType {
         case .searchClick, .searchTriggered:
             // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "magnifyingglass")!
+        case .twoFaCreation, .twoFaUpdate:
+            // swiftlint:disable:next force_unwrapping
+            UIImage(systemName: "2.circle")!
         }
     }
 
@@ -166,6 +170,8 @@ private extension TelemetryEventType {
             PassColor.signalInfo
         case .searchClick, .searchTriggered:
             PassColor.signalDanger
+        case .twoFaCreation, .twoFaUpdate:
+            ItemContentType.login.normMajor1Color
         }
     }
 
@@ -183,6 +189,8 @@ private extension TelemetryEventType {
             PassColor.signalInfo.withAlphaComponent(0.16)
         case .searchClick, .searchTriggered:
             PassColor.signalDanger.withAlphaComponent(0.16)
+        case .twoFaCreation, .twoFaUpdate:
+            ItemContentType.login.normMinor1Color
         }
     }
 
@@ -206,6 +214,10 @@ private extension TelemetryEventType {
             "Pick search result 🔎"
         case .searchTriggered:
             "Open search 🔎"
+        case .twoFaCreation:
+            "Create 2FA"
+        case .twoFaUpdate:
+            "Update 2FA"
         }
     }
 }
