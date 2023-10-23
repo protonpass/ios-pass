@@ -64,7 +64,7 @@ private extension UpsellingView {
             Text("Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus.")
                 .padding(.bottom)
                 .multilineTextAlignment(.center)
-                .foregroundColor(PassColor.textWeak.toColor)
+                .foregroundColor(PassColor.textNorm.toColor)
 
             VStack {
                 perkRow(title: "Multiple Vaults", icon: PassIcon.trialVaults)
