@@ -62,7 +62,7 @@ struct ManageSharedVaultView: View {
         .alert("Member Limit",
                isPresented: $showFreeSharingLimit,
                actions: {
-                   Button(role: .cancel, label: { Text("Ok") })
+                   Button(role: .cancel, label: { Text("OK") })
                }, message: {
                    Text(viewModel
                        .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
