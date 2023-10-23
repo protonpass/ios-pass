@@ -70,7 +70,6 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "expireTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "owner", on: sut, hasType: .boolean)
         verifyAttribute(named: "permission", on: sut, hasType: .integer64)
-        verifyAttribute(named: "primary", on: sut, hasType: .boolean)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
         verifyAttribute(named: "targetID", on: sut, hasType: .string)
