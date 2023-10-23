@@ -20,7 +20,7 @@ let package = Package(name: "Core",
                       ],
                       dependencies: [
                           .package(url: "https://github.com/protonpass/OneTimePassword", exact: "0.1.1"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "12.2.0"),
+                          .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "12.2.0"),
                           .package(name: "Macro", path: "../Macro")
                       ],
                       targets: [
@@ -30,13 +30,13 @@ let package = Package(name: "Core",
                           // package depends on.
                           .target(name: "Core",
                                   dependencies: [
-                                      .product(name: "ProtonCoreDataModel", package: "protoncore_ios"),
-                                      .product(name: "ProtonCoreDoh", package: "protoncore_ios"),
-                                      .product(name: "ProtonCoreKeymaker", package: "protoncore_ios"),
-                                      .product(name: "ProtonCoreLogin", package: "protoncore_ios"),
-                                      .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
-                                      .product(name: "ProtonCoreNetworking", package: "protoncore_ios"),
-                                      .product(name: "ProtonCoreSettings", package: "protoncore_ios"),
+                                      .product(name: "ProtonCoreDataModel", package: "protoncore"),
+                                      .product(name: "ProtonCoreDoh", package: "protoncore"),
+                                      .product(name: "ProtonCoreKeymaker", package: "protoncore"),
+                                      .product(name: "ProtonCoreLogin", package: "protoncore"),
+                                      .product(name: "ProtonCoreLoginUI", package: "protoncore"),
+                                      .product(name: "ProtonCoreNetworking", package: "protoncore"),
+                                      .product(name: "ProtonCoreSettings", package: "protoncore"),
                                       .product(name: "OneTimePassword", package: "OneTimePassword"),
                                       .product(name: "Macro", package: "Macro")
                                   ],
@@ -47,7 +47,7 @@ let package = Package(name: "Core",
                                       dependencies: [
                                           "Core",
                                           .product(name: "ProtonCoreTestingToolkitUnitTestsCore",
-                                                   package: "protoncore_ios")
+                                                   package: "protoncore")
 
                                       ])
                       ])

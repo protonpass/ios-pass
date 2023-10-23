@@ -27,7 +27,7 @@ let package = Package(
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Macro", path: "../Macro"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "12.2.0")
+        .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "12.2.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -41,7 +41,7 @@ let package = Package(
                 .product(name: "UseCases", package: "UseCases"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
                 .product(name: "Macro", package: "Macro"),
-                .product(name: "ProtonCoreLoginUI", package: "protoncore_ios")
+                .product(name: "ProtonCoreLoginUI", package: "protoncore")
             ])
     ]
 )
