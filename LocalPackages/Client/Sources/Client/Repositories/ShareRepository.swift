@@ -75,8 +75,6 @@ public protocol ShareRepositoryProtocol: Sendable {
     /// Delete vault. If vault is not empty (0 active & trashed items)  an error is thrown.
     func deleteVault(shareId: String) async throws
 
-    func setPrimaryVault(shareId: String) async throws -> Bool
-
     @discardableResult
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
 }
@@ -316,32 +314,6 @@ public extension ShareRepository {
         logger.trace("Finished deleting vault \(shareId) for user \(userId)")
     }
 
-    func setPrimaryVault(shareId: String) async throws -> Bool {
-        logger.trace("Setting primary vault \(shareId) \(shareId) for user \(userId)")
-        let shares = try await getShares()
-        guard try await remoteDatasouce.setPrimaryVault(shareId: shareId) else {
-            logger.trace("Failed to set primary vault \(shareId) \(shareId) for user \(userId)")
-            return false
-        }
-
-        let updatedShares = shares.map { share in
-            let clonedShare = share.share.copy(primary: share.share.shareID == shareId)
-            return SymmetricallyEncryptedShare(encryptedContent: share.encryptedContent,
-                                               share: clonedShare)
-        }
-
-        let primaryShares = updatedShares.filter(\.share.primary)
-        assert(primaryShares.count == 1, "Should only have one primary vault")
-        assert(primaryShares.first?.share.shareID == shareId)
-
-        // Remove all shares before upserting because of CoreData bug
-        // that doesn't update boolean values ("primary" boolean of ShareEntity in this case)
-        try await localDatasource.removeAllShares(userId: userId)
-        try await localDatasource.upsertShares(updatedShares, userId: userId)
-        logger.trace("Finished setting primary vault \(shareId) \(shareId) for user \(userId)")
-        return true
-    }
-
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool {
         logger.trace("Setting new owner \(newOwnerShareId) for vault \(vaultShareId)")
 
@@ -411,7 +383,6 @@ private extension SymmetricallyEncryptedShare {
                      name: vaultContent.name,
                      description: vaultContent.description_p,
                      displayPreferences: vaultContent.display,
-                     isPrimary: share.primary,
                      isOwner: share.owner,
                      shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
                      members: Int(share.targetMembers),

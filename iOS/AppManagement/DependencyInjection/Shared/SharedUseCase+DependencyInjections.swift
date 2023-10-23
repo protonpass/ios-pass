@@ -105,7 +105,6 @@ extension SharedUseCasesContainer {
                                   credentialManager: self.credentialManager,
                                   preferences: self.preferences,
                                   mapLoginItem: self.mapLoginItem(),
-                                  getfeatureFlagStatus: self.getFeatureFlagStatus(),
                                   logManager: self.logManager) }
     }
 
@@ -122,8 +121,7 @@ extension SharedUseCasesContainer {
     }
 
     var getMainVault: Factory<GetMainVaultUseCase> {
-        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                            featuresFlags: self.getFeatureFlagStatus()) }
+        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
 }
 
