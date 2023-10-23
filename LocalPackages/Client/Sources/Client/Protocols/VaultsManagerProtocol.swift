@@ -36,7 +36,6 @@ public protocol VaultsManagerProtocol: Sendable {
     func delete(vault: Vault) async throws
     func restoreAllTrashedItems() async throws
     func permanentlyDeleteAllTrashedItems() async throws
-    func getPrimaryVault() -> Vault?
     func getOldestOwnedVault() -> Vault?
     func getFilteredItems() -> [ItemUiModel]
 }

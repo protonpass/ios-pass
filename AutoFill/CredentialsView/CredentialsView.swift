@@ -90,7 +90,7 @@ private extension CredentialsView {
             switch viewModel.state {
             case .idle:
                 if let planType = viewModel.planType, case .free = planType {
-                    primaryVaultOnlyMessage
+                    mainVaultsOnlyMessage
                 }
                 if let results = viewModel.results {
                     if results.isEmpty {
@@ -203,7 +203,7 @@ private extension CredentialsView {
         }
     }
 
-    var primaryVaultOnlyMessage: some View {
+    var mainVaultsOnlyMessage: some View {
         ZStack {
             Text("Your plan only allows to use items from your first vaults for autofill purposes.")
                 .foregroundColor(PassColor.textNorm.toColor) +

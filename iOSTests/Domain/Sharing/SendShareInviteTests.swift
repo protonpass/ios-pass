@@ -87,7 +87,6 @@ extension Vault {
               name: .random(),
               description: .random(),
               displayPreferences: .init(),
-              isPrimary: false,
               isOwner: false,
               shareRole: .read,
               members: 0,

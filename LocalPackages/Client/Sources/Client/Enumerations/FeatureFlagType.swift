@@ -20,6 +20,5 @@
 
 public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
     case passSharingV1 = "PassSharingV1"
-    case passRemovePrimaryVault = "PassRemovePrimaryVault"
     case passSharingNewUsers = "PassSharingNewUsers"
 }

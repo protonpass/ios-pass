@@ -238,8 +238,6 @@
 		356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* EditThemeView.swift */; };
 		356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */; };
 		356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
-		356BC36729D7266800F03497 /* EditPrimaryVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */; };
-		356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */; };
 		356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356CE7722A2289C80043DC62 /* BannersSection.swift */; };
 		356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */; };
 		356FBD482949246A0063978C /* Coordinator+ShowFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */; };
@@ -767,8 +765,6 @@
 		356BC35A29D70C5000F03497 /* EditThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditThemeView.swift; sourceTree = "<group>"; };
 		356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipboardExpirationView.swift; sourceTree = "<group>"; };
 		356BC36229D7226A00F03497 /* VaultThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultThumbnail.swift; sourceTree = "<group>"; };
-		356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPrimaryVaultView.swift; sourceTree = "<group>"; };
-		356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPrimaryVaultViewModel.swift; sourceTree = "<group>"; };
 		356CE7722A2289C80043DC62 /* BannersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannersSection.swift; sourceTree = "<group>"; };
 		356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultAlertHandler.swift; sourceTree = "<group>"; };
 		356FBD472949246A0063978C /* Coordinator+ShowFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinator+ShowFullScreen.swift"; sourceTree = "<group>"; };
@@ -1443,8 +1439,6 @@
 			children = (
 				356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */,
 				356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */,
-				356BC36629D7266800F03497 /* EditPrimaryVaultView.swift */,
-				356BC36829D7267F00F03497 /* EditPrimaryVaultViewModel.swift */,
 				356BC35A29D70C5000F03497 /* EditThemeView.swift */,
 				355895AE29D76E67001E2207 /* LogsView.swift */,
 				355895B029D76E9F001E2207 /* LogsViewModel.swift */,
@@ -3040,7 +3034,6 @@
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
 				355D61722991564D00192873 /* ItemDetailMoreInfoSection.swift in Sources */,
 				5B0C75002A2F61D000272CE8 /* SharedServices+DependencyInjections.swift in Sources */,
-				356BC36929D7267F00F03497 /* EditPrimaryVaultViewModel.swift in Sources */,
 				3567414F2A28927800C99C32 /* UserDataProvider.swift in Sources */,
 				358C68282A68131E006E720F /* Preferences+LocalAuthentication.swift in Sources */,
 				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
@@ -3062,7 +3055,6 @@
 				356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */,
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,
 				3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */,
-				356BC36729D7266800F03497 /* EditPrimaryVaultView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,
 				5BA663FE2A7D04D50049EA68 /* UpdateUserShareRole.swift in Sources */,
 				354E9AAB2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
