@@ -164,4 +164,12 @@ extension SharedUseCasesContainer {
     var generatePassword: Factory<GeneratePasswordUseCase> {
         self { GeneratePassword() }
     }
+
+    var generateRandomWords: Factory<GenerateRandomWordsUseCase> {
+        self { GenerateRandomWords() }
+    }
+
+    var generatePassphrase: Factory<GeneratePassphraseUseCase> {
+        self { GeneratePassphrase() }
+    }
 }

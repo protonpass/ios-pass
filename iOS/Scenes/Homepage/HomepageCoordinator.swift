@@ -76,7 +76,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var wordProvider: WordProviderProtocol?
     private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
@@ -892,18 +891,6 @@ extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
 // MARK: - CreateEditItemCoordinatorDelegate
 
 extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
-    func createEditItemCoordinatorWantsWordProvider() async -> WordProviderProtocol? {
-        do {
-            let wordProvider = try await WordProvider()
-            self.wordProvider = wordProvider
-            return wordProvider
-        } catch {
-            logger.error(error)
-            bannerManager.displayTopErrorMessage(error)
-            return nil
-        }
-    }
-
     func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
         present(view, dismissible: dismissable)
     }
