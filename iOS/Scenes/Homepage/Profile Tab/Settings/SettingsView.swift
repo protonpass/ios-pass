@@ -44,13 +44,9 @@ struct SettingsView: View {
         ScrollView {
             VStack(spacing: kItemDetailSectionPadding) {
                 untitledSection
+
                 clipboardSection
                     .padding(.vertical)
-                if !viewModel.primaryVaultRemoved,
-                   let primaryVault = viewModel.vaultsManager.getPrimaryVault() {
-                    primaryVaultSection(vault: primaryVault)
-                        .padding(.bottom)
-                }
 
                 logsSection
 
@@ -149,28 +145,6 @@ struct SettingsView: View {
                 }
             }
             .roundedEditableSection()
-        }
-    }
-
-    private func primaryVaultSection(vault: Vault) -> some View {
-        VStack(spacing: 0) {
-            Text("Vaults")
-                .sectionHeaderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, kItemDetailSectionPadding)
-
-            OptionRow(action: { viewModel.edit(primaryVault: vault) },
-                      title: #localized("Primary vault"),
-                      height: .tall,
-                      content: { Text(vault.name).foregroundColor(Color(uiColor: PassColor.textNorm)) },
-                      leading: { VaultThumbnail(vault: vault) },
-                      trailing: { ChevronRight() })
-                .roundedEditableSection()
-
-            Text("You can not delete a primary vault")
-                .sectionTitleText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, kItemDetailSectionPadding / 2)
         }
     }
 

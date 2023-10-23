@@ -70,6 +70,6 @@ struct VaultSelectorView: View {
                 .padding(.horizontal)
         })
         .buttonStyle(.plain)
-        .opacityReduced(viewModel.shouldReduceOpacity(for: vault.vault))
+        .opacityReduced(!vault.vault.canEdit)
     }
 }
