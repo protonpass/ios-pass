@@ -33,7 +33,6 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
     private let getVaultContentForVault = resolve(\UseCasesContainer.getVaultContentForVault)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @Published private(set) var isFreeUser = false
     @Published var selectedVault: VaultContentUiModel

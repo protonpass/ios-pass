@@ -34023,9 +34023,6 @@
         }
       }
     },
-    "Ok" : {
-
-    },
     "OK" : {
 
     },
@@ -52051,6 +52048,14 @@
           }
         }
       }
+    },
+    "Vaults can’t contain more than 3 users with a free plan." : {
+      "comment" : "Message shown to free user to explain the sharing limits in an alert",
+      "extractionState" : "manual"
+    },
+    "Vaults can’t contain more than 10 users." : {
+      "comment" : "Message shown to paid user to explain the sharing limits in an alert",
+      "extractionState" : "manual"
     },
     "Verification number" : {
       "localizations" : {
