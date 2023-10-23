@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -60,36 +59,38 @@ private extension UpsellingView {
             Text("Pass Plus")
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
+                .foregroundColor(PassColor.textNorm.toColor)
 
             Text("Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus.")
                 .padding(.bottom)
                 .multilineTextAlignment(.center)
+                .foregroundColor(PassColor.textWeak.toColor)
 
             VStack {
-                perkRow(title: #localized("Multiple Vaults"), icon: PassIcon.trialVaults)
+                perkRow(title: "Multiple Vaults", icon: PassIcon.trialVaults)
                 PassDivider()
-                perkRow(title: #localized("Unlimited email aliases"),
+                perkRow(title: "Unlimited email aliases",
                         icon: IconProvider.alias,
                         iconTintColor: PassColor.aliasInteractionNorm)
                 PassDivider()
-                perkRow(title: #localized("Unlimited 2FA Autofill"), icon: PassIcon.trial2FA)
+                perkRow(title: "Unlimited 2FA Autofill", icon: PassIcon.trial2FA)
             }
             .padding()
-            .background(Color(uiColor: PassColor.inputBackgroundNorm))
+            .background(PassColor.inputBackgroundNorm.toColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .padding(.horizontal)
             .padding(.vertical, 32)
 
             Spacer()
 
-            GradientRoundedButton(title: #localized("Upgrade"),
+            GradientRoundedButton(title: "Upgrade",
                                   leadingBackgroundColor: .init(red: 174 / 255, green: 80 / 255, blue: 96 / 255),
                                   endingBackgroundColor: .init(red: 113 / 255, green: 77 / 255, blue: 255 / 255),
                                   action: onUpgrade)
         }
     }
 
-    private func perkRow(title: String, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {
+    private func perkRow(title: LocalizedStringKey, icon: UIImage, iconTintColor: UIColor? = nil) -> some View {
         Label(title: {
             Text(title)
                 .minimumScaleFactor(0.75)

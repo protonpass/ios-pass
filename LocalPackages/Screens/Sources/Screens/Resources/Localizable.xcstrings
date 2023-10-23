@@ -6,7 +6,8 @@
       "extractionState" : "manual"
     },
     "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus." : {
-
+      "comment" : "Used in the upselling screen to explain benefits",
+      "extractionState" : "manual"
     },
     "Learn more about Pass" : {
       "extractionState" : "manual"
