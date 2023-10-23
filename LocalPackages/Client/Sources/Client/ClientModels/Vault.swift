@@ -92,7 +92,7 @@ public extension Vault {
     }
 
     var reachedSharingLimit: Bool {
-        maxMembers < totalOverallMembers
+        maxMembers <= totalOverallMembers
     }
 
     var isAdmin: Bool {

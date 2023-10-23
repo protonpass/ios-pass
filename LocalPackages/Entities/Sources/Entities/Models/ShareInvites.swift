@@ -19,25 +19,29 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct ShareInvites: Equatable, Sendable {
-    public let exisingUserInvites: [ShareExisingUserInvite]
+    public let existingUserInvites: [ShareExistingUserInvite]
     public let newUserInvites: [ShareNewUserInvite]
 
-    public init(exisingUserInvites: [ShareExisingUserInvite],
+    public init(existingUserInvites: [ShareExistingUserInvite],
                 newUserInvites: [ShareNewUserInvite]) {
-        self.exisingUserInvites = exisingUserInvites
+        self.existingUserInvites = existingUserInvites
         self.newUserInvites = newUserInvites
     }
 
     public static var `default`: Self {
-        .init(exisingUserInvites: [], newUserInvites: [])
+        .init(existingUserInvites: [], newUserInvites: [])
     }
 
     public var isEmpty: Bool {
-        exisingUserInvites.isEmpty && newUserInvites.isEmpty
+        existingUserInvites.isEmpty && newUserInvites.isEmpty
+    }
+
+    public var totalNumberOfInvites: Int {
+        existingUserInvites.count + newUserInvites.count
     }
 }
 
-public struct ShareExisingUserInvite: Decodable, Equatable, Identifiable, Sendable {
+public struct ShareExistingUserInvite: Decodable, Equatable, Identifiable, Sendable {
     public let inviteID, invitedEmail, inviterEmail, shareRoleID: String
     public let targetType: Int
     public let targetID: String

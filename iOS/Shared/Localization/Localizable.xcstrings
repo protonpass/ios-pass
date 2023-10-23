@@ -435,6 +435,28 @@
         }
       }
     },
+    "%lld invite remaining" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld invite remaining"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld invites remaining"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld item(s)" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -29741,6 +29763,10 @@
         }
       }
     },
+    "Member Limit" : {
+      "comment" : "Title of an alert to explain sharing limit",
+      "extractionState" : "manual"
+    },
     "Members" : {
       "comment" : "Title of the section which shows the list of members",
       "extractionState" : "manual"
@@ -33996,6 +34022,9 @@
           }
         }
       }
+    },
+    "Ok" : {
+
     },
     "OK" : {
 
@@ -50514,6 +50543,10 @@
         }
       }
     },
+    "Upgrade now to share with more people" : {
+      "comment" : "Message shown to user when they reach the limit of sharing when they are free",
+      "extractionState" : "manual"
+    },
     "Upgrade to add custom fields" : {
       "localizations" : {
         "be" : {
@@ -52548,6 +52581,14 @@
           }
         }
       }
+    },
+    "Vaults can’t contain more than 3 users with a free plan." : {
+      "comment" : "Message shown to free user to explain the sharing limits in an alert",
+      "extractionState" : "manual"
+    },
+    "Vaults can’t contain more than 10 users." : {
+      "comment" : "Message shown to paid user to explain the sharing limits in an alert",
+      "extractionState" : "manual"
     },
     "Verification number" : {
       "localizations" : {
@@ -55741,6 +55782,10 @@
           }
         }
       }
+    },
+    "You have reached the limit of users in this vault." : {
+      "comment" : "Message shown to free user when they reach sharing limits",
+      "extractionState" : "manual"
     },
     "You have reached the limit of vaults you can create. Create unlimited vaults when you upgrade your subscription." : {
       "localizations" : {
