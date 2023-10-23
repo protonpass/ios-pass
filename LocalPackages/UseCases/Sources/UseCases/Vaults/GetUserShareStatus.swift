@@ -43,7 +43,6 @@ public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUs
     private let getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase
     private var isFreeUser = true
     private var sharingFeatureFlagIsOpen = false
-    private var isPrimaryVaultRemoved = false
 
     public init(getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase,
                 accessRepository: AccessRepositoryProtocol) {
@@ -74,12 +73,9 @@ private extension GetUserShareStatus {
             }
 
             async let isFreeUserCheck = try? await accessRepository.getPlan().isFreeUser
-            async let isPrimaryRemoved = await getFeatureFlagStatusUseCase(with: FeatureFlagType
-                .passRemovePrimaryVault)
             async let featureFlags = await getFeatureFlagStatusUseCase(with: FeatureFlagType.passSharingV1)
             isFreeUser = await isFreeUserCheck ?? true
             sharingFeatureFlagIsOpen = await featureFlags
-            isPrimaryVaultRemoved = await isPrimaryRemoved
         }
     }
 
@@ -99,10 +95,6 @@ private extension GetUserShareStatus {
     }
 
     func finalCheck(for vault: Vault) -> Bool {
-        if isPrimaryVaultRemoved {
-            vault.canShareVaultWithMorePeople
-        } else {
-            vault.canShareVaultWithMorePeople && !vault.isPrimary
-        }
+        vault.canShareVaultWithMorePeople
     }
 }
