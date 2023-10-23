@@ -52,7 +52,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
     private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
     private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
-    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
+    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let promoteNewUserInvite = resolve(\UseCasesContainer.promoteNewUserInvite)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -128,7 +128,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                 } else {
                     loading = false
                 }
-                canShare = canUserShareVault(for: vault) == .canShare
+                canShare = getUserShareStatus(for: vault) == .canShare
             }
             do {
                 try await doFetchShareInformation()
@@ -149,7 +149,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             defer {
-                canShare = canUserShareVault(for: vault) == .canShare
+                canShare = getUserShareStatus(for: vault) == .canShare
             }
             do {
                 switch option {
@@ -237,7 +237,7 @@ private extension ManageSharedVaultViewModel {
             invitations = try await getPendingInvitationsForShare(with: shareId)
         }
         members = try await getUsersLinkedToShare(with: shareId)
-        canShare = canUserShareVault(for: vault) == .canShare
+        canShare = getUserShareStatus(for: vault) == .canShare
     }
 }
 
@@ -247,7 +247,7 @@ private extension ManageSharedVaultViewModel {
             guard let self else {
                 return
             }
-            canShare = canUserShareVault(for: vault) == .canShare
+            canShare = getUserShareStatus(for: vault) == .canShare
             if let status = try? await accessRepository.getPlan().isFreeUser {
                 isFreeUser = status
             }
