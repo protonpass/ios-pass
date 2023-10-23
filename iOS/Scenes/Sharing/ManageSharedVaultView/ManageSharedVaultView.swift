@@ -32,17 +32,15 @@ struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @State private var showFreeSharingLimit = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
             mainContainer
-                .padding(.bottom, viewModel.vault.isAdmin ? 60 : 0) // Avoid the bottom button
+                .padding(.bottom, viewModel.vault.isAdmin ? 70 : 0) // Avoid the bottom button
 
-            if viewModel.canShare {
-                CapsuleTextButton(title: #localized("Share with more people"),
-                                  titleColor: PassColor.textInvert,
-                                  backgroundColor: PassColor.interactionNorm,
-                                  action: viewModel.shareWithMorePeople)
+            if !viewModel.fetching, !viewModel.isViewOnly {
+                shareButtonAndInfos
             }
         }
         .onAppear {
@@ -61,6 +59,15 @@ struct ManageSharedVaultView: View {
                                           action: { viewModel.handle(option: .transferOwnership(newOwner)) }),
                   secondaryButton: .cancel())
         }
+        .alert("Member Limit",
+               isPresented: $showFreeSharingLimit,
+               actions: {
+                   Button(role: .cancel, label: { Text("OK") })
+               }, message: {
+                   Text(viewModel
+                       .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
+                       "Vaults can’t contain more than 10 users.")
+               })
         .navigationModifier()
     }
 
@@ -152,6 +159,60 @@ private extension ManageSharedVaultView {
             }
             .roundedEditableSection()
         }
+    }
+}
+
+private extension ManageSharedVaultView {
+    var shareButtonAndInfos: some View {
+        VStack {
+            DisablableCapsuleTextButton(title: #localized("Share with more people"),
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textInvert,
+                                        backgroundColor: PassColor.interactionNorm,
+                                        disableBackgroundColor: PassColor.interactionNorm
+                                            .withAlphaComponent(0.5),
+                                        disabled: viewModel.reachedLimit,
+                                        action: viewModel.shareWithMorePeople)
+
+            if viewModel.showVaultLimitMessage {
+                vaultLimitReachedMessage
+            }
+
+            if viewModel.showInvitesLeft {
+                Button { showFreeSharingLimit.toggle() } label: {
+                    Label {
+                        Text("\(viewModel.numberOfInvitesLeft) invite remaining")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                    } icon: {
+                        IconProvider.questionCircle.toImage
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16)
+                    }
+                    .foregroundColor(PassColor.textWeak.toColor)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+}
+
+private extension ManageSharedVaultView {
+    var vaultLimitReachedMessage: some View {
+        ZStack {
+            Text("You have reached the limit of users in this vault.")
+                .foregroundColor(PassColor.textNorm.toColor) +
+                Text(verbatim: " ") +
+                Text("Upgrade now to share with more people")
+                .underline(color: PassColor.interactionNormMajor1.toColor)
+                .foregroundColor(PassColor.interactionNormMajor1.toColor)
+        }
+        .padding()
+        .background(PassColor.interactionNormMinor1.toColor)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .frame(maxWidth: .infinity)
+        .onTapGesture(perform: viewModel.upgrade)
     }
 }
 

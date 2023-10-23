@@ -58,7 +58,7 @@ final class GetPendingInvitesforShareResponseTests: XCTestCase {
    "Code":1000
 }
 """
-        let existingUserInvite = ShareExisingUserInvite(inviteID: "a1b2c3==",
+        let existingUserInvite = ShareExistingUserInvite(inviteID: "a1b2c3==",
                                                         invitedEmail: "invited@user.tld",
                                                         inviterEmail: "inviter@user.tld",
                                                         shareRoleID: "a2b2c3==",
@@ -79,12 +79,12 @@ final class GetPendingInvitesforShareResponseTests: XCTestCase {
                                                createTime: 1674813070,
                                                modifyTime: 1674813070)
 
-        let expectedResult = GetPendingInvitesforShareResponse(code: 1000,
+        let expectedResult = GetPendingInvitesForShareResponse(code: 1000,
                                                                invites: [existingUserInvite],
                                                                newUserInvites: [newUserInvite])
 
         // When
-        let sut = try GetPendingInvitesforShareResponse.decode(from: string)
+        let sut = try GetPendingInvitesForShareResponse.decode(from: string)
 
         // Then
         XCTAssertEqual(sut, expectedResult)
