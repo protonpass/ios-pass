@@ -23,7 +23,7 @@ import Macro
 
 extension ShareInvites {
     var invitees: [any ShareInvitee] {
-        exisingUserInvites + newUserInvites
+        existingUserInvites + newUserInvites
     }
 }
 
@@ -57,7 +57,7 @@ extension UserShareInfos: ShareInvitee {
     }
 }
 
-extension ShareExisingUserInvite: ShareInvitee {
+extension ShareExistingUserInvite: ShareInvitee {
     public var email: String {
         invitedEmail
     }

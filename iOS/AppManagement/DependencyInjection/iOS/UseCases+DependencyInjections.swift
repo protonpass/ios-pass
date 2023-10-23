@@ -156,10 +156,10 @@ extension UseCasesContainer {
         self { RevokeUserShareAccess(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
 
-    var canUserShareVault: Factory<CanUserShareVaultUseCase> {
+    var getUserShareStatus: Factory<GetUserShareStatusUseCase> {
         self {
-            CanUserShareVault(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
-                              accessRepository: SharedRepositoryContainer.shared.accessRepository())
+            GetUserShareStatus(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
+                               accessRepository: SharedRepositoryContainer.shared.accessRepository())
         }
     }
 

@@ -5,11 +5,35 @@
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "extractionState" : "manual"
     },
+    "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus." : {
+      "comment" : "Used in the upselling screen to explain benefits",
+      "extractionState" : "manual"
+    },
     "Learn more about Pass" : {
+      "extractionState" : "manual"
+    },
+    "Multiple Vaults" : {
+      "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "manual"
+    },
+    "Pass Plus" : {
+      "comment" : "Title on upselling screen",
       "extractionState" : "manual"
     },
     "Pending access to the shared data" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
+      "extractionState" : "manual"
+    },
+    "Unlimited 2FA Autofill" : {
+      "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "manual"
+    },
+    "Unlimited email aliases" : {
+      "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "manual"
+    },
+    "Upgrade" : {
+      "comment" : "Button on the upselling screen",
       "extractionState" : "manual"
     }
   },
