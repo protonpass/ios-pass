@@ -684,7 +684,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d개 항목"
+                  "value" : "%lld %d개 항목"
                 }
               }
             }
@@ -1133,7 +1133,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d명 회원"
+                  "value" : "%lld %d명 회원"
                 }
               }
             }
@@ -1582,7 +1582,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d회 남은 시도"
+                  "value" : "%lld %d회 남은 시도"
                 }
               }
             }
@@ -1797,7 +1797,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вынікі"
+                  "value" : "вынікі"
                 }
               },
               "many" : {
@@ -1809,7 +1809,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вынік"
+                  "value" : "вынік"
                 }
               },
               "other" : {
@@ -1827,7 +1827,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld výsledků"
+                  "value" : "výsledků"
                 }
               },
               "many" : {
@@ -1839,7 +1839,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld výsledek"
+                  "value" : "výsledek"
                 }
               },
               "other" : {
@@ -1857,7 +1857,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld Ergebnis"
+                  "value" : "Ergebnis"
                 }
               },
               "other" : {
@@ -1875,7 +1875,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld αποτέλεσμα"
+                  "value" : "αποτέλεσμα"
                 }
               },
               "other" : {
@@ -1911,7 +1911,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld resultado"
+                  "value" : "resultado"
                 }
               },
               "other" : {
@@ -1929,7 +1929,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld resultado"
+                  "value" : "resultado"
                 }
               },
               "other" : {
@@ -1947,7 +1947,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld tulos"
+                  "value" : "tulos"
                 }
               },
               "other" : {
@@ -1965,7 +1965,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld résultat"
+                  "value" : "résultat"
                 }
               },
               "other" : {
@@ -1983,7 +1983,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld risultato"
+                  "value" : "risultato"
                 }
               },
               "other" : {
@@ -2013,7 +2013,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld შედეგი"
+                  "value" : "შედეგი"
                 }
               },
               "other" : {
@@ -2043,7 +2043,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld wyniki"
+                  "value" : "wyniki"
                 }
               },
               "many" : {
@@ -2055,7 +2055,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld wynik"
+                  "value" : "wynik"
                 }
               },
               "other" : {
@@ -2073,7 +2073,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld resultado"
+                  "value" : "resultado"
                 }
               },
               "other" : {
@@ -2091,7 +2091,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld resultado"
+                  "value" : "resultado"
                 }
               },
               "other" : {
@@ -2109,13 +2109,13 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld rezultate"
+                  "value" : "rezultate"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld rezultat"
+                  "value" : "rezultat"
                 }
               },
               "other" : {
@@ -2133,7 +2133,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld výsledky"
+                  "value" : "výsledky"
                 }
               },
               "many" : {
@@ -2145,7 +2145,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld výsledok"
+                  "value" : "výsledok"
                 }
               },
               "other" : {
@@ -2163,7 +2163,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld resultat"
+                  "value" : "resultat"
                 }
               },
               "other" : {
@@ -2181,7 +2181,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld sonuç"
+                  "value" : "sonuç"
                 }
               },
               "other" : {
@@ -2199,7 +2199,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld результати"
+                  "value" : "результати"
                 }
               },
               "many" : {
@@ -2211,7 +2211,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld результат"
+                  "value" : "результат"
                 }
               },
               "other" : {
@@ -2282,7 +2282,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%dkrát"
+                  "value" : "%lld %dkrát"
                 }
               },
               "one" : {
@@ -2294,7 +2294,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%dkrát"
+                  "value" : "%lld %dkrát"
                 }
               }
             }
@@ -2468,7 +2468,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d-ჯერ"
+                  "value" : "%lld %d-ჯერ"
                 }
               }
             }
@@ -2480,7 +2480,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%d회"
+                  "value" : "%lld %d회"
                 }
               }
             }
@@ -2929,7 +2929,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "무료 체험이 %d일 남았습니다"
+                  "value" : "%lld 무료 체험이 %d일 남았습니다"
                 }
               }
             }
@@ -7938,7 +7938,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias permanently deleted"
+            "value" : "Alias trvale smazán"
           }
         },
         "de" : {
@@ -10055,7 +10055,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automatické dopĺňanie"
+            "value" : "Automatické vypĺňanie"
           }
         },
         "sv" : {
@@ -10185,7 +10185,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automatické dopĺňanie vypnuté"
+            "value" : "Automatické vypĺňanie vypnuté"
           }
         },
         "sv" : {
@@ -10452,7 +10452,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automatické dopĺňanie v aplikáciách a na weboch zapnutím funkcie Automatické dopĺňanie cez Proton Pass"
+            "value" : "Zapnite funkciu automatického vypĺňania v Proton Pass pre používanie v aplikáciách a na webových stránkach"
           }
         },
         "sv" : {
@@ -10987,7 +10987,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Môžete vytvárať, upravovať, mazať a exportovať položky v tomto trezore"
+            "value" : "Môže vytvárať, upravovať, mazať a exportovať položky v tomto trezore"
           }
         },
         "sv" : {
@@ -14454,7 +14454,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트 컨텐츠 복사"
+            "value" : "메모 컨텐츠 복사"
           }
         },
         "pl" : {
@@ -14759,7 +14759,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kopírovať meno používateľa"
+            "value" : "Kopírovať používateľské meno"
           }
         },
         "sv" : {
@@ -16853,7 +16853,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credit card permanently deleted"
+            "value" : "Platební karta trvale smazána"
           }
         },
         "de" : {
@@ -16949,7 +16949,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Platobná karta bola natrvalo odstránená"
+            "value" : "Platobná karta bola natrvalo vymazaná"
           }
         },
         "sv" : {
@@ -17086,7 +17086,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Platobná karta bola obnovená"
+            "value" : "Platobná karta obnovená"
           }
         },
         "sv" : {
@@ -17223,7 +17223,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Platobná karta bola aktualizovaná"
+            "value" : "Platobná karta aktualizovaná"
           }
         },
         "sv" : {
@@ -18166,7 +18166,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odstrániť účet."
+            "value" : "Odstrániť účet"
           }
         },
         "sv" : {
@@ -19104,7 +19104,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zrušiť zmeny?"
+            "value" : "Zahodiť zmeny?"
           }
         },
         "sv" : {
@@ -19234,7 +19234,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stiahnite si všetky položky znova, aby ste sa uistili, že ste synchronizovaný"
+            "value" : "Stiahnite si všetky položky znova, aby ste sa uistili, že všetky údaje sú synchronizované"
           }
         },
         "sv" : {
@@ -20127,7 +20127,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "빈 노트"
+            "value" : "빈 메모"
           }
         },
         "pl" : {
@@ -20417,7 +20417,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zapnúť automatické dopĺňanie"
+            "value" : "Zapnúť automatické vypĺňanie"
           }
         },
         "sv" : {
@@ -21631,7 +21631,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Expiruje"
+            "value" : "Exspiruje"
           }
         },
         "sv" : {
@@ -22403,7 +22403,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별명, 로그인 및 노트를 검색"
+            "value" : "별명, 로그인 및 메모 검색"
           }
         },
         "pl" : {
@@ -22694,7 +22694,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Správa hesiel posunutá na vyššiu úroveň:"
+            "value" : "Pre správu hesiel na vyššej úrovni:"
           }
         },
         "sv" : {
@@ -22794,7 +22794,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "동기화 강제 실행"
+            "value" : "강제로 동기화"
           }
         },
         "pl" : {
@@ -23091,7 +23091,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preposielam"
+            "value" : "Preposiela na"
           }
         },
         "sv" : {
@@ -26308,7 +26308,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "자신에게 PIN, 코드 또는 메모를 적어두세요."
+            "value" : "PIN, 코드 또는 메모 적기"
           }
         },
         "pl" : {
@@ -26338,7 +26338,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poznačte si PIN, kód alebo poznámku pre seba"
+            "value" : "Poznačte si PIN, kód alebo poznámku"
           }
         },
         "sv" : {
@@ -26605,7 +26605,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pokračovať v editácii"
+            "value" : "Pokračovať v úpravách"
           }
         },
         "sv" : {
@@ -27290,7 +27290,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posledné 2 týždne"
+            "value" : "Posledné dva týždne"
           }
         },
         "sv" : {
@@ -28539,7 +28539,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Login permanently deleted"
+            "value" : "Přihlášení trvale smazáno"
           }
         },
         "de" : {
@@ -31870,7 +31870,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Žiadne"
+            "value" : "Bez odomykania"
           }
         },
         "sv" : {
@@ -32598,7 +32598,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poznámky"
+            "value" : "Poznámka"
           }
         },
         "sv" : {
@@ -32705,7 +32705,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트 컨텐츠 복사됨"
+            "value" : "메모 컨텐츠 복사됨"
           }
         },
         "pl" : {
@@ -32979,7 +32979,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트를 휴지통으로 이동했습니다"
+            "value" : "메모를 휴지통으로 이동했습니다"
           }
         },
         "pl" : {
@@ -33050,7 +33050,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Note permanently deleted"
+            "value" : "Poznámka trvale smazána"
           }
         },
         "de" : {
@@ -33116,7 +33116,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트를 완전히 삭제했습니다."
+            "value" : "메모를 완전히 삭제했습니다"
           }
         },
         "pl" : {
@@ -33253,7 +33253,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트 복구됨"
+            "value" : "메모 복구됨"
           }
         },
         "pl" : {
@@ -33390,7 +33390,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "노트 업데이트됨"
+            "value" : "메모 업데이트됨"
           }
         },
         "pl" : {
@@ -34452,7 +34452,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rendez-vous dans les **Réglages** de votre appareil iOS."
+            "value" : "Rendez-vous dans les **Réglages** de votre appareil."
           }
         },
         "it" : {
@@ -36386,7 +36386,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povoľte prístup ku kamere v Nastaveniach"
+            "value" : "Povoľte prístup ku kamere v Nastaveniach, prosím"
           }
         },
         "sv" : {
@@ -36660,7 +36660,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Popíšte problém čo najpodrobnejšie. Ak sa vyskytlo chybové hlásenie, dajte nám vedieť, čo sa v ňom uvádzalo."
+            "value" : "Popíšte problém čo najpodrobnejšie. Ak sa vyskytlo chybové hlásenie, dajte nám, prosím, vedieť, čo sa v ňom uvádzalo."
           }
         },
         "sv" : {
@@ -36790,7 +36790,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ponechajte aplikáciu otvorenú."
+            "value" : "Ponechajte aplikáciu otvorenú, prosím."
           }
         },
         "sv" : {
@@ -36920,7 +36920,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prihláste sa, aby ste mohli používať rozšírenie s automatický vypĺňaním pomocou Proton Pass"
+            "value" : "Prihláste sa, prosím, aby ste mohli používať rozšírenie s automatický vypĺňaním pomocou Proton Pass"
           }
         },
         "sv" : {
@@ -38774,7 +38774,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "랜덤 비밀번호"
+            "value" : "무작위 비밀번호"
           }
         },
         "pl" : {
@@ -38941,7 +38941,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "prečítané"
+            "value" : "čítať"
           }
         },
         "sv" : {
@@ -40946,7 +40946,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyhľadávanie vo všetkých trezoroch"
+            "value" : "Hľadať vo všetkých trezoroch"
           }
         },
         "sv" : {
@@ -41083,7 +41083,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyhľadávanie vo všetkých trezoroch..."
+            "value" : "Hľadať vo všetkých trezoroch..."
           }
         },
         "sv" : {
@@ -41224,7 +41224,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyhľadávať v primárnom trezore"
+            "value" : "Hľadať v primárnom trezore"
           }
         },
         "sv" : {
@@ -41361,7 +41361,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyhľadávať v koši..."
+            "value" : "Hľadať v koši..."
           }
         },
         "sv" : {
@@ -41499,7 +41499,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bezpečný správca hesiel a ďalšie"
+            "value" : "Bezpečný správca hesiel a ďalších vecí"
           }
         },
         "sv" : {
@@ -41606,7 +41606,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "안전하게 결제 수단 정보를 저장하세요"
+            "value" : "안전하게 결제 수단 정보 저장하기"
           }
         },
         "pl" : {
@@ -42829,7 +42829,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zdieľajte schránku medzi zariadeniami"
+            "value" : "Zdieľať schránku medzi zariadeniami"
           }
         },
         "sv" : {
@@ -43282,7 +43282,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show large"
+            "value" : "Zobrazit velké"
           }
         },
         "de" : {
@@ -43632,7 +43632,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zobraziť ikony webových stránok"
+            "value" : "Zobraziť náhľady stránok"
           }
         },
         "sv" : {
@@ -44304,7 +44304,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Začať používať Proton Pass"
+            "value" : "Začnite používať Proton Pass"
           }
         },
         "sv" : {
@@ -46586,7 +46586,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tým sa natrvalo odstráni vaše konto Proton a všetky jeho údaje vrátane e-mailov, kalendárov a údajov uložených v službe Disk. Toto konto nebude možné opätovne aktivovať."
+            "value" : "Týmto sa natrvalo vymaže váš Proton účet a všetky jeho údaje vrátane emailov, kalendárov a údajov uložených na Disku. Tento účet už nebude možné znovu aktivovať."
           }
         },
         "sv" : {
@@ -48171,7 +48171,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "휴지통이 비어 있습니다."
+            "value" : "휴지통이 비어있음"
           }
         },
         "pl" : {
@@ -48201,7 +48201,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kôš prázdny"
+            "value" : "Kôš je prázdny"
           }
         },
         "sv" : {
@@ -48519,7 +48519,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activa **Autorrellenar contraseñas**"
+            "value" : "Activa **Relleno automático de las contraseñas**"
           }
         },
         "es-419" : {
@@ -49003,7 +49003,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zapnite Automatické dopĺňanie, aby Proton Pass mohol vyplniť prihlasovacie údaje za váš - 10 sekúnd, ktoré vám ušetria hodiny"
+            "value" : "Zapnite Automatické dopĺňanie, aby Proton Pass mohol vyplniť prihlasovacie údaje za vás - 10 sekúnd, ktoré vám ušetria hodiny"
           }
         },
         "sv" : {
@@ -49407,7 +49407,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Podčiarkovník"
+            "value" : "Podčiarkovníky"
           }
         },
         "sv" : {
@@ -50349,7 +50349,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Navýšiť"
+            "value" : "Upgradovať"
           }
         },
         "sv" : {
@@ -50437,7 +50437,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Effettua l'upgrade adesso"
+            "value" : "Effettua l'upgrade ora"
           }
         },
         "ja" : {
@@ -50615,7 +50615,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prejdite na vyšší program pre pridávanie vlastných polí"
+            "value" : "Prejdite na vyššie predplatné pre pridávanie vlastných polí"
           }
         },
         "sv" : {
@@ -50748,7 +50748,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upgradovať pre zachovanie týchto funkcií"
+            "value" : "Navýšte predplatné pre zachovanie týchto funkcií"
           }
         },
         "sv" : {
@@ -51111,7 +51111,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilizza il codice di accesso di sistema quando Face ID non funziona"
+            "value" : "Usa il codice di accesso di sistema quando Face ID non funziona"
           }
         },
         "ja" : {
@@ -51248,7 +51248,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilizza il codice di accesso di sistema quando Touch ID non funziona"
+            "value" : "Usa il codice di accesso di sistema quando Touch ID non funziona"
           }
         },
         "ja" : {
@@ -52109,7 +52109,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trezor vytvorený"
+            "value" : "Trezor bol vytvorený"
           }
         },
         "sv" : {
@@ -55713,7 +55713,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dosiahli ste limit aliasov, ktoré môžete vytvoriť. Vytvorte neobmedzený počet aliasov po upgrade predplatného."
+            "value" : "Dosiahli ste limit aliasov, ktoré môžete vytvoriť. Vytvorte neobmedzený počet aliasov po navýšení predplatného."
           }
         },
         "sv" : {
@@ -55843,7 +55843,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dosiahli ste limit trezorov, ktoré môžete vytvoriť. Vytvorte neobmedzený počet trezorov po upgrade predplatného."
+            "value" : "Dosiahli ste limit trezorov, ktoré môžete vytvoriť. Vytvorte neobmedzený počet trezorov po navýšení predplatného."
           }
         },
         "sv" : {
@@ -55908,7 +55908,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tienes cambios sin guardar. ¿Estás seguro de que desas descartarlos?"
+            "value" : "Tienes cambios sin guardar. ¿Estás seguro de que quieres descartarlos?"
           }
         },
         "es-419" : {
@@ -56219,7 +56219,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "금고가 비어있습니다."
+            "value" : "금고가 비어있음"
           }
         },
         "pl" : {
