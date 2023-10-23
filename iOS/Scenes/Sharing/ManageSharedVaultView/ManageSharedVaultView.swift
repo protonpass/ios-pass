@@ -32,6 +32,7 @@ struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ManageSharedVaultViewModel
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @State private var showFreeSharingLimit = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -58,6 +59,15 @@ struct ManageSharedVaultView: View {
                                           action: { viewModel.handle(option: .transferOwnership(newOwner)) }),
                   secondaryButton: .cancel())
         }
+        .alert("Member Limit",
+               isPresented: $showFreeSharingLimit,
+               actions: {
+                   Button(role: .cancel, label: { Text("Ok") })
+               }, message: {
+                   Text(viewModel
+                       .isFreeUser ? "Vaults can’t contain more than 3 users with a free plan." :
+                       "Vaults can’t contain more than 10 users.")
+               })
         .navigationModifier()
     }
 
@@ -169,18 +179,20 @@ private extension ManageSharedVaultView {
             }
 
             if viewModel.showInvitesLeft {
-                Label(title: {
-                    Text("\(viewModel.numberOfInvitesLeft) invite remaining")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
-                }, icon: {
-                    IconProvider.questionCircle.toImage
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 16)
-                        .foregroundColor(Color(uiColor: PassColor.textWeak))
-                })
+                Button { showFreeSharingLimit.toggle() } label: {
+                    Label {
+                        Text("\(viewModel.numberOfInvitesLeft) invite remaining")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                    } icon: {
+                        IconProvider.questionCircle.toImage
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16)
+                    }
+                    .foregroundColor(PassColor.textWeak.toColor)
+                }
+                .buttonStyle(.plain)
             }
         }
     }

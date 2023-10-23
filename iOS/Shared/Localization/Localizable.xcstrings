@@ -436,7 +436,26 @@
       }
     },
     "%lld invite remaining" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%lld invite remaining"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld invites remaining"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld item(s)" : {
       "extractionState" : "manual",
@@ -29744,6 +29763,10 @@
         }
       }
     },
+    "Member Limit" : {
+      "comment" : "Title of an alert to explain sharing limit",
+      "extractionState" : "manual"
+    },
     "Members" : {
       "comment" : "Title of the section which shows the list of members",
       "extractionState" : "manual"
@@ -33999,6 +34022,9 @@
           }
         }
       }
+    },
+    "Ok" : {
+
     },
     "OK" : {
 
@@ -52555,6 +52581,14 @@
           }
         }
       }
+    },
+    "Vaults can’t contain more than 3 users with a free plan." : {
+      "comment" : "Message shown to free user to explain the sharing limits in an alert",
+      "extractionState" : "manual"
+    },
+    "Vaults can’t contain more than 10 users." : {
+      "comment" : "Message shown to paid user to explain the sharing limits in an alert",
+      "extractionState" : "manual"
     },
     "Verification number" : {
       "localizations" : {

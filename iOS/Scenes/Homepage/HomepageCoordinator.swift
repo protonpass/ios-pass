@@ -540,9 +540,6 @@ private extension HomepageCoordinator {
             }
             let viewController = UIHostingController(rootView: view)
 
-            viewController.setDetentType(.large,
-                                         parentViewController: rootViewController)
-
             viewController.sheetPresentationController?.prefersGrabberVisible = false
             present(viewController)
         }
