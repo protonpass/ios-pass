@@ -28,7 +28,7 @@ import ProtonCoreLogin
 
 final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()
-    private var registered = false
+    private(set) var registered = false
     let manager = ContainerManager()
 
     func autoRegister() {
@@ -50,6 +50,7 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
         // Check if registered before resetting otherwise it'll crash
         if registered {
             manager.reset()
+            registered = false
         }
     }
 }
