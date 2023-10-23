@@ -53,7 +53,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
+    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -62,7 +62,7 @@ class BaseItemDetailViewModel: ObservableObject {
         guard let vault else {
             return false
         }
-        return canUserShareVault(for: vault.vault) != .cantShare
+        return getUserShareStatus(for: vault.vault) != .cantShare
     }
 
     var isAllowedToEdit: Bool {
@@ -115,7 +115,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func share() {
         guard let vault else { return }
-        if canUserShareVault(for: vault.vault) == .canShare {
+        if getUserShareStatus(for: vault.vault) == .canShare {
             router.present(for: .shareVaultFromItemDetail(vault, itemContent))
         } else {
             router.present(for: .upselling)
