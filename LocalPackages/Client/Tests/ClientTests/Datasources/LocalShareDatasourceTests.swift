@@ -49,7 +49,6 @@ final class LocalShareDatasourceTests: XCTestCase {
 //        XCTAssertEqual(lhsShare.targetType, rhsShare.targetType)
         XCTAssertEqual(lhsShare.targetID, rhsShare.targetID)
 //        XCTAssertEqual(lhsShare.permission, rhsShare.permission)
-//        XCTAssertEqual(lhsShare.primary, rhsShare.primary)
         XCTAssertEqual(lhsShare.content, rhsShare.content)
         XCTAssertEqual(lhsShare.contentKeyRotation, rhsShare.contentKeyRotation)
         XCTAssertEqual(lhsShare.contentFormatVersion, rhsShare.contentFormatVersion)

@@ -40,7 +40,6 @@ extension ShareEntity {
     @NSManaged var expireTime: Int64
     @NSManaged var owner: Bool
     @NSManaged var permission: Int64
-    @NSManaged var primary: Bool
     @NSManaged var shareID: String
     @NSManaged var symmetricallyEncryptedContent: String?
     @NSManaged var targetID: String
@@ -69,7 +68,6 @@ extension ShareEntity {
                            targetMaxMembers: targetMaxMembers,
                            pendingInvites: pendingInvites,
                            newUserInvitesReady: newUserInvitesReady,
-                           primary: primary,
                            owner: owner,
                            shared: shared,
                            content: content,
@@ -88,7 +86,6 @@ extension ShareEntity {
         expireTime = share.expireTime ?? -1
         owner = share.owner
         permission = share.permission
-        primary = share.primary
         shareID = share.shareID
         symmetricallyEncryptedContent = symmetricallyEncryptedShare.encryptedContent
         targetID = share.targetID

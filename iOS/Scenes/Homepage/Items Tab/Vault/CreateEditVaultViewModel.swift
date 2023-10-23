@@ -103,12 +103,7 @@ private extension CreateEditVaultViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                // Primary vault can always be edited
-                if case let .editExistingVault(vault) = self.mode, vault.isPrimary {
-                    self.canCreateOrEdit = true
-                } else {
-                    canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
-                }
+                canCreateOrEdit = try await upgradeChecker.canCreateMoreVaults()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))

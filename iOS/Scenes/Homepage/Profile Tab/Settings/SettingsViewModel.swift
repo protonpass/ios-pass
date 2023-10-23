@@ -29,7 +29,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func settingsViewModelWantsToEditDefaultBrowser()
     func settingsViewModelWantsToEditTheme()
     func settingsViewModelWantsToEditClipboardExpiration()
-    func settingsViewModelWantsToEdit(primaryVault: Vault)
     func settingsViewModelWantsToClearLogs()
 }
 
@@ -49,7 +48,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
     @Published private(set) var selectedClipboardExpiration: ClipboardExpiration
-    @Published private(set) var primaryVaultRemoved = false
 
     @Published var displayFavIcons: Bool {
         didSet {
@@ -96,10 +94,6 @@ extension SettingsViewModel {
         delegate?.settingsViewModelWantsToEditClipboardExpiration()
     }
 
-    func edit(primaryVault: Vault) {
-        delegate?.settingsViewModelWantsToEdit(primaryVault: primaryVault)
-    }
-
     func viewHostAppLogs() {
         router.present(for: .logView(module: .hostApp))
     }
@@ -135,11 +129,6 @@ extension SettingsViewModel {
 
 private extension SettingsViewModel {
     func setup() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            primaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
-        }
-
         preferences
             .objectWillChange
             .sink { [weak self] in
