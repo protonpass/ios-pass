@@ -26,7 +26,6 @@ import SwiftUI
 import UIKit
 
 protocol CreateEditItemCoordinatorDelegate: AnyObject {
-    func createEditItemCoordinatorWantsWordProvider() async -> WordProviderProtocol?
     func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool)
 }
 
@@ -155,15 +154,10 @@ private extension CreateEditItemCoordinator {
         assert(delegate != nil, "delegate is not set")
         guard let delegate else { return }
         Task { @MainActor [weak self] in
-            guard let wordProvider = await delegate.createEditItemCoordinatorWantsWordProvider() else {
-                assertionFailure("wordProvider should not be null")
-                return
-            }
             guard let self else { return }
             let coordinator =
                 GeneratePasswordCoordinator(generatePasswordViewModelDelegate: generatePasswordViewModelDelegate,
-                                            mode: mode,
-                                            wordProvider: wordProvider)
+                                            mode: mode)
             coordinator.delegate = createEditItemDelegates
             coordinator.start()
             generatePasswordCoordinator = coordinator
