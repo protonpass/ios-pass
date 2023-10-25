@@ -20,6 +20,8 @@
 
 import Core
 import DesignSystem
+import Entities
+import Factory
 import SwiftUI
 
 protocol GeneratePasswordViewModelDelegate: AnyObject {
@@ -51,7 +53,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     deinit { print(deinitMessage) }
 
     let mode: GeneratePasswordViewMode
-    let wordProvider: WordProviderProtocol
 
     @Published private(set) var password = ""
 
@@ -103,9 +104,13 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     private var cachedWords = [String]()
 
-    init(mode: GeneratePasswordViewMode, wordProvider: WordProviderProtocol) {
+    private let generatePassword = resolve(\SharedUseCasesContainer.generatePassword)
+    private let generateRandomWords = resolve(\SharedUseCasesContainer.generateRandomWords)
+    private let generatePassphrase = resolve(\SharedUseCasesContainer.generatePassphrase)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    init(mode: GeneratePasswordViewMode) {
         self.mode = mode
-        self.wordProvider = wordProvider
         regenerate()
     }
 }
@@ -114,11 +119,24 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
 extension GeneratePasswordViewModel {
     func regenerate(forceRefresh: Bool = true) {
-        switch type {
-        case .random:
-            regenerateRandomPassword()
-        case .memorable:
-            regenerateMemorablePassword(forceRefresh: forceRefresh)
+        do {
+            switch type {
+            case .random:
+                password = try generatePassword(length: Int(characterCount),
+                                                numbers: hasNumberCharacters,
+                                                uppercaseLetters: hasCapitalCharacters,
+                                                symbols: hasSpecialCharacters)
+            case .memorable:
+                if forceRefresh || cachedWords.isEmpty {
+                    cachedWords = try generateRandomWords(wordCount: Int(wordCount))
+                }
+                password = try generatePassphrase(words: cachedWords,
+                                                  separator: wordSeparator,
+                                                  capitalise: capitalizingWords,
+                                                  includeNumbers: includingNumbers)
+            }
+        } catch {
+            router.display(element: .displayErrorBanner(error))
         }
     }
 
@@ -138,41 +156,6 @@ extension GeneratePasswordViewModel {
 // MARK: - Private APIs
 
 private extension GeneratePasswordViewModel {
-    func regenerateRandomPassword() {
-        var allowedCharacters: [AllowedCharacter] = [.lowercase]
-        if hasSpecialCharacters { allowedCharacters.append(.special) }
-        if hasCapitalCharacters { allowedCharacters.append(.uppercase) }
-        if hasNumberCharacters { allowedCharacters.append(.digit) }
-        password = .random(allowedCharacters: allowedCharacters, length: Int(characterCount))
-    }
-
-    func regenerateMemorablePassword(forceRefresh: Bool) {
-        if forceRefresh || cachedWords.isEmpty {
-            cachedWords = PassphraseGenerator.generate(from: wordProvider, wordCount: Int(wordCount))
-        }
-
-        var words = cachedWords
-
-        if capitalizingWords { words = words.map(\.capitalized) }
-
-        if includingNumbers {
-            if let randomIndex = words.indices.randomElement(),
-               let randomNumber = AllowedCharacter.digit.rawValue.randomElement() {
-                words[randomIndex] += String(randomNumber)
-            }
-        }
-
-        var password = ""
-        for (index, word) in words.enumerated() {
-            password += word
-            if index != words.count - 1 {
-                password += wordSeparator.value
-            }
-        }
-
-        self.password = password
-    }
-
     func requestHeightUpdate() {
         uiDelegate?
             .generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: isShowingAdvancedOptions)
