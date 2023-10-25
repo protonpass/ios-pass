@@ -376,10 +376,15 @@
 		37BE837029954C6000E42C89 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE836F29954C6000E42C89 /* APIManager.swift */; };
 		38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BD5BCAD9A76E353D3AC67F /* PassKeyManagerProtocolMock.generated.swift */; };
 		5179844D85D43BF233B6DA2B /* SyncEventLoopProtocolMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49A03B7613230B40F93791B /* SyncEventLoopProtocolMock.generated.swift */; };
+		5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */; };
+		5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */; };
 		575543F92AC30D3700565C19 /* FeatureFlagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575543F82AC30D3700565C19 /* FeatureFlagsTests.swift */; };
 		575D3C252AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C242AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore */; };
+		575D3C272AE9154A0012434B /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C262AE9154A0012434B /* TrustKit */; };
+		575D3C2A2AE9168C0012434B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C292AE9168C0012434B /* SDWebImage */; };
 		578B8BA22AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 578B8BA12AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation */; };
 		578B8BA42AE5AB6600719DA6 /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 578B8BA32AE5AB6600719DA6 /* ProtonCoreForceUpgrade */; };
+		57CCEC082AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 57CCEC072AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin */; };
 		57D3314B2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion in Frameworks */ = {isa = PBXBuildFile; productRef = 57D3314A2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion */; };
 		57F59FB02AE5C3EB002EFDFD /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 57F59FAF2AE5C3EB002EFDFD /* ProtonCoreForceUpgrade */; };
 		57F59FB22AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 57F59FB12AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation */; };
@@ -1037,7 +1042,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				575D3C2A2AE9168C0012434B /* SDWebImage in Frameworks */,
+				57CCEC082AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin in Frameworks */,
+				5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */,
+				575D3C272AE9154A0012434B /* TrustKit in Frameworks */,
 				5B8D20BE2AA7639E00457CA3 /* fusion in Frameworks */,
+				5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2315,6 +2325,11 @@
 			name = iOSUITests;
 			packageProductDependencies = (
 				5B8D20BD2AA7639E00457CA3 /* fusion */,
+				575D3C262AE9154A0012434B /* TrustKit */,
+				575D3C292AE9168C0012434B /* SDWebImage */,
+				57CCEC072AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin */,
+				5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */,
+				5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */,
 			);
 			productName = iOSUITests;
 			productReference = 75283BD52946E1A8006658A6 /* iOSUITests.xctest */;
@@ -2394,6 +2409,7 @@
 				5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */,
 				57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */,
 				575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */,
+				575D3C282AE9168C0012434B /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 35E5063C286F819F00A3F6EA /* Products */;
 			projectDirPath = "";
@@ -4981,6 +4997,15 @@
 				minimumVersion = 1.0.3;
 			};
 		};
+		575D3C282AE9168C0012434B /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 5.16.0;
+				minimumVersion = 0.0.0;
+			};
+		};
 		5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hmlongco/Factory";
@@ -5065,10 +5090,30 @@
 			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
 			productName = Factory;
 		};
+		5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */;
+			productName = ProtonCoreTestingToolkitUITestsPaymentsUI;
+		};
+		5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */;
+			productName = ProtonCoreTestingToolkitUITestsCore;
+		};
 		575D3C242AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreTestingToolkitUnitTestsCore;
+		};
+		575D3C262AE9154A0012434B /* TrustKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */;
+			productName = TrustKit;
+		};
+		575D3C292AE9168C0012434B /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 575D3C282AE9168C0012434B /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
 		};
 		578B8BA12AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -5079,6 +5124,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreForceUpgrade;
+		};
+		57CCEC072AE9252600AD99A4 /* ProtonCoreTestingToolkitUITestsLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */;
+			productName = ProtonCoreTestingToolkitUITestsLogin;
 		};
 		57D3314A2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion */ = {
 			isa = XCSwiftPackageProductDependency;
