@@ -108,8 +108,8 @@ extension SharedUseCasesContainer {
                                   logManager: self.logManager) }
     }
 
-    var unindexAllLoginItems: Factory<UnindexAllLoginItemsUseCase> {
-        self { UnindexAllLoginItems(manager: self.credentialManager) }
+    var unIndexAllLoginItems: Factory<UnIndexAllLoginItemsUseCase> {
+        self { UnIndexAllLoginItems(manager: self.credentialManager) }
     }
 }
 

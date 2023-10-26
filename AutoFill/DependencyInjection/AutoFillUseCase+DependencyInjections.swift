@@ -45,10 +45,6 @@ private extension AutoFillUseCaseContainer {
     var context: ASCredentialProviderExtensionContext {
         AutoFillDataContainer.shared.context()
     }
-
-    var credentialManager: CredentialManagerProtocol {
-        SharedServiceContainer.shared.credentialManager()
-    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -68,8 +64,8 @@ extension AutoFillUseCaseContainer {
         self { CompleteAutoFill(context: self.context,
                                 logManager: self.logManager,
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
+                                itemRepository: SharedRepositoryContainer.shared.itemRepository(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
-                                indexAllLoginItems: SharedUseCasesContainer.shared.indexAllLoginItems(),
                                 resetFactory: self.resetFactory()) }
     }
 
