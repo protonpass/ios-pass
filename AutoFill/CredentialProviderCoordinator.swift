@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable file_length
 import AuthenticationServices
 import Client
 import Combine
@@ -37,7 +36,6 @@ import SwiftUI
 
 public final class CredentialProviderCoordinator: DeinitPrintable {
     deinit {
-        print("Test deinit CredentialProviderCoordinator")
         print(deinitMessage)
     }
 
@@ -87,7 +85,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
 
         // Post init
-        
+
         try? setupSharedData()
         sendAllEventsIfApplicable()
         AppearanceSettings.apply()
@@ -101,7 +99,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         }
         do {
             try setupSharedData()
-            
+
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
             showCredentialsView(serviceIdentifiers: serviceIdentifiers)
@@ -181,7 +179,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
         do {
             try setupSharedData()
-            
+
             let viewModel = LockedCredentialViewModel(credentialIdentity: credentialIdentity)
             viewModel.onFailure = { [weak self] error in
                 guard let self else { return }
@@ -191,7 +189,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 guard let self else { return }
                 Task { [weak self] in
                     guard let self else { return }
-                    
+
                     try? await completeAutoFill(quickTypeBar: false,
                                                 credential: credential,
                                                 itemContent: itemContent,
@@ -269,10 +267,10 @@ private extension CredentialProviderCoordinator {
               let userData = appData.userData else {
             return
         }
-            try SharedDataContainer.shared.register(container: container,
-                                                    symmetricKey: appData.getSymmetricKey(),
-                                                    userData: userData,
-                                                    manualLogIn: false)
+        try SharedDataContainer.shared.register(container: container,
+                                                symmetricKey: appData.getSymmetricKey(),
+                                                userData: userData,
+                                                manualLogIn: false)
     }
 
     func handle(error: Error) {

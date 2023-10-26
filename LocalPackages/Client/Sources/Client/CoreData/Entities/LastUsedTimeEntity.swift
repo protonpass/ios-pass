@@ -38,13 +38,13 @@ extension LastUsedTimeEntity {
 }
 
 extension LastUsedTimeEntity {
-    var toItemLastUsedTime: ItemLastUsedTime {
-        ItemLastUsedTime(shareId: shareId, itemId: itemId, lastUsedTime: lastUseTime)
+    var toLastUsedTimeItem: LastUsedTimeItem {
+        LastUsedTimeItem(shareId: shareId, itemId: itemId, lastUsedTime: lastUseTime)
     }
 
-    func hydrate(from itemLastUsedTime: ItemLastUsedTime) {
-        itemId = itemLastUsedTime.itemId
-        shareId = itemLastUsedTime.shareId
-        lastUseTime = itemLastUsedTime.lastUsedTime
+    func hydrate(from lastUsedTimeItem: LastUsedTimeItem) {
+        itemId = lastUsedTimeItem.itemId
+        shareId = lastUsedTimeItem.shareId
+        lastUseTime = lastUsedTimeItem.lastUsedTime
     }
 }
