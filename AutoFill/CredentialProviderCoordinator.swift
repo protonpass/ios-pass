@@ -36,7 +36,10 @@ import ProtonCoreServices
 import SwiftUI
 
 public final class CredentialProviderCoordinator: DeinitPrintable {
-    deinit { print(deinitMessage) }
+    deinit {
+        print("Test deinit CredentialProviderCoordinator")
+        print(deinitMessage)
+    }
 
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
@@ -53,7 +56,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+    private let unIndexAllLoginItems = resolve(\SharedUseCasesContainer.unIndexAllLoginItems)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -61,27 +64,15 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\SharedRepositoryContainer.telemetryEventRepository) private var telemetryEventRepository
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
+    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
-    private var symmetricKey: SymmetricKey?
-    private var shareRepository: ShareRepositoryProtocol?
-    private var shareEventIDRepository: ShareEventIDRepositoryProtocol?
-    private var itemRepository: ItemRepositoryProtocol?
-    private var favIconRepository: FavIconRepositoryProtocol?
-    private var shareKeyRepository: ShareKeyRepositoryProtocol?
-    private var aliasRepository: AliasRepositoryProtocol?
-    private var remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol?
-    private var telemetryEventRepository: TelemetryEventRepositoryProtocol?
-    private var upgradeChecker: UpgradeCheckerProtocol?
-    private var accessRepository: AccessRepositoryProtocol?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
-    private var vaultListUiModels: [VaultListUiModel]?
-    private var aliasCount: Int?
-    private var vaultCount: Int?
-    private var totpCount: Int?
-
     private var wordProvider: WordProviderProtocol?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
     private var customCoordinator: CustomCoordinator?
@@ -96,7 +87,8 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
 
         // Post init
-        makeSymmetricKeyAndRepositories()
+        
+        try? setupSharedData()
         sendAllEventsIfApplicable()
         AppearanceSettings.apply()
         setUpRouting()
@@ -107,19 +99,12 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             showNotLoggedInView()
             return
         }
-
         do {
-            let symmetricKey = try appData.getSymmetricKey()
-            SharedDataContainer.shared.register(container: container,
-                                                symmetricKey: symmetricKey,
-                                                userData: userData,
-                                                manualLogIn: false)
-
+            try setupSharedData()
+            
             apiManager.sessionIsAvailable(authCredential: userData.credential,
                                           scopes: userData.scopes)
-            showCredentialsView(userData: userData,
-                                symmetricKey: symmetricKey,
-                                serviceIdentifiers: serviceIdentifiers)
+            showCredentialsView(serviceIdentifiers: serviceIdentifiers)
             addNewEvent(type: .autofillDisplay)
         } catch {
             alert(error: error)
@@ -143,9 +128,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// QuickType bar support
     func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let itemRepository,
-              let upgradeChecker,
-              let recordIdentifier = credentialIdentity.recordIdentifier else {
+        guard let recordIdentifier = credentialIdentity.recordIdentifier else {
             cancelAutoFill(reason: .failed)
             return
         }
@@ -157,16 +140,27 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 guard let self else { return }
                 do {
                     logger.trace("Autofilling from QuickType bar")
+                    try setupSharedData()
                     let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
+                    if Task.isCancelled {
+                        cancelAutoFill(reason: .failed)
+                    }
                     if let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
                                                                                  itemId: ids.itemId) {
+                        if Task.isCancelled {
+                            cancelAutoFill(reason: .failed)
+                        }
                         if case let .login(data) = itemContent.contentData {
-                            complete(quickTypeBar: true,
-                                     credential: .init(user: data.username, password: data.password),
-                                     itemContent: itemContent,
-                                     itemRepository: itemRepository,
-                                     upgradeChecker: upgradeChecker,
-                                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
+                            if Task.isCancelled {
+                                cancelAutoFill(reason: .failed)
+                            }
+
+                            try await completeAutoFill(quickTypeBar: true,
+                                                       credential: .init(user: data.username,
+                                                                         password: data.password),
+                                                       itemContent: itemContent,
+                                                       upgradeChecker: upgradeChecker,
+                                                       telemetryEventRepository: telemetryEventRepository)
                         } else {
                             logger.error("Failed to autofill. Not log in item.")
                             cancelAutoFill(reason: .credentialIdentityNotFound)
@@ -185,100 +179,45 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Biometric authentication
     func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let symmetricKey, let itemRepository, let upgradeChecker else {
-            cancelAutoFill(reason: .failed)
-            return
-        }
-
-        let viewModel = LockedCredentialViewModel(itemRepository: itemRepository,
-                                                  symmetricKey: symmetricKey,
-                                                  credentialIdentity: credentialIdentity)
-        viewModel.onFailure = { [weak self] error in
-            guard let self else { return }
-            handle(error: error)
-        }
-        viewModel.onSuccess = { [weak self] credential, itemContent in
-            guard let self else { return }
-            complete(quickTypeBar: false,
-                     credential: credential,
-                     itemContent: itemContent,
-                     itemRepository: itemRepository,
-                     upgradeChecker: upgradeChecker,
-                     serviceIdentifiers: [credentialIdentity.serviceIdentifier])
-        }
-        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
-    }
-
-    private func handle(error: Error) {
-        let defaultHandler: (Error) -> Void = { [weak self] error in
-            guard let self else { return }
-            logger.error(error)
-            alert(error: error)
-        }
-
-        guard let error = error as? PPError,
-              case let .credentialProvider(reason) = error else {
-            defaultHandler(error)
-            return
-        }
-
-        switch reason {
-        case .userCancelled:
-            cancelAutoFill(reason: .userCanceled)
-            return
-        case .failedToAuthenticate:
-            Task { [weak self] in
+        do {
+            try setupSharedData()
+            
+            let viewModel = LockedCredentialViewModel(credentialIdentity: credentialIdentity)
+            viewModel.onFailure = { [weak self] error in
                 guard let self else { return }
-                defer { self.cancelAutoFill(reason: .failed) }
-                do {
-                    logger.trace("Authenticaion failed. Removing all credentials")
-                    appData.userData = nil
-                    try await unindexAllLoginItems()
-                    logger.info("Removed all credentials after authentication failure")
-                } catch {
-                    logger.error(error)
+                handle(error: error)
+            }
+            viewModel.onSuccess = { [weak self] credential, itemContent in
+                guard let self else { return }
+                Task { [weak self] in
+                    guard let self else { return }
+                    
+                    try? await completeAutoFill(quickTypeBar: false,
+                                                credential: credential,
+                                                itemContent: itemContent,
+                                                upgradeChecker: upgradeChecker,
+                                                telemetryEventRepository: telemetryEventRepository)
                 }
             }
-        default:
-            defaultHandler(error)
+            showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
+        } catch {
+            handle(error: error)
         }
-    }
-
-    private func makeSymmetricKeyAndRepositories() {
-        guard let userData = appData.userData,
-              let symmetricKey = try? appData.getSymmetricKey() else { return }
-        SharedDataContainer.shared.register(container: container,
-                                            symmetricKey: symmetricKey,
-                                            userData: userData,
-                                            manualLogIn: false)
-        self.symmetricKey = symmetricKey
-        shareRepository = SharedRepositoryContainer.shared.shareRepository()
-        shareEventIDRepository = SharedRepositoryContainer.shared.shareEventIDRepository()
-        itemRepository = SharedRepositoryContainer.shared.itemRepository()
-        favIconRepository = SharedRepositoryContainer.shared.favIconRepository()
-        shareKeyRepository = SharedRepositoryContainer.shared.shareKeyRepository()
-        aliasRepository = SharedRepositoryContainer.shared.aliasRepository()
-        remoteSyncEventsDatasource = SharedRepositoryContainer.shared.remoteSyncEventsDatasource()
-        telemetryEventRepository = SharedRepositoryContainer.shared.telemetryEventRepository()
-        upgradeChecker = SharedServiceContainer.shared.upgradeChecker()
-        accessRepository = SharedRepositoryContainer.shared.accessRepository()
-    }
-
-    func addNewEvent(type: TelemetryEventType) {
-        addTelemetryEvent(with: type)
     }
 
     func sendAllEventsIfApplicable() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await telemetryEventRepository?.sendAllEventsIfApplicable()
+                try await telemetryEventRepository.sendAllEventsIfApplicable()
             } catch {
                 logger.error(error)
             }
         }
     }
 }
+
+// MARK: - Setup & Utils
 
 private extension CredentialProviderCoordinator {
     // swiftlint:disable cyclomatic_complexity
@@ -323,28 +262,60 @@ private extension CredentialProviderCoordinator {
             }
             .store(in: &cancellables)
     }
-    // swiftlint:enable cyclomatic_complexity
-}
 
-private extension CredentialProviderCoordinator {
-    // swiftlint:disable:next function_parameter_count
-    func complete(quickTypeBar: Bool,
-                  credential: ASPasswordCredential,
-                  itemContent: ItemContent,
-                  itemRepository: ItemRepositoryProtocol,
-                  upgradeChecker: UpgradeCheckerProtocol,
-                  serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        completeAutoFill(quickTypeBar: quickTypeBar,
-                         credential: credential,
-                         itemContent: itemContent,
-                         itemRepository: itemRepository,
-                         upgradeChecker: upgradeChecker,
-                         serviceIdentifiers: serviceIdentifiers,
-                         telemetryEventRepository: telemetryEventRepository)
+    // swiftlint:enable cyclomatic_complexity
+    func setupSharedData() throws {
+        guard !SharedDataContainer.shared.registered,
+              let userData = appData.userData else {
+            return
+        }
+            try SharedDataContainer.shared.register(container: container,
+                                                    symmetricKey: appData.getSymmetricKey(),
+                                                    userData: userData,
+                                                    manualLogIn: false)
+    }
+
+    func handle(error: Error) {
+        let defaultHandler: (Error) -> Void = { [weak self] error in
+            guard let self else { return }
+            logger.error(error)
+            alert(error: error)
+        }
+
+        guard let error = error as? PPError,
+              case let .credentialProvider(reason) = error else {
+            defaultHandler(error)
+            return
+        }
+
+        switch reason {
+        case .userCancelled:
+            cancelAutoFill(reason: .userCanceled)
+            return
+        case .failedToAuthenticate:
+            Task { [weak self] in
+                guard let self else { return }
+                defer { cancelAutoFill(reason: .failed) }
+                do {
+                    logger.trace("Authenticaion failed. Removing all credentials")
+                    appData.userData = nil
+                    try await unIndexAllLoginItems()
+                    logger.info("Removed all credentials after authentication failure")
+                } catch {
+                    logger.error(error)
+                }
+            }
+        default:
+            defaultHandler(error)
+        }
+    }
+
+    func addNewEvent(type: TelemetryEventType) {
+        addTelemetryEvent(with: type)
     }
 }
 
-// MARK: - Views
+// MARK: - Views for routing
 
 private extension CredentialProviderCoordinator {
     func showView(_ view: some View) {
@@ -371,26 +342,8 @@ private extension CredentialProviderCoordinator {
         lastChildViewController = viewController
     }
 
-    func showCredentialsView(userData: UserData,
-                             symmetricKey: SymmetricKey,
-                             serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let shareRepository,
-              let shareEventIDRepository,
-              let itemRepository,
-              let accessRepository,
-              let favIconRepository,
-              let shareKeyRepository,
-              let remoteSyncEventsDatasource else { return }
-        let viewModel = CredentialsViewModel(userId: userData.user.ID,
-                                             shareRepository: shareRepository,
-                                             shareEventIDRepository: shareEventIDRepository,
-                                             itemRepository: itemRepository,
-                                             accessRepository: accessRepository,
-                                             shareKeyRepository: shareKeyRepository,
-                                             remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                                             favIconRepository: favIconRepository,
-                                             symmetricKey: symmetricKey,
-                                             serviceIdentifiers: serviceIdentifiers)
+    func showCredentialsView(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        let viewModel = CredentialsViewModel(serviceIdentifiers: serviceIdentifiers)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel))
@@ -441,10 +394,10 @@ private extension CredentialProviderCoordinator {
                 do {
                     let wordProvider = try await WordProvider()
                     self.wordProvider = wordProvider
-                    self.showGeneratePasswordView(delegate: delegate)
+                    showGeneratePasswordView(delegate: delegate)
                 } catch {
-                    self.logger.error(error)
-                    self.bannerManager.displayTopErrorMessage(error)
+                    logger.error(error)
+                    bannerManager.displayTopErrorMessage(error)
                 }
             }
         }
@@ -541,46 +494,24 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?) {
-        guard let itemRepository,
-              let shareRepository,
-              let upgradeChecker,
-              let symmetricKey else { return }
-        if let vaultListUiModels {
-            showCreateLoginView(shareId: shareId,
-                                upgradeChecker: upgradeChecker,
-                                vaults: vaultListUiModels.map(\.vault),
-                                url: url)
-        } else {
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                do {
-                    self.showLoadingHud()
-                    let items = try await itemRepository.getAllItems()
-                    let vaults = try await shareRepository.getVaults()
-
-                    self.aliasCount = items.filter { $0.item.aliasEmail != nil }.count
-
-                    self.vaultListUiModels = vaults.map { vault in
-                        let activeItems =
-                            items.filter { $0.item.itemState == .active && $0.shareId == vault.shareId }
-                        return .init(vault: vault, itemCount: activeItems.count)
-                    }
-
-                    self.vaultCount = vaults.count
-
-                    self.totpCount = try items
-                        .filter(\.isLogInItem)
-                        .map { try $0.toItemUiModel(symmetricKey) }
-                        .filter(\.hasTotpUri)
-                        .count
-
-                    self.hideLoadingHud()
-                    self.credentialsViewModelWantsToCreateLoginItem(shareId: shareId, url: url)
-                } catch {
-                    self.logger.error(error)
-                    self.hideLoadingHud()
-                    self.bannerManager.displayTopErrorMessage(error)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                showLoadingHud()
+                if vaultsManager.getAllVaultContents().isEmpty {
+                    try await vaultsManager.asyncRefresh()
                 }
+                let vaults = vaultsManager.getAllVaultContents()
+
+                hideLoadingHud()
+                showCreateLoginView(shareId: shareId,
+                                    upgradeChecker: upgradeChecker,
+                                    vaults: vaults.map(\.vault),
+                                    url: url)
+            } catch {
+                logger.error(error)
+                hideLoadingHud()
+                bannerManager.displayTopErrorMessage(error)
             }
         }
     }
@@ -588,13 +519,18 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     func credentialsViewModelDidSelect(credential: ASPasswordCredential,
                                        itemContent: ItemContent,
                                        serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let itemRepository, let upgradeChecker else { return }
-        complete(quickTypeBar: false,
-                 credential: credential,
-                 itemContent: itemContent,
-                 itemRepository: itemRepository,
-                 upgradeChecker: upgradeChecker,
-                 serviceIdentifiers: serviceIdentifiers)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await completeAutoFill(quickTypeBar: false,
+                                           credential: credential,
+                                           itemContent: itemContent,
+                                           upgradeChecker: upgradeChecker,
+                                           telemetryEventRepository: telemetryEventRepository)
+            } catch {
+                cancelAutoFill(reason: .failed)
+            }
+        }
     }
 }
 
@@ -602,13 +538,13 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 
 extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelWantsToChangeVault() {
-        guard let vaultListUiModels, let rootViewController else { return }
+        guard let rootViewController else { return }
         let viewModel = VaultSelectorViewModel()
 
         let view = VaultSelectorView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
-        let customHeight = 66 * vaultListUiModels.count + 180 // Space for upsell banner
+        let customHeight = 66 * vaultsManager.getVaultCount() + 180 // Space for upsell banner
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 
@@ -723,24 +659,5 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     func extensionSettingsViewModelWantsToLogOut() {
         appData.userData = nil
         context.completeExtensionConfigurationRequest()
-    }
-}
-
-// MARK: - LimitationCounterProtocol
-
-extension CredentialProviderCoordinator: LimitationCounterProtocol {
-    public func getAliasCount() -> Int {
-        guard let aliasCount else { return 0 }
-        return aliasCount
-    }
-
-    public func getVaultCount() -> Int {
-        guard let vaultCount else { return 0 }
-        return vaultCount
-    }
-
-    public func getTOTPCount() -> Int {
-        guard let totpCount else { return 0 }
-        return totpCount
     }
 }

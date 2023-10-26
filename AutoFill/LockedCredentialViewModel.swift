@@ -26,19 +26,15 @@ import Factory
 import SwiftUI
 
 final class LockedCredentialViewModel: ObservableObject {
-    private let itemRepository: ItemRepositoryProtocol
-    private let symmetricKey: SymmetricKey
     private let credentialIdentity: ASPasswordCredentialIdentity
     private let logger = resolve(\SharedToolingContainer.logger)
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedDataContainer.symmetricKey) private var symmetricKey
 
     var onFailure: ((Error) -> Void)?
     var onSuccess: ((ASPasswordCredential, ItemContent) -> Void)?
 
-    init(itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         credentialIdentity: ASPasswordCredentialIdentity) {
-        self.itemRepository = itemRepository
-        self.symmetricKey = symmetricKey
+    init(credentialIdentity: ASPasswordCredentialIdentity) {
         self.credentialIdentity = credentialIdentity
     }
 

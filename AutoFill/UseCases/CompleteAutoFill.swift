@@ -27,27 +27,21 @@ protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  credential: ASPasswordCredential,
                  itemContent: ItemContent,
-                 itemRepository: ItemRepositoryProtocol,
                  upgradeChecker: UpgradeCheckerProtocol,
-                 serviceIdentifiers: [ASCredentialServiceIdentifier],
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?)
+                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws
 }
 
 extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
                         credential: ASPasswordCredential,
                         itemContent: ItemContent,
-                        itemRepository: ItemRepositoryProtocol,
                         upgradeChecker: UpgradeCheckerProtocol,
-                        serviceIdentifiers: [ASCredentialServiceIdentifier],
-                        telemetryEventRepository: TelemetryEventRepositoryProtocol?) {
-        execute(quickTypeBar: quickTypeBar,
-                credential: credential,
-                itemContent: itemContent,
-                itemRepository: itemRepository,
-                upgradeChecker: upgradeChecker,
-                serviceIdentifiers: serviceIdentifiers,
-                telemetryEventRepository: telemetryEventRepository)
+                        telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
+        try await execute(quickTypeBar: quickTypeBar,
+                          credential: credential,
+                          itemContent: itemContent,
+                          upgradeChecker: upgradeChecker,
+                          telemetryEventRepository: telemetryEventRepository)
     }
 }
 
@@ -57,21 +51,21 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let logManager: LogManagerProtocol
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
-    private let indexAllLoginItems: IndexAllLoginItemsUseCase
     private let resetFactory: ResetFactoryUseCase
+    private let itemRepository: ItemRepositoryProtocol
 
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
          clipboardManager: ClipboardManager,
+         itemRepository: ItemRepositoryProtocol,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
-         indexAllLoginItems: IndexAllLoginItemsUseCase,
          resetFactory: ResetFactoryUseCase) {
         self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager
+        self.itemRepository = itemRepository
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
-        self.indexAllLoginItems = indexAllLoginItems
         self.resetFactory = resetFactory
     }
 
@@ -84,55 +78,58 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     func execute(quickTypeBar: Bool,
                  credential: ASPasswordCredential,
                  itemContent: ItemContent,
-                 itemRepository: ItemRepositoryProtocol,
                  upgradeChecker: UpgradeCheckerProtocol,
-                 serviceIdentifiers: [ASCredentialServiceIdentifier],
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) {
-        context.completeRequest(withSelectedCredential: credential) { _ in
-            Task(priority: .high) { [weak self] in
-                guard let self else { return }
-                defer {
-                    resetFactory()
-                }
-                do {
-                    if quickTypeBar {
-                        try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
-                    } else {
-                        try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
-                    }
-                    logger.info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugInformation)")
-                    try await complete(itemContent: itemContent,
-                                       itemRepository: itemRepository,
-                                       upgradeChecker: upgradeChecker,
-                                       serviceIdentifiers: serviceIdentifiers)
-                    await logManager.saveAllLogs()
-                } catch {
-                    // Do nothing but only log the errors
-                    logger.error(error)
-                    // Repeat the "saveAllLogs" function instead of deferring
-                    // because we can't "await" in defer block
-                    await logManager.saveAllLogs()
-                }
+                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
+        print("Test context.CompleteAutoFill entering with context \(context)")
+
+        defer {
+            resetFactory()
+        }
+        do {
+            if quickTypeBar {
+                try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
+            } else {
+                try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
             }
+            logger
+                .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugInformation)")
+            if Task.isCancelled {
+                resetFactory()
+            }
+            await logManager.saveAllLogs()
+            try await copyTotpTokenAndNotify(itemContent: itemContent,
+                                             clipboardManager: clipboardManager,
+                                             upgradeChecker: upgradeChecker)
+            try await update(itemContent: itemContent)
+
+            await context.completeRequestAsync(credential: credential)
+        } catch {
+            // Do nothing but only log the errors
+            logger.error(error)
+            // Repeat the "saveAllLogs" function instead of deferring
+            // because we can't "await" in defer block
+            await logManager.saveAllLogs()
         }
     }
 }
 
 private extension CompleteAutoFill {
-    func complete(itemContent: ItemContent,
-                  itemRepository: ItemRepositoryProtocol,
-                  upgradeChecker: UpgradeCheckerProtocol,
-                  serviceIdentifiers: [ASCredentialServiceIdentifier]) async throws {
-        try await copyTotpTokenAndNotify(itemContent: itemContent,
-                                         clipboardManager: clipboardManager,
-                                         upgradeChecker: upgradeChecker)
+    func update(itemContent: ItemContent) async throws {
         logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
-        try await itemRepository.update(item: itemContent,
-                                        lastUseTime: Date().timeIntervalSince1970)
+        try await itemRepository.saveLocally(lastUseTime: Date().timeIntervalSince1970, for: itemContent)
         logger.info("Updated lastUseTime \(itemContent.debugInformation)")
-
-        try await indexAllLoginItems(ignorePreferences: false)
     }
 }
 
 // swiftlint:enable function_parameter_count
+
+private extension ASCredentialProviderExtensionContext {
+    @discardableResult
+    func completeRequestAsync(credential: ASPasswordCredential) async -> Bool {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
+            completeRequest(withSelectedCredential: credential) { result in
+                continuation.resume(returning: result)
+            }
+        }
+    }
+}

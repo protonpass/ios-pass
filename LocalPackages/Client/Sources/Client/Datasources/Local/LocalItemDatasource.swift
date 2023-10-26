@@ -43,6 +43,9 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Insert or update a list of items
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
+    /// Insert or update a list of last used times for a item
+    func upsertLastUseTime(for item: ItemLastUsedTime) async throws
+
     /// Trash or untrash items
     func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws
 
@@ -124,6 +127,16 @@ public extension LocalItemDatasourceProtocol {
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
                                                        sourceItems: items) { managedObject, item in
             (managedObject as? ItemEntity)?.hydrate(from: item)
+        }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+    }
+
+    func upsertLastUseTime(for item: ItemLastUsedTime) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let entity = LastUsedTimeEntity.entity(context: taskContext)
+        let batchInsertRequest = newBatchInsertRequest(entity: entity,
+                                                       sourceItems: [item]) { managedObject, item in
+            (managedObject as? LastUsedTimeEntity)?.hydrate(from: item)
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }

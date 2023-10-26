@@ -1,6 +1,6 @@
 //
-// UnindexAllLoginItems.swift
-// Proton Pass - Created on 03/08/2023.
+// ItemLastUsedTime.swift
+// Proton Pass - Created on 26/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,27 +18,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
+import Foundation
 
-/// Empty credential database
-protocol UnindexAllLoginItemsUseCase: Sendable {
-    func execute() async throws
-}
+public struct ItemLastUsedTime: Codable, Hashable, Sendable {
+    public let shareId: String
+    public let itemId: String
+    public let lastUsedTime: Double
 
-extension UnindexAllLoginItemsUseCase {
-    func callAsFunction() async throws {
-        try await execute()
-    }
-}
-
-final class UnindexAllLoginItems: Sendable, UnindexAllLoginItemsUseCase {
-    private let manager: CredentialManagerProtocol
-
-    init(manager: CredentialManagerProtocol) {
-        self.manager = manager
-    }
-
-    func execute() async throws {
-        try await manager.removeAllCredentials()
+    public init(shareId: String, itemId: String, lastUsedTime: Double) {
+        self.shareId = shareId
+        self.itemId = itemId
+        self.lastUsedTime = lastUsedTime
     }
 }
