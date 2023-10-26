@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct ItemLastUsedTime: Codable, Hashable, Sendable {
+public struct LastUsedTimeItem: Codable, Hashable, Sendable {
     public let shareId: String
     public let itemId: String
     public let lastUsedTime: Double

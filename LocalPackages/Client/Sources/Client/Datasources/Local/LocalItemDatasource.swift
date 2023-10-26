@@ -31,6 +31,10 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
+    func getAllLastUsedTimeItems() async throws -> [LastUsedTimeItem]
+
+    func removeAllLastUsedTimeItems() async throws
+
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -44,7 +48,7 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
     /// Insert or update a list of last used times for a item
-    func upsertLastUseTime(for item: ItemLastUsedTime) async throws
+    func upsertLastUseTime(for item: LastUsedTimeItem) async throws
 
     /// Trash or untrash items
     func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws
@@ -73,6 +77,20 @@ public extension LocalItemDatasourceProtocol {
         let fetchRequest = ItemEntity.fetchRequest()
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
+    func getAllLastUsedTimeItems() async throws -> [LastUsedTimeItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = LastUsedTimeEntity.fetchRequest()
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return itemEntities.map(\.toLastUsedTimeItem)
+    }
+
+    func removeAllLastUsedTimeItems() async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LastUsedTimeEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
     }
 
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
@@ -131,7 +149,7 @@ public extension LocalItemDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    func upsertLastUseTime(for item: ItemLastUsedTime) async throws {
+    func upsertLastUseTime(for item: LastUsedTimeItem) async throws {
         let taskContext = newTaskContext(type: .insert)
         let entity = LastUsedTimeEntity.entity(context: taskContext)
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
