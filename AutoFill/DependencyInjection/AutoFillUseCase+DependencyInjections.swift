@@ -65,6 +65,7 @@ extension AutoFillUseCaseContainer {
                                 logManager: self.logManager,
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                indexAllLoginItems: SharedUseCasesContainer.shared.indexAllLoginItems(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 resetFactory: self.resetFactory()) }
     }

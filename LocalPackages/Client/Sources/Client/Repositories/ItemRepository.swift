@@ -108,6 +108,10 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws
 
     func saveLocally(lastUseTime: TimeInterval, for item: ItemIdentifiable) async throws
+
+    func getAllItemLastUsedTime() async throws -> [LastUsedTimeItem]
+    func removeAllLastUsedTimeItems() async throws
+    func update(items: [LastUsedTimeItem]) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -116,6 +120,7 @@ public extension ItemRepositoryProtocol {
     }
 }
 
+// swiftlint: disable discouraged_optional_self
 public final class ItemRepository: ItemRepositoryProtocol {
     private let userData: UserData
     private let symmetricKey: SymmetricKey
@@ -176,11 +181,27 @@ public final class ItemRepository: ItemRepositoryProtocol {
 
     public func saveLocally(lastUseTime: TimeInterval, for item: ItemIdentifiable) async throws {
         logger.trace("Saving lastUsedTime \(item.debugInformation) to be updated in back ground task")
-        let lastUsedTime = ItemLastUsedTime(shareId: item.shareId, itemId: item.itemId, lastUsedTime: lastUseTime)
+        let lastUsedTime = LastUsedTimeItem(shareId: item.shareId, itemId: item.itemId, lastUsedTime: lastUseTime)
         try await localDatasource.upsertLastUseTime(for: lastUsedTime)
         logger.trace("Updated lastUsedTime \(item.debugInformation)")
     }
+
+    public func getAllItemLastUsedTime() async throws -> [LastUsedTimeItem] {
+        try await localDatasource.getAllLastUsedTimeItems()
+    }
+
+    public func removeAllLastUsedTimeItems() async throws {
+        try await localDatasource.removeAllLastUsedTimeItems()
+    }
+
+    public func update(items: [LastUsedTimeItem]) async throws {
+        for item in items {
+            try await update(item: item, lastUseTime: item.lastUsedTime)
+        }
+    }
 }
+
+extension LastUsedTimeItem: ItemIdentifiable {}
 
 public extension ItemRepository {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
@@ -559,3 +580,4 @@ private extension ItemRepository {
         }
     }
 }
+// swiftlint: enable discouraged_optional_self
