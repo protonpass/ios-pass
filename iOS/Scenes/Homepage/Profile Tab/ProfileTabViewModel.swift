@@ -49,7 +49,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+    private let unIndexAllLoginItems = resolve(\SharedUseCasesContainer.unIndexAllLoginItems)
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime = .twoMinutes
@@ -233,7 +233,7 @@ private extension ProfileTabViewModel {
                 if self.quickTypeBar {
                     try await self.indexAllLoginItems(ignorePreferences: true)
                 } else {
-                    try await self.unindexAllLoginItems()
+                    try await self.unIndexAllLoginItems()
                 }
                 self.preferences.quickTypeBar = self.quickTypeBar
             } catch {
