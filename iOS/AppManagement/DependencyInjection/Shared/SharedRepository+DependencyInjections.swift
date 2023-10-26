@@ -118,7 +118,7 @@ extension SharedRepositoryContainer {
         self {
             ItemRepository(userData: self.userData,
                            symmetricKey: self.symmetricKey,
-                           localDatasoure: LocalItemDatasource(container: self.container),
+                           localDatasource: LocalItemDatasource(container: self.container),
                            remoteDatasource: RemoteItemRevisionDatasource(apiService: self.apiService),
                            shareEventIDRepository: self.shareEventIDRepository(),
                            passKeyManager: self.passKeyManager(),
