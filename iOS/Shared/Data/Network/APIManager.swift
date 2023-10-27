@@ -146,8 +146,9 @@ final class APIManager: APIManagerProtocol {
 
     private static func setUpCertificatePinning(trustKitDelegate: TrustKitDelegate) {
         TrustKitWrapper.setUp(delegate: trustKitDelegate)
-        PMAPIService.noTrustKit = false
-        PMAPIService.trustKit = TrustKitWrapper.current
+        let trustKit = TrustKitWrapper.current
+        PMAPIService.trustKit = trustKit
+        PMAPIService.noTrustKit = trustKit == nil
     }
 
     private func setUpCore() {
