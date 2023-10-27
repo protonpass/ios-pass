@@ -163,40 +163,44 @@ extension VaultsManager {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.isRefreshing = false }
-            self.isRefreshing = true
+            try? await asyncRefresh()
+        }
+    }
 
-            do {
-                // No need to show loading indicator once items are loaded beforehand.
-                var cryptoErrorOccured = false
-                switch self.state {
-                case .loaded:
-                    break
-                case let .error(error):
-                    cryptoErrorOccured = error is CryptoKitError
-                    self.state = .loading
-                default:
-                    self.state = .loading
-                }
+    func asyncRefresh() async throws {
+        guard !isRefreshing else { return }
+        defer { isRefreshing = false }
 
-                if self.manualLogIn {
-                    self.logger.info("Manual login, doing full sync")
-                    try await self.fullSync()
-                    self.manualLogIn = false
-                    self.logger.info("Manual login, done full sync")
-                } else if cryptoErrorOccured {
-                    self.logger.info("Crypto error occured. Doing full sync")
-                    try await self.fullSync()
-                    self.logger.info("Crypto error occured. Done full sync")
-                } else {
-                    self.logger.info("Not manual login, getting local shares & items")
-                    let vaults = try await self.shareRepository.getVaults()
-                    try await self.loadContents(for: vaults)
-                    self.logger.info("Not manual login, done getting local shares & items")
-                }
-            } catch {
-                self.state = .error(error)
+        do {
+            // No need to show loading indicator once items are loaded beforehand.
+            var cryptoErrorOccured = false
+            switch state {
+            case .loaded:
+                break
+            case let .error(error):
+                cryptoErrorOccured = error is CryptoKitError
+                state = .loading
+            default:
+                state = .loading
             }
+
+            if manualLogIn {
+                logger.info("Manual login, doing full sync")
+                try await fullSync()
+                manualLogIn = false
+                logger.info("Manual login, done full sync")
+            } else if cryptoErrorOccured {
+                logger.info("Crypto error occured. Doing full sync")
+                try await fullSync()
+                logger.info("Crypto error occured. Done full sync")
+            } else {
+                logger.info("Not manual login, getting local shares & items")
+                let vaults = try await shareRepository.getVaults()
+                try await loadContents(for: vaults)
+                logger.info("Not manual login, done getting local shares & items")
+            }
+        } catch {
+            state = .error(error)
         }
     }
 

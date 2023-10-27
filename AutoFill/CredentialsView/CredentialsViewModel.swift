@@ -90,17 +90,17 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
-    private let shareRepository: ShareRepositoryProtocol
-    private let itemRepository: ItemRepositoryProtocol
-    private let accessRepository: AccessRepositoryProtocol
-    private let symmetricKey: SymmetricKey
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedDataContainer.symmetricKey) private var symmetricKey
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\SharedServiceContainer.syncEventLoop) private(set) var syncEventLoop
+
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
-    let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
     private var vaults = [Vault]()
 
@@ -108,23 +108,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-    let syncEventLoop: SyncEventLoop
 
-    init(userId: String,
-         shareRepository: ShareRepositoryProtocol,
-         shareEventIDRepository: ShareEventIDRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         accessRepository: AccessRepositoryProtocol,
-         shareKeyRepository: ShareKeyRepositoryProtocol,
-         remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
-         favIconRepository: FavIconRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        self.shareRepository = shareRepository
-        self.itemRepository = itemRepository
-        self.accessRepository = accessRepository
-        self.favIconRepository = favIconRepository
-        self.symmetricKey = symmetricKey
+    init(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.serviceIdentifiers = serviceIdentifiers
         urls = serviceIdentifiers.compactMap { serviceIdentifier in
             // ".domain" means in app context where identifiers don't have protocol,
@@ -133,15 +118,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                 .type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
             return URL(string: id)
         }
-
-        syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                              userId: userId,
-                              shareRepository: shareRepository,
-                              shareEventIDRepository: shareEventIDRepository,
-                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                              itemRepository: itemRepository,
-                              shareKeyRepository: shareKeyRepository,
-                              logManager: logManager)
 
         setup()
     }
