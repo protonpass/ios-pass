@@ -122,8 +122,8 @@ private extension AppDelegate {
 private extension AppDelegate {
     func scheduleAppRefresh() {
         let request = BGProcessingTaskRequest(identifier: "me.proton.pass.ios.db_lastUsedTimeUpdate")
-        // Fetch no earlier than 30 minutes from now
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 30 * 60)
+        // Fetch no earlier than 15 minutes from now
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
         request.requiresNetworkConnectivity = true
 
         do {
@@ -157,7 +157,7 @@ private extension AppDelegate {
             guard let self,
                   let itemsToUpdates = try? await itemRepository?.getAllItemLastUsedTime(),
                   !itemsToUpdates.isEmpty else {
-                task.setTaskCompleted(success: false)
+                task.setTaskCompleted(success: true)
                 return
             }
             if Task.isCancelled {
