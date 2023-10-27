@@ -72,26 +72,16 @@ extension AccountViewModel {
     }
 
     func manageSubscription() {
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            paymentsUI.showCurrentPlan(presentationType: .modal,
-                                       backendFetch: true) { _ in }
-        } else {
-            paymentsManager.manageSubscription { [weak self] result in
-                guard let self else { return }
-                handlePaymentsResult(result: result)
-            }
+        paymentsManager.manageSubscription { [weak self] result in
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 
     func upgradeSubscription() {
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            paymentsUI.showUpgradePlan(presentationType: .modal,
-                                       backendFetch: true) { _ in }
-        } else {
-            paymentsManager.upgradeSubscription { [weak self] result in
-                guard let self else { return }
-                handlePaymentsResult(result: result)
-            }
+        paymentsManager.upgradeSubscription { [weak self] result in
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 
@@ -101,7 +91,12 @@ extension AccountViewModel {
             if inAppPurchasePlan != nil {
                 refreshUserPlan()
             } else {
-                logger.debug("Payment is done but no plan is purchased")
+                logger
+                    .debug("""
+                    Payment is done but no plan is purchased.
+                     Or purchase was cancelled.
+                     Or completed, and sheet is being dismissed.
+                    """)
             }
         case let .failure(error):
             logger.error(error)
