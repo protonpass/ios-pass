@@ -94,7 +94,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedDataContainer.symmetricKey) private var symmetricKey
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
+    @LazyInjected(\SharedServiceContainer.syncEventLoop) private(set) var syncEventLoop
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)

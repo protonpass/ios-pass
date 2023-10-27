@@ -26,6 +26,7 @@ enum PPError: Error, CustomDebugStringConvertible {
     case credentialProvider(CredentialProviderFailureReason)
     case deallocatedSelf
     case failedToGetOrCreateSymmetricKey
+    case noUserData
     case itemNotFound(shareID: String, itemID: String)
     case vault(VaultFailureReason)
 
@@ -37,6 +38,8 @@ enum PPError: Error, CustomDebugStringConvertible {
             "Failed to access deallocated self"
         case .failedToGetOrCreateSymmetricKey:
             "Failed to get or create symmetric key"
+        case .noUserData:
+            "No user data currently accessible"
         case let .itemNotFound(shareID, itemID):
             "Item not found \"\(itemID)\" - Share ID \"\(shareID)\""
         case let .vault(reason):
