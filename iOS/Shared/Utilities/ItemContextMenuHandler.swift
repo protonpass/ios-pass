@@ -32,6 +32,8 @@ final class ItemContextMenuHandler {
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemContextMenuHandlerDelegate?
@@ -193,7 +195,6 @@ extension ItemContextMenuHandler {
 
 private extension ItemContextMenuHandler {
     func getDecryptedItemContent(for item: ItemIdentifiable) async throws -> ItemContent {
-        let symmetricKey = itemRepository.symmetricKey
         let encryptedItem = try await getEncryptedItem(for: item)
         return try encryptedItem.getItemContent(symmetricKey: symmetricKey)
     }

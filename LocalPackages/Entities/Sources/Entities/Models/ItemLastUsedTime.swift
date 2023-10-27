@@ -1,7 +1,6 @@
 //
-//
-// ResetFactory.swift
-// Proton Pass - Created on 06/10/2023.
+// ItemLastUsedTime.swift
+// Proton Pass - Created on 26/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,28 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Factory
+import Foundation
 
-protocol ResetFactoryUseCase: Sendable {
-    func execute()
-}
+public struct LastUsedTimeItem: Codable, Hashable, Sendable {
+    public let shareId: String
+    public let itemId: String
+    public let lastUsedTime: Double
 
-extension ResetFactoryUseCase {
-    func callAsFunction() {
-        execute()
-    }
-}
-
-final class ResetFactory: ResetFactoryUseCase {
-    init() {}
-
-    func execute() {
-        SharedDataContainer.shared.reset()
-        SharedViewContainer.shared.reset()
-        SharedToolingContainer.shared.resetCache()
-        SharedRepositoryContainer.shared.reset()
-        SharedServiceContainer.shared.reset()
+    public init(shareId: String, itemId: String, lastUsedTime: Double) {
+        self.shareId = shareId
+        self.itemId = itemId
+        self.lastUsedTime = lastUsedTime
     }
 }

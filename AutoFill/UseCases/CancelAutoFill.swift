@@ -40,7 +40,7 @@ final class CancelAutoFill: @unchecked Sendable, CancelAutoFillUseCase {
 
     init(context: ASCredentialProviderExtensionContext,
          saveAllLogs: SaveAllLogsUseCase,
-         resetFactory: ResetFactoryUseCase = ResetFactory()) {
+         resetFactory: ResetFactoryUseCase) {
         self.context = context
         self.saveAllLogs = saveAllLogs
         self.resetFactory = resetFactory

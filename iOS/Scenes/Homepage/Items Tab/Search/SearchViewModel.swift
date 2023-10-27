@@ -124,7 +124,6 @@ private extension SearchViewModel {
         }
 
         let searchEntries = try await searchEntryDatasource.getAllEntries(shareId: shareId)
-        let symmetricKey = itemRepository.symmetricKey
         history = try searchEntries.compactMap { entry in
             if let item = allItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID
