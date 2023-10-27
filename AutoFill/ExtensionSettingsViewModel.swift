@@ -49,7 +49,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let unIndexAllLoginItems = resolve(\SharedUseCasesContainer.unIndexAllLoginItems)
+    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     init() {
         quickTypeBar = preferences.quickTypeBar
@@ -84,7 +84,7 @@ private extension ExtensionSettingsViewModel {
                 if quickTypeBar {
                     try await indexAllLoginItems(ignorePreferences: true)
                 } else {
-                    try await unIndexAllLoginItems()
+                    try await unindexAllLoginItems()
                 }
                 preferences.quickTypeBar = quickTypeBar
             } catch {

@@ -1,5 +1,5 @@
 //
-// UnIndexAllLoginItems.swift
+// UnindexAllLoginItems.swift
 // Proton Pass - Created on 03/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,17 +21,17 @@
 import Client
 
 /// Empty credential database
-protocol UnIndexAllLoginItemsUseCase: Sendable {
+protocol UnindexAllLoginItemsUseCase: Sendable {
     func execute() async throws
 }
 
-extension UnIndexAllLoginItemsUseCase {
+extension UnindexAllLoginItemsUseCase {
     func callAsFunction() async throws {
         try await execute()
     }
 }
 
-final class UnIndexAllLoginItems: Sendable, UnIndexAllLoginItemsUseCase {
+final class UnindexAllLoginItems: Sendable, UnindexAllLoginItemsUseCase {
     private let manager: CredentialManagerProtocol
 
     init(manager: CredentialManagerProtocol) {

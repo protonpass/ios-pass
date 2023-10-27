@@ -54,7 +54,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let unIndexAllLoginItems = resolve(\SharedUseCasesContainer.unIndexAllLoginItems)
+    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -129,47 +129,47 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             cancelAutoFill(reason: .failed)
             return
         }
-
-        if preferences.localAuthenticationMethod != .none {
+        guard preferences.localAuthenticationMethod == .none else {
             cancelAutoFill(reason: .userInteractionRequired)
-        } else {
-            Task { [weak self] in
-                guard let self else { return }
-                do {
-                    logger.trace("Autofilling from QuickType bar")
-                    try setupSharedData()
-                    let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
+            return
+        }
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                logger.trace("Autofilling from QuickType bar")
+                try setupSharedData()
+                let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
+                if Task.isCancelled {
+                    cancelAutoFill(reason: .failed)
+                }
+                if let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
+                                                                             itemId: ids.itemId) {
                     if Task.isCancelled {
                         cancelAutoFill(reason: .failed)
                     }
-                    if let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
-                                                                                 itemId: ids.itemId) {
+                    if case let .login(data) = itemContent.contentData {
                         if Task.isCancelled {
-                            cancelAutoFill(reason: .failed)
-                        }
-                        if case let .login(data) = itemContent.contentData {
-                            if Task.isCancelled {
-                                cancelAutoFill(reason: .failed)
-                            }
-
-                            try await completeAutoFill(quickTypeBar: true,
-                                                       credential: .init(user: data.username,
-                                                                         password: data.password),
-                                                       itemContent: itemContent,
-                                                       upgradeChecker: upgradeChecker,
-                                                       telemetryEventRepository: telemetryEventRepository)
-                        } else {
-                            logger.error("Failed to autofill. Not log in item.")
                             cancelAutoFill(reason: .credentialIdentityNotFound)
                         }
+
+                        try await completeAutoFill(quickTypeBar: true,
+                                                   credential: .init(user: data.username,
+                                                                     password: data.password),
+                                                   itemContent: itemContent,
+                                                   upgradeChecker: upgradeChecker,
+                                                   telemetryEventRepository: telemetryEventRepository)
                     } else {
-                        logger.warning("Failed to autofill. Item not found.")
-                        cancelAutoFill(reason: .failed)
+                        logger.error("Failed to autofill. Not log in item.")
+                        cancelAutoFill(reason: .credentialIdentityNotFound)
                     }
-                } catch {
-                    logger.error(error)
+                } else {
+                    logger.warning("Failed to autofill. Item not found.")
                     cancelAutoFill(reason: .failed)
                 }
+            } catch {
+                logger.error(error)
+                cancelAutoFill(reason: .failed)
             }
         }
     }
@@ -262,10 +262,14 @@ private extension CredentialProviderCoordinator {
 
     // swiftlint:enable cyclomatic_complexity
     func setupSharedData() throws {
-        guard !SharedDataContainer.shared.registered,
-              let userData = appData.userData else {
+        guard !SharedDataContainer.shared.registered else {
             return
         }
+
+        guard let userData = appData.userData else {
+            throw PPError.noUserData
+        }
+
         try SharedDataContainer.shared.register(container: container,
                                                 symmetricKey: appData.getSymmetricKey(),
                                                 userData: userData,
@@ -296,7 +300,7 @@ private extension CredentialProviderCoordinator {
                 do {
                     logger.trace("Authenticaion failed. Removing all credentials")
                     appData.userData = nil
-                    try await unIndexAllLoginItems()
+                    try await unindexAllLoginItems()
                     logger.info("Removed all credentials after authentication failure")
                 } catch {
                     logger.error(error)

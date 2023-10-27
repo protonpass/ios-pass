@@ -31,8 +31,8 @@ import UIKit
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
-    private var itemRepository: ItemRepositoryProtocol?
-    private var indexAllLoginItems: IndexAllLoginItemsUseCase?
+    @LazyInjected(\UseCasesContainer.updateItemsWithLastUsedTime) private var updateItemsWithLastUsedTime
+
     private var backgroundTask: Task<Void, Never>?
 
     func application(_ application: UIApplication,
@@ -41,7 +41,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpCoreFeatureSwitches()
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
-        setUpBackGroundTask()
+        setUpBackgroundTask()
 
         return true
     }
@@ -104,15 +104,15 @@ private extension AppDelegate {
         FeatureFactory.shared.disable(&.dynamicPlans)
     }
 
-    func setUpBackGroundTask() {
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "me.proton.pass.ios.db_lastUsedTimeUpdate",
+    func setUpBackgroundTask() {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.backgroundTaskIdentifier,
                                         using: nil) { task in
             // Downcast the parameter to a processing task as this identifier is used for a processing request.
             guard let processTask = task as? BGProcessingTask else {
                 task.setTaskCompleted(success: false)
                 return
             }
-            self.handleUpdateLasTimeUsed(task: processTask)
+            self.handleUpdateLastUsedTime(task: processTask)
         }
     }
 }
@@ -121,7 +121,7 @@ private extension AppDelegate {
 
 private extension AppDelegate {
     func scheduleAppRefresh() {
-        let request = BGProcessingTaskRequest(identifier: "me.proton.pass.ios.db_lastUsedTimeUpdate")
+        let request = BGProcessingTaskRequest(identifier: Constants.backgroundTaskIdentifier)
         // Fetch no earlier than 15 minutes from now
         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
         request.requiresNetworkConnectivity = true
@@ -137,26 +137,17 @@ private extension AppDelegate {
 // MARK: - Handling Launch for Tasks
 
 private extension AppDelegate {
-    func handleUpdateLasTimeUsed(task: BGProcessingTask) {
+    func handleUpdateLastUsedTime(task: BGProcessingTask) {
         scheduleAppRefresh()
 
         guard SharedDataContainer.shared.registered else {
             task.setTaskCompleted(success: false)
             return
         }
-        if itemRepository == nil {
-            itemRepository = SharedRepositoryContainer.shared.itemRepository()
-        }
-
-        if indexAllLoginItems == nil {
-            indexAllLoginItems = SharedUseCasesContainer.shared.indexAllLoginItems()
-        }
 
         backgroundTask?.cancel()
         backgroundTask = Task { [weak self] in
-            guard let self,
-                  let itemsToUpdates = try? await itemRepository?.getAllItemLastUsedTime(),
-                  !itemsToUpdates.isEmpty else {
+            guard let self else {
                 task.setTaskCompleted(success: true)
                 return
             }
@@ -166,9 +157,7 @@ private extension AppDelegate {
             }
 
             do {
-                try await itemRepository?.update(items: itemsToUpdates)
-                try await indexAllLoginItems?(ignorePreferences: false)
-                try await itemRepository?.removeAllLastUsedTimeItems()
+                try await updateItemsWithLastUsedTime()
                 task.setTaskCompleted(success: true)
             } catch {
                 task.setTaskCompleted(success: false)
