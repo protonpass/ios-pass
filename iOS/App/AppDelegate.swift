@@ -90,8 +90,8 @@ private extension AppDelegate {
     }
 
     func setUpCoreFeatureSwitches() {
-        #if DEBUG
-        FeatureFactory.shared.enable(&.dynamicPlans)
-        #endif
+        if Bundle.main.isQaBuild {
+            FeatureFactory.shared.enable(&.dynamicPlans)
+        }
     }
 }
