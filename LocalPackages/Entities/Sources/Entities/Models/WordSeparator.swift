@@ -1,6 +1,6 @@
 //
-// PassphraseGenerator.swift
-// Proton Pass - Created on 09/05/2023.
+// WordSeparator.swift
+// Proton Pass - Created on 23/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,15 +17,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public enum PassphraseGenerator {
-    public static func generate(from provider: WordProviderProtocol, wordCount: Int) -> [String] {
-        var words = [String]()
-        for _ in 0..<wordCount {
-            words.append(provider.word(for: .random()))
-        }
-        return words
-    }
+public enum WordSeparator: Int, CaseIterable {
+    case hyphens = 0, spaces, periods, commas, underscores, numbers, numbersAndSymbols
 }
