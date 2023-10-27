@@ -191,7 +191,6 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
-                try await updateItemsWithLastUsedTime()
             } catch {
                 logger.error(error)
             }
