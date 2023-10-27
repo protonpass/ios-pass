@@ -507,22 +507,17 @@ private extension HomepageCoordinator {
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            if FeatureFactory.shared.isEnabled(.dynamicPlans) {
-                paymentsUI.showUpgradePlan(presentationType: .modal,
-                                           backendFetch: true) { _ in }
-            } else {
-                paymentsManager.upgradeSubscription { [weak self] result in
-                    guard let self else { return }
-                    switch result {
-                    case let .success(inAppPurchasePlan):
-                        if inAppPurchasePlan != nil {
-                            refreshAccess()
-                        } else {
-                            logger.debug("Payment is done but no plan is purchased")
-                        }
-                    case let .failure(error):
-                        bannerManager.displayTopErrorMessage(error)
+            paymentsManager.upgradeSubscription { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case let .success(inAppPurchasePlan):
+                    if inAppPurchasePlan != nil {
+                        refreshAccess()
+                    } else {
+                        logger.debug("Payment is done but no plan is purchased")
                     }
+                case let .failure(error):
+                    bannerManager.displayTopErrorMessage(error)
                 }
             }
         }

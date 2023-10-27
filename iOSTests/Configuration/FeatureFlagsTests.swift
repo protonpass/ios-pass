@@ -23,7 +23,7 @@ import ProtonCoreFeatureSwitch
 
 final class FeatureFlagsTests: XCTestCase {
 
-    func testDefaultForDynamicPlansIsOff() {
-        XCTAssertFalse(FeatureFactory.shared.isEnabled(.dynamicPlans))
+    func testDefaultForDynamicPlansIsOn() {
+        XCTAssert(FeatureFactory.shared.isEnabled(.dynamicPlans))
     }
 }
