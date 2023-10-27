@@ -52,13 +52,11 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
     private let resetFactory: ResetFactoryUseCase
     private let itemRepository: ItemRepositoryProtocol
-    private let indexAllLoginItems: IndexAllLoginItemsUseCase
 
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
          clipboardManager: ClipboardManager,
          itemRepository: ItemRepositoryProtocol,
-         indexAllLoginItems: IndexAllLoginItemsUseCase,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
          resetFactory: ResetFactoryUseCase) {
         self.context = context
@@ -68,7 +66,6 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
         self.resetFactory = resetFactory
-        self.indexAllLoginItems = indexAllLoginItems
     }
 
     /*
@@ -82,8 +79,6 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                  itemContent: ItemContent,
                  upgradeChecker: UpgradeCheckerProtocol,
                  telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
-        print("Test context.CompleteAutoFill entering with context \(context)")
-
         defer {
             resetFactory()
         }
@@ -119,7 +114,6 @@ private extension CompleteAutoFill {
     func update(itemContent: ItemContent) async throws {
         logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
         try await itemRepository.saveLocally(lastUseTime: Date().timeIntervalSince1970, for: itemContent)
-        try await indexAllLoginItems(ignorePreferences: false)
         logger.info("Updated lastUseTime \(itemContent.debugInformation)")
     }
 }

@@ -31,10 +31,6 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
-    func getAllLastUsedTimeItems() async throws -> [LastUsedTimeItem]
-
-    func removeAllLastUsedTimeItems() async throws
-
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -46,9 +42,6 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
 
     /// Insert or update a list of items
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws
-
-    /// Insert or update a list of last used times for a item
-    func upsertLastUseTime(for item: LastUsedTimeItem) async throws
 
     /// Trash or untrash items
     func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws
@@ -64,6 +57,15 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
 
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
+
+    /// Get a list of last used times no yet refreshed
+    func getAllLastUsedTimeItems() async throws -> [LastUsedTimeItem]
+
+    /// Remove all `LastUsedTimeItem` from db
+    func removeAllLastUsedTimeItems() async throws
+
+    /// Insert or update a list of last used times for a item
+    func upsertLastUseTime(for item: LastUsedTimeItem) async throws
 
     // MARK: - AutoFill related operations
 
