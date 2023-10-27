@@ -41,6 +41,5 @@ final class ResetFactory: ResetFactoryUseCase {
         SharedToolingContainer.shared.resetCache()
         SharedRepositoryContainer.shared.reset()
         SharedServiceContainer.shared.reset()
-        SharedViewContainer.shared.reset()
     }
 }

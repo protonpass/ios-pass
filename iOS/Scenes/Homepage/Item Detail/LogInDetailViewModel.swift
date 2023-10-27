@@ -147,7 +147,6 @@ extension LogInDetailViewModel {
     func showAliasDetail() {
         guard let aliasItem else { return }
         do {
-            let symmetricKey = itemRepository.symmetricKey
             let itemContent = try aliasItem.getItemContent(symmetricKey: symmetricKey)
             logInDetailViewModelDelegate?.logInDetailViewModelWantsToShowAliasDetail(itemContent)
         } catch {
