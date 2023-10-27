@@ -71,7 +71,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private var lastChildViewController: UIViewController?
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
-    private var wordProvider: WordProviderProtocol?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
     private var customCoordinator: CustomCoordinator?
 
@@ -379,26 +378,11 @@ private extension CredentialProviderCoordinator {
     }
 
     func showGeneratePasswordView(delegate: GeneratePasswordViewModelDelegate) {
-        if let wordProvider {
-            let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
-                                                          mode: .createLogin,
-                                                          wordProvider: wordProvider)
-            coordinator.delegate = self
-            coordinator.start()
-            generatePasswordCoordinator = coordinator
-        } else {
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                do {
-                    let wordProvider = try await WordProvider()
-                    self.wordProvider = wordProvider
-                    showGeneratePasswordView(delegate: delegate)
-                } catch {
-                    logger.error(error)
-                    bannerManager.displayTopErrorMessage(error)
-                }
-            }
-        }
+        let coordinator = GeneratePasswordCoordinator(generatePasswordViewModelDelegate: delegate,
+                                                      mode: .createLogin)
+        coordinator.delegate = self
+        coordinator.start()
+        generatePasswordCoordinator = coordinator
     }
 
     func showLoadingHud() {
