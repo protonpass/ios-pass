@@ -23,26 +23,26 @@ import Core
 import ProtonCoreServices
 
 /// Inform the BE that the users had logged in into Pass so that welcome or instruction emails can be sent
-protocol CheckAccessToPassUseCase: Sendable {
+public protocol CheckAccessToPassUseCase: Sendable {
     func execute()
 }
 
-extension CheckAccessToPassUseCase {
+public extension CheckAccessToPassUseCase {
     func callAsFunction() {
         execute()
     }
 }
 
-final class CheckAccessToPass: @unchecked Sendable, CheckAccessToPassUseCase {
+public final class CheckAccessToPass: @unchecked Sendable, CheckAccessToPassUseCase {
     private let apiService: APIService
     private let logger: Logger
 
-    init(apiService: APIService, logManager: LogManagerProtocol) {
+    public init(apiService: APIService, logManager: LogManagerProtocol) {
         self.apiService = apiService
         logger = .init(manager: logManager)
     }
 
-    func execute() {
+    public func execute() {
         Task { [weak self] in
             guard let self else { return }
             do {

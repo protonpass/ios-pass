@@ -34,11 +34,9 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = VaultManagerState.loading
 
-    private(set) var numberOfAliasForSharedVault = 0
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
