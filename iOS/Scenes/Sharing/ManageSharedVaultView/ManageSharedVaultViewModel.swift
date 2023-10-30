@@ -39,7 +39,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     @Published var newOwner: NewOwner?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
-    private let getVaultInfos = resolve(\UseCasesContainer.getVaultInfos)
     private let getUsersLinkedToShare = resolve(\UseCasesContainer.getUsersLinkedToShare)
     private let getPendingInvitationsForShare = resolve(\UseCasesContainer.getPendingInvitationsForShare)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
@@ -50,7 +49,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let revokeUserShareAccess = resolve(\UseCasesContainer.revokeUserShareAccess)
     private let transferVaultOwnership = resolve(\UseCasesContainer.transferVaultOwnership)
     private let canUserTransferVaultOwnership = resolve(\UseCasesContainer.canUserTransferVaultOwnership)
-    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let promoteNewUserInvite = resolve(\UseCasesContainer.promoteNewUserInvite)
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -58,8 +56,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
-
-    private var cancellables = Set<AnyCancellable>()
 
     var reachedLimit: Bool {
         numberOfInvitesLeft <= 0
@@ -99,10 +95,6 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
 
     func isCurrentUser(_ invitee: any ShareInvitee) -> Bool {
         userData.user.email == invitee.email
-    }
-
-    func isOwnerAndCurrentUser(_ invitee: any ShareInvitee) -> Bool {
-        vault.isOwner && isCurrentUser(invitee)
     }
 
     func shareWithMorePeople() {
