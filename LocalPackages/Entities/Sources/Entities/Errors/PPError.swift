@@ -21,7 +21,7 @@
 import Foundation
 
 /// Proton Pass errors
-enum PPError: Error, CustomDebugStringConvertible {
+public enum PPError: Error, CustomDebugStringConvertible {
     /// AutoFill extension
     case credentialProvider(CredentialProviderFailureReason)
     case deallocatedSelf
@@ -30,7 +30,7 @@ enum PPError: Error, CustomDebugStringConvertible {
     case itemNotFound(shareID: String, itemID: String)
     case vault(VaultFailureReason)
 
-    var debugDescription: String {
+    public var debugDescription: String {
         switch self {
         case let .credentialProvider(reason):
             reason.debugDescription
@@ -50,14 +50,14 @@ enum PPError: Error, CustomDebugStringConvertible {
 
 // MARK: - VaultFailureReason
 
-extension PPError {
+public extension PPError {
     enum VaultFailureReason: CustomDebugStringConvertible {
         case canNotDeleteLastVault
         case noSelectedVault
         case vaultNotEmpty(String)
         case vaultNotFound(String)
 
-        var debugDescription: String {
+        public var debugDescription: String {
             switch self {
             case .canNotDeleteLastVault:
                 "Can not delete last vault"
@@ -74,7 +74,7 @@ extension PPError {
 
 // MARK: - CredentialProviderFailureReason
 
-extension PPError {
+public extension PPError {
     enum CredentialProviderFailureReason: Error, CustomDebugStringConvertible {
         case failedToAuthenticate
         case invalidURL(URL?)
@@ -83,7 +83,7 @@ extension PPError {
         case userCancelled
         case generic
 
-        var debugDescription: String {
+        public var debugDescription: String {
             switch self {
             case .failedToAuthenticate:
                 "Failed to authenticate"

@@ -1,7 +1,7 @@
 //
-// ClipboardExpiration.swift
-// Proton Pass - Created on 26/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// ClipboardExpiration+Extensions.swift
+// Proton Pass - Created on 30/10/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Entities
 import Macro
 
-public enum ClipboardExpiration: Int, Codable, CustomStringConvertible, CaseIterable, Sendable {
-    case fifteenSeconds = 0
-    case oneMinute = 1
-    case twoMinutes = 2
-    case never = 3
-
+extension ClipboardExpiration: CustomStringConvertible {
     public var description: String {
         switch self {
         case .fifteenSeconds:
@@ -37,19 +32,6 @@ public enum ClipboardExpiration: Int, Codable, CustomStringConvertible, CaseIter
             #localized("After 120 seconds")
         case .never:
             #localized("Never")
-        }
-    }
-
-    public var expirationDate: Date? {
-        switch self {
-        case .fifteenSeconds:
-            Date().addingTimeInterval(15)
-        case .oneMinute:
-            Date().addingTimeInterval(60)
-        case .twoMinutes:
-            Date().addingTimeInterval(120)
-        case .never:
-            nil
         }
     }
 }

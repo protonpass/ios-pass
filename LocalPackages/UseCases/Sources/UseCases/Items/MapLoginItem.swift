@@ -20,28 +20,29 @@
 
 import Client
 import CryptoKit
+import Entities
 
 /// A login item can have multiple associated URLs while the OS expects a single URL per item,
 /// so we need to make a separate entry for each URL in the credential database.
 /// This use case map a login item into multiple `AutoFillCredential`
-protocol MapLoginItemUseCase: Sendable {
+public protocol MapLoginItemUseCase: Sendable {
     func execute(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential]
 }
 
-extension MapLoginItemUseCase {
+public extension MapLoginItemUseCase {
     func callAsFunction(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential] {
         try execute(for: item)
     }
 }
 
-final class MapLoginItem: Sendable, MapLoginItemUseCase {
+public final class MapLoginItem: Sendable, MapLoginItemUseCase {
     private let key: SymmetricKey
 
-    init(key: SymmetricKey) {
+    public init(key: SymmetricKey) {
         self.key = key
     }
 
-    func execute(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential] {
+    public func execute(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential] {
         let itemContent = try item.getItemContent(symmetricKey: key)
         guard case let .login(data) = itemContent.contentData else {
             throw PPError.credentialProvider(.notLogInItem)

@@ -18,13 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
 import Foundation
 
 public struct TelemetryEvent: Sendable {
     public let uuid: String
     public let time: TimeInterval
     public let type: TelemetryEventType
+
+    public init(uuid: String, time: TimeInterval, type: TelemetryEventType) {
+        self.uuid = uuid
+        self.time = time
+        self.type = type
+    }
 }
 
 public enum TelemetryEventType: Sendable {
@@ -67,7 +72,7 @@ public enum TelemetryEventType: Sendable {
         }
     }
 
-    init?(rawValue: String) {
+    public init?(rawValue: String) {
         switch rawValue {
         case "autofill.display":
             self = .autofillDisplay

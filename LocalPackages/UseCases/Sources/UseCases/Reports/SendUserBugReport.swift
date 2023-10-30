@@ -18,20 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Entities
 import Foundation
-import UseCases
-
-enum ReportFileKey: String, CaseIterable {
-    case hostApp = "File0"
-    case autofill = "File1"
-}
 
 /**
  The SendUserBugReportUseCase protocol defines the contract for a use case that handles sending user bug reports.
  It inherits from the `Sendable protocol, which allows the use case to be executed asynchronously.
  */
-protocol SendUserBugReportUseCase: Sendable {
+public protocol SendUserBugReportUseCase: Sendable {
     /**
      Executes the use case to send a bug report with the specified title and description.
 
@@ -46,7 +41,7 @@ protocol SendUserBugReportUseCase: Sendable {
     func execute(with title: String, and description: String, shouldSendLogs: Bool) async throws -> Bool
 }
 
-extension SendUserBugReportUseCase {
+public extension SendUserBugReportUseCase {
     /**
      Convenience method that allows the use case to be invoked as a function, simplifying its usage.
 
@@ -65,7 +60,7 @@ extension SendUserBugReportUseCase {
     }
 }
 
-final class SendUserBugReport: SendUserBugReportUseCase {
+public final class SendUserBugReport: SendUserBugReportUseCase {
     private let reportRepository: ReportRepositoryProtocol
     private let extractLogsToFile: ExtractLogsToFileUseCase
     private let getLogEntries: GetLogEntriesUseCase
@@ -78,9 +73,9 @@ final class SendUserBugReport: SendUserBugReportUseCase {
        - extractLogsToFile: The use case responsible for extracting logs to a file.
        - getLogEntries: The use case responsible for retrieving log entries.
      */
-    init(reportRepository: ReportRepositoryProtocol,
-         extractLogsToFile: ExtractLogsToFileUseCase,
-         getLogEntries: GetLogEntriesUseCase) {
+    public init(reportRepository: ReportRepositoryProtocol,
+                extractLogsToFile: ExtractLogsToFileUseCase,
+                getLogEntries: GetLogEntriesUseCase) {
         self.reportRepository = reportRepository
         self.extractLogsToFile = extractLogsToFile
         self.getLogEntries = getLogEntries
@@ -97,9 +92,9 @@ final class SendUserBugReport: SendUserBugReportUseCase {
 
      - Throws: An error if an issue occurs while sending the bug report.
      */
-    func execute(with title: String,
-                 and description: String,
-                 shouldSendLogs: Bool) async throws -> Bool {
+    public func execute(with title: String,
+                        and description: String,
+                        shouldSendLogs: Bool) async throws -> Bool {
         var logs = [String: URL]()
 
         if shouldSendLogs {

@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 import SwiftUI
 
 private extension KeychainStorage {
@@ -30,11 +31,6 @@ private extension KeychainStorage {
                   keychain: SharedToolingContainer.shared.keychain(),
                   logManager: SharedToolingContainer.shared.logManager())
     }
-}
-
-protocol PreferencesProtocol: Sendable {
-    var shareClipboard: Bool { get set }
-    var clipboardExpiration: ClipboardExpiration { get set }
 }
 
 /// User's personal preferences as well as settings related to app's functionalities
