@@ -28,7 +28,7 @@ import Foundation
 // a file.
 // It inherits from the Sendable protocol, allowing the use case to be executed asynchronously.
 // sourcery: AutoMockable
-protocol ExtractLogsToFileUseCase: Sendable {
+public protocol ExtractLogsToFileUseCase: Sendable {
     /**
      Executes the use case to extract the specified log entries to a file with the provided file name.
 
@@ -43,7 +43,7 @@ protocol ExtractLogsToFileUseCase: Sendable {
     func execute(for entries: [LogEntry], in fileName: String) async throws -> URL?
 }
 
-extension ExtractLogsToFileUseCase {
+public extension ExtractLogsToFileUseCase {
     /**
      Convenience method that allows the use case to be invoked as a function, simplifying its usage.
 
@@ -63,10 +63,10 @@ extension ExtractLogsToFileUseCase {
 /**
  The ExtractLogsToFile class is an implementation of the `ExtractLogsToFileUseCase protocol. It provides functionality for extracting log entries to a file.
  */
-final class ExtractLogsToFile: ExtractLogsToFileUseCase {
+public final class ExtractLogsToFile: ExtractLogsToFileUseCase {
     private let logFormatter: LogFormatterProtocol
 
-    init(logFormatter: LogFormatterProtocol) {
+    public init(logFormatter: LogFormatterProtocol) {
         self.logFormatter = logFormatter
     }
 
@@ -81,7 +81,7 @@ final class ExtractLogsToFile: ExtractLogsToFileUseCase {
 
      - Throws: An error if an issue occurs during the log extraction or file writing process.
      */
-    func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
+    public func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
         guard !entries.isEmpty else {
             return nil
         }
