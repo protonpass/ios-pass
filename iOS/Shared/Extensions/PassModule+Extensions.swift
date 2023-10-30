@@ -1,6 +1,6 @@
 //
-// PassModule.swift
-// Proton Pass - Created on 09/07/2023.
+// PassModule+Extensions.swift
+// Proton Pass - Created on 30/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,12 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 import Macro
-
-enum PassModule: String, CaseIterable {
-    case hostApp, autoFillExtension, keyboardExtension
-}
 
 extension PassModule {
     var logTitle: String {

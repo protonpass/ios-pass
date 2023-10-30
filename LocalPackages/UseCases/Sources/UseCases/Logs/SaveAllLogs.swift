@@ -20,24 +20,24 @@
 
 import Core
 
-protocol SaveAllLogsUseCase: Sendable {
+public protocol SaveAllLogsUseCase: Sendable {
     func execute()
 }
 
-extension SaveAllLogsUseCase {
+public extension SaveAllLogsUseCase {
     func callAsFunction() {
         execute()
     }
 }
 
-final class SaveAllLogs: SaveAllLogsUseCase {
+public final class SaveAllLogs: SaveAllLogsUseCase {
     private let logManager: LogManagerProtocol
 
-    init(logManager: LogManagerProtocol) {
+    public init(logManager: LogManagerProtocol) {
         self.logManager = logManager
     }
 
-    func execute() {
+    public func execute() {
         Task { [weak self] in
             guard let self else { return }
             await logManager.saveAllLogs()
