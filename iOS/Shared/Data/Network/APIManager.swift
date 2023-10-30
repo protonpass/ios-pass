@@ -43,11 +43,6 @@ protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
 }
 
-public protocol APIManagerProtocol {
-    var userData: UserData? { get }
-    var apiService: APIService { get }
-}
-
 final class APIManager: APIManagerProtocol {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)

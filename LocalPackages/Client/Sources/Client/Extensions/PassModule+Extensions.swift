@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import Macro
 
-extension PassModule {
+public extension PassModule {
     var logTitle: String {
         switch self {
         case .hostApp:
