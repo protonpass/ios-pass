@@ -37,7 +37,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ bóveda"
+            "value" : "%@ caja fuerte"
           }
         },
         "es-419" : {
@@ -3813,7 +3813,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sekret TOTP"
+            "value" : "Sekretny TOTP"
           }
         },
         "pt" : {
@@ -4032,7 +4032,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "20 bóvedas"
+            "value" : "20 cajas fuertes"
           }
         },
         "es-419" : {
@@ -4612,7 +4612,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dodaj sekret TOTP"
+            "value" : "Dodaj sekretny TOTP"
           }
         },
         "pt" : {
@@ -7275,7 +7275,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias adresa zkopírována"
+            "value" : "Alias adresy zkopírován"
           }
         },
         "de" : {
@@ -7371,7 +7371,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliasová adresa skopírovaná"
+            "value" : "Adresa aliasu skopírovaná"
           }
         },
         "sv" : {
@@ -8733,7 +8733,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Všetky položky v koši boli natrvalo odstránené"
+            "value" : "Všetky položky v koši budú natrvalo odstránené"
           }
         },
         "sv" : {
@@ -9210,7 +9210,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todas las bóvedas"
+            "value" : "Todas las cajas fuertes"
           }
         },
         "es-419" : {
@@ -9679,7 +9679,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pridružiť a automaticky vyplniť"
+            "value" : "Priradiť a automaticky vyplniť"
           }
         },
         "sv" : {
@@ -9719,7 +9719,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Přidružit adresu URL?"
+            "value" : "Přiřadit adresu URL?"
           }
         },
         "de" : {
@@ -10937,7 +10937,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permite crear, editar, eliminar y exportar los elementos en esta bóveda."
+            "value" : "Permite crear, editar, eliminar y exportar los elementos en esta caja fuerte."
           }
         },
         "es-419" : {
@@ -11074,7 +11074,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permite conceder y revocar el acceso a esta bóveda."
+            "value" : "Permite conceder y revocar el acceso a esta caja fuerte."
           }
         },
         "es-419" : {
@@ -11212,7 +11212,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permite ver los elementos en esta bóveda"
+            "value" : "Permite ver los elementos en esta caja fuerte"
           }
         },
         "es-419" : {
@@ -12309,7 +12309,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Modifica codice PIN"
+            "value" : "Cambia il codice PIN"
           }
         },
         "ja" : {
@@ -14232,7 +14232,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kopírovať aliasovú adresu"
+            "value" : "Kopírovať adresu aliasu"
           }
         },
         "sv" : {
@@ -16214,7 +16214,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crear una bóveda"
+            "value" : "Crear una caja fuerte"
           }
         },
         "es-419" : {
@@ -17423,7 +17423,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vlastní název pole"
+            "value" : "Název vlastního pole"
           }
         },
         "de" : {
@@ -18643,7 +18643,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar la bóveda"
+            "value" : "Eliminar la caja fuerte"
           }
         },
         "es-419" : {
@@ -18780,7 +18780,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar la bóveda?"
+            "value" : "Eliminar la caja fuerte?"
           }
         },
         "es-419" : {
@@ -20510,7 +20510,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Habilitar Face ID"
+            "value" : "Activar Face ID"
           }
         },
         "fi" : {
@@ -20647,7 +20647,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Habilitar Touch ID"
+            "value" : "Activar Touch ID"
           }
         },
         "fi" : {
@@ -23113,7 +23113,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preposiela na"
+            "value" : "Preposielať na"
           }
         },
         "sv" : {
@@ -24863,7 +24863,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chce nahlásiť problém s..."
+            "value" : "Chcem nahlásiť problém s..."
           }
         },
         "sv" : {
@@ -25611,7 +25611,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El elemento ha sido movido a la bóveda \"%@\"."
+            "value" : "El elemento ha sido movido a la caja fuerte &quot;%@&quot;."
           }
         },
         "es-419" : {
@@ -25878,7 +25878,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los elementos de \"%@\" han sido movidos a la bóveda \"%@\"."
+            "value" : "Los elementos de &quot;%@&quot; han sido movidos a la caja fuerte &quot;%@&quot;."
           }
         },
         "es-419" : {
@@ -26151,7 +26151,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unirte a la bóveda compartida"
+            "value" : "Unirte a la caja fuerte compartida"
           }
         },
         "es-419" : {
@@ -27637,7 +27637,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abandonar la bóveda"
+            "value" : "Abandonar la caja fuerte"
           }
         },
         "es-419" : {
@@ -30010,7 +30010,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "LL / AAAA"
+            "value" : "LL/AAAA"
           }
         },
         "sk" : {
@@ -30616,7 +30616,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover todos los elementos a otra bóveda"
+            "value" : "Mover todos los elementos a otra caja fuerte"
           }
         },
         "es-419" : {
@@ -30746,7 +30746,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mover a otra bóveda"
+            "value" : "Mover a otra caja fuerte"
           }
         },
         "es-419" : {
@@ -32197,13 +32197,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Esta bóveda contiene un alias. No es posible compartir alias por el momento: el alias no se compartirá."
+                  "value" : "Esta caja fuerte contiene un alias. No es posible compartir alias por el momento: el alias no se compartirá."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Esta bóveda contiene %lld alias. No es posible compartir alias por el momento: los alias no se compartirán."
+                  "value" : "Esta caja fuerte contiene %lld alias. No es posible compartir alias por el momento: los alias no se compartirán."
                 }
               }
             }
@@ -34442,7 +34442,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otevřete **Nastavení** v aplikaci"
+            "value" : "Otevřete **Nastavení** zařízení"
           }
         },
         "de" : {
@@ -34929,7 +34929,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otvorte v telefóne NastaveniaHeslá → Možnosti hesiel"
+            "value" : "Otvorte v telefóne Nastavenia → Heslá → Možnosti hesiel"
           }
         },
         "sv" : {
@@ -37491,7 +37491,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Predpona musí obsahovať len malé písmená (a-z, 0-9), bodku (.), spojovník (-) a podčiarkovník (_)"
+            "value" : "Predpona musí obsahovať len malé písmená (a-z, 0-9), bodku (.), pomlčku (-) a podčiarkovník (_)"
           }
         },
         "sv" : {
@@ -38033,7 +38033,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chráňte si vašu schránku pred spamom a phishingom"
+            "value" : "Chráňte svoju schránku pred spamom a phishingom"
           }
         },
         "sv" : {
@@ -40637,7 +40637,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buscar en todas las bóvedas"
+            "value" : "Buscar en todas las cajas fuertes"
           }
         },
         "es-419" : {
@@ -40774,7 +40774,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buscar en todas las bóvedas..."
+            "value" : "Buscar en todas las cajas fuertes..."
           }
         },
         "es-419" : {
@@ -41125,7 +41125,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bezpečný správca hesiel a ďalších vecí"
+            "value" : "Bezpečný správca hesiel a oveľa viac"
           }
         },
         "sv" : {
@@ -41585,7 +41585,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seleccionar una bóveda"
+            "value" : "Seleccionar una caja fuerte"
           }
         },
         "es-419" : {
@@ -42065,7 +42065,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nastavte Proton Pass na odomknutie tvárou alebo odtlačkom prsta, aby ste mali prístup iba vy"
+            "value" : "Nastavte Proton Pass na odomknutie tvárou alebo odtlačkom prsta, aby ste iba vy mali k nemu prístup"
           }
         },
         "sv" : {
@@ -42524,7 +42524,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compartir la bóveda"
+            "value" : "Compartir la caja fuerte"
           }
         },
         "es-419" : {
@@ -46010,7 +46010,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esto eliminará permanentemente la bóveda \"%@\" y todo su contenido. Escribe el nombre de la bóveda para confirmar la eliminación."
+            "value" : "Esto eliminará permanentemente la caja fuerte &quot;%@&quot; y todo su contenido. Escribe el nombre de la caja fuerte para confirmar la eliminación."
           }
         },
         "es-419" : {
@@ -46082,7 +46082,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Týmto sa natrvalo odstráni trezor « %@ »a celý jeho obsah. Pre potvrdenie vymazania zadajte názov trezoru."
+            "value" : "Týmto sa natrvalo odstráni trezor « %@ » a celý jeho obsah. Pre potvrdenie vymazania zadajte názov trezoru."
           }
         },
         "sv" : {
@@ -46811,7 +46811,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Para interactuar con tus otras bóvedas, necesitas actualizar tu cuenta."
+            "value" : "Para interactuar con tus otras cajas fuertes, necesitas actualizar tu cuenta."
           }
         },
         "es-419" : {
@@ -48217,13 +48217,13 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zapnite **Vypĺňať heslá a prihlasovacie kľúče**"
+            "value" : "Zapnite **Automatické vypĺňanie hesiel**"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ενεργοποιήστε **Αυτόματη συμπλήρωση κωδικών πρόσβασης**"
+            "value" : "Slå på **Autofyll lösenord**"
           }
         },
         "tr" : {
@@ -48491,7 +48491,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zapnite automatické vypĺňanie hesiel a prihlasovacích kľúčov a povoľte ich vypĺňanie z Proton Pass"
+            "value" : "Zapnite automatické vypĺňanie hesiel a povoľte ich vypĺňanie z Proton Pass"
           }
         },
         "sv" : {
@@ -48533,7 +48533,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zapnutím funkce AutoFill necháte Proton Pass vyplnit přihlašovací údaje za vás⏤10 sekund, které vám ušetří hodiny."
+            "value" : "Zapnutím automatického vyplňování necháte Proton Pass vyplnit přihlašovací údaje za vás⏤10 sekund, které vám ušetří hodiny."
           }
         },
         "de" : {
@@ -48629,7 +48629,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zapnite Automatické dopĺňanie, aby Proton Pass mohol vyplniť prihlasovacie údaje za vás - 10 sekúnd, ktoré vám ušetria hodiny"
+            "value" : "Zapnite Automatické vypĺňanie, aby mohol Proton Pass za vás vyplniť prihlasovacie údaje - 10 sekúnd, ktoré vám ušetria hodiny"
           }
         },
         "sv" : {
@@ -48848,7 +48848,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Digita nuovamente il PIN per confermare"
+            "value" : "Inserisci nuovamente il PIN per confermare"
           }
         },
         "ja" : {
@@ -50652,7 +50652,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Použiť e-mailový alias"
+            "value" : "Použiť emailový alias"
           }
         },
         "sv" : {
@@ -51393,7 +51393,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bóveda"
+            "value" : "caja fuerte"
           }
         },
         "es-419" : {
@@ -51530,7 +51530,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La bóveda \"%@\" ha sido eliminada."
+            "value" : "La caja fuerte &quot;%@&quot; ha sido eliminada."
           }
         },
         "es-419" : {
@@ -51667,7 +51667,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La bóveda ha sido creada."
+            "value" : "La caja fuerte ha sido creada."
           }
         },
         "es-419" : {
@@ -51807,7 +51807,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nombre de la bóveda"
+            "value" : "Nombre de la caja fuerte"
           }
         },
         "es-419" : {
@@ -51948,7 +51948,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La bóveda ha sido actualizada."
+            "value" : "La caja fuerte ha sido actualizada."
           }
         },
         "es-419" : {
@@ -53958,7 +53958,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Desea asociar \"%@\" con \"%@\"?"
+            "value" : "¿Quiere asociar &quot;%@&quot; con &quot;%@&quot;?"
           }
         },
         "fi" : {
@@ -54024,7 +54024,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chcete pridružiť « %@ » k « %@ »?"
+            "value" : "Chcete priradiť « %@ » k « %@ »?"
           }
         },
         "sv" : {
@@ -55153,7 +55153,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Has alcanzado el límite de bóvedas que puedes crear. Crea bóvedas ilimitadas al mejorar tu suscripción."
+            "value" : "Has alcanzado el límite de cajas fuertes que puedes crear. Crea cajas fuertes ilimitadas al mejorar tu suscripción."
           }
         },
         "es-419" : {
@@ -55559,7 +55559,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tu bóveda está vacía."
+            "value" : "Tu caja fuerte está vacía."
           }
         },
         "es-419" : {
