@@ -1,6 +1,6 @@
 //
-// LoggerManager+Initializer.swift
-// Proton Pass - Created on 04/01/2023.
+// PassModule.swift
+// Proton Pass - Created on 09/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,17 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Entities
 import Foundation
 
-extension LogManager {
-    /// Convenience initialize for iOS & extensions which creates a log file in shared container.
-    init(module: PassModule) {
-        guard let fileContainer =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Shared file container could not be created.")
-        }
-        self.init(url: fileContainer, fileName: module.logFileName)
-    }
+public enum PassModule: String, CaseIterable {
+    case hostApp, autoFillExtension, keyboardExtension
 }
