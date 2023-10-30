@@ -18,16 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Core
 import Foundation
 
-enum ReportRepositoryError: Error {
+public enum ReportRepositoryError: Error {
     case noUserData
 }
 
+public enum ReportFileKey: String, CaseIterable {
+    case hostApp = "File0"
+    case autofill = "File1"
+}
+
 // sourcery: AutoMockable
-protocol ReportRepositoryProtocol: Sendable {
+public protocol ReportRepositoryProtocol: Sendable {
     func sendBug(with title: String,
                  and description: String,
                  optional logs: [String: URL]) async throws -> Bool

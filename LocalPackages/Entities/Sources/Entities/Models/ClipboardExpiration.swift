@@ -1,5 +1,5 @@
 //
-// ClipboardManager.swift
+// ClipboardExpiration.swift
 // Proton Pass - Created on 26/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,25 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Core
-import DesignSystem
-import Factory
-import UIKit
+import Foundation
+import Macro
 
-final class ClipboardManager: Sendable {
-    private let preferences: PreferencesProtocol
-    let bannerManager: BannerDisplayProtocol
+public enum ClipboardExpiration: Int, Codable, CaseIterable, Sendable {
+    case fifteenSeconds = 0
+    case oneMinute = 1
+    case twoMinutes = 2
+    case never = 3
 
-    init(bannerManager: BannerDisplayProtocol, preferences: PreferencesProtocol) {
-        self.bannerManager = bannerManager
-        self.preferences = preferences
-    }
-
-    func copy(text: String, bannerMessage: String) {
-        UIPasteboard.general.setObjects([NSString(string: text)],
-                                        localOnly: !preferences.shareClipboard,
-                                        expirationDate: preferences.clipboardExpiration.expirationDate)
-        bannerManager.displayBottomInfoMessage(bannerMessage)
+    public var expirationDate: Date? {
+        switch self {
+        case .fifteenSeconds:
+            Date().addingTimeInterval(15)
+        case .oneMinute:
+            Date().addingTimeInterval(60)
+        case .twoMinutes:
+            Date().addingTimeInterval(120)
+        case .never:
+            nil
+        }
     }
 }

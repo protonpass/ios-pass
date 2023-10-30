@@ -21,6 +21,7 @@
 //
 
 import Client
+import UseCases
 
 protocol UpdateItemsWithLastUsedTimeUseCase: Sendable {
     func execute() async throws
