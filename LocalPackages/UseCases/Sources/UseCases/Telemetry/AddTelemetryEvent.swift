@@ -20,13 +20,14 @@
 
 import Client
 import Core
+import Entities
 
-protocol AddTelemetryEventUseCase: Sendable {
+public protocol AddTelemetryEventUseCase: Sendable {
     func execute(with eventType: TelemetryEventType)
     func execute(with eventTypes: [TelemetryEventType])
 }
 
-extension AddTelemetryEventUseCase {
+public extension AddTelemetryEventUseCase {
     func callAsFunction(with eventType: TelemetryEventType) {
         execute(with: eventType)
     }
@@ -36,17 +37,17 @@ extension AddTelemetryEventUseCase {
     }
 }
 
-final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
+public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
     private let repository: TelemetryEventRepositoryProtocol
     private let logger: Logger
 
-    init(repository: TelemetryEventRepositoryProtocol,
-         logManager: LogManagerProtocol) {
+    public init(repository: TelemetryEventRepositoryProtocol,
+                logManager: LogManagerProtocol) {
         self.repository = repository
         logger = .init(manager: logManager)
     }
 
-    func execute(with eventType: TelemetryEventType) {
+    public func execute(with eventType: TelemetryEventType) {
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -57,7 +58,7 @@ final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
         }
     }
 
-    func execute(with eventTypes: [TelemetryEventType]) {
+    public func execute(with eventTypes: [TelemetryEventType]) {
         Task { [weak self] in
             guard let self else { return }
             do {

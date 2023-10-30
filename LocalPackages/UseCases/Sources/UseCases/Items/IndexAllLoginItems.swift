@@ -27,32 +27,32 @@ import UseCases
 /// We only index if user enabled "QuickType bar" option but in case when
 /// user is enabling but not yet enabled "QuickType bar" option we need to bypass
 /// by ignoring what is currently set in preferences.
-protocol IndexAllLoginItemsUseCase: Sendable {
+public protocol IndexAllLoginItemsUseCase: Sendable {
     func execute(ignorePreferences: Bool) async throws
 }
 
-extension IndexAllLoginItemsUseCase {
+public extension IndexAllLoginItemsUseCase {
     func callAsFunction(ignorePreferences: Bool) async throws {
         try await execute(ignorePreferences: ignorePreferences)
     }
 }
 
-final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
+public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
     private let itemRepository: ItemRepositoryProtocol
     private let shareRepository: ShareRepositoryProtocol
     private let accessRepository: AccessRepositoryProtocol
     private let credentialManager: CredentialManagerProtocol
-    private let preferences: Preferences
+    private let preferences: PreferencesProtocol
     private let mapLoginItem: MapLoginItemUseCase
     private let logger: Logger
 
-    init(itemRepository: ItemRepositoryProtocol,
-         shareRepository: ShareRepositoryProtocol,
-         accessRepository: AccessRepositoryProtocol,
-         credentialManager: CredentialManagerProtocol,
-         preferences: Preferences,
-         mapLoginItem: MapLoginItemUseCase,
-         logManager: LogManagerProtocol) {
+    public init(itemRepository: ItemRepositoryProtocol,
+                shareRepository: ShareRepositoryProtocol,
+                accessRepository: AccessRepositoryProtocol,
+                credentialManager: CredentialManagerProtocol,
+                preferences: PreferencesProtocol,
+                mapLoginItem: MapLoginItemUseCase,
+                logManager: LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
@@ -62,7 +62,7 @@ final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
         logger = .init(manager: logManager)
     }
 
-    func execute(ignorePreferences: Bool) async throws {
+    public func execute(ignorePreferences: Bool) async throws {
         let start = Date()
         logger.trace("Indexing all login items")
 
