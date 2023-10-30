@@ -44,7 +44,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let logger = resolve(\SharedToolingContainer.logger)
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
     private var isRefreshing = false
-    private var progresses = [VaultSyncProgress]()
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
