@@ -23,11 +23,11 @@
 import Client
 import Entities
 
-protocol UpdateUserShareRoleUseCase: Sendable {
+public protocol UpdateUserShareRoleUseCase: Sendable {
     func execute(userShareId: String, shareId: String, shareRole: ShareRole, expireTime: Int?) async throws
 }
 
-extension UpdateUserShareRoleUseCase {
+public extension UpdateUserShareRoleUseCase {
     func callAsFunction(userShareId: String,
                         shareId: String,
                         shareRole: ShareRole,
@@ -36,14 +36,15 @@ extension UpdateUserShareRoleUseCase {
     }
 }
 
-final class UpdateUserShareRole: UpdateUserShareRoleUseCase {
+public final class UpdateUserShareRole: UpdateUserShareRoleUseCase {
     private let repository: ShareRepositoryProtocol
 
-    init(repository: ShareRepositoryProtocol) {
+    public init(repository: ShareRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute(userShareId: String, shareId: String, shareRole: ShareRole, expireTime: Int?) async throws {
+    public func execute(userShareId: String, shareId: String, shareRole: ShareRole,
+                        expireTime: Int?) async throws {
         try await repository.updateUserPermission(userId: userShareId,
                                                   shareId: shareId,
                                                   shareRole: shareRole,
