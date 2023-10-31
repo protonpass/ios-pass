@@ -316,21 +316,7 @@
 		35B9321E2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		35C2162729EA8B0B001720FF /* macOS-Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */; };
-		35C2815D2A7BFCE40077030C /* UnindexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */; };
-		35C2815E2A7BFD400077030C /* UnindexAllLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */; };
-		35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */; };
-		35CEA8D02A60431400343A4E /* AuthenticateBiometrically.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */; };
-		35CEA8D22A60443600343A4E /* CheckBiometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */; };
-		35CEA8D32A60443C00343A4E /* AuthenticateBiometrically.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */; };
 		35CEA8D52A60666400343A4E /* LocalAuthenticationMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */; };
-		35CEA8D72A60675900343A4E /* LocalAuthenticationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D62A60675900343A4E /* LocalAuthenticationMethod.swift */; };
-		35CEA8D82A606E3600343A4E /* LocalAuthenticationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D62A60675900343A4E /* LocalAuthenticationMethod.swift */; };
-		35CEA8D92A606E3700343A4E /* LocalAuthenticationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8D62A60675900343A4E /* LocalAuthenticationMethod.swift */; };
-		35CEA8DD2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8DC2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift */; };
-		35CEA8DE2A6075F500343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8DC2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift */; };
-		35CEA8DF2A6075F500343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8DC2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift */; };
-		35CEA8E12A60761D00343A4E /* CheckBiometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */; };
-		35CEA8E22A60762000343A4E /* AuthenticateBiometrically.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */; };
 		35CEA8E42A60769E00343A4E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 35CEA8E32A60769E00343A4E /* Factory */; };
 		35CEA8E62A607D2F00343A4E /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
 		35CEA8E72A607D3200343A4E /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
@@ -469,9 +455,8 @@
 		5BCF61A02ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
-		5BFC92102AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFC920F2AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift */; };
-		5BFC92112AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFC920F2AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift */; };
 		5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */; };
+		5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */; };
 		5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */; };
 		5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */; };
 		5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */; };
@@ -780,12 +765,7 @@
 		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162829EA911E001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnindexAllLoginItems.swift; sourceTree = "<group>"; };
-		35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBiometryType.swift; sourceTree = "<group>"; };
-		35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateBiometrically.swift; sourceTree = "<group>"; };
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
-		35CEA8D62A60675900343A4E /* LocalAuthenticationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethod.swift; sourceTree = "<group>"; };
-		35CEA8DC2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLocalAuthenticationMethodsUseCase.swift; sourceTree = "<group>"; };
 		35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsCoordinator.swift; sourceTree = "<group>"; };
 		35E152C12A38864600E47E57 /* CreateEditCreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardView.swift; sourceTree = "<group>"; };
 		35E152C32A38866900E47E57 /* CreateEditCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCreditCardViewModel.swift; sourceTree = "<group>"; };
@@ -882,9 +862,9 @@
 		5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pass-Constant-Prod.plist"; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
-		5BFC920F2AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItemsWithLastUsedTime.swift; sourceTree = "<group>"; };
 		5BFD5D052AE145E70025185B /* Screens */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Screens; path = LocalPackages/Screens; sourceTree = "<group>"; };
 		5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClipboardExpiration+Extensions.swift"; sourceTree = "<group>"; };
+		5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalAuthenticationMethodUiModel+Extensions.swift"; sourceTree = "<group>"; };
 		5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialSearchResultView.swift; sourceTree = "<group>"; };
 		5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCredentialItemRow.swift; sourceTree = "<group>"; };
 		5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
@@ -1042,7 +1022,6 @@
 			isa = PBXGroup;
 			children = (
 				354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */,
-				35CEA8D62A60675900343A4E /* LocalAuthenticationMethod.swift */,
 				355E33AB29C499E400402CAE /* SearchEntryUiModel.swift */,
 				5B1453BC2A6EA8890048B022 /* SharingInfos.swift */,
 				35733B7E29CC60D200052229 /* VaultColor.swift */,
@@ -1455,25 +1434,6 @@
 			path = Regular;
 			sourceTree = "<group>";
 		};
-		35C281522A7BD2F40077030C /* AutoFill */ = {
-			isa = PBXGroup;
-			children = (
-				5BFC920F2AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift */,
-				35C2815C2A7BFCE40077030C /* UnindexAllLoginItems.swift */,
-			);
-			path = AutoFill;
-			sourceTree = "<group>";
-		};
-		35CEA8CC2A603FFE00343A4E /* Local Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				35CEA8CF2A60431400343A4E /* AuthenticateBiometrically.swift */,
-				35CEA8CD2A60403B00343A4E /* CheckBiometryType.swift */,
-				35CEA8DC2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift */,
-			);
-			path = "Local Authentication";
-			sourceTree = "<group>";
-		};
 		35E5062E286F819F00A3F6EA = {
 			isa = PBXGroup;
 			children = (
@@ -1753,6 +1713,7 @@
 				5B3AD42C2ACDB81E00E1A07D /* SymmetricallyEncryptedItem+Extensions.swift */,
 				5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */,
 				5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */,
+				5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1812,9 +1773,7 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				35C281522A7BD2F40077030C /* AutoFill */,
 				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
-				35CEA8CC2A603FFE00343A4E /* Local Authentication */,
 				35711D5B2A7A79C8003B6845 /* User */,
 			);
 			path = UseCases;
@@ -2523,14 +2482,12 @@
 			files = (
 				3552A28B29EC89EF00ABDB6E /* ItemSquircleThumbnail.swift in Sources */,
 				3552273029DCAE2200B9607E /* SortTypeButton.swift in Sources */,
-				35CEA8D82A606E3600343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				5B3AD4302ACDB8B100E1A07D /* SymmetricallyEncryptedItem+Extensions.swift in Sources */,
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
 				354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
-				5BFC92112AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
 				5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */,
 				5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
@@ -2565,7 +2522,6 @@
 				5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */,
 				354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				354E9AAC2A44699E00AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
-				35CEA8D32A60443C00343A4E /* AuthenticateBiometrically.swift in Sources */,
 				35B9321D2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35AC9A662A0BE4C700FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				35702C952A1E44140089B539 /* VaultSelectorViewModel.swift in Sources */,
@@ -2592,7 +2548,6 @@
 				355CA07E2A6FEF1900866024 /* ItemContextMenuHandler.swift in Sources */,
 				354B247F2A77F2280060EDF7 /* CompleteAutoFill.swift in Sources */,
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
-				35CEA8DE2A6075F500343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */,
 				3559BAA62A5B32600020E172 /* AppLockTime.swift in Sources */,
 				354E9AA92A4459C700AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
@@ -2627,8 +2582,6 @@
 				3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
-				35CEA8D22A60443600343A4E /* CheckBiometryType.swift in Sources */,
-				35C2815E2A7BFD400077030C /* UnindexAllLoginItems.swift in Sources */,
 				3565FD58298D423800E2A0EE /* TOTPCircularTimer.swift in Sources */,
 				3561C9F929E6E65600D6E518 /* VaultThumbnail.swift in Sources */,
 				354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */,
@@ -2680,16 +2633,12 @@
 				35CEA8E62A607D2F00343A4E /* SharedUseCase+DependencyInjections.swift in Sources */,
 				3559BAA72A5B32640020E172 /* Browser.swift in Sources */,
 				35612519298262A300EDA991 /* LoggerManager+Initializer.swift in Sources */,
-				35CEA8D92A606E3700343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				356125102982544400EDA991 /* KeyboardNotLoggedInView.swift in Sources */,
 				356125032982438300EDA991 /* KeyboardViewController.swift in Sources */,
 				3559BAA82A5B32640020E172 /* Theme.swift in Sources */,
-				35CEA8E12A60761D00343A4E /* CheckBiometryType.swift in Sources */,
-				35CEA8DF2A6075F500343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */,
 				3549ACA329830E8400BA5CD6 /* ClipboardManager.swift in Sources */,
 				3561250E2982538900EDA991 /* KeyboardCoordinator.swift in Sources */,
 				3559BAAA2A5B32640020E172 /* Preferences.swift in Sources */,
-				35CEA8E22A60762000343A4E /* AuthenticateBiometrically.swift in Sources */,
 				3565FD5B298D427800E2A0EE /* TOTPText.swift in Sources */,
 				3549AC9D2982F90B00BA5CD6 /* TOTPLogInItem.swift in Sources */,
 				35CEA8E72A607D3200343A4E /* SharedTooling+DependencyInjections.swift in Sources */,
@@ -2723,7 +2672,6 @@
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
-				5BFC92102AEBEBC70000F8E1 /* UpdateItemsWithLastUsedTime.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
@@ -2760,12 +2708,12 @@
 				5B14538D2A681B400048B022 /* MainRouter.swift in Sources */,
 				359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */,
 				35AC9A652A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
+				5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */,
 				5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */,
 				5B653AED2A77E09F00D6869A /* RejectInvitation.swift in Sources */,
 				5B415E4D2ADECB3A00D9C8CC /* UpdateUserAddresses.swift in Sources */,
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
-				35CEA8CE2A60403B00343A4E /* CheckBiometryType.swift in Sources */,
 				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
@@ -2790,7 +2738,6 @@
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
-				35CEA8D72A60675900343A4E /* LocalAuthenticationMethod.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+ScannerSheet.swift in Sources */,
 				5B3AD4342AD44D3400E1A07D /* UserData+Extensions.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
@@ -2832,7 +2779,6 @@
 				35AC9A592A0BD12600FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				3569B29929B764D60070830B /* Coordinator+ShowHideSpinner.swift in Sources */,
 				3557441B295A064F00EA4AF0 /* ClipboardManager.swift in Sources */,
-				35CEA8D02A60431400343A4E /* AuthenticateBiometrically.swift in Sources */,
 				5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
 				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
@@ -2847,7 +2793,6 @@
 				359DB2A92A70435800549466 /* Service+DependencyInjections.swift in Sources */,
 				35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				3546327B2A9CEFBC00321691 /* AutoFillInstructionsView.swift in Sources */,
-				35CEA8DD2A60757200343A4E /* GetLocalAuthenticationMethodsUseCase.swift in Sources */,
 				3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */,
 				35A5EEE22958CDBC00A09623 /* UrlOpener.swift in Sources */,
 				3569B2A429B7BA280070830B /* ItemsTabViewModel.swift in Sources */,
@@ -2906,7 +2851,6 @@
 				5B1453A62A69662D0048B022 /* ShareInviteService.swift in Sources */,
 				3571B59F29BF7204008D4350 /* SearchView.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
-				35C2815D2A7BFCE40077030C /* UnindexAllLoginItems.swift in Sources */,
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
