@@ -21,11 +21,11 @@
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
-protocol AuthenticateBiometricallyUseCase: Sendable {
+public protocol AuthenticateBiometricallyUseCase: Sendable {
     func execute(policy: LAPolicy, reason: String) async throws -> Bool
 }
 
-extension AuthenticateBiometricallyUseCase {
+public extension AuthenticateBiometricallyUseCase {
     func callAsFunction(policy: LAPolicy, reason: String = "Please authenticate") async throws -> Bool {
         try await execute(policy: policy, reason: reason)
     }
@@ -38,10 +38,10 @@ extension AuthenticateBiometricallyUseCase {
  multiple times on a same `LAContext` always succeed without repeating authentication
  (maybe the result is cached but found no info in the docs)
  */
-final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
-    init() {}
+public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
+    public init() {}
 
-    func execute(policy: LAPolicy, reason: String) async throws -> Bool {
+    public func execute(policy: LAPolicy, reason: String) async throws -> Bool {
         try await LAContext().evaluatePolicy(policy, localizedReason: reason)
     }
 }
