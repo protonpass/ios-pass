@@ -21,22 +21,22 @@
 @preconcurrency import LocalAuthentication
 
 /// Determine the supported `LABiometryType` of the device
-protocol CheckBiometryTypeUseCase: Sendable {
+public protocol CheckBiometryTypeUseCase: Sendable {
     func execute(policy: LAPolicy) throws -> LABiometryType
 }
 
-extension CheckBiometryTypeUseCase {
+public extension CheckBiometryTypeUseCase {
     func callAsFunction(policy: LAPolicy) throws -> LABiometryType {
         try execute(policy: policy)
     }
 }
 
-final class CheckBiometryType: CheckBiometryTypeUseCase {
+public final class CheckBiometryType: CheckBiometryTypeUseCase {
     private let context = LAContext()
 
-    init() {}
+    public init() {}
 
-    func execute(policy: LAPolicy) throws -> LABiometryType {
+    public func execute(policy: LAPolicy) throws -> LABiometryType {
         var error: NSError?
         context.canEvaluatePolicy(policy, error: &error)
         if let error {

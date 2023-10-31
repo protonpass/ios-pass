@@ -21,29 +21,28 @@
 //
 
 import Client
-import UseCases
 
-protocol UpdateItemsWithLastUsedTimeUseCase: Sendable {
+public protocol UpdateItemsWithLastUsedTimeUseCase: Sendable {
     func execute() async throws
 }
 
-extension UpdateItemsWithLastUsedTimeUseCase {
+public extension UpdateItemsWithLastUsedTimeUseCase {
     func callAsFunction() async throws {
         try await execute()
     }
 }
 
-final class UpdateItemsWithLastUsedTime: UpdateItemsWithLastUsedTimeUseCase {
+public final class UpdateItemsWithLastUsedTime: UpdateItemsWithLastUsedTimeUseCase {
     private let itemRepository: ItemRepositoryProtocol
     private let indexAllLoginItems: IndexAllLoginItemsUseCase
 
-    init(itemRepository: ItemRepositoryProtocol,
-         indexAllLoginItems: IndexAllLoginItemsUseCase) {
+    public init(itemRepository: ItemRepositoryProtocol,
+                indexAllLoginItems: IndexAllLoginItemsUseCase) {
         self.indexAllLoginItems = indexAllLoginItems
         self.itemRepository = itemRepository
     }
 
-    func execute() async throws {
+    public func execute() async throws {
         guard let itemsToUpdates = try? await itemRepository.getAllItemLastUsedTime(),
               !itemsToUpdates.isEmpty else {
             return
