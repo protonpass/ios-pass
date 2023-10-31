@@ -1,7 +1,7 @@
 //
 //
-// RevokeUserShareAccess.swift
-// Proton Pass - Created on 04/08/2023.
+// GetPendingInvitationsForShare.swift
+// Proton Pass - Created on 03/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,26 +20,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
+@preconcurrency import Client
+import Entities
 
-protocol RevokeUserShareAccessUseCase: Sendable {
-    func execute(with userShareId: String, and shareId: String) async throws
+public protocol GetPendingInvitationsForShareUseCase: Sendable {
+    func execute(with shareId: String) async throws -> ShareInvites
 }
 
-extension RevokeUserShareAccessUseCase {
-    func callAsFunction(with userShareId: String, and shareId: String) async throws {
-        try await execute(with: userShareId, and: shareId)
+public extension GetPendingInvitationsForShareUseCase {
+    func callAsFunction(with shareId: String) async throws -> ShareInvites {
+        try await execute(with: shareId)
     }
 }
 
-final class RevokeUserShareAccess: RevokeUserShareAccessUseCase {
-    private let repository: ShareRepositoryProtocol
+public final class GetPendingInvitationsForShare: GetPendingInvitationsForShareUseCase {
+    private let repository: ShareInviteRepositoryProtocol
 
-    init(repository: ShareRepositoryProtocol) {
+    public init(repository: ShareInviteRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute(with userShareId: String, and shareId: String) async throws {
-        try await repository.deleteUserShare(userId: userShareId, shareId: shareId)
+    public func execute(with shareId: String) async throws -> ShareInvites {
+        try await repository.getAllPendingInvites(shareId: shareId)
     }
 }
