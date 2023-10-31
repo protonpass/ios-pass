@@ -24,24 +24,24 @@ import Client
 import Combine
 import Entities
 
-protocol GetPendingUserInvitationsUseCase: Sendable {
+public protocol GetPendingUserInvitationsUseCase: Sendable {
     func execute() -> CurrentValueSubject<[UserInvite], Never>
 }
 
-extension GetPendingUserInvitationsUseCase {
+public extension GetPendingUserInvitationsUseCase {
     func callAsFunction() -> CurrentValueSubject<[UserInvite], Never> {
         execute()
     }
 }
 
-final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
+public final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
     private let repository: InviteRepositoryProtocol
 
-    init(repository: InviteRepositoryProtocol) {
+    public init(repository: InviteRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute() -> CurrentValueSubject<[UserInvite], Never> {
+    public func execute() -> CurrentValueSubject<[UserInvite], Never> {
         repository.currentPendingInvites
     }
 }

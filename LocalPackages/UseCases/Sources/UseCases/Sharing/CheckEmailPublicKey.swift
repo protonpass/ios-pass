@@ -24,24 +24,24 @@ import Client
 import Entities
 import ProtonCoreNetworking
 
-protocol GetEmailPublicKeyUseCase: Sendable {
+public protocol GetEmailPublicKeyUseCase: Sendable {
     func execute(with email: String) async throws -> [PublicKey]
 }
 
-extension GetEmailPublicKeyUseCase {
+public extension GetEmailPublicKeyUseCase {
     func callAsFunction(with email: String) async throws -> [PublicKey] {
         try await execute(with: email)
     }
 }
 
-final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseCase {
+public final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseCase {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
 
-    init(publicKeyRepository: PublicKeyRepositoryProtocol) {
+    public init(publicKeyRepository: PublicKeyRepositoryProtocol) {
         self.publicKeyRepository = publicKeyRepository
     }
 
-    func execute(with email: String) async throws -> [PublicKey] {
+    public func execute(with email: String) async throws -> [PublicKey] {
         do {
             let keys = try await publicKeyRepository.getPublicKeys(email: email)
             guard !keys.isEmpty else {
