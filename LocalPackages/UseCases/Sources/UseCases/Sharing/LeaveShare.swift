@@ -22,30 +22,30 @@
 
 import Client
 
-protocol LeaveShareUseCase: Sendable {
+public protocol LeaveShareUseCase: Sendable {
     func execute(with shareId: String) async throws
 }
 
-extension LeaveShareUseCase {
+public extension LeaveShareUseCase {
     func callAsFunction(with shareId: String) async throws {
         try await execute(with: shareId)
     }
 }
 
-final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
+public final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
     private let repository: ShareRepositoryProtocol
     private let itemRepository: ItemRepositoryProtocol
     private let vaultManager: VaultsManagerProtocol
 
-    init(repository: ShareRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         vaultManager: VaultsManagerProtocol) {
+    public init(repository: ShareRepositoryProtocol,
+                itemRepository: ItemRepositoryProtocol,
+                vaultManager: VaultsManagerProtocol) {
         self.repository = repository
         self.itemRepository = itemRepository
         self.vaultManager = vaultManager
     }
 
-    func execute(with shareId: String) async throws {
+    public func execute(with shareId: String) async throws {
         try await repository.deleteShare(shareId: shareId)
         try await repository.deleteShareLocally(shareId: shareId)
         try await itemRepository.deleteAllItemsLocally(shareId: shareId)
