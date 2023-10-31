@@ -22,6 +22,7 @@
 
 import Client
 import Entities
+import UseCases
 
 protocol SetShareInviteVaultUseCase {
     func execute(with vault: SharingVaultData)
