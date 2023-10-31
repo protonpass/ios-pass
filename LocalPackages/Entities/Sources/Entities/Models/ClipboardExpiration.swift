@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import Macro
 
 public enum ClipboardExpiration: Int, Codable, CaseIterable, Sendable {
     case fifteenSeconds = 0
