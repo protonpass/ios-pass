@@ -18,27 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Entities
 import LocalAuthentication
 
 /// Get supported local authentication  methods
-protocol GetLocalAuthenticationMethodsUseCase: Sendable {
+public protocol GetLocalAuthenticationMethodsUseCase: Sendable {
     func execute(policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel]
 }
 
-extension GetLocalAuthenticationMethodsUseCase {
+public extension GetLocalAuthenticationMethodsUseCase {
     func callAsFunction(policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel] {
         try execute(policy: policy)
     }
 }
 
-final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsUseCase {
+public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsUseCase {
     private let checkBiometryType: CheckBiometryTypeUseCase
 
-    init(checkBiometryType: CheckBiometryTypeUseCase) {
+    public init(checkBiometryType: CheckBiometryTypeUseCase) {
         self.checkBiometryType = checkBiometryType
     }
 
-    func execute(policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel] {
+    public func execute(policy: LAPolicy) throws -> [LocalAuthenticationMethodUiModel] {
         do {
             let biometryType = try checkBiometryType(policy: policy)
             if biometryType.usable {

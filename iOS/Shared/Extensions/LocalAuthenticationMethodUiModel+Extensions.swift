@@ -1,6 +1,6 @@
 //
-// LocalAuthenticationMethod.swift
-// Proton Pass - Created on 13/07/2023.
+// LocalAuthenticationMethodUiModel+Extensions.swift
+// Proton Pass - Created on 31/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,16 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import LocalAuthentication
 import Macro
 
-enum LocalAuthenticationMethod: Codable {
-    case none, biometric, pin
-}
-
-enum LocalAuthenticationMethodUiModel {
-    case none, biometric(LABiometryType), pin
-
+extension LocalAuthenticationMethodUiModel {
     var iconSystemName: String? {
         if case let .biometric(type) = self {
             switch type {
@@ -76,31 +71,7 @@ enum LocalAuthenticationMethodUiModel {
 }
 
 extension LocalAuthenticationMethodUiModel: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.method == rhs.method
-    }
-}
-
-extension LABiometryType {
-    // We only use Face ID or Touch ID
-    var usable: Bool {
-        switch self {
-        case .faceID, .touchID:
-            true
-        default:
-            false
-        }
-    }
-
-    var fallbackToPasscodeMessage: String {
-        switch self {
-        case .faceID:
-            return #localized("Use system passcode when Face ID fails")
-        case .touchID:
-            return #localized("Use system passcode when Touch ID fails")
-        default:
-            assertionFailure("Not applicable")
-            return ""
-        }
     }
 }

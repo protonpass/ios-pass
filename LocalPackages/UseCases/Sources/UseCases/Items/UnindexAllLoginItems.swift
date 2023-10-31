@@ -21,24 +21,24 @@
 import Client
 
 /// Empty credential database
-protocol UnindexAllLoginItemsUseCase: Sendable {
+public protocol UnindexAllLoginItemsUseCase: Sendable {
     func execute() async throws
 }
 
-extension UnindexAllLoginItemsUseCase {
+public extension UnindexAllLoginItemsUseCase {
     func callAsFunction() async throws {
         try await execute()
     }
 }
 
-final class UnindexAllLoginItems: Sendable, UnindexAllLoginItemsUseCase {
+public final class UnindexAllLoginItems: Sendable, UnindexAllLoginItemsUseCase {
     private let manager: CredentialManagerProtocol
 
-    init(manager: CredentialManagerProtocol) {
+    public init(manager: CredentialManagerProtocol) {
         self.manager = manager
     }
 
-    func execute() async throws {
+    public func execute() async throws {
         try await manager.removeAllCredentials()
     }
 }
