@@ -21,9 +21,8 @@
 //
 
 import Client
-import UseCases
+import Entities
 
-// sourcery: AutoMockable
 protocol SetShareInviteVaultUseCase {
     func execute(with vault: SharingVaultData)
 }
