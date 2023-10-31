@@ -22,24 +22,24 @@
 
 import Client
 
-protocol RejectInvitationUseCase: Sendable {
+public protocol RejectInvitationUseCase: Sendable {
     func execute(for inviteToken: String) async throws
 }
 
-extension RejectInvitationUseCase {
+public extension RejectInvitationUseCase {
     func callAsFunction(for inviteToken: String) async throws {
         try await execute(for: inviteToken)
     }
 }
 
-final class RejectInvitation: RejectInvitationUseCase {
+public final class RejectInvitation: RejectInvitationUseCase {
     private let repository: InviteRepositoryProtocol
 
-    init(repository: InviteRepositoryProtocol) {
+    public init(repository: InviteRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute(for inviteToken: String) async throws {
+    public func execute(for inviteToken: String) async throws {
         try await repository.rejectInvite(with: inviteToken)
     }
 }

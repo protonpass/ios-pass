@@ -23,24 +23,24 @@
 import Client
 import Entities
 
-protocol GetUsersLinkedToShareUseCase: Sendable {
+public protocol GetUsersLinkedToShareUseCase: Sendable {
     func execute(with shareId: String) async throws -> [UserShareInfos]
 }
 
-extension GetUsersLinkedToShareUseCase {
+public extension GetUsersLinkedToShareUseCase {
     func callAsFunction(with shareId: String) async throws -> [UserShareInfos] {
         try await execute(with: shareId)
     }
 }
 
-final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
+public final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
     private let repository: ShareRepositoryProtocol
 
-    init(repository: ShareRepositoryProtocol) {
+    public init(repository: ShareRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute(with shareId: String) async throws -> [UserShareInfos] {
+    public func execute(with shareId: String) async throws -> [UserShareInfos] {
         try await repository.getUsersLinked(to: shareId)
     }
 }
