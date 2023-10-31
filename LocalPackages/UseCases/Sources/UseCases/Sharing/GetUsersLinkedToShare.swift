@@ -1,7 +1,7 @@
 //
 //
-// GetPendingInvitationsForShare.swift
-// Proton Pass - Created on 03/08/2023.
+// GetUsersLinkedToShare.swift
+// Proton Pass - Created on 02/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,27 +20,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
+import Client
 import Entities
 
-protocol GetPendingInvitationsForShareUseCase: Sendable {
-    func execute(with shareId: String) async throws -> ShareInvites
+protocol GetUsersLinkedToShareUseCase: Sendable {
+    func execute(with shareId: String) async throws -> [UserShareInfos]
 }
 
-extension GetPendingInvitationsForShareUseCase {
-    func callAsFunction(with shareId: String) async throws -> ShareInvites {
+extension GetUsersLinkedToShareUseCase {
+    func callAsFunction(with shareId: String) async throws -> [UserShareInfos] {
         try await execute(with: shareId)
     }
 }
 
-final class GetPendingInvitationsForShare: GetPendingInvitationsForShareUseCase {
-    private let repository: ShareInviteRepositoryProtocol
+final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
+    private let repository: ShareRepositoryProtocol
 
-    init(repository: ShareInviteRepositoryProtocol) {
+    init(repository: ShareRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute(with shareId: String) async throws -> ShareInvites {
-        try await repository.getAllPendingInvites(shareId: shareId)
+    func execute(with shareId: String) async throws -> [UserShareInfos] {
+        try await repository.getUsersLinked(to: shareId)
     }
 }

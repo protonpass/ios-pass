@@ -1,6 +1,7 @@
 //
-// RevokeNewUserInvitation.swift
-// Proton Pass - Created on 18/10/2023.
+//
+// RevokeInvitation.swift
+// Proton Pass - Created on 04/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,27 +18,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-
+//
 @preconcurrency import Client
 
-protocol RevokeNewUserInvitationUseCase: Sendable {
+public protocol RevokeInvitationUseCase: Sendable {
     func execute(with shareId: String, and inviteId: String) async throws
 }
 
-extension RevokeNewUserInvitationUseCase {
+public extension RevokeInvitationUseCase {
     func callAsFunction(with shareId: String, and inviteId: String) async throws {
         try await execute(with: shareId, and: inviteId)
     }
 }
 
-final class RevokeNewUserInvitation: RevokeNewUserInvitationUseCase {
+public final class RevokeInvitation: RevokeInvitationUseCase {
     private let shareInviteRepository: ShareInviteRepositoryProtocol
 
-    init(shareInviteRepository: ShareInviteRepositoryProtocol) {
+    public init(shareInviteRepository: ShareInviteRepositoryProtocol) {
         self.shareInviteRepository = shareInviteRepository
     }
 
-    func execute(with shareId: String, and inviteId: String) async throws {
-        try await shareInviteRepository.deleteNewUserInvite(shareId: shareId, inviteId: inviteId)
+    public func execute(with shareId: String, and inviteId: String) async throws {
+        try await shareInviteRepository.deleteInvite(shareId: shareId, inviteId: inviteId)
     }
 }

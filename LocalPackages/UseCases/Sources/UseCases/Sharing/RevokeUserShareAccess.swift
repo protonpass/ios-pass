@@ -1,7 +1,7 @@
 //
 //
-// GetUsersLinkedToShare.swift
-// Proton Pass - Created on 02/08/2023.
+// RevokeUserShareAccess.swift
+// Proton Pass - Created on 04/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,27 +20,26 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
-import Entities
+import Client
 
-protocol GetUsersLinkedToShareUseCase: Sendable {
-    func execute(with shareId: String) async throws -> [UserShareInfos]
+public protocol RevokeUserShareAccessUseCase: Sendable {
+    func execute(with userShareId: String, and shareId: String) async throws
 }
 
-extension GetUsersLinkedToShareUseCase {
-    func callAsFunction(with shareId: String) async throws -> [UserShareInfos] {
-        try await execute(with: shareId)
+public extension RevokeUserShareAccessUseCase {
+    func callAsFunction(with userShareId: String, and shareId: String) async throws {
+        try await execute(with: userShareId, and: shareId)
     }
 }
 
-final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
+public final class RevokeUserShareAccess: RevokeUserShareAccessUseCase {
     private let repository: ShareRepositoryProtocol
 
-    init(repository: ShareRepositoryProtocol) {
+    public init(repository: ShareRepositoryProtocol) {
         self.repository = repository
     }
 
-    func execute(with shareId: String) async throws -> [UserShareInfos] {
-        try await repository.getUsersLinked(to: shareId)
+    public func execute(with userShareId: String, and shareId: String) async throws {
+        try await repository.deleteUserShare(userId: userShareId, shareId: shareId)
     }
 }
