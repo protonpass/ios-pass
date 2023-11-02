@@ -46,3 +46,31 @@ public extension View {
         modifier(ObsoleteItemAlertModifier(isPresented: isPresented, onAction: onAction))
     }
 }
+
+public struct UpsellingAlertModifier: ViewModifier {
+    @Binding var isPresented: Bool
+    let onAction: () -> Void
+
+    public init(isPresented: Binding<Bool>, onAction: @escaping () -> Void) {
+        _isPresented = isPresented
+        self.onAction = onAction
+    }
+
+    public func body(content: Content) -> some View {
+        content
+            .alert("This item is obsolete",
+                   isPresented: $isPresented,
+                   actions: {
+                Button("Cancel", role: .cancel, action: {})
+                Button("Update", role: .cancel, action: onAction)
+            }, message: {
+                Text("Some changes happened to this item, heading back to the previous page.")
+            })
+    }
+}
+
+public extension View {
+    func upsellAlert(isPresented: Binding<Bool>, onAction: @escaping () -> Void) -> some View {
+        modifier(UpsellingAlertModifier(isPresented: isPresented, onAction: onAction))
+    }
+}
