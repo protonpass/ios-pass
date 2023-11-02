@@ -37,6 +37,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
+    @Published var upsellingAlert = false
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -118,6 +119,7 @@ class BaseItemDetailViewModel: ObservableObject {
         if getUserShareStatus(for: vault.vault) == .canShare {
             router.present(for: .shareVaultFromItemDetail(vault, itemContent))
         } else {
+//            upsellingAlert = true
             router.present(for: .upselling)
         }
     }
