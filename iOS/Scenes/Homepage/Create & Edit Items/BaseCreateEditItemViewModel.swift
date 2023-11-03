@@ -109,14 +109,14 @@ class BaseCreateEditItemViewModel {
         }
 
         guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
-            throw PPError.vault(.vaultNotFound(vaultShareId))
+            throw PassError.vault(.vaultNotFound(vaultShareId))
         }
 
         if vault.canEdit {
             selectedVault = vault
         } else {
             guard let vault = vaults.twoOldestVaults.owned ?? vaults.first else {
-                throw PPError.vault(.vaultNotFound(vaultShareId))
+                throw PassError.vault(.vaultNotFound(vaultShareId))
             }
             isShowingNonEditableAlert = true
             selectedVault = vault
@@ -231,7 +231,7 @@ private extension BaseCreateEditItemViewModel {
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
                                                              itemId: itemId) else {
-            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
+            throw PassError.itemNotFound(shareID: shareId, itemID: itemId)
         }
         let newItemContent = try generateItemContent()
         try await itemRepository.updateItem(oldItem: oldItem.item,
