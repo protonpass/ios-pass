@@ -37,8 +37,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let userData = resolve(\SharedDataContainer.userData)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
-    private let payments = resolve(\ServiceContainer.payments)
-    private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
 

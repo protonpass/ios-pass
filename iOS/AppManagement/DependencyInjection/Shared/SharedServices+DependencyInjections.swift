@@ -31,7 +31,7 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
     }
 
     func autoRegister() {
-        manager.defaultScope = .cached
+        manager.defaultScope = .singleton
     }
 }
 
