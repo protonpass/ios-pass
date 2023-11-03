@@ -21,6 +21,7 @@
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import ProtonCoreCrypto
 import ProtonCoreLogin
 import ProtonCoreServices
@@ -30,12 +31,6 @@ typealias Encryptor = ProtonCoreCrypto.Encryptor
 
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol {
-    var localDatasource: LocalShareKeyDatasourceProtocol { get }
-    var remoteDatasource: RemoteShareKeyDatasourceProtocol { get }
-    var logger: Logger { get }
-    var symmetricKey: CryptoKit.SymmetricKey { get }
-    var userData: UserData { get }
-
     /// Get share keys of a share with `shareId`. Not offline first.
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
@@ -44,7 +39,27 @@ public protocol ShareKeyRepositoryProtocol {
     func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 }
 
-public extension ShareKeyRepositoryProtocol {
+public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
+    private let localDatasource: LocalShareKeyDatasourceProtocol
+    private let remoteDatasource: RemoteShareKeyDatasourceProtocol
+    private let logger: Logger
+    private let userDataProvider: UserDataProvider
+    private let symmetricKeyProvider: SymmetricKeyProvider
+
+    public init(localDatasource: LocalShareKeyDatasourceProtocol,
+                remoteDatasource: RemoteShareKeyDatasourceProtocol,
+                logManager: LogManagerProtocol,
+                userDataProvider: UserDataProvider,
+                symmetricKeyProvider: SymmetricKeyProvider) {
+        self.localDatasource = localDatasource
+        self.remoteDatasource = remoteDatasource
+        logger = .init(manager: logManager)
+        self.userDataProvider = userDataProvider
+        self.symmetricKeyProvider = symmetricKeyProvider
+    }
+}
+
+public extension ShareKeyRepository {
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localDatasource.getKeys(shareId: shareId)
@@ -61,13 +76,14 @@ public extension ShareKeyRepositoryProtocol {
 
     func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Refreshing keys for share \(shareId)")
+
         let keys = try await remoteDatasource.getKeys(shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
         let encryptedKeys = try keys.map { key in
-            let decryptedKey = try decrypt(key, shareId: shareId, userData: userData)
+            let decryptedKey = try decrypt(key, shareId: shareId)
             let dencryptedKeyBase64 = decryptedKey.encodeBase64()
-            let symmetricallyEncryptedKey = try symmetricKey.encrypt(dencryptedKeyBase64)
+            let symmetricallyEncryptedKey = try getSymmetricKey().encrypt(dencryptedKeyBase64)
             return SymmetricallyEncryptedShareKey(encryptedKey: symmetricallyEncryptedKey,
                                                   shareId: shareId,
                                                   shareKey: key)
@@ -81,8 +97,13 @@ public extension ShareKeyRepositoryProtocol {
     }
 }
 
-private extension ShareKeyRepositoryProtocol {
-    func decrypt(_ encryptedKey: ShareKey, shareId: String, userData: UserData) throws -> Data {
+private extension ShareKeyRepository {
+    func getSymmetricKey() throws -> CryptoKit.SymmetricKey {
+        try symmetricKeyProvider.getSymmetricKey()
+    }
+
+    func decrypt(_ encryptedKey: ShareKey, shareId: String) throws -> Data {
+        let userData = try userDataProvider.unwrap()
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")
 
@@ -110,37 +131,5 @@ private extension ShareKeyRepositoryProtocol {
 
         logger.trace("Decrypted share key \(keyDescription)")
         return decryptedKey.content
-    }
-}
-
-public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
-    public let localDatasource: LocalShareKeyDatasourceProtocol
-    public let remoteDatasource: RemoteShareKeyDatasourceProtocol
-    public let logger: Logger
-    public let symmetricKey: CryptoKit.SymmetricKey
-    public var userData: UserData
-
-    public init(localDatasource: LocalShareKeyDatasourceProtocol,
-                remoteDatasource: RemoteShareKeyDatasourceProtocol,
-                logManager: LogManagerProtocol,
-                symmetricKey: CryptoKit.SymmetricKey,
-                userData: UserData) {
-        self.localDatasource = localDatasource
-        self.remoteDatasource = remoteDatasource
-        logger = .init(manager: logManager)
-        self.symmetricKey = symmetricKey
-        self.userData = userData
-    }
-
-    public init(container: NSPersistentContainer,
-                apiService: APIService,
-                logManager: LogManagerProtocol,
-                symmetricKey: CryptoKit.SymmetricKey,
-                userData: UserData) {
-        localDatasource = LocalShareKeyDatasource(container: container)
-        remoteDatasource = RemoteShareKeyDatasource(apiService: apiService)
-        logger = .init(manager: logManager)
-        self.symmetricKey = symmetricKey
-        self.userData = userData
     }
 }
