@@ -56,10 +56,6 @@ extension UseCasesContainer {
                                  extractLogsToFile: self.extractLogsToFile(),
                                  getLogEntries: self.getLogEntries()) }
     }
-
-    var sendUserFeedBack: Factory<SendUserFeedBackUseCase> {
-        self { SendUserFeedBack(reportRepository: RepositoryContainer.shared.reportRepository()) }
-    }
 }
 
 // MARK: Logs
@@ -67,10 +63,6 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var extractLogsToFile: Factory<ExtractLogsToFileUseCase> {
         self { ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.logFormatter()) }
-    }
-
-    var extractLogsToData: Factory<ExtractLogsToDataUseCase> {
-        self { ExtractLogsToData(logFormatter: SharedToolingContainer.shared.logFormatter()) }
     }
 
     var getLogEntries: Factory<GetLogEntriesUseCase> {

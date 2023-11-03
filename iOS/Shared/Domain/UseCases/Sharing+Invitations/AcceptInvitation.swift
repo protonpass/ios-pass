@@ -27,6 +27,7 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
+import UseCases
 
 @preconcurrency import ProtonCoreLogin
 

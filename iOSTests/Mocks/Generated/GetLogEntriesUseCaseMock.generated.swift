@@ -20,6 +20,8 @@
 // swiftlint:disable all
 
 @testable import Proton_Pass
+import UseCases
+import Entities
 import Core
 
 final class GetLogEntriesUseCaseMock: @unchecked Sendable, GetLogEntriesUseCase {
