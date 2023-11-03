@@ -24,6 +24,10 @@
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "extractionState" : "manual"
     },
+    "Sharing with up to 10 people" : {
+      "comment" : "Used in the upselling screen to explain benefits",
+      "extractionState" : "manual"
+    },
     "Unlimited 2FA Autofill" : {
       "comment" : "Used in upselling screen to explain paid feature",
       "extractionState" : "manual"

@@ -61,11 +61,11 @@ public struct UpsellingAlertModifier: ViewModifier {
             .alert("This item is obsolete",
                    isPresented: $isPresented,
                    actions: {
-                Button("Cancel", role: .cancel, action: {})
-                Button("Update", role: .cancel, action: onAction)
-            }, message: {
-                Text("Some changes happened to this item, heading back to the previous page.")
-            })
+                       Button("Cancel", role: .cancel, action: {})
+                       Button("Update", role: .cancel, action: onAction)
+                   }, message: {
+                       Text("Some changes happened to this item, heading back to the previous page.")
+                   })
     }
 }
 

@@ -1590,12 +1590,11 @@
 		5B1453902A6831C60048B022 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
+				5BAD39612AF52B31009FD5A3 /* ShareOrCreateNewVaultView */,
 				5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */,
 				5B1453AE2A69814C0048B022 /* SummaryView */,
 				5B1453962A69382E0048B022 /* UserPermissionView */,
 				5B1453912A68321B0048B022 /* UserEmailView */,
-				356BBB702ACC539E005A10DB /* ShareOrCreateNewVaultView.swift */,
-				35704EBE2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -1793,6 +1792,15 @@
 				5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		5BAD39612AF52B31009FD5A3 /* ShareOrCreateNewVaultView */ = {
+			isa = PBXGroup;
+			children = (
+				356BBB702ACC539E005A10DB /* ShareOrCreateNewVaultView.swift */,
+				35704EBE2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift */,
+			);
+			path = ShareOrCreateNewVaultView;
 			sourceTree = "<group>";
 		};
 		5BB2B6E62A444B73005E831C /* App */ = {
