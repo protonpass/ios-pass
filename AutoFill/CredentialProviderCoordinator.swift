@@ -255,7 +255,7 @@ private extension CredentialProviderCoordinator {
         }
 
         guard let userData = appData.userData else {
-            throw PPError.noUserData
+            throw PassError.noUserData
         }
 
         try SharedDataContainer.shared.register(container: container,
@@ -271,7 +271,7 @@ private extension CredentialProviderCoordinator {
             alert(error: error)
         }
 
-        guard let error = error as? PPError,
+        guard let error = error as? PassError,
               case let .credentialProvider(reason) = error else {
             defaultHandler(error)
             return

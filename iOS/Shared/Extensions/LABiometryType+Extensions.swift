@@ -22,13 +22,15 @@ import LocalAuthentication
 import Macro
 
 public extension LABiometryType {
-    // We only use Face ID or Touch ID
-    var usable: Bool {
+    var fallbackToPasscodeMessage: String {
         switch self {
-        case .faceID, .touchID:
-            true
+        case .faceID:
+            return #localized("Use system passcode when Face ID fails")
+        case .touchID:
+            return #localized("Use system passcode when Touch ID fails")
         default:
-            false
+            assertionFailure("Not applicable")
+            return ""
         }
     }
 }
