@@ -42,24 +42,25 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
 public final class AccessRepository: AccessRepositoryProtocol {
     private let localDatasource: LocalAccessDatasourceProtocol
     private let remoteDatasource: RemoteAccessDatasourceProtocol
-    private let userId: String
+    private let userDataProvider: UserDataProvider
     private let logger: Logger
 
     public weak var delegate: AccessRepositoryDelegate?
 
     public init(localDatasource: LocalAccessDatasourceProtocol,
                 remoteDatasource: RemoteAccessDatasourceProtocol,
-                userId: String,
+                userDataProvider: UserDataProvider,
                 logManager: LogManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.userId = userId
+        self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)
     }
 }
 
 public extension AccessRepository {
     func getAccess() async throws -> Access {
+        let userId = try userDataProvider.getUserId()
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
@@ -71,12 +72,14 @@ public extension AccessRepository {
     }
 
     func getPlan() async throws -> Plan {
+        let userId = try userDataProvider.getUserId()
         logger.trace("Getting plan for user \(userId)")
         return try await getAccess().plan
     }
 
     @discardableResult
     func refreshAccess() async throws -> Access {
+        let userId = try userDataProvider.getUserId()
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess()
 
