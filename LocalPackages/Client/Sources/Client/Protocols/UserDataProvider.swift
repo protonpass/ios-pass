@@ -1,6 +1,6 @@
 //
-// APIManagerProtocol.swift
-// Proton Pass - Created on 30/10/2023.
+// UserDataProvider.swift
+// Proton Pass - Created on 03/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,11 +17,30 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
+import Entities
 import ProtonCoreLogin
-import ProtonCoreServices
 
-public protocol APIManagerProtocol {
-    var userData: UserData? { get }
-    var apiService: APIService { get }
+public protocol UserDataProvider: Sendable {
+    func getUserData() -> UserData?
+    func setUserData(_ userData: UserData?)
+}
+
+public extension UserDataProvider {
+    func getUserId() throws -> String {
+        guard let userData = getUserData() else {
+            assertionFailure("Failed to get userId for nil userData")
+            throw PassError.noUserData
+        }
+        return userData.user.ID
+    }
+
+    func unwrap() throws -> UserData {
+        guard let userData = getUserData() else {
+            assertionFailure("Failed to unwrap nil userData")
+            throw PassError.noUserData
+        }
+        return userData
+    }
 }

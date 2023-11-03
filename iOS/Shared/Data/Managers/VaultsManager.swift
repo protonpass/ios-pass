@@ -39,10 +39,11 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
+    private let appData = resolve(\SharedDataContainer.appData)
     private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
+    private var symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private var isRefreshing = false
 
     // Use cases
@@ -115,12 +116,13 @@ private extension VaultsManager {
                                   description: #localized("Personal"),
                                   color: .color1,
                                   icon: .icon1)
-        let createdShare = try await shareRepository.createVault(vault)
+        try await shareRepository.createVault(vault)
         logger.info("Created default vault for user")
     }
 
     @MainActor
     func loadContents(for vaults: [Vault]) async throws {
+        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems()
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
         currentVaults.send(vaults)

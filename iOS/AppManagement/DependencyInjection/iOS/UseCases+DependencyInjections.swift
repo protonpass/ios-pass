@@ -109,7 +109,7 @@ extension UseCasesContainer {
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
-                                    userData: SharedDataContainer.shared.userData(),
+                                    userDataProvider: SharedDataContainer.shared.appData(),
                                     syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 
@@ -118,7 +118,7 @@ extension UseCasesContainer {
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
-                                    userData: SharedDataContainer.shared.userData()) }
+                                    userDataProvider: SharedDataContainer.shared.appData()) }
     }
 
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
@@ -182,13 +182,13 @@ extension UseCasesContainer {
 
     var acceptInvitation: Factory<AcceptInvitationUseCase> {
         self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
-                                userData: SharedDataContainer.shared.userData(),
+                                userDataProvider: SharedDataContainer.shared.userDataProvider(),
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 updateUserAddresses: self.updateUserAddresses()) }
     }
 
     var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
-        self { DecodeShareVaultInformation(userData: SharedDataContainer.shared.userData(),
+        self { DecodeShareVaultInformation(userDataProvider: SharedDataContainer.shared.appData(),
                                            getEmailPublicKey: self.getEmailPublicKey(),
                                            updateUserAddresses: self.updateUserAddresses()) }
     }
@@ -227,7 +227,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   userInfos: SharedDataContainer.shared.userData(),
+                                   userDataProvider: SharedDataContainer.shared.appData(),
                                    logManager: self.logManager) }
     }
 }
@@ -264,10 +264,6 @@ extension UseCasesContainer {
 // MARK: - User
 
 extension UseCasesContainer {
-    var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
-        self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
-    }
-
     var updateUserAddresses: Factory<UpdateUserAddressesUseCase> {
         self { UpdateUserAddresses(sharedDataContainer: SharedDataContainer.shared,
                                    authenticator: ServiceContainer.shared.authenticator()) }

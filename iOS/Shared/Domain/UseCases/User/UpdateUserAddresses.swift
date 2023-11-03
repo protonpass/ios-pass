@@ -47,7 +47,7 @@ final class UpdateUserAddresses: UpdateUserAddressesUseCase {
 
     func execute() async throws -> [Address]? {
         let newAppData = SharedDataContainer.shared.appData()
-        guard let userdata = newAppData.userData else {
+        guard let userdata = newAppData.getUserData() else {
             return nil
         }
         let newAddresses = try await authenticator.getAddresses(userdata.getCredential)
@@ -59,9 +59,8 @@ final class UpdateUserAddresses: UpdateUserAddressesUseCase {
                                    addresses: newAddresses,
                                    scopes: userdata.scopes)
 
-        newAppData.userData = newUserData
+        newAppData.setUserData(newUserData)
 
-        SharedDataContainer.shared.userData.register { newUserData }
         SharedDataContainer.shared.appData.register { newAppData }
 
         return newAddresses

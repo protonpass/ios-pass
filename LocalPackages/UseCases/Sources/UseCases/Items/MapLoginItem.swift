@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import CryptoKit
 import Entities
 
 /// A login item can have multiple associated URLs while the OS expects a single URL per item,
@@ -36,14 +35,14 @@ public extension MapLoginItemUseCase {
 }
 
 public final class MapLoginItem: Sendable, MapLoginItemUseCase {
-    private let key: SymmetricKey
+    private let symmetricKeyProvider: SymmetricKeyProvider
 
-    public init(key: SymmetricKey) {
-        self.key = key
+    public init(symmetricKeyProvider: SymmetricKeyProvider) {
+        self.symmetricKeyProvider = symmetricKeyProvider
     }
 
     public func execute(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential] {
-        let itemContent = try item.getItemContent(symmetricKey: key)
+        let itemContent = try item.getItemContent(symmetricKey: symmetricKeyProvider.getSymmetricKey())
         guard case let .login(data) = itemContent.contentData else {
             throw PassError.credentialProvider(.notLogInItem)
         }

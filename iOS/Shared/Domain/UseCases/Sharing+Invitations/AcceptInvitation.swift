@@ -43,16 +43,16 @@ extension AcceptInvitationUseCase {
 
 final class AcceptInvitation: AcceptInvitationUseCase {
     private let repository: InviteRepositoryProtocol
-    private let userData: UserData
+    private let userDataProvider: UserDataProvider
     private let getEmailPublicKey: GetEmailPublicKeyUseCase
     private let updateUserAddresses: UpdateUserAddressesUseCase
 
     init(repository: InviteRepositoryProtocol,
-         userData: UserData,
+         userDataProvider: UserDataProvider,
          getEmailPublicKey: GetEmailPublicKeyUseCase,
          updateUserAddresses: UpdateUserAddressesUseCase) {
         self.repository = repository
-        self.userData = userData
+        self.userDataProvider = userDataProvider
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses
     }
@@ -65,7 +65,8 @@ final class AcceptInvitation: AcceptInvitationUseCase {
 
 private extension AcceptInvitation {
     func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
-        guard let address = try await fetchInvitedAddress(with: userInvite) else {
+        let userData = try userDataProvider.unwrap()
+        guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
             throw SharingError.invalidKeyOrAddress
         }
         let addressKeys = try CryptoUtils.unlockAddressKeys(address: address,
@@ -76,14 +77,16 @@ private extension AcceptInvitation {
         let reencrytedKeys: [ItemKey] = try userInvite.keys.map { key in
             try transformKey(key: key,
                              addressKeys: addressKeys,
-                             armoredInviterPublicKeys: armoredInviterPublicKeys)
+                             armoredInviterPublicKeys: armoredInviterPublicKeys,
+                             userData: userData)
         }
         return reencrytedKeys
     }
 
     func transformKey(key: ItemKey,
                       addressKeys: [DecryptionKey],
-                      armoredInviterPublicKeys: [ArmoredKey]) throws -> ItemKey {
+                      armoredInviterPublicKeys: [ArmoredKey],
+                      userData: UserData) throws -> ItemKey {
         guard let decodeKey = try? key.key.base64Decode() else {
             throw SharingError.cannotDecode
         }
@@ -122,7 +125,7 @@ private extension AcceptInvitation {
 }
 
 private extension AcceptInvitation {
-    func fetchInvitedAddress(with userInvite: UserInvite) async throws -> Address? {
+    func fetchInvitedAddress(with userInvite: UserInvite, userData: UserData) async throws -> Address? {
         guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
             return try await updateUserAddresses()?
                 .first(where: { $0.email == userInvite.invitedEmail })
