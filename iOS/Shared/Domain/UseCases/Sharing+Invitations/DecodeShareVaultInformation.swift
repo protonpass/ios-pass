@@ -27,6 +27,7 @@ import Entities
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreLogin
+import UseCases
 
 protocol DecodeShareVaultInformationUseCase: Sendable {
     func execute(with userInvite: UserInvite) async throws -> VaultProtobuf

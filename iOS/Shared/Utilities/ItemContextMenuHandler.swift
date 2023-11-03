@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
@@ -202,7 +203,7 @@ private extension ItemContextMenuHandler {
     func getEncryptedItem(for item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
         guard let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
                                                                    itemId: item.itemId) else {
-            throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+            throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
         }
         return encryptedItem
     }
