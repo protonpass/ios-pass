@@ -42,7 +42,6 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
             .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
                                                     onDelete: viewModel.permanentlyDelete))
-            .modifier(UpsellingAlertModifier(isPresented: <#T##Binding<Bool>#>, onAction: <#T##() -> Void#>))
     }
 }
 

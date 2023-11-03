@@ -29,6 +29,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
+    private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
 
     init(vault: VaultListUiModel, itemContent: ItemContent) {
         self.vault = vault
@@ -40,7 +41,17 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func createNewVault() {
-        complete(with: .new(.defaultNewSharedVault, itemContent))
+        Task { [weak self] in
+            guard let self,
+                  let reachedLimit = try? await reachedVaultLimit() else {
+                return
+            }
+            if reachedLimit {
+                router.present(for: .upselling)
+            } else {
+                complete(with: .new(.defaultNewSharedVault, itemContent))
+            }
+        }
     }
 
     private func complete(with vault: SharingVaultData) {
