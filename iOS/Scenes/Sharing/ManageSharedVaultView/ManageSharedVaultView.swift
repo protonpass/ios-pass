@@ -31,7 +31,6 @@ import SwiftUI
 struct ManageSharedVaultView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ManageSharedVaultViewModel
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @State private var showFreeSharingLimit = false
 
     var body: some View {
