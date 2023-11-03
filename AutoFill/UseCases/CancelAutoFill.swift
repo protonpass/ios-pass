@@ -20,6 +20,7 @@
 
 import AuthenticationServices
 import Core
+import UseCases
 
 /// Cancel the autofill process with a given reason
 /// e.g: users explicitly cancel, authentication required, authentication failed...

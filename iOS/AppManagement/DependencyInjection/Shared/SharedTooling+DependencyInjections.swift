@@ -22,6 +22,7 @@ import Client
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import Factory
 import LocalAuthentication
 import ProtonCoreKeymaker

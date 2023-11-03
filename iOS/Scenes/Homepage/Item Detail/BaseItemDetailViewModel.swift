@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import Entities
 import Factory
 import Macro
 import UIKit
@@ -243,11 +244,11 @@ private extension BaseItemDetailViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.deallocatedSelf
+                throw PassError.deallocatedSelf
             }
             guard let item = try await itemRepository.getItem(shareId: item.shareId,
                                                               itemId: item.itemId) else {
-                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return item
         }
