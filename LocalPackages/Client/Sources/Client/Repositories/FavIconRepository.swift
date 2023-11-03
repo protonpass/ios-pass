@@ -35,12 +35,7 @@ public protocol FavIconSettings {
 
 /// Take care of fetching and caching behind the scenes
 public protocol FavIconRepositoryProtocol {
-    var datasource: RemoteFavIconDatasourceProtocol { get }
-    /// URL to the folder that contains cached fav icons
-    var containerUrl: URL { get }
-    var cacheExpirationDays: Int { get }
     var settings: FavIconSettings { get }
-    var symmetricKey: SymmetricKey { get }
 
     /// Always return `nil` if fav icons are disabled in `Preferences`
     /// Check if the icon is cached on disk and decryptable. Otherwise go fetch a new icon.
@@ -57,9 +52,33 @@ public protocol FavIconRepositoryProtocol {
     func emptyCache() throws
 }
 
-public extension FavIconRepositoryProtocol {
+public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
+    deinit { print(deinitMessage) }
+
+    public let datasource: RemoteFavIconDatasourceProtocol
+    /// URL to the folder that contains cached fav icons
+    public let containerUrl: URL
+    public let cacheExpirationDays: Int
+    public let settings: FavIconSettings
+    public let symmetricKeyProvider: SymmetricKeyProvider
+
+    public init(datasource: RemoteFavIconDatasourceProtocol,
+                containerUrl: URL,
+                settings: FavIconSettings,
+                symmetricKeyProvider: SymmetricKeyProvider,
+                cacheExpirationDays: Int = 14) {
+        self.datasource = datasource
+        self.containerUrl = containerUrl
+        self.cacheExpirationDays = cacheExpirationDays
+        self.settings = settings
+        self.symmetricKeyProvider = symmetricKeyProvider
+    }
+}
+
+public extension FavIconRepository {
     func getIcon(for domain: String) async throws -> FavIcon? {
         guard settings.shouldDisplayFavIcons else { return nil }
+        let symmetricKey = try getSymmetricKey()
 
         let domain = URL(string: domain)?.host ?? domain
         let hashedDomain = domain.sha256
@@ -101,7 +120,7 @@ public extension FavIconRepositoryProtocol {
                                                           conformingTo: .data)
         if let data = try? getDataOrRemoveIfObsolete(url: dataUrl) {
             return try? .init(domain: domain,
-                              data: symmetricKey.decrypt(data),
+                              data: getSymmetricKey().decrypt(data),
                               isFromCache: true)
         }
         return nil
@@ -111,12 +130,13 @@ public extension FavIconRepositoryProtocol {
         let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,
                                                                includingPropertiesForKeys: nil)
 
-        let getDecryptedData: (URL) throws -> Data? = { url in
+        let getDecryptedData: (URL) throws -> Data? = { [weak self] url in
+            guard let self else { return nil }
             let encryptedData = try Data(contentsOf: url)
             if encryptedData.isEmpty {
                 return .init()
             } else {
-                return try? symmetricKey.decrypt(encryptedData)
+                return try? getSymmetricKey().decrypt(encryptedData)
             }
         }
 
@@ -148,45 +168,15 @@ public extension FavIconRepositoryProtocol {
     }
 }
 
-private extension FavIconRepositoryProtocol {
+private extension FavIconRepository {
+    func getSymmetricKey() throws -> SymmetricKey {
+        try symmetricKeyProvider.getSymmetricKey()
+    }
+
     func getDataOrRemoveIfObsolete(url: URL) throws -> Data? {
         let isObsolete = FileUtils.isObsolete(url: url,
                                               currentDate: .now,
                                               thresholdInDays: cacheExpirationDays)
         return try FileUtils.getDataRemovingIfObsolete(url: url, isObsolete: isObsolete)
-    }
-}
-
-public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
-    deinit { print(deinitMessage) }
-
-    public let datasource: RemoteFavIconDatasourceProtocol
-    public let containerUrl: URL
-    public let cacheExpirationDays: Int
-    public let settings: FavIconSettings
-    public let symmetricKey: SymmetricKey
-
-    public init(datasource: RemoteFavIconDatasourceProtocol,
-                containerUrl: URL,
-                settings: FavIconSettings,
-                symmetricKey: SymmetricKey,
-                cacheExpirationDays: Int = 14) {
-        self.datasource = datasource
-        self.containerUrl = containerUrl
-        self.cacheExpirationDays = cacheExpirationDays
-        self.settings = settings
-        self.symmetricKey = symmetricKey
-    }
-
-    public init(apiService: APIService,
-                containerUrl: URL,
-                settings: FavIconSettings,
-                symmetricKey: SymmetricKey,
-                cacheExpirationDays: Int = 14) {
-        datasource = RemoteFavIconDatasource(apiService: apiService)
-        self.containerUrl = containerUrl
-        self.cacheExpirationDays = cacheExpirationDays
-        self.settings = settings
-        self.symmetricKey = symmetricKey
     }
 }

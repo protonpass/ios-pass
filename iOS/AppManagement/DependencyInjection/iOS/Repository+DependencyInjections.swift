@@ -22,6 +22,7 @@ import Client
 import Core
 import Factory
 import Foundation
+import ProtonCoreServices
 
 final class RepositoryContainer: SharedContainer, AutoRegistering {
     static let shared = RepositoryContainer()
@@ -34,15 +35,15 @@ final class RepositoryContainer: SharedContainer, AutoRegistering {
 
 extension RepositoryContainer {
     var reportRepository: Factory<ReportRepositoryProtocol> {
-        self { ReportRepository(apiManager: self.apiManager,
+        self { ReportRepository(apiService: self.apiService,
+                                userDataProvider: SharedDataContainer.shared.userDataProvider(),
                                 logManager: self.logManager) }
     }
 
     var inviteRepository: Factory<InviteRepositoryProtocol> {
         self {
-            InviteRepository(remoteInviteDatasource: RemoteInviteDatasource(apiService: self.apiManager
-                                 .apiService),
-            logManager: self.logManager)
+            InviteRepository(remoteInviteDatasource: RemoteInviteDatasource(apiService: self.apiService),
+                             logManager: self.logManager)
         }
     }
 }
@@ -50,8 +51,8 @@ extension RepositoryContainer {
 // MARK: - Computed properties
 
 private extension RepositoryContainer {
-    var apiManager: APIManager {
-        SharedToolingContainer.shared.apiManager()
+    var apiService: APIService {
+        SharedToolingContainer.shared.apiManager().apiService
     }
 
     var logManager: LogManagerProtocol {

@@ -20,6 +20,7 @@
 
 import Core
 import Foundation
+import ProtonCoreServices
 
 public enum ReportRepositoryError: Error {
     case noUserData
@@ -40,13 +41,16 @@ public protocol ReportRepositoryProtocol: Sendable {
 }
 
 public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
-    private let apiManager: APIManagerProtocol
+    private let apiService: APIService
+    private let userDataProvider: UserDataProvider
     private let logger: Logger
 
-    public init(apiManager: APIManagerProtocol,
+    public init(apiService: APIService,
+                userDataProvider: UserDataProvider,
                 logManager: LogManagerProtocol) {
         logger = .init(manager: logManager)
-        self.apiManager = apiManager
+        self.apiService = apiService
+        self.userDataProvider = userDataProvider
     }
 
     /// Sends a user bug report
@@ -58,17 +62,17 @@ public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtoc
     public func sendBug(with title: String,
                         and description: String,
                         optional logs: [String: URL]) async throws -> Bool {
-        guard let userData = apiManager.userData else {
+        guard let userData = userDataProvider.getUserData() else {
             throw ReportRepositoryError.noUserData
         }
         let request = BugReportRequest(with: title, and: description, userData: userData)
         let endpoint = ReportsBugEndpoint(request: request)
         if !logs.isEmpty {
-            let result = try await apiManager.apiService.exec(endpoint: endpoint, files: logs).isSuccessful
+            let result = try await apiService.exec(endpoint: endpoint, files: logs).isSuccessful
             cleanReportLogFiles(from: logs)
             return result
         } else {
-            return try await apiManager.apiService.exec(endpoint: endpoint).isSuccessful
+            return try await apiService.exec(endpoint: endpoint).isSuccessful
         }
     }
 
@@ -81,7 +85,7 @@ public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtoc
                              and description: String) async throws -> Bool {
         let request = FeedbackRequest(with: title, and: description)
         let endpoint = FeedbackEndpoint(request: request)
-        return try await apiManager.apiService.exec(endpoint: endpoint).isSuccessful
+        return try await apiService.exec(endpoint: endpoint).isSuccessful
     }
 }
 
