@@ -22,6 +22,7 @@
 @testable import Proton_Pass
 import Core
 import Foundation
+import UseCases
 
 final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLogsToFileUseCase {
     // MARK: - execute
