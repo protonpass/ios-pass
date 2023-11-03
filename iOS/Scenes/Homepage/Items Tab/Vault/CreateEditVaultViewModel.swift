@@ -60,7 +60,6 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
-    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
 
     weak var delegate: CreateEditVaultViewModelDelegate?
