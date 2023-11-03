@@ -86,7 +86,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         // Post init
 
         try? setupSharedData()
-        sendAllEventsIfApplicable()
         AppearanceSettings.apply()
         setUpRouting()
     }
@@ -201,17 +200,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             handle(error: error)
         }
     }
-
-    func sendAllEventsIfApplicable() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await telemetryEventRepository.sendAllEventsIfApplicable()
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
 }
 
 // MARK: - Setup & Utils
@@ -267,7 +255,7 @@ private extension CredentialProviderCoordinator {
         }
 
         guard let userData = appData.userData else {
-            throw PPError.noUserData
+            throw PassError.noUserData
         }
 
         try SharedDataContainer.shared.register(container: container,
@@ -283,7 +271,7 @@ private extension CredentialProviderCoordinator {
             alert(error: error)
         }
 
-        guard let error = error as? PPError,
+        guard let error = error as? PassError,
               case let .credentialProvider(reason) = error else {
             defaultHandler(error)
             return

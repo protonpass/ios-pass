@@ -277,7 +277,7 @@ private extension CreateEditAliasViewModel {
     func getAliasOptionsTask(shareId: String) -> Task<AliasOptions, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.deallocatedSelf
+                throw PassError.deallocatedSelf
             }
             return try await aliasRepository.getAliasOptions(shareId: shareId)
         }
@@ -288,7 +288,7 @@ private extension CreateEditAliasViewModel {
                              mailboxIDs: [Int]) -> Task<Void, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.deallocatedSelf
+                throw PassError.deallocatedSelf
             }
             try await aliasRepository.changeMailboxes(shareId: shareId,
                                                       itemId: itemId,

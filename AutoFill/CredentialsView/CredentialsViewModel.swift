@@ -170,10 +170,10 @@ extension CredentialsViewModel {
                 let encryptedItem = try await self.getItemTask(item: item).value
                 let oldContent = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
                 guard case let .login(oldData) = oldContent.contentData else {
-                    throw PPError.credentialProvider(.notLogInItem)
+                    throw PassError.credentialProvider(.notLogInItem)
                 }
                 guard let newUrl = self.urls.first?.schemeAndHost, !newUrl.isEmpty else {
-                    throw PPError.credentialProvider(.invalidURL(urls.first))
+                    throw PassError.credentialProvider(.invalidURL(urls.first))
                 }
                 let newLoginData = ItemContentData.login(.init(username: oldData.username,
                                                                password: oldData.password,
@@ -240,7 +240,7 @@ extension CredentialsViewModel {
 
     func handleAuthenticationFailure() {
         logger.error("Failed to locally authenticate. Logging out.")
-        display(error: PPError.credentialProvider(.failedToAuthenticate))
+        display(error: PassError.credentialProvider(.failedToAuthenticate))
     }
 
     func createLoginItem() {
@@ -337,12 +337,12 @@ private extension CredentialsViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.CredentialProviderFailureReason.generic
+                throw PassError.CredentialProviderFailureReason.generic
             }
             guard let encryptedItem =
                 try await itemRepository.getItem(shareId: item.shareId,
                                                  itemId: item.itemId) else {
-                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return encryptedItem
         }
@@ -351,7 +351,7 @@ private extension CredentialsViewModel {
     func fetchCredentialsTask(plan: Plan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.CredentialProviderFailureReason.generic
+                throw PassError.CredentialProviderFailureReason.generic
             }
 
             vaults = try await shareRepository.getVaults()
@@ -419,12 +419,12 @@ private extension CredentialsViewModel {
     func getCredentialTask(for item: ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.CredentialProviderFailureReason.generic
+                throw PassError.CredentialProviderFailureReason.generic
             }
             guard let itemContent =
                 try await itemRepository.getItemContent(shareId: item.shareId,
                                                         itemId: item.itemId) else {
-                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
 
             switch itemContent.contentData {
@@ -432,7 +432,7 @@ private extension CredentialsViewModel {
                 let credential = ASPasswordCredential(user: data.username, password: data.password)
                 return (credential, itemContent)
             default:
-                throw PPError.credentialProvider(.notLogInItem)
+                throw PassError.credentialProvider(.notLogInItem)
             }
         }
     }
