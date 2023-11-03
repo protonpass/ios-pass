@@ -1,5 +1,5 @@
 //
-// PPError.swift
+// PassError.swift
 // Proton Pass - Created on 08/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
