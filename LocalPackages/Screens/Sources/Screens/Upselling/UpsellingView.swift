@@ -67,13 +67,16 @@ private extension UpsellingView {
                 .foregroundColor(PassColor.textNorm.toColor)
 
             VStack {
-                perkRow(title: "Multiple Vaults", icon: PassIcon.trialVaults)
-                PassDivider()
                 perkRow(title: "Unlimited email aliases",
                         icon: IconProvider.alias,
                         iconTintColor: PassColor.aliasInteractionNorm)
                 PassDivider()
                 perkRow(title: "Unlimited 2FA Autofill", icon: PassIcon.trial2FA)
+                PassDivider()
+                perkRow(title: "Sharing with up to 10 people", icon: IconProvider.userPlus,
+                        iconTintColor: PassColor.noteInteractionNormMajor1)
+                PassDivider()
+                perkRow(title: "Multiple Vaults", icon: PassIcon.trialVaults)
             }
             .padding()
             .background(PassColor.inputBackgroundNorm.toColor)
