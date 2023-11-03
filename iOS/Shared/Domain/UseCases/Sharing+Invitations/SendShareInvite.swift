@@ -45,7 +45,7 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     private let shareInviteService: ShareInviteServiceProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
-    private let userData: UserData
+    private let userDataProvider: UserDataProvider
     private let syncEventLoop: SyncEventLoopProtocol
 
     init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
@@ -53,14 +53,14 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
          shareInviteService: ShareInviteServiceProtocol,
          passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
-         userData: UserData,
+         userDataProvider: UserDataProvider,
          syncEventLoop: SyncEventLoopProtocol) {
         self.createAndMoveItemToNewVault = createAndMoveItemToNewVault
         self.makeUnsignedSignatureForVaultSharing = makeUnsignedSignatureForVaultSharing
         self.shareInviteService = shareInviteService
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
-        self.userData = userData
+        self.userDataProvider = userDataProvider
         self.syncEventLoop = syncEventLoop
     }
 
@@ -102,6 +102,7 @@ private extension SendVaultShareInvite {
     func generateInviteeData(from info: SharingInfos,
                              vault: Vault,
                              vaultKey: DecryptedShareKey) throws -> InviteeData {
+        let userData = try userDataProvider.unwrap()
         guard let email = info.email else {
             throw SharingError.incompleteInformation
         }
@@ -115,14 +116,16 @@ private extension SendVaultShareInvite {
         } else {
             let signature = try createAndSignSignature(addressId: vault.addressId,
                                                        vaultKey: vaultKey,
-                                                       email: email)
+                                                       email: email,
+                                                       userData: userData)
             return .new(email: email, signature: signature)
         }
     }
 
     func createAndSignSignature(addressId: String,
                                 vaultKey: DecryptedShareKey,
-                                email: String) throws -> String {
+                                email: String,
+                                userData: UserData) throws -> String {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
                                                                  userData: userData).first else {
             throw PPClientError.crypto(.addressNotFound(addressID: addressId))
