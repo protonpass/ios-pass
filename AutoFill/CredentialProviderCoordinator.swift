@@ -86,7 +86,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         // Post init
 
         try? setupSharedData()
-        sendAllEventsIfApplicable()
         AppearanceSettings.apply()
         setUpRouting()
     }
@@ -199,17 +198,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
         } catch {
             handle(error: error)
-        }
-    }
-
-    func sendAllEventsIfApplicable() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await telemetryEventRepository.sendAllEventsIfApplicable()
-            } catch {
-                logger.error(error)
-            }
         }
     }
 }
