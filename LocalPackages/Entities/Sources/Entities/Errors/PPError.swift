@@ -21,7 +21,7 @@
 import Foundation
 
 /// Proton Pass errors
-public enum PPError: Error, CustomDebugStringConvertible {
+public enum PassError: Error, CustomDebugStringConvertible {
     /// AutoFill extension
     case credentialProvider(CredentialProviderFailureReason)
     case deallocatedSelf
@@ -50,7 +50,7 @@ public enum PPError: Error, CustomDebugStringConvertible {
 
 // MARK: - VaultFailureReason
 
-public extension PPError {
+public extension PassError {
     enum VaultFailureReason: CustomDebugStringConvertible {
         case canNotDeleteLastVault
         case noSelectedVault
@@ -74,7 +74,7 @@ public extension PPError {
 
 // MARK: - CredentialProviderFailureReason
 
-public extension PPError {
+public extension PassError {
     enum CredentialProviderFailureReason: Error, CustomDebugStringConvertible {
         case failedToAuthenticate
         case invalidURL(URL?)
