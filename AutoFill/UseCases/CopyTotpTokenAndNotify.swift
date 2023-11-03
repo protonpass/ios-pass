@@ -68,7 +68,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
 
         guard case let .login(data) = itemContent.contentData else {
             // Not a login item
-            let error = PPError.credentialProvider(.notLogInItem)
+            let error = PassError.credentialProvider(.notLogInItem)
             logger.error(error)
             throw error
         }
