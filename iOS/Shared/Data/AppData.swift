@@ -59,7 +59,7 @@ final class AppData {
             if symmetricKey.count == 32 {
                 // Legacy path with 32-character long string
                 guard let symmetricKeyData = symmetricKey.data(using: .utf8) else {
-                    throw PPError.failedToGetOrCreateSymmetricKey
+                    throw PassError.failedToGetOrCreateSymmetricKey
                 }
                 // Update the legacy key to the new model
                 self.symmetricKey = symmetricKeyData.encodeBase64()
@@ -67,7 +67,7 @@ final class AppData {
             } else {
                 // New path with base 64 string
                 guard let symmetricKeyData = try symmetricKey.base64Decode() else {
-                    throw PPError.failedToGetOrCreateSymmetricKey
+                    throw PassError.failedToGetOrCreateSymmetricKey
                 }
                 return .init(data: symmetricKeyData)
             }

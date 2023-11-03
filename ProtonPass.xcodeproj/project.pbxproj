@@ -400,6 +400,7 @@
 		5B3AD4342AD44D3400E1A07D /* UserData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */; };
 		5B3AD4352AD44DAC00E1A07D /* UserData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */; };
 		5B415E4D2ADECB3A00D9C8CC /* UpdateUserAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B415E4C2ADECB3A00D9C8CC /* UpdateUserAddresses.swift */; };
+		5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */; };
 		5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
 		5B503FEE2A4D84AD00E6681C /* UseCases+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */; };
@@ -810,6 +811,7 @@
 		5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Extensions.swift"; sourceTree = "<group>"; };
 		5B3E2FFF2AAF01A30002289A /* TestPlans */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestPlans; sourceTree = "<group>"; };
 		5B415E4C2ADECB3A00D9C8CC /* UpdateUserAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAddresses.swift; sourceTree = "<group>"; };
+		5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LABiometryType+Extensions.swift"; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
 		5B503FED2A4D84AD00E6681C /* UseCases+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UseCases+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1671,6 +1673,7 @@
 		5B1453E32A72BF2A0048B022 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */,
 				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
 				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 				5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */,
@@ -2632,6 +2635,7 @@
 				355694A229D466C9005DD2EB /* VaultRow.swift in Sources */,
 				35AC9A682A0C16FE00FBCEEC /* EditCustomFieldView.swift in Sources */,
 				35704EB52AD5703500044716 /* CreateAndMoveItemToNewVault.swift in Sources */,
+				5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,

@@ -45,7 +45,7 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
     public func execute(for item: SymmetricallyEncryptedItem) throws -> [AutoFillCredential] {
         let itemContent = try item.getItemContent(symmetricKey: key)
         guard case let .login(data) = itemContent.contentData else {
-            throw PPError.credentialProvider(.notLogInItem)
+            throw PassError.credentialProvider(.notLogInItem)
         }
         return data.urls.map { .init(shareId: itemContent.shareId,
                                      itemId: itemContent.item.itemID,

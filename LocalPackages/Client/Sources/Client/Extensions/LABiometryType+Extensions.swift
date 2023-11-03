@@ -31,16 +31,4 @@ public extension LABiometryType {
             false
         }
     }
-
-    var fallbackToPasscodeMessage: String {
-        switch self {
-        case .faceID:
-            return #localized("Use system passcode when Face ID fails")
-        case .touchID:
-            return #localized("Use system passcode when Touch ID fails")
-        default:
-            assertionFailure("Not applicable")
-            return ""
-        }
-    }
 }
