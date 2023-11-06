@@ -45,7 +45,7 @@ private struct TelemetryEventUiModel: Identifiable {
 
 private final class TelemetryEventsViewModel: ObservableObject {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
-    private let appData = resolve(\SharedDataContainer.appData)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
 
     @Published private(set) var uiModels = [TelemetryEventUiModel]()
     @Published private(set) var relativeThreshold = ""
@@ -64,7 +64,7 @@ private final class TelemetryEventsViewModel: ObservableObject {
                     let relativeDate = formatter.localizedString(for: threshold, relativeTo: .now)
                     self.relativeThreshold = "Next batch \(relativeDate)"
                 }
-                let userId = try appData.getUserId()
+                let userId = try userDataProvider.getUserId()
                 let events = try await self.telemetryEventRepository.getAllEvents(userId: userId)
                 // Reverse to move new events to the top of the list
                 self.uiModels = events.reversed().map { TelemetryEventUiModel(event: $0,
