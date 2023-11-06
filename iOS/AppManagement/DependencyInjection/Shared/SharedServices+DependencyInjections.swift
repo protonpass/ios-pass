@@ -53,7 +53,7 @@ extension SharedServiceContainer {
     var syncEventLoop: Factory<SyncEventLoop> {
         self {
             .init(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
-                  userDataProvider: SharedDataContainer.shared.appData(),
+                  userDataProvider: SharedDataContainer.shared.userDataProvider(),
                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                   shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
                   remoteSyncEventsDatasource: SharedRepositoryContainer.shared.remoteSyncEventsDatasource(),

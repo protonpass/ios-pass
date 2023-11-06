@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Factory
 import ProtonCoreServices
@@ -45,6 +46,10 @@ private extension UseCasesContainer {
 
     var shareInviteService: ShareInviteServiceProtocol {
         ServiceContainer.shared.shareInviteService()
+    }
+
+    var userDataProvider: UserDataProvider {
+        SharedDataContainer.shared.userDataProvider()
     }
 }
 
@@ -109,7 +114,7 @@ extension UseCasesContainer {
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
-                                    userDataProvider: SharedDataContainer.shared.appData(),
+                                    userDataProvider: self.userDataProvider,
                                     syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 
@@ -118,7 +123,7 @@ extension UseCasesContainer {
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
-                                    userDataProvider: SharedDataContainer.shared.appData()) }
+                                    userDataProvider: self.userDataProvider) }
     }
 
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
@@ -182,13 +187,13 @@ extension UseCasesContainer {
 
     var acceptInvitation: Factory<AcceptInvitationUseCase> {
         self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
-                                userDataProvider: SharedDataContainer.shared.userDataProvider(),
+                                userDataProvider: self.userDataProvider,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 updateUserAddresses: self.updateUserAddresses()) }
     }
 
     var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
-        self { DecodeShareVaultInformation(userDataProvider: SharedDataContainer.shared.appData(),
+        self { DecodeShareVaultInformation(userDataProvider: self.userDataProvider,
                                            getEmailPublicKey: self.getEmailPublicKey(),
                                            updateUserAddresses: self.updateUserAddresses()) }
     }
@@ -227,7 +232,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   userDataProvider: SharedDataContainer.shared.appData(),
+                                   userDataProvider: self.userDataProvider,
                                    logManager: self.logManager) }
     }
 }
