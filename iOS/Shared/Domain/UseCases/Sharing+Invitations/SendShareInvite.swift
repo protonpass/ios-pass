@@ -102,7 +102,7 @@ private extension SendVaultShareInvite {
     func generateInviteeData(from info: SharingInfos,
                              vault: Vault,
                              vaultKey: DecryptedShareKey) throws -> InviteeData {
-        let userData = try userDataProvider.unwrap()
+        let userData = try userDataProvider.getUnwrappedUserData()
         guard let email = info.email else {
             throw SharingError.incompleteInformation
         }
