@@ -270,7 +270,7 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var updateUserAddresses: Factory<UpdateUserAddressesUseCase> {
-        self { UpdateUserAddresses(sharedDataContainer: SharedDataContainer.shared,
+        self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
                                    authenticator: ServiceContainer.shared.authenticator()) }
     }
 }
