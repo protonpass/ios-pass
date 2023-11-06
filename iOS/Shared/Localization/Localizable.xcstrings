@@ -13,7 +13,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ trezor"
+            "value" : "trezor %@"
           }
         },
         "de" : {
@@ -127,7 +127,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ сховище"
+            "value" : "Сховище %@"
           }
         },
         "vi" : {
@@ -874,7 +874,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld елементів"
+                  "value" : "%lld елементи"
                 }
               },
               "many" : {
@@ -1329,7 +1329,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld учасника"
+                  "value" : "%lld учасників"
                 }
               },
               "one" : {
@@ -1341,7 +1341,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld учасника"
+                  "value" : "%lld учасників"
                 }
               }
             }
@@ -1778,7 +1778,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Залишилось %lld спроби"
+                  "value" : "Залишилось %lld спроб"
                 }
               },
               "one" : {
@@ -1790,7 +1790,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Залишилось %lld спроби"
+                  "value" : "Залишилось %lld спроб"
                 }
               }
             }
@@ -2670,13 +2670,13 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld разів"
+                  "value" : "%lld рази"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld рази"
+                  "value" : "%lld разів"
                 }
               },
               "one" : {
@@ -2688,7 +2688,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld рази"
+                  "value" : "%lld разів"
                 }
               }
             }
@@ -3568,7 +3568,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld слів"
+                  "value" : "%lld слова"
                 }
               },
               "many" : {
@@ -4144,7 +4144,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protokol je typ souboru, který nám ukazuje akce, které jste provedli a které vedly k chybě. Budeme je vždy používat pouze k tomu, abychom pomohli našim inženýrům opravit chyby."
+            "value" : "Logy jsou typem souboru, který nám ukazuje akce, které jste provedli a které vedly k chybě. Budeme je vždy používat pouze k tomu, abychom pomohli našim inženýrům opravit chyby."
           }
         },
         "de" : {
@@ -4654,7 +4654,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Додати секретний ключ 2FA"
+            "value" : "Введіть секретний ключ 2FA"
           }
         },
         "vi" : {
@@ -4784,7 +4784,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Додати префікс"
+            "value" : "Додайте префікс"
           }
         },
         "vi" : {
@@ -5325,7 +5325,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Додати пароль"
+            "value" : "Введіть пароль"
           }
         },
         "vi" : {
@@ -5456,7 +5456,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Додайте ім'я користувача або адресу електронної пошти"
+            "value" : "Введіть ім'я користувача або адресу е-пошти"
           }
         },
         "vi" : {
@@ -7275,7 +7275,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias adresy zkopírován"
+            "value" : "Alias adresa zkopírována"
           }
         },
         "de" : {
@@ -7526,7 +7526,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдонім не може містити двох послідовних крапок (..)"
+            "value" : "У псевдонімі не можна використовувати дві послідовні крапки (..)"
           }
         },
         "vi" : {
@@ -7937,7 +7937,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Псевдонім з елементом входу \"%@\""
+            "value" : "Псевдонім для елемента входу \"%@\""
           }
         },
         "vi" : {
@@ -8751,7 +8751,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Усі об’єкти зі смітника будуть остаточно видалені."
+            "value" : "Усі елементи зі смітника будуть остаточно видалені."
           }
         },
         "vi" : {
@@ -9048,7 +9048,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Všechny protokoly vymazány"
+            "value" : "Všechny logy smazány"
           }
         },
         "de" : {
@@ -9589,7 +9589,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Přidružení a automatické vyplňování"
+            "value" : "Přiřazení a automatické vyplňování"
           }
         },
         "de" : {
@@ -9697,7 +9697,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прив'язка та автозаповнення"
+            "value" : "Прив'язування та автозаповнення"
           }
         },
         "vi" : {
@@ -10248,7 +10248,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protokoly rozšíření AutoFill"
+            "value" : "Logy rozšíření automatického vyplňování"
           }
         },
         "de" : {
@@ -10390,7 +10390,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiviere Proton Pass AutoFill, um automatisches einsetzen auf Apps und Websites zu nutzen."
+            "value" : "Aktiviere Proton Pass AutoFill, um AutoFill auf Apps und Websites zu nutzen."
           }
         },
         "el" : {
@@ -11573,7 +11573,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Заголовні літери"
+            "value" : "Великі літери"
           }
         },
         "vi" : {
@@ -12245,7 +12245,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ім'я тримача картки скопійовано"
+            "value" : "Ім'я власника картки скопійовано"
           }
         },
         "vi" : {
@@ -12664,7 +12664,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vymazat všechny protokoly"
+            "value" : "Smazat všechny logy"
           }
         },
         "de" : {
@@ -14005,7 +14005,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zkopírovat 2FA kód"
+            "value" : "Zkopírujte 2FA kód"
           }
         },
         "de" : {
@@ -14136,7 +14136,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kopírovat alias adresy"
+            "value" : "Zkopírovat alias adresu"
           }
         },
         "de" : {
@@ -14250,7 +14250,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Копіювати адресу псевдоніму"
+            "value" : "Копіювати адресу псевдоніма"
           }
         },
         "vi" : {
@@ -14410,7 +14410,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zkpírovat obsah poznámky"
+            "value" : "Zkopírovat obsah poznámky"
           }
         },
         "de" : {
@@ -14524,7 +14524,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скопіювати вміст нотатки"
+            "value" : "Копіювати вміст нотатки"
           }
         },
         "vi" : {
@@ -15364,7 +15364,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vytvořit & AutoFill"
+            "value" : "Vytvořit a automaticky vyplnit"
           }
         },
         "de" : {
@@ -15478,7 +15478,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Створення та автозаповнення"
+            "value" : "Створення й автозаповнення"
           }
         },
         "vi" : {
@@ -15615,7 +15615,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Створити кредитну картку"
+            "value" : "Створити банківську картку"
           }
         },
         "vi" : {
@@ -16578,7 +16578,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Кредитна картка"
+            "value" : "Банківська картка"
           }
         },
         "vi" : {
@@ -16715,7 +16715,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Кредитну картку створено"
+            "value" : "Банківську картку створено"
           }
         },
         "vi" : {
@@ -16852,7 +16852,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Кредитну картку переміщено до смітника"
+            "value" : "Банківську картку переміщено до смітника"
           }
         },
         "vi" : {
@@ -17400,7 +17400,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Кредитна карта"
+            "value" : "Банківські картки"
           }
         },
         "vi" : {
@@ -18941,7 +18941,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elimina"
+            "value" : "Scarta"
           }
         },
         "ja" : {
@@ -19144,7 +19144,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Відкинути зміни?"
+            "value" : "Відхилити зміни?"
           }
         },
         "vi" : {
@@ -19166,7 +19166,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Znovu si stáhněte všechny položky, abyste se ujistili, že jste synchronizováni"
+            "value" : "Znovu si stáhněte všechny položky, abyste se ujistili, že jsou synchronizované"
           }
         },
         "de" : {
@@ -19274,7 +19274,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Завантажити усі ваші елементи знову щоб впевнитися що усе синхронізовано"
+            "value" : "Завантажте ваші елементи знову щоб упевнитися що все синхронізовано"
           }
         },
         "vi" : {
@@ -19411,7 +19411,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "змінити"
+            "value" : "редагувати"
           }
         },
         "vi" : {
@@ -19802,7 +19802,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Редагувати назву"
+            "value" : "Редагувати заголовок"
           }
         },
         "vi" : {
@@ -20066,7 +20066,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Очистити"
+            "value" : "Порожньо"
           }
         },
         "vi" : {
@@ -20457,7 +20457,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Увімкнути автозаповнення"
+            "value" : "Увімкніть автозаповнення"
           }
         },
         "vi" : {
@@ -21411,7 +21411,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Виберіть PIN-код"
+            "value" : "Створіть PIN-код"
           }
         },
         "vi" : {
@@ -22016,7 +22016,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Richiedi funzionalità"
+            "value" : "Richiedi una funzionalità"
           }
         },
         "ja" : {
@@ -22342,7 +22342,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сортування за"
+            "value" : "Фільтрувати"
           }
         },
         "vi" : {
@@ -22473,7 +22473,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Знайти псевдонім, запис входу, або нотатку"
+            "value" : "Знайдіть псевдонім, запис входу, або нотатку"
           }
         },
         "vi" : {
@@ -22734,7 +22734,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Щоб керувати паролями на новому рівні:"
+            "value" : "Керування паролями нового рівня:"
           }
         },
         "vi" : {
@@ -23154,7 +23154,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zkusit zdarma"
+            "value" : "Bezplatná zkušební doba"
           }
         },
         "de" : {
@@ -23268,7 +23268,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Безплатна пробна версія"
+            "value" : "Безплатний пробний період"
           }
         },
         "vi" : {
@@ -23942,7 +23942,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Перейти до Налаштувань"
+            "value" : "Відкрити Параметри"
           }
         },
         "vi" : {
@@ -24346,7 +24346,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Схований текст скопійовано"
+            "value" : "Прихований текст скопійовано"
           }
         },
         "vi" : {
@@ -24613,7 +24613,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Як імпортувати до Proton Pass"
+            "value" : "Як імпортувати дані до Proton Pass"
           }
         },
         "vi" : {
@@ -24881,7 +24881,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Я хочу повідомити про проблему з..."
+            "value" : "Я хочу повідомити про проблему..."
           }
         },
         "vi" : {
@@ -25155,7 +25155,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Додати цифри"
+            "value" : "Додати числа"
           }
         },
         "vi" : {
@@ -25285,7 +25285,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Невірний PIN-код"
+            "value" : "Неправильний PIN-код."
           }
         },
         "vi" : {
@@ -25552,7 +25552,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Невірне посилання TOTP"
+            "value" : "Недійсний URI для TOTP"
           }
         },
         "vi" : {
@@ -25854,7 +25854,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Položka z « %@ » přesunuta do trezoru « %@ »"
+            "value" : "Položky z « %@ » přesunuty do trezoru « %@ »"
           }
         },
         "de" : {
@@ -26400,7 +26400,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pouze automatické vyplňování"
+            "value" : "Pouze automaticky vyplnit"
           }
         },
         "de" : {
@@ -27857,7 +27857,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Розпочнімо створивши перший елемент"
+            "value" : "Розпочнімо зі створення першого елемента"
           }
         },
         "vi" : {
@@ -30438,7 +30438,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Більше ніж 90 днів"
+            "value" : "Понад 90 днів"
           }
         },
         "vi" : {
@@ -31644,7 +31644,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Без журналів активності"
+            "value" : "Без журналів"
           }
         },
         "vi" : {
@@ -31914,7 +31914,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Немає"
+            "value" : "Без блокування"
           }
         },
         "vi" : {
@@ -32485,25 +32485,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується і ними не можна поділитись."
+                  "value" : "Це сховище містить %lld псевдоніми. Спільний доступ до псевдонімів наразі не підтримується."
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується і ними не можна поділитись."
+                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Це сховище містить один псевдонім. Спільний доступ до псевдоніма наразі не підтримується і ним не можна поділитись."
+                  "value" : "Це сховище містить один псевдонім. Спільний доступ до псевдонімів наразі не підтримується."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується і ними не можна поділитись."
+                  "value" : "Це сховище містить %lld псевдонімів. Спільний доступ до псевдонімів наразі не підтримується."
                 }
               }
             }
@@ -32665,7 +32665,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obsah poznámek byl zkopírován"
+            "value" : "Obsah poznámky byl zkopírován"
           }
         },
         "de" : {
@@ -33738,7 +33738,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тепер ви можете швидко та безпечно розблокувати Proton Pass тільки тоді, коли Вам потрібно"
+            "value" : "Тепер ви можете швидко та безпечно розблокувати Proton Pass тільки тоді, коли вам потрібно"
           }
         },
         "vi" : {
@@ -33875,7 +33875,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Цифри"
+            "value" : "Числа"
           }
         },
         "vi" : {
@@ -34012,7 +34012,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Цифри та символи"
+            "value" : "Числа та символи"
           }
         },
         "vi" : {
@@ -34152,7 +34152,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Найдавніші"
+            "value" : "Спочатку найдавніші"
           }
         },
         "vi" : {
@@ -34175,7 +34175,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stačí jedno klepnutí a⏤presto!⏤vaše uživatelské jméno a heslo jsou okamžitě vyplněny"
+            "value" : "Stačí jedno klepnutí a⏤hotovo!⏤vaše uživatelské jméno a heslo jsou okamžitě vyplněny"
           }
         },
         "de" : {
@@ -34289,7 +34289,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Одне натискання і ⏤ готово! ⏤ ваше ім'я користувача та пароль заповнені миттєво"
+            "value" : "Ваше ім'я користувача та пароль заповнюються одним дотиком"
           }
         },
         "vi" : {
@@ -34550,7 +34550,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Відкрити програму **Налаштування**"
+            "value" : "Відкрийте **Параметри** системи"
           }
         },
         "vi" : {
@@ -34680,7 +34680,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Запустити камеру"
+            "value" : "Відкрити камеру"
           }
         },
         "vi" : {
@@ -34702,7 +34702,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otevřít nastavení"
+            "value" : "Otevřete Nastavení"
           }
         },
         "de" : {
@@ -34810,7 +34810,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Відкрити налаштування"
+            "value" : "Відкрити Параметри пристрою"
           }
         },
         "vi" : {
@@ -34833,7 +34833,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otevřete Nastavení systému → Hesla → Možnosti hesel"
+            "value" : "Otevřete Nastavení systému → Hesla → Možnosti hesla"
           }
         },
         "de" : {
@@ -34947,7 +34947,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Відкрийте Системні налаштування → Паролі → Налаштування пароля"
+            "value" : "Відкрийте Параметри системи → Паролі → Параметри паролів"
           }
         },
         "vi" : {
@@ -36304,7 +36304,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN-коди не збігаються"
+            "value" : "PIN-коди відрізняються"
           }
         },
         "vi" : {
@@ -36326,7 +36326,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povolte přístup ke kameře v Nastavení"
+            "value" : "Povolte přístup ke fotoaparátu v Nastavení"
           }
         },
         "de" : {
@@ -36434,7 +36434,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Будь ласка, надайте доступ до камери у налаштуваннях"
+            "value" : "Надайте доступ до камери в параметрах пристрою"
           }
         },
         "vi" : {
@@ -36457,7 +36457,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ověřte prosím pravost"
+            "value" : "Prosím přihlaste se"
           }
         },
         "de" : {
@@ -36553,7 +36553,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Overte, prosím"
+            "value" : "Overte prosím pravosť"
           }
         },
         "sv" : {
@@ -36730,7 +36730,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aplikaci nechte otevřenou prosím."
+            "value" : "Prosím, ponechte aplikaci otevřenou."
           }
         },
         "de" : {
@@ -36838,7 +36838,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Будь ласка, тримайте додаток ввімкненим."
+            "value" : "Не закривайте програму."
           }
         },
         "vi" : {
@@ -36968,7 +36968,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Будь ласка, увійдіть, щоб скористатися розширенням автозаповнення Proton Pass"
+            "value" : "Увійдіть, щоб скористатися розширенням автозаповнення Proton Pass"
           }
         },
         "vi" : {
@@ -37235,7 +37235,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Префікс не може бути порожнім"
+            "value" : "Потрібно ввести префікс"
           }
         },
         "vi" : {
@@ -37372,7 +37372,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Префікс не може містити двох послідовних крапок (..)"
+            "value" : "У префіксі не можна використовувати дві послідовні крапки (..)"
           }
         },
         "vi" : {
@@ -37509,7 +37509,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Префікс має містити тільки латинські літеро-лічбові символи у нижньому регістрі (a-z, 0-9), крапку(.), дефіс (-) та знак підкреслення (_)"
+            "value" : "Префікс має містити лише малі латинські літери та цифри (a-z, 0-9), крапку(.), дефіс (-) та підкреслення (_)"
           }
         },
         "vi" : {
@@ -37532,7 +37532,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Připravuje se…"
+            "value" : "Příprava..."
           }
         },
         "de" : {
@@ -37937,7 +37937,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chraňte svou schránku před spamy a phishingem"
+            "value" : "Chraňte svou schránku před spamem a phishingem"
           }
         },
         "de" : {
@@ -38051,7 +38051,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Захистіть ваші вхідні від спаму та фішінгу"
+            "value" : "Захистіть поштову скриньку від спаму та шахрайства"
           }
         },
         "vi" : {
@@ -38210,7 +38210,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rychlý výběr přihlašovací položky z návrhů nad klávesnicí"
+            "value" : "Rychle vyberte přihlašovací položku z návrhů nad klávesnicí"
           }
         },
         "de" : {
@@ -38318,7 +38318,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Швидко обирайте елемент запису входу з запропонованих над клавіатурою"
+            "value" : "Швидко вибирайте елемент входу з пропозицій над клавіатурою"
           }
         },
         "vi" : {
@@ -38448,7 +38448,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пропозиції щодо панелі QuickType"
+            "value" : "Пропозиції панелі QuickType"
           }
         },
         "vi" : {
@@ -38608,7 +38608,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "přečteno"
+            "value" : "číst"
           }
         },
         "de" : {
@@ -38722,7 +38722,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "прочитані"
+            "value" : "читати"
           }
         },
         "vi" : {
@@ -39119,7 +39119,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Видалити псевдонім"
+            "value" : "Вилучити псевдонім"
           }
         },
         "vi" : {
@@ -39680,7 +39680,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restartovat Proton Pass"
+            "value" : "Restartujte Proton Pass"
           }
         },
         "de" : {
@@ -39794,7 +39794,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Перезапустити Proton Pass"
+            "value" : "Перезапустіть Proton Pass"
           }
         },
         "vi" : {
@@ -41005,7 +41005,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пошук у Смітнику..."
+            "value" : "Пошук у смітнику..."
           }
         },
         "vi" : {
@@ -41143,7 +41143,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Безпечний менеджер паролів та більше"
+            "value" : "Безпечний менеджер паролів і не тільки"
           }
         },
         "vi" : {
@@ -41697,7 +41697,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poslat protokoly"
+            "value" : "Odeslat logy"
           }
         },
         "de" : {
@@ -42083,7 +42083,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Налаштуйте Proton Pass на розблокування за допомогою обличчя або відбитка пальця, щоб лише ви мали доступ"
+            "value" : "Налаштуйте розблокування Proton Pass за допомогою обличчя або відбитка пальця, щоб лише ви мали доступ"
           }
         },
         "vi" : {
@@ -42473,7 +42473,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ділитися буфером обміну між пристроями"
+            "value" : "Доступ до буфера обміну на різних пристроях"
           }
         },
         "vi" : {
@@ -43537,7 +43537,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сортувати за"
+            "value" : "Сортувати"
           }
         },
         "vi" : {
@@ -44097,7 +44097,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Припиніть повідомляти свою справжню електронну адресу. Натомість приховайте її за допомогою псевдонімів електронної пошти - це ексклюзив Proton Pass."
+            "value" : "Не повідомляйте свою справжню адресу електронної пошти. Натомість приховайте її за допомогою псевдонімів – це ексклюзивна функція Proton Pass."
           }
         },
         "vi" : {
@@ -44631,7 +44631,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Синхронізація завершена"
+            "value" : "Синхронізацію завершено"
           }
         },
         "vi" : {
@@ -44768,7 +44768,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Триває синхронізація"
+            "value" : "Синхронізація"
           }
         },
         "vi" : {
@@ -44791,7 +44791,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Synchronizace položek…..."
+            "value" : "Synchronizace položek..."
           }
         },
         "de" : {
@@ -45033,7 +45033,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Натисніть **Налаштування пароля**"
+            "value" : "Оберіть **Параметри паролів**"
           }
         },
         "vi" : {
@@ -45163,7 +45163,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Натисніть **Паролі**"
+            "value" : "Торкніться **Паролі**"
           }
         },
         "vi" : {
@@ -45568,7 +45568,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тепер додаток готовий до користування"
+            "value" : "Тепер можна користуватися програмою"
           }
         },
         "vi" : {
@@ -45725,7 +45725,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toto je váš poslední pokus. Po neúspěšném opakovaném ověření budete odhlášeni."
+            "value" : "Toto je váš poslední pokus. Pokud znovu selže ověření, budete odhlášeni."
           }
         },
         "de" : {
@@ -45855,7 +45855,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Může to trvat několik minut"
+            "value" : "Může to trvat několik minut."
           }
         },
         "de" : {
@@ -45963,7 +45963,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Це може зайняти кілька хвилин."
+            "value" : "Це може тривати кілька хвилин."
           }
         },
         "vi" : {
@@ -46122,7 +46122,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tím dojde k trvalému odstranění účtu Proton a všech jeho dat, včetně e-mailů, kalendářů a dat uložených na Disku. Tento účet nebude možné znovu aktivovat."
+            "value" : "Toto trvale smaže váš účet Proton a všechna jeho data, včetně e-mailů, kalendářů a dat uložených na Disku. Tento účet nebude možné znovu aktivovat."
           }
         },
         "de" : {
@@ -46230,7 +46230,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Це призведе до остаточного видалення вашого облікового запису Proton та усіх його даних, включаючи е-пошту, календарі та дані збережені на диску. Ви не зможете повторно активувати цей обліковий запис."
+            "value" : "Це призведе до остаточного видалення вашого облікового запису Proton та всіх його даних, включно з електронною поштою, календарями та збереженими на диску даними. Ви не зможете повторно активувати цей обліковий запис."
           }
         },
         "vi" : {
@@ -46497,7 +46497,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "За назвою (A-Z)"
+            "value" : "За назвою (А-Я)"
           }
         },
         "vi" : {
@@ -46634,7 +46634,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "За назвою (Z-A)"
+            "value" : "За назвою (Я-А)"
           }
         },
         "vi" : {
@@ -47580,7 +47580,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Передача права власності"
+            "value" : "Передати право власності"
           }
         },
         "vi" : {
@@ -47997,7 +47997,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zkuste hledat pomocí jiného pravopisu nebo klíčových slov"
+            "value" : "Pokuste se hledat pomocí jiného hláskování nebo klíčových slov"
           }
         },
         "de" : {
@@ -48105,7 +48105,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Спробуйте ще раз виконати пошук, використовуючи інше написання або ключове слово"
+            "value" : "Спробуйте виконати пошук, використавши інше написання або ключове слово"
           }
         },
         "vi" : {
@@ -48395,7 +48395,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zapnutí funkce automatického vyplňování hesel a povolení vyplňování z aplikace Proton Pass"
+            "value" : "Zapněte automatické vyplňování hesel a povolte vyplňování z aplikace Proton Pass"
           }
         },
         "de" : {
@@ -48509,7 +48509,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Увімкніть Автозаповнення паролів та дозвольте заповнення з Proton Pass"
+            "value" : "Увімкніть Автозаповнення паролів та виберіть Proton Pass"
           }
         },
         "vi" : {
@@ -48647,7 +48647,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Увімкніть автозаповнення, щоб Proton Pass міг заповнювати параметри входу для вас - 10 секунд, які збережуть Вам години."
+            "value" : "Увімкніть автозаповнення, щоб Proton Pass міг заповнювати дані входу для вас – 10 секунд, які заощадять вам години."
           }
         },
         "vi" : {
@@ -48800,7 +48800,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pro potvrzení zadejte znovu kód PIN"
+            "value" : "Zadejte PIN kód znovu pro potvrzení"
           }
         },
         "de" : {
@@ -48914,7 +48914,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Введіть PIN-код повторно для підтвердження"
+            "value" : "Введіть PIN-код ще раз для підтвердження"
           }
         },
         "vi" : {
@@ -49599,7 +49599,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Розблокуйте програму за допомогою цього коду"
+            "value" : "Розблоковуйте програму за допомогою цього коду"
           }
         },
         "vi" : {
@@ -49729,7 +49729,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Розблокувати за допомогою"
+            "value" : "Спосіб розблокування"
           }
         },
         "vi" : {
@@ -49993,7 +49993,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Поліпшити"
+            "value" : "Покращити"
           }
         },
         "vi" : {
@@ -50263,7 +50263,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Покращте, щоб додати власні поля"
+            "value" : "Щоб додавати власні поля, передплатіть тарифний план"
           }
         },
         "vi" : {
@@ -50396,7 +50396,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Покращуйте тариф, щоб зберегти ці функції"
+            "value" : "Щоб і надалі користуватися цими функціями, передплатіть тарифний план"
           }
         },
         "vi" : {
@@ -50670,7 +50670,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Використовувати псевдоніми електронної пошти"
+            "value" : "Використовуйте псевдоніми електронної пошти"
           }
         },
         "vi" : {
@@ -50693,7 +50693,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Použít systémové heslo při selhání Face ID"
+            "value" : "Použít přístupový kód systému při selhání Face ID"
           }
         },
         "de" : {
@@ -50807,7 +50807,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Використовувати системний код доступу, коли Face ID не спрацював"
+            "value" : "Використовувати системний код доступу в разі збою Face ID"
           }
         },
         "vi" : {
@@ -50830,7 +50830,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Použít systémové heslo při selhání Touch ID"
+            "value" : "Použít přístupový kód systému při selhání Touch ID"
           }
         },
         "de" : {
@@ -50944,7 +50944,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Використовувати системний код доступу, коли Touch ID не спрацював"
+            "value" : "Використовувати системний код доступу в разі збою Touch ID"
           }
         },
         "vi" : {
@@ -51494,143 +51494,6 @@
         }
       }
     },
-    "Vault « %@ » deleted" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховішча « %@ » выдалена"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor « %@ » smazán"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tresor \"%@\" gelöscht"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Η κρύπτη « %@ » διαγράφηκε"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault « %@ » deleted"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La caja fuerte &quot;%@&quot; ha sido eliminada."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La bóveda \"%@\" fue eliminada."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Holvi \"%@\" poistettiin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le coffre-fort « %@ » a été supprimé."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cassaforte « %@ » eliminata"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保管庫« %@ » が削除されました"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "საცავი „%@“ წაიშალა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "금고 « %@ »가 삭제되었습니다."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sejf « %@ » został usunięty"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cofre « %@ » eliminado"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O cofre « %@ » foi excluído"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seiful „%@” a fost șters."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor « %@ » bol odstránený"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valv « %@ » borttaget"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "« %@ » kasası silindi"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховище « %@ » видалено"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Đã xóa kho lưu trữ « %@ »"
-          }
-        }
-      }
-    },
     "Vault created" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -52049,6 +51912,143 @@
         }
       }
     },
+    "Vault « %@ » deleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховішча « %@ » выдалена"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » smazán"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tresor \"%@\" gelöscht"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η κρύπτη « %@ » διαγράφηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault « %@ » deleted"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La caja fuerte &quot;%@&quot; ha sido eliminada."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La bóveda \"%@\" fue eliminada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holvi \"%@\" poistettiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le coffre-fort « %@ » a été supprimé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte « %@ » eliminata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫« %@ » が削除されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავი „%@“ წაიშალა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고 « %@ »가 삭제되었습니다."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sejf « %@ » został usunięty"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre « %@ » eliminado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O cofre « %@ » foi excluído"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seiful „%@” a fost șters."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » bol odstránený"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valv « %@ » borttaget"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » kasası silindi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховище « %@ » видалено"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xóa kho lưu trữ « %@ »"
+          }
+        }
+      }
+    },
     "Vaults can’t contain more than 3 users with a free plan." : {
       "comment" : "Message shown to free user to explain the sharing limits in an alert",
       "extractionState" : "manual"
@@ -52443,7 +52443,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Версія: %@"
+            "value" : "Версія %@"
           }
         },
         "vi" : {
@@ -52573,7 +52573,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вигляд"
+            "value" : "Переглянути"
           }
         },
         "vi" : {
@@ -52833,7 +52833,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Переглянути та змінити деталі для цього псевдоніма на окремій сторінці псевдоніма."
+            "value" : "Перегляньте й редагуйте подробиці цього псевдоніма на окремій сторінці."
           }
         },
         "vi" : {
@@ -53104,7 +53104,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Голосування за нові функції"
+            "value" : "Голосуйте за нові функції"
           }
         },
         "vi" : {
@@ -53638,7 +53638,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Що трапилося?"
+            "value" : "Що сталося?"
           }
         },
         "vi" : {
@@ -53775,7 +53775,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Натисніть Proton Pass для автоматичного заповнення даних, під час входу на сайті або в додатку."
+            "value" : "Під час входу на вебсайті чи в програмі торкніться Proton Pass для автоматичного заповнення даних."
           }
         },
         "vi" : {
@@ -54042,7 +54042,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чи хочете ви прив'язати « %@ » з « %@ »?"
+            "value" : "Хочете прив'язати « %@ » до « %@ »?"
           }
         },
         "vi" : {
@@ -54309,7 +54309,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Так, я хочу вийти"
+            "value" : "Так, вийти з системи"
           }
         },
         "vi" : {
@@ -54837,7 +54837,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ви збираєтеся незворотно видалити повідомлення, ви впевнені?"
+            "value" : "Ви збираєтеся остаточно видалити елемент. Ви впевнені?"
           }
         },
         "vi" : {
@@ -54967,7 +54967,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "На цей час у вас немає елементів запису входу"
+            "value" : "Наразі у вас немає елементів входу"
           }
         },
         "vi" : {
@@ -55314,7 +55314,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sono presenti modifiche non salvate. Vuoi davvero annullarle?"
+            "value" : "Sono presenti modifiche non salvate. Sei sicuro di volerle annullare?"
           }
         },
         "ja" : {
