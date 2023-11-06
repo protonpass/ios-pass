@@ -92,7 +92,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedDataContainer.appData) private var appData
+    @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.syncEventLoop) private(set) var syncEventLoop
 
@@ -166,7 +166,7 @@ extension CredentialsViewModel {
             defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             self.router.display(element: .globalLoading(shouldShow: true))
             do {
-                let symmetricKey = try appData.getSymmetricKey()
+                let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
                 self.logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await self.getItemTask(item: item).value
                 let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
@@ -354,7 +354,7 @@ private extension CredentialsViewModel {
             guard let self else {
                 throw PassError.CredentialProviderFailureReason.generic
             }
-            let symmetricKey = try appData.getSymmetricKey()
+            let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
             vaults = try await shareRepository.getVaults()
             let encryptedItems = try await itemRepository.getActiveLogInItems()
