@@ -399,7 +399,6 @@
 		5B3AD4322AD019B800E1A07D /* ResetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4312AD019B800E1A07D /* ResetFactory.swift */; };
 		5B3AD4342AD44D3400E1A07D /* UserData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */; };
 		5B3AD4352AD44DAC00E1A07D /* UserData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */; };
-		5B415E4D2ADECB3A00D9C8CC /* UpdateUserAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B415E4C2ADECB3A00D9C8CC /* UpdateUserAddresses.swift */; };
 		5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */; };
 		5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */; };
 		5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */; };
@@ -811,7 +810,6 @@
 		5B3AD4312AD019B800E1A07D /* ResetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetFactory.swift; sourceTree = "<group>"; };
 		5B3AD4332AD44D3400E1A07D /* UserData+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+Extensions.swift"; sourceTree = "<group>"; };
 		5B3E2FFF2AAF01A30002289A /* TestPlans */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestPlans; sourceTree = "<group>"; };
-		5B415E4C2ADECB3A00D9C8CC /* UpdateUserAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAddresses.swift; sourceTree = "<group>"; };
 		5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LABiometryType+Extensions.swift"; sourceTree = "<group>"; };
 		5B503FD32A4C7ED900E6681C /* BugReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewModel.swift; sourceTree = "<group>"; };
 		5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1320,14 +1318,6 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		35711D5B2A7A79C8003B6845 /* User */ = {
-			isa = PBXGroup;
-			children = (
-				5B415E4C2ADECB3A00D9C8CC /* UpdateUserAddresses.swift */,
-			);
-			path = User;
-			sourceTree = "<group>";
-		};
 		3572E5262994043C00775FAC /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1744,7 +1734,6 @@
 			isa = PBXGroup;
 			children = (
 				5B14539B2A6963B00048B022 /* Sharing+Invitations */,
-				35711D5B2A7A79C8003B6845 /* User */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -2678,7 +2667,6 @@
 				35AC9A652A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */,
 				5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */,
-				5B415E4D2ADECB3A00D9C8CC /* UpdateUserAddresses.swift in Sources */,
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
 				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,

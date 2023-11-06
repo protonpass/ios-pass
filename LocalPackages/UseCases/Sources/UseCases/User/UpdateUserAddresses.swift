@@ -20,34 +20,35 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import ProtonCoreAuthentication
+import Client
+
+@preconcurrency import ProtonCoreAuthentication
 import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
-protocol UpdateUserAddressesUseCase: Sendable {
+public protocol UpdateUserAddressesUseCase: Sendable {
     func execute() async throws -> [Address]?
 }
 
-extension UpdateUserAddressesUseCase {
+public extension UpdateUserAddressesUseCase {
     func callAsFunction() async throws -> [Address]? {
         try await execute()
     }
 }
 
-final class UpdateUserAddresses: UpdateUserAddressesUseCase {
+public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
+    private let userDataProvider: UserDataProvider
     private let authenticator: AuthenticatorInterface
-    private let sharedDataContainer: SharedDataContainer
 
-    init(sharedDataContainer: SharedDataContainer,
-         authenticator: AuthenticatorInterface) {
-        self.sharedDataContainer = sharedDataContainer
+    public init(userDataProvider: UserDataProvider,
+                authenticator: AuthenticatorInterface) {
+        self.userDataProvider = userDataProvider
         self.authenticator = authenticator
     }
 
-    func execute() async throws -> [Address]? {
-        let newAppData = SharedDataContainer.shared.appData()
-        guard let userdata = newAppData.getUserData() else {
+    public func execute() async throws -> [Address]? {
+        guard let userdata = userDataProvider.getUserData() else {
             return nil
         }
         let newAddresses = try await authenticator.getAddresses(userdata.getCredential)
@@ -59,9 +60,7 @@ final class UpdateUserAddresses: UpdateUserAddressesUseCase {
                                    addresses: newAddresses,
                                    scopes: userdata.scopes)
 
-        newAppData.setUserData(newUserData)
-
-        SharedDataContainer.shared.appData.register { newAppData }
+        userDataProvider.setUserData(newUserData)
 
         return newAddresses
     }
