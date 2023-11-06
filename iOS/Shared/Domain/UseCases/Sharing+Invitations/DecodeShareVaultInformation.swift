@@ -53,7 +53,7 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
     }
 
     func execute(with userInvite: UserInvite) async throws -> VaultProtobuf {
-        let userData = try userDataProvider.unwrap()
+        let userData = try userDataProvider.getUnwrappedUserData()
         guard let vaultData = userInvite.vaultData,
               let intermediateVaultKey = userInvite.keys
               .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),

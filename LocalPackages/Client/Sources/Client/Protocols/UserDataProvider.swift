@@ -36,7 +36,7 @@ public extension UserDataProvider {
         return userData.user.ID
     }
 
-    func unwrap() throws -> UserData {
+    func getUnwrappedUserData() throws -> UserData {
         guard let userData = getUserData() else {
             throw PassError.noUserData
         }
