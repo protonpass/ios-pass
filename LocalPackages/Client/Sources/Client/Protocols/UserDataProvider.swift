@@ -22,6 +22,7 @@
 import Entities
 import ProtonCoreLogin
 
+// sourcery: AutoMockable
 public protocol UserDataProvider: Sendable {
     func getUserData() -> UserData?
     func setUserData(_ userData: UserData?)
@@ -30,7 +31,6 @@ public protocol UserDataProvider: Sendable {
 public extension UserDataProvider {
     func getUserId() throws -> String {
         guard let userData = getUserData() else {
-            assertionFailure("Failed to get userId for nil userData")
             throw PassError.noUserData
         }
         return userData.user.ID
@@ -38,7 +38,6 @@ public extension UserDataProvider {
 
     func unwrap() throws -> UserData {
         guard let userData = getUserData() else {
-            assertionFailure("Failed to unwrap nil userData")
             throw PassError.noUserData
         }
         return userData

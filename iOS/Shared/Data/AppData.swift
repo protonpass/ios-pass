@@ -52,7 +52,11 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
     }
 
     @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
-    private var unauthSessionCredentials: AuthCredential?
+    private var unauthSessionCredentials: AuthCredential? {
+        didSet {
+            cachedUnauthSessionCredentials = nil
+        }
+    }
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String? {
@@ -61,9 +65,9 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
         }
     }
 
-    /// Reading from keychain is expensive so we cache `userData` & `symmetricKey`
-    /// so we always serve cached results until values are updated in keychain
-    private var cachedUserData: UserData??
+    /// Reading from keychain is expensive so we cache & serve cached results until values are updated in keychain
+    private var cachedUserData: UserData?
+    private var cachedUnauthSessionCredentials: AuthCredential?
     private var cachedSymmetricKey: SymmetricKey?
 
     init() {}
@@ -90,7 +94,7 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
             return cachedUserData
         }
         cachedUserData = userData
-        return userData
+        return cachedUserData
     }
 
     func setUnauthCredential(_ credential: AuthCredential?) {
@@ -98,7 +102,11 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
     }
 
     func getUnauthCredential() -> AuthCredential? {
-        unauthSessionCredentials
+        if let cachedUnauthSessionCredentials {
+            return cachedUnauthSessionCredentials
+        }
+        cachedUnauthSessionCredentials = unauthSessionCredentials
+        return cachedUnauthSessionCredentials
     }
 }
 
