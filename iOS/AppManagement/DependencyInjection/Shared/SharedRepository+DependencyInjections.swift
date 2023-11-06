@@ -76,6 +76,10 @@ private extension SharedRepositoryContainer {
     var symmetricKeyProvider: SymmetricKeyProvider {
         SharedDataContainer.shared.symmetricKeyProvider()
     }
+
+    var userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider {
+        SharedDataContainer.shared.appData()
+    }
 }
 
 // MARK: Repositories
@@ -92,8 +96,7 @@ extension SharedRepositoryContainer {
             ShareKeyRepository(localDatasource: LocalShareKeyDatasource(container: self.container),
                                remoteDatasource: RemoteShareKeyDatasource(apiService: self.apiService),
                                logManager: self.logManager,
-                               userDataProvider: self.userDataProvider,
-                               symmetricKeyProvider: self.symmetricKeyProvider)
+                               userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider)
         }
     }
 
@@ -116,8 +119,7 @@ extension SharedRepositoryContainer {
 
     var itemRepository: Factory<ItemRepositoryProtocol> {
         self {
-            ItemRepository(userDataProvider: SharedDataContainer.shared.appData(),
-                           symmetricKeyProvider: self.symmetricKeyProvider,
+            ItemRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
                            localDatasource: LocalItemDatasource(container: self.container),
                            remoteDatasource: RemoteItemRevisionDatasource(apiService: self.apiService),
                            shareEventIDRepository: self.shareEventIDRepository(),
@@ -136,8 +138,7 @@ extension SharedRepositoryContainer {
     }
 
     var shareRepository: Factory<ShareRepositoryProtocol> {
-        self { ShareRepository(symmetricKeyProvider: self.symmetricKeyProvider,
-                               userDataProvider: self.userDataProvider,
+        self { ShareRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
                                localDatasource: LocalShareDatasource(container: self.container),
                                remoteDatasouce: RemoteShareDatasource(apiService: self.apiService),
                                passKeyManager: self.passKeyManager(),
