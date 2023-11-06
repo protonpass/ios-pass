@@ -122,23 +122,20 @@ public extension ItemRepositoryProtocol {
 
 // swiftlint: disable discouraged_optional_self
 public final class ItemRepository: ItemRepositoryProtocol {
-    private let userDataProvider: UserDataProvider
-    private let symmetricKeyProvider: SymmetricKeyProvider
+    private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
     private let localDatasource: LocalItemDatasourceProtocol
     private let remoteDatasource: RemoteItemRevisionDatasourceProtocol
     private let shareEventIDRepository: ShareEventIDRepositoryProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let logger: Logger
 
-    public init(userDataProvider: UserDataProvider,
-                symmetricKeyProvider: SymmetricKeyProvider,
+    public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
                 localDatasource: LocalItemDatasourceProtocol,
                 remoteDatasource: RemoteItemRevisionDatasourceProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManagerProtocol) {
-        self.userDataProvider = userDataProvider
-        self.symmetricKeyProvider = symmetricKeyProvider
+        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.shareEventIDRepository = shareEventIDRepository
@@ -229,8 +226,9 @@ public extension ItemRepository {
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
         logger.trace("Refreshing last event ID for share \(shareId)")
+        let userId = try userDataSymmetricKeyProvider.getUserId()
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
-                                                        userId: userDataProvider.getUserId(),
+                                                        userId: userId,
                                                         shareId: shareId)
         logger.trace("Refreshed last event ID for share \(shareId)")
     }
@@ -469,7 +467,7 @@ public extension ItemRepository {
 
 private extension ItemRepository {
     func getSymmetricKey() throws -> SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
+        try userDataSymmetricKeyProvider.getSymmetricKey()
     }
 
     func symmetricallyEncrypt(itemRevision: ItemRevision,
