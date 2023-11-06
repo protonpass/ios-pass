@@ -62,7 +62,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let appData = resolve(\SharedDataContainer.appData)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Self-intialized properties
@@ -309,7 +309,7 @@ private extension SearchViewModel {
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
-        try appData.getSymmetricKey()
+        try symmetricKeyProvider.getSymmetricKey()
     }
 }
 
