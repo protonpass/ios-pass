@@ -78,7 +78,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
                                                                                   inMemory: true))
         thresholdProvider = TelemetryThresholdProviderMock()
         userDataProviderMock = UserDataProviderMock()
-        userDataProviderMock.stubbedGetUserDataResult = .test
+        userDataProviderMock.stubbedGetUserDataResult = .preview
     }
 
     override func tearDown() {

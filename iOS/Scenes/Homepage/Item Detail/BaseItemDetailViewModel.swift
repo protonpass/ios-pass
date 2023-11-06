@@ -41,7 +41,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    let appData = resolve(\SharedDataContainer.appData)
+    let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
 
     let upgradeChecker: UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
@@ -226,7 +226,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
-        try appData.getSymmetricKey()
+        try symmetricKeyProvider.getSymmetricKey()
     }
 }
 

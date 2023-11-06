@@ -132,7 +132,7 @@ extension SharedRepositoryContainer {
         self {
             AccessRepository(localDatasource: LocalAccessDatasource(container: self.container),
                              remoteDatasource: RemoteAccessDatasource(apiService: self.apiService),
-                             userDataProvider: SharedDataContainer.shared.appData(),
+                             userDataProvider: self.userDataProvider,
                              logManager: self.logManager)
         }
     }
@@ -169,7 +169,7 @@ extension SharedRepositoryContainer {
                 logManager: self.logManager,
                 scheduler: TelemetryScheduler(currentDateProvider: self.currentDateProvider,
                                               thresholdProvider: self.preferences),
-                userDataProvider: SharedDataContainer.shared.appData())
+                userDataProvider: self.userDataProvider)
         }
     }
 
