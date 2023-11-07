@@ -64,11 +64,11 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
 
 private extension CustomFieldAdditionCoordinator {
     func makeAlert(for type: CustomFieldType) -> UIAlertController {
-        let alert = UIAlertController(title: #localized("Custom field title"),
-                                      message: #localized("Enter a title for your custom field"),
+        let alert = UIAlertController(title: #localized("Enter a field name"),
+                                      message: type.alertMessage,
                                       preferredStyle: .alert)
         alert.addTextField { textField in
-            textField.placeholder = #localized("Title of the custom field")
+            textField.placeholder = type.placeholder
             let action = UIAction { _ in
                 alert.actions.first?.isEnabled = textField.text?.isEmpty == false
             }
@@ -86,5 +86,29 @@ private extension CustomFieldAdditionCoordinator {
         let cancelAction = UIAlertAction(title: #localized("Cancel"), style: .cancel)
         alert.addAction(cancelAction)
         return alert
+    }
+}
+
+private extension CustomFieldType {
+    var alertMessage: String {
+        switch self {
+        case .text:
+            #localized("Text custom field")
+        case .totp:
+            #localized("2FA secret (TOTP) custom field")
+        case .hidden:
+            #localized("Hidden custom field")
+        }
+    }
+
+    var placeholder: String {
+        switch self {
+        case .text:
+            #localized("E.g., User ID, Acct number")
+        case .totp:
+            #localized("2FA secret (TOTP)")
+        case .hidden:
+            #localized("E.g., Recovery key, PIN")
+        }
     }
 }
