@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Core
 import ProtonCoreFeatureFlags
 
@@ -36,20 +37,21 @@ public extension GetFeatureFlagStatusUseCase {
 
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    private let userInformations: UserInformationProtocol
+    private let userDataProvider: UserDataProvider
     private let logger: Logger
 
     public init(repository: FeatureFlagsRepositoryProtocol,
-                userInfos: UserInformationProtocol,
+                userDataProvider: UserDataProvider,
                 logManager: LogManagerProtocol) {
         featureFlagsRepository = repository
-        userInformations = userInfos
+        self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)
     }
 
     public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
         do {
-            logger.trace("Getting feature flags for user \(userInformations.userId)")
+            let userId = try userDataProvider.getUserId()
+            logger.trace("Getting feature flags for user \(userId)")
             let flags = try await featureFlagsRepository.getFlags()
             logger.trace("Found local feature flags for user")
             return flags.isFlagEnabled(for: flag)

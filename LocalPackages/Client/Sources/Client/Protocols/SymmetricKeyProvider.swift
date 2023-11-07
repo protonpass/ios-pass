@@ -1,6 +1,6 @@
 //
-// UserDataProvider.swift
-// Proton Pass - Created on 01/06/2023.
+// SymmetricKeyProvider.swift
+// Proton Pass - Created on 03/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,11 +17,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import ProtonCoreLogin
+import CryptoKit
 
-protocol UserDataProvider {
-    var userData: UserData? { get }
+public protocol SymmetricKeyProvider: Sendable {
+    func getSymmetricKey() throws -> SymmetricKey
+    func removeSymmetricKey()
 }
-
-extension AppData: UserDataProvider {}
