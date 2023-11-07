@@ -22331,6 +22331,18 @@
         }
       }
     },
+    "Failed to authenticate" : {
+      "comment" : "Users failed to authenticate via Face ID/Touch ID or PIN. We log them out and show an alert with this message.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to authenticate"
+          }
+        }
+      }
+    },
     "Feature request" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -37095,6 +37107,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vui lòng giữ úng dụng mở."
+          }
+        }
+      }
+    },
+    "Please log in again" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please log in again"
           }
         }
       }
@@ -56394,6 +56416,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
+          }
+        }
+      }
+    },
+    "Your session is expired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your session is expired"
           }
         }
       }
