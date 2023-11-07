@@ -604,3 +604,5 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
         context.completeExtensionConfigurationRequest()
     }
 }
+
+// swiftlint:enable cyclomatic_complexity
