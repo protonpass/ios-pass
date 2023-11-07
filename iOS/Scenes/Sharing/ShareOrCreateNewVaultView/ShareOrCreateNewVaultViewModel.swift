@@ -42,14 +42,17 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     func createNewVault() {
         Task { [weak self] in
-            guard let self,
-                  let reachedLimit = try? await reachedVaultLimit() else {
+            guard let self else {
                 return
             }
-            if reachedLimit {
-                router.present(for: .upselling)
-            } else {
-                complete(with: .new(.defaultNewSharedVault, itemContent))
+            do {
+                if try await reachedVaultLimit() {
+                    router.present(for: .upselling)
+                } else {
+                    complete(with: .new(.defaultNewSharedVault, itemContent))
+                }
+            } catch {
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
