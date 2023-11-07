@@ -74,8 +74,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        localDatasource = LocalTelemetryEventDatasource(container: .Builder.build(name: kProtonPassContainerName,
-                                                                                  inMemory: true))
+        localDatasource = LocalTelemetryEventDatasource(databaseService: DatabaseService(inMemory: true))
         thresholdProvider = TelemetryThresholdProviderMock()
         userDataProviderMock = UserDataProviderMock()
         userDataProviderMock.stubbedGetUserDataResult = .preview
