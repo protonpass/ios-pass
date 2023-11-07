@@ -55,11 +55,6 @@ final class APIManager {
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
-    // Logout issue mitigation
-    @AppStorage("lastSuccessfulRefreshTimestamp", store: kSharedUserDefaults)
-    private var lastSuccessfulRefreshTimestamp: TimeInterval?
-    private var ignoredRefreshFailure = false
-
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: APIManagerDelegate?
@@ -117,13 +112,6 @@ final class APIManager {
     func sessionIsAvailable(authCredential: AuthCredential, scopes: Scopes) {
         apiService.setSessionUID(uid: authCredential.sessionID)
         authHelper.onSessionObtaining(credential: Credential(authCredential, scopes: scopes))
-    }
-
-    // Should only be used for tests
-    func setLastSuccessfulRefreshTimestamp(_ date: Date) {
-        #if DEBUG
-        lastSuccessfulRefreshTimestamp = date.timeIntervalSince1970
-        #endif
     }
 
     func clearCredentials() {
@@ -185,14 +173,6 @@ final class APIManager {
         appData.setUserData(updatedUserData)
         appData.setUnauthCredential(nil)
     }
-
-    /// Ignore when last successful refresh happened less than 24h
-    private func shouldIgnoreFailure() -> Bool {
-        guard let lastSuccessfulRefreshTimestamp, !ignoredRefreshFailure else { return false }
-        let lastSuccessfulRefreshDate = Date(timeIntervalSince1970: lastSuccessfulRefreshTimestamp)
-        let days = Calendar.current.numberOfDaysBetween(lastSuccessfulRefreshDate, and: .now)
-        return days == 0
-    }
 }
 
 // MARK: - AuthHelperDelegate
@@ -200,15 +180,9 @@ final class APIManager {
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
         if isAuthenticatedSession {
-            if shouldIgnoreFailure() {
-                logger.debug("Authenticated session is invalidated. Ignore failure.")
-                ignoredRefreshFailure = true
-                return
-            } else {
-                logger.info("Authenticated session is invalidated. Logging out.")
-                appData.setUserData(nil)
-                delegate?.appLoggedOutBecauseSessionWasInvalidated()
-            }
+            logger.info("Authenticated session is invalidated. Logging out.")
+            appData.setUserData(nil)
+            delegate?.appLoggedOutBecauseSessionWasInvalidated()
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
@@ -220,8 +194,6 @@ extension APIManager: AuthHelperDelegate {
         logger.info("Session credentials are updated")
         if let userData = appData.getUserData() {
             update(userData: userData, authCredential: authCredential)
-            lastSuccessfulRefreshTimestamp = Date.now.timeIntervalSince1970
-            ignoredRefreshFailure = false
         } else {
             appData.setUnauthCredential(authCredential)
         }
