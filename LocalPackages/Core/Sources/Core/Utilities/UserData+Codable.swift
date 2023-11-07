@@ -101,15 +101,15 @@ extension AuthCredential: Codable {
 
 public extension UserData {
     static var preview: UserData {
-        let credential = AuthCredential(sessionID: "",
-                                        accessToken: "",
-                                        refreshToken: "",
-                                        userName: "",
-                                        userID: "",
+        let credential = AuthCredential(sessionID: .random(),
+                                        accessToken: .random(),
+                                        refreshToken: .random(),
+                                        userName: .random(),
+                                        userID: .random(),
                                         privateKey: nil,
                                         passwordKeySalt: nil)
 
-        let user = User(ID: "",
+        let user = User(ID: .random(),
                         name: nil,
                         usedSpace: 0,
                         currency: "",

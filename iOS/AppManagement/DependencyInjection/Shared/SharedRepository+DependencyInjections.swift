@@ -69,12 +69,16 @@ private extension SharedRepositoryContainer {
         SharedDataContainer.shared.container()
     }
 
-    var symmetricKey: SymmetricKey {
-        SharedDataContainer.shared.symmetricKey()
+    var userDataProvider: UserDataProvider {
+        SharedDataContainer.shared.userDataProvider()
     }
 
-    var userData: UserData {
-        SharedDataContainer.shared.userData()
+    var symmetricKeyProvider: SymmetricKeyProvider {
+        SharedDataContainer.shared.symmetricKeyProvider()
+    }
+
+    var userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider {
+        SharedDataContainer.shared.appData()
     }
 }
 
@@ -92,8 +96,7 @@ extension SharedRepositoryContainer {
             ShareKeyRepository(localDatasource: LocalShareKeyDatasource(container: self.container),
                                remoteDatasource: RemoteShareKeyDatasource(apiService: self.apiService),
                                logManager: self.logManager,
-                               symmetricKey: self.symmetricKey,
-                               userData: self.userData)
+                               userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider)
         }
     }
 
@@ -110,14 +113,13 @@ extension SharedRepositoryContainer {
             PassKeyManager(shareKeyRepository: self.shareKeyRepository(),
                            itemKeyDatasource: RemoteItemKeyDatasource(apiService: self.apiService),
                            logManager: self.logManager,
-                           symmetricKey: self.symmetricKey)
+                           symmetricKeyProvider: self.symmetricKeyProvider)
         }
     }
 
     var itemRepository: Factory<ItemRepositoryProtocol> {
         self {
-            ItemRepository(userData: self.userData,
-                           symmetricKey: self.symmetricKey,
+            ItemRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
                            localDatasource: LocalItemDatasource(container: self.container),
                            remoteDatasource: RemoteItemRevisionDatasource(apiService: self.apiService),
                            shareEventIDRepository: self.shareEventIDRepository(),
@@ -130,14 +132,13 @@ extension SharedRepositoryContainer {
         self {
             AccessRepository(localDatasource: LocalAccessDatasource(container: self.container),
                              remoteDatasource: RemoteAccessDatasource(apiService: self.apiService),
-                             userId: self.userData.user.ID,
+                             userDataProvider: self.userDataProvider,
                              logManager: self.logManager)
         }
     }
 
     var shareRepository: Factory<ShareRepositoryProtocol> {
-        self { ShareRepository(symmetricKey: self.symmetricKey,
-                               userData: self.userData,
+        self { ShareRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
                                localDatasource: LocalShareDatasource(container: self.container),
                                remoteDatasouce: RemoteShareDatasource(apiService: self.apiService),
                                passKeyManager: self.passKeyManager(),
@@ -168,16 +169,17 @@ extension SharedRepositoryContainer {
                 logManager: self.logManager,
                 scheduler: TelemetryScheduler(currentDateProvider: self.currentDateProvider,
                                               thresholdProvider: self.preferences),
-                userId: self.userData.user.ID)
+                userDataProvider: self.userDataProvider)
         }
     }
 
     var featureFlagsRepository: Factory<FeatureFlagsRepositoryProtocol> {
         self {
-            FeatureFlagsRepository(configuration: FeatureFlagsConfiguration(userId: self.userData.user.ID,
-                                                                            currentBUFlags: FeatureFlagType.self),
-                                   localDatasource: LocalFeatureFlagsDatasource(container: self.container),
-                                   remoteDatasource: DefaultRemoteDatasource(apiService: self.apiService))
+            FeatureFlagsRepository(configuration: FeatureFlagsConfiguration(userId: SharedDataContainer.shared
+                                       .appData().getUserData()?.user.ID ?? "",
+                currentBUFlags: FeatureFlagType.self),
+            localDatasource: LocalFeatureFlagsDatasource(container: self.container),
+            remoteDatasource: DefaultRemoteDatasource(apiService: self.apiService))
         }
     }
 
@@ -185,7 +187,7 @@ extension SharedRepositoryContainer {
         self { FavIconRepository(datasource: RemoteFavIconDatasource(apiService: self.apiService),
                                  containerUrl: URL.favIconsContainerURL(),
                                  settings: self.preferences,
-                                 symmetricKey: self.symmetricKey) }
+                                 symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 
     var localSearchEntryDatasource: Factory<LocalSearchEntryDatasourceProtocol> {
