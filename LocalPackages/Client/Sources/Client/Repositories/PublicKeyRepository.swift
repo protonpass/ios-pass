@@ -63,10 +63,10 @@ public struct PublicKeyRepository: PublicKeyRepositoryProtocol {
         return localPublicKeys
     }
 
-    public init(container: NSPersistentContainer,
+    public init(databaseService: DatabaseServiceProtocol,
                 apiService: APIService,
                 logManager: LogManagerProtocol) {
-        localPublicKeyDatasource = LocalPublicKeyDatasource(container: container)
+        localPublicKeyDatasource = LocalPublicKeyDatasource(databaseService: databaseService)
         remotePublicKeyDatasource = RemotePublicKeyDatasource(apiService: apiService)
         logger = .init(manager: logManager)
     }
