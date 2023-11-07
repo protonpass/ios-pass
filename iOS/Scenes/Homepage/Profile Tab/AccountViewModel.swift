@@ -36,9 +36,11 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let revokeCurrentSession = resolve(\UseCasesContainer.revokeCurrentSession)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
+    @Published private(set) var isLoading = false
 
     weak var delegate: AccountViewModelDelegate?
 
@@ -102,7 +104,13 @@ extension AccountViewModel {
     }
 
     func signOut() {
-        delegate?.accountViewModelWantsToSignOut()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            isLoading = true
+            await revokeCurrentSession()
+            isLoading = false
+            delegate?.accountViewModelWantsToSignOut()
+        }
     }
 
     func deleteAccount() {
