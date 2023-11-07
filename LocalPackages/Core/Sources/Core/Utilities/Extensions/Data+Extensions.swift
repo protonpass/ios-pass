@@ -25,7 +25,7 @@ public extension Data {
         var data = Data(count: byteCount)
         _ = try data.withUnsafeMutableBytes { byte in
             guard let baseAddress = byte.baseAddress else {
-                throw PPCoreError.biometryTypeNotInitialized
+                throw PPCoreError.failedToRandomizeData
             }
             return SecRandomCopyBytes(kSecRandomDefault, byteCount, baseAddress)
         }

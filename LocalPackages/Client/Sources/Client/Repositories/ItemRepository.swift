@@ -122,52 +122,24 @@ public extension ItemRepositoryProtocol {
 
 // swiftlint: disable discouraged_optional_self
 public final class ItemRepository: ItemRepositoryProtocol {
-    private let userData: UserData
-    private let symmetricKey: SymmetricKey
+    private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
     private let localDatasource: LocalItemDatasourceProtocol
     private let remoteDatasource: RemoteItemRevisionDatasourceProtocol
     private let shareEventIDRepository: ShareEventIDRepositoryProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let logger: Logger
 
-    public init(userData: UserData,
-                symmetricKey: SymmetricKey,
+    public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
                 localDatasource: LocalItemDatasourceProtocol,
                 remoteDatasource: RemoteItemRevisionDatasourceProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManagerProtocol) {
-        self.userData = userData
-        self.symmetricKey = symmetricKey
+        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
-        logger = .init(manager: logManager)
-    }
-
-    public init(userData: UserData,
-                symmetricKey: SymmetricKey,
-                container: NSPersistentContainer,
-                apiService: APIService,
-                logManager: LogManagerProtocol) {
-        self.userData = userData
-        self.symmetricKey = symmetricKey
-        localDatasource = LocalItemDatasource(container: container)
-        remoteDatasource = RemoteItemRevisionDatasource(apiService: apiService)
-        shareEventIDRepository = ShareEventIDRepository(container: container,
-                                                        apiService: apiService,
-                                                        logManager: logManager)
-        let shareKeyRepository = ShareKeyRepository(container: container,
-                                                    apiService: apiService,
-                                                    logManager: logManager,
-                                                    symmetricKey: symmetricKey,
-                                                    userData: userData)
-        let itemKeyDatasource = RemoteItemKeyDatasource(apiService: apiService)
-        passKeyManager = PassKeyManager(shareKeyRepository: shareKeyRepository,
-                                        itemKeyDatasource: itemKeyDatasource,
-                                        logManager: logManager,
-                                        symmetricKey: symmetricKey)
         logger = .init(manager: logManager)
     }
 
@@ -222,7 +194,7 @@ public extension ItemRepository {
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
         let encryptedItem = try await getItem(shareId: shareId, itemId: itemId)
-        return try encryptedItem?.getItemContent(symmetricKey: symmetricKey)
+        return try encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
     }
 
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
@@ -254,8 +226,9 @@ public extension ItemRepository {
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
 
         logger.trace("Refreshing last event ID for share \(shareId)")
+        let userId = try userDataSymmetricKeyProvider.getUserId()
         try await shareEventIDRepository.getLastEventId(forceRefresh: true,
-                                                        userId: userData.user.ID,
+                                                        userId: userId,
                                                         shareId: shareId)
         logger.trace("Refreshed last event ID for share \(shareId)")
     }
@@ -428,7 +401,7 @@ public extension ItemRepository {
             throw PPClientError.itemNotFound(item: item)
         }
 
-        let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: symmetricKey)
+        let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: getSymmetricKey())
         let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
         let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
                                           destinationShareId: toShareId,
@@ -450,7 +423,7 @@ public extension ItemRepository {
         }
 
         let oldItemsContent = try oldEncryptedItems
-            .map { try $0.getItemContent(symmetricKey: symmetricKey) }
+            .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
         let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
 
         let request = try MoveItemsRequest(itemsContent: oldItemsContent,
@@ -493,12 +466,16 @@ public extension ItemRepository {
 // MARK: - Private util functions
 
 private extension ItemRepository {
+    func getSymmetricKey() throws -> SymmetricKey {
+        try userDataSymmetricKeyProvider.getSymmetricKey()
+    }
+
     func symmetricallyEncrypt(itemRevision: ItemRevision,
                               shareId: String) async throws -> SymmetricallyEncryptedItem {
         let vaultKey = try await passKeyManager.getShareKey(shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
         let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey)
-        let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
+        let encryptedContent = try contentProtobuf.encrypt(symmetricKey: getSymmetricKey())
 
         let isLogInItem = if case .login = contentProtobuf.contentData {
             true
@@ -528,7 +505,7 @@ public extension ItemRepository {
         let loginItemsWithTotp =
             try items
                 .filter(\.isLogInItem)
-                .map { try $0.getItemContent(symmetricKey: symmetricKey) }
+                .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
                 .filter { item in
                     switch item.contentData {
                     case let .login(loginData):
