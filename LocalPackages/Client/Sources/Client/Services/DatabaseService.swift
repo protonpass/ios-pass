@@ -30,16 +30,20 @@ public protocol DatabaseServiceProtocol {
 
 public final class DatabaseService: DatabaseServiceProtocol {
     public private(set) var container: NSPersistentContainer!
-    private let logger: Logger
+    private let logger: Logger?
 
-    public init(logManager: LogManagerProtocol) {
-        logger = .init(manager: logManager)
-        container = build(name: kProtonPassContainerName, inMemory: false)
+    public init(logManager: LogManagerProtocol? = nil, inMemory: Bool = false) {
+        if let logManager {
+            logger = .init(manager: logManager)
+        } else {
+            logger = nil
+        }
+        container = build(name: kProtonPassContainerName, inMemory: inMemory)
     }
 
     public func resetContainer() {
         do {
-            logger.info("Recreating Store")
+            logger?.info("Recreating Store")
             // Delete existing persistent stores
             let storeContainer = container.persistentStoreCoordinator
             for store in storeContainer.persistentStores {
@@ -50,9 +54,9 @@ public final class DatabaseService: DatabaseServiceProtocol {
 
             // Re-create persistent container
             container = build(name: kProtonPassContainerName, inMemory: false)
-            logger.info("Nuked local data")
+            logger?.info("Nuked local data")
         } catch {
-            logger.error(message: "Failed to reset database container", error: error)
+            logger?.error(message: "Failed to reset database container", error: error)
         }
     }
 }
@@ -82,29 +86,5 @@ private extension DatabaseServiceProtocol {
             }
         }
         return container
-    }
-}
-
-private extension URL {
-    /// Returns a URL for the given app group and database pointing to the sqlite database.
-    static func storeURL(for appGroup: String, databaseName: String) -> URL {
-        guard let fileContainer =
-            FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
-            fatalError("Shared file container could not be created.")
-        }
-
-        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
-    }
-}
-
-private extension NSPersistentContainer {
-    static func model(for name: String) -> NSManagedObjectModel {
-        guard let url = Bundle.module.url(forResource: name, withExtension: "momd")
-        else { fatalError("Could not get URL for model: \(name)") }
-
-        guard let model = NSManagedObjectModel(contentsOf: url)
-        else { fatalError("Could not get model for: \(url)") }
-
-        return model
     }
 }
