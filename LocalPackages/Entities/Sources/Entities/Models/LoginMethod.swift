@@ -1,7 +1,6 @@
 //
-//
-// ResetFactory.swift
-// Proton Pass - Created on 06/10/2023.
+// LoginMethod.swift
+// Proton Pass - Created on 07/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,24 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Factory
+import Foundation
 
-protocol ResetFactoryUseCase: Sendable {
-    func execute()
-}
+public actor LoginMethodFlow {
+    private var manualLogIn = false
 
-extension ResetFactoryUseCase {
-    func callAsFunction() {
-        execute()
+    public init() {}
+
+    public func isManualLogIn() -> Bool {
+        manualLogIn
     }
-}
 
-final class ResetFactory: ResetFactoryUseCase {
-    init() {}
-
-    func execute() {
-        SharedViewContainer.shared.reset()
+    public func setLogInFlow(newState: Bool) {
+        manualLogIn = newState
     }
 }

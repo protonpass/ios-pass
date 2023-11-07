@@ -171,6 +171,11 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
         }
         try reachability?.startNotifier()
     }
+
+    public func reset() {
+        stop()
+        additionalTasks.removeAll()
+    }
 }
 
 // MARK: - Public APIs

@@ -102,7 +102,7 @@ private extension ItemsTabViewModel {
         // Show the progress if after 5 seconds after logging in and items are not yet loaded
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
             guard let self else { return }
-            if manualLogIn,
+            if manualLogIn.isManualLogIn(),
                case .loading = vaultsManager.state {
                 shouldShowSyncProgress = true
             }

@@ -47,10 +47,6 @@ final class SharedToolingContainer: SharedContainer, AutoRegistering {
         }
     }
 
-    func resetCache() {
-        manager.reset(scope: .cached)
-    }
-
     func autoRegister() {
         manager.defaultScope = .singleton
     }
