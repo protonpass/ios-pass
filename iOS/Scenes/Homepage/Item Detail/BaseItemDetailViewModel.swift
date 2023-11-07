@@ -41,7 +41,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
+    let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
 
     let upgradeChecker: UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
@@ -170,7 +170,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.trace("Trashing \(self.itemContent.debugInformation)")
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
                 try await self.itemRepository.trashItems([encryptedItem])
                 self.delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 self.logger.info("Trashed \(item.debugInformation)")
@@ -189,7 +189,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.trace("Restoring \(self.itemContent.debugInformation)")
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
                 try await self.itemRepository.untrashItems([encryptedItem])
                 self.router.display(element: .successMessage(item.type.restoreMessage,
                                                              config: .dismissAndRefresh(with: .update(item.type))))
@@ -209,7 +209,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 self.router.display(element: .successMessage(item.type.deleteMessage,
                                                              config: .dismissAndRefresh(with: .delete(item.type))))
@@ -223,6 +223,10 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+
+    func getSymmetricKey() throws -> SymmetricKey {
+        try symmetricKeyProvider.getSymmetricKey()
     }
 }
 

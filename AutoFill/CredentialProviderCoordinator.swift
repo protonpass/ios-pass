@@ -41,7 +41,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let appData = resolve(\SharedDataContainer.appData)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -91,7 +91,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let userData = appData.userData else {
+        guard let userData = userDataProvider.getUserData() else {
             showNotLoggedInView()
             return
         }
@@ -108,7 +108,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func configureExtension() {
-        guard appData.userData != nil else {
+        guard userDataProvider.getUserData() != nil else {
             let notLoggedInView = NotLoggedInView { [context] in
                 context.completeExtensionConfigurationRequest()
             }
@@ -254,14 +254,7 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        guard let userData = appData.userData else {
-            throw PassError.noUserData
-        }
-
-        try SharedDataContainer.shared.register(container: container,
-                                                symmetricKey: appData.getSymmetricKey(),
-                                                userData: userData,
-                                                manualLogIn: false)
+        SharedDataContainer.shared.register(container: container, manualLogIn: false)
     }
 
     func handle(error: Error) {
@@ -287,7 +280,7 @@ private extension CredentialProviderCoordinator {
                 defer { cancelAutoFill(reason: .failed) }
                 do {
                     logger.trace("Authenticaion failed. Removing all credentials")
-                    appData.userData = nil
+                    userDataProvider.setUserData(nil)
                     try await unindexAllLoginItems()
                     logger.info("Removed all credentials after authentication failure")
                 } catch {
@@ -631,7 +624,7 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     }
 
     func extensionSettingsViewModelWantsToLogOut() {
-        appData.userData = nil
+        userDataProvider.setUserData(nil)
         context.completeExtensionConfigurationRequest()
     }
 }
