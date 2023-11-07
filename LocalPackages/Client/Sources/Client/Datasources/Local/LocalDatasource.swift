@@ -58,13 +58,16 @@ public protocol LocalDatasourceProtocol {
 }
 
 public class LocalDatasource {
-    public let container: NSPersistentContainer
+    private let databaseService: DatabaseServiceProtocol
+    public var container: NSPersistentContainer {
+        databaseService.container
+    }
 
-    public init(container: NSPersistentContainer) {
-        guard container.name == kProtonPassContainerName else {
-            fatalError("Unsupported container name \"\(container.name)\"")
+    public init(databaseService: DatabaseServiceProtocol) {
+        guard databaseService.container.name == kProtonPassContainerName else {
+            fatalError("Unsupported container name \"\(databaseService.container.name)\"")
         }
-        self.container = container
+        self.databaseService = databaseService
     }
 }
 

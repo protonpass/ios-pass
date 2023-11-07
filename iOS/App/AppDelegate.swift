@@ -142,11 +142,6 @@ private extension AppDelegate {
     func handleUpdateLastUsedTime(task: BGProcessingTask) {
         scheduleAppRefresh()
 
-        guard SharedDataContainer.shared.registered else {
-            task.setTaskCompleted(success: false)
-            return
-        }
-
         backgroundTask?.cancel()
         backgroundTask = Task { [weak self] in
             guard let self else {
