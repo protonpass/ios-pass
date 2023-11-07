@@ -34,7 +34,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let userData = resolve(\SharedDataContainer.userData)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     let isShownAsSheet: Bool
@@ -42,7 +42,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: AccountViewModelDelegate?
 
-    var username: String { userData.user.email ?? "" }
+    var username: String { userDataProvider.getUserData()?.user.email ?? "" }
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet

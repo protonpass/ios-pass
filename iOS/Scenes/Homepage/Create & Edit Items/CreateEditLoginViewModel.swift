@@ -68,14 +68,14 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
-        let userData = resolve(\SharedDataContainer.userData)
-        emailAddress = userData.addresses.first?.email ?? ""
+        emailAddress = try userDataProvider.getUnwrappedUserData().addresses.first?.email ?? ""
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)

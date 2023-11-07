@@ -62,7 +62,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Self-intialized properties
@@ -108,7 +108,7 @@ private extension SearchViewModel {
                 allItems = try await itemRepository.getItems(state: .trashed)
             }
             searchableItems = try allItems.map { try SearchableItem(from: $0,
-                                                                    symmetricKey: symmetricKey,
+                                                                    symmetricKey: getSymmetricKey(),
                                                                     allVaults: vaults) }
             try await refreshSearchHistory()
         } catch {
@@ -128,7 +128,7 @@ private extension SearchViewModel {
             if let item = allItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID
             }) {
-                try item.toSearchEntryUiModel(symmetricKey)
+                try item.toSearchEntryUiModel(getSymmetricKey())
             } else {
                 nil
             }
@@ -306,6 +306,10 @@ private extension SearchViewModel {
                 filterAndSortResults()
             }
             .store(in: &cancellables)
+    }
+
+    func getSymmetricKey() throws -> SymmetricKey {
+        try symmetricKeyProvider.getSymmetricKey()
     }
 }
 

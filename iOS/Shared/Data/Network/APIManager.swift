@@ -43,7 +43,7 @@ protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
 }
 
-final class APIManager: APIManagerProtocol {
+final class APIManager {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
     private let appData = resolve(\SharedDataContainer.appData)
@@ -64,10 +64,6 @@ final class APIManager: APIManagerProtocol {
 
     weak var delegate: APIManagerDelegate?
 
-    var userData: UserData? {
-        appData.userData
-    }
-
     init() {
         let trustKitDelegate = PassTrustKitDelegate()
         APIManager.setUpCertificatePinning(trustKitDelegate: trustKitDelegate)
@@ -77,7 +73,7 @@ final class APIManager: APIManagerProtocol {
         let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
-        if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
+        if let credential = appData.getUserData()?.credential ?? appData.getUnauthCredential() {
             apiService = PMAPIService.createAPIService(doh: doh,
                                                        sessionUID: credential.sessionID,
                                                        challengeParametersProvider: challengeProvider)
@@ -131,7 +127,7 @@ final class APIManager: APIManagerProtocol {
     }
 
     func clearCredentials() {
-        appData.unauthSessionCredentials = nil
+        appData.setUnauthCredential(nil)
         apiService.setSessionUID(uid: "")
         // destroying and recreating AuthHelper to clear its cache
         authHelper = AuthHelper()
@@ -172,7 +168,7 @@ final class APIManager: APIManagerProtocol {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                guard let self, let userData = appData.userData else { return }
+                guard let self, let userData = appData.getUserData() else { return }
                 authHelper.onSessionObtaining(credential: userData.getCredential)
             }
             .store(in: &cancellables)
@@ -186,8 +182,8 @@ final class APIManager: APIManagerProtocol {
                                        passphrases: userData.passphrases,
                                        addresses: userData.addresses,
                                        scopes: userData.scopes)
-        appData.userData = updatedUserData
-        appData.unauthSessionCredentials = nil
+        appData.setUserData(updatedUserData)
+        appData.setUnauthCredential(nil)
     }
 
     /// Ignore when last successful refresh happened less than 24h
@@ -210,7 +206,7 @@ extension APIManager: AuthHelperDelegate {
                 return
             } else {
                 logger.info("Authenticated session is invalidated. Logging out.")
-                appData.userData = nil
+                appData.setUserData(nil)
                 delegate?.appLoggedOutBecauseSessionWasInvalidated()
             }
         } else {
@@ -222,12 +218,12 @@ extension APIManager: AuthHelperDelegate {
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
-        if let userData = appData.userData {
+        if let userData = appData.getUserData() {
             update(userData: userData, authCredential: authCredential)
             lastSuccessfulRefreshTimestamp = Date.now.timeIntervalSince1970
             ignoredRefreshFailure = false
         } else {
-            appData.unauthSessionCredentials = authCredential
+            appData.setUnauthCredential(authCredential)
         }
     }
 }

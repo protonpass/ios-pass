@@ -56,9 +56,6 @@ final class AppCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
 
-    // Use cases
-    private let checkAccessToPass = resolve(\UseCasesContainer.checkAccessToPass)
-
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
@@ -80,7 +77,7 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
-        appData.userData = nil
+        appData.setUserData(nil)
     }
 
     private func bindAppState() {
@@ -98,13 +95,14 @@ final class AppCoordinator {
 
                 case let .loggedIn(userData, manualLogIn):
                     logger.info("Logged in manual \(manualLogIn)")
-                    appData.userData = userData
+                    if manualLogIn {
+                        // Only update userData when manually log in
+                        // because otherwise we'd just rewrite the same userData object
+                        appData.setUserData(userData)
+                    }
                     apiManager.sessionIsAvailable(authCredential: userData.credential,
                                                   scopes: userData.scopes)
-                    showHomeScene(userData: userData, manualLogIn: manualLogIn)
-                    if manualLogIn {
-                        checkAccessToPass()
-                    }
+                    showHomeScene(manualLogIn: manualLogIn)
 
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -114,9 +112,9 @@ final class AppCoordinator {
     }
 
     func start() {
-        if let userData = appData.userData {
+        if let userData = appData.getUserData() {
             appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: false))
-        } else if appData.unauthSessionCredentials != nil {
+        } else if appData.getUnauthCredential() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
@@ -144,31 +142,20 @@ final class AppCoordinator {
         }
     }
 
-    private func showHomeScene(userData: UserData, manualLogIn: Bool) {
-        do {
-            let symmetricKey = try appData.getSymmetricKey()
+    private func showHomeScene(manualLogIn: Bool) {
+        SharedDataContainer.shared.reset()
+        SharedDataContainer.shared.register(container: container, manualLogIn: manualLogIn)
+        SharedToolingContainer.shared.resetCache()
+        SharedRepositoryContainer.shared.reset()
+        SharedServiceContainer.shared.reset()
+        SharedViewContainer.shared.reset()
 
-            SharedDataContainer.shared.reset()
-            SharedDataContainer.shared.register(container: container,
-                                                symmetricKey: symmetricKey,
-                                                userData: userData,
-                                                manualLogIn: manualLogIn)
-            SharedToolingContainer.shared.resetCache()
-            SharedRepositoryContainer.shared.reset()
-            SharedServiceContainer.shared.reset()
-            SharedViewContainer.shared.reset()
-
-            let homepageCoordinator = HomepageCoordinator()
-            homepageCoordinator.delegate = self
-            self.homepageCoordinator = homepageCoordinator
-            welcomeCoordinator = nil
-            animateUpdateRootViewController(homepageCoordinator.rootViewController) {
-                homepageCoordinator.onboardIfNecessary()
-            }
-        } catch {
-            logger.error(error)
-            wipeAllData(includingUnauthSession: true)
-            appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
+        let homepageCoordinator = HomepageCoordinator()
+        homepageCoordinator.delegate = self
+        self.homepageCoordinator = homepageCoordinator
+        welcomeCoordinator = nil
+        animateUpdateRootViewController(homepageCoordinator.rootViewController) {
+            homepageCoordinator.onboardIfNecessary()
         }
     }
 
@@ -183,7 +170,8 @@ final class AppCoordinator {
 
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
-        appData.userData = nil
+        appData.setUserData(nil)
+        appData.removeSymmetricKey()
         if includingUnauthSession {
             apiManager.clearCredentials()
             mainKeyProvider.wipeMainKey()

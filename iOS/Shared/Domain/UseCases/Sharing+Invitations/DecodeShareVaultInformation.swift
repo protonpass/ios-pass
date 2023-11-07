@@ -40,23 +40,24 @@ extension DecodeShareVaultInformationUseCase {
 }
 
 final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultInformationUseCase {
-    private let userData: UserData
+    private let userDataProvider: UserDataProvider
     private let getEmailPublicKey: GetEmailPublicKeyUseCase
     private let updateUserAddresses: UpdateUserAddressesUseCase
 
-    init(userData: UserData,
+    init(userDataProvider: UserDataProvider,
          getEmailPublicKey: GetEmailPublicKeyUseCase,
          updateUserAddresses: UpdateUserAddressesUseCase) {
-        self.userData = userData
+        self.userDataProvider = userDataProvider
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses
     }
 
     func execute(with userInvite: UserInvite) async throws -> VaultProtobuf {
+        let userData = try userDataProvider.getUnwrappedUserData()
         guard let vaultData = userInvite.vaultData,
               let intermediateVaultKey = userInvite.keys
               .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),
-              let invitedAddress = try await address(for: userInvite) else {
+              let invitedAddress = try await address(for: userInvite, userData: userData) else {
             throw SharingError.invalidKeyOrAddress
         }
 
@@ -94,7 +95,7 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
 }
 
 private extension DecodeShareVaultInformation {
-    func address(for userInvite: UserInvite) async throws -> Address? {
+    func address(for userInvite: UserInvite, userData: UserData) async throws -> Address? {
         guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
             return try await updateUserAddresses()?
                 .first(where: { $0.email == userInvite.invitedEmail })
