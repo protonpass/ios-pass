@@ -19,10 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 // swiftlint:disable all
 
-@testable import Proton_Pass
-import Client
+@testable import Client
 import Core
 import Foundation
+import ProtonCoreServices
 
 final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryProtocol {
     // MARK: - sendBug

@@ -19,10 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 // swiftlint:disable all
 
-@testable import Proton_Pass
+@testable import UseCases
 import Core
 import Foundation
-import UseCases
 
 final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLogsToFileUseCase {
     // MARK: - execute
