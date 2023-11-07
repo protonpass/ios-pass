@@ -264,6 +264,11 @@ extension UseCasesContainer {
         self { CreateVault(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                            repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
+
+    var reachedVaultLimit: Factory<ReachedVaultLimitUseCase> {
+        self { ReachedVaultLimit(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
+                                 vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
 }
 
 // MARK: - User
