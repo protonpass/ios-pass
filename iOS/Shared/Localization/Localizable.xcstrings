@@ -2716,25 +2716,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дні"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду застаўся 1 дзень"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
                 }
               }
@@ -2746,25 +2746,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývají %lld dny"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývá %lld dnů"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývá 1 den"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývá %lld dnů"
                 }
               }
@@ -2776,13 +2776,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deine kostenlose Testphase läuft noch einen Tag."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deine kostenlose Testphase läuft noch %lld Tage."
                 }
               }
@@ -2794,13 +2794,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Μία ημέρα απομένει στη δοκιμαστική σας περίοδο"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Απομένουν %lld ημέρες στη δοκιμαστική περίοδο σας"
                 }
               }
@@ -2813,13 +2813,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "One day left in your trial period"
+                  "value" : "One day left to try premium features"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld days left in your trial period"
+                  "value" : "%lld days left to try premium features"
                 }
               }
             }
@@ -2830,13 +2830,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "1 día restante en tu periodo de prueba"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld días restantes en tu periodo de prueba"
                 }
               }
@@ -2848,13 +2848,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Un día restante en su periodo de prueba"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld días restantes en su periodo de prueba"
                 }
               }
@@ -2866,13 +2866,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Kokeilujaksoasi on jäljellä yksi päivä"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Kokeilujaksoasi on jäljellä %lld päivää"
                 }
               }
@@ -2884,13 +2884,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Votre période d'essai se termine dans un jour."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Votre période d'essai se termine dans %lld jours."
                 }
               }
@@ -2902,13 +2902,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Manca un giorno al termine del periodo di prova"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld giorni rimanenti al termine del periodo di prova"
                 }
               }
@@ -2920,7 +2920,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "試用期間は残り %lld 日です"
                 }
               }
@@ -2932,13 +2932,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია ერთი დღე"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია %lld დღე"
                 }
               }
@@ -2950,7 +2950,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld 무료 체험이 %d일 남았습니다"
                 }
               }
@@ -2962,25 +2962,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostały %lld dni wersji próbnej"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostało %lld dni wersji próbnej"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostał 1 dzień wersji próbnej"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostało %lld dnia wersji próbnej"
                 }
               }
@@ -2992,13 +2992,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Resta um dia no seu período experimental"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Ainda tem %lld dias de teste gratuito."
                 }
               }
@@ -3010,13 +3010,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Um dia restante em seu período de avaliação gratuita"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld dias restantes em seu período de avaliação gratuita"
                 }
               }
@@ -3028,19 +3028,19 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Au mai rămas %lld zile de încercare."
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "A mai rămas o zi de încercare."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Au mai rămas %lld de zile de încercare."
                 }
               }
@@ -3052,25 +3052,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostávajú %lld dni"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostáva %lld dní"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostáva jeden deň"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostáva %lld dní"
                 }
               }
@@ -3082,13 +3082,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "1 dag kvar av din provperiod"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld dagar kvar av din provperiod"
                 }
               }
@@ -3100,13 +3100,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deneme sürenizin bitmesine 1 gün kaldı"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deneme sürenizin bitmesine %lld gün kaldı"
                 }
               }
@@ -3118,25 +3118,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишилося %lld дні"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишилося %lld днів"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишився 1 день"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишилося %lld днів"
                 }
               }
@@ -3148,7 +3148,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Thời gian dùng thử còn %lld ngày"
                 }
               }
@@ -4010,6 +4010,142 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mã bảo mật 2FA (TOTP)"
+          }
+        }
+      }
+    },
+    "7 days to try premium features for free. Only during your first week of Proton Pass." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Даведайцеся пра ўсе эксклюзіўныя функцыі, якія будуць даступны вам на працягу абмежаванага часу"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Podívejte se na všechny exkluzivní funkce, které jsou vám po omezenou dobu k dispozici"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sieh dir all die exklusiven Funktionen an, die dir für eine begrenzte Zeit zur Verfügung stehen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Δείτε όλες τις αποκλειστικές λειτουργίες που είναι διαθέσιμες σε εσάς για περιορισμένο χρονικό διάστημα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 days to try premium features for free. Only during your first week of Proton Pass."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Echa un vistazo a todas las funciones exclusivas que están disponibles para ti por tiempo limitado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eche un vistazo a todas las funciones exclusivas que están disponibles para usted por tiempo limitado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tutustu kaikkiin ainutlaatuisiin ominaisuuksiin, jotka ovat käytettävissäsi rajoitetun ajan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Découvrez toutes les fonctionnalités exclusives disponibles pour une durée limitée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Scopri tutte le funzionalità esclusive che sono disponibili per te per un periodo di tempo limitato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "期間限定で利用可能なすべての限定機能をチェックする"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "შეამოწმეთ ყველა ექსკლუზიური შემოთავაზება, რომელიც, მხოლოდ, შეზღუდული დროითაა თქვენთვის შემოთავაზებული"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "한정 기간 동안 사용할 수 있는 특전 기능들을 살펴보세요"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sprawdź wszystkie dodatkowe funkcje, które możesz przetestować przez ograniczony czas"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Descubra todas as funcionalidades exclusivas que estão à sua disposição por um período limitado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Confira todos os recursos exclusivos que estão disponíveis para você por um tempo limitado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Încercați toate funcțiile exclusive care vă sunt disponibile pentru o perioadă limitată de timp"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pozrite si všetky exkluzívne funkcie, ktoré máte k dispozícii na obmedzený čas"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kolla in alla exklusiva funktioner som är tillgängliga för dig under en begränsad tid"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tüm ücretli özellikleri sınırlı bir süre için deneyimleyebilirsiniz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ознайомтеся з усіма ексклюзивними функціями протягом обмеженого часу"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Xem tất cả các tính năng độc quyền mà bạn có thể sử dụng trong một thời gian giới hạn"
           }
         }
       }
@@ -21099,6 +21235,142 @@
         }
       }
     },
+    "Enjoy next-level password management" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Для кіравання паролямі на новым узроўні:"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pro správu hesel na vyšší úrovni:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Für die nächste Stufe der Passwortverwaltung:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Για διαχείριση κωδικών πρόσβασης επόμενου επιπέδου:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enjoy next-level password management"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para una gestión de contraseñas de nivel superior:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para una gestión de contraseñas de nivel superior:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seuraavan tason salasanahallintaan:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tout ce qu'il vous faut pour gérer vos mots de passe de façon optimale :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Per una gestione delle password di livello superiore:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "次のレベルのパスワード管理の場合:"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "შემდეგი დონის პაროლების მართვისთვის:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "차세대 비밀번호 관리를 위해:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zarządzanie hasłami na wyższym poziomie:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para uma gestão de palavras-passe de nível superior:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para gerenciamento de senhas avançado:"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pentru gestionarea parolelor la nivel superior:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pre správu hesiel na vyššej úrovni:"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "För nästa nivå av lösenordshantering:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gelecek nesil parola yönetimi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Керування паролями нового рівня:"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Để quản lý mật khẩu cao cấp hơn:"
+          }
+        }
+      }
+    },
     "Enjoy the magic of AutoFill" : {
       "comment" : "Onboarding: Titles of the steps",
       "extractionState" : "manual",
@@ -21233,143 +21505,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tận hưởng ma thuật của Tự động Điền"
-          }
-        }
-      }
-    },
-    "Enjoy your free trial" : {
-      "comment" : "Info banners",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Атрымлівайце асалоду ад бясплатнай выпрабавальнай версіі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Užijte si bezplatnou zkušební verzi"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Genieße deine kostenlose Testversion"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Απολαύστε τη δωρεάν δοκιμή σας"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enjoy your free trial"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disfruta de tu prueba gratuita"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disfrute de su prueba gratuita"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nauti ilmaisesta kokeilusta"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profitez de votre essai gratuit."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Goditi la tua prova gratuita"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "無料トライアルをお楽しみください"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ისიამოვნეთ თქვენი უფასო სატესტო ვერსიით"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "무료 체험을 즐겨보세요"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ciesz się darmową wersją próbną"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aproveite o seu período de teste gratuito"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aproveite sua avaliação gratuita"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bucurați-vă de versiunea de încercare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Užite si bezplatné skúšobné obdobie"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Njut av din gratis provperiod"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ücretsiz denemenizin tadını çıkarın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Оцініть усі переваги з безплатною пробною версією"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
           }
         }
       }
@@ -23021,143 +23156,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hãy làm theo các bước đơn giản sau đây để có được trải nghiệm tốt nhất:"
-          }
-        }
-      }
-    },
-    "For next-level password management:" : {
-      "comment" : "Trial page",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Для кіравання паролямі на новым узроўні:"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pro správu hesel na vyšší úrovni:"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Für die nächste Stufe der Passwortverwaltung:"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Για διαχείριση κωδικών πρόσβασης επόμενου επιπέδου:"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For next-level password management:"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para una gestión de contraseñas de nivel superior:"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para una gestión de contraseñas de nivel superior:"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seuraavan tason salasanahallintaan:"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tout ce qu'il vous faut pour gérer vos mots de passe de façon optimale :"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Per una gestione delle password di livello superiore:"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "次のレベルのパスワード管理の場合:"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შემდეგი დონის პაროლების მართვისთვის:"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "차세대 비밀번호 관리를 위해:"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zarządzanie hasłami na wyższym poziomie:"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para uma gestão de palavras-passe de nível superior:"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para gerenciamento de senhas avançado:"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pentru gestionarea parolelor la nivel superior:"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pre správu hesiel na vyššej úrovni:"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "För nästa nivå av lösenordshantering:"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gelecek nesil parola yönetimi"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Керування паролями нового рівня:"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Để quản lý mật khẩu cao cấp hơn:"
           }
         }
       }
@@ -35423,6 +35421,142 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nội dung khác"
+          }
+        }
+      }
+    },
+    "Our welcome gift to you" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Атрымлівайце асалоду ад бясплатнай выпрабавальнай версіі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užijte si bezplatnou zkušební verzi"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Genieße deine kostenlose Testversion"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Απολαύστε τη δωρεάν δοκιμή σας"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Our welcome gift to you"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfruta de tu prueba gratuita"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfrute de su prueba gratuita"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nauti ilmaisesta kokeilusta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Profitez de votre essai gratuit."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Goditi la tua prova gratuita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "無料トライアルをお楽しみください"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ისიამოვნეთ თქვენი უფასო სატესტო ვერსიით"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "무료 체험을 즐겨보세요"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ciesz się darmową wersją próbną"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite o seu período de teste gratuito"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite sua avaliação gratuita"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bucurați-vă de versiunea de încercare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užite si bezplatné skúšobné obdobie"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Njut av din gratis provperiod"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ücretsiz denemenizin tadını çıkarın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Оцініть усі переваги з безплатною пробною версією"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
           }
         }
       }
@@ -50978,142 +51112,6 @@
         }
       }
     },
-    "Upgrade to keep these features" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Палепшыць, каб пакінуць гэтыя функцыі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Navyšte tarif pro zachování těchto funkcí"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade, um diese Funktionen zu behalten"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αναβάθμιση για να διατηρήσετε αυτές τις δυνατότητες"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade to keep these features"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mejora tu plan para mantener estas funciones"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Actualice para mantener estas funciones"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Säilytä ominaisuudet päivittämällä tilauksesi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Changer d'abonnement pour garder ces fonctionnalités."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effettua l'upgrade per mantenere queste funzionalità"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "これらの機能を維持するためにアップグレードする"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ასწიეთ ტარიფი ამ თვისებების შესანარჩუნებლად"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 기능을 계속 누리려면 업그레이드"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ulepsz konto, aby zachować te funkcje"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atualize para manter estas funcionalidades"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Faça upgrade para manter esses recursos"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modificați planul pentru a păstra aceste parole"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Navýšte predplatné pre zachovanie týchto funkcií"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uppgradera för att behålla dessa funktioner"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu özelliği tutmak için tarifenizi yükseltin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Щоб і надалі користуватися цими функціями, передплатіть тарифний план"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nâng cấp để giữ những tính năng này"
-          }
-        }
-      }
-    },
     "Use %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -56563,6 +56561,142 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kho lưu trữ của bạn trống"
+          }
+        }
+      }
+    },
+    "Your welcome gift" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Атрымлівайце асалоду ад бясплатнай выпрабавальнай версіі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užijte si bezplatnou zkušební verzi"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Genieße deine kostenlose Testversion"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Απολαύστε τη δωρεάν δοκιμή σας"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your welcome gift"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfruta de tu prueba gratuita"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfrute de su prueba gratuita"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nauti ilmaisesta kokeilusta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Profitez de votre essai gratuit."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Goditi la tua prova gratuita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "無料トライアルをお楽しみください"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ისიამოვნეთ თქვენი უფასო სატესტო ვერსიით"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "무료 체험을 즐겨보세요"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ciesz się darmową wersją próbną"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite o seu período de teste gratuito"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite sua avaliação gratuita"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bucurați-vă de versiunea de încercare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užite si bezplatné skúšobné obdobie"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Njut av din gratis provperiod"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ücretsiz denemenizin tadını çıkarın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Оцініть усі переваги з безплатною пробною версією"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
           }
         }
       }
