@@ -129,7 +129,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     private var ongoingTask: Task<Void, Error>?
 
     // Injected params
-    private let userId: String
+    private let userDataProvider: UserDataProvider
     private let shareRepository: ShareRepositoryProtocol
     private let shareEventIDRepository: ShareEventIDRepositoryProtocol
     private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
@@ -141,7 +141,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     public weak var pullToRefreshDelegate: SyncEventLoopPullToRefreshDelegate?
 
     public init(currentDateProvider: CurrentDateProviderProtocol,
-                userId: String,
+                userDataProvider: UserDataProvider,
                 shareRepository: ShareRepositoryProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
@@ -149,7 +149,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
                 shareKeyRepository: ShareKeyRepositoryProtocol,
                 logManager: LogManagerProtocol) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
-        self.userId = userId
+        self.userDataProvider = userDataProvider
         self.shareRepository = shareRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
@@ -486,6 +486,7 @@ private extension SyncEventLoop {
 
     /// Sync a single share. Can be a recursion if share has many events
     func sync(share: Share, hasNewEvents: inout Bool) async throws {
+        let userId = try userDataProvider.getUserId()
         let shareId = share.shareID
         logger.trace("Syncing share \(shareId)")
         let lastEventId = try await shareEventIDRepository.getLastEventId(forceRefresh: false,
