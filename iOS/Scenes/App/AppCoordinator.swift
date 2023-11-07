@@ -54,7 +54,6 @@ final class AppCoordinator {
     private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let manualLogInFlow = resolve(\SharedDataContainer.manualLogIn)
 
     init(window: UIWindow) {
