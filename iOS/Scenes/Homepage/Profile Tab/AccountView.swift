@@ -120,6 +120,7 @@ struct AccountView: View {
         .navigationBarTitleDisplayMode(.large)
         .background(Color(uiColor: PassColor.backgroundNorm))
         .toolbar { toolbarContent }
+        .showSpinner(viewModel.isLoading)
         .alert("You will be signed out",
                isPresented: $isShowingSignOutConfirmation,
                actions: {
