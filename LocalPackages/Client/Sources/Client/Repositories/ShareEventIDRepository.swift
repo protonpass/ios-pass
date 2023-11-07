@@ -83,10 +83,10 @@ public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
         logger = .init(manager: logManager)
     }
 
-    public init(container: NSPersistentContainer,
+    public init(databaseService: DatabaseServiceProtocol,
                 apiService: APIService,
                 logManager: LogManagerProtocol) {
-        localDatasource = LocalShareEventIDDatasource(container: container)
+        localDatasource = LocalShareEventIDDatasource(databaseService: databaseService)
         remoteDatasource = RemoteShareEventIDDatasource(apiService: apiService)
         logger = .init(manager: logManager)
     }

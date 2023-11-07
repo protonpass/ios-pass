@@ -108,6 +108,11 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
         cachedUnauthSessionCredentials = unauthSessionCredentials
         return cachedUnauthSessionCredentials
     }
+
+    func resetData() {
+        setUserData(nil)
+        removeSymmetricKey()
+    }
 }
 
 private extension AppData {
