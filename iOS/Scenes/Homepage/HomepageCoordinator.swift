@@ -653,9 +653,9 @@ private extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        guard manualLogIn else { return }
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self,
+                  await manualLogIn.isManualLogIn() else { return }
             if let access = try? await accessRepository.getAccess(),
                access.waitingNewUserInvites > 0 {
                 // New user just registered after an invitation
