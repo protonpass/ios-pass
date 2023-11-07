@@ -11880,7 +11880,7 @@
         }
       }
     },
-    "Capitalise" : {
+    "Capitalize" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -11910,7 +11910,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Capitalise"
+            "value" : "Capitalize"
           }
         },
         "es" : {
@@ -30379,7 +30379,7 @@
         }
       }
     },
-    "Memorable Password" : {
+    "Memorable password" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -30409,7 +30409,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Memorable Password"
+            "value" : "Memorable password"
           }
         },
         "es" : {
@@ -38804,7 +38804,7 @@
         }
       }
     },
-    "Random Password" : {
+    "Random password" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -38834,7 +38834,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Random Password"
+            "value" : "Random password"
           }
         },
         "es" : {
