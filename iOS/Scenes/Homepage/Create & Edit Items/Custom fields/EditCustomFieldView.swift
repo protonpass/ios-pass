@@ -83,7 +83,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
 
             Menu(content: {
                 Button(action: onEditTitle) {
-                    Label(title: { Text("Edit title") },
+                    Label(title: { Text("Edit name") },
                           icon: { Image(uiImage: IconProvider.pencil) })
                 }
 

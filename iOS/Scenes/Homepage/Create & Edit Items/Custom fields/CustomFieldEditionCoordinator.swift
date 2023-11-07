@@ -57,11 +57,10 @@ final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {
     }
 
     func start() {
-        let alert = UIAlertController(title: #localized("Edit title"),
-                                      message: #localized("Enter new title for « %@ »", uiModel.customField.title),
+        let alert = UIAlertController(title: #localized("Edit field name"),
+                                      message: #localized("Enter new name for « %@ »", uiModel.customField.title),
                                       preferredStyle: .alert)
         alert.addTextField { textField in
-            textField.placeholder = #localized("New title")
             let action = UIAction { _ in
                 alert.actions.first?.isEnabled = textField.text?.isEmpty == false
             }
