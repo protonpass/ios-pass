@@ -136,9 +136,9 @@ extension PasswordType {
     var title: String {
         switch self {
         case .random:
-            #localized("Random Password")
+            #localized("Random password")
         case .memorable:
-            #localized("Memorable Password")
+            #localized("Memorable password")
         }
     }
 }
