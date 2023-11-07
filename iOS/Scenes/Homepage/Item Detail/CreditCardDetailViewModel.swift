@@ -74,6 +74,6 @@ extension CreditCardDetailViewModel {
 
     func copyVerificationNumber() {
         guard !verificationNumber.isEmpty else { return }
-        copyToClipboard(text: verificationNumber, message: #localized("Verification number copied"))
+        copyToClipboard(text: verificationNumber, message: #localized("Security code copied"))
     }
 }
