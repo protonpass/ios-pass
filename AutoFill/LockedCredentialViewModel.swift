@@ -30,7 +30,7 @@ final class LockedCredentialViewModel: ObservableObject {
     private let credentialIdentity: ASPasswordCredentialIdentity
     private let logger = resolve(\SharedToolingContainer.logger)
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedDataContainer.symmetricKey) private var symmetricKey
+    @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
 
     var onFailure: ((Error) -> Void)?
     var onSuccess: ((ASPasswordCredential, ItemContent) -> Void)?
@@ -47,6 +47,7 @@ final class LockedCredentialViewModel: ObservableObject {
                 guard let recordIdentifier = credentialIdentity.recordIdentifier else {
                     throw PassError.credentialProvider(.missingRecordIdentifier)
                 }
+                let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                 logger.trace("Loading credential \(ids.debugInformation)")
                 guard let item = try await itemRepository.getItem(shareId: ids.shareId,

@@ -36,19 +36,20 @@ final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
-    private let userData: UserData
+    private let userDataProvider: UserDataProvider
 
     init(publicKeyRepository: PublicKeyRepositoryProtocol,
          passKeyManager: PassKeyManagerProtocol,
          shareInviteRepository: ShareInviteRepositoryProtocol,
-         userData: UserData) {
+         userDataProvider: UserDataProvider) {
         self.publicKeyRepository = publicKeyRepository
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
-        self.userData = userData
+        self.userDataProvider = userDataProvider
     }
 
     func execute(vault: Vault, inviteId: String, email: String) async throws {
+        let userData = try userDataProvider.getUnwrappedUserData()
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {
             throw SharingError.noPublicKeyAssociatedWithEmail

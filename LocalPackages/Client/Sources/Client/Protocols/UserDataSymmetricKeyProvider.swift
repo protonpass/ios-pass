@@ -1,6 +1,6 @@
 //
-// UserInformationProtocol.swift
-// Proton Pass - Created on 09/10/2023.
+// UserDataSymmetricKeyProvider.swift
+// Proton Pass - Created on 06/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,9 +17,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Foundation
+import SwiftUI
 
-public protocol UserInformationProtocol {
-    var userId: String { get }
-}
+public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider

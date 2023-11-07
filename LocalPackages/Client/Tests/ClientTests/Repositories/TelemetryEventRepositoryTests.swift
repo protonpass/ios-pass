@@ -69,6 +69,7 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
 final class TelemetryEventRepositoryTests: XCTestCase {
     var localDatasource: LocalTelemetryEventDatasourceProtocol!
     var thresholdProvider: TelemetryThresholdProviderMock!
+    var userDataProviderMock: UserDataProviderMock!
     var sut: TelemetryEventRepositoryProtocol!
 
     override func setUp() {
@@ -76,11 +77,14 @@ final class TelemetryEventRepositoryTests: XCTestCase {
         localDatasource = LocalTelemetryEventDatasource(container: .Builder.build(name: kProtonPassContainerName,
                                                                                   inMemory: true))
         thresholdProvider = TelemetryThresholdProviderMock()
+        userDataProviderMock = UserDataProviderMock()
+        userDataProviderMock.stubbedGetUserDataResult = .preview
     }
 
     override func tearDown() {
         localDatasource = nil
         thresholdProvider = nil
+        userDataProviderMock = nil
         sut = nil
         super.tearDown()
     }
@@ -89,7 +93,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
 extension TelemetryEventRepositoryTests {
     func testAddNewEvents() async throws {
         // Given
-        let givenUserId = String.random()
+        let givenUserId = try userDataProviderMock.getUserId()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
@@ -98,7 +102,7 @@ extension TelemetryEventRepositoryTests {
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userId: givenUserId)
+                                       userDataProvider: userDataProviderMock)
 
         // When
         try await sut.addNewEvent(type: .create(.login))
@@ -117,7 +121,6 @@ extension TelemetryEventRepositoryTests {
 
     func testAutoGenerateThresholdWhenCurrentThresholdIsNil() async throws {
         // Given
-        let givenUserId = String.random()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
@@ -126,7 +129,7 @@ extension TelemetryEventRepositoryTests {
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userId: givenUserId)
+                                       userDataProvider: userDataProviderMock)
         XCTAssertNil(sut.scheduler.threshhold)
 
         // When
@@ -139,8 +142,6 @@ extension TelemetryEventRepositoryTests {
 
     func testDoNotSendEventWhenThresholdNotReached() async throws {
         // Given
-        let givenUserId = String.random()
-
         let givenCurrentDate = Date.now
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
@@ -154,7 +155,7 @@ extension TelemetryEventRepositoryTests {
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userId: givenUserId)
+                                       userDataProvider: userDataProviderMock)
 
         // When
         let sendResult = try await sut.sendAllEventsIfApplicable()
@@ -165,8 +166,7 @@ extension TelemetryEventRepositoryTests {
 
     func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
         // Given
-        let givenUserId = String.random()
-
+        let givenUserId = try userDataProviderMock.getUserId()
         let givenCurrentDate = Date.now
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
@@ -182,7 +182,7 @@ extension TelemetryEventRepositoryTests {
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userId: givenUserId,
+                                       userDataProvider: userDataProviderMock,
                                        eventCount: 1)
 
         // When
@@ -223,7 +223,7 @@ extension TelemetryEventRepositoryTests {
                                        accessRepository: MockedFreePlanRepository(),
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userId: givenUserId)
+                                       userDataProvider: userDataProviderMock)
 
         // When
         try await sut.addNewEvent(type: .create(.login))

@@ -41,10 +41,6 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var symmetricKey: SymmetricKey {
-        SharedDataContainer.shared.symmetricKey()
-    }
-
     var preferences: Preferences {
         SharedToolingContainer.shared.preferences()
     }
@@ -95,7 +91,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var mapLoginItem: Factory<MapLoginItemUseCase> {
-        self { MapLoginItem(key: self.symmetricKey) }
+        self { MapLoginItem(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
     }
 
     var indexAllLoginItems: Factory<IndexAllLoginItemsUseCase> {
@@ -140,7 +136,7 @@ extension SharedUseCasesContainer {
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 userInfos: SharedDataContainer.shared.userData(),
+                                 userDataProvider: SharedDataContainer.shared.userDataProvider(),
                                  logManager: SharedToolingContainer.shared.logManager())
         }
     }
