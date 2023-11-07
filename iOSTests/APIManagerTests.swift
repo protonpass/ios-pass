@@ -261,7 +261,6 @@ final class APIManagerTests: XCTestCase {
         }
         let delegate = TestAPIManagerDelegate()
         apiManager.delegate = delegate
-        apiManager.setLastSuccessfulRefreshTimestamp(.now)
 
         // WHEN
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
