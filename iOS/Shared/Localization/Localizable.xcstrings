@@ -24290,6 +24290,143 @@
         }
       }
     },
+    "Goodbye spam and scams" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Выкарыстоўваць псеўданімы электроннай пошты"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Použít e-mailové aliasy"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "E-Mail-Aliasse verwenden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Χρήση ψευδωνύμων ηλεκτρονικού ταχυδρομείου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goodbye spam and scams"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utilizar los alias de correo electrónico"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Use los alias de correo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Käytä sähköpostialiaksia"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utilisez des alias d'adresse e-mail"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Usa gli alias email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "メールエイリアスを使用"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ელფოსტის ფსევდონიმების გამოყენება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이메일 별명 사용"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Użyj aliasu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utilize 'aliases' de e-mail"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Usar aliases de e-mail"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Folosire alias e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Použiť emailový alias"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Använd e-postalias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "E-posta takma adlarını kullanın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Використовуйте псевдоніми електронної пошти"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sử dụng email bí danh"
+          }
+        }
+      }
+    },
     "Help center" : {
       "localizations" : {
         "be" : {
@@ -38258,143 +38395,6 @@
         }
       }
     },
-    "Protect your inbox against spams and phishings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Абараніце сваю электронную скрыню ад спама і фішынга"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chraňte svou schránku před spamem a phishingem"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schütze dein Postfach vor Spam und Phishing"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Προστατέψτε τα εισερχόμενά σας από ανεπιθύμητα μηνύματα και phishing"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protect your inbox against spams and phishings"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protege tu buzón contra spam y suplantaciones de identidad."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteja su buzón contra spam y suplantaciones de identidad."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suojaa postilaatikkoasi roskapostilta ja tietojenkalastelulta"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protégez votre messagerie contre les indésirables/spam et le phishing/hameçonnage."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteggi la tua posta in arrivo da spam e phishing"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スパムやフィッシングから受信トレイを守る"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "დაიცავით თქვენი საფოსტო ყუთი სპამისა და ფიშინგისგან"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "편지함을 스팸과 피싱으로부터 보호하세요."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chroń pocztę przed spamem i phishingiem"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteja o seu correio eletrónico de 'spams' e 'phishings'"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteja sua caixa de entrada contra spams e phishings"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protejați-vă adresa de e-mail de mesaje abuzive și înșelăciuni"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chráňte svoju schránku pred spamom a phishingom"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skydda din inkorg mot skräppost och nätfiske"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gelen kutunuzu istenmeyen ve sahtecilik e-postalarından koruyun"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Захистіть поштову скриньку від спаму та шахрайства"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bảo vệ hộp thư đến của bạn khỏi thư rác và lừa đảo"
-          }
-        }
-      }
-    },
     "Protect your most sensitive data" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -51304,139 +51304,139 @@
         }
       }
     },
-    "Use email aliases" : {
+    "Use email aliases to protect your inbox and identity" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выкарыстоўваць псеўданімы электроннай пошты"
+            "state" : "needs_review",
+            "value" : "Абараніце сваю электронную скрыню ад спама і фішынга"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Použít e-mailové aliasy"
+            "state" : "needs_review",
+            "value" : "Chraňte svou schránku před spamem a phishingem"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-Mail-Aliasse verwenden"
+            "state" : "needs_review",
+            "value" : "Schütze dein Postfach vor Spam und Phishing"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Χρήση ψευδωνύμων ηλεκτρονικού ταχυδρομείου"
+            "state" : "needs_review",
+            "value" : "Προστατέψτε τα εισερχόμενά σας από ανεπιθύμητα μηνύματα και phishing"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use email aliases"
+            "value" : "Use email aliases to protect your inbox and identity"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utilizar los alias de correo electrónico"
+            "state" : "needs_review",
+            "value" : "Protege tu buzón contra spam y suplantaciones de identidad."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use los alias de correo"
+            "state" : "needs_review",
+            "value" : "Proteja su buzón contra spam y suplantaciones de identidad."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Käytä sähköpostialiaksia"
+            "state" : "needs_review",
+            "value" : "Suojaa postilaatikkoasi roskapostilta ja tietojenkalastelulta"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utilisez des alias d'adresse e-mail"
+            "state" : "needs_review",
+            "value" : "Protégez votre messagerie contre les indésirables/spam et le phishing/hameçonnage."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usa gli alias email"
+            "state" : "needs_review",
+            "value" : "Proteggi la tua posta in arrivo da spam e phishing"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "メールエイリアスを使用"
+            "state" : "needs_review",
+            "value" : "スパムやフィッシングから受信トレイを守る"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელფოსტის ფსევდონიმების გამოყენება"
+            "state" : "needs_review",
+            "value" : "დაიცავით თქვენი საფოსტო ყუთი სპამისა და ფიშინგისგან"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "이메일 별명 사용"
+            "state" : "needs_review",
+            "value" : "편지함을 스팸과 피싱으로부터 보호하세요."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Użyj aliasu"
+            "state" : "needs_review",
+            "value" : "Chroń pocztę przed spamem i phishingiem"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utilize 'aliases' de e-mail"
+            "state" : "needs_review",
+            "value" : "Proteja o seu correio eletrónico de 'spams' e 'phishings'"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usar aliases de e-mail"
+            "state" : "needs_review",
+            "value" : "Proteja sua caixa de entrada contra spams e phishings"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Folosire alias e-mail"
+            "state" : "needs_review",
+            "value" : "Protejați-vă adresa de e-mail de mesaje abuzive și înșelăciuni"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Použiť emailový alias"
+            "state" : "needs_review",
+            "value" : "Chráňte svoju schránku pred spamom a phishingom"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Använd e-postalias"
+            "state" : "needs_review",
+            "value" : "Skydda din inkorg mot skräppost och nätfiske"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-posta takma adlarını kullanın"
+            "state" : "needs_review",
+            "value" : "Gelen kutunuzu istenmeyen ve sahtecilik e-postalarından koruyun"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Використовуйте псевдоніми електронної пошти"
+            "state" : "needs_review",
+            "value" : "Захистіть поштову скриньку від спаму та шахрайства"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sử dụng email bí danh"
+            "state" : "needs_review",
+            "value" : "Bảo vệ hộp thư đến của bạn khỏi thư rác và lừa đảo"
           }
         }
       }
