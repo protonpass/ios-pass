@@ -92,7 +92,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedDataContainer.symmetricKey) private var symmetricKey
+    @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.syncEventLoop) private(set) var syncEventLoop
 
@@ -166,9 +166,10 @@ extension CredentialsViewModel {
             defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             self.router.display(element: .globalLoading(shouldShow: true))
             do {
+                let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
                 self.logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await self.getItemTask(item: item).value
-                let oldContent = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
+                let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 guard case let .login(oldData) = oldContent.contentData else {
                     throw PassError.credentialProvider(.notLogInItem)
                 }
@@ -353,6 +354,7 @@ private extension CredentialsViewModel {
             guard let self else {
                 throw PassError.CredentialProviderFailureReason.generic
             }
+            let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
             vaults = try await shareRepository.getVaults()
             let encryptedItems = try await itemRepository.getActiveLogInItems()
@@ -402,9 +404,9 @@ private extension CredentialsViewModel {
             }
 
             let matchedItems = try await matchedEncryptedItems.sorted()
-                .parallelMap { try $0.item.toItemUiModel(self.symmetricKey) }
+                .parallelMap { try $0.item.toItemUiModel(symmetricKey) }
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
-                .parallelMap { try $0.toItemUiModel(self.symmetricKey) }
+                .parallelMap { try $0.toItemUiModel(symmetricKey) }
 
             logger.debug("Mapped \(encryptedItems.count) encrypted items.")
             logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
