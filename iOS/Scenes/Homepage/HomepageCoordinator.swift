@@ -60,7 +60,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
-    private let manualLogIn = resolve(\SharedDataContainer.manualLogIn)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -655,7 +655,7 @@ extension HomepageCoordinator {
     func onboardIfNecessary() {
         Task { @MainActor [weak self] in
             guard let self,
-                  await manualLogIn.isManualLogIn() else { return }
+                  await loginMethod.isManualLogIn() else { return }
             if let access = try? await accessRepository.getAccess(),
                access.waitingNewUserInvites > 0 {
                 // New user just registered after an invitation

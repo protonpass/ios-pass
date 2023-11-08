@@ -54,7 +54,7 @@ final class AppCoordinator {
     private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let manualLogInFlow = resolve(\SharedDataContainer.manualLogIn)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
 
     init(window: UIWindow) {
         self.window = window
@@ -136,7 +136,7 @@ final class AppCoordinator {
             guard let self else {
                 return
             }
-            await manualLogInFlow.setLogInFlow(newState: manualLogIn)
+            await loginMethod.setLogInFlow(newState: manualLogIn)
             let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
             self.homepageCoordinator = homepageCoordinator
@@ -159,19 +159,16 @@ final class AppCoordinator {
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.resetData()
+        mainKeyProvider.wipeMainKey()
         if includingUnauthSession {
             apiManager.clearCredentials()
-            mainKeyProvider.wipeMainKey()
         }
         preferences.reset(isTests: isUITest)
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else { return }
-            // Do things independently in different `do catch` blocks
-            // because we don't want a failed operation prevents others from running
             do {
                 try await SharedServiceContainer.shared.reset()
-
-                logger.info("Removed all credentials")
+                SharedViewContainer.shared.reset()
             } catch {
                 logger.error(error)
             }

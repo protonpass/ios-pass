@@ -23,38 +23,12 @@ import Core
 import CoreData
 import XCTest
 
-extension NSPersistentContainer {
-    static func build(name: String, inMemory: Bool) -> NSPersistentContainer {
-        let model = NSPersistentContainer.model(for: name)
-        let container = NSPersistentContainer(name: name, managedObjectModel: model)
-
-        let url = if inMemory {
-            URL(fileURLWithPath: "/dev/null")
-        } else {
-            URL.storeURL(for: Constants.appGroup, databaseName: name)
-        }
-        /* add necessary support for migration */
-        let description = NSPersistentStoreDescription(url: url)
-        description.shouldMigrateStoreAutomatically = true
-        description.shouldInferMappingModelAutomatically = true
-        container.persistentStoreDescriptions = [description]
-        /* add necessary support for migration */
-
-        container.loadPersistentStores { _, error in
-            if let error {
-                fatalError("Unresolved error \(error.localizedDescription)")
-            }
-        }
-        return container
-    }
-}
-
 final class CoreDataEntityStructureTests: XCTestCase {
     var container: NSPersistentContainer!
 
     override func setUp() {
         super.setUp()
-        container = .build(name: kProtonPassContainerName, inMemory: true)
+        container = DatabaseService.build(name: kProtonPassContainerName, inMemory: true)
     }
 
     override func tearDown() {

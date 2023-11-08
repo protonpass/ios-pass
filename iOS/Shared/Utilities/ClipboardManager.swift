@@ -24,12 +24,12 @@ import DesignSystem
 import Factory
 import UIKit
 
-protocol ClipboardProtocol: Sendable {
+protocol ClipboardManagerProtocol: Sendable {
     func copy(text: String, bannerMessage: String)
     func clean()
 }
 
-final class ClipboardManager: ClipboardProtocol {
+final class ClipboardManager: ClipboardManagerProtocol {
     private let preferences: PreferencesProtocol
     let bannerManager: BannerDisplayProtocol
 
