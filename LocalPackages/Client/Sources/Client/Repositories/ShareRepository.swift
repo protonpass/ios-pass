@@ -89,7 +89,7 @@ public extension ShareRepositoryProtocol {
     }
 }
 
-public final class ShareRepository: ShareRepositoryProtocol {
+public actor ShareRepository: ShareRepositoryProtocol {
     public let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
     public let localDatasource: LocalShareDatasourceProtocol
     public let remoteDatasouce: RemoteShareDatasourceProtocol

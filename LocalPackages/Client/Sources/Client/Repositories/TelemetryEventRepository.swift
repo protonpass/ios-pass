@@ -43,7 +43,7 @@ public protocol TelemetryEventRepositoryProtocol {
     func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult
 }
 
-public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
+public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public let localDatasource: LocalTelemetryEventDatasourceProtocol
     public let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
     public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol

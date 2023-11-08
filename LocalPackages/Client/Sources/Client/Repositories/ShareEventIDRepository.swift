@@ -70,7 +70,7 @@ extension ShareEventIDRepositoryProtocol {
     }
 }
 
-public final class ShareEventIDRepository: ShareEventIDRepositoryProtocol {
+public actor ShareEventIDRepository: ShareEventIDRepositoryProtocol {
     public let localDatasource: LocalShareEventIDDatasourceProtocol
     public let remoteDatasource: RemoteShareEventIDDatasourceProtocol
     public let logger: Logger
