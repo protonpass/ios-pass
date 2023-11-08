@@ -51,7 +51,7 @@ public protocol ShareInviteRepositoryProtocol {
     func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool
 }
 
-public final class ShareInviteRepository: ShareInviteRepositoryProtocol {
+public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
     public let remoteDataSource: RemoteShareInviteDatasourceProtocol
     public let logger: Logger
 

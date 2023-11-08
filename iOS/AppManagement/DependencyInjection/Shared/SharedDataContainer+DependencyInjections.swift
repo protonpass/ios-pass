@@ -22,41 +22,23 @@ import Client
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import Factory
 import Foundation
 import ProtonCoreLogin
 
 final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()
-    private(set) var registered = false
     let manager = ContainerManager()
 
     func autoRegister() {
-        manager.defaultScope = .cached
-    }
-
-    func register(container: NSPersistentContainer, manualLogIn: Bool) {
-        self.container.register { container }
-        self.manualLogIn.register { manualLogIn }
-        registered = true
-    }
-
-    func reset() {
-        // Check if registered before resetting otherwise it'll crash
-        if registered {
-            manager.reset()
-            registered = false
-        }
+        manager.defaultScope = .singleton
     }
 }
 
 extension SharedDataContainer {
-    var container: Factory<NSPersistentContainer> {
-        self { fatalError("container not registered") }
-    }
-
-    var manualLogIn: Factory<Bool> {
-        self { fatalError("manualLogIn not registered") }
+    var loginMethod: Factory<LoginMethodFlow> {
+        self { LoginMethodFlow() }
     }
 
     var appData: Factory<AppData> {

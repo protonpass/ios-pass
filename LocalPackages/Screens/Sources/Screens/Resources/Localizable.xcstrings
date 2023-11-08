@@ -74,7 +74,15 @@
     },
     "Sharing with up to 10 people" : {
       "comment" : "Used in the upselling screen to explain benefits",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sharing with up to 10 people"
+          }
+        }
+      }
     },
     "Unlimited 2FA Autofill" : {
       "comment" : "Used in upselling screen to explain paid feature",
