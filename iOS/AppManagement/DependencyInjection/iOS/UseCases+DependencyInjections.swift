@@ -36,6 +36,10 @@ final class UseCasesContainer: SharedContainer, AutoRegistering {
 // MARK: - Computed properties
 
 private extension UseCasesContainer {
+    var apiService: APIService {
+        SharedToolingContainer.shared.apiManager().apiService
+    }
+
     var logManager: LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
