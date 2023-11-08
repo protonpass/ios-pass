@@ -73,7 +73,6 @@ extension CredentialManager: CredentialManagerProtocol {
             logger.trace("AutoFill is not enabled. Skipped removing all credentials.")
             return
         }
-
         try await store.removeAllCredentialIdentities()
         logger.trace("Removed all credentials.")
     }
