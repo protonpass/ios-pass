@@ -41,7 +41,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
+    private var loginMethod = resolve(\SharedDataContainer.loginMethod)
     private var symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private var isRefreshing = false
 
@@ -66,7 +66,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     }
 
     @MainActor
-    func reset() async {
+    func reset() {
         state = .loading
         vaultSelection = .all
         filterOption = .all
@@ -153,7 +153,7 @@ private extension VaultsManager {
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
 
-        if await manualLogIn.isManualLogIn() {
+        if await loginMethod.isManualLogIn() {
             try await indexAllLoginItems(ignorePreferences: false)
         } else {
             Task.detached(priority: .background) { [weak self] in
@@ -193,10 +193,10 @@ extension VaultsManager {
                 state = .loading
             }
 
-            if await manualLogIn.isManualLogIn() {
+            if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
                 try await fullSync()
-                await manualLogIn.setLogInFlow(newState: false)
+                await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
             } else if cryptoErrorOccured {
                 logger.info("Crypto error occured. Doing full sync")

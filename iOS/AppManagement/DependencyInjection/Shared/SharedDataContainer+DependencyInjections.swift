@@ -37,7 +37,7 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
 }
 
 extension SharedDataContainer {
-    var manualLogIn: Factory<LoginMethodFlow> {
+    var loginMethod: Factory<LoginMethodFlow> {
         self { LoginMethodFlow() }
     }
 
