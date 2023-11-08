@@ -24,7 +24,7 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
-    var didUpdateToNewPlan: PassthroughSubject<Bool, Never> { get }
+    var didUpdateToNewPlan: PassthroughSubject<Void, Never> { get }
 
     /// Get from local, refresh if not exist
     func getAccess() async throws -> Access
@@ -42,7 +42,7 @@ public actor AccessRepository: AccessRepositoryProtocol {
     private let userDataProvider: UserDataProvider
     private let logger: Logger
 
-    public nonisolated let didUpdateToNewPlan: PassthroughSubject<Bool, Never> = .init()
+    public nonisolated let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: LocalAccessDatasourceProtocol,
                 remoteDatasource: RemoteAccessDatasourceProtocol,
@@ -83,7 +83,7 @@ public extension AccessRepository {
         if let localAccess = try await localDatasource.getAccess(userId: userId),
            localAccess.plan != remoteAccess.plan {
             logger.info("New plan found")
-            didUpdateToNewPlan.send(true)
+            didUpdateToNewPlan.send()
         }
 
         logger.trace("Upserting access for user \(userId)")
