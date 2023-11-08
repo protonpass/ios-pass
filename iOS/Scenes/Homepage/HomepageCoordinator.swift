@@ -115,9 +115,8 @@ private extension HomepageCoordinator {
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] updated in
-                guard let self,
-                      updated == true else { return }
+            .sink { [weak self] _ in
+                guard let self else { return }
                 logger.trace("Found new plan, refreshing credential database")
                 homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
                 profileTabViewModel?.refreshPlan()
