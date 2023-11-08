@@ -38,11 +38,11 @@ struct TrialDetailView: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                Text("Enjoy your free trial")
+                Text("Your welcome gift")
                     .font(.title.bold())
                     .multilineTextAlignment(.center)
 
-                Text("For next-level password management:")
+                Text("Enjoy next-level password management")
                     .padding(.bottom)
                     .multilineTextAlignment(.center)
 
@@ -64,7 +64,7 @@ struct TrialDetailView: View {
                 .padding(.vertical, 32)
 
                 Button(action: onUpgrade) {
-                    Text("Upgrade to keep these features")
+                    Text("Upgrade now")
                         .font(.title3)
                         .padding(16)
                         .foregroundColor(.white)
