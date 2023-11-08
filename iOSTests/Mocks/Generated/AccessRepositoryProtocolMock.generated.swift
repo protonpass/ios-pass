@@ -20,30 +20,13 @@
 // swiftlint:disable all
 
 @testable import Client
+import Combine
 import Core
 import Entities
 
 final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryProtocol {
-    // MARK: - delegate
-    var invokedDelegateSetter = false
-    var invokedDelegateSetterCount = 0
-    var invokedDelegate: AccessRepositoryDelegate?
-    var invokedDelegateList = [AccessRepositoryDelegate?]()
-    var invokedDelegateGetter = false
-    var invokedDelegateGetterCount = 0
-    var stubbedDelegate: AccessRepositoryDelegate!
-    var delegate: AccessRepositoryDelegate? {
-        set {
-            invokedDelegateSetter = true
-            invokedDelegateSetterCount += 1
-            invokedDelegate = newValue
-            invokedDelegateList.append(newValue)
-        } get {
-            invokedDelegateGetter = true
-            invokedDelegateGetterCount += 1
-            return stubbedDelegate
-        }
-    }
+    var didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
+
     // MARK: - getAccess
     var getAccessThrowableError: Error?
     var closureGetAccess: () -> () = {}
