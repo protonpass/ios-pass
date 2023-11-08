@@ -1,6 +1,6 @@
 //
-// Access.swift
-// Proton Pass - Created on 16/10/2023.
+// LoginMethod.swift
+// Proton Pass - Created on 07/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,18 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Foundation
 
-public struct Access: Decodable, Equatable, Sendable {
-    public let plan: Plan
-    public let pendingInvites: Int
-    public let waitingNewUserInvites: Int
+public actor LoginMethodFlow {
+    private var manualLogIn = false
 
-    public init(plan: Plan, pendingInvites: Int, waitingNewUserInvites: Int) {
-        self.plan = plan
-        self.pendingInvites = pendingInvites
-        self.waitingNewUserInvites = waitingNewUserInvites
+    public init() {}
+
+    public func isManualLogIn() -> Bool {
+        manualLogIn
+    }
+
+    public func setLogInFlow(newState: Bool) {
+        manualLogIn = newState
     }
 }
