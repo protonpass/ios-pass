@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct Access: Decodable, Equatable {
+public struct Access: Decodable, Equatable, Sendable {
     public let plan: Plan
     public let pendingInvites: Int
     public let waitingNewUserInvites: Int
