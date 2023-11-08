@@ -184,12 +184,12 @@ extension ItemsTabViewModel {
             delegate?.itemsTabViewModelWantsToShowTrialDetail()
         case .autofill:
             UIApplication.shared.openPasswordSettings()
+        case .aliases:
+            router.navigate(to: .urlPage(urlString: "https://proton.me/support/pass-alias-ios"))
         case let .invite(invites: invites):
             if let firstInvite = invites.first {
                 router.present(for: .acceptRejectInvite(firstInvite))
             }
-        default:
-            break
         }
     }
 

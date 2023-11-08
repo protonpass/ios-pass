@@ -2716,25 +2716,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дні"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду застаўся 1 дзень"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
                 }
               }
@@ -2746,25 +2746,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývají %lld dny"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývá %lld dnů"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývá 1 den"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konce zkušebního období zbývá %lld dnů"
                 }
               }
@@ -2776,13 +2776,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deine kostenlose Testphase läuft noch einen Tag."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deine kostenlose Testphase läuft noch %lld Tage."
                 }
               }
@@ -2794,13 +2794,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Μία ημέρα απομένει στη δοκιμαστική σας περίοδο"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Απομένουν %lld ημέρες στη δοκιμαστική περίοδο σας"
                 }
               }
@@ -2813,13 +2813,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "One day left in your trial period"
+                  "value" : "One day left to try premium features"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld days left in your trial period"
+                  "value" : "%lld days left to try premium features"
                 }
               }
             }
@@ -2830,13 +2830,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "1 día restante en tu periodo de prueba"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld días restantes en tu periodo de prueba"
                 }
               }
@@ -2848,13 +2848,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Un día restante en su periodo de prueba"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld días restantes en su periodo de prueba"
                 }
               }
@@ -2866,13 +2866,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Kokeilujaksoasi on jäljellä yksi päivä"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Kokeilujaksoasi on jäljellä %lld päivää"
                 }
               }
@@ -2884,13 +2884,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Votre période d'essai se termine dans un jour."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Votre période d'essai se termine dans %lld jours."
                 }
               }
@@ -2902,13 +2902,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Manca un giorno al termine del periodo di prova"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld giorni rimanenti al termine del periodo di prova"
                 }
               }
@@ -2920,7 +2920,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "試用期間は残り %lld 日です"
                 }
               }
@@ -2932,13 +2932,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია ერთი დღე"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია %lld დღე"
                 }
               }
@@ -2950,7 +2950,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld 무료 체험이 %d일 남았습니다"
                 }
               }
@@ -2962,25 +2962,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostały %lld dni wersji próbnej"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostało %lld dni wersji próbnej"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostał 1 dzień wersji próbnej"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Pozostało %lld dnia wersji próbnej"
                 }
               }
@@ -2992,13 +2992,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Resta um dia no seu período experimental"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Ainda tem %lld dias de teste gratuito."
                 }
               }
@@ -3010,13 +3010,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Um dia restante em seu período de avaliação gratuita"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld dias restantes em seu período de avaliação gratuita"
                 }
               }
@@ -3028,19 +3028,19 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Au mai rămas %lld zile de încercare."
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "A mai rămas o zi de încercare."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Au mai rămas %lld de zile de încercare."
                 }
               }
@@ -3052,25 +3052,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostávajú %lld dni"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostáva %lld dní"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostáva jeden deň"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Do konca skúšobného obdobia zostáva %lld dní"
                 }
               }
@@ -3082,13 +3082,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "1 dag kvar av din provperiod"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld dagar kvar av din provperiod"
                 }
               }
@@ -3100,13 +3100,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deneme sürenizin bitmesine 1 gün kaldı"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Deneme sürenizin bitmesine %lld gün kaldı"
                 }
               }
@@ -3118,25 +3118,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишилося %lld дні"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишилося %lld днів"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишився 1 день"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "До закінчення пробного періоду залишилося %lld днів"
                 }
               }
@@ -3148,7 +3148,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "Thời gian dùng thử còn %lld ngày"
                 }
               }
@@ -3878,6 +3878,16 @@
         }
       }
     },
+    "2FA secret (TOTP) custom field" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA secret (TOTP) custom field"
+          }
+        }
+      }
+    },
     "2FA token (TOTP)" : {
       "localizations" : {
         "be" : {
@@ -4010,6 +4020,142 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mã bảo mật 2FA (TOTP)"
+          }
+        }
+      }
+    },
+    "7 days to try premium features for free. Only during your first week of Proton Pass." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Даведайцеся пра ўсе эксклюзіўныя функцыі, якія будуць даступны вам на працягу абмежаванага часу"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Podívejte se na všechny exkluzivní funkce, které jsou vám po omezenou dobu k dispozici"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sieh dir all die exklusiven Funktionen an, die dir für eine begrenzte Zeit zur Verfügung stehen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Δείτε όλες τις αποκλειστικές λειτουργίες που είναι διαθέσιμες σε εσάς για περιορισμένο χρονικό διάστημα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 days to try premium features for free. Only during your first week of Proton Pass."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Echa un vistazo a todas las funciones exclusivas que están disponibles para ti por tiempo limitado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eche un vistazo a todas las funciones exclusivas que están disponibles para usted por tiempo limitado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tutustu kaikkiin ainutlaatuisiin ominaisuuksiin, jotka ovat käytettävissäsi rajoitetun ajan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Découvrez toutes les fonctionnalités exclusives disponibles pour une durée limitée."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Scopri tutte le funzionalità esclusive che sono disponibili per te per un periodo di tempo limitato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "期間限定で利用可能なすべての限定機能をチェックする"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "შეამოწმეთ ყველა ექსკლუზიური შემოთავაზება, რომელიც, მხოლოდ, შეზღუდული დროითაა თქვენთვის შემოთავაზებული"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "한정 기간 동안 사용할 수 있는 특전 기능들을 살펴보세요"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sprawdź wszystkie dodatkowe funkcje, które możesz przetestować przez ograniczony czas"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Descubra todas as funcionalidades exclusivas que estão à sua disposição por um período limitado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Confira todos os recursos exclusivos que estão disponíveis para você por um tempo limitado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Încercați toate funcțiile exclusive care vă sunt disponibile pentru o perioadă limitată de timp"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pozrite si všetky exkluzívne funkcie, ktoré máte k dispozícii na obmedzený čas"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kolla in alla exklusiva funktioner som är tillgängliga för dig under en begränsad tid"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tüm ücretli özellikleri sınırlı bir süre için deneyimleyebilirsiniz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ознайомтеся з усіма ексклюзивними функціями протягом обмеженого часу"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Xem tất cả các tính năng độc quyền mà bạn có thể sử dụng trong một thời gian giới hạn"
           }
         }
       }
@@ -11734,7 +11880,7 @@
         }
       }
     },
-    "Capitalise" : {
+    "Capitalize" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -11764,7 +11910,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Capitalise"
+            "value" : "Capitalize"
           }
         },
         "es" : {
@@ -11867,6 +12013,143 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In hoa"
+          }
+        }
+      }
+    },
+    "Card" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Крэдытная картка"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Platební karta"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kreditkarte"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Πιστωτική κάρτα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Card"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tarjeta de crédito"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tarjeta de crédito"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Maksukortti"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Une carte de paiement"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Carta di credito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "クレジットカード"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "საკრედიტო ბარათი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "신용 카드"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Karta płatnicza"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cartão de crédito"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cartão de crédito"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Card de credit"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Platobná karta"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kreditkort"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kredi kartı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Банківська картка"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Thẻ tín dụng"
           }
         }
       }
@@ -15733,138 +16016,138 @@
         }
       }
     },
-    "Create a credit card" : {
+    "Create a card" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Стварыць крэдытную картку"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vytvořit platební kartu"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Kreditkarte erfassen"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Δημιουργία πιστωτικής κάρτας"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create a credit card"
+            "value" : "Create a card"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Crear una tarjeta de crédito"
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Crear una tarjeta de crédito"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Luo maksukortti"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Créer une carte de paiement"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Crea una carta di credito"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "クレジットカード情報を作成"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "საკრედიტო ბარათის შექმნა"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "신용 카드 생성"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Utwórz kartę płatniczą"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Criar um cartão de crédito"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Criar um cartão de crédito"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Creare card de credit"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vytvoriť platobnú kartu"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Skapa ett kreditkort"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Kredi kartı ekle"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Створити банківську картку"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Tạo thẻ"
           }
         }
@@ -16703,143 +16986,6 @@
         }
       }
     },
-    "Credit card" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Крэдытная картка"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Platební karta"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kreditkarte"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Πιστωτική κάρτα"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Credit card"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarjeta de crédito"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarjeta de crédito"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Maksukortti"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Une carte de paiement"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carta di credito"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クレジットカード"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "საკრედიტო ბარათი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "신용 카드"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Karta płatnicza"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartão de crédito"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cartão de crédito"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Card de credit"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Platobná karta"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kreditkort"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kredi kartı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Банківська картка"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Thẻ tín dụng"
-          }
-        }
-      }
-    },
     "Credit card created" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -17658,143 +17804,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thẻ tín dụng"
-          }
-        }
-      }
-    },
-    "Custom field title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Загаловак карыстальніцкага поля"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Název vlastního pole"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel des benutzerdefinierten Feldes"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Τίτλος προσαρμοσμένου πεδίου"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Custom field title"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título del campo personalizado"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título del campo personalizado"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oman kentän nimi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titre du champ personnalisé"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titolo del campo personalizzato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "カスタムフィールドのタイトル"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მომხმარებლის ველის სათაური"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용자 지정 필드 이름"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nazwa pola niestandardowego"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome do campo personalizado"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título do campo personalizado"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titlu câmp personal"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Názov vlastného poľa"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anpassad fältrubrik"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Özel alan başlığı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Заголовок власного поля"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tên trường tùy chọn"
           }
         }
       }
@@ -19586,6 +19595,30 @@
         }
       }
     },
+    "E.g., Recovery key, PIN" : {
+      "comment" : "Placeholder of hidden custom field",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g, Recovery key, PIN"
+          }
+        }
+      }
+    },
+    "E.g., User ID, Acct number" : {
+      "comment" : "Placeholder of text custom field",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g., User ID, Acct number"
+          }
+        }
+      }
+    },
     "edit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -19996,137 +20029,275 @@
         }
       }
     },
-    "Edit title" : {
+    "Edit field name" : {
+      "comment" : "Title of the dialog when editing a custom field's name",
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Рэдагаваць назву"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Upravit název"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Titel bearbeiten"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Επεξεργασία τίτλου"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit title"
+            "value" : "Edit field name"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Editar título"
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Editar título"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Muokkaa nimeä"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Modifier le titre"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Modifica titolo"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "タイトルを編集"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "სათაურის ჩასწორება"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "제목 수정"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Edytuj tytuł"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Editar o título"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Editar título"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Editare titlu"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Upraviť názov"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Redigera rubrik"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Başlığı düzenle"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Редагувати заголовок"
           }
         },
         "vi" : {
           "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sửa tiêu đề"
+          }
+        }
+      }
+    },
+    "Edit name" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Рэдагаваць назву"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Upravit název"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Titel bearbeiten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Επεξεργασία τίτλου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
             "state" : "translated",
+            "value" : "Edit name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Editar título"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Editar título"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Muokkaa nimeä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Modifier le titre"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Modifica titolo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "タイトルを編集"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "სათაურის ჩასწორება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "제목 수정"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Edytuj tytuł"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Editar o título"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Editar título"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Editare titlu"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Upraviť názov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Redigera rubrik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Başlığı düzenle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Редагувати заголовок"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Sửa tiêu đề"
           }
         }
@@ -21099,6 +21270,142 @@
         }
       }
     },
+    "Enjoy next-level password management" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Для кіравання паролямі на новым узроўні:"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pro správu hesel na vyšší úrovni:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Für die nächste Stufe der Passwortverwaltung:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Για διαχείριση κωδικών πρόσβασης επόμενου επιπέδου:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enjoy next-level password management"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para una gestión de contraseñas de nivel superior:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para una gestión de contraseñas de nivel superior:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Seuraavan tason salasanahallintaan:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tout ce qu'il vous faut pour gérer vos mots de passe de façon optimale :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Per una gestione delle password di livello superiore:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "次のレベルのパスワード管理の場合:"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "შემდეგი დონის პაროლების მართვისთვის:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "차세대 비밀번호 관리를 위해:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zarządzanie hasłami na wyższym poziomie:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para uma gestão de palavras-passe de nível superior:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Para gerenciamento de senhas avançado:"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pentru gestionarea parolelor la nivel superior:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pre správu hesiel na vyššej úrovni:"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "För nästa nivå av lösenordshantering:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gelecek nesil parola yönetimi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Керування паролями нового рівня:"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Để quản lý mật khẩu cao cấp hơn:"
+          }
+        }
+      }
+    },
     "Enjoy the magic of AutoFill" : {
       "comment" : "Onboarding: Titles of the steps",
       "extractionState" : "manual",
@@ -21237,412 +21544,275 @@
         }
       }
     },
-    "Enjoy your free trial" : {
-      "comment" : "Info banners",
+    "Enter a field name" : {
+      "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Атрымлівайце асалоду ад бясплатнай выпрабавальнай версіі"
+            "state" : "needs_review",
+            "value" : "Загаловак карыстальніцкага поля"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Užijte si bezplatnou zkušební verzi"
+            "state" : "needs_review",
+            "value" : "Název vlastního pole"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Genieße deine kostenlose Testversion"
+            "state" : "needs_review",
+            "value" : "Titel des benutzerdefinierten Feldes"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Απολαύστε τη δωρεάν δοκιμή σας"
+            "state" : "needs_review",
+            "value" : "Τίτλος προσαρμοσμένου πεδίου"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enjoy your free trial"
+            "value" : "Enter a field name"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disfruta de tu prueba gratuita"
+            "state" : "needs_review",
+            "value" : "Título del campo personalizado"
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disfrute de su prueba gratuita"
+            "state" : "needs_review",
+            "value" : "Título del campo personalizado"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nauti ilmaisesta kokeilusta"
+            "state" : "needs_review",
+            "value" : "Oman kentän nimi"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profitez de votre essai gratuit."
+            "state" : "needs_review",
+            "value" : "Titre du champ personnalisé"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Goditi la tua prova gratuita"
+            "state" : "needs_review",
+            "value" : "Titolo del campo personalizzato"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "無料トライアルをお楽しみください"
+            "state" : "needs_review",
+            "value" : "カスタムフィールドのタイトル"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "ისიამოვნეთ თქვენი უფასო სატესტო ვერსიით"
+            "state" : "needs_review",
+            "value" : "მომხმარებლის ველის სათაური"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "무료 체험을 즐겨보세요"
+            "state" : "needs_review",
+            "value" : "사용자 지정 필드 이름"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ciesz się darmową wersją próbną"
+            "state" : "needs_review",
+            "value" : "Nazwa pola niestandardowego"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aproveite o seu período de teste gratuito"
+            "state" : "needs_review",
+            "value" : "Nome do campo personalizado"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aproveite sua avaliação gratuita"
+            "state" : "needs_review",
+            "value" : "Título do campo personalizado"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bucurați-vă de versiunea de încercare"
+            "state" : "needs_review",
+            "value" : "Titlu câmp personal"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Užite si bezplatné skúšobné obdobie"
+            "state" : "needs_review",
+            "value" : "Názov vlastného poľa"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Njut av din gratis provperiod"
+            "state" : "needs_review",
+            "value" : "Anpassad fältrubrik"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ücretsiz denemenizin tadını çıkarın"
+            "state" : "needs_review",
+            "value" : "Özel alan başlığı"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Оцініть усі переваги з безплатною пробною версією"
+            "state" : "needs_review",
+            "value" : "Заголовок власного поля"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
+            "state" : "needs_review",
+            "value" : "Tên trường tùy chọn"
           }
         }
       }
     },
-    "Enter a title for your custom field" : {
+    "Enter new name for « %@ »" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Увядзіце загаловак для вашага карыстальніцкага поля"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zadejte název vlastního pole"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gib einen Titel für dein benutzerdefiniertes Feld ein."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Εισαγάγετε ένα τίτλο για το προσαρμοσμένο πεδίο σας"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter a title for your custom field"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Introduce un título para tu campo personalizado."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Introduzca un título para su campo personalizado."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Syötä omalle kentälle nimi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saisissez un titre pour votre champ personnalisé."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inserisci un titolo per il tuo campo personalizzato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "カスタムフィールドのタイトルを入力してください"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შეიყვანეთ თქვენი ხელით მითითებული ველის სათაური"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용자 지정 필드 이름을 입력하세요"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wpisz nazwę pola niestandardowego"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Introduza um nome para o seu campo personalizado"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Insira um título para o seu campo personalizado"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Introduceți un titlu pentru câmpul personal"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zadajte názov vlastného poľa"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ange en rubrik för ditt anpassade fält"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Özel alanınız için başlık yazın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Введіть заголовок власного поля"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhập tiêu đề cho trường tùy chỉnh của bạn"
-          }
-        }
-      }
-    },
-    "Enter new title for « %@ »" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Увядзіце новы загаловак для « %@ »"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Zadejte nový název pro « %@ »"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Gib den neuen Titel für \"%@\" ein"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Εισαγάγετε νέο τίτλο για το « %@ »"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter new title for « %@ »"
+            "value" : "Enter new name for « %@ »"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Introduce un nuevo título para \" %@ \""
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Ingrese un título nuevo para \" %@ \""
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Syötä uusi nimi holville \"%@\""
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Saisissez un nouveau titre pour « %@ »."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Inserisci un nuovo titolo per « %@ »"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "« %@ » の新しいタイトルを入力してください"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "შეიყვანეთ ახალი სათაური „%@“-სთვის"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "« %@ »의 새 이름을 입력하세요"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Wpisz nowy tytuł dla « %@ »"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Introduza um novo nome para « %@ »"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Insira um novo nome para « %@ »"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Introduceți titlul nou pentru „%@”"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Zadajte nový názov pre « %@ »"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Ange ny rubrik för « %@ »"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "« %@ » için yeni bir başlık yazın"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Введіть новий заголовок для « %@ »"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Nhập tiêu đề mới cho « %@ »"
           }
         }
@@ -21921,137 +22091,137 @@
         }
       }
     },
-    "Expires on" : {
+    "Expiration date" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Дзейнічае да"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Vyprší"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Verfällt am"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Λήγει στις"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Expires on"
+            "value" : "Expiration date"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Expira el"
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Expira el"
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Voimassaolo päättyy"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Expire le"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Scade il"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "有効期限"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "ვადა იწურება"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "만료 시기"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Wygasa"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Expira em"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Válido até"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Expiră la"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Exspiruje"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Löper ut den"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Son kullanma tarihi"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Діє до"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Hết hạn vào"
           }
         }
@@ -23025,143 +23195,6 @@
         }
       }
     },
-    "For next-level password management:" : {
-      "comment" : "Trial page",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Для кіравання паролямі на новым узроўні:"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pro správu hesel na vyšší úrovni:"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Für die nächste Stufe der Passwortverwaltung:"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Για διαχείριση κωδικών πρόσβασης επόμενου επιπέδου:"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For next-level password management:"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para una gestión de contraseñas de nivel superior:"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para una gestión de contraseñas de nivel superior:"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seuraavan tason salasanahallintaan:"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tout ce qu'il vous faut pour gérer vos mots de passe de façon optimale :"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Per una gestione delle password di livello superiore:"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "次のレベルのパスワード管理の場合:"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შემდეგი დონის პაროლების მართვისთვის:"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "차세대 비밀번호 관리를 위해:"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zarządzanie hasłami na wyższym poziomie:"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para uma gestão de palavras-passe de nível superior:"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para gerenciamento de senhas avançado:"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pentru gestionarea parolelor la nivel superior:"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pre správu hesiel na vyššej úrovni:"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "För nästa nivå av lösenordshantering:"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gelecek nesil parola yönetimi"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Керування паролями нового рівня:"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Để quản lý mật khẩu cao cấp hơn:"
-          }
-        }
-      }
-    },
     "Force synchronization" : {
       "localizations" : {
         "be" : {
@@ -23704,143 +23737,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dùng thử miễn phí"
-          }
-        }
-      }
-    },
-    "Full name" : {
-      "comment" : "Credit card item create/edit page",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Поўнае імя"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jméno a příjmení"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vollständiger Name"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ονοματεπώνυμο"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full name"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nombre completo"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nombre completo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Koko nimi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nom complet"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome completo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フルネーム"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "სრული სახელი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "본인 이름"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imię i nazwisko"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome completo"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome completo"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Numele complet"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Meno a priezvisko"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fullständigt namn"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tam ad"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Повне ім'я"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tên đầy đủ"
           }
         }
       }
@@ -24394,6 +24290,143 @@
         }
       }
     },
+    "Goodbye spam and scams" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Выкарыстоўваць псеўданімы электроннай пошты"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Použít e-mailové aliasy"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "E-Mail-Aliasse verwenden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Χρήση ψευδωνύμων ηλεκτρονικού ταχυδρομείου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goodbye spam and scams"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utilizar los alias de correo electrónico"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Use los alias de correo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Käytä sähköpostialiaksia"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utilisez des alias d'adresse e-mail"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Usa gli alias email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "メールエイリアスを使用"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ელფოსტის ფსევდონიმების გამოყენება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이메일 별명 사용"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Użyj aliasu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utilize 'aliases' de e-mail"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Usar aliases de e-mail"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Folosire alias e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Použiť emailový alias"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Använd e-postalias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "E-posta takma adlarını kullanın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Використовуйте псевдоніми електронної пошти"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sử dụng email bí danh"
+          }
+        }
+      }
+    },
     "Help center" : {
       "localizations" : {
         "be" : {
@@ -24663,6 +24696,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ẩn"
+          }
+        }
+      }
+    },
+    "Hidden custom field" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidden custom field"
           }
         }
       }
@@ -30336,7 +30379,7 @@
         }
       }
     },
-    "Memorable Password" : {
+    "Memorable password" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -30366,7 +30409,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Memorable Password"
+            "value" : "Memorable password"
           }
         },
         "es" : {
@@ -31566,6 +31609,144 @@
         }
       }
     },
+    "Name on card" : {
+      "comment" : "Credit card item create/edit page",
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Поўнае імя"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Jméno a příjmení"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Vollständiger Name"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ονοματεπώνυμο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name on card"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nombre completo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nombre completo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Koko nimi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nom complet"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nome completo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "フルネーム"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "სრული სახელი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "본인 이름"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Imię i nazwisko"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nome completo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nome completo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Numele complet"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Meno a priezvisko"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Fullständigt namn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tam ad"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Повне ім'я"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tên đầy đủ"
+          }
+        }
+      }
+    },
     "Never" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -31699,143 +31880,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không bao giờ"
-          }
-        }
-      }
-    },
-    "New title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Новы загаловак"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nový název"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neuer Titel"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Νέος τίτλος"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New title"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuevo título"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título nuevo"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uusi nimi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nouveau titre"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuovo titolo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "新しいタイトル"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ახალი სათაური"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "새 이름"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nowy tytuł"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Novo título"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Novo título"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titlu nou"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nový názov"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ny rubrik"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yeni başlık"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Новий заголовок"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tiêu đề mới"
           }
         }
       }
@@ -35427,6 +35471,142 @@
         }
       }
     },
+    "Our welcome gift to you" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Атрымлівайце асалоду ад бясплатнай выпрабавальнай версіі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užijte si bezplatnou zkušební verzi"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Genieße deine kostenlose Testversion"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Απολαύστε τη δωρεάν δοκιμή σας"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Our welcome gift to you"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfruta de tu prueba gratuita"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfrute de su prueba gratuita"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nauti ilmaisesta kokeilusta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Profitez de votre essai gratuit."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Goditi la tua prova gratuita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "無料トライアルをお楽しみください"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ისიამოვნეთ თქვენი უფასო სატესტო ვერსიით"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "무료 체험을 즐겨보세요"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ciesz się darmową wersją próbną"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite o seu período de teste gratuito"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite sua avaliação gratuita"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bucurați-vă de versiunea de încercare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užite si bezplatné skúšobné obdobie"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Njut av din gratis provperiod"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ücretsiz denemenizin tadını çıkarın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Оцініть усі переваги з безплатною пробною версією"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
+          }
+        }
+      }
+    },
     "Owner" : {
       "comment" : "Share access level",
       "extractionState" : "manual",
@@ -38215,143 +38395,6 @@
         }
       }
     },
-    "Protect your inbox against spams and phishings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Абараніце сваю электронную скрыню ад спама і фішынга"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chraňte svou schránku před spamem a phishingem"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schütze dein Postfach vor Spam und Phishing"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Προστατέψτε τα εισερχόμενά σας από ανεπιθύμητα μηνύματα και phishing"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protect your inbox against spams and phishings"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protege tu buzón contra spam y suplantaciones de identidad."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteja su buzón contra spam y suplantaciones de identidad."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suojaa postilaatikkoasi roskapostilta ja tietojenkalastelulta"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protégez votre messagerie contre les indésirables/spam et le phishing/hameçonnage."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteggi la tua posta in arrivo da spam e phishing"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スパムやフィッシングから受信トレイを守る"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "დაიცავით თქვენი საფოსტო ყუთი სპამისა და ფიშინგისგან"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "편지함을 스팸과 피싱으로부터 보호하세요."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chroń pocztę przed spamem i phishingiem"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteja o seu correio eletrónico de 'spams' e 'phishings'"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proteja sua caixa de entrada contra spams e phishings"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protejați-vă adresa de e-mail de mesaje abuzive și înșelăciuni"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chráňte svoju schránku pred spamom a phishingom"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skydda din inkorg mot skräppost och nätfiske"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gelen kutunuzu istenmeyen ve sahtecilik e-postalarından koruyun"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Захистіть поштову скриньку від спаму та шахрайства"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bảo vệ hộp thư đến của bạn khỏi thư rác và lừa đảo"
-          }
-        }
-      }
-    },
     "Protect your most sensitive data" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -38761,7 +38804,7 @@
         }
       }
     },
-    "Random Password" : {
+    "Random password" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
@@ -38791,7 +38834,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Random Password"
+            "value" : "Random password"
           }
         },
         "es" : {
@@ -41811,6 +41854,279 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bảo mật"
+          }
+        }
+      }
+    },
+    "Security code" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Праверачны нумар"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Číslo pro ověření"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kartenprüfnummer"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Αριθμός επαλήθευσης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security code"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Número de verificación"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Número de verificación"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Turvakoodi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Numéro de vérification"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Codice di verifica"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "検証番号"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "გადამოწმების ნომერი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "인증 번호"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kod CCV"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Número de verificação"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Número de verificação"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Număr de verificare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Overovacie číslo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Verifieringsnummer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Güvenlik kodu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Номер підтвердження"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Số CVV"
+          }
+        }
+      }
+    },
+    "Security code copied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Праверачны нумар скапіяваны"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Číslo pro ověření zkopírováno"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kartenprüfnummer kopiert"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ο αριθμός επαλήθευσης αντιγράφηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security code copied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "El número de verificación ha sido copiado."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "El número de verificación fue copiado."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Turvakoodi kopioitiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Le numéro de vérification a été copié."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Numero di verifica copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "認証番号をコピーしました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "გადამოწმების ნომერი დაკოპირდა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "인증 번호 복사됨"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kod CCV został skopiowany"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Número de verificação copiado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Número de verificação copiado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Număr de verificare a fost copiat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Overovacie číslo skopírované"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Verifieringsnummer kopierat"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Güvenlik kodu kopyalandı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Номер підтвердження скопійовано"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Đã sao chép số CVV"
           }
         }
       }
@@ -45983,6 +46299,16 @@
         }
       }
     },
+    "Text custom field" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text custom field"
+          }
+        }
+      }
+    },
     "The app is now ready to use" : {
       "localizations" : {
         "be" : {
@@ -47219,143 +47545,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiêu đề (Z-A)"
-          }
-        }
-      }
-    },
-    "Title of the custom field" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Загаловак карыстальніцкага поля"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Název vlastního pole"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel des benutzerdefinierten Feldes"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Τίτλος του προσαρμοσμένου πεδίου"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Title of the custom field"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título del campo personalizado"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título del campo personalizado"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oman kentän nimi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titre du champ personnalisé"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titolo del campo personalizzato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "カスタムフィールドのタイトル"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მომხმარებლის ველის სათაური"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용자 지정 필드의 이름"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nazwa pola niestandardowego"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome do campo personalizado"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título do campo personalizado"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titlu câmp personal"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Názov vlastného poľa"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rubrik på anpassade fältet"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Özel alanın başlığı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Заголовок власного поля"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tên của trường tùy chỉnh"
           }
         }
       }
@@ -50978,142 +51167,6 @@
         }
       }
     },
-    "Upgrade to keep these features" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Палепшыць, каб пакінуць гэтыя функцыі"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Navyšte tarif pro zachování těchto funkcí"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade, um diese Funktionen zu behalten"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αναβάθμιση για να διατηρήσετε αυτές τις δυνατότητες"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade to keep these features"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mejora tu plan para mantener estas funciones"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Actualice para mantener estas funciones"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Säilytä ominaisuudet päivittämällä tilauksesi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Changer d'abonnement pour garder ces fonctionnalités."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effettua l'upgrade per mantenere queste funzionalità"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "これらの機能を維持するためにアップグレードする"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ასწიეთ ტარიფი ამ თვისებების შესანარჩუნებლად"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 기능을 계속 누리려면 업그레이드"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ulepsz konto, aby zachować te funkcje"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atualize para manter estas funcionalidades"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Faça upgrade para manter esses recursos"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modificați planul pentru a păstra aceste parole"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Navýšte predplatné pre zachovanie týchto funkcií"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uppgradera för att behålla dessa funktioner"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu özelliği tutmak için tarifenizi yükseltin"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Щоб і надалі користуватися цими функціями, передплатіть тарифний план"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nâng cấp để giữ những tính năng này"
-          }
-        }
-      }
-    },
     "Use %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -51251,139 +51304,139 @@
         }
       }
     },
-    "Use email aliases" : {
+    "Use email aliases to protect your inbox and identity" : {
       "extractionState" : "manual",
       "localizations" : {
         "be" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выкарыстоўваць псеўданімы электроннай пошты"
+            "state" : "needs_review",
+            "value" : "Абараніце сваю электронную скрыню ад спама і фішынга"
           }
         },
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Použít e-mailové aliasy"
+            "state" : "needs_review",
+            "value" : "Chraňte svou schránku před spamem a phishingem"
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-Mail-Aliasse verwenden"
+            "state" : "needs_review",
+            "value" : "Schütze dein Postfach vor Spam und Phishing"
           }
         },
         "el" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Χρήση ψευδωνύμων ηλεκτρονικού ταχυδρομείου"
+            "state" : "needs_review",
+            "value" : "Προστατέψτε τα εισερχόμενά σας από ανεπιθύμητα μηνύματα και phishing"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use email aliases"
+            "value" : "Use email aliases to protect your inbox and identity"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utilizar los alias de correo electrónico"
+            "state" : "needs_review",
+            "value" : "Protege tu buzón contra spam y suplantaciones de identidad."
           }
         },
         "es-419" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use los alias de correo"
+            "state" : "needs_review",
+            "value" : "Proteja su buzón contra spam y suplantaciones de identidad."
           }
         },
         "fi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Käytä sähköpostialiaksia"
+            "state" : "needs_review",
+            "value" : "Suojaa postilaatikkoasi roskapostilta ja tietojenkalastelulta"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utilisez des alias d'adresse e-mail"
+            "state" : "needs_review",
+            "value" : "Protégez votre messagerie contre les indésirables/spam et le phishing/hameçonnage."
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usa gli alias email"
+            "state" : "needs_review",
+            "value" : "Proteggi la tua posta in arrivo da spam e phishing"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "メールエイリアスを使用"
+            "state" : "needs_review",
+            "value" : "スパムやフィッシングから受信トレイを守る"
           }
         },
         "ka" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელფოსტის ფსევდონიმების გამოყენება"
+            "state" : "needs_review",
+            "value" : "დაიცავით თქვენი საფოსტო ყუთი სპამისა და ფიშინგისგან"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "이메일 별명 사용"
+            "state" : "needs_review",
+            "value" : "편지함을 스팸과 피싱으로부터 보호하세요."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Użyj aliasu"
+            "state" : "needs_review",
+            "value" : "Chroń pocztę przed spamem i phishingiem"
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utilize 'aliases' de e-mail"
+            "state" : "needs_review",
+            "value" : "Proteja o seu correio eletrónico de 'spams' e 'phishings'"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usar aliases de e-mail"
+            "state" : "needs_review",
+            "value" : "Proteja sua caixa de entrada contra spams e phishings"
           }
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Folosire alias e-mail"
+            "state" : "needs_review",
+            "value" : "Protejați-vă adresa de e-mail de mesaje abuzive și înșelăciuni"
           }
         },
         "sk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Použiť emailový alias"
+            "state" : "needs_review",
+            "value" : "Chráňte svoju schránku pred spamom a phishingom"
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Använd e-postalias"
+            "state" : "needs_review",
+            "value" : "Skydda din inkorg mot skräppost och nätfiske"
           }
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-posta takma adlarını kullanın"
+            "state" : "needs_review",
+            "value" : "Gelen kutunuzu istenmeyen ve sahtecilik e-postalarından koruyun"
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Використовуйте псевдоніми електронної пошти"
+            "state" : "needs_review",
+            "value" : "Захистіть поштову скриньку від спаму та шахрайства"
           }
         },
         "vi" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sử dụng email bí danh"
+            "state" : "needs_review",
+            "value" : "Bảo vệ hộp thư đến của bạn khỏi thư rác và lừa đảo"
           }
         }
       }
@@ -52810,279 +52863,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vaults can’t contain more than 10 users."
-          }
-        }
-      }
-    },
-    "Verification number" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Праверачны нумар"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Číslo pro ověření"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kartenprüfnummer"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αριθμός επαλήθευσης"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verification number"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Número de verificación"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Número de verificación"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Turvakoodi"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Numéro de vérification"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Codice di verifica"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "検証番号"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გადამოწმების ნომერი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "인증 번호"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kod CCV"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Número de verificação"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Número de verificação"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Număr de verificare"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Overovacie číslo"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verifieringsnummer"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Güvenlik kodu"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Номер підтвердження"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Số CVV"
-          }
-        }
-      }
-    },
-    "Verification number copied" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Праверачны нумар скапіяваны"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Číslo pro ověření zkopírováno"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kartenprüfnummer kopiert"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ο αριθμός επαλήθευσης αντιγράφηκε"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verification number copied"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El número de verificación ha sido copiado."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El número de verificación fue copiado."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Turvakoodi kopioitiin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le numéro de vérification a été copié."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Numero di verifica copiato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "認証番号をコピーしました"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გადამოწმების ნომერი დაკოპირდა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "인증 번호 복사됨"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kod CCV został skopiowany"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Número de verificação copiado"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Número de verificação copiado"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Număr de verificare a fost copiat."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Overovacie číslo skopírované"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verifieringsnummer kopierat"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Güvenlik kodu kopyalandı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Номер підтвердження скопійовано"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Đã sao chép số CVV"
           }
         }
       }
@@ -56563,6 +56343,142 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kho lưu trữ của bạn trống"
+          }
+        }
+      }
+    },
+    "Your welcome gift" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Атрымлівайце асалоду ад бясплатнай выпрабавальнай версіі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užijte si bezplatnou zkušební verzi"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Genieße deine kostenlose Testversion"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Απολαύστε τη δωρεάν δοκιμή σας"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your welcome gift"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfruta de tu prueba gratuita"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Disfrute de su prueba gratuita"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nauti ilmaisesta kokeilusta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Profitez de votre essai gratuit."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Goditi la tua prova gratuita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "無料トライアルをお楽しみください"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ისიამოვნეთ თქვენი უფასო სატესტო ვერსიით"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "무료 체험을 즐겨보세요"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ciesz się darmową wersją próbną"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite o seu período de teste gratuito"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aproveite sua avaliação gratuita"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bucurați-vă de versiunea de încercare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Užite si bezplatné skúšobné obdobie"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Njut av din gratis provperiod"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ücretsiz denemenizin tadını çıkarın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Оцініть усі переваги з безплатною пробною версією"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tận hưởng bản dùng thử miễn phí của bạn"
           }
         }
       }
