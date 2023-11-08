@@ -1,6 +1,6 @@
 //
-// Access.swift
-// Proton Pass - Created on 16/10/2023.
+// NSPersistentContainer+Extensions.swift
+// Proton Pass - Created on 07/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,18 +17,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Foundation
+import CoreData
 
-public struct Access: Decodable, Equatable, Sendable {
-    public let plan: Plan
-    public let pendingInvites: Int
-    public let waitingNewUserInvites: Int
+public extension NSPersistentContainer {
+    static func model(for name: String) -> NSManagedObjectModel {
+        guard let url = Bundle.module.url(forResource: name, withExtension: "momd")
+        else { fatalError("Could not get URL for model: \(name)") }
 
-    public init(plan: Plan, pendingInvites: Int, waitingNewUserInvites: Int) {
-        self.plan = plan
-        self.pendingInvites = pendingInvites
-        self.waitingNewUserInvites = waitingNewUserInvites
+        guard let model = NSManagedObjectModel(contentsOf: url)
+        else { fatalError("Could not get model for: \(url)") }
+
+        return model
     }
 }

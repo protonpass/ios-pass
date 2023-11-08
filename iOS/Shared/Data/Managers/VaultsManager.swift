@@ -41,7 +41,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
+    private var loginMethod = resolve(\SharedDataContainer.loginMethod)
     private var symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private var isRefreshing = false
 
@@ -63,6 +63,15 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     var hasOnlyOneOwnedVault: Bool {
         getAllVaults().numberOfOwnedVault <= 1
+    }
+
+    @MainActor
+    func reset() {
+        state = .loading
+        vaultSelection = .all
+        filterOption = .all
+        itemCount = .zero
+        currentVaults.send([])
     }
 }
 
@@ -144,7 +153,7 @@ private extension VaultsManager {
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
 
-        if manualLogIn {
+        if await loginMethod.isManualLogIn() {
             try await indexAllLoginItems(ignorePreferences: false)
         } else {
             Task.detached(priority: .background) { [weak self] in
@@ -167,10 +176,10 @@ extension VaultsManager {
         }
     }
 
+    @MainActor
     func asyncRefresh() async throws {
         guard !isRefreshing else { return }
         defer { isRefreshing = false }
-
         do {
             // No need to show loading indicator once items are loaded beforehand.
             var cryptoErrorOccured = false
@@ -184,10 +193,10 @@ extension VaultsManager {
                 state = .loading
             }
 
-            if manualLogIn {
+            if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
                 try await fullSync()
-                manualLogIn = false
+                await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
             } else if cryptoErrorOccured {
                 logger.info("Crypto error occured. Doing full sync")
