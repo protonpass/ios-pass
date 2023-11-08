@@ -156,8 +156,11 @@ final class APIManager {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                guard let self, let userData = appData.getUserData() else { return }
-                authHelper.onSessionObtaining(credential: userData.getCredential)
+                guard let self else { return }
+                appData.invalidateCachedUserData()
+                if let userData = appData.getUserData() {
+                    authHelper.onSessionObtaining(credential: userData.getCredential)
+                }
             }
             .store(in: &cancellables)
     }
