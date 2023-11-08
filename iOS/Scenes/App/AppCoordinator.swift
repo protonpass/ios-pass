@@ -25,6 +25,7 @@ import CoreData
 import CryptoKit
 import DesignSystem
 import Factory
+import Macro
 import MBProgressHUD
 import ProtonCoreAuthentication
 import ProtonCoreFeatureSwitch
@@ -129,16 +130,7 @@ final class AppCoordinator {
         homepageCoordinator = nil
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
-            switch reason {
-            case .expiredRefreshToken:
-                alertRefreshTokenExpired()
-            case .failedBiometricAuthentication:
-                alertFailedBiometricAuthentication()
-            case .sessionInvalidated:
-                alertSessionInvalidated()
-            default:
-                break
-            }
+            handle(logOutReason: reason)
         }
     }
 
@@ -205,13 +197,27 @@ final class AppCoordinator {
             }
         }
     }
+}
 
-    private func alertRefreshTokenExpired() {
-        let alert = UIAlertController(title: "Your session is expired",
-                                      message: "Please log in again",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
+private extension AppCoordinator {
+    /// Show an alert with a single "OK" button that does nothing
+    func alert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(.init(title: #localized("OK"), style: .default))
         rootViewController?.present(alert, animated: true)
+    }
+
+    func handle(logOutReason: LogOutReason) {
+        switch logOutReason {
+        case .expiredRefreshToken, .sessionInvalidated:
+            alert(title: #localized("Your session is expired"),
+                  message: #localized("Please log in again"))
+        case .failedBiometricAuthentication:
+            alert(title: #localized("Failed to authenticate"),
+                  message: #localized("Please log in again"))
+        default:
+            break
+        }
     }
 }
 
@@ -220,22 +226,6 @@ final class AppCoordinator {
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
         appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
-    }
-
-    private func alertSessionInvalidated() {
-        let alert = UIAlertController(title: "Error occured",
-                                      message: "Your session was invalidated",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
-        rootViewController?.present(alert, animated: true)
-    }
-
-    private func alertFailedBiometricAuthentication() {
-        let alert = UIAlertController(title: "Failed to authenticate",
-                                      message: "You have to log in again in order to continue using Proton Pass",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
-        rootViewController?.present(alert, animated: true)
     }
 }
 
