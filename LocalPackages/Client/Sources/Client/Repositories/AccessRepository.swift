@@ -18,16 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import Entities
 
-public protocol AccessRepositoryDelegate: AnyObject {
-    func accessRepositoryDidUpdateToNewPlan()
-}
-
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
-    var delegate: AccessRepositoryDelegate? { get set }
+    var didUpdateToNewPlan: PassthroughSubject<Bool, Never> { get }
 
     /// Get from local, refresh if not exist
     func getAccess() async throws -> Access
@@ -39,13 +36,13 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     func refreshAccess() async throws -> Access
 }
 
-public final class AccessRepository: AccessRepositoryProtocol {
+public actor AccessRepository: AccessRepositoryProtocol {
     private let localDatasource: LocalAccessDatasourceProtocol
     private let remoteDatasource: RemoteAccessDatasourceProtocol
     private let userDataProvider: UserDataProvider
     private let logger: Logger
 
-    public weak var delegate: AccessRepositoryDelegate?
+    public nonisolated let didUpdateToNewPlan: PassthroughSubject<Bool, Never> = .init()
 
     public init(localDatasource: LocalAccessDatasourceProtocol,
                 remoteDatasource: RemoteAccessDatasourceProtocol,
@@ -86,7 +83,7 @@ public extension AccessRepository {
         if let localAccess = try await localDatasource.getAccess(userId: userId),
            localAccess.plan != remoteAccess.plan {
             logger.info("New plan found")
-            delegate?.accessRepositoryDidUpdateToNewPlan()
+            didUpdateToNewPlan.send(true)
         }
 
         logger.trace("Upserting access for user \(userId)")

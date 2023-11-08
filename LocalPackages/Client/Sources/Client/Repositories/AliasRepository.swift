@@ -57,7 +57,7 @@ public extension AliasRepositoryProtocol {
     }
 }
 
-public struct AliasRepository: AliasRepositoryProtocol {
+public actor AliasRepository: AliasRepositoryProtocol {
     public let remoteDatasouce: RemoteAliasDatasourceProtocol
 
     public init(remoteDatasouce: RemoteAliasDatasourceProtocol) {
