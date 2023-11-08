@@ -34,7 +34,7 @@ final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
     private init() {}
 
     func autoRegister() {
-        manager.defaultScope = .cached
+        manager.defaultScope = .singleton
     }
 
     func reset() {
@@ -65,8 +65,8 @@ private extension SharedRepositoryContainer {
         SharedToolingContainer.shared.currentDateProvider()
     }
 
-    var container: NSPersistentContainer {
-        SharedDataContainer.shared.container()
+    var databaseService: DatabaseServiceProtocol {
+        SharedServiceContainer.shared.databaseService()
     }
 
     var userDataProvider: UserDataProvider {
@@ -93,7 +93,7 @@ extension SharedRepositoryContainer {
 
     var shareKeyRepository: Factory<ShareKeyRepositoryProtocol> {
         self {
-            ShareKeyRepository(localDatasource: LocalShareKeyDatasource(container: self.container),
+            ShareKeyRepository(localDatasource: LocalShareKeyDatasource(databaseService: self.databaseService),
                                remoteDatasource: RemoteShareKeyDatasource(apiService: self.apiService),
                                logManager: self.logManager,
                                userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider)
@@ -102,9 +102,10 @@ extension SharedRepositoryContainer {
 
     var shareEventIDRepository: Factory<ShareEventIDRepositoryProtocol> {
         self {
-            ShareEventIDRepository(localDatasource: LocalShareEventIDDatasource(container: self.container),
-                                   remoteDatasource: RemoteShareEventIDDatasource(apiService: self.apiService),
-                                   logManager: self.logManager)
+            ShareEventIDRepository(localDatasource: LocalShareEventIDDatasource(databaseService: self
+                                       .databaseService),
+            remoteDatasource: RemoteShareEventIDDatasource(apiService: self.apiService),
+            logManager: self.logManager)
         }
     }
 
@@ -120,7 +121,7 @@ extension SharedRepositoryContainer {
     var itemRepository: Factory<ItemRepositoryProtocol> {
         self {
             ItemRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
-                           localDatasource: LocalItemDatasource(container: self.container),
+                           localDatasource: LocalItemDatasource(databaseService: self.databaseService),
                            remoteDatasource: RemoteItemRevisionDatasource(apiService: self.apiService),
                            shareEventIDRepository: self.shareEventIDRepository(),
                            passKeyManager: self.passKeyManager(),
@@ -130,7 +131,7 @@ extension SharedRepositoryContainer {
 
     var accessRepository: Factory<AccessRepositoryProtocol> {
         self {
-            AccessRepository(localDatasource: LocalAccessDatasource(container: self.container),
+            AccessRepository(localDatasource: LocalAccessDatasource(databaseService: self.databaseService),
                              remoteDatasource: RemoteAccessDatasource(apiService: self.apiService),
                              userDataProvider: self.userDataProvider,
                              logManager: self.logManager)
@@ -139,17 +140,20 @@ extension SharedRepositoryContainer {
 
     var shareRepository: Factory<ShareRepositoryProtocol> {
         self { ShareRepository(userDataSymmetricKeyProvider: self.userDataSymmetricKeyProvider,
-                               localDatasource: LocalShareDatasource(container: self.container),
+                               localDatasource: LocalShareDatasource(databaseService: self.databaseService),
                                remoteDatasouce: RemoteShareDatasource(apiService: self.apiService),
                                passKeyManager: self.passKeyManager(),
                                logManager: self.logManager) }
     }
 
     var publicKeyRepository: Factory<PublicKeyRepositoryProtocol> {
-        self { PublicKeyRepository(localPublicKeyDatasource: LocalPublicKeyDatasource(container: self.container),
-                                   remotePublicKeyDatasource: RemotePublicKeyDatasource(apiService: self
-                                       .apiService),
-                                   logManager: self.logManager) }
+        self {
+            PublicKeyRepository(localPublicKeyDatasource: LocalPublicKeyDatasource(databaseService: self
+                                    .databaseService),
+            remotePublicKeyDatasource: RemotePublicKeyDatasource(apiService: self
+                .apiService),
+            logManager: self.logManager)
+        }
     }
 
     var shareInviteRepository: Factory<ShareInviteRepositoryProtocol> {
@@ -161,7 +165,7 @@ extension SharedRepositoryContainer {
         self {
             // swiftformat:disable:next all
             TelemetryEventRepository(
-                localDatasource: LocalTelemetryEventDatasource(container: self.container),
+                localDatasource: LocalTelemetryEventDatasource(databaseService: self.databaseService),
                 remoteDatasource: RemoteTelemetryEventDatasource(apiService: self.apiService),
                 remoteUserSettingsDatasource: RemoteUserSettingsDatasource(apiService: self
                     .apiService),
@@ -178,7 +182,7 @@ extension SharedRepositoryContainer {
             FeatureFlagsRepository(configuration: FeatureFlagsConfiguration(userId: SharedDataContainer.shared
                                        .appData().getUserData()?.user.ID ?? "",
                 currentBUFlags: FeatureFlagType.self),
-            localDatasource: LocalFeatureFlagsDatasource(container: self.container),
+            localDatasource: LocalFeatureFlagsDatasource(databaseService: self.databaseService),
             remoteDatasource: DefaultRemoteDatasource(apiService: self.apiService))
         }
     }
@@ -191,7 +195,7 @@ extension SharedRepositoryContainer {
     }
 
     var localSearchEntryDatasource: Factory<LocalSearchEntryDatasourceProtocol> {
-        self { LocalSearchEntryDatasource(container: self.container) }
+        self { LocalSearchEntryDatasource(databaseService: self.databaseService) }
     }
 
     var remoteSyncEventsDatasource: Factory<RemoteSyncEventsDatasourceProtocol> {

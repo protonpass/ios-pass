@@ -40,7 +40,7 @@ public protocol ReportRepositoryProtocol: Sendable {
                       and description: String) async throws -> Bool
 }
 
-public final class ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
+public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
     private let apiService: APIService
     private let userDataProvider: UserDataProvider
     private let logger: Logger

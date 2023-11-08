@@ -47,7 +47,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private let container: NSPersistentContainer
     private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
     private var cancellables = Set<AnyCancellable>()
@@ -80,12 +79,10 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     init(rootViewController: UIViewController) {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
-        container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
         self.rootViewController = rootViewController
 
         // Post init
 
-        try? setupSharedData()
         AppearanceSettings.apply()
         setUpRouting()
     }
@@ -95,16 +92,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             showNotLoggedInView()
             return
         }
-        do {
-            try setupSharedData()
 
-            apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                          scopes: userData.scopes)
-            showCredentialsView(serviceIdentifiers: serviceIdentifiers)
-            addNewEvent(type: .autofillDisplay)
-        } catch {
-            alert(error: error)
-        }
+        apiManager.sessionIsAvailable(authCredential: userData.credential,
+                                      scopes: userData.scopes)
+        showCredentialsView(serviceIdentifiers: serviceIdentifiers)
+        addNewEvent(type: .autofillDisplay)
     }
 
     func configureExtension() {
@@ -137,7 +129,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 logger.trace("Autofilling from QuickType bar")
-                try setupSharedData()
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                 if Task.isCancelled {
                     cancelAutoFill(reason: .failed)
@@ -175,30 +166,24 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Biometric authentication
     func provideCredentialWithBiometricAuthentication(for credentialIdentity: ASPasswordCredentialIdentity) {
-        do {
-            try setupSharedData()
-
-            let viewModel = LockedCredentialViewModel(credentialIdentity: credentialIdentity)
-            viewModel.onFailure = { [weak self] error in
-                guard let self else { return }
-                handle(error: error)
-            }
-            viewModel.onSuccess = { [weak self] credential, itemContent in
-                guard let self else { return }
-                Task { [weak self] in
-                    guard let self else { return }
-
-                    try? await completeAutoFill(quickTypeBar: false,
-                                                credential: credential,
-                                                itemContent: itemContent,
-                                                upgradeChecker: upgradeChecker,
-                                                telemetryEventRepository: telemetryEventRepository)
-                }
-            }
-            showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
-        } catch {
+        let viewModel = LockedCredentialViewModel(credentialIdentity: credentialIdentity)
+        viewModel.onFailure = { [weak self] error in
+            guard let self else { return }
             handle(error: error)
         }
+        viewModel.onSuccess = { [weak self] credential, itemContent in
+            guard let self else { return }
+            Task { [weak self] in
+                guard let self else { return }
+
+                try? await completeAutoFill(quickTypeBar: false,
+                                            credential: credential,
+                                            itemContent: itemContent,
+                                            upgradeChecker: upgradeChecker,
+                                            telemetryEventRepository: telemetryEventRepository)
+            }
+        }
+        showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
     }
 }
 
@@ -246,15 +231,6 @@ private extension CredentialProviderCoordinator {
                 }
             }
             .store(in: &cancellables)
-    }
-
-    // swiftlint:enable cyclomatic_complexity
-    func setupSharedData() throws {
-        guard !SharedDataContainer.shared.registered else {
-            return
-        }
-
-        SharedDataContainer.shared.register(container: container, manualLogIn: false)
     }
 
     func handle(error: Error) {
@@ -628,3 +604,5 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
         context.completeExtensionConfigurationRequest()
     }
 }
+
+// swiftlint:enable cyclomatic_complexity

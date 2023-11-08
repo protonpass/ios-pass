@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import Combine
 import Core
 import Entities
 import ProtonCoreServices
@@ -49,7 +50,8 @@ private final class MockedTelemetryOffUserSettingsDatasource: RemoteUserSettings
 }
 
 private final class MockedFreePlanRepository: AccessRepositoryProtocol {
-    weak var delegate: AccessRepositoryDelegate?
+    let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
+    
     let access = Access(plan: .init(type: "free",
                                     internalName: .random(),
                                     displayName: .random(),
@@ -74,8 +76,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        localDatasource = LocalTelemetryEventDatasource(container: .Builder.build(name: kProtonPassContainerName,
-                                                                                  inMemory: true))
+        localDatasource = LocalTelemetryEventDatasource(databaseService: DatabaseService(inMemory: true))
         thresholdProvider = TelemetryThresholdProviderMock()
         userDataProviderMock = UserDataProviderMock()
         userDataProviderMock.stubbedGetUserDataResult = .preview

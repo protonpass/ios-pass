@@ -39,7 +39,7 @@ public protocol ShareKeyRepositoryProtocol {
     func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 }
 
-public final class ShareKeyRepository: ShareKeyRepositoryProtocol {
+public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let localDatasource: LocalShareKeyDatasourceProtocol
     private let remoteDatasource: RemoteShareKeyDatasourceProtocol
     private let logger: Logger

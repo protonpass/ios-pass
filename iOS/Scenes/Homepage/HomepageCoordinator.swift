@@ -60,7 +60,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
-    private let manualLogIn = resolve(\SharedDataContainer.manualLogIn)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -108,11 +108,20 @@ private extension HomepageCoordinator {
     func finalizeInitialization() {
         eventLoop.delegate = self
         itemContextMenuHandler.delegate = self
-        accessRepository.delegate = self
         urlOpener.rootViewController = rootViewController
 
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                           task: refreshInvitations.callAsFunction))
+
+        accessRepository.didUpdateToNewPlan
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                logger.trace("Found new plan, refreshing credential database")
+                homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
+                profileTabViewModel?.refreshPlan()
+            }
+            .store(in: &cancellables)
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
@@ -653,9 +662,9 @@ private extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        guard manualLogIn else { return }
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self,
+                  await loginMethod.isManualLogIn() else { return }
             if let access = try? await accessRepository.getAccess(),
                access.waitingNewUserInvites > 0 {
                 // New user just registered after an invitation
@@ -691,16 +700,6 @@ private extension HomepageCoordinator {
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
-    }
-}
-
-// MARK: - PassPlanRepositoryDelegate
-
-extension HomepageCoordinator: AccessRepositoryDelegate {
-    func accessRepositoryDidUpdateToNewPlan() {
-        logger.trace("Found new plan, refreshing credential database")
-        homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
-        profileTabViewModel?.refreshPlan()
     }
 }
 

@@ -40,7 +40,6 @@ import UIKit
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
-    private var container: NSPersistentContainer
     private var isUITest: Bool
 
     private var homepageCoordinator: HomepageCoordinator?
@@ -55,14 +54,12 @@ final class AppCoordinator {
     private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
 
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
 
-        container = .Builder.build(name: kProtonPassContainerName,
-                                   inMemory: false)
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
@@ -135,19 +132,18 @@ final class AppCoordinator {
     }
 
     private func showHomeScene(manualLogIn: Bool) {
-        SharedDataContainer.shared.reset()
-        SharedDataContainer.shared.register(container: container, manualLogIn: manualLogIn)
-        SharedToolingContainer.shared.resetCache()
-        SharedRepositoryContainer.shared.reset()
-        SharedServiceContainer.shared.reset()
-        SharedViewContainer.shared.reset()
-
-        let homepageCoordinator = HomepageCoordinator()
-        homepageCoordinator.delegate = self
-        self.homepageCoordinator = homepageCoordinator
-        welcomeCoordinator = nil
-        animateUpdateRootViewController(homepageCoordinator.rootViewController) {
-            homepageCoordinator.onboardIfNecessary()
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            await loginMethod.setLogInFlow(newState: manualLogIn)
+            let homepageCoordinator = HomepageCoordinator()
+            homepageCoordinator.delegate = self
+            self.homepageCoordinator = homepageCoordinator
+            welcomeCoordinator = nil
+            animateUpdateRootViewController(homepageCoordinator.rootViewController) {
+                homepageCoordinator.onboardIfNecessary()
+            }
         }
     }
 
@@ -162,36 +158,17 @@ final class AppCoordinator {
 
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
-        appData.setUserData(nil)
-        appData.removeSymmetricKey()
+        appData.resetData()
+        mainKeyProvider.wipeMainKey()
         if includingUnauthSession {
             apiManager.clearCredentials()
-            mainKeyProvider.wipeMainKey()
         }
         preferences.reset(isTests: isUITest)
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else { return }
-            // Do things independently in different `do catch` blocks
-            // because we don't want a failed operation prevents others from running
             do {
-                try await credentialManager.removeAllCredentials()
-                logger.info("Removed all credentials")
-            } catch {
-                logger.error(error)
-            }
-
-            do {
-                // Delete existing persistent stores
-                let storeContainer = container.persistentStoreCoordinator
-                for store in storeContainer.persistentStores {
-                    if let url = store.url {
-                        try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
-                    }
-                }
-
-                // Re-create persistent container
-                container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-                logger.info("Nuked local data")
+                try await SharedServiceContainer.shared.reset()
+                SharedViewContainer.shared.reset()
             } catch {
                 logger.error(error)
             }
