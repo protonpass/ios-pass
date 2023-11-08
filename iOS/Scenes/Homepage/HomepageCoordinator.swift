@@ -108,11 +108,21 @@ private extension HomepageCoordinator {
     func finalizeInitialization() {
         eventLoop.delegate = self
         itemContextMenuHandler.delegate = self
-        accessRepository.delegate = self
         urlOpener.rootViewController = rootViewController
 
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                           task: refreshInvitations.callAsFunction))
+
+        accessRepository.didUpdateToNewPlan
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updated in
+                guard let self,
+                      updated == true else { return }
+                logger.trace("Found new plan, refreshing credential database")
+                homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
+                profileTabViewModel?.refreshPlan()
+            }
+            .store(in: &cancellables)
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
@@ -691,16 +701,6 @@ private extension HomepageCoordinator {
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
-    }
-}
-
-// MARK: - PassPlanRepositoryDelegate
-
-extension HomepageCoordinator: AccessRepositoryDelegate {
-    func accessRepositoryDidUpdateToNewPlan() {
-        logger.trace("Found new plan, refreshing credential database")
-        homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
-        profileTabViewModel?.refreshPlan()
     }
 }
 
