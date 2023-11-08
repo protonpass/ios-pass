@@ -23,13 +23,19 @@ import CoreData
 import Foundation
 
 public protocol DatabaseServiceProtocol {
-    var container: NSPersistentContainer! { get }
+    var container: NSPersistentContainer { get }
 
-    func resetContainer()
+    func resetContainer(inMemory: Bool)
+}
+
+public extension DatabaseServiceProtocol {
+    func resetContainer(inMemory: Bool = false) {
+        resetContainer(inMemory: inMemory)
+    }
 }
 
 public final class DatabaseService: DatabaseServiceProtocol {
-    public private(set) var container: NSPersistentContainer!
+    public private(set) var container: NSPersistentContainer
     private let logger: Logger?
 
     public init(logManager: LogManagerProtocol? = nil, inMemory: Bool = false) {
@@ -38,10 +44,10 @@ public final class DatabaseService: DatabaseServiceProtocol {
         } else {
             logger = nil
         }
-        container = build(name: kProtonPassContainerName, inMemory: inMemory)
+        container = DatabaseService.build(name: kProtonPassContainerName, inMemory: inMemory)
     }
 
-    public func resetContainer() {
+    public func resetContainer(inMemory: Bool = false) {
         do {
             logger?.info("Recreating Store")
             // Delete existing persistent stores
@@ -53,7 +59,7 @@ public final class DatabaseService: DatabaseServiceProtocol {
             }
 
             // Re-create persistent container
-            container = build(name: kProtonPassContainerName, inMemory: false)
+            container = DatabaseService.build(name: kProtonPassContainerName, inMemory: inMemory)
             logger?.info("Nuked local data")
         } catch {
             logger?.error(message: "Failed to reset database container", error: error)
@@ -63,8 +69,8 @@ public final class DatabaseService: DatabaseServiceProtocol {
 
 // MARK: - Utils & Setup
 
-private extension DatabaseServiceProtocol {
-    func build(name: String, inMemory: Bool) -> NSPersistentContainer {
+extension DatabaseService {
+    static func build(name: String, inMemory: Bool) -> NSPersistentContainer {
         let model = NSPersistentContainer.model(for: name)
         let container = NSPersistentContainer(name: name, managedObjectModel: model)
 
