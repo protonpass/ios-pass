@@ -109,6 +109,10 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
         return cachedUnauthSessionCredentials
     }
 
+    func invalidateCachedUserData() {
+        cachedUserData = nil
+    }
+
     func resetData() {
         setUserData(nil)
         removeSymmetricKey()
