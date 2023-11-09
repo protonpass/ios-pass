@@ -69,9 +69,11 @@ final class AppCoordinator {
             isUITest = true
             wipeAllData(includingUnauthSession: true)
         }
+        
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
+                // swiftlint:disable:next discouraged_optional_self
                 self?.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
             }.store(in: &cancellables)
     }
