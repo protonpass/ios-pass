@@ -39,11 +39,14 @@ import ProtonCoreServices
 import SwiftUI
 import UIKit
 
-protocol APIManagerDelegate: AnyObject {
-    func appLoggedOutBecauseSessionWasInvalidated()
+protocol APIManagerProtocol {
+    var sessionWasInvalidated: PassthroughSubject<Void, Never> { get }
+    var credentialFinishedUpdating: CurrentValueSubject<Bool, Never> { get }
+
+    func startCredentialUpdate()
 }
 
-final class APIManager {
+final class APIManager: APIManagerProtocol {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
     private let appData = resolve(\SharedDataContainer.appData)
@@ -57,7 +60,8 @@ final class APIManager {
 
     private var cancellables = Set<AnyCancellable>()
 
-    weak var delegate: APIManagerDelegate?
+    let sessionWasInvalidated: PassthroughSubject<Void, Never> = .init()
+    let credentialFinishedUpdating: CurrentValueSubject<Bool, Never> = .init(false)
 
     init() {
         let trustKitDelegate = PassTrustKitDelegate()
@@ -106,12 +110,11 @@ final class APIManager {
 
         setUpCore()
         fetchUnauthSessionIfNeeded()
-        useNewTokensWhenAppBackToForegound()
     }
 
     func sessionIsAvailable(authCredential: AuthCredential, scopes: Scopes) {
         apiService.setSessionUID(uid: authCredential.sessionID)
-        authHelper.onSessionObtaining(credential: Credential(authCredential, scopes: scopes))
+        apiService.authDelegate?.onSessionObtaining(credential: Credential(authCredential, scopes: scopes))
     }
 
     func clearCredentials() {
@@ -123,18 +126,32 @@ final class APIManager {
         apiService.authDelegate = authHelper
     }
 
-    private static func setUpCertificatePinning(trustKitDelegate: TrustKitDelegate) {
+    /// Function that start the credential update process
+    /// You will need to register to the credentialFinishedUpdating publisher to know when the process if finished as it is async
+    func startCredentialUpdate() {
+        appData.invalidateCachedUserData()
+        if let userData = appData.getUserData() {
+            credentialFinishedUpdating.send(false)
+            apiService.authDelegate?.onSessionObtaining(credential: userData.getCredential)
+        }
+    }
+}
+
+// MARK: - Utils
+
+private extension APIManager {
+    static func setUpCertificatePinning(trustKitDelegate: TrustKitDelegate) {
         TrustKitWrapper.setUp(delegate: trustKitDelegate)
         let trustKit = TrustKitWrapper.current
         PMAPIService.trustKit = trustKit
         PMAPIService.noTrustKit = trustKit == nil
     }
 
-    private func setUpCore() {
+    func setUpCore() {
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 
-    private func fetchUnauthSessionIfNeeded() {
+    func fetchUnauthSessionIfNeeded() {
         apiService.acquireSessionIfNeeded { result in
             switch result {
             case .success:
@@ -149,24 +166,8 @@ final class APIManager {
         }
     }
 
-    // UserData with new access token & refresh token can be updated from AutoFill extension
-    // Update the session of AuthHelper here to take the new tokens into account
-    // Otherwise old token are used and user would be logged out
-    private func useNewTokensWhenAppBackToForegound() {
-        NotificationCenter.default
-            .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                appData.invalidateCachedUserData()
-                if let userData = appData.getUserData() {
-                    authHelper.onSessionObtaining(credential: userData.getCredential)
-                }
-            }
-            .store(in: &cancellables)
-    }
-
     // Create a new instance of UserData with everything copied except credential
-    private func update(userData: UserData, authCredential: AuthCredential) {
+    func update(userData: UserData, authCredential: AuthCredential) {
         let updatedUserData = UserData(credential: authCredential,
                                        user: userData.user,
                                        salts: userData.salts,
@@ -185,7 +186,7 @@ extension APIManager: AuthHelperDelegate {
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out.")
             appData.setUserData(nil)
-            delegate?.appLoggedOutBecauseSessionWasInvalidated()
+            sessionWasInvalidated.send()
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
@@ -200,6 +201,7 @@ extension APIManager: AuthHelperDelegate {
         } else {
             appData.setUnauthCredential(authCredential)
         }
+        credentialFinishedUpdating.send(true)
     }
 }
 

@@ -66,6 +66,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\UseCasesContainer.updateItemsWithLastUsedTime) private var updateItemsWithLastUsedTime
+    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -145,12 +146,20 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.info("App goes back to foreground")
+                apiManager.startCredentialUpdate()
+            }
+            .store(in: &cancellables)
+        
+        apiManager.credentialFinishedUpdating
+            .sink { [weak self] finishedUpdating in
+                guard let self, finishedUpdating else { return }
                 refresh()
                 sendAllEventsIfApplicable()
                 eventLoop.start()
                 eventLoop.forceSync()
                 refreshAccess()
                 refreshItems()
+                refreshFeatureFlags()
             }
             .store(in: &cancellables)
     }

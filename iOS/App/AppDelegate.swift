@@ -32,6 +32,7 @@ import UIKit
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
     @LazyInjected(\UseCasesContainer.updateItemsWithLastUsedTime) private var updateItemsWithLastUsedTime
+    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
 
     private var backgroundTask: Task<Void, Never>?
 
@@ -141,23 +142,26 @@ private extension AppDelegate {
 private extension AppDelegate {
     func handleUpdateLastUsedTime(task: BGProcessingTask) {
         scheduleAppRefresh()
+        apiManager.startCredentialUpdate()
 
         backgroundTask?.cancel()
+        let states = apiManager.credentialFinishedUpdating.values
         backgroundTask = Task { [weak self] in
-            guard let self else {
-                task.setTaskCompleted(success: true)
-                return
-            }
-            if Task.isCancelled {
-                task.setTaskCompleted(success: false)
-                return
-            }
-
-            do {
-                try await updateItemsWithLastUsedTime()
-                task.setTaskCompleted(success: true)
-            } catch {
-                task.setTaskCompleted(success: false)
+            for await state in states where state == true {
+                guard let self else {
+                    task.setTaskCompleted(success: true)
+                    return
+                }
+                if Task.isCancelled {
+                    task.setTaskCompleted(success: false)
+                    return
+                }
+                do {
+                    try await updateItemsWithLastUsedTime()
+                    task.setTaskCompleted(success: true)
+                } catch {
+                    task.setTaskCompleted(success: false)
+                }
             }
         }
     }

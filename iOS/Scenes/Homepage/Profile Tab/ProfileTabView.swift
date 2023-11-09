@@ -73,6 +73,9 @@ struct ProfileTabView: View {
             .background(Color(uiColor: PassColor.backgroundNorm))
             .toolbar { toolbarContent }
         }
+        .onAppear {
+            viewModel.refreshPlan()
+        }
         .navigationViewStyle(.stack)
     }
 
