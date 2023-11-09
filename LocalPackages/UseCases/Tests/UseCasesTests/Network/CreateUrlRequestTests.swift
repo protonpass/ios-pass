@@ -33,7 +33,7 @@ final class CreateUrlRequestTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = MakeUrlRequest()
+        sut = CreateUrlRequest()
     }
 
     override func tearDown() {
@@ -52,6 +52,8 @@ final class CreateUrlRequestTests: XCTestCase {
 
         XCTAssertEqual(request.url?.absoluteString, "https://proton.me/api/v1/test")
         XCTAssertEqual(request.httpMethod, "GET")
+        XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"],
+                       "application/json")
         XCTAssertEqual(request.allHTTPHeaderFields?["X-Enforce-UnauthSession"], "true")
         XCTAssertEqual(request.allHTTPHeaderFields?["x-pm-appversion"], "pass-ios@1.0.0")
         XCTAssertEqual(request.allHTTPHeaderFields?["x-pm-uid"], "test_session_id")
@@ -70,6 +72,8 @@ final class CreateUrlRequestTests: XCTestCase {
 
         XCTAssertEqual(request.url?.absoluteString, "https://proton.me/api/v1/test")
         XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"],
+                       "application/json")
         XCTAssertEqual(request.allHTTPHeaderFields?["X-Enforce-UnauthSession"], "true")
         XCTAssertEqual(request.allHTTPHeaderFields?["x-pm-appversion"], "pass-ios@1.0.0")
         XCTAssertEqual(request.allHTTPHeaderFields?["x-pm-uid"], "test_session_id")

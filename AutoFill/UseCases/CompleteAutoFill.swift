@@ -21,6 +21,8 @@
 import AuthenticationServices
 import Client
 import Core
+import Entities
+import UseCases
 
 protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
@@ -48,23 +50,29 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let context: ASCredentialProviderExtensionContext
     private let logger: Logger
     private let logManager: LogManagerProtocol
+    private let appVersion: String
+    private let userDataProvider: UserDataProvider
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
+    private let updateLastUseTime: UpdateLastUseTimeUseCase
     private let resetFactory: ResetFactoryUseCase
-    private let itemRepository: ItemRepositoryProtocol
 
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
+         appVersion: String,
+         userDataProvider: UserDataProvider,
          clipboardManager: ClipboardManager,
-         itemRepository: ItemRepositoryProtocol,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
+         updateLastUseTime: UpdateLastUseTimeUseCase,
          resetFactory: ResetFactoryUseCase) {
         self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager
-        self.itemRepository = itemRepository
+        self.appVersion = appVersion
+        self.userDataProvider = userDataProvider
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
+        self.updateLastUseTime = updateLastUseTime
         self.resetFactory = resetFactory
     }
 
@@ -97,9 +105,10 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             try await copyTotpTokenAndNotify(itemContent: itemContent,
                                              clipboardManager: clipboardManager,
                                              upgradeChecker: upgradeChecker)
-            try await update(itemContent: itemContent)
-
-            await context.completeRequestAsync(credential: credential)
+            context.completeRequest(withSelectedCredential: credential) { [weak self] _ in
+                guard let self else { return }
+                updateLastUseTime(item: itemContent)
+            }
         } catch {
             // Do nothing but only log the errors
             logger.error(error)
@@ -110,12 +119,25 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     }
 }
 
-private extension ASCredentialProviderExtensionContext {
-    @discardableResult
-    func completeRequestAsync(credential: ASPasswordCredential) async -> Bool {
-        await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
-            completeRequest(withSelectedCredential: credential) { result in
-                continuation.resume(returning: result)
+private extension CompleteAutoFill {
+    func updateLastUseTime(item: ItemIdentifiable) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let credential = try userDataProvider.getUnwrappedUserData().credential
+                let doh = ProtonPassDoH()
+                let baseUrl = doh.defaultHost + doh.defaultPath
+                let code = try await updateLastUseTime(baseUrl: baseUrl,
+                                                       sessionId: credential.sessionID,
+                                                       accessToken: credential.accessToken,
+                                                       appVersion: appVersion,
+                                                       item: item,
+                                                       date: .now)
+                if code == 401 {
+                    print("Log out")
+                }
+            } catch {
+                logger.error(error)
             }
         }
     }

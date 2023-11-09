@@ -43,6 +43,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
     case sharing(SharingErrorReason)
+    case notHttpResponse
+    case badUrlString(String)
 
     public var debugDescription: String {
         switch self {
@@ -86,6 +88,10 @@ public enum PassError: Error, CustomDebugStringConvertible {
             "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
         case let .sharing(reason):
             reason.debugDescription
+        case .notHttpResponse:
+            "Not HTTP response"
+        case let .badUrlString(urlString):
+            "Bad URL \(urlString)"
         }
     }
 }

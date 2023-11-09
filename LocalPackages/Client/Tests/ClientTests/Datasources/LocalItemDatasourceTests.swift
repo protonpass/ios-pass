@@ -299,33 +299,7 @@ extension LocalItemDatasourceTests {
      waitForExpectations(timeout: expectationTimeOut)
      }
      */
-    
-    func testLastUsedTimeItem() async throws {
-        let sharedId = "testSharedId"
-        let itemId = "testItemId"
-        // Given
-        let firstItem = LastUsedTimeItem(shareId: sharedId, itemId: itemId, lastUsedTime: 3)
-        try await sut.upsertLastUseTime(for: firstItem)
-        
-        // When
-        let items = try await sut.getAllLastUsedTimeItems()
-        XCTAssertEqual(items.count, 1)
 
-        let firstItemUpdate = LastUsedTimeItem(shareId: sharedId, itemId: itemId, lastUsedTime: 16)
-        try await sut.upsertLastUseTime(for: firstItemUpdate)
-        let secondItem = LastUsedTimeItem(shareId: sharedId + "2", itemId: itemId + "2", lastUsedTime: 123)
-        try await sut.upsertLastUseTime(for: secondItem)
-        
-        let newItems = try await sut.getAllLastUsedTimeItems()
-        XCTAssertEqual(newItems.count, 2)
-        XCTAssertEqual(newItems.first?.lastUsedTime, 16)
-        XCTAssertEqual(newItems.last?.lastUsedTime, 123)
-        
-        try await sut.removeAllLastUsedTimeItems()
-        let noItems = try await sut.getAllLastUsedTimeItems()
-        XCTAssertEqual(noItems.count, 0)
-    }
-    
     func testGetActiveLogInItems() async throws {
         // Given
         let givenShareId = String.random()
