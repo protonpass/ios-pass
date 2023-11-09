@@ -20,6 +20,7 @@
 
 import Core
 import CryptoKit
+import Entities
 import Foundation
 import ProtonCoreLogin
 
@@ -79,7 +80,7 @@ extension PassKeyManager: PassKeyManagerProtocol {
 
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
         guard let encryptedShareKey = allEncryptedShareKeys.first(where: { $0.shareId == shareId }) else {
-            throw PPClientError.keysNotFound(shareID: shareId)
+            throw PassError.keysNotFound(shareID: shareId)
         }
         return try decryptAndCache(encryptedShareKey)
     }
@@ -101,7 +102,7 @@ extension PassKeyManager: PassKeyManagerProtocol {
 
         guard let encryptedItemKeyData = try latestItemKey.key.base64Decode() else {
             logger.trace("Failed to base 64 decode latest item key \(keyDescription)")
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
 
         let decryptedItemKeyData = try AES.GCM.open(encryptedItemKeyData,
@@ -125,7 +126,7 @@ private extension PassKeyManager {
 
         let decryptedKey = try symmetricKeyProvider.getSymmetricKey().decrypt(encryptedShareKey.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
         let decryptedShareKey = DecryptedShareKey(shareId: encryptedShareKey.shareId,
                                                   keyRotation: encryptedShareKey.shareKey.keyRotation,

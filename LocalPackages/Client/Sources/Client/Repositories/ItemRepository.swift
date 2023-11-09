@@ -398,7 +398,7 @@ public extension ItemRepository {
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Moving \(item.debugInformation) to share \(toShareId)")
         guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
-            throw PPClientError.itemNotFound(item: item)
+            throw PassError.itemNotFound(item)
         }
 
         let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: getSymmetricKey())
@@ -419,7 +419,7 @@ public extension ItemRepository {
     func move(oldEncryptedItems: [SymmetricallyEncryptedItem],
               toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
         guard let fromSharedId = oldEncryptedItems.first?.shareId else {
-            throw PPClientError.unexpectedError
+            throw PassError.unexpectedError
         }
 
         let oldItemsContent = try oldEncryptedItems

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import Entities
 
 /// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
 public struct SymmetricallyEncryptedItem: Equatable, Sendable {

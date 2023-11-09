@@ -325,11 +325,11 @@ private extension ShareRepository {
         }
 
         guard let contentData = try content.base64Decode() else {
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
 
         guard contentData.count > 12 else {
-            throw PPClientError.crypto(.corruptedShareContent(shareID: share.shareID))
+            throw PassError.crypto(.corruptedShareContent(shareID: share.shareID))
         }
 
         let key = try await passKeyManager.getShareKey(shareId: share.shareID,
@@ -347,8 +347,8 @@ private extension ShareRepository {
         do {
             return try await symmetricallyEncrypt(share)
         } catch {
-            if let clientError = error as? PPClientError,
-               case let .crypto(reason) = clientError,
+            if let passError = error as? PassError,
+               case let .crypto(reason) = passError,
                case .inactiveUserKey = reason {
                 // We can’t decrypt old vaults because of password reset
                 // just log and move on instead of throwing

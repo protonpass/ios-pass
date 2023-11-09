@@ -231,7 +231,7 @@ private extension BaseCreateEditItemViewModel {
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
                                                              itemId: itemId) else {
-            throw PassError.itemNotFound(shareID: shareId, itemID: itemId)
+            throw PassError.itemNotFound(oldItemContent)
         }
         let newItemContent = try generateItemContent()
         try await itemRepository.updateItem(oldItem: oldItem.item,
