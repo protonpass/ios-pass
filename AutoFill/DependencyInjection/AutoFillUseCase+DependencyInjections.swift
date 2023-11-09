@@ -23,6 +23,7 @@ import Client
 import Core
 import Factory
 import Foundation
+import UseCases
 
 final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
     static let shared = AutoFillUseCaseContainer()
@@ -63,13 +64,24 @@ extension AutoFillUseCaseContainer {
     var completeAutoFill: Factory<CompleteAutoFillUseCase> {
         self { CompleteAutoFill(context: self.context,
                                 logManager: self.logManager,
+                                appVersion: SharedToolingContainer.shared.appVersion(),
+                                userDataProvider: SharedDataContainer.shared.userDataProvider(),
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
-                                itemRepository: SharedRepositoryContainer.shared.itemRepository(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
+                                updateLastUseTime: self.updateLastUseTime(),
                                 resetFactory: self.resetFactory()) }
     }
 
     var resetFactory: Factory<ResetFactoryUseCase> {
         self { ResetFactory() }
+    }
+
+    var createUrlRequest: Factory<CreateUrlRequestUseCase> {
+        self { CreateUrlRequest() }
+    }
+
+    var updateLastUseTime: Factory<UpdateLastUseTimeUseCase> {
+        self { UpdateLastUseTime(createUrlRequest: self.createUrlRequest(),
+                                 apiService: AutoFillDataContainer.shared.apiServiceLite()) }
     }
 }
