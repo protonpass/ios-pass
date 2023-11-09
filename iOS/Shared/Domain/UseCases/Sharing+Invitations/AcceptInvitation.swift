@@ -67,7 +67,7 @@ private extension AcceptInvitation {
     func encryptKeys(userInvite: UserInvite) async throws -> [ItemKey] {
         let userData = try userDataProvider.getUnwrappedUserData()
         guard let address = try await fetchInvitedAddress(with: userInvite, userData: userData) else {
-            throw SharingError.invalidKeyOrAddress
+            throw PassError.sharing(.invalidKeyOrAddress)
         }
         let addressKeys = try CryptoUtils.unlockAddressKeys(address: address,
                                                             userData: userData)
@@ -88,7 +88,7 @@ private extension AcceptInvitation {
                       armoredInviterPublicKeys: [ArmoredKey],
                       userData: UserData) throws -> ItemKey {
         guard let decodeKey = try? key.key.base64Decode() else {
-            throw SharingError.cannotDecode
+            throw PassError.sharing(.cannotDecode)
         }
 
         let armoredEncryptedKeyData = try CryptoUtils.armorMessage(decodeKey)
