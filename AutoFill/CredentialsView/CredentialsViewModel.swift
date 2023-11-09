@@ -343,7 +343,7 @@ private extension CredentialsViewModel {
             guard let encryptedItem =
                 try await itemRepository.getItem(shareId: item.shareId,
                                                  itemId: item.itemId) else {
-                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(item)
             }
             return encryptedItem
         }
@@ -426,7 +426,7 @@ private extension CredentialsViewModel {
             guard let itemContent =
                 try await itemRepository.getItemContent(shareId: item.shareId,
                                                         itemId: item.itemId) else {
-                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(item)
             }
 
             switch itemContent.contentData {

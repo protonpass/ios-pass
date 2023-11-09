@@ -128,7 +128,7 @@ private extension SendVaultShareInvite {
                                 userData: UserData) throws -> String {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
                                                                  userData: userData).first else {
-            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
+            throw PassError.crypto(.addressNotFound(addressID: addressId))
         }
 
         let signerKey = SigningKey(privateKey: addressKey.privateKey,

@@ -102,11 +102,11 @@ private extension AcceptInvitation {
                                                                   verificationContext: context)
 
         guard let userKey = userData.user.keys.first else {
-            throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
+            throw PassError.crypto(.missingUserKey(userID: userData.user.ID))
         }
 
         guard let passphrase = userData.passphrases[userKey.keyID] else {
-            throw PPClientError.crypto(.missingPassphrase(keyID: userKey.keyID))
+            throw PassError.crypto(.missingPassphrase(keyID: userKey.keyID))
         }
 
         let publicKey = ArmoredKey(value: userKey.publicKey)

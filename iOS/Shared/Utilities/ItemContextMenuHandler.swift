@@ -204,7 +204,7 @@ private extension ItemContextMenuHandler {
     func getEncryptedItem(for item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
         guard let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
                                                                    itemId: item.itemId) else {
-            throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+            throw PassError.itemNotFound(item)
         }
         return encryptedItem
     }
