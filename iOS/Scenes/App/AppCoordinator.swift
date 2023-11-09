@@ -69,7 +69,7 @@ final class AppCoordinator {
             isUITest = true
             wipeAllData(includingUnauthSession: true)
         }
-        
+
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
