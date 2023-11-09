@@ -149,8 +149,9 @@ private extension HomepageCoordinator {
                 apiManager.startCredentialUpdate()
             }
             .store(in: &cancellables)
-        
+
         apiManager.credentialFinishedUpdating
+            .removeDuplicates()
             .sink { [weak self] finishedUpdating in
                 guard let self, finishedUpdating else { return }
                 refresh()

@@ -127,7 +127,8 @@ final class APIManager: APIManagerProtocol {
     }
 
     /// Function that start the credential update process
-    /// You will need to register to the credentialFinishedUpdating publisher to know when the process if finished as it is async
+    /// You will need to register to the `credentialFinishedUpdating` publisher to know when the process if finished
+    /// as it is async.
     func startCredentialUpdate() {
         appData.invalidateCachedUserData()
         if let userData = appData.getUserData() {
