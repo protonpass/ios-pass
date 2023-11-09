@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import Entities
 import ProtonCoreLogin
 
 public struct UpdateVaultRequest {
@@ -46,7 +47,7 @@ public extension UpdateVaultRequest {
                                                 associatedData: .vaultContent)
 
         guard let content = encryptedContent.combined?.base64EncodedString(), content.count >= 28 else {
-            throw PPClientError.crypto(.failedToAESEncrypt)
+            throw PassError.crypto(.failedToAESEncrypt)
         }
         self.content = content
         keyRotation = Int(shareKey.keyRotation)

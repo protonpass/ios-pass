@@ -252,7 +252,7 @@ private extension BaseItemDetailViewModel {
             }
             guard let item = try await itemRepository.getItem(shareId: item.shareId,
                                                               itemId: item.itemId) else {
-                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(item)
             }
             return item
         }

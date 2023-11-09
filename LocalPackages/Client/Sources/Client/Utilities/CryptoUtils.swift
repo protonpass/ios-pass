@@ -45,11 +45,11 @@ public enum CryptoUtils {
             CryptoGo.HelperGetJsonSHA256Fingerprints(key, &error)
         }
         guard let data else {
-            throw PPClientError.crypto(.failedToGetFingerprint)
+            throw PassError.crypto(.failedToGetFingerprint)
         }
         let array = try JSONDecoder().decode([String].self, from: data)
         guard let fingerprint = array.first else {
-            throw PPClientError.crypto(.failedToGetFingerprint)
+            throw PassError.crypto(.failedToGetFingerprint)
         }
         return fingerprint
     }
@@ -58,14 +58,14 @@ public enum CryptoUtils {
         let splitMessage = try unwrap { CryptoGo.CryptoPGPSplitMessage(fromArmored: message) }
         guard let keyPacket = splitMessage.keyPacket,
               let dataPacket = splitMessage.dataPacket else {
-            throw PPClientError.crypto(.failedToSplitPGPMessage)
+            throw PassError.crypto(.failedToSplitPGPMessage)
         }
         return (keyPacket, dataPacket)
     }
 
     public static func unarmorAndBase64(data: String, name: String) throws -> String {
         guard let unarmoredData = data.unArmor else {
-            throw PPClientError.crypto(.failedToUnarmor(name))
+            throw PassError.crypto(.failedToUnarmor(name))
         }
         return unarmoredData.base64EncodedString()
     }
@@ -85,7 +85,7 @@ public enum CryptoUtils {
     public static func generateSessionKey() throws -> CryptoSessionKey {
         var error: NSError?
         guard let sessionKey = CryptoGo.CryptoGenerateSessionKey(&error) else {
-            throw PPClientError.crypto(.failedToGenerateSessionKey)
+            throw PassError.crypto(.failedToGenerateSessionKey)
         }
         if let error { throw error }
         return sessionKey
@@ -109,7 +109,7 @@ public enum CryptoUtils {
     public static func unlockAddressKeys(addressID: String,
                                          userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
         guard let firstAddress = userData.addresses.first(where: { $0.addressID == addressID }) else {
-            throw PPClientError.crypto(.addressNotFound(addressID: addressID))
+            throw PassError.crypto(.addressNotFound(addressID: addressID))
         }
 
         return try CryptoUtils.unlockAddressKeys(address: firstAddress, userData: userData)
@@ -126,7 +126,7 @@ public enum CryptoUtils {
                                             vaultKey: DecryptedShareKey) throws -> ItemKey {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
                                                                  userData: userData).first else {
-            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
+            throw PassError.crypto(.addressNotFound(addressID: addressId))
         }
 
         let publicKey = ArmoredKey(value: publicReceiverKey.value)

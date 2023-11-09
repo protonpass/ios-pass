@@ -52,7 +52,7 @@ final class LockedCredentialViewModel: ObservableObject {
                 logger.trace("Loading credential \(ids.debugInformation)")
                 guard let item = try await itemRepository.getItem(shareId: ids.shareId,
                                                                   itemId: ids.itemId) else {
-                    throw PassError.itemNotFound(shareID: ids.shareId, itemID: ids.itemId)
+                    throw PassError.itemNotFound(ids)
                 }
 
                 let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
