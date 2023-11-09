@@ -58,15 +58,6 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
 
-    /// Get a list of last used times no yet refreshed
-    func getAllLastUsedTimeItems() async throws -> [LastUsedTimeItem]
-
-    /// Remove all `LastUsedTimeItem` from db
-    func removeAllLastUsedTimeItems() async throws
-
-    /// Insert or update a list of last used times for a item
-    func upsertLastUseTime(for item: LastUsedTimeItem) async throws
-
     // MARK: - AutoFill related operations
 
     /// Get all active log in items
@@ -79,20 +70,6 @@ public extension LocalItemDatasourceProtocol {
         let fetchRequest = ItemEntity.fetchRequest()
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
-    }
-
-    func getAllLastUsedTimeItems() async throws -> [LastUsedTimeItem] {
-        let taskContext = newTaskContext(type: .fetch)
-        let fetchRequest = LastUsedTimeEntity.fetchRequest()
-        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return itemEntities.map(\.toLastUsedTimeItem)
-    }
-
-    func removeAllLastUsedTimeItems() async throws {
-        let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LastUsedTimeEntity")
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: taskContext)
     }
 
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
@@ -147,16 +124,6 @@ public extension LocalItemDatasourceProtocol {
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
                                                        sourceItems: items) { managedObject, item in
             (managedObject as? ItemEntity)?.hydrate(from: item)
-        }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
-    }
-
-    func upsertLastUseTime(for item: LastUsedTimeItem) async throws {
-        let taskContext = newTaskContext(type: .insert)
-        let entity = LastUsedTimeEntity.entity(context: taskContext)
-        let batchInsertRequest = newBatchInsertRequest(entity: entity,
-                                                       sourceItems: [item]) { managedObject, item in
-            (managedObject as? LastUsedTimeEntity)?.hydrate(from: item)
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
