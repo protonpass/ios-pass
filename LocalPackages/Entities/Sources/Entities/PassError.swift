@@ -40,6 +40,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case symmetricEncryption(SymmetricEncryptionFailureReason)
     case unexpectedError
     case unexpectedHttpStatusCode(Int?)
+    case unexpectedLogout
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
     case sharing(SharingErrorReason)
@@ -80,6 +81,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             "Unexpected HTTP status code \(String(describing: statusCode))"
         case .unknownShareType:
             "Unknown share type"
+        case .unexpectedLogout:
+            "Unexpected logout"
         case let .unmatchedRotationID(leftID, rightID):
             "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
         case let .sharing(reason):
