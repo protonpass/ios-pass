@@ -24,6 +24,7 @@ import Core
 import CoreData
 import CryptoKit
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import MBProgressHUD
@@ -34,6 +35,7 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUtilities
+import Sentry
 import SwiftUI
 import UIKit
 
@@ -210,6 +212,7 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 
 extension AppCoordinator: APIManagerDelegate {
     func appLoggedOutBecauseSessionWasInvalidated() {
+        SentrySDK.capture(error: PassError.unexpectedLogout)
         // Run on main thread because the callback that triggers this function
         // is returned by `AuthHelperDelegate` from background thread
         DispatchQueue.main.async {
