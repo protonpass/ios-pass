@@ -52,6 +52,8 @@ public extension CreateUrlRequestUseCase {
 }
 
 public final class CreateUrlRequest: CreateUrlRequestUseCase {
+    public init() {}
+
     public func execute(baseUrl: String,
                         path: String,
                         method: HTTPMethod,
@@ -71,6 +73,7 @@ public final class CreateUrlRequest: CreateUrlRequestUseCase {
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("true", forHTTPHeaderField: "X-Enforce-UnauthSession")
         request.setValue(appVersion, forHTTPHeaderField: "x-pm-appversion")
         request.setValue(sessionId, forHTTPHeaderField: "x-pm-uid")
