@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
