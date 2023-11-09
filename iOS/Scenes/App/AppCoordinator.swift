@@ -69,7 +69,11 @@ final class AppCoordinator {
             isUITest = true
             wipeAllData(includingUnauthSession: true)
         }
-        apiManager.delegate = self
+        apiManager.sessionWasInvalidated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
+            }.store(in: &cancellables)
     }
 
     private func clearUserDataInKeychainIfFirstRun() {
@@ -203,18 +207,6 @@ private extension AppCoordinator {
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
         appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
-    }
-}
-
-// MARK: - APIManagerDelegate
-
-extension AppCoordinator: APIManagerDelegate {
-    func appLoggedOutBecauseSessionWasInvalidated() {
-        // Run on main thread because the callback that triggers this function
-        // is returned by `AuthHelperDelegate` from background thread
-        DispatchQueue.main.async {
-            self.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
-        }
     }
 }
 

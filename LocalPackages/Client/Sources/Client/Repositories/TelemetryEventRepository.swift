@@ -148,6 +148,7 @@ public extension TelemetrySchedulerProtocol {
         }
     }
 
+    @MainActor
     func randomNextThreshold() {
         let randomIntervalInHours = Int.random(in: minIntervalInHours...maxIntervalInHours)
         let currentDate = currentDateProvider.getCurrentDate()
