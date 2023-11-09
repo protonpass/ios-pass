@@ -42,6 +42,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case unexpectedHttpStatusCode(Int?)
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
+    case sharing(SharingErrorReason)
 
     public var debugDescription: String {
         switch self {
@@ -81,6 +82,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
             "Unknown share type"
         case let .unmatchedRotationID(leftID, rightID):
             "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
+        case let .sharing(reason):
+            reason.debugDescription
         }
     }
 }
@@ -256,6 +259,8 @@ public extension PassError {
     }
 }
 
+// MARK: - SymmetricEncryptionFailureReason
+
 public extension PassError {
     enum SymmetricEncryptionFailureReason: CustomDebugStringConvertible, Sendable {
         case failedToUtf8ConvertToData(String)
@@ -270,6 +275,42 @@ public extension PassError {
                 "Failed to base 64 decode \"\(string)\""
             case .failedToUtf8Decode:
                 "Failed to UTF8 decode"
+            }
+        }
+    }
+}
+
+// MARK: - SharingErrorReason
+
+public extension PassError {
+    enum SharingErrorReason: CustomDebugStringConvertible, LocalizedError, Equatable {
+        case incompleteInformation
+        case failedEncryptionKeysFetching
+        case noPublicKeyAssociatedWithEmail(String)
+        case invalidKeyOrAddress
+        case cannotDecode
+        case failedToCreateNewVault
+        case failedToInvite
+        case notProtonAddress
+
+        public var debugDescription: String {
+            switch self {
+            case .incompleteInformation:
+                "Incomplete information"
+            case .failedEncryptionKeysFetching:
+                "Failed to fetch encryption keys"
+            case let .noPublicKeyAssociatedWithEmail(email):
+                "No public key for email \(email)"
+            case .invalidKeyOrAddress:
+                "Invalid key or address"
+            case .cannotDecode:
+                "Cannot decode"
+            case .failedToCreateNewVault:
+                "Failed to create new vault"
+            case .failedToInvite:
+                "Failed to invite"
+            case .notProtonAddress:
+                "Not Proton address"
             }
         }
     }

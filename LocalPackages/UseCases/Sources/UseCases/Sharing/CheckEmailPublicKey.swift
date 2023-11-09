@@ -45,13 +45,13 @@ public final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseC
         do {
             let keys = try await publicKeyRepository.getPublicKeys(email: email)
             guard !keys.isEmpty else {
-                throw SharingError.noPublicKeyAssociatedWithEmail
+                throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
             }
             return keys
         } catch {
             if let networkError = error as? ProtonCoreNetworking.ResponseError,
                networkError.httpCode == 422, networkError.responseCode == 33_102 {
-                throw SharingError.notProtonAddress
+                throw PassError.sharing(.notProtonAddress)
             } else {
                 throw error
             }

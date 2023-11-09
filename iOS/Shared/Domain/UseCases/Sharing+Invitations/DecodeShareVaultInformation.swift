@@ -58,14 +58,14 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
               let intermediateVaultKey = userInvite.keys
               .first(where: { $0.keyRotation == vaultData.contentKeyRotation }),
               let invitedAddress = try await address(for: userInvite, userData: userData) else {
-            throw SharingError.invalidKeyOrAddress
+            throw PassError.sharing(.invalidKeyOrAddress)
         }
 
         let invitedAddressKeys = try CryptoUtils.unlockAddressKeys(address: invitedAddress,
                                                                    userData: userData)
 
         guard let decodedIntermediateVaultKey = try intermediateVaultKey.key.base64Decode() else {
-            throw SharingError.cannotDecode
+            throw PassError.sharing(.cannotDecode)
         }
 
         let inviterPublicKeys = try await getEmailPublicKey(with: userInvite.inviterEmail)
@@ -82,7 +82,7 @@ final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultIn
                                                                   verificationContext: context)
 
         guard let content = try vaultData.content.base64Decode() else {
-            throw SharingError.cannotDecode
+            throw PassError.sharing(.cannotDecode)
         }
 
         let decryptedContent = try AES.GCM.open(content,
