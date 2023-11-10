@@ -49,7 +49,7 @@ final class LockedCredentialViewModel: ObservableObject {
                 }
                 let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
-                logger.trace("Loading credential \(ids.debugInformation)")
+                logger.trace("Loading credential \(ids.debugDescription)")
                 guard let item = try await itemRepository.getItem(shareId: ids.shareId,
                                                                   itemId: ids.itemId) else {
                     throw PassError.itemNotFound(ids)
@@ -62,7 +62,7 @@ final class LockedCredentialViewModel: ObservableObject {
                     let credential = ASPasswordCredential(user: data.username,
                                                           password: data.password)
                     onSuccess?(credential, itemContent)
-                    logger.info("Loaded and returned credential \(ids.debugInformation)")
+                    logger.info("Loaded and returned credential \(ids.debugDescription)")
                 default:
                     throw PassError.credentialProvider(.notLogInItem)
                 }
