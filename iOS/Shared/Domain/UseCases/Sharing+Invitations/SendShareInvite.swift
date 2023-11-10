@@ -66,7 +66,7 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
 
     func execute(with infos: SharingInfos) async throws -> Vault {
         guard let role = infos.role else {
-            throw SharingError.incompleteInformation
+            throw PassError.sharing(.incompleteInformation)
         }
 
         let vault = try await getVault(from: infos)
@@ -83,7 +83,7 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
             return vault
         }
 
-        throw SharingError.failedToInvite
+        throw PassError.sharing(.failedToInvite)
     }
 }
 
@@ -95,7 +95,7 @@ private extension SendVaultShareInvite {
         case let .new(vaultProtobuf, itemContent):
             try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
         default:
-            throw SharingError.incompleteInformation
+            throw PassError.sharing(.incompleteInformation)
         }
     }
 
@@ -104,7 +104,7 @@ private extension SendVaultShareInvite {
                              vaultKey: DecryptedShareKey) throws -> InviteeData {
         let userData = try userDataProvider.getUnwrappedUserData()
         guard let email = info.email else {
-            throw SharingError.incompleteInformation
+            throw PassError.sharing(.incompleteInformation)
         }
 
         if let key = info.receiverPublicKeys?.first {
@@ -128,7 +128,7 @@ private extension SendVaultShareInvite {
                                 userData: UserData) throws -> String {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
                                                                  userData: userData).first else {
-            throw PPClientError.crypto(.addressNotFound(addressID: addressId))
+            throw PassError.crypto(.addressNotFound(addressID: addressId))
         }
 
         let signerKey = SigningKey(privateKey: addressKey.privateKey,

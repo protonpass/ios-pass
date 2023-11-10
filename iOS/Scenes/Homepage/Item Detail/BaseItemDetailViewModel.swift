@@ -165,18 +165,18 @@ class BaseItemDetailViewModel: ObservableObject {
     func moveToTrash() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.logger.trace("Trashing \(self.itemContent.debugInformation)")
-                self.router.display(element: .globalLoading(shouldShow: true))
-                let encryptedItem = try await self.getItemTask(item: self.itemContent).value
+                logger.trace("Trashing \(itemContent.debugDescription)")
+                router.display(element: .globalLoading(shouldShow: true))
+                let encryptedItem = try await getItemTask(item: itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
-                try await self.itemRepository.trashItems([encryptedItem])
-                self.delegate?.itemDetailViewModelDidMoveToTrash(item: item)
-                self.logger.info("Trashed \(item.debugInformation)")
+                try await itemRepository.trashItems([encryptedItem])
+                delegate?.itemDetailViewModelDidMoveToTrash(item: item)
+                logger.info("Trashed \(item.debugDescription)")
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -184,19 +184,19 @@ class BaseItemDetailViewModel: ObservableObject {
     func restore() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.logger.trace("Restoring \(self.itemContent.debugInformation)")
-                self.router.display(element: .globalLoading(shouldShow: true))
-                let encryptedItem = try await self.getItemTask(item: self.itemContent).value
+                logger.trace("Restoring \(itemContent.debugDescription)")
+                router.display(element: .globalLoading(shouldShow: true))
+                let encryptedItem = try await getItemTask(item: itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
-                try await self.itemRepository.untrashItems([encryptedItem])
-                self.router.display(element: .successMessage(item.type.restoreMessage,
-                                                             config: .dismissAndRefresh(with: .update(item.type))))
-                self.logger.info("Restored \(item.debugInformation)")
+                try await itemRepository.untrashItems([encryptedItem])
+                router.display(element: .successMessage(item.type.restoreMessage,
+                                                        config: .dismissAndRefresh(with: .update(item.type))))
+                logger.info("Restored \(item.debugDescription)")
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -204,19 +204,19 @@ class BaseItemDetailViewModel: ObservableObject {
     func permanentlyDelete() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
-                self.router.display(element: .globalLoading(shouldShow: true))
-                let encryptedItem = try await self.getItemTask(item: self.itemContent).value
+                logger.trace("Permanently deleting \(itemContent.debugDescription)")
+                router.display(element: .globalLoading(shouldShow: true))
+                let encryptedItem = try await getItemTask(item: itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
-                try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
-                self.router.display(element: .successMessage(item.type.deleteMessage,
-                                                             config: .dismissAndRefresh(with: .delete(item.type))))
-                self.logger.info("Permanently deleted \(item.debugInformation)")
+                try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
+                router.display(element: .successMessage(item.type.deleteMessage,
+                                                        config: .dismissAndRefresh(with: .delete(item.type))))
+                logger.info("Permanently deleted \(item.debugDescription)")
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -252,7 +252,7 @@ private extension BaseItemDetailViewModel {
             }
             guard let item = try await itemRepository.getItem(shareId: item.shareId,
                                                               itemId: item.itemId) else {
-                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(item)
             }
             return item
         }

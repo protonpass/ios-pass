@@ -1,6 +1,6 @@
 //
-// SharingError.swift
-// Proton Pass - Created on 25/07/2023.
+// ItemTypeIdentifiable.swift
+// Proton Pass - Created on 10/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,16 +17,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public enum SharingError: LocalizedError, Equatable {
-    case incompleteInformation
-    case failedEncryptionKeysFetching
-    case noPublicKeyAssociatedWithEmail
-    case invalidKeyOrAddress
-    case cannotDecode
-    case failedToCreateNewVault
-    case failedToInvite
-    case notProtonAddress
+public protocol ItemTypeIdentifiable: ItemIdentifiable {
+    var type: ItemContentType { get }
+    var aliasEmail: String? { get }
 }

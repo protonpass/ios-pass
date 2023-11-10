@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Entities
 
 public protocol LocalSearchEntryDatasourceProtocol: LocalDatasourceProtocol {
     /// Get entries of all vaults if `shareId` is `null`

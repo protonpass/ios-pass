@@ -52,7 +52,7 @@ final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         let userData = try userDataProvider.getUnwrappedUserData()
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {
-            throw SharingError.noPublicKeyAssociatedWithEmail
+            throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
         }
         let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
         let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,
@@ -63,7 +63,7 @@ final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
                                                                             inviteId: inviteId,
                                                                             keys: [signedKey])
         if !promoted {
-            throw SharingError.failedToInvite
+            throw PassError.sharing(.failedToInvite)
         }
     }
 }
