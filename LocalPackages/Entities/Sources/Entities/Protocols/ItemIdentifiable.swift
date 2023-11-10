@@ -1,7 +1,7 @@
 //
 // ItemIdentifiable.swift
-// Proton Pass - Created on 05/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 09/11/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,62 +17,20 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Core
-import Entities
+import Foundation
 
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching
-public protocol ItemIdentifiable: Sendable {
+public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible {
     var shareId: String { get }
     var itemId: String { get }
 }
 
 public extension ItemIdentifiable {
-    var debugInformation: String {
-        "Item ID (\(itemId)) - Share ID (\(shareId))"
-    }
-}
-
-public protocol ItemTypeIdentifiable: ItemIdentifiable {
-    var type: ItemContentType { get }
-    var aliasEmail: String? { get }
-}
-
-public protocol ItemThumbnailable {
-    var type: ItemContentType { get }
-    var title: String { get }
-    var url: String? { get }
-}
-
-public extension ItemThumbnailable {
-    func thumbnailData() -> ItemThumbnailData {
-        switch type {
-        case .login:
-            let initials = title.initials()
-            if let url {
-                return .favIcon(type: type, url: url, initials: initials)
-            } else {
-                return .initials(type: type, initials: initials)
-            }
-        default:
-            return .icon(type: type)
-        }
-    }
-}
-
-public enum ItemThumbnailData: Equatable {
-    case icon(type: ItemContentType)
-    case initials(type: ItemContentType, initials: String)
-    case favIcon(type: ItemContentType, url: String, initials: String)
-
-    public var url: String? {
-        switch self {
-        case let .favIcon(_, url, _):
-            url
-        default:
-            nil
-        }
+    var debugDescription: String {
+        "Item \(itemId) - Share \(shareId)"
     }
 }
 

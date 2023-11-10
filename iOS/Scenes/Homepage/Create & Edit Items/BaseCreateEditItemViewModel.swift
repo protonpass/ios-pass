@@ -231,7 +231,7 @@ private extension BaseCreateEditItemViewModel {
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
                                                              itemId: itemId) else {
-            throw PassError.itemNotFound(shareID: shareId, itemID: itemId)
+            throw PassError.itemNotFound(oldItemContent)
         }
         let newItemContent = try generateItemContent()
         try await itemRepository.updateItem(oldItem: oldItem.item,
@@ -263,29 +263,29 @@ extension BaseCreateEditItemViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
 
-            defer { self.isSaving = false }
-            self.isSaving = true
+            defer { isSaving = false }
+            isSaving = true
 
             do {
-                switch self.mode {
+                switch mode {
                 case let .create(_, type):
-                    self.logger.trace("Creating item")
-                    if let createdItem = try await self.createItem(for: type) {
-                        self.logger.info("Created \(createdItem.debugInformation)")
-                        self.delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
+                    logger.trace("Creating item")
+                    if let createdItem = try await createItem(for: type) {
+                        logger.info("Created \(createdItem.debugDescription)")
+                        delegate?.createEditItemViewModelDidCreateItem(createdItem, type: itemContentType())
                     }
 
                 case let .edit(oldItemContent):
-                    self.logger.trace("Editing \(oldItemContent.debugInformation)")
-                    try await self.editItem(oldItemContent: oldItemContent)
-                    self.logger.info("Edited \(oldItemContent.debugInformation)")
-                    self.delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
+                    logger.trace("Editing \(oldItemContent.debugDescription)")
+                    try await editItem(oldItemContent: oldItemContent)
+                    logger.info("Edited \(oldItemContent.debugDescription)")
+                    delegate?.createEditItemViewModelDidUpdateItem(itemContentType())
                 }
 
                 addTelemetryEvent(with: telemetryEventTypes())
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -298,14 +298,14 @@ extension BaseCreateEditItemViewModel {
             guard let self else { return }
             do {
                 guard let updatedItem =
-                    try await self.itemRepository.getItem(shareId: itemContent.shareId,
-                                                          itemId: itemContent.item.itemID) else {
+                    try await itemRepository.getItem(shareId: itemContent.shareId,
+                                                     itemId: itemContent.item.itemID) else {
                     return
                 }
-                self.isObsolete = itemContent.item.revision != updatedItem.item.revision
+                isObsolete = itemContent.item.revision != updatedItem.item.revision
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

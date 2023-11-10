@@ -152,10 +152,10 @@ public final class ItemRepository: ItemRepositoryProtocol {
     }
 
     public func saveLocally(lastUseTime: TimeInterval, for item: ItemIdentifiable) async throws {
-        logger.trace("Saving lastUsedTime \(item.debugInformation) to be updated in back ground task")
+        logger.trace("Saving lastUsedTime \(item.debugDescription) to be updated in back ground task")
         let lastUsedTime = LastUsedTimeItem(shareId: item.shareId, itemId: item.itemId, lastUsedTime: lastUseTime)
         try await localDatasource.upsertLastUseTime(for: lastUsedTime)
-        logger.trace("Updated lastUsedTime \(item.debugInformation)")
+        logger.trace("Updated lastUsedTime \(item.debugDescription)")
     }
 
     public func getAllItemLastUsedTime() async throws -> [LastUsedTimeItem] {
@@ -396,9 +396,9 @@ public extension ItemRepository {
     }
 
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Moving \(item.debugInformation) to share \(toShareId)")
+        logger.trace("Moving \(item.debugDescription) to share \(toShareId)")
         guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
-            throw PPClientError.itemNotFound(item: item)
+            throw PassError.itemNotFound(item)
         }
 
         let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: getSymmetricKey())
@@ -412,14 +412,14 @@ public extension ItemRepository {
         let newEncryptedItem = try await symmetricallyEncrypt(itemRevision: newItem, shareId: toShareId)
         try await localDatasource.deleteItems([oldEncryptedItem])
         try await localDatasource.upsertItems([newEncryptedItem])
-        logger.info("Moved \(item.debugInformation) to share \(toShareId)")
+        logger.info("Moved \(item.debugDescription) to share \(toShareId)")
         return newEncryptedItem
     }
 
     func move(oldEncryptedItems: [SymmetricallyEncryptedItem],
               toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
         guard let fromSharedId = oldEncryptedItems.first?.shareId else {
-            throw PPClientError.unexpectedError
+            throw PassError.unexpectedError
         }
 
         let oldItemsContent = try oldEncryptedItems
@@ -451,7 +451,7 @@ public extension ItemRepository {
     }
 
     func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws {
-        logger.trace("Updating lastUsedTime \(item.debugInformation)")
+        logger.trace("Updating lastUsedTime \(item.debugDescription)")
         let updatedItem =
             try await remoteDatasource.updateLastUseTime(shareId: item.shareId,
                                                          itemId: item.itemId,
@@ -459,7 +459,7 @@ public extension ItemRepository {
         let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
                                                                   shareId: item.shareId)
         try await localDatasource.upsertItems([encryptedUpdatedItem])
-        logger.trace("Updated lastUsedTime \(item.debugInformation)")
+        logger.trace("Updated lastUsedTime \(item.debugDescription)")
     }
 }
 
