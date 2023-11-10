@@ -23,40 +23,14 @@ import Foundation
 
 /// Should be conformed by structs that represent items differently.
 /// E.g: for different purposes like listing & searching
-public protocol ItemIdentifiable: Sendable {
+public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible {
     var shareId: String { get }
     var itemId: String { get }
 }
 
 public extension ItemIdentifiable {
-    var debugInformation: String {
-        "Item ID (\(itemId)) - Share ID (\(shareId))"
-    }
-}
-
-public protocol ItemTypeIdentifiable: ItemIdentifiable {
-    var type: ItemContentType { get }
-    var aliasEmail: String? { get }
-}
-
-public protocol ItemThumbnailable {
-    var type: ItemContentType { get }
-    var title: String { get }
-    var url: String? { get }
-}
-
-public enum ItemThumbnailData: Equatable {
-    case icon(type: ItemContentType)
-    case initials(type: ItemContentType, initials: String)
-    case favIcon(type: ItemContentType, url: String, initials: String)
-
-    public var url: String? {
-        switch self {
-        case let .favIcon(_, url, _):
-            url
-        default:
-            nil
-        }
+    var debugDescription: String {
+        "Item \(itemId) - Share \(shareId)"
     }
 }
 
