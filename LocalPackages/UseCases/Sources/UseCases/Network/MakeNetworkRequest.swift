@@ -29,7 +29,7 @@ public protocol MakeNetworkRequestUseCase {
                  appVersion: String,
                  sessionId: String,
                  accessToken: String?,
-                 body: Encodable?) async throws -> ApiServiceLite.HTTPCode
+                 body: Encodable?) async throws -> Int
 }
 
 public extension MakeNetworkRequestUseCase {
@@ -39,7 +39,7 @@ public extension MakeNetworkRequestUseCase {
                         appVersion: String,
                         sessionId: String,
                         accessToken: String?,
-                        body: Encodable?) async throws -> ApiServiceLite.HTTPCode {
+                        body: Encodable?) async throws -> Int {
         try await execute(baseUrl: baseUrl,
                           path: path,
                           method: method,
@@ -52,12 +52,9 @@ public extension MakeNetworkRequestUseCase {
 
 public final class MakeNetworkRequest: MakeNetworkRequestUseCase {
     private let apiService: ApiServiceLiteProtocol
-    private let createUrlRequest: CreateUrlRequestUseCase
 
-    public init(apiService: ApiServiceLiteProtocol,
-                createUrlRequest: CreateUrlRequestUseCase) {
+    public init(apiService: ApiServiceLiteProtocol) {
         self.apiService = apiService
-        self.createUrlRequest = createUrlRequest
     }
 
     public func execute(baseUrl: String,
@@ -66,14 +63,14 @@ public final class MakeNetworkRequest: MakeNetworkRequestUseCase {
                         appVersion: String,
                         sessionId: String,
                         accessToken: String?,
-                        body: Encodable?) async throws -> ApiServiceLite.HTTPCode {
-        let request = try createUrlRequest(baseUrl: baseUrl,
-                                           path: path,
-                                           method: method,
-                                           appVersion: appVersion,
-                                           sessionId: sessionId,
-                                           accessToken: accessToken,
-                                           body: body)
+                        body: Encodable?) async throws -> Int {
+        let request = try CreateUrlRequest()(baseUrl: baseUrl,
+                                             path: path,
+                                             method: method,
+                                             appVersion: appVersion,
+                                             sessionId: sessionId,
+                                             accessToken: accessToken,
+                                             body: body)
         return try await apiService.execute(request: request)
     }
 }

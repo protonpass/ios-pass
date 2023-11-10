@@ -24,9 +24,8 @@ import Foundation
 import ProtonCoreEnvironment
 
 public protocol ApiServiceLiteProtocol {
-    typealias HTTPCode = Int
-
-    func execute(request: URLRequest) async throws -> HTTPCode
+    /// Execute a request and return the HTTP code of the response
+    func execute(request: URLRequest) async throws -> Int
 }
 
 public final class ApiServiceLite: NSObject {
@@ -36,7 +35,7 @@ public final class ApiServiceLite: NSObject {
 }
 
 extension ApiServiceLite: ApiServiceLiteProtocol {
-    public func execute(request: URLRequest) async throws -> HTTPCode {
+    public func execute(request: URLRequest) async throws -> Int {
         let (_, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw PassError.notHttpResponse

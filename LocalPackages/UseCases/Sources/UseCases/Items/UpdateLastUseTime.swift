@@ -29,7 +29,7 @@ public protocol UpdateLastUseTimeUseCase {
                  accessToken: String,
                  appVersion: String,
                  item: ItemIdentifiable,
-                 date: Date) async throws -> ApiServiceLite.HTTPCode
+                 date: Date) async throws -> UpdateLastUseTimeResult
 }
 
 public extension UpdateLastUseTimeUseCase {
@@ -38,7 +38,7 @@ public extension UpdateLastUseTimeUseCase {
                         accessToken: String,
                         appVersion: String,
                         item: ItemIdentifiable,
-                        date: Date) async throws -> ApiServiceLite.HTTPCode {
+                        date: Date) async throws -> UpdateLastUseTimeResult {
         try await execute(baseUrl: baseUrl,
                           sessionId: sessionId,
                           accessToken: accessToken,
@@ -49,13 +49,10 @@ public extension UpdateLastUseTimeUseCase {
 }
 
 public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
-    private let createUrlRequest: CreateUrlRequestUseCase
-    private let apiService: ApiServiceLiteProtocol
+    private let makeNetworkRequest: MakeNetworkRequestUseCase
 
-    public init(createUrlRequest: CreateUrlRequestUseCase,
-                apiService: ApiServiceLiteProtocol) {
-        self.createUrlRequest = createUrlRequest
-        self.apiService = apiService
+    public init(makeNetworkRequest: MakeNetworkRequestUseCase) {
+        self.makeNetworkRequest = makeNetworkRequest
     }
 
     public func execute(baseUrl: String,
@@ -63,16 +60,23 @@ public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
                         accessToken: String,
                         appVersion: String,
                         item: ItemIdentifiable,
-                        date: Date) async throws -> ApiServiceLite.HTTPCode {
+                        date: Date) async throws -> UpdateLastUseTimeResult {
         let path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/lastuse"
         let body = UpdateLastUseTimeRequest(lastUseTime: Int(date.timeIntervalSince1970))
-        let request = try createUrlRequest(baseUrl: baseUrl,
-                                           path: path,
-                                           method: .put,
-                                           appVersion: appVersion,
-                                           sessionId: sessionId,
-                                           accessToken: accessToken,
-                                           body: body)
-        return try await apiService.execute(request: request)
+        let code = try await makeNetworkRequest(baseUrl: baseUrl,
+                                                path: path,
+                                                method: .put,
+                                                appVersion: appVersion,
+                                                sessionId: sessionId,
+                                                accessToken: accessToken,
+                                                body: body)
+        return switch code {
+        case 401:
+            .shouldRefreshAccessToken
+        case 400, 402...499:
+            .shouldLogOut
+        default:
+            .successful
+        }
     }
 }
