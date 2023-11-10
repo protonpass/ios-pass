@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import Factory
 @testable import Proton_Pass
@@ -41,6 +42,7 @@ final class APIManagerTests: XCTestCase {
     var mainKeyProvider: MainKeyProviderMock!
     let unauthSessionKey = AppDataKey.unauthSessionCredentials.rawValue
     let userDataKey = AppDataKey.userData.rawValue
+    private var sessionPublisher:AnyCancellable?
 
     let unauthSessionCredentials = AuthCredential(sessionID: "test_session_id",
                                                   accessToken: "test_access_token",
@@ -93,6 +95,8 @@ final class APIManagerTests: XCTestCase {
     override func tearDown() {
         mainKeyProvider = nil
         keychain = nil
+        sessionPublisher?.cancel()
+        sessionPublisher = nil
         super.tearDown()
     }
 
@@ -226,21 +230,10 @@ final class APIManagerTests: XCTestCase {
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let apiManager = givenApiManager()
 
-        final class TestAPIManagerDelegate: APIManagerDelegate {
-            @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
-
-            func appLoggedOutBecauseSessionWasInvalidated() { appLoggedOutStub() }
-        }
-        let delegate = TestAPIManagerDelegate()
-        apiManager.delegate = delegate
-
-        // WHEN
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: false)
-
-        // THEN
+        
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
-        XCTAssertTrue(delegate.appLoggedOutStub.wasNotCalled)
     }
 
     func testAPIServiceAuthSessionInvalidationClearsCredentialsAndLogsOut() throws {
@@ -254,21 +247,21 @@ final class APIManagerTests: XCTestCase {
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let apiManager = givenApiManager()
 
-        final class TestAPIManagerDelegate: APIManagerDelegate {
-            @FuncStub(TestAPIManagerDelegate.appLoggedOutBecauseSessionWasInvalidated) var appLoggedOutStub
-
-            func appLoggedOutBecauseSessionWasInvalidated() { appLoggedOutStub() }
-        }
-        let delegate = TestAPIManagerDelegate()
-        apiManager.delegate = delegate
-
-        // WHEN
+        var sessionWasInvalidatedWasCalled = false
+        let imageConfigurationExpectation = expectation(description: "Image should be configured")
+        sessionPublisher = apiManager.sessionWasInvalidated
+                        .sink { [weak self] _ in
+                            sessionWasInvalidatedWasCalled = true
+                        
+                            imageConfigurationExpectation.fulfill()
+                        }
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
 
-        // THEN
+        wait(for: [imageConfigurationExpectation])
+        
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
-        XCTAssertTrue(delegate.appLoggedOutStub.wasCalledExactlyOnce)
+        XCTAssertTrue(sessionWasInvalidatedWasCalled)
     }
 
     func testAPIServiceAuthCredentialsUpdateSetsNewUnauthCredentials() throws {
