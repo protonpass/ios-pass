@@ -75,7 +75,7 @@ final class AppCoordinator {
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-  				SentrySDK.capture(error: PassError.unexpectedLogout)
+                SentrySDK.capture(error: PassError.unexpectedLogout)
                 // swiftlint:disable:next discouraged_optional_self
                 self?.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
             }.store(in: &cancellables)
