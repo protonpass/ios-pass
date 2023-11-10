@@ -1,6 +1,6 @@
 //
-// CreateUrlRequest.swift
-// Proton Pass - Created on 09/11/2023.
+// URLUtils+MakeURLRequest.swift
+// Proton Pass - Created on 10/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -23,44 +23,15 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-public protocol CreateUrlRequestUseCase: Sendable {
-    func execute(baseUrl: String,
-                 path: String,
-                 method: HTTPMethod,
-                 appVersion: String,
-                 sessionId: String,
-                 accessToken: String?,
-                 body: Encodable?) throws -> URLRequest
-}
-
-public extension CreateUrlRequestUseCase {
-    func callAsFunction(baseUrl: String,
-                        path: String,
-                        method: HTTPMethod,
-                        appVersion: String,
-                        sessionId: String,
-                        accessToken: String?,
-                        body: Encodable?) throws -> URLRequest {
-        try execute(baseUrl: baseUrl,
-                    path: path,
-                    method: method,
-                    appVersion: appVersion,
-                    sessionId: sessionId,
-                    accessToken: accessToken,
-                    body: body)
-    }
-}
-
-public final class CreateUrlRequest: CreateUrlRequestUseCase {
-    public init() {}
-
-    public func execute(baseUrl: String,
-                        path: String,
-                        method: HTTPMethod,
-                        appVersion: String,
-                        sessionId: String,
-                        accessToken: String?,
-                        body: Encodable?) throws -> URLRequest {
+public extension URLUtils {
+    // swiftlint:disable:next function_parameter_count
+    static func makeUrlRequest(baseUrl: String,
+                               path: String,
+                               method: HTTPMethod,
+                               appVersion: String,
+                               sessionId: String,
+                               accessToken: String?,
+                               body: Encodable?) throws -> URLRequest {
         guard var url = URL(string: baseUrl) else {
             throw PassError.badUrlString(baseUrl)
         }
