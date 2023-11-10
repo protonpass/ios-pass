@@ -185,6 +185,7 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
     /// Start looping
     public func start() {
         delegate?.syncEventLoopDidStartLooping()
+        stop()
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
             guard let self else { return }
