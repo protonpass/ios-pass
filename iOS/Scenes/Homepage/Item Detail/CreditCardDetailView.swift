@@ -89,13 +89,13 @@ private extension CreditCardDetailView {
             PassSectionDivider()
             cardNumberRow
             PassSectionDivider()
+            expirationDateRow
+            PassSectionDivider()
             verificationNumberRow
             if !viewModel.pin.isEmpty {
                 PassSectionDivider()
                 pinRow
             }
-            PassSectionDivider()
-            expirationDateRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedDetailSection()
@@ -194,7 +194,7 @@ private extension CreditCardDetailView {
             ItemDetailSectionIcon(icon: PassIcon.shieldCheck, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Verification number")
+                Text("Security code")
                     .sectionTitleText()
 
                 UpsellableDetailText(text: isShowingVerificationNumber ?
@@ -290,7 +290,7 @@ private extension CreditCardDetailView {
             ItemDetailSectionIcon(icon: IconProvider.calendarDay, color: tintColor)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Expires on")
+                Text("Expiration date")
                     .sectionTitleText()
 
                 UpsellableDetailText(text: viewModel.expirationDate,

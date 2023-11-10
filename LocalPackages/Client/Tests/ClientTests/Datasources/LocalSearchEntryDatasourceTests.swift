@@ -31,8 +31,7 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = .init(container: .Builder.build(name: kProtonPassContainerName,
-                                              inMemory: true))
+        sut = .init(databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {

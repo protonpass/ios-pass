@@ -261,20 +261,11 @@ final class APIManagerTests: XCTestCase {
         }
         let delegate = TestAPIManagerDelegate()
         apiManager.delegate = delegate
-        apiManager.setLastSuccessfulRefreshTimestamp(.now)
 
-        // WHEN: first refresh failure
+        // WHEN
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
 
-        // THEN: logout issue mitigation, do nothing on first failure
-        XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
-        XCTAssertNotNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
-        XCTAssertTrue(delegate.appLoggedOutStub.wasNotCalled)
-
-        // WHEN: second refresh failure
-        apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
-
-        // THEN: log out on second refresh failure
+        // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
         XCTAssertTrue(delegate.appLoggedOutStub.wasCalledExactlyOnce)

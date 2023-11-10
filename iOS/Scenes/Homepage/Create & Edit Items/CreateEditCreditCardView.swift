@@ -131,11 +131,11 @@ private extension CreateEditCreditCardView {
             PassSectionDivider()
             cardNumberRow
             PassSectionDivider()
+            expirationDateRow
+            PassSectionDivider()
             verificationNumberRow
             PassSectionDivider()
             pinRow
-            PassSectionDivider()
-            expirationDateRow
         }
         .padding(.vertical, kItemDetailSectionPadding)
         .roundedEditableSection()
@@ -148,7 +148,7 @@ private extension CreateEditCreditCardView {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("Cardholder name")
                     .sectionTitleText()
-                TextField("Full name", text: $viewModel.cardholderName)
+                TextField("Name on card", text: $viewModel.cardholderName)
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .cardholderName)
@@ -205,7 +205,7 @@ private extension CreateEditCreditCardView {
             ItemDetailSectionIcon(icon: PassIcon.shieldCheck)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Verification number")
+                Text("Security code")
                     .sectionTitleText()
 
                 SensitiveTextField(text: $viewModel.verificationNumber,
@@ -269,7 +269,7 @@ private extension CreateEditCreditCardView {
             ItemDetailSectionIcon(icon: IconProvider.calendarDay)
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Expires on")
+                Text("Expiration date")
                     .sectionTitleText()
                 MonthYearTextField(placeholder: #localized("MM / YYYY"),
                                    tintColor: tintColor,

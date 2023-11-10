@@ -77,20 +77,20 @@ private extension ExtensionSettingsViewModel {
         guard quickTypeBar != preferences.quickTypeBar else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                self.logger.trace("Updating credential database QuickTypeBar \(self.quickTypeBar)")
-                self.router.display(element: .globalLoading(shouldShow: true))
-                if self.quickTypeBar {
-                    try await self.indexAllLoginItems(ignorePreferences: true)
+                logger.trace("Updating credential database QuickTypeBar \(quickTypeBar)")
+                router.display(element: .globalLoading(shouldShow: true))
+                if quickTypeBar {
+                    try await indexAllLoginItems(ignorePreferences: true)
                 } else {
-                    try await self.unindexAllLoginItems()
+                    try await unindexAllLoginItems()
                 }
-                self.preferences.quickTypeBar = self.quickTypeBar
+                preferences.quickTypeBar = quickTypeBar
             } catch {
-                self.logger.error(error)
-                self.quickTypeBar.toggle() // rollback to previous value
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                quickTypeBar.toggle() // rollback to previous value
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

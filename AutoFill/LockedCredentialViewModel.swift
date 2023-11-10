@@ -22,23 +22,20 @@ import AuthenticationServices
 import Client
 import Core
 import CryptoKit
+import Entities
 import Factory
 import SwiftUI
 
 final class LockedCredentialViewModel: ObservableObject {
-    private let itemRepository: ItemRepositoryProtocol
-    private let symmetricKey: SymmetricKey
     private let credentialIdentity: ASPasswordCredentialIdentity
     private let logger = resolve(\SharedToolingContainer.logger)
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
 
     var onFailure: ((Error) -> Void)?
     var onSuccess: ((ASPasswordCredential, ItemContent) -> Void)?
 
-    init(itemRepository: ItemRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         credentialIdentity: ASPasswordCredentialIdentity) {
-        self.itemRepository = itemRepository
-        self.symmetricKey = symmetricKey
+    init(credentialIdentity: ASPasswordCredentialIdentity) {
         self.credentialIdentity = credentialIdentity
     }
 
@@ -48,13 +45,14 @@ final class LockedCredentialViewModel: ObservableObject {
             guard let self else { return }
             do {
                 guard let recordIdentifier = credentialIdentity.recordIdentifier else {
-                    throw PPError.credentialProvider(.missingRecordIdentifier)
+                    throw PassError.credentialProvider(.missingRecordIdentifier)
                 }
+                let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
                 let ids = try AutoFillCredential.IDs.deserializeBase64(recordIdentifier)
                 logger.trace("Loading credential \(ids.debugInformation)")
                 guard let item = try await itemRepository.getItem(shareId: ids.shareId,
                                                                   itemId: ids.itemId) else {
-                    throw PPError.itemNotFound(shareID: ids.shareId, itemID: ids.itemId)
+                    throw PassError.itemNotFound(shareID: ids.shareId, itemID: ids.itemId)
                 }
 
                 let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
@@ -66,7 +64,7 @@ final class LockedCredentialViewModel: ObservableObject {
                     onSuccess?(credential, itemContent)
                     logger.info("Loaded and returned credential \(ids.debugInformation)")
                 default:
-                    throw PPError.credentialProvider(.notLogInItem)
+                    throw PassError.credentialProvider(.notLogInItem)
                 }
             } catch {
                 logger.error(error)
@@ -77,10 +75,10 @@ final class LockedCredentialViewModel: ObservableObject {
 
     func handleAuthenticationFailure() {
         logger.info("Failed to locally authenticate. Logging out.")
-        onFailure?(PPError.credentialProvider(.failedToAuthenticate))
+        onFailure?(PassError.credentialProvider(.failedToAuthenticate))
     }
 
     func handleCancellation() {
-        onFailure?(PPError.credentialProvider(.userCancelled))
+        onFailure?(PassError.credentialProvider(.userCancelled))
     }
 }

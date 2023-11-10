@@ -26,12 +26,17 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
     static let shared = SharedServiceContainer()
     let manager = ContainerManager()
 
-    func reset() {
-        manager.reset()
+    func reset() async throws {
+        databaseService().resetContainer()
+        clipboardManager().clean()
+        syncEventLoop().reset()
+        await vaultsManager().reset()
+        vaultSyncEventStream().value = .initialization
+        try await credentialManager().removeAllCredentials()
     }
 
     func autoRegister() {
-        manager.defaultScope = .cached
+        manager.defaultScope = .singleton
     }
 }
 
@@ -53,7 +58,7 @@ extension SharedServiceContainer {
     var syncEventLoop: Factory<SyncEventLoop> {
         self {
             .init(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
-                  userId: SharedDataContainer.shared.userData().user.ID,
+                  userDataProvider: SharedDataContainer.shared.userDataProvider(),
                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                   shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
                   remoteSyncEventsDatasource: SharedRepositoryContainer.shared.remoteSyncEventsDatasource(),
@@ -84,5 +89,9 @@ extension SharedServiceContainer {
         self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                               counter: self.vaultsManager(),
                               totpChecker: SharedRepositoryContainer.shared.itemRepository()) }
+    }
+
+    var databaseService: Factory<DatabaseServiceProtocol> {
+        self { DatabaseService(logManager: self.logManager) }
     }
 }

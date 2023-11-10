@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Macro
 import SwiftUI
 import UIKit
@@ -34,10 +35,6 @@ enum PasswordType: Int, CaseIterable {
     case random = 0, memorable
 }
 
-enum WordSeparator: Int, CaseIterable {
-    case hyphens = 0, spaces, periods, commas, underscores, numbers, numbersAndSymbols
-}
-
 protocol GeneratePasswordCoordinatorDelegate: AnyObject {
     func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController)
 }
@@ -47,18 +44,15 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
 
     private weak var generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?
     private let mode: GeneratePasswordViewMode
-    private let wordProvider: WordProviderProtocol
     weak var delegate: GeneratePasswordCoordinatorDelegate?
 
     private var generatePasswordViewModel: GeneratePasswordViewModel?
     private var sheetPresentationController: UISheetPresentationController?
 
     init(generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?,
-         mode: GeneratePasswordViewMode,
-         wordProvider: WordProviderProtocol) {
+         mode: GeneratePasswordViewMode) {
         self.generatePasswordViewModelDelegate = generatePasswordViewModelDelegate
         self.mode = mode
-        self.wordProvider = wordProvider
     }
 
     func start() {
@@ -67,7 +61,7 @@ final class GeneratePasswordCoordinator: DeinitPrintable {
             return
         }
 
-        let viewModel = GeneratePasswordViewModel(mode: mode, wordProvider: wordProvider)
+        let viewModel = GeneratePasswordViewModel(mode: mode)
         viewModel.delegate = generatePasswordViewModelDelegate
         viewModel.uiDelegate = self
         let view = GeneratePasswordView(viewModel: viewModel)
@@ -142,9 +136,9 @@ extension PasswordType {
     var title: String {
         switch self {
         case .random:
-            #localized("Random Password")
+            #localized("Random password")
         case .memorable:
-            #localized("Memorable Password")
+            #localized("Memorable password")
         }
     }
 }
@@ -166,36 +160,6 @@ extension WordSeparator {
             #localized("Numbers")
         case .numbersAndSymbols:
             #localized("Numbers and Symbols")
-        }
-    }
-
-    var value: String {
-        switch self {
-        case .hyphens:
-            return "-"
-        case .spaces:
-            return " "
-        case .periods:
-            return "."
-        case .commas:
-            return ","
-        case .underscores:
-            return "_"
-        case .numbers:
-            if let randomCharacter = AllowedCharacter.digit.rawValue.randomElement() {
-                return String(randomCharacter)
-            } else {
-                assertionFailure("Something's wrong")
-                return "0"
-            }
-        case .numbersAndSymbols:
-            let allowedCharacters = AllowedCharacter.digit.rawValue + AllowedCharacter.special.rawValue
-            if let randomCharacter = allowedCharacters.randomElement() {
-                return String(randomCharacter)
-            } else {
-                assertionFailure("Something's wrong")
-                return "&"
-            }
         }
     }
 }

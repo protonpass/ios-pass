@@ -65,9 +65,6 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// How many new user invites are waiting for an admin to create the proper invite
     public let newUserInvitesReady: Int64
 
-    /// Whether this vault is primary for this user
-    public let primary: Bool
-
     /// Whether the user is owner of this vault
     public let owner: Bool
 
@@ -123,7 +120,6 @@ public extension Share {
                               name: vaultContent.name,
                               description: vaultContent.description_p,
                               displayPreferences: vaultContent.display,
-                              isPrimary: primary,
                               isOwner: owner,
                               shareRole: ShareRole(rawValue: shareRoleID) ?? .read,
                               members: Int(targetMembers),

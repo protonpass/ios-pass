@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import Core
 import CoreData
 import XCTest
 
@@ -27,7 +28,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        container = .Builder.build(name: kProtonPassContainerName, inMemory: true)
+        container = DatabaseService.build(name: kProtonPassContainerName, inMemory: true)
     }
 
     override func tearDown() {
@@ -70,7 +71,6 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "expireTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "owner", on: sut, hasType: .boolean)
         verifyAttribute(named: "permission", on: sut, hasType: .integer64)
-        verifyAttribute(named: "primary", on: sut, hasType: .boolean)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
         verifyAttribute(named: "targetID", on: sut, hasType: .string)
@@ -149,5 +149,12 @@ final class CoreDataEntityStructureTests: XCTestCase {
         let sut = entity(byName: "FeatureFlagsEntity")
         verifyAttribute(named: "flagsData", on: sut, hasType: .binaryData)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
+    }
+    
+    func testLastUsedTimeEntity() {
+        let sut = entity(byName: "LastUsedTimeEntity")
+        verifyAttribute(named: "itemId", on: sut, hasType: .string)
+        verifyAttribute(named: "shareId", on: sut, hasType: .string)
+        verifyAttribute(named: "lastUseTime", on: sut, hasType: .double)
     }
 }

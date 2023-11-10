@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Factory
 import ProtonCoreServices
@@ -46,6 +47,10 @@ private extension UseCasesContainer {
     var shareInviteService: ShareInviteServiceProtocol {
         ServiceContainer.shared.shareInviteService()
     }
+
+    var userDataProvider: UserDataProvider {
+        SharedDataContainer.shared.userDataProvider()
+    }
 }
 
 // MARK: User report
@@ -56,10 +61,6 @@ extension UseCasesContainer {
                                  extractLogsToFile: self.extractLogsToFile(),
                                  getLogEntries: self.getLogEntries()) }
     }
-
-    var sendUserFeedBack: Factory<SendUserFeedBackUseCase> {
-        self { SendUserFeedBack(reportRepository: RepositoryContainer.shared.reportRepository()) }
-    }
 }
 
 // MARK: Logs
@@ -67,10 +68,6 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var extractLogsToFile: Factory<ExtractLogsToFileUseCase> {
         self { ExtractLogsToFile(logFormatter: SharedToolingContainer.shared.logFormatter()) }
-    }
-
-    var extractLogsToData: Factory<ExtractLogsToDataUseCase> {
-        self { ExtractLogsToData(logFormatter: SharedToolingContainer.shared.logFormatter()) }
     }
 
     var getLogEntries: Factory<GetLogEntriesUseCase> {
@@ -117,7 +114,7 @@ extension UseCasesContainer {
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
-                                    userData: SharedDataContainer.shared.userData(),
+                                    userDataProvider: self.userDataProvider,
                                     syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 
@@ -126,7 +123,7 @@ extension UseCasesContainer {
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: SharedRepositoryContainer.shared
                                         .shareInviteRepository(),
-                                    userData: SharedDataContainer.shared.userData()) }
+                                    userDataProvider: self.userDataProvider) }
     }
 
     var getEmailPublicKey: Factory<GetEmailPublicKeyUseCase> {
@@ -156,10 +153,10 @@ extension UseCasesContainer {
         self { RevokeUserShareAccess(repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
 
-    var canUserShareVault: Factory<CanUserShareVaultUseCase> {
+    var getUserShareStatus: Factory<GetUserShareStatusUseCase> {
         self {
-            CanUserShareVault(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
-                              accessRepository: SharedRepositoryContainer.shared.accessRepository())
+            GetUserShareStatus(getFeatureFlagStatusUseCase: SharedUseCasesContainer.shared.getFeatureFlagStatus(),
+                               accessRepository: SharedRepositoryContainer.shared.accessRepository())
         }
     }
 
@@ -190,13 +187,13 @@ extension UseCasesContainer {
 
     var acceptInvitation: Factory<AcceptInvitationUseCase> {
         self { AcceptInvitation(repository: RepositoryContainer.shared.inviteRepository(),
-                                userData: SharedDataContainer.shared.userData(),
+                                userDataProvider: self.userDataProvider,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 updateUserAddresses: self.updateUserAddresses()) }
     }
 
     var decodeShareVaultInformation: Factory<DecodeShareVaultInformationUseCase> {
-        self { DecodeShareVaultInformation(userData: SharedDataContainer.shared.userData(),
+        self { DecodeShareVaultInformation(userDataProvider: self.userDataProvider,
                                            getEmailPublicKey: self.getEmailPublicKey(),
                                            updateUserAddresses: self.updateUserAddresses()) }
     }
@@ -235,7 +232,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var refreshFeatureFlags: Factory<RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   userInfos: SharedDataContainer.shared.userData(),
+                                   userDataProvider: self.userDataProvider,
                                    logManager: self.logManager) }
     }
 }
@@ -267,18 +264,33 @@ extension UseCasesContainer {
         self { CreateVault(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                            repository: SharedRepositoryContainer.shared.shareRepository()) }
     }
+
+    var reachedVaultLimit: Factory<ReachedVaultLimitUseCase> {
+        self { ReachedVaultLimit(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
+                                 vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+    }
 }
 
 // MARK: - User
 
 extension UseCasesContainer {
-    var checkAccessToPass: Factory<CheckAccessToPassUseCase> {
-        self { CheckAccessToPass(apiService: self.apiService, logManager: self.logManager) }
+    var updateUserAddresses: Factory<UpdateUserAddressesUseCase> {
+        self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
+                                   authenticator: ServiceContainer.shared.authenticator()) }
     }
 
-    var updateUserAddresses: Factory<UpdateUserAddressesUseCase> {
-        self { UpdateUserAddresses(sharedDataContainer: SharedDataContainer.shared,
-                                   authenticator: ServiceContainer.shared.authenticator()) }
+    var revokeCurrentSession: Factory<RevokeCurrentSessionUseCase> {
+        self { RevokeCurrentSession(apiService: self.apiService) }
+    }
+}
+
+// MARK: - Items
+
+extension UseCasesContainer {
+    var updateItemsWithLastUsedTime: Factory<UpdateItemsWithLastUsedTimeUseCase> {
+        self { UpdateItemsWithLastUsedTime(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                           indexAllLoginItems: SharedUseCasesContainer.shared
+                                               .indexAllLoginItems()) }
     }
 }
 

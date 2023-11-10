@@ -29,7 +29,6 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
@@ -37,8 +36,6 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var selectedVault: Vault?
     @Published private(set) var isFreeUser = false
-
-    private var isPrimaryVaultRemoved = false
 
     init() {
         allVaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
@@ -54,21 +51,12 @@ final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
-
-    func shouldReduceOpacity(for vault: Vault) -> Bool {
-        if isPrimaryVaultRemoved {
-            !vault.canEdit
-        } else {
-            isFreeUser && !vault.isPrimary
-        }
-    }
 }
 
 private extension VaultSelectorViewModel {
     func setup() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            isPrimaryVaultRemoved = await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault)
             guard allVaults.count > 1 else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()

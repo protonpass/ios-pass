@@ -34,16 +34,12 @@ public extension GetMainVaultUseCase {
 
 public final class GetMainVault: GetMainVaultUseCase {
     private let vaultsManager: VaultsManagerProtocol
-    private let featuresFlags: GetFeatureFlagStatusUseCase
 
-    public init(vaultsManager: VaultsManagerProtocol,
-                featuresFlags: GetFeatureFlagStatusUseCase) {
+    public init(vaultsManager: VaultsManagerProtocol) {
         self.vaultsManager = vaultsManager
-        self.featuresFlags = featuresFlags
     }
 
     public func execute() async -> Vault? {
-        let isPrimaryVaultRemoved = await featuresFlags(with: FeatureFlagType.passRemovePrimaryVault)
-        return isPrimaryVaultRemoved ? vaultsManager.getOldestOwnedVault() : vaultsManager.getPrimaryVault()
+        vaultsManager.getOldestOwnedVault()
     }
 }

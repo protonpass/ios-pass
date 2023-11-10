@@ -21,6 +21,7 @@
 import Client
 import Core
 import CryptoKit
+import Entities
 import Factory
 import Macro
 import UIKit
@@ -40,6 +41,8 @@ class BaseItemDetailViewModel: ObservableObject {
 
     let isShownAsSheet: Bool
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+
     let upgradeChecker: UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
         didSet {
@@ -53,7 +56,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
+    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
@@ -62,7 +65,7 @@ class BaseItemDetailViewModel: ObservableObject {
         guard let vault else {
             return false
         }
-        return canUserShareVault(for: vault.vault)
+        return getUserShareStatus(for: vault.vault) != .cantShare
     }
 
     var isAllowedToEdit: Bool {
@@ -73,8 +76,6 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     weak var delegate: ItemDetailViewModelDelegate?
-
-    private var symmetricKey: SymmetricKey { itemRepository.symmetricKey }
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
@@ -115,7 +116,11 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func share() {
         guard let vault else { return }
-        router.present(for: .shareVaultFromItemDetail(vault, itemContent))
+        if getUserShareStatus(for: vault.vault) == .canShare {
+            router.present(for: .shareVaultFromItemDetail(vault, itemContent))
+        } else {
+            router.present(for: .upselling)
+        }
     }
 
     func refresh() {
@@ -165,7 +170,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.trace("Trashing \(self.itemContent.debugInformation)")
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
                 try await self.itemRepository.trashItems([encryptedItem])
                 self.delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 self.logger.info("Trashed \(item.debugInformation)")
@@ -184,8 +189,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.trace("Restoring \(self.itemContent.debugInformation)")
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
-                let symmetricKey = self.itemRepository.symmetricKey
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
                 try await self.itemRepository.untrashItems([encryptedItem])
                 self.router.display(element: .successMessage(item.type.restoreMessage,
                                                              config: .dismissAndRefresh(with: .update(item.type))))
@@ -205,8 +209,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 self.logger.trace("Permanently deleting \(self.itemContent.debugInformation)")
                 self.router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await self.getItemTask(item: self.itemContent).value
-                let symmetricKey = self.itemRepository.symmetricKey
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
+                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
                 try await self.itemRepository.deleteItems([encryptedItem], skipTrash: false)
                 self.router.display(element: .successMessage(item.type.deleteMessage,
                                                              config: .dismissAndRefresh(with: .delete(item.type))))
@@ -220,6 +223,10 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+
+    func getSymmetricKey() throws -> SymmetricKey {
+        try symmetricKeyProvider.getSymmetricKey()
     }
 }
 
@@ -241,11 +248,11 @@ private extension BaseItemDetailViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.deallocatedSelf
+                throw PassError.deallocatedSelf
             }
             guard let item = try await itemRepository.getItem(shareId: item.shareId,
                                                               itemId: item.itemId) else {
-                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return item
         }

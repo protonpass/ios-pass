@@ -41,10 +41,6 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.logManager()
     }
 
-    var symmetricKey: SymmetricKey {
-        SharedDataContainer.shared.symmetricKey()
-    }
-
     var preferences: Preferences {
         SharedToolingContainer.shared.preferences()
     }
@@ -95,7 +91,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var mapLoginItem: Factory<MapLoginItemUseCase> {
-        self { MapLoginItem(key: self.symmetricKey) }
+        self { MapLoginItem(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
     }
 
     var indexAllLoginItems: Factory<IndexAllLoginItemsUseCase> {
@@ -105,7 +101,6 @@ extension SharedUseCasesContainer {
                                   credentialManager: self.credentialManager,
                                   preferences: self.preferences,
                                   mapLoginItem: self.mapLoginItem(),
-                                  getfeatureFlagStatus: self.getFeatureFlagStatus(),
                                   logManager: self.logManager) }
     }
 
@@ -122,8 +117,7 @@ extension SharedUseCasesContainer {
     }
 
     var getMainVault: Factory<GetMainVaultUseCase> {
-        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                            featuresFlags: self.getFeatureFlagStatus()) }
+        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
 }
 
@@ -142,7 +136,7 @@ extension SharedUseCasesContainer {
     var getFeatureFlagStatus: Factory<GetFeatureFlagStatusUseCase> {
         self {
             GetFeatureFlagStatus(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 userInfos: SharedDataContainer.shared.userData(),
+                                 userDataProvider: SharedDataContainer.shared.userDataProvider(),
                                  logManager: SharedToolingContainer.shared.logManager())
         }
     }
@@ -157,5 +151,21 @@ extension SharedUseCasesContainer {
 
     var sanitizeTotpUriForSaving: Factory<SanitizeTotpUriForSavingUseCase> {
         self { SanitizeTotpUriForSaving() }
+    }
+}
+
+// MARK: Password generator
+
+extension SharedUseCasesContainer {
+    var generatePassword: Factory<GeneratePasswordUseCase> {
+        self { GeneratePassword() }
+    }
+
+    var generateRandomWords: Factory<GenerateRandomWordsUseCase> {
+        self { GenerateRandomWords() }
+    }
+
+    var generatePassphrase: Factory<GeneratePassphraseUseCase> {
+        self { GeneratePassphrase() }
     }
 }

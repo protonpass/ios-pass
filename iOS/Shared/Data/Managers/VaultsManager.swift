@@ -39,12 +39,11 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let symmetricKey = resolve(\SharedDataContainer.symmetricKey)
     private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private var manualLogIn = resolve(\SharedDataContainer.manualLogIn)
+    private var loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private var symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private var isRefreshing = false
-    private var progresses = [VaultSyncProgress]()
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -64,6 +63,15 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     var hasOnlyOneOwnedVault: Bool {
         getAllVaults().numberOfOwnedVault <= 1
+    }
+
+    @MainActor
+    func reset() {
+        state = .loading
+        vaultSelection = .all
+        filterOption = .all
+        itemCount = .zero
+        currentVaults.send([])
     }
 }
 
@@ -110,24 +118,19 @@ private extension VaultsManager {
     }
 
     @MainActor
-    func createDefaultVault(isPrimary: Bool) async throws {
+    func createDefaultVault() async throws {
         logger.trace("Creating default vault for user")
-        let vault = VaultProtobuf(name: "Personal",
-                                  description: "Personal vault",
+        let vault = VaultProtobuf(name: #localized("Personal"),
+                                  description: #localized("Personal"),
                                   color: .color1,
                                   icon: .icon1)
-        let createdShare = try await shareRepository.createVault(vault)
-        if isPrimary {
-            logger.trace("Created default vault. Setting as primary \(createdShare.shareID)")
-            _ = try await shareRepository.setPrimaryVault(shareId: createdShare.shareID)
-            logger.info("Created default primary vault for user")
-        } else {
-            logger.info("Created default vault for user")
-        }
+        try await shareRepository.createVault(vault)
+        logger.info("Created default vault for user")
     }
 
     @MainActor
     func loadContents(for vaults: [Vault]) async throws {
+        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems()
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
         currentVaults.send(vaults)
@@ -150,7 +153,7 @@ private extension VaultsManager {
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
 
-        if manualLogIn {
+        if await loginMethod.isManualLogIn() {
             try await indexAllLoginItems(ignorePreferences: false)
         } else {
             Task.detached(priority: .background) { [weak self] in
@@ -169,40 +172,44 @@ extension VaultsManager {
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.isRefreshing = false }
-            self.isRefreshing = true
+            try? await asyncRefresh()
+        }
+    }
 
-            do {
-                // No need to show loading indicator once items are loaded beforehand.
-                var cryptoErrorOccured = false
-                switch self.state {
-                case .loaded:
-                    break
-                case let .error(error):
-                    cryptoErrorOccured = error is CryptoKitError
-                    self.state = .loading
-                default:
-                    self.state = .loading
-                }
-
-                if self.manualLogIn {
-                    self.logger.info("Manual login, doing full sync")
-                    try await self.fullSync()
-                    self.manualLogIn = false
-                    self.logger.info("Manual login, done full sync")
-                } else if cryptoErrorOccured {
-                    self.logger.info("Crypto error occured. Doing full sync")
-                    try await self.fullSync()
-                    self.logger.info("Crypto error occured. Done full sync")
-                } else {
-                    self.logger.info("Not manual login, getting local shares & items")
-                    let vaults = try await self.shareRepository.getVaults()
-                    try await self.loadContents(for: vaults)
-                    self.logger.info("Not manual login, done getting local shares & items")
-                }
-            } catch {
-                self.state = .error(error)
+    @MainActor
+    func asyncRefresh() async throws {
+        guard !isRefreshing else { return }
+        defer { isRefreshing = false }
+        do {
+            // No need to show loading indicator once items are loaded beforehand.
+            var cryptoErrorOccured = false
+            switch state {
+            case .loaded:
+                break
+            case let .error(error):
+                cryptoErrorOccured = error is CryptoKitError
+                state = .loading
+            default:
+                state = .loading
             }
+
+            if await loginMethod.isManualLogIn() {
+                logger.info("Manual login, doing full sync")
+                try await fullSync()
+                await loginMethod.setLogInFlow(newState: false)
+                logger.info("Manual login, done full sync")
+            } else if cryptoErrorOccured {
+                logger.info("Crypto error occured. Doing full sync")
+                try await fullSync()
+                logger.info("Crypto error occured. Done full sync")
+            } else {
+                logger.info("Not manual login, getting local shares & items")
+                let vaults = try await shareRepository.getVaults()
+                try await loadContents(for: vaults)
+                logger.info("Not manual login, done getting local shares & items")
+            }
+        } catch {
+            state = .error(error)
         }
     }
 
@@ -230,18 +237,18 @@ extension VaultsManager {
 
         // 3. Create default vault if no vaults
         if remoteShares.isEmpty {
-            try await createDefaultVault(isPrimary: false)
+            try await createDefaultVault()
         }
 
         // 4. Load vaults and their contents
         var vaults = try await shareRepository.getVaults()
 
-        // 5. Check if in "forgot password" scenario. Create a new primary vault if applicable
+        // 5. Check if in "forgot password" scenario. Create a new default vault if applicable
         let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
         // We see that there are remote vaults but we can't decrypt any of them
         // => "forgot password" happened
         if hasRemoteVaults, vaults.isEmpty {
-            try await createDefaultVault(isPrimary: true)
+            try await createDefaultVault()
             vaults = try await shareRepository.getVaults()
         }
 
@@ -335,13 +342,6 @@ extension VaultsManager {
         let trashedItems = try await itemRepository.getItems(state: .trashed)
         try await itemRepository.deleteItems(trashedItems, skipTrash: false)
         logger.info("Permanently deleted all trashed items")
-    }
-
-    // Should disappear once we remove the remove primary vault feature flag
-    func getPrimaryVault() -> Vault? {
-        guard case let .loaded(uiModels, _) = state else { return nil }
-        let vaults = uiModels.map(\.vault)
-        return vaults.first(where: { $0.isPrimary }) ?? vaults.first
     }
 
     func getOldestOwnedVault() -> Vault? {

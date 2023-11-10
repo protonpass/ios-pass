@@ -83,7 +83,6 @@ class BaseCreateEditItemViewModel {
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
@@ -110,14 +109,14 @@ class BaseCreateEditItemViewModel {
         }
 
         guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
-            throw PPError.vault(.vaultNotFound(vaultShareId))
+            throw PassError.vault(.vaultNotFound(vaultShareId))
         }
 
         if vault.canEdit {
             selectedVault = vault
         } else {
             guard let vault = vaults.twoOldestVaults.owned ?? vaults.first else {
-                throw PPError.vault(.vaultNotFound(vaultShareId))
+                throw PassError.vault(.vaultNotFound(vaultShareId))
             }
             isShowingNonEditableAlert = true
             selectedVault = vault
@@ -167,8 +166,10 @@ private extension BaseCreateEditItemViewModel {
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
                 canAddMoreCustomFields = !isFreeUser
-                if isFreeUser, case .create = mode, vaults.count > 1 {
-                    await setMainVault()
+                if isFreeUser,
+                   case .create = mode, vaults.count > 1,
+                   let mainVault = await getMainVault() {
+                    selectedVault = mainVault
                 }
             } catch {
                 logger.error(error)
@@ -188,15 +189,6 @@ private extension BaseCreateEditItemViewModel {
                 selectedVault = newSelectedVault
             }
             .store(in: &cancellables)
-    }
-
-    func setMainVault() async {
-        if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault),
-           let mainVault = await getMainVault() {
-            selectedVault = mainVault
-        } else if !selectedVault.isPrimary, let primaryVault = vaults.first(where: { $0.isPrimary }) {
-            selectedVault = primaryVault
-        }
     }
 
     func createItem(for type: ItemCreationType) async throws -> SymmetricallyEncryptedItem? {
@@ -239,7 +231,7 @@ private extension BaseCreateEditItemViewModel {
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
                                                              itemId: itemId) else {
-            throw PPError.itemNotFound(shareID: shareId, itemID: itemId)
+            throw PassError.itemNotFound(shareID: shareId, itemID: itemId)
         }
         let newItemContent = try generateItemContent()
         try await itemRepository.updateItem(oldItem: oldItem.item,
