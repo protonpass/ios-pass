@@ -113,18 +113,15 @@ extension ProfileTabViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    func refreshPlan() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                // First get local plan to optimistically display it
-                // and then try to refresh the plan to have it updated
-                plan = try await accessRepository.getPlan()
-                plan = try await self.accessRepository.refreshAccess().plan
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
-            }
+    func refreshPlan() async {
+        do {
+            // First get local plan to optimistically display it
+            // and then try to refresh the plan to have it updated
+            plan = try await accessRepository.getPlan()
+            plan = try await accessRepository.refreshAccess().plan
+        } catch {
+            logger.error(error)
+            router.display(element: .displayErrorBanner(error))
         }
     }
 
