@@ -33,6 +33,7 @@ final class SendShareInviteTests: XCTestCase {
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
+    var userDataProvider: UserDataProviderMock!
     var syncEventLoop: SyncEventLoopProtocolMock!
 
     override func setUp() {
@@ -42,13 +43,14 @@ final class SendShareInviteTests: XCTestCase {
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
+        userDataProvider = UserDataProviderMock()
         syncEventLoop = SyncEventLoopProtocolMock()
         sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
                                    makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
                                    shareInviteRepository: shareInviteRepository,
-                                   userData: UserData.mock,
+                                   userDataProvider: userDataProvider,
                                    syncEventLoop: syncEventLoop)
     }
 
@@ -74,7 +76,7 @@ final class SendShareInviteTests: XCTestCase {
             _ = try await sut(with: infos)
             XCTFail("Error needs to be thrown")
         } catch {
-            XCTAssertTrue(error is PPClientError)
+            XCTAssertTrue(error is PassError)
         }
     }
 }
@@ -87,7 +89,6 @@ extension Vault {
               name: .random(),
               description: .random(),
               displayPreferences: .init(),
-              isPrimary: false,
               isOwner: false,
               shareRole: .read,
               members: 0,

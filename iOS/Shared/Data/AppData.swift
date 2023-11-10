@@ -18,8 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import CryptoKit
+import Entities
 import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
@@ -41,35 +43,89 @@ enum AppDataKey: String {
     case symmetricKey
 }
 
-final class AppData {
+final class AppData: UserDataProvider, SymmetricKeyProvider {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
-    var userData: UserData?
+    private var userData: UserData? {
+        didSet {
+            cachedUserData = nil
+        }
+    }
 
     @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
-    var unauthSessionCredentials: AuthCredential?
+    private var unauthSessionCredentials: AuthCredential? {
+        didSet {
+            cachedUnauthSessionCredentials = nil
+        }
+    }
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
-    private var symmetricKey: String?
+    private var symmetricKey: String? {
+        didSet {
+            cachedSymmetricKey = nil
+        }
+    }
+
+    /// Reading from keychain is expensive so we cache & serve cached results until values are updated in keychain
+    private var cachedUserData: UserData?
+    private var cachedUnauthSessionCredentials: AuthCredential?
+    private var cachedSymmetricKey: SymmetricKey?
 
     init() {}
 
     func getSymmetricKey() throws -> SymmetricKey {
+        if let cachedSymmetricKey {
+            return cachedSymmetricKey
+        }
+        let symmetricKey = try getOrCreateSymmetricKey()
+        cachedSymmetricKey = symmetricKey
+        return symmetricKey
+    }
+
+    func removeSymmetricKey() {
+        symmetricKey = nil
+    }
+
+    func setUserData(_ userData: UserData?) {
+        self.userData = userData
+    }
+
+    func getUserData() -> UserData? {
+        if let cachedUserData {
+            return cachedUserData
+        }
+        cachedUserData = userData
+        return cachedUserData
+    }
+
+    func setUnauthCredential(_ credential: AuthCredential?) {
+        unauthSessionCredentials = credential
+    }
+
+    func getUnauthCredential() -> AuthCredential? {
+        if let cachedUnauthSessionCredentials {
+            return cachedUnauthSessionCredentials
+        }
+        cachedUnauthSessionCredentials = unauthSessionCredentials
+        return cachedUnauthSessionCredentials
+    }
+
+    func invalidateCachedUserData() {
+        cachedUserData = nil
+    }
+
+    func resetData() {
+        setUserData(nil)
+        removeSymmetricKey()
+    }
+}
+
+private extension AppData {
+    func getOrCreateSymmetricKey() throws -> SymmetricKey {
         if let symmetricKey {
-            if symmetricKey.count == 32 {
-                // Legacy path with 32-character long string
-                guard let symmetricKeyData = symmetricKey.data(using: .utf8) else {
-                    throw PPError.failedToGetOrCreateSymmetricKey
-                }
-                // Update the legacy key to the new model
-                self.symmetricKey = symmetricKeyData.encodeBase64()
-                return .init(data: symmetricKeyData)
-            } else {
-                // New path with base 64 string
-                guard let symmetricKeyData = try symmetricKey.base64Decode() else {
-                    throw PPError.failedToGetOrCreateSymmetricKey
-                }
-                return .init(data: symmetricKeyData)
+            guard let symmetricKeyData = try symmetricKey.base64Decode() else {
+                throw PassError.failedToGetOrCreateSymmetricKey
             }
+            return .init(data: symmetricKeyData)
         } else {
             let randomData = try Data.random()
             symmetricKey = randomData.encodeBase64()

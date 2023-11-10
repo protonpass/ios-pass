@@ -3,14 +3,122 @@
   "strings" : {
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For security reasons, your access needs to be confirmed"
+          }
+        }
+      }
+    },
+    "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus." : {
+      "comment" : "Used in the upselling screen to explain benefits",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get unlimited aliases, enjoy exclusive features, and support us by subscribing to Pass Plus."
+          }
+        }
+      }
     },
     "Learn more about Pass" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learn more about Pass"
+          }
+        }
+      }
+    },
+    "Multiple Vaults" : {
+      "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Multiple Vaults"
+          }
+        }
+      }
+    },
+    "Pass Plus" : {
+      "comment" : "Title on upselling screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus"
+          }
+        }
+      }
     },
     "Pending access to the shared data" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending access to the shared data"
+          }
+        }
+      }
+    },
+    "Sharing with up to 10 people" : {
+      "comment" : "Used in the upselling screen to explain benefits",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sharing with up to 10 people"
+          }
+        }
+      }
+    },
+    "Unlimited 2FA Autofill" : {
+      "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited 2FA Autofill"
+          }
+        }
+      }
+    },
+    "Unlimited email aliases" : {
+      "comment" : "Used in upselling screen to explain paid feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited email aliases"
+          }
+        }
+      }
+    },
+    "Upgrade" : {
+      "comment" : "Button on the upselling screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
