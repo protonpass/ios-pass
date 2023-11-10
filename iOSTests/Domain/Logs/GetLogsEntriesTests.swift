@@ -20,6 +20,8 @@
 
 import Foundation
 import Core
+import Entities
+import UseCases
 import XCTest
 @testable import Proton_Pass
 

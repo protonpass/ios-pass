@@ -28,7 +28,6 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
     public let name: String
     public let description: String
     public let displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences
-    public let isPrimary: Bool
     public let isOwner: Bool
     /// Role given to the user when invited with sharing feature
     public let shareRole: ShareRole
@@ -57,7 +56,6 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
                 name: String,
                 description: String,
                 displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences,
-                isPrimary: Bool,
                 isOwner: Bool,
                 shareRole: ShareRole,
                 members: Int,
@@ -71,7 +69,6 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.name = name
         self.description = description
         self.displayPreferences = displayPreferences
-        self.isPrimary = isPrimary
         self.addressId = addressId
         self.isOwner = isOwner
         self.shareRole = shareRole
@@ -92,7 +89,7 @@ public extension Vault {
     }
 
     var reachedSharingLimit: Bool {
-        maxMembers < totalOverallMembers
+        maxMembers <= totalOverallMembers
     }
 
     var isAdmin: Bool {

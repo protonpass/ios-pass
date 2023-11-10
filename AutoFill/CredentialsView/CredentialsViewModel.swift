@@ -90,17 +90,17 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
-    private let shareRepository: ShareRepositoryProtocol
-    private let itemRepository: ItemRepositoryProtocol
-    private let accessRepository: AccessRepositoryProtocol
-    private let symmetricKey: SymmetricKey
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\SharedServiceContainer.syncEventLoop) private(set) var syncEventLoop
+
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let logManager = resolve(\SharedToolingContainer.logManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
-    let favIconRepository: FavIconRepositoryProtocol
     let urls: [URL]
     private var vaults = [Vault]()
 
@@ -108,23 +108,8 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-    let syncEventLoop: SyncEventLoop
 
-    init(userId: String,
-         shareRepository: ShareRepositoryProtocol,
-         shareEventIDRepository: ShareEventIDRepositoryProtocol,
-         itemRepository: ItemRepositoryProtocol,
-         accessRepository: AccessRepositoryProtocol,
-         shareKeyRepository: ShareKeyRepositoryProtocol,
-         remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
-         favIconRepository: FavIconRepositoryProtocol,
-         symmetricKey: SymmetricKey,
-         serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        self.shareRepository = shareRepository
-        self.itemRepository = itemRepository
-        self.accessRepository = accessRepository
-        self.favIconRepository = favIconRepository
-        self.symmetricKey = symmetricKey
+    init(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.serviceIdentifiers = serviceIdentifiers
         urls = serviceIdentifiers.compactMap { serviceIdentifier in
             // ".domain" means in app context where identifiers don't have protocol,
@@ -133,15 +118,6 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
                 .type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
             return URL(string: id)
         }
-
-        syncEventLoop = .init(currentDateProvider: CurrentDateProvider(),
-                              userId: userId,
-                              shareRepository: shareRepository,
-                              shareEventIDRepository: shareEventIDRepository,
-                              remoteSyncEventsDatasource: remoteSyncEventsDatasource,
-                              itemRepository: itemRepository,
-                              shareKeyRepository: shareKeyRepository,
-                              logManager: logManager)
 
         setup()
     }
@@ -190,14 +166,15 @@ extension CredentialsViewModel {
             defer { self.router.display(element: .globalLoading(shouldShow: false)) }
             self.router.display(element: .globalLoading(shouldShow: true))
             do {
+                let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
                 self.logger.trace("Associate and autofilling \(item.debugInformation)")
                 let encryptedItem = try await self.getItemTask(item: item).value
-                let oldContent = try encryptedItem.getItemContent(symmetricKey: self.symmetricKey)
+                let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 guard case let .login(oldData) = oldContent.contentData else {
-                    throw PPError.credentialProvider(.notLogInItem)
+                    throw PassError.credentialProvider(.notLogInItem)
                 }
                 guard let newUrl = self.urls.first?.schemeAndHost, !newUrl.isEmpty else {
-                    throw PPError.credentialProvider(.invalidURL(urls.first))
+                    throw PassError.credentialProvider(.invalidURL(urls.first))
                 }
                 let newLoginData = ItemContentData.login(.init(username: oldData.username,
                                                                password: oldData.password,
@@ -264,7 +241,7 @@ extension CredentialsViewModel {
 
     func handleAuthenticationFailure() {
         logger.error("Failed to locally authenticate. Logging out.")
-        display(error: PPError.credentialProvider(.failedToAuthenticate))
+        display(error: PassError.credentialProvider(.failedToAuthenticate))
     }
 
     func createLoginItem() {
@@ -361,12 +338,12 @@ private extension CredentialsViewModel {
     func getItemTask(item: ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.CredentialProviderFailureReason.generic
+                throw PassError.CredentialProviderFailureReason.generic
             }
             guard let encryptedItem =
                 try await itemRepository.getItem(shareId: item.shareId,
                                                  itemId: item.itemId) else {
-                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
             return encryptedItem
         }
@@ -375,8 +352,9 @@ private extension CredentialsViewModel {
     func fetchCredentialsTask(plan: Plan) -> Task<CredentialsFetchResult, Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.CredentialProviderFailureReason.generic
+                throw PassError.CredentialProviderFailureReason.generic
             }
+            let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
 
             vaults = try await shareRepository.getVaults()
             let encryptedItems = try await itemRepository.getActiveLogInItems()
@@ -426,9 +404,9 @@ private extension CredentialsViewModel {
             }
 
             let matchedItems = try await matchedEncryptedItems.sorted()
-                .parallelMap { try $0.item.toItemUiModel(self.symmetricKey) }
+                .parallelMap { try $0.item.toItemUiModel(symmetricKey) }
             let notMatchedItems = try await notMatchedEncryptedItems.sorted()
-                .parallelMap { try $0.toItemUiModel(self.symmetricKey) }
+                .parallelMap { try $0.toItemUiModel(symmetricKey) }
 
             logger.debug("Mapped \(encryptedItems.count) encrypted items.")
             logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
@@ -443,12 +421,12 @@ private extension CredentialsViewModel {
     func getCredentialTask(for item: ItemIdentifiable) -> Task<(ASPasswordCredential, ItemContent), Error> {
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else {
-                throw PPError.CredentialProviderFailureReason.generic
+                throw PassError.CredentialProviderFailureReason.generic
             }
             guard let itemContent =
                 try await itemRepository.getItemContent(shareId: item.shareId,
                                                         itemId: item.itemId) else {
-                throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
             }
 
             switch itemContent.contentData {
@@ -456,12 +434,12 @@ private extension CredentialsViewModel {
                 let credential = ASPasswordCredential(user: data.username, password: data.password)
                 return (credential, itemContent)
             default:
-                throw PPError.credentialProvider(.notLogInItem)
+                throw PassError.credentialProvider(.notLogInItem)
             }
         }
     }
 
-    /// When in free plan, only take primary vault into account (suggestions & search)
+    /// When in free plan, only take 2 oldest vaults into account (suggestions & search)
     /// Otherwise take everything into account
     func shouldTakeIntoAccount(vaults: [Vault], vault: Vault?, withPlan plan: Plan) async -> Bool {
         guard let vault else { return true }
@@ -471,11 +449,7 @@ private extension CredentialsViewModel {
                 let oldestVaults = vaults.twoOldestVaults
                 return oldestVaults.isOneOf(shareId: vault.shareId)
             } else {
-                if await getFeatureFlagStatus(with: FeatureFlagType.passRemovePrimaryVault) {
-                    return vaults.oldestOwned == vault
-                } else {
-                    return vault.isPrimary
-                }
+                return vaults.oldestOwned == vault
             }
         default:
             return true

@@ -23,11 +23,7 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 import UseCases
 
-extension UserData: UserInformationProtocol {
-    public var userId: String {
-        user.ID
-    }
-
+extension UserData {
     func address(for email: String) -> Address? {
         addresses.first(where: { $0.email == email })
     }

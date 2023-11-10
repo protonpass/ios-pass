@@ -34,12 +34,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = VaultManagerState.loading
 
-    private(set) var numberOfAliasForSharedVault = 0
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private let canUserShareVault = resolve(\UseCasesContainer.canUserShareVault)
+    private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
@@ -69,7 +67,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func canShare(vault: Vault) -> Bool {
-        canUserShareVault(for: vault) && !vault.shared
+        getUserShareStatus(for: vault) != .cantShare && !vault.shared
     }
 
     func canEdit(vault: Vault) -> Bool {
@@ -122,8 +120,12 @@ extension EditableVaultListViewModel {
     }
 
     func share(vault: Vault) {
-        setShareInviteVault(with: .existing(vault))
-        router.present(for: .sharingFlow(.none))
+        if getUserShareStatus(for: vault) == .canShare {
+            setShareInviteVault(with: .existing(vault))
+            router.present(for: .sharingFlow(.none))
+        } else {
+            router.present(for: .upselling)
+        }
     }
 
     func leaveVault(vault: Vault) {

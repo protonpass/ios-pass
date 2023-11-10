@@ -20,6 +20,7 @@
 // swiftlint:disable all
 
 @testable import UseCases
+import Client
 import Core
 import ProtonCoreFeatureFlags
 

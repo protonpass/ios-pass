@@ -34,17 +34,17 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let userData = resolve(\SharedDataContainer.userData)
+    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let revokeCurrentSession = resolve(\UseCasesContainer.revokeCurrentSession)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
-    private let payments = resolve(\ServiceContainer.payments)
-    private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
+    @Published private(set) var isLoading = false
 
     weak var delegate: AccountViewModelDelegate?
 
-    var username: String { userData.user.email ?? "" }
+    var username: String { userDataProvider.getUserData()?.user.email ?? "" }
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
@@ -72,26 +72,16 @@ extension AccountViewModel {
     }
 
     func manageSubscription() {
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            paymentsUI.showCurrentPlan(presentationType: .modal,
-                                       backendFetch: true) { _ in }
-        } else {
-            paymentsManager.manageSubscription { [weak self] result in
-                guard let self else { return }
-                handlePaymentsResult(result: result)
-            }
+        paymentsManager.manageSubscription { [weak self] result in
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 
     func upgradeSubscription() {
-        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            paymentsUI.showUpgradePlan(presentationType: .modal,
-                                       backendFetch: true) { _ in }
-        } else {
-            paymentsManager.upgradeSubscription { [weak self] result in
-                guard let self else { return }
-                handlePaymentsResult(result: result)
-            }
+        paymentsManager.upgradeSubscription { [weak self] result in
+            guard let self else { return }
+            handlePaymentsResult(result: result)
         }
     }
 
@@ -101,7 +91,12 @@ extension AccountViewModel {
             if inAppPurchasePlan != nil {
                 refreshUserPlan()
             } else {
-                logger.debug("Payment is done but no plan is purchased")
+                logger
+                    .debug("""
+                    Payment is done but no plan is purchased.
+                     Or purchase was cancelled.
+                     Or completed, and sheet is being dismissed.
+                    """)
             }
         case let .failure(error):
             logger.error(error)
@@ -109,7 +104,13 @@ extension AccountViewModel {
     }
 
     func signOut() {
-        delegate?.accountViewModelWantsToSignOut()
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            isLoading = true
+            await revokeCurrentSession()
+            isLoading = false
+            delegate?.accountViewModelWantsToSignOut()
+        }
     }
 
     func deleteAccount() {

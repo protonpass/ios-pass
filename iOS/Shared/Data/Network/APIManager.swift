@@ -43,12 +43,7 @@ protocol APIManagerDelegate: AnyObject {
     func appLoggedOutBecauseSessionWasInvalidated()
 }
 
-public protocol APIManagerProtocol {
-    var userData: UserData? { get }
-    var apiService: APIService { get }
-}
-
-final class APIManager: APIManagerProtocol {
+final class APIManager {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
     private let appData = resolve(\SharedDataContainer.appData)
@@ -60,18 +55,9 @@ final class APIManager: APIManagerProtocol {
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
-    // Logout issue mitigation
-    @AppStorage("lastSuccessfulRefreshTimestamp", store: kSharedUserDefaults)
-    private var lastSuccessfulRefreshTimestamp: TimeInterval?
-    private var ignoredRefreshFailure = false
-
     private var cancellables = Set<AnyCancellable>()
 
     weak var delegate: APIManagerDelegate?
-
-    var userData: UserData? {
-        appData.userData
-    }
 
     init() {
         let trustKitDelegate = PassTrustKitDelegate()
@@ -82,7 +68,7 @@ final class APIManager: APIManagerProtocol {
         let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
-        if let credential = appData.userData?.credential ?? appData.unauthSessionCredentials {
+        if let credential = appData.getUserData()?.credential ?? appData.getUnauthCredential() {
             apiService = PMAPIService.createAPIService(doh: doh,
                                                        sessionUID: credential.sessionID,
                                                        challengeParametersProvider: challengeProvider)
@@ -128,15 +114,8 @@ final class APIManager: APIManagerProtocol {
         authHelper.onSessionObtaining(credential: Credential(authCredential, scopes: scopes))
     }
 
-    // Should only be used for tests
-    func setLastSuccessfulRefreshTimestamp(_ date: Date) {
-        #if DEBUG
-        lastSuccessfulRefreshTimestamp = date.timeIntervalSince1970
-        #endif
-    }
-
     func clearCredentials() {
-        appData.unauthSessionCredentials = nil
+        appData.setUnauthCredential(nil)
         apiService.setSessionUID(uid: "")
         // destroying and recreating AuthHelper to clear its cache
         authHelper = AuthHelper()
@@ -146,8 +125,9 @@ final class APIManager: APIManagerProtocol {
 
     private static func setUpCertificatePinning(trustKitDelegate: TrustKitDelegate) {
         TrustKitWrapper.setUp(delegate: trustKitDelegate)
-        PMAPIService.noTrustKit = false
-        PMAPIService.trustKit = TrustKitWrapper.current
+        let trustKit = TrustKitWrapper.current
+        PMAPIService.trustKit = trustKit
+        PMAPIService.noTrustKit = trustKit == nil
     }
 
     private func setUpCore() {
@@ -176,8 +156,11 @@ final class APIManager: APIManagerProtocol {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                guard let self, let userData = appData.userData else { return }
-                authHelper.onSessionObtaining(credential: userData.getCredential)
+                guard let self else { return }
+                appData.invalidateCachedUserData()
+                if let userData = appData.getUserData() {
+                    authHelper.onSessionObtaining(credential: userData.getCredential)
+                }
             }
             .store(in: &cancellables)
     }
@@ -190,16 +173,8 @@ final class APIManager: APIManagerProtocol {
                                        passphrases: userData.passphrases,
                                        addresses: userData.addresses,
                                        scopes: userData.scopes)
-        appData.userData = updatedUserData
-        appData.unauthSessionCredentials = nil
-    }
-
-    /// Ignore when last successful refresh happened less than 24h
-    private func shouldIgnoreFailure() -> Bool {
-        guard let lastSuccessfulRefreshTimestamp, !ignoredRefreshFailure else { return false }
-        let lastSuccessfulRefreshDate = Date(timeIntervalSince1970: lastSuccessfulRefreshTimestamp)
-        let days = Calendar.current.numberOfDaysBetween(lastSuccessfulRefreshDate, and: .now)
-        return days == 0
+        appData.setUserData(updatedUserData)
+        appData.setUnauthCredential(nil)
     }
 }
 
@@ -208,15 +183,9 @@ final class APIManager: APIManagerProtocol {
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
         if isAuthenticatedSession {
-            if shouldIgnoreFailure() {
-                logger.debug("Authenticated session is invalidated. Ignore failure.")
-                ignoredRefreshFailure = true
-                return
-            } else {
-                logger.info("Authenticated session is invalidated. Logging out.")
-                appData.userData = nil
-                delegate?.appLoggedOutBecauseSessionWasInvalidated()
-            }
+            logger.info("Authenticated session is invalidated. Logging out.")
+            appData.setUserData(nil)
+            delegate?.appLoggedOutBecauseSessionWasInvalidated()
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
@@ -226,12 +195,10 @@ extension APIManager: AuthHelperDelegate {
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
-        if let userData = appData.userData {
+        if let userData = appData.getUserData() {
             update(userData: userData, authCredential: authCredential)
-            lastSuccessfulRefreshTimestamp = Date.now.timeIntervalSince1970
-            ignoredRefreshFailure = false
         } else {
-            appData.unauthSessionCredentials = authCredential
+            appData.setUnauthCredential(authCredential)
         }
     }
 }

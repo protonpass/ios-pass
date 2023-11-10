@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Foundation
 import ProtonCoreLogin
 import ProtonCoreServices
@@ -32,14 +33,9 @@ public enum TelemetryEventSendResult {
 // MARK: - TelemetryEventRepositoryProtocol
 
 public protocol TelemetryEventRepositoryProtocol {
-    var localDatasource: LocalTelemetryEventDatasourceProtocol { get }
-    var remoteDatasource: RemoteTelemetryEventDatasourceProtocol { get }
-    var remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol { get }
-    var accessRepository: AccessRepositoryProtocol { get }
-    var eventCount: Int { get }
-    var logger: Logger { get }
     var scheduler: TelemetrySchedulerProtocol { get }
-    var userId: String { get }
+
+    func getAllEvents(userId: String) async throws -> [TelemetryEvent]
 
     func addNewEvent(type: TelemetryEventType) async throws
 
@@ -47,8 +43,42 @@ public protocol TelemetryEventRepositoryProtocol {
     func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult
 }
 
-public extension TelemetryEventRepositoryProtocol {
+public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
+    public let localDatasource: LocalTelemetryEventDatasourceProtocol
+    public let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
+    public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
+    public let accessRepository: AccessRepositoryProtocol
+    public let eventCount: Int
+    public let logger: Logger
+    public let scheduler: TelemetrySchedulerProtocol
+    public let userDataProvider: UserDataProvider
+
+    public init(localDatasource: LocalTelemetryEventDatasourceProtocol,
+                remoteDatasource: RemoteTelemetryEventDatasourceProtocol,
+                remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
+                accessRepository: AccessRepositoryProtocol,
+                logManager: LogManagerProtocol,
+                scheduler: TelemetrySchedulerProtocol,
+                userDataProvider: UserDataProvider,
+                eventCount: Int = 500) {
+        self.localDatasource = localDatasource
+        self.remoteDatasource = remoteDatasource
+        self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
+        self.accessRepository = accessRepository
+        self.eventCount = eventCount
+        logger = .init(manager: logManager)
+        self.scheduler = scheduler
+        self.userDataProvider = userDataProvider
+    }
+}
+
+public extension TelemetryEventRepository {
+    func getAllEvents(userId: String) async throws -> [TelemetryEvent] {
+        try await localDatasource.getAllEvents(userId: userId)
+    }
+
     func addNewEvent(type: TelemetryEventType) async throws {
+        let userId = try userDataProvider.getUserId()
         try await localDatasource.insert(event: .init(uuid: UUID().uuidString,
                                                       time: Date.now.timeIntervalSince1970,
                                                       type: type),
@@ -63,6 +93,8 @@ public extension TelemetryEventRepositoryProtocol {
         }
 
         defer { scheduler.randomNextThreshold() }
+
+        let userId = try userDataProvider.getUserId()
 
         logger.debug("Threshold is reached. Checking telemetry settings before sending events.")
 
@@ -90,35 +122,6 @@ public extension TelemetryEventRepositoryProtocol {
 
         logger.info("Sent all events")
         return .allEventsSent
-    }
-}
-
-public final class TelemetryEventRepository: TelemetryEventRepositoryProtocol {
-    public let localDatasource: LocalTelemetryEventDatasourceProtocol
-    public let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
-    public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
-    public let accessRepository: AccessRepositoryProtocol
-    public let eventCount: Int
-    public let logger: Logger
-    public let scheduler: TelemetrySchedulerProtocol
-    public let userId: String
-
-    public init(localDatasource: LocalTelemetryEventDatasourceProtocol,
-                remoteDatasource: RemoteTelemetryEventDatasourceProtocol,
-                remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol,
-                accessRepository: AccessRepositoryProtocol,
-                logManager: LogManagerProtocol,
-                scheduler: TelemetrySchedulerProtocol,
-                userId: String,
-                eventCount: Int = 500) {
-        self.localDatasource = localDatasource
-        self.remoteDatasource = remoteDatasource
-        self.remoteUserSettingsDatasource = remoteUserSettingsDatasource
-        self.accessRepository = accessRepository
-        self.eventCount = eventCount
-        logger = .init(manager: logManager)
-        self.scheduler = scheduler
-        self.userId = userId
     }
 }
 

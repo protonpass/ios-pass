@@ -26,8 +26,7 @@ final class LocalShareDatasourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = .init(container: .Builder.build(name: kProtonPassContainerName,
-                                              inMemory: true))
+        sut = .init(databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {
@@ -49,7 +48,6 @@ final class LocalShareDatasourceTests: XCTestCase {
 //        XCTAssertEqual(lhsShare.targetType, rhsShare.targetType)
         XCTAssertEqual(lhsShare.targetID, rhsShare.targetID)
 //        XCTAssertEqual(lhsShare.permission, rhsShare.permission)
-//        XCTAssertEqual(lhsShare.primary, rhsShare.primary)
         XCTAssertEqual(lhsShare.content, rhsShare.content)
         XCTAssertEqual(lhsShare.contentKeyRotation, rhsShare.contentKeyRotation)
         XCTAssertEqual(lhsShare.contentFormatVersion, rhsShare.contentFormatVersion)

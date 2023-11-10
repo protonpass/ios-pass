@@ -130,7 +130,7 @@ extension ItemType {
         case .note:
             #localized("Note")
         case .creditCard:
-            #localized("Credit card")
+            #localized("Card")
         case .password:
             #localized("Password")
         }

@@ -128,7 +128,7 @@ extension ItemContentType {
         case .note:
             #localized("Note")
         case .creditCard:
-            #localized("Credit card")
+            #localized("Card")
         }
     }
 
@@ -152,7 +152,7 @@ extension ItemContentType {
         case .alias:
             #localized("Create a Hide My Email alias")
         case .creditCard:
-            #localized("Create a credit card")
+            #localized("Create a card")
         case .note:
             #localized("Create a note")
         }

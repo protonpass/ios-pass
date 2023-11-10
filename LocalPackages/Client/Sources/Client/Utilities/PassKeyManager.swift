@@ -37,12 +37,7 @@ public struct DecryptedItemKey: Hashable, Sendable {
 }
 
 // sourcery: AutoMockable
-public protocol PassKeyManagerProtocol: AnyObject {
-    var itemKeyDatasource: RemoteItemKeyDatasourceProtocol { get }
-    var shareKeyRepository: ShareKeyRepositoryProtocol { get }
-    var logger: Logger { get }
-    var symmetricKey: SymmetricKey { get }
-
+public protocol PassKeyManagerProtocol: Sendable, AnyObject {
     /// Get share key of a given key rotation to decrypt share content
     func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey
 
@@ -57,17 +52,17 @@ public actor PassKeyManager {
     public let shareKeyRepository: ShareKeyRepositoryProtocol
     public let itemKeyDatasource: RemoteItemKeyDatasourceProtocol
     public let logger: Logger
-    public let symmetricKey: SymmetricKey
+    public let symmetricKeyProvider: SymmetricKeyProvider
     private var decryptedShareKeys = Set<DecryptedShareKey>()
 
     public init(shareKeyRepository: ShareKeyRepositoryProtocol,
                 itemKeyDatasource: RemoteItemKeyDatasourceProtocol,
                 logManager: LogManagerProtocol,
-                symmetricKey: SymmetricKey) {
+                symmetricKeyProvider: SymmetricKeyProvider) {
         self.shareKeyRepository = shareKeyRepository
         self.itemKeyDatasource = itemKeyDatasource
         logger = .init(manager: logManager)
-        self.symmetricKey = symmetricKey
+        self.symmetricKeyProvider = symmetricKeyProvider
     }
 }
 
@@ -128,7 +123,7 @@ private extension PassKeyManager {
         let keyDescription = "share id \(shareId), keyRotation: \(keyRotation)"
         logger.trace("Decrypting share key \(keyDescription)")
 
-        let decryptedKey = try symmetricKey.decrypt(encryptedShareKey.encryptedKey)
+        let decryptedKey = try symmetricKeyProvider.getSymmetricKey().decrypt(encryptedShareKey.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {
             throw PPClientError.crypto(.failedToBase64Decode)
         }

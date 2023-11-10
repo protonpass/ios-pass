@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="displayName" attributeType="String"/>
@@ -47,6 +47,17 @@
             <uniquenessConstraint>
                 <constraint value="itemID"/>
                 <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="LastUsedTimeEntity" representedClassName="LastUsedTimeEntity" syncable="YES">
+        <attribute name="itemId" attributeType="String"/>
+        <attribute name="lastUseTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="shareId" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="itemId"/>
+                <constraint value="shareId"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

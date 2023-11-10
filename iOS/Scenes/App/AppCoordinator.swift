@@ -25,6 +25,7 @@ import CoreData
 import CryptoKit
 import DesignSystem
 import Factory
+import Macro
 import MBProgressHUD
 import ProtonCoreAuthentication
 import ProtonCoreFeatureSwitch
@@ -39,7 +40,6 @@ import UIKit
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
-    private var container: NSPersistentContainer
     private var isUITest: Bool
 
     private var homepageCoordinator: HomepageCoordinator?
@@ -54,17 +54,12 @@ final class AppCoordinator {
     private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-
-    // Use cases
-    private let checkAccessToPass = resolve(\UseCasesContainer.checkAccessToPass)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
 
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
 
-        container = .Builder.build(name: kProtonPassContainerName,
-                                   inMemory: false)
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
         bindAppState()
@@ -80,7 +75,7 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
-        appData.userData = nil
+        appData.setUserData(nil)
     }
 
     private func bindAppState() {
@@ -98,13 +93,14 @@ final class AppCoordinator {
 
                 case let .loggedIn(userData, manualLogIn):
                     logger.info("Logged in manual \(manualLogIn)")
-                    appData.userData = userData
+                    if manualLogIn {
+                        // Only update userData when manually log in
+                        // because otherwise we'd just rewrite the same userData object
+                        appData.setUserData(userData)
+                    }
                     apiManager.sessionIsAvailable(authCredential: userData.credential,
                                                   scopes: userData.scopes)
-                    showHomeScene(userData: userData, manualLogIn: manualLogIn)
-                    if manualLogIn {
-                        checkAccessToPass()
-                    }
+                    showHomeScene(manualLogIn: manualLogIn)
 
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -114,9 +110,9 @@ final class AppCoordinator {
     }
 
     func start() {
-        if let userData = appData.userData {
+        if let userData = appData.getUserData() {
             appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: false))
-        } else if appData.unauthSessionCredentials != nil {
+        } else if appData.getUnauthCredential() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
@@ -131,33 +127,16 @@ final class AppCoordinator {
         homepageCoordinator = nil
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
-            switch reason {
-            case .expiredRefreshToken:
-                alertRefreshTokenExpired()
-            case .failedBiometricAuthentication:
-                alertFailedBiometricAuthentication()
-            case .sessionInvalidated:
-                alertSessionInvalidated()
-            default:
-                break
-            }
+            handle(logOutReason: reason)
         }
     }
 
-    private func showHomeScene(userData: UserData, manualLogIn: Bool) {
-        do {
-            let symmetricKey = try appData.getSymmetricKey()
-
-            SharedDataContainer.shared.reset()
-            SharedDataContainer.shared.register(container: container,
-                                                symmetricKey: symmetricKey,
-                                                userData: userData,
-                                                manualLogIn: manualLogIn)
-            SharedToolingContainer.shared.resetCache()
-            SharedRepositoryContainer.shared.reset()
-            SharedServiceContainer.shared.reset()
-            SharedViewContainer.shared.reset()
-
+    private func showHomeScene(manualLogIn: Bool) {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
+            await loginMethod.setLogInFlow(newState: manualLogIn)
             let homepageCoordinator = HomepageCoordinator()
             homepageCoordinator.delegate = self
             self.homepageCoordinator = homepageCoordinator
@@ -165,10 +144,6 @@ final class AppCoordinator {
             animateUpdateRootViewController(homepageCoordinator.rootViewController) {
                 homepageCoordinator.onboardIfNecessary()
             }
-        } catch {
-            logger.error(error)
-            wipeAllData(includingUnauthSession: true)
-            appStateObserver.updateAppState(.loggedOut(.failedToGenerateSymmetricKey))
         }
     }
 
@@ -183,47 +158,43 @@ final class AppCoordinator {
 
     private func wipeAllData(includingUnauthSession: Bool) {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
-        appData.userData = nil
+        appData.resetData()
+        mainKeyProvider.wipeMainKey()
         if includingUnauthSession {
             apiManager.clearCredentials()
-            mainKeyProvider.wipeMainKey()
         }
         preferences.reset(isTests: isUITest)
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else { return }
-            // Do things independently in different `do catch` blocks
-            // because we don't want a failed operation prevents others from running
             do {
-                try await credentialManager.removeAllCredentials()
-                logger.info("Removed all credentials")
-            } catch {
-                logger.error(error)
-            }
-
-            do {
-                // Delete existing persistent stores
-                let storeContainer = container.persistentStoreCoordinator
-                for store in storeContainer.persistentStores {
-                    if let url = store.url {
-                        try storeContainer.destroyPersistentStore(at: url, ofType: store.type)
-                    }
-                }
-
-                // Re-create persistent container
-                container = .Builder.build(name: kProtonPassContainerName, inMemory: false)
-                logger.info("Nuked local data")
+                try await SharedServiceContainer.shared.reset()
+                SharedViewContainer.shared.reset()
             } catch {
                 logger.error(error)
             }
         }
     }
+}
 
-    private func alertRefreshTokenExpired() {
-        let alert = UIAlertController(title: "Your session is expired",
-                                      message: "Please log in again",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
+private extension AppCoordinator {
+    /// Show an alert with a single "OK" button that does nothing
+    func alert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(.init(title: #localized("OK"), style: .default))
         rootViewController?.present(alert, animated: true)
+    }
+
+    func handle(logOutReason: LogOutReason) {
+        switch logOutReason {
+        case .expiredRefreshToken, .sessionInvalidated:
+            alert(title: #localized("Your session is expired"),
+                  message: #localized("Please log in again"))
+        case .failedBiometricAuthentication:
+            alert(title: #localized("Failed to authenticate"),
+                  message: #localized("Please log in again"))
+        default:
+            break
+        }
     }
 }
 
@@ -232,22 +203,6 @@ final class AppCoordinator {
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
         appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
-    }
-
-    private func alertSessionInvalidated() {
-        let alert = UIAlertController(title: "Error occured",
-                                      message: "Your session was invalidated",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
-        rootViewController?.present(alert, animated: true)
-    }
-
-    private func alertFailedBiometricAuthentication() {
-        let alert = UIAlertController(title: "Failed to authenticate",
-                                      message: "You have to log in again in order to continue using Proton Pass",
-                                      preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default))
-        rootViewController?.present(alert, animated: true)
     }
 }
 
