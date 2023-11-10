@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public enum FavIconFetchResult {
@@ -67,7 +68,7 @@ extension RemoteFavIconDatasourceProtocol {
                let favIconError = FavIconError(rawValue: protonCode) {
                 return .negative(.error(favIconError))
             }
-            throw PPClientError.unexpectedHttpStatusCode(dataResponse.httpCode)
+            throw PassError.unexpectedHttpStatusCode(dataResponse.httpCode)
         }
     }
 }

@@ -65,17 +65,17 @@ public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
 public extension ItemRevision {
     func getContentProtobuf(vaultKey: DecryptedShareKey) throws -> ItemContentProtobuf {
         guard vaultKey.keyRotation == keyRotation else {
-            throw PPClientError.crypto(.unmatchedKeyRotation(lhsKey: vaultKey.keyRotation,
-                                                             rhsKey: keyRotation))
+            throw PassError.crypto(.unmatchedKeyRotation(lhsKey: vaultKey.keyRotation,
+                                                         rhsKey: keyRotation))
         }
 
         #warning("Handle this")
         guard let itemKey else {
-            throw PPClientError.crypto(.failedToDecryptContent)
+            throw PassError.crypto(.failedToDecryptContent)
         }
 
         guard let itemKeyData = try itemKey.base64Decode() else {
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
 
         let decryptedItemKeyData = try AES.GCM.open(itemKeyData,
@@ -83,7 +83,7 @@ public extension ItemRevision {
                                                     associatedData: .itemKey)
 
         guard let contentData = try content.base64Decode() else {
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
 
         let decryptedContentData = try AES.GCM.open(contentData,

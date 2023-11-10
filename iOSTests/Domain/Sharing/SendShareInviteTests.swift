@@ -60,7 +60,12 @@ final class SendShareInviteTests: XCTestCase {
             _ = try await sut(with: infos)
             XCTFail("Error needs to be thrown")
         } catch {
-            XCTAssertEqual(error as! SharingError, SharingError.incompleteInformation)
+            if let passError = error as? PassError,
+               case let .sharing(reason) = passError {
+                XCTAssertEqual(reason, .incompleteInformation)
+            } else {
+                XCTFail("Expect .incompleteInformation error")
+            }
         }
     }
     
