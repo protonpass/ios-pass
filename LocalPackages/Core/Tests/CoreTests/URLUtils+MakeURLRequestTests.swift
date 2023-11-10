@@ -1,6 +1,6 @@
-//
-// CreateUrlRequestTests.swift
-// Proton Pass - Created on 09/11/2023.
+//  
+// URLUtils+MakeURLRequestTests.swift
+// Proton Pass - Created on 10/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,36 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@testable import UseCases
-import Entities
+@testable import Core
 import XCTest
 
-final class CreateUrlRequestTests: XCTestCase {
-    var sut: CreateUrlRequestUseCase!
-
+final class URLUtilsPlusMakeURLRequestTests: XCTestCase {
     struct Person: Codable, Equatable {
         let name: String
         let age: Int
     }
 
-    override func setUp() {
-        super.setUp()
-        sut = CreateUrlRequest()
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-
     func testMakeRequestWithNoAccessTokenAndNoBody() throws {
-        let request = try sut(baseUrl: "https://proton.me",
-                              path: "api/v1/test",
-                              method: .get,
-                              appVersion: "pass-ios@1.0.0",
-                              sessionId: "test_session_id",
-                              accessToken: nil,
-                              body: nil)
+        let request = try URLUtils.makeUrlRequest(baseUrl: "https://proton.me",
+                                                  path: "api/v1/test",
+                                                  method: .get,
+                                                  appVersion: "pass-ios@1.0.0",
+                                                  sessionId: "test_session_id",
+                                                  accessToken: nil,
+                                                  body: nil)
 
         XCTAssertEqual(request.url?.absoluteString, "https://proton.me/api/v1/test")
         XCTAssertEqual(request.httpMethod, "GET")
@@ -62,13 +49,13 @@ final class CreateUrlRequestTests: XCTestCase {
 
     func testMakeRequestWithAccessTokenAndBody() throws {
         let alice = Person(name: "Alice", age: 20)
-        let request = try sut(baseUrl: "https://proton.me",
-                              path: "api/v1/test",
-                              method: .post,
-                              appVersion: "pass-ios@1.0.0",
-                              sessionId: "test_session_id",
-                              accessToken: "test_access_token",
-                              body: alice)
+        let request = try URLUtils.makeUrlRequest(baseUrl: "https://proton.me",
+                                                  path: "api/v1/test",
+                                                  method: .post,
+                                                  appVersion: "pass-ios@1.0.0",
+                                                  sessionId: "test_session_id",
+                                                  accessToken: "test_access_token",
+                                                  body: alice)
 
         XCTAssertEqual(request.url?.absoluteString, "https://proton.me/api/v1/test")
         XCTAssertEqual(request.httpMethod, "POST")
