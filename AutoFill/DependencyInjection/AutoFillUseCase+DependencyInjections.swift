@@ -69,6 +69,7 @@ extension AutoFillUseCaseContainer {
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTime: self.updateLastUseTime(),
+                                databaseService: SharedServiceContainer.shared.databaseService(),
                                 resetFactory: self.resetFactory()) }
     }
 
@@ -76,12 +77,11 @@ extension AutoFillUseCaseContainer {
         self { ResetFactory() }
     }
 
-    var createUrlRequest: Factory<CreateUrlRequestUseCase> {
-        self { CreateUrlRequest() }
+    var makeNetworkRequest: Factory<MakeNetworkRequestUseCase> {
+        self { MakeNetworkRequest(apiService: AutoFillDataContainer.shared.apiServiceLite()) }
     }
 
     var updateLastUseTime: Factory<UpdateLastUseTimeUseCase> {
-        self { UpdateLastUseTime(createUrlRequest: self.createUrlRequest(),
-                                 apiService: AutoFillDataContainer.shared.apiServiceLite()) }
+        self { UpdateLastUseTime(makeNetworkRequest: self.makeNetworkRequest()) }
     }
 }
