@@ -82,7 +82,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
         await MainActor.run {
             clipboardManager.copy(text: totpData.code, bannerMessage: "")
         }
-        logger.trace("Copied TOTP token \(itemContent.debugInformation)")
+        logger.trace("Copied TOTP token \(itemContent.debugDescription)")
 
         let content = UNMutableNotificationContent()
         content.title = #localized("TOTP copied")

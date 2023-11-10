@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
@@ -67,7 +68,7 @@ public extension APIService {
 
                 switch result {
                 case .success:
-                    continuation.resume(throwing: PPClientError.errorExpected)
+                    continuation.resume(throwing: PassError.errorExpected)
 
                 case let .failure(error):
                     if let responseError = error.underlyingError as? SessionResponseError,
@@ -77,7 +78,7 @@ public extension APIService {
                                                              data: body))
                         return
                     }
-                    continuation.resume(throwing: PPClientError.unexpectedError)
+                    continuation.resume(throwing: PassError.unexpectedError)
                 }
             }
         }

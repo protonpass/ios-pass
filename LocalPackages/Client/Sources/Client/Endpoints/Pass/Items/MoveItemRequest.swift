@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import Entities
 import Foundation
 
 public struct MoveItemRequest {
@@ -53,7 +54,7 @@ extension MoveItemRequest {
                                                 associatedData: .itemContent)
 
         guard let content = encryptedContent.combined?.base64EncodedString() else {
-            throw PPClientError.crypto(.failedToAESEncrypt)
+            throw PassError.crypto(.failedToAESEncrypt)
         }
 
         let encryptedItemKey = try AES.GCM.seal(itemKey,

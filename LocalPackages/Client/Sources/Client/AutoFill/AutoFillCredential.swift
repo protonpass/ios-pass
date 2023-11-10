@@ -20,6 +20,7 @@
 
 import AuthenticationServices
 import Core
+import Entities
 
 /// A proxy object for `ASPasswordCredentialIdentity` to interact with the credential database
 public struct AutoFillCredential: Sendable {

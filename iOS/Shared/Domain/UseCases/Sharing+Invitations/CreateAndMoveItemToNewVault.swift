@@ -54,10 +54,10 @@ final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase {
                 vaultsManager.refresh()
                 return vault
             } else {
-                throw SharingError.failedToCreateNewVault
+                throw PassError.sharing(.failedToCreateNewVault)
             }
         } catch {
-            throw SharingError.failedToCreateNewVault
+            throw PassError.sharing(.failedToCreateNewVault)
         }
     }
 }
