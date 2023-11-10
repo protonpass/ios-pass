@@ -1,3 +1,24 @@
+## Version 1.5.5
+Bug fixes:
+- Fixed occasional crashes when autofilling
+
+Others:
+- Improved DI process (no more redundant injections)
+- Updated copy for several places (banners, password generator, credit card page...)
+- Updated sharing upselling page
+- Localized alerts when users are forcefully logged out (session expiration or failed local authentication)
+
+## Version 1.5.4
+Bug fixes:
+- Fixed blank screen when autofilling
+
+Others:
+- Point to Core in Gitlab
+- Added sharing upselling
+- Password generation operations using Rust
+- Bump core from 12.2.0 to 14.0.1
+- Update lastUseTime in background tasks instead of after autofilling
+
 ## Version 1.5.3
 - Added ability to share a vault to non-Proton users
 - Added 2FA telemetry
