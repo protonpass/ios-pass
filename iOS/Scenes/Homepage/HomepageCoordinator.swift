@@ -120,7 +120,6 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 logger.trace("Found new plan, refreshing credential database")
                 homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
-                profileTabViewModel?.refreshPlan()
             }
             .store(in: &cancellables)
 
