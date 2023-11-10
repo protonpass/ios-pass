@@ -24,6 +24,7 @@ import Core
 import CoreData
 import CryptoKit
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import MBProgressHUD
@@ -34,6 +35,7 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUtilities
+import Sentry
 import SwiftUI
 import UIKit
 
@@ -73,6 +75,7 @@ final class AppCoordinator {
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
+  				SentrySDK.capture(error: PassError.unexpectedLogout)
                 // swiftlint:disable:next discouraged_optional_self
                 self?.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
             }.store(in: &cancellables)

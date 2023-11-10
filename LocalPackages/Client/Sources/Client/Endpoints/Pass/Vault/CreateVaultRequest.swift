@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import Entities
 import Foundation
 import ProtonCoreCrypto
 import ProtonCoreLogin
@@ -45,11 +46,11 @@ public extension CreateVaultRequest {
         addressID = userData.addresses.first?.addressID ?? ""
 
         guard let userKey = userData.user.keys.first else {
-            throw PPClientError.crypto(.missingUserKey(userID: userData.user.ID))
+            throw PassError.crypto(.missingUserKey(userID: userData.user.ID))
         }
 
         guard let passphrase = userData.passphrases[userKey.keyID] else {
-            throw PPClientError.crypto(.missingPassphrase(keyID: userKey.keyID))
+            throw PassError.crypto(.missingPassphrase(keyID: userKey.keyID))
         }
 
         let publicKey = ArmoredKey(value: userKey.publicKey)
@@ -68,7 +69,7 @@ public extension CreateVaultRequest {
                                                 associatedData: .vaultContent)
 
         guard let content = encryptedContent.combined?.base64EncodedString(), content.count >= 28 else {
-            throw PPClientError.crypto(.failedToAESEncrypt)
+            throw PassError.crypto(.failedToAESEncrypt)
         }
         self.content = content
     }

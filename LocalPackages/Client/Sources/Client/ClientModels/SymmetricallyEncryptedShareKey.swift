@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 /// `ShareKey` with its symmetrically encrypted key by an application-wide symmetric key
@@ -35,12 +36,12 @@ public struct SymmetricallyEncryptedShareKey: Hashable, Sendable {
 public extension [SymmetricallyEncryptedShareKey] {
     func latestKey() throws -> SymmetricallyEncryptedShareKey {
         guard !isEmpty else {
-            throw PPClientError.crypto(.missingKeys)
+            throw PassError.crypto(.missingKeys)
         }
 
         guard let latestKey =
             sorted(by: { $0.shareKey.keyRotation < $1.shareKey.keyRotation }).last else {
-            throw PPClientError.crypto(.missingKeys)
+            throw PassError.crypto(.missingKeys)
         }
         return latestKey
     }
