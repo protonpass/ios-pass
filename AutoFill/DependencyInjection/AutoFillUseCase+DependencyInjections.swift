@@ -49,6 +49,10 @@ private extension AutoFillUseCaseContainer {
 }
 
 extension AutoFillUseCaseContainer {
+    var mapServiceIdentifierToURL: Factory<MapASCredentialServiceIdentifierToURLUseCase> {
+        self { MapASCredentialServiceIdentifierToURL() }
+    }
+
     var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(preferences: self.preferences,
                                       logManager: self.logManager,
@@ -69,12 +73,19 @@ extension AutoFillUseCaseContainer {
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTime: self.updateLastUseTime(),
+                                reindexLoginItem: self.reindexLoginItem(),
+                                unindexAllLoginItems: SharedUseCasesContainer.shared.unindexAllLoginItems(),
                                 databaseService: SharedServiceContainer.shared.databaseService(),
                                 resetFactory: self.resetFactory()) }
     }
 
     var resetFactory: Factory<ResetFactoryUseCase> {
         self { ResetFactory() }
+    }
+
+    var reindexLoginItem: Factory<ReindexLoginItemUseCase> {
+        self { ReindexLoginItem(manager: SharedServiceContainer.shared.credentialManager(),
+                                mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
 
     var makeNetworkRequest: Factory<MakeNetworkRequestUseCase> {

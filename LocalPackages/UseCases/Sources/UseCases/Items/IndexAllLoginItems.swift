@@ -21,7 +21,6 @@
 import Client
 import Core
 import Foundation
-import UseCases
 
 /// Empty credential database and index all existing login items
 /// We only index if user enabled "QuickType bar" option but in case when
