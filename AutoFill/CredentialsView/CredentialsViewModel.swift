@@ -163,12 +163,12 @@ extension CredentialsViewModel {
             guard let self else {
                 return
             }
-            defer { self.router.display(element: .globalLoading(shouldShow: false)) }
-            self.router.display(element: .globalLoading(shouldShow: true))
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            router.display(element: .globalLoading(shouldShow: true))
             do {
                 let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-                self.logger.trace("Associate and autofilling \(item.debugInformation)")
-                let encryptedItem = try await self.getItemTask(item: item).value
+                logger.trace("Associate and autofilling \(item.debugDescription)")
+                let encryptedItem = try await getItemTask(item: item).value
                 let oldContent = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 guard case let .login(oldData) = oldContent.contentData else {
                     throw PassError.credentialProvider(.notLogInItem)
@@ -185,14 +185,14 @@ extension CredentialsViewModel {
                                                      itemUuid: oldContent.itemUuid,
                                                      data: newLoginData,
                                                      customFields: oldContent.customFields)
-                try await self.itemRepository.updateItem(oldItem: encryptedItem.item,
-                                                         newItemContent: newContent,
-                                                         shareId: encryptedItem.shareId)
-                self.autoFill(item: item)
-                self.logger.info("Associate and autofill successfully \(item.debugInformation)")
+                try await itemRepository.updateItem(oldItem: encryptedItem.item,
+                                                    newItemContent: newContent,
+                                                    shareId: encryptedItem.shareId)
+                autoFill(item: item)
+                logger.info("Associate and autofill successfully \(item.debugDescription)")
             } catch {
-                self.logger.error(error)
-                self.state = .error(error)
+                logger.error(error)
+                state = .error(error)
             }
         }
     }
@@ -222,15 +222,15 @@ extension CredentialsViewModel {
                 return
             }
             do {
-                self.logger.trace("Selecting \(item.debugInformation)")
-                let (credential, itemContent) = try await self.getCredentialTask(for: item).value
-                self.delegate?.credentialsViewModelDidSelect(credential: credential,
-                                                             itemContent: itemContent,
-                                                             serviceIdentifiers: self.serviceIdentifiers)
-                self.logger.info("Selected \(item.debugInformation)")
+                logger.trace("Selecting \(item.debugDescription)")
+                let (credential, itemContent) = try await getCredentialTask(for: item).value
+                delegate?.credentialsViewModelDidSelect(credential: credential,
+                                                        itemContent: itemContent,
+                                                        serviceIdentifiers: serviceIdentifiers)
+                logger.info("Selected \(item.debugDescription)")
             } catch {
-                self.logger.error(error)
-                self.state = .error(error)
+                logger.error(error)
+                state = .error(error)
             }
         }
     }
@@ -273,17 +273,17 @@ private extension CredentialsViewModel {
                 return
             }
             let hashedTerm = term.sha256
-            self.logger.trace("Searching for term \(hashedTerm)")
-            self.state = .searching
-            let searchResults = self.results?.searchableItems.result(for: term) ?? []
+            logger.trace("Searching for term \(hashedTerm)")
+            state = .searching
+            let searchResults = results?.searchableItems.result(for: term) ?? []
             if Task.isCancelled {
                 return
             }
-            self.state = .searchResults(searchResults)
+            state = .searchResults(searchResults)
             if searchResults.isEmpty {
-                self.logger.trace("No results for term \(hashedTerm)")
+                logger.trace("No results for term \(hashedTerm)")
             } else {
-                self.logger.trace("Found results for term \(hashedTerm)")
+                logger.trace("Found results for term \(hashedTerm)")
             }
         }
     }
@@ -343,7 +343,7 @@ private extension CredentialsViewModel {
             guard let encryptedItem =
                 try await itemRepository.getItem(shareId: item.shareId,
                                                  itemId: item.itemId) else {
-                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(item)
             }
             return encryptedItem
         }
@@ -426,7 +426,7 @@ private extension CredentialsViewModel {
             guard let itemContent =
                 try await itemRepository.getItemContent(shareId: item.shareId,
                                                         itemId: item.itemId) else {
-                throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+                throw PassError.itemNotFound(item)
             }
 
             switch itemContent.contentData {

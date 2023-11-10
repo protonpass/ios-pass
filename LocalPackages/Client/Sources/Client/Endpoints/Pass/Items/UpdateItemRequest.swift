@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import Entities
 import ProtonCoreKeyManager
 
 public struct UpdateItemRequest {
@@ -44,7 +45,7 @@ public extension UpdateItemRequest {
                                          associatedData: .itemContent)
 
         guard let updatedContent = sealedBox.combined?.base64EncodedString() else {
-            throw PPClientError.crypto(.failedToAESEncrypt)
+            throw PassError.crypto(.failedToAESEncrypt)
         }
 
         self.init(keyRotation: latestItemKey.keyRotation,

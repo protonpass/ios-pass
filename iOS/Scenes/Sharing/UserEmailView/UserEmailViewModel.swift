@@ -62,8 +62,9 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 setShareInviteUserEmailAndKeys(with: email, and: receiverPublicKeys)
                 goToNextStep = true
             } catch {
-                if let sharingError = error as? SharingError,
-                   sharingError == .notProtonAddress,
+                if let passError = error as? PassError,
+                   case let .sharing(reason) = passError,
+                   reason == .notProtonAddress,
                    await getFeatureFlagStatus(with: FeatureFlagType.passSharingNewUsers) {
                     setShareInviteUserEmailAndKeys(with: email, and: nil)
                     goToNextStep = true

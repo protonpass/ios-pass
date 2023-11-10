@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Entities
 
 @objc(ItemEntity)
 public class ItemEntity: NSManagedObject {}
@@ -51,20 +52,20 @@ extension ItemEntity {
 extension ItemEntity {
     func toEncryptedItem() throws -> SymmetricallyEncryptedItem {
         guard let shareID else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "shareID"))
+            throw PassError.coreData(.corrupted(object: self, property: "shareID"))
         }
 
         guard let itemID else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "itemID"))
+            throw PassError.coreData(.corrupted(object: self, property: "itemID"))
         }
 
         guard let symmetricallyEncryptedContent else {
-            throw PPClientError.coreData(.corrupted(object: self,
-                                                    property: "symmetricallyEncryptedContent"))
+            throw PassError.coreData(.corrupted(object: self,
+                                                property: "symmetricallyEncryptedContent"))
         }
 
         guard let content else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "content"))
+            throw PassError.coreData(.corrupted(object: self, property: "content"))
         }
 
         let itemRevision = ItemRevision(itemID: itemID,
