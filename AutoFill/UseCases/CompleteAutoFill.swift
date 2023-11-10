@@ -89,7 +89,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                 try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
             }
             logger
-                .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugInformation)")
+                .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugDescription)")
             if Task.isCancelled {
                 resetFactory()
             }
@@ -112,9 +112,9 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
 
 private extension CompleteAutoFill {
     func update(itemContent: ItemContent) async throws {
-        logger.trace("Updating lastUseTime \(itemContent.debugInformation)")
+        logger.trace("Updating lastUseTime \(itemContent.debugDescription)")
         try await itemRepository.saveLocally(lastUseTime: Date().timeIntervalSince1970, for: itemContent)
-        logger.info("Updated lastUseTime \(itemContent.debugInformation)")
+        logger.info("Updated lastUseTime \(itemContent.debugDescription)")
     }
 }
 

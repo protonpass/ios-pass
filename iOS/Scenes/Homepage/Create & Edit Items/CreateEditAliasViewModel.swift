@@ -231,31 +231,31 @@ extension CreateEditAliasViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.state = .loading
+                state = .loading
 
-                let shareId = self.selectedVault.shareId
-                let aliasOptions = try await self.getAliasOptionsTask(shareId: shareId).value
-                self.suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                self.suffixSelection?.attach(to: self, storeIn: &self.cancellables)
-                self.mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
-                self.mailboxSelection?.attach(to: self, storeIn: &self.cancellables)
-                self.canCreateAlias = aliasOptions.canCreateAlias
+                let shareId = selectedVault.shareId
+                let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
+                suffixSelection = .init(suffixes: aliasOptions.suffixes)
+                suffixSelection?.attach(to: self, storeIn: &cancellables)
+                mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
+                mailboxSelection?.attach(to: self, storeIn: &cancellables)
+                canCreateAlias = aliasOptions.canCreateAlias
 
                 if case let .edit(itemContent) = mode {
                     let alias =
-                        try await self.aliasRepository.getAliasDetailsTask(shareId: shareId,
-                                                                           itemId: itemContent.item.itemID).value
-                    self.aliasEmail = alias.email
+                        try await aliasRepository.getAliasDetailsTask(shareId: shareId,
+                                                                      itemId: itemContent.item.itemID).value
+                    aliasEmail = alias.email
                     self.alias = alias
-                    self.mailboxSelection?.selectedMailboxes = alias.mailboxes
-                    self.logger.info("Get alias successfully \(itemContent.debugInformation)")
+                    mailboxSelection?.selectedMailboxes = alias.mailboxes
+                    logger.info("Get alias successfully \(itemContent.debugDescription)")
                 }
 
-                self.state = .loaded
-                self.logger.info("Get alias options successfully")
+                state = .loaded
+                logger.info("Get alias options successfully")
             } catch {
-                self.logger.error(error)
-                self.state = .error(error)
+                logger.error(error)
+                state = .error(error)
             }
         }
     }
