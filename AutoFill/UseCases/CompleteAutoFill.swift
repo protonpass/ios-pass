@@ -55,6 +55,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
     private let updateLastUseTime: UpdateLastUseTimeUseCase
+    private let databaseService: DatabaseServiceProtocol
     private let resetFactory: ResetFactoryUseCase
 
     init(context: ASCredentialProviderExtensionContext,
@@ -64,6 +65,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
          clipboardManager: ClipboardManager,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
          updateLastUseTime: UpdateLastUseTimeUseCase,
+         databaseService: DatabaseServiceProtocol,
          resetFactory: ResetFactoryUseCase) {
         self.context = context
         logger = .init(manager: logManager)
@@ -73,6 +75,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
         self.updateLastUseTime = updateLastUseTime
+        self.databaseService = databaseService
         self.resetFactory = resetFactory
     }
 
@@ -87,9 +90,6 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                  itemContent: ItemContent,
                  upgradeChecker: UpgradeCheckerProtocol,
                  telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
-        defer {
-            resetFactory()
-        }
         do {
             if quickTypeBar {
                 try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
@@ -123,18 +123,28 @@ private extension CompleteAutoFill {
     func updateLastUseTime(item: ItemIdentifiable) {
         Task { [weak self] in
             guard let self else { return }
+            defer { resetFactory() }
             do {
                 let credential = try userDataProvider.getUnwrappedUserData().credential
                 let doh = ProtonPassDoH()
                 let baseUrl = doh.defaultHost + doh.defaultPath
-                let code = try await updateLastUseTime(baseUrl: baseUrl,
-                                                       sessionId: credential.sessionID,
-                                                       accessToken: credential.accessToken,
-                                                       appVersion: appVersion,
-                                                       item: item,
-                                                       date: .now)
-                if code == 401 {
-                    print("Log out")
+                let result = try await updateLastUseTime(baseUrl: baseUrl,
+                                                         sessionId: credential.sessionID,
+                                                         accessToken: credential.accessToken,
+                                                         appVersion: appVersion,
+                                                         item: item,
+                                                         date: .now)
+                switch result {
+                case .successful:
+                    logger.info("Updated lastUseTime \(item.debugDescription)")
+                case .shouldRefreshAccessToken:
+                    logger.info("TODO: refresh access token")
+                case .shouldLogOut:
+                    logger
+                        .error("Token is expired while updating lastUseTime \(item.debugDescription). Logging out.")
+                    userDataProvider.setUserData(nil)
+                    databaseService.resetContainer()
+                    // Unindex all items also
                 }
             } catch {
                 logger.error(error)
