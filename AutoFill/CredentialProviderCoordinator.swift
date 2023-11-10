@@ -142,8 +142,8 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                         if Task.isCancelled {
                             cancelAutoFill(reason: .credentialIdentityNotFound)
                         }
-
                         try await completeAutoFill(quickTypeBar: true,
+                                                   identifiers: [credentialIdentity.serviceIdentifier],
                                                    credential: .init(user: data.username,
                                                                      password: data.password),
                                                    itemContent: itemContent,
@@ -177,6 +177,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 guard let self else { return }
 
                 try? await completeAutoFill(quickTypeBar: false,
+                                            identifiers: [credentialIdentity.serviceIdentifier],
                                             credential: credential,
                                             itemContent: itemContent,
                                             upgradeChecker: upgradeChecker,
@@ -466,6 +467,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
             guard let self else { return }
             do {
                 try await completeAutoFill(quickTypeBar: false,
+                                           identifiers: serviceIdentifiers,
                                            credential: credential,
                                            itemContent: itemContent,
                                            upgradeChecker: upgradeChecker,

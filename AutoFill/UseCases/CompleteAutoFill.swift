@@ -26,6 +26,7 @@ import UseCases
 
 protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
+                 identifiers: [ASCredentialServiceIdentifier],
                  credential: ASPasswordCredential,
                  itemContent: ItemContent,
                  upgradeChecker: UpgradeCheckerProtocol,
@@ -34,11 +35,13 @@ protocol CompleteAutoFillUseCase: Sendable {
 
 extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
+                        identifiers: [ASCredentialServiceIdentifier],
                         credential: ASPasswordCredential,
                         itemContent: ItemContent,
                         upgradeChecker: UpgradeCheckerProtocol,
                         telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
         try await execute(quickTypeBar: quickTypeBar,
+                          identifiers: identifiers,
                           credential: credential,
                           itemContent: itemContent,
                           upgradeChecker: upgradeChecker,
@@ -55,6 +58,8 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
     private let updateLastUseTime: UpdateLastUseTimeUseCase
+    private let reindexLoginItem: ReindexLoginItemUseCase
+    private let unindexAllLoginItems: UnindexAllLoginItemsUseCase
     private let databaseService: DatabaseServiceProtocol
     private let resetFactory: ResetFactoryUseCase
 
@@ -65,6 +70,8 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
          clipboardManager: ClipboardManager,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
          updateLastUseTime: UpdateLastUseTimeUseCase,
+         reindexLoginItem: ReindexLoginItemUseCase,
+         unindexAllLoginItems: UnindexAllLoginItemsUseCase,
          databaseService: DatabaseServiceProtocol,
          resetFactory: ResetFactoryUseCase) {
         self.context = context
@@ -75,6 +82,8 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
         self.updateLastUseTime = updateLastUseTime
+        self.reindexLoginItem = reindexLoginItem
+        self.unindexAllLoginItems = unindexAllLoginItems
         self.databaseService = databaseService
         self.resetFactory = resetFactory
     }
@@ -86,6 +95,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
      and at this moment the autofill process is done and the extension is already closed, we have no way to tell users about the errors anyway
      */
     func execute(quickTypeBar: Bool,
+                 identifiers: [ASCredentialServiceIdentifier],
                  credential: ASPasswordCredential,
                  itemContent: ItemContent,
                  upgradeChecker: UpgradeCheckerProtocol,
@@ -107,7 +117,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                                              upgradeChecker: upgradeChecker)
             context.completeRequest(withSelectedCredential: credential) { [weak self] _ in
                 guard let self else { return }
-                updateLastUseTime(item: itemContent)
+                update(item: itemContent, identifiers: identifiers)
             }
         } catch {
             // Do nothing but only log the errors
@@ -120,7 +130,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
 }
 
 private extension CompleteAutoFill {
-    func updateLastUseTime(item: ItemIdentifiable) {
+    func update(item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
         Task { [weak self] in
             guard let self else { return }
             defer { resetFactory() }
@@ -128,15 +138,19 @@ private extension CompleteAutoFill {
                 let credential = try userDataProvider.getUnwrappedUserData().credential
                 let doh = ProtonPassDoH()
                 let baseUrl = doh.defaultHost + doh.defaultPath
+                let now = Date()
                 let result = try await updateLastUseTime(baseUrl: baseUrl,
                                                          sessionId: credential.sessionID,
                                                          accessToken: credential.accessToken,
                                                          appVersion: appVersion,
                                                          item: item,
-                                                         date: .now)
+                                                         date: now)
                 switch result {
                 case .successful:
                     logger.info("Updated lastUseTime \(item.debugDescription)")
+                    try await reindexLoginItem(item: item,
+                                               identifiers: identifiers,
+                                               lastUseTime: now)
                 case .shouldRefreshAccessToken:
                     logger.info("TODO: refresh access token")
                 case .shouldLogOut:
@@ -144,7 +158,7 @@ private extension CompleteAutoFill {
                         .error("Token is expired while updating lastUseTime \(item.debugDescription). Logging out.")
                     userDataProvider.setUserData(nil)
                     databaseService.resetContainer()
-                    // Unindex all items also
+                    try await unindexAllLoginItems()
                 }
             } catch {
                 logger.error(error)
