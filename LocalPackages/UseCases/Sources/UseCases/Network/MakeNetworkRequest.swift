@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 import ProtonCoreNetworking
 
 public protocol MakeNetworkRequestUseCase {
@@ -64,13 +65,13 @@ public final class MakeNetworkRequest: MakeNetworkRequestUseCase {
                         sessionId: String,
                         accessToken: String?,
                         body: Encodable?) async throws -> Int {
-        let request = try CreateUrlRequest()(baseUrl: baseUrl,
-                                             path: path,
-                                             method: method,
-                                             appVersion: appVersion,
-                                             sessionId: sessionId,
-                                             accessToken: accessToken,
-                                             body: body)
+        let request = try URLUtils.makeUrlRequest(baseUrl: baseUrl,
+                                                  path: path,
+                                                  method: method,
+                                                  appVersion: appVersion,
+                                                  sessionId: sessionId,
+                                                  accessToken: accessToken,
+                                                  body: body)
         return try await apiService.execute(request: request)
     }
 }
