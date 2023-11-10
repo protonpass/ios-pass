@@ -35,7 +35,6 @@ final class ShareTests: XCTestCase {
                                targetMaxMembers: 10, 
                                pendingInvites: 3,
                                newUserInvitesReady: 0,
-                               primary: false,
                                owner: .random(),
                                shared: true,
                                content: .random(),
@@ -45,7 +44,7 @@ final class ShareTests: XCTestCase {
                                createTime: .random(in: 100...200))
 
         // When
-        let clonedShare = givenShare.copy(primary: true)
+        let clonedShare = givenShare.copy(pendingInvites: 10)
 
         // Then
         XCTAssertEqual(givenShare.shareID, clonedShare.shareID)
@@ -54,11 +53,11 @@ final class ShareTests: XCTestCase {
         XCTAssertEqual(givenShare.targetType, clonedShare.targetType)
         XCTAssertEqual(givenShare.targetID, clonedShare.targetID)
         XCTAssertEqual(givenShare.permission, clonedShare.permission)
-        XCTAssertTrue(clonedShare.primary)
         XCTAssertEqual(givenShare.content, clonedShare.content)
         XCTAssertEqual(givenShare.contentKeyRotation, clonedShare.contentKeyRotation)
         XCTAssertEqual(givenShare.contentFormatVersion, clonedShare.contentFormatVersion)
         XCTAssertEqual(givenShare.expireTime, clonedShare.expireTime)
         XCTAssertEqual(givenShare.createTime, clonedShare.createTime)
+        XCTAssertEqual(clonedShare.pendingInvites, 10)
     }
 }

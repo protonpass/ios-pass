@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Entities
 import SwiftUI
 
 struct EditClipboardExpirationView: View {

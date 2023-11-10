@@ -64,17 +64,21 @@ final class PaymentsManager {
     }
 
     private func initializePaymentsStack() {
-        guard !FeatureFactory.shared.isEnabled(.dynamicPlans) else { return }
-
         switch payments.planService {
         case let .left(service):
             service.currentSubscriptionChangeDelegate = self
         default:
             break
         }
+
         payments.storeKitManager.delegate = self
-        payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
-            guard let self else { return }
+
+        if !FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
+                guard let self else { return }
+                payments.storeKitManager.subscribeToPaymentQueue()
+            }
+        } else {
             payments.storeKitManager.subscribeToPaymentQueue()
         }
     }
@@ -97,9 +101,9 @@ final class PaymentsManager {
         let paymentsUI = createPaymentsUI()
         // keep reference to avoid being deallocated
         self.paymentsUI = paymentsUI
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] result in
+        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
             guard let self else { return }
-            handlePaymentsResponse(result: result, completion: completion)
+            handlePaymentsResponse(result: reason, completion: completion)
         }
     }
 
@@ -139,15 +143,15 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var isSignedIn: Bool {
-        userDataProvider.userData?.getCredential.isForUnauthenticatedSession == false
+        userDataProvider.getUserData()?.getCredential.isForUnauthenticatedSession == false
     }
 
     var activeUsername: String? {
-        userDataProvider.userData?.user.name
+        userDataProvider.getUserData()?.user.name
     }
 
     var userId: String? {
-        userDataProvider.userData?.user.ID
+        userDataProvider.getUserData()?.user.ID
     }
 }
 

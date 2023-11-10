@@ -46,9 +46,9 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
     var detail: InfoBannerDetail {
         switch self {
         case .trial:
-            .init(title: #localized("Enjoy your free trial"),
+            .init(title: #localized("Our welcome gift to you"),
                   // swiftlint:disable:next line_length
-                  description: #localized("Check out all the exclusive features that are available to you for a limited time"),
+                  description: #localized("7 days to try premium features for free. Only during your first week of Proton Pass."),
                   icon: nil,
                   ctaTitle: #localized("Learn more"),
                   backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
@@ -62,10 +62,10 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                   foregroundColor: PassColor.textInvert.toColor)
 
         case .aliases:
-            .init(title: #localized("Use email aliases"),
-                  description: #localized("Protect your inbox against spams and phishings"),
+            .init(title: #localized("Goodbye spam and scams"),
+                  description: #localized("Use email aliases to protect your inbox and identity"),
                   icon: PassIcon.infoBannerAliases,
-                  ctaTitle: nil,
+                  ctaTitle: #localized("Learn more"),
                   backgroundColor: PassColor.signalSuccess.toColor,
                   foregroundColor: PassColor.textInvert.toColor)
         case .invite:

@@ -23,7 +23,7 @@ import UIKit
 
 final class SharedViewContainer: SharedContainer, AutoRegistering {
     static let shared = SharedViewContainer()
-    private var registered = false
+    private(set) var registered = false
     let manager = ContainerManager()
 
     func autoRegister() {
@@ -40,6 +40,7 @@ final class SharedViewContainer: SharedContainer, AutoRegistering {
         if registered {
             SharedViewContainer.shared.bannerManager.reset()
             SharedViewContainer.shared.rootViewController.reset()
+            registered = false
         }
     }
 }

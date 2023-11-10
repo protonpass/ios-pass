@@ -54,18 +54,18 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
-    private let paymentsUI = resolve(\ServiceContainer.paymentsUI)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     private let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
-    private let manualLogIn = resolve(\SharedDataContainer.manualLogIn)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
 
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\UseCasesContainer.updateItemsWithLastUsedTime) private var updateItemsWithLastUsedTime
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -76,7 +76,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var wordProvider: WordProviderProtocol?
     private var customCoordinator: CustomCoordinator?
     private var cancellables = Set<AnyCancellable>()
 
@@ -109,11 +108,20 @@ private extension HomepageCoordinator {
     func finalizeInitialization() {
         eventLoop.delegate = self
         itemContextMenuHandler.delegate = self
-        accessRepository.delegate = self
         urlOpener.rootViewController = rootViewController
 
         eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
                                           task: refreshInvitations.callAsFunction))
+
+        accessRepository.didUpdateToNewPlan
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                logger.trace("Found new plan, refreshing credential database")
+                homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
+                profileTabViewModel?.refreshPlan()
+            }
+            .store(in: &cancellables)
 
         preferences.objectWillChange
             .receive(on: DispatchQueue.main)
@@ -142,6 +150,7 @@ private extension HomepageCoordinator {
                 eventLoop.start()
                 eventLoop.forceSync()
                 refreshAccess()
+                refreshItems()
             }
             .store(in: &cancellables)
     }
@@ -190,6 +199,17 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func refreshItems() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateItemsWithLastUsedTime()
             } catch {
                 logger.error(error)
             }
@@ -266,6 +286,8 @@ private extension HomepageCoordinator {
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
                     startUpgradeFlow()
+                case .upselling:
+                    startUpsellingFlow()
                 case let .vaultCreateEdit(vault: vault):
                     createEditVaultView(vault: vault)
                 case let .logView(module: module):
@@ -506,24 +528,35 @@ private extension HomepageCoordinator {
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            if FeatureFactory.shared.isEnabled(.dynamicPlans) {
-                paymentsUI.showUpgradePlan(presentationType: .modal,
-                                           backendFetch: true) { _ in }
-            } else {
-                paymentsManager.upgradeSubscription { [weak self] result in
-                    guard let self else { return }
-                    switch result {
-                    case let .success(inAppPurchasePlan):
-                        if inAppPurchasePlan != nil {
-                            refreshAccess()
-                        } else {
-                            logger.debug("Payment is done but no plan is purchased")
-                        }
-                    case let .failure(error):
-                        bannerManager.displayTopErrorMessage(error)
+            paymentsManager.upgradeSubscription { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case let .success(inAppPurchasePlan):
+                    if inAppPurchasePlan != nil {
+                        refreshAccess()
+                    } else {
+                        logger.debug("Payment is done but no plan is purchased")
                     }
+                case let .failure(error):
+                    bannerManager.displayTopErrorMessage(error)
                 }
             }
+        }
+    }
+
+    func startUpsellingFlow() {
+        dismissAllViewControllers(animated: true) { [weak self] in
+            guard let self else { return }
+            let view = UpsellingView { [weak self] in
+                guard let self else {
+                    return
+                }
+                startUpgradeFlow()
+            }
+            let viewController = UIHostingController(rootView: view)
+
+            viewController.sheetPresentationController?.prefersGrabberVisible = false
+            present(viewController)
         }
     }
 
@@ -629,9 +662,9 @@ private extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func onboardIfNecessary() {
-        guard manualLogIn else { return }
         Task { @MainActor [weak self] in
-            guard let self else { return }
+            guard let self,
+                  await loginMethod.isManualLogIn() else { return }
             if let access = try? await accessRepository.getAccess(),
                access.waitingNewUserInvites > 0 {
                 // New user just registered after an invitation
@@ -667,16 +700,6 @@ private extension HomepageCoordinator {
         vc.modalPresentationStyle = UIDevice.current.isIpad ? .formSheet : .fullScreen
         vc.isModalInPresentation = true
         topMostViewController.present(vc, animated: true)
-    }
-}
-
-// MARK: - PassPlanRepositoryDelegate
-
-extension HomepageCoordinator: AccessRepositoryDelegate {
-    func accessRepositoryDidUpdateToNewPlan() {
-        logger.trace("Found new plan, refreshing credential database")
-        homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
-        profileTabViewModel?.refreshPlan()
     }
 }
 
@@ -874,18 +897,6 @@ extension HomepageCoordinator: ItemDetailCoordinatorDelegate {
 // MARK: - CreateEditItemCoordinatorDelegate
 
 extension HomepageCoordinator: CreateEditItemCoordinatorDelegate {
-    func createEditItemCoordinatorWantsWordProvider() async -> WordProviderProtocol? {
-        do {
-            let wordProvider = try await WordProvider()
-            self.wordProvider = wordProvider
-            return wordProvider
-        } catch {
-            logger.error(error)
-            bannerManager.displayTopErrorMessage(error)
-            return nil
-        }
-    }
-
     func createEditItemCoordinatorWantsToPresent(view: any View, dismissable: Bool) {
         present(view, dismissible: dismissable)
     }
@@ -1037,21 +1048,6 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.compact.value) * ClipboardExpiration.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func settingsViewModelWantsToEdit(primaryVault: Vault) {
-        let allVaults = vaultsManager.getAllVaultContents().map { VaultListUiModel(vaultContent: $0) }
-        let viewModel = EditPrimaryVaultViewModel(allVaults: allVaults, primaryVault: primaryVault)
-        viewModel.delegate = self
-        let view = EditPrimaryVaultView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.medium.value) * vaultsManager.getVaultCount() + 60
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 
@@ -1245,18 +1241,6 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }
             bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
-        }
-        vaultsManager.refresh()
-    }
-}
-
-// MARK: - EditPrimaryVaultViewModelDelegate
-
-extension HomepageCoordinator: EditPrimaryVaultViewModelDelegate {
-    func editPrimaryVaultViewModelDidUpdatePrimaryVault() {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomSuccessMessage(#localized("Primary vault updated"))
         }
         vaultsManager.refresh()
     }

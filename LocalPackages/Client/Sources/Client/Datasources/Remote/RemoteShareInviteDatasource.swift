@@ -33,9 +33,9 @@ public protocol RemoteShareInviteDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteShareInviteDatasourceProtocol {
     func getPendingInvites(sharedId: String) async throws -> ShareInvites {
-        let endpoint = GetPendingInvitesforShareEndpoint(for: sharedId)
+        let endpoint = GetPendingInvitesForShareEndpoint(for: sharedId)
         let response = try await apiService.exec(endpoint: endpoint)
-        return .init(exisingUserInvites: response.invites,
+        return .init(existingUserInvites: response.invites,
                      newUserInvites: response.newUserInvites)
     }
 

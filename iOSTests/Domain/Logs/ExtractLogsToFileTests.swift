@@ -21,6 +21,7 @@
 import Factory
 import Foundation
 import XCTest
+import UseCases
 @testable import Proton_Pass
 
 class ExtractLogsToFileTests: XCTestCase {

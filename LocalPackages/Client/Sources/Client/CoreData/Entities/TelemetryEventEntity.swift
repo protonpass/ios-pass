@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import Entities
 
 @objc(TelemetryEventEntity)
 public final class TelemetryEventEntity: NSManagedObject {}
