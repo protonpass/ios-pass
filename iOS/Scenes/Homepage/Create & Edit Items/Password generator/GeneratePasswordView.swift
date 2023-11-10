@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -217,7 +218,7 @@ struct GeneratePasswordView: View {
     }
 
     private var capitalizingWordsRow: some View {
-        toggle(title: #localized("Capitalise"), isOn: $viewModel.capitalizingWords)
+        toggle(title: #localized("Capitalize"), isOn: $viewModel.capitalizingWords)
     }
 
     private var wordSeparatorRow: some View {

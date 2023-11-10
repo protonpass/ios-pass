@@ -18,16 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import Entities
 
-public protocol AccessRepositoryDelegate: AnyObject {
-    func accessRepositoryDidUpdateToNewPlan()
-}
-
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
-    var delegate: AccessRepositoryDelegate? { get set }
+    var didUpdateToNewPlan: PassthroughSubject<Void, Never> { get }
 
     /// Get from local, refresh if not exist
     func getAccess() async throws -> Access
@@ -39,27 +36,28 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     func refreshAccess() async throws -> Access
 }
 
-public final class AccessRepository: AccessRepositoryProtocol {
+public actor AccessRepository: AccessRepositoryProtocol {
     private let localDatasource: LocalAccessDatasourceProtocol
     private let remoteDatasource: RemoteAccessDatasourceProtocol
-    private let userId: String
+    private let userDataProvider: UserDataProvider
     private let logger: Logger
 
-    public weak var delegate: AccessRepositoryDelegate?
+    public nonisolated let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: LocalAccessDatasourceProtocol,
                 remoteDatasource: RemoteAccessDatasourceProtocol,
-                userId: String,
+                userDataProvider: UserDataProvider,
                 logManager: LogManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.userId = userId
+        self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)
     }
 }
 
 public extension AccessRepository {
     func getAccess() async throws -> Access {
+        let userId = try userDataProvider.getUserId()
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
@@ -71,19 +69,21 @@ public extension AccessRepository {
     }
 
     func getPlan() async throws -> Plan {
+        let userId = try userDataProvider.getUserId()
         logger.trace("Getting plan for user \(userId)")
         return try await getAccess().plan
     }
 
     @discardableResult
     func refreshAccess() async throws -> Access {
+        let userId = try userDataProvider.getUserId()
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess()
 
         if let localAccess = try await localDatasource.getAccess(userId: userId),
            localAccess.plan != remoteAccess.plan {
             logger.info("New plan found")
-            delegate?.accessRepositoryDidUpdateToNewPlan()
+            didUpdateToNewPlan.send()
         }
 
         logger.trace("Upserting access for user \(userId)")

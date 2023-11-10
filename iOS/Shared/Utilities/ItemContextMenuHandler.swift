@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
@@ -32,6 +33,8 @@ final class ItemContextMenuHandler {
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     weak var delegate: ItemContextMenuHandlerDelegate?
@@ -193,7 +196,7 @@ extension ItemContextMenuHandler {
 
 private extension ItemContextMenuHandler {
     func getDecryptedItemContent(for item: ItemIdentifiable) async throws -> ItemContent {
-        let symmetricKey = itemRepository.symmetricKey
+        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
         let encryptedItem = try await getEncryptedItem(for: item)
         return try encryptedItem.getItemContent(symmetricKey: symmetricKey)
     }
@@ -201,7 +204,7 @@ private extension ItemContextMenuHandler {
     func getEncryptedItem(for item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
         guard let encryptedItem = try await itemRepository.getItem(shareId: item.shareId,
                                                                    itemId: item.itemId) else {
-            throw PPError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
+            throw PassError.itemNotFound(shareID: item.shareId, itemID: item.itemId)
         }
         return encryptedItem
     }

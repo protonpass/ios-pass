@@ -22,6 +22,7 @@ import Client
 import Core
 import CoreData
 import CryptoKit
+import Entities
 import Factory
 import LocalAuthentication
 import ProtonCoreKeymaker
@@ -44,10 +45,6 @@ final class SharedToolingContainer: SharedContainer, AutoRegistering {
             // Default to host app
             break
         }
-    }
-
-    func resetCache() {
-        manager.reset(scope: .cached)
     }
 
     func autoRegister() {
