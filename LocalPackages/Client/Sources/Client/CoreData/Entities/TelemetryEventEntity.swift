@@ -41,7 +41,7 @@ extension TelemetryEventEntity {
 extension TelemetryEventEntity {
     func toTelemetryEvent() throws -> TelemetryEvent {
         guard let type = TelemetryEventType(rawValue: rawValue) else {
-            throw PPClientError.coreData(.corrupted(object: self, property: "rawValue"))
+            throw PassError.coreData(.corrupted(object: self, property: "rawValue"))
         }
         return .init(uuid: uuid, time: time, type: type)
     }
