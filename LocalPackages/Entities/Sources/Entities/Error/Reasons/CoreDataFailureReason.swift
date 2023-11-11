@@ -1,6 +1,6 @@
 //
-// SearchEntry.swift
-// Proton Pass - Created on 16/03/2023.
+// CoreDataFailureReason.swift
+// Proton Pass - Created on 10/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,29 +17,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Entities
+import CoreData
 import Foundation
 
-public struct SearchEntry: Hashable, Sendable {
-    public let itemID: String
-    public let shareID: String
-    public let time: Int64
+public extension PassError {
+    enum CoreDataFailureReason: CustomDebugStringConvertible, @unchecked Sendable {
+        case corrupted(object: NSManagedObject, property: String)
+        case corruptedShareKeys(shareId: String)
 
-    public init(itemID: String, shareID: String, time: Int64) {
-        self.itemID = itemID
-        self.shareID = shareID
-        self.time = time
+        public var debugDescription: String {
+            switch self {
+            case let .corrupted(object, property):
+                "Corrupted \(type(of: object)): missing value for \(property)"
+            case let .corruptedShareKeys(shareId):
+                "ItemKeys & VaultKeys are not synced for share with ID \(shareId)"
+            }
+        }
     }
-
-    public init(item: ItemIdentifiable, date: Date = .now) {
-        itemID = item.itemId
-        shareID = item.shareId
-        time = Int64(date.timeIntervalSince1970)
-    }
-}
-
-extension SearchEntry: ItemIdentifiable {
-    public var shareId: String { shareID }
-    public var itemId: String { itemID }
 }

@@ -98,11 +98,11 @@ extension Share: Identifiable {
 public extension Share {
     func getShareContent(key: DecryptedShareKey) throws -> ShareContent {
         guard let contentData = try content?.base64Decode() else {
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
 
         guard contentData.count > 12 else {
-            throw PPClientError.crypto(.corruptedShareContent(shareID: shareID))
+            throw PassError.crypto(.corruptedShareContent(shareID: shareID))
         }
 
         let decryptedContent = try AES.GCM.open(contentData,
@@ -111,7 +111,7 @@ public extension Share {
 
         switch shareType {
         case .unknown:
-            throw PPClientError.unknownShareType
+            throw PassError.unknownShareType
         case .vault:
             let vaultContent = try VaultProtobuf(data: decryptedContent)
             let vault = Vault(id: vaultID,

@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import Entities
 import Foundation
 import ProtonCoreNetworking
 import Reachability
@@ -426,8 +427,8 @@ private extension SyncEventLoop {
                             try await shareRepository.upsertShares([remoteShare])
                             try await itemRepository.refreshItems(shareId: shareId)
                         } catch {
-                            if let clientError = error as? PPClientError,
-                               case let .crypto(reason) = clientError,
+                            if let passError = error as? PassError,
+                               case let .crypto(reason) = passError,
                                case .inactiveUserKey = reason {
                                 // Ignore the case where user key is inactive
                                 logger.warning(reason.debugDescription)

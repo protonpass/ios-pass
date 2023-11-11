@@ -106,12 +106,12 @@ private extension ShareKeyRepository {
 
         guard let userKey = userData.user.keys.first(where: { $0.keyID == encryptedKey.userKeyID }),
               userKey.active == 1 else {
-            throw PPClientError.crypto(.inactiveUserKey(userKeyId: encryptedKey.userKeyID))
+            throw PassError.crypto(.inactiveUserKey(userKeyId: encryptedKey.userKeyID))
         }
 
         guard let encryptedKeyData = try encryptedKey.key.base64Decode() else {
             logger.trace("Failed to base 64 decode share key \(keyDescription)")
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
 
         let armoredEncryptedKeyData = try CryptoUtils.armorMessage(encryptedKeyData)
