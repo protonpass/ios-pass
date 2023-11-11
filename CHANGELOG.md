@@ -1,3 +1,8 @@
+## Version 1.5.6
+Others:
+- Send logout events to Sentry
+- Merged different errors into PassError
+
 ## Version 1.5.5
 Bug fixes:
 - Fixed occasional crashes when autofilling
