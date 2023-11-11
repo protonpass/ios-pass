@@ -20,6 +20,7 @@
 
 import Core
 import CryptoKit
+import Entities
 import Foundation
 import ProtonCoreServices
 
@@ -104,7 +105,7 @@ public extension FavIconRepository {
                                         fileName: "\(hashedDomain).data",
                                         containerUrl: containerUrl)
         guard let domainData = domain.data(using: .utf8) else {
-            throw PPClientError.crypto(.failedToEncode(domain))
+            throw PassError.crypto(.failedToEncode(domain))
         }
         try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(domainData),
                                         fileName: "\(hashedDomain).domain",
