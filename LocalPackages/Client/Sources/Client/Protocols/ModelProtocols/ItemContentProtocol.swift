@@ -304,7 +304,7 @@ public extension ItemContentProtobuf {
 
     init(base64: String, symmetricKey: SymmetricKey) throws {
         guard let cypherData = try base64.base64Decode() else {
-            throw PPClientError.crypto(.failedToBase64Decode)
+            throw PassError.crypto(.failedToBase64Decode)
         }
         let clearData = try symmetricKey.decrypt(cypherData)
         try self.init(data: clearData)
