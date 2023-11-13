@@ -59,6 +59,16 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
         guard case let .login(data) = item.contentData else {
             throw PassError.credentialProvider(.notLogInItem)
         }
+
+        // First we remove old index credentials
+        let oldCredentials = data.urls.map { AutoFillCredential(shareId: item.shareId,
+                                                                itemId: item.item.itemID,
+                                                                username: data.username,
+                                                                url: $0,
+                                                                lastUseTime: item.item.lastUseTime ?? 0) }
+        try await manager.remove(credentials: oldCredentials)
+
+        // Then we insert updated credentials
         let givenUrls = identifiers.compactMap(mapServiceIdentifierToUrl.callAsFunction)
         let parser = try DomainParser()
         let credentials = data.urls.map { url -> AutoFillCredential in
