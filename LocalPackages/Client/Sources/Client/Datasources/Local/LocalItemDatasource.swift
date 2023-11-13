@@ -46,6 +46,9 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Trash or untrash items
     func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws
 
+    /// Bulk update lastUseTime
+    func update(lastUseItems: [LastUseItem], shareId: String) async throws
+
     /// Permanently delete items
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
@@ -150,6 +153,22 @@ public extension LocalItemDatasourceProtocol {
                                              isLogInItem: item.isLogInItem)])
             }
         }
+    }
+
+    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
+        let taskContext = newTaskContext(type: .fetch)
+        for item in lastUseItems {
+            let fetchRequest = ItemEntity.fetchRequest()
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                .init(format: "shareID = %@", shareId),
+                .init(format: "itemID = %@", item.itemID)
+            ])
+            if let fetchedItem = try await execute(fetchRequest: fetchRequest,
+                                                   context: taskContext).first {
+                fetchedItem.lastUseTime = Int64(item.lastUseTime)
+            }
+        }
+        try taskContext.save()
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem]) async throws {
