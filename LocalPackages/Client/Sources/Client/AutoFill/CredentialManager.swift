@@ -25,6 +25,7 @@ public protocol CredentialManagerProtocol: Sendable {
     /// Whether users had choosen Proton Pass as AutoFill Provider
     var isAutoFillEnabled: Bool { get async }
 
+    func remove(credentials: [AutoFillCredential]) async throws
     func insert(credentials: [AutoFillCredential]) async throws
     func removeAllCredentials() async throws
 }
@@ -44,6 +45,21 @@ extension CredentialManager: CredentialManagerProtocol {
     public var isAutoFillEnabled: Bool {
         get async {
             await store.state().isEnabled
+        }
+    }
+
+    public func remove(credentials: [AutoFillCredential]) async throws {
+        logger.trace("Trying to remove \(credentials.count) credentials.")
+        let state = await store.state()
+        guard state.isEnabled else {
+            logger.trace("AutoFill is not enabled. Skipped removing \(credentials.count) credentials.")
+            return
+        }
+
+        let domainCredentials = try credentials.map { try ASPasswordCredentialIdentity($0) }
+        if state.supportsIncrementalUpdates {
+            logger.trace("Non empty credential store. Removing \(credentials.count) credentials.")
+            try await store.removeCredentialIdentities(domainCredentials)
         }
     }
 
