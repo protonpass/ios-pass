@@ -24,6 +24,7 @@ import Core
 import Entities
 import UseCases
 
+// swiftlint:disable function_parameter_count
 protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
@@ -166,3 +167,5 @@ private extension CompleteAutoFill {
         }
     }
 }
+
+// swiftlint:enable function_parameter_count
