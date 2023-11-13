@@ -80,6 +80,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func upsertItems(_ items: [ItemRevision], shareId: String) async throws
 
+    func update(lastUseItems: [LastUseItem], shareId: String) async throws
+
     @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
@@ -361,6 +363,12 @@ public extension ItemRepository {
             try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }.compactMap { $0 }
         try await localDatasource.upsertItems(encryptedItems)
+    }
+
+    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
+        logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
+        try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
+        logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
     }
 
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {

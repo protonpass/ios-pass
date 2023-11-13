@@ -361,6 +361,31 @@ extension LocalItemDatasourceTests {
         // Then
         XCTAssertEqual(activeLogInItems.count, 4)
     }
+
+    func testUpdateLastUseItems() async throws {
+        // Given
+        let givenShareId = String.random()
+        let item1 = try await sut.givenInsertedItem(shareId: givenShareId)
+        let item2 = try await sut.givenInsertedItem(shareId: givenShareId)
+        let item3 = try await sut.givenInsertedItem(shareId: givenShareId)
+
+        // When
+        let updatedItem1 = LastUseItem(itemID: item1.itemId, lastUseTime: 123)
+        let updatedItem2 = LastUseItem(itemID: item2.itemId, lastUseTime: 234)
+        let updatedItem3 = LastUseItem(itemID: item3.itemId, lastUseTime: 345)
+        try await sut.update(lastUseItems: [updatedItem1, updatedItem2, updatedItem3],
+                             shareId: givenShareId)
+
+        // Then
+        let retrievedItem1 = try await sut.getItem(shareId: givenShareId, itemId: item1.itemId)
+        XCTAssertEqual(retrievedItem1?.item.lastUseTime, 123)
+
+        let retrievedItem2 = try await sut.getItem(shareId: givenShareId, itemId: item2.itemId)
+        XCTAssertEqual(retrievedItem2?.item.lastUseTime, 234)
+
+        let retrievedItem3 = try await sut.getItem(shareId: givenShareId, itemId: item3.itemId)
+        XCTAssertEqual(retrievedItem3?.item.lastUseTime, 345)
+    }
 }
 
 extension LocalItemDatasource {
