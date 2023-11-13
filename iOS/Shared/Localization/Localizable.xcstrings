@@ -2716,26 +2716,26 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дні"
+                  "state" : "translated",
+                  "value" : "Да завяршэння пробнага перыяду засталося %lld дні"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
+                  "state" : "translated",
+                  "value" : "Да завяршэння пробнага перыяду засталося %lld дзён"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "Да завяршэння выпрабавальнага перыяду застаўся 1 дзень"
+                  "state" : "translated",
+                  "value" : "Да завяршэння пробнага перыяду застаўся %lld дзень"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "Да завяршэння выпрабавальнага перыяду засталося %lld дзён"
+                  "state" : "translated",
+                  "value" : "Да завяршэння пробнага перыяду засталося %lld дзён"
                 }
               }
             }
@@ -2746,25 +2746,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konce zkušebního období zbývají %lld dny"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konce zkušebního období zbývá %lld dnů"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konce zkušebního období zbývá 1 den"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konce zkušebního období zbývá %lld dnů"
                 }
               }
@@ -2776,13 +2776,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Deine kostenlose Testphase läuft noch einen Tag."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Deine kostenlose Testphase läuft noch %lld Tage."
                 }
               }
@@ -2794,13 +2794,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Μία ημέρα απομένει στη δοκιμαστική σας περίοδο"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Απομένουν %lld ημέρες στη δοκιμαστική περίοδο σας"
                 }
               }
@@ -2830,13 +2830,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "1 día restante en tu periodo de prueba"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld días restantes en tu periodo de prueba"
                 }
               }
@@ -2848,13 +2848,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Un día restante en su periodo de prueba"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld días restantes en su periodo de prueba"
                 }
               }
@@ -2866,13 +2866,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
-                  "value" : "Kokeilujaksoasi on jäljellä yksi päivä"
+                  "state" : "translated",
+                  "value" : "Kokeilujaksoasi on jäljellä 1 päivä"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Kokeilujaksoasi on jäljellä %lld päivää"
                 }
               }
@@ -2884,13 +2884,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Votre période d'essai se termine dans un jour."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Votre période d'essai se termine dans %lld jours."
                 }
               }
@@ -2902,13 +2902,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Manca un giorno al termine del periodo di prova"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld giorni rimanenti al termine del periodo di prova"
                 }
               }
@@ -2920,7 +2920,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "試用期間は残り %lld 日です"
                 }
               }
@@ -2932,13 +2932,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია ერთი დღე"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "თქვენი სატესტო პერიოდიდან დარჩენილია %lld დღე"
                 }
               }
@@ -2950,7 +2950,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld 무료 체험이 %d일 남았습니다"
                 }
               }
@@ -2962,25 +2962,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Pozostały %lld dni wersji próbnej"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Pozostało %lld dni wersji próbnej"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Pozostał 1 dzień wersji próbnej"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Pozostało %lld dnia wersji próbnej"
                 }
               }
@@ -2992,13 +2992,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Resta um dia no seu período experimental"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Ainda tem %lld dias de teste gratuito."
                 }
               }
@@ -3010,13 +3010,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Um dia restante em seu período de avaliação gratuita"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld dias restantes em seu período de avaliação gratuita"
                 }
               }
@@ -3028,19 +3028,19 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Au mai rămas %lld zile de încercare."
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "A mai rămas o zi de încercare."
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Au mai rămas %lld de zile de încercare."
                 }
               }
@@ -3052,25 +3052,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konca skúšobného obdobia zostávajú %lld dni"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konca skúšobného obdobia zostáva %lld dní"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konca skúšobného obdobia zostáva jeden deň"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Do konca skúšobného obdobia zostáva %lld dní"
                 }
               }
@@ -3082,13 +3082,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "1 dag kvar av din provperiod"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld dagar kvar av din provperiod"
                 }
               }
@@ -3100,13 +3100,13 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Deneme sürenizin bitmesine 1 gün kaldı"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Deneme sürenizin bitmesine %lld gün kaldı"
                 }
               }
@@ -3118,25 +3118,25 @@
             "plural" : {
               "few" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "До закінчення пробного періоду залишилося %lld дні"
                 }
               },
               "many" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "До закінчення пробного періоду залишилося %lld днів"
                 }
               },
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "До закінчення пробного періоду залишився 1 день"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "До закінчення пробного періоду залишилося %lld днів"
                 }
               }
@@ -3148,7 +3148,7 @@
             "plural" : {
               "other" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "Thời gian dùng thử còn %lld ngày"
                 }
               }
@@ -10138,7 +10138,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automaattitäytetty:"
+            "value" : "Täytetty:"
           }
         },
         "fr" : {
@@ -19470,7 +19470,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Znovu si stáhněte všechny položky, abyste se ujistili, že jsou synchronizované"
+            "value" : "Znovu si stáhněte všechny položky, abyste se ujistili, že jsou synchronizovány"
           }
         },
         "de" : {
@@ -21050,7 +21050,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activez Face ID"
+            "value" : "Activer Face ID"
           }
         },
         "it" : {
@@ -21187,7 +21187,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activez Touch ID"
+            "value" : "Activer Touch ID"
           }
         },
         "it" : {
@@ -26333,7 +26333,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Items"
+            "value" : "Elementy"
           }
         },
         "pt" : {
@@ -26944,7 +26944,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pouze automaticky vyplnit"
+            "value" : "Pouze automatické vyplňování"
           }
         },
         "de" : {
@@ -27254,7 +27254,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viimeisen 30 päivän sisällä"
+            "value" : "30 päivän aikana"
           }
         },
         "fr" : {
@@ -27391,7 +27391,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viimeisen 60 päivän sisällä"
+            "value" : "60 päivän aikana"
           }
         },
         "fr" : {
@@ -27528,7 +27528,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viimeisen 90 päivän sisällä"
+            "value" : "90 päivän aikana"
           }
         },
         "fr" : {
@@ -27802,7 +27802,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viimeisen 14 päivän sisällä"
+            "value" : "Kahden viikon aikana"
           }
         },
         "fr" : {
@@ -27939,7 +27939,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viimeisen 7 päivän sisällä"
+            "value" : "Viikon aikana"
           }
         },
         "fr" : {
@@ -30974,7 +30974,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enemmän kuin 90 päivää"
+            "value" : "Yli 90 päivää sitten"
           }
         },
         "fr" : {
@@ -38074,7 +38074,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing..."
+            "value" : "A preparar..."
           }
         },
         "pt-BR" : {
@@ -46902,7 +46902,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esto eliminará permanentemente la caja fuerte &quot;%@&quot; y todo su contenido. Escribe el nombre de la caja fuerte para confirmar la eliminación."
+            "value" : "Esto eliminará permanentemente la caja fuerte \"%@\" y todo su contenido. Escribe el nombre de la caja fuerte para confirmar la eliminación."
           }
         },
         "es-419" : {
@@ -48802,7 +48802,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pokuste se hledat pomocí jiného hláskování nebo klíčových slov"
+            "value" : "Zkuste vyhledávat pomocí jiných písmen nebo klíčových slov"
           }
         },
         "de" : {
@@ -52273,143 +52273,6 @@
         }
       }
     },
-    "Vault « %@ » deleted" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховішча « %@ » выдалена"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor « %@ » smazán"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tresor \"%@\" gelöscht"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Η κρύπτη « %@ » διαγράφηκε"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vault « %@ » deleted"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La caja fuerte &quot;%@&quot; ha sido eliminada."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La bóveda \"%@\" fue eliminada."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Holvi \"%@\" poistettiin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le coffre-fort « %@ » a été supprimé."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cassaforte « %@ » eliminata"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保管庫« %@ » が削除されました"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "საცავი „%@“ წაიშალა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "금고 « %@ »가 삭제되었습니다."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sejf « %@ » został usunięty"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cofre « %@ » eliminado"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O cofre « %@ » foi excluído"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seiful „%@” a fost șters."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trezor « %@ » bol odstránený"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valv « %@ » borttaget"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "« %@ » kasası silindi"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сховище « %@ » видалено"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Đã xóa kho lưu trữ « %@ »"
-          }
-        }
-      }
-    },
     "Vault created" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -52839,6 +52702,143 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã cập nhật kho lưu trữ"
+          }
+        }
+      }
+    },
+    "Vault « %@ » deleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховішча « %@ » выдалена"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » smazán"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tresor \"%@\" gelöscht"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η κρύπτη « %@ » διαγράφηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault « %@ » deleted"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La caja fuerte\"%@\" ha sido eliminada."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La bóveda \"%@\" fue eliminada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holvi \"%@\" poistettiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le coffre-fort « %@ » a été supprimé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte « %@ » eliminata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫« %@ » が削除されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავი „%@“ წაიშალა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고 « %@ »가 삭제되었습니다."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sejf « %@ » został usunięty"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre « %@ » eliminado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O cofre « %@ » foi excluído"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seiful „%@” a fost șters."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trezor « %@ » bol odstránený"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valv « %@ » borttaget"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » kasası silindi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховище « %@ » видалено"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xóa kho lưu trữ « %@ »"
           }
         }
       }
