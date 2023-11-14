@@ -20,50 +20,31 @@
 //
 
 import Client
-import Core
 import Entities
 import Foundation
+import ProtonCoreServices
 
-@preconcurrency import ProtonCoreDoh
-
-public protocol UpdateLastUseTimeUseCase: Sendable {
-    func execute(item: ItemIdentifiable, date: Date) async throws -> NetworkCallResult
+public protocol UpdateLastUseTimeUseCase {
+    func execute(item: ItemIdentifiable, date: Date) async throws
 }
 
 public extension UpdateLastUseTimeUseCase {
-    func callAsFunction(item: ItemIdentifiable, date: Date) async throws -> NetworkCallResult {
+    func callAsFunction(item: ItemIdentifiable, date: Date) async throws {
         try await execute(item: item, date: date)
     }
 }
 
 public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
-    private let apiService: ApiServiceLiteProtocol
-    private let userDataProvider: UserDataProvider
-    private let serverConfig: ServerConfig
-    private let appVersion: String
+    private let apiService: APIService
 
-    public init(apiService: ApiServiceLiteProtocol,
-                userDataProvider: UserDataProvider,
-                serverConfig: ServerConfig,
-                appVersion: String) {
+    public init(apiService: APIService) {
         self.apiService = apiService
-        self.userDataProvider = userDataProvider
-        self.serverConfig = serverConfig
-        self.appVersion = appVersion
     }
 
-    public func execute(item: ItemIdentifiable, date: Date) async throws -> NetworkCallResult {
-        let credential = try userDataProvider.getUnwrappedUserData().credential
-        let baseUrl = serverConfig.defaultHost + serverConfig.defaultPath
-        let path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/lastuse"
-        let body = UpdateLastUseTimeRequest(lastUseTime: Int(date.timeIntervalSince1970))
-        let request = try URLUtils.makeUrlRequest(baseUrl: baseUrl,
-                                                  path: path,
-                                                  method: .put,
-                                                  appVersion: appVersion,
-                                                  sessionId: credential.sessionID,
-                                                  accessToken: credential.accessToken,
-                                                  body: body)
-        return try await apiService.execute(request: request)
+    public func execute(item: ItemIdentifiable, date: Date) async throws {
+        let endpoint = UpdateLastUseTimeEndpoint(shareId: item.shareId,
+                                                 itemId: item.itemId,
+                                                 lastUseTime: date.timeIntervalSince1970)
+        _ = try await apiService.exec(endpoint: endpoint)
     }
 }

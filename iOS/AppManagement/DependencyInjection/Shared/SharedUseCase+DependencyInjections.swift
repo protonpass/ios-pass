@@ -169,3 +169,21 @@ extension SharedUseCasesContainer {
         self { GeneratePassphrase() }
     }
 }
+
+// MARK: Data
+
+extension SharedUseCasesContainer {
+    var wipeAllData: Factory<WipeAllDataUseCase> {
+        self { WipeAllData(logManager: self.logManager,
+                           appData: SharedDataContainer.shared.appData(),
+                           mainKeyProvider: SharedToolingContainer.shared.mainKeyProvider(),
+                           apiManager: SharedToolingContainer.shared.apiManager(),
+                           preferences: self.preferences,
+                           databaseService: SharedServiceContainer.shared.databaseService(),
+                           clipboardManager: SharedServiceContainer.shared.clipboardManager(),
+                           syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                           vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                           vaultSyncEventStream: SharedServiceContainer.shared.vaultSyncEventStream(),
+                           credentialManager: SharedServiceContainer.shared.credentialManager()) }
+    }
+}

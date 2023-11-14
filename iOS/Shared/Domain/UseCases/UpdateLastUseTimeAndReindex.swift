@@ -19,20 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-#if canImport(AuthenticationServices)
 import AuthenticationServices
 import Client
 import Core
 import Entities
 import Foundation
+import UseCases
 
-public protocol UpdateLastUseTimeAndReindexUseCase {
+protocol UpdateLastUseTimeAndReindexUseCase {
     func execute(item: ItemContent,
                  date: Date,
                  identifiers: [ASCredentialServiceIdentifier]) async throws
 }
 
-public extension UpdateLastUseTimeAndReindexUseCase {
+extension UpdateLastUseTimeAndReindexUseCase {
     func callAsFunction(item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
@@ -40,25 +40,19 @@ public extension UpdateLastUseTimeAndReindexUseCase {
     }
 }
 
-public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase {
+final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase {
     private let updateLastUseTime: UpdateLastUseTimeUseCase
     private let reindexLoginItem: ReindexLoginItemUseCase
-    private let unindexAllLoginItems: UnindexAllLoginItemsUseCase
-    private let databaseService: DatabaseServiceProtocol
-    private let userDataProvider: UserDataProvider
+    private let wipeAllData: WipeAllDataUseCase
     private let logger: Logger
 
-    public init(updateLastUseTime: UpdateLastUseTimeUseCase,
-                reindexLoginItem: ReindexLoginItemUseCase,
-                unindexAllLoginItems: UnindexAllLoginItemsUseCase,
-                databaseService: DatabaseServiceProtocol,
-                userDataProvider: UserDataProvider,
-                logManager: LogManagerProtocol) {
+    init(updateLastUseTime: UpdateLastUseTimeUseCase,
+         reindexLoginItem: ReindexLoginItemUseCase,
+         wipeAllData: WipeAllDataUseCase,
+         logManager: LogManagerProtocol) {
         self.updateLastUseTime = updateLastUseTime
         self.reindexLoginItem = reindexLoginItem
-        self.unindexAllLoginItems = unindexAllLoginItems
-        self.databaseService = databaseService
-        self.userDataProvider = userDataProvider
+        self.wipeAllData = wipeAllData
         logger = .init(manager: logManager)
     }
 
@@ -66,26 +60,10 @@ public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCa
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
         do {
-            let result = try await updateLastUseTime(item: item, date: date)
-            switch result {
-            case .successful:
-                logger.info("Updated lastUseTime \(item.debugDescription)")
-                try await reindexLoginItem(item: item,
-                                           identifiers: identifiers,
-                                           lastUseTime: date)
-            case .shouldRefreshAccessToken:
-                logger.info("TODO: refresh access token")
-            case .shouldLogOut:
-                logger
-                    .error("Token is expired while updating lastUseTime \(item.debugDescription). Logging out.")
-                userDataProvider.setUserData(nil)
-                databaseService.resetContainer()
-                try await unindexAllLoginItems()
-            }
+            try await updateLastUseTime(item: item, date: date)
+            try await reindexLoginItem(item: item, identifiers: identifiers, lastUseTime: date)
         } catch {
             logger.error(error)
         }
     }
 }
-
-#endif

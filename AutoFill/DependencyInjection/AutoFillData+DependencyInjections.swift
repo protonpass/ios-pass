@@ -40,8 +40,4 @@ extension AutoFillDataContainer {
     var context: Factory<ASCredentialProviderExtensionContext> {
         self { fatalError("context not registered") }
     }
-
-    var apiServiceLite: Factory<ApiServiceLiteProtocol> {
-        self { ApiServiceLite() }
-    }
 }
