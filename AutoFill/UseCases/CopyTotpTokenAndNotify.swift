@@ -25,18 +25,13 @@ import Macro
 import UserNotifications
 
 protocol CopyTotpTokenAndNotifyUseCase: Sendable {
-    func execute(itemContent: ItemContent,
-                 clipboardManager: ClipboardManager,
-                 upgradeChecker: UpgradeCheckerProtocol) async throws
+    func execute(itemContent: ItemContent, clipboardManager: ClipboardManager) async throws
 }
 
 extension CopyTotpTokenAndNotifyUseCase {
     func callAsFunction(itemContent: ItemContent,
-                        clipboardManager: ClipboardManager,
-                        upgradeChecker: UpgradeCheckerProtocol) async throws {
-        try await execute(itemContent: itemContent,
-                          clipboardManager: clipboardManager,
-                          upgradeChecker: upgradeChecker)
+                        clipboardManager: ClipboardManager) async throws {
+        try await execute(itemContent: itemContent, clipboardManager: clipboardManager)
     }
 }
 
@@ -44,18 +39,20 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
     private let preferences: Preferences
     private let logger: Logger
     private let notificationService: LocalNotificationServiceProtocol
+    private let upgradeChecker: UpgradeCheckerProtocol
 
     init(preferences: Preferences,
          logManager: LogManagerProtocol,
-         notificationService: LocalNotificationServiceProtocol) {
+         notificationService: LocalNotificationServiceProtocol,
+         upgradeChecker: UpgradeCheckerProtocol) {
         self.preferences = preferences
         logger = .init(manager: logManager)
         self.notificationService = notificationService
+        self.upgradeChecker = upgradeChecker
     }
 
-    func execute(itemContent: ItemContent,
-                 clipboardManager: ClipboardManager,
-                 upgradeChecker: UpgradeCheckerProtocol) async throws {
+    @MainActor
+    func execute(itemContent: ItemContent, clipboardManager: ClipboardManager) async throws {
         guard preferences.automaticallyCopyTotpCode else {
             // Not opted in
             return
@@ -78,10 +75,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
             return
         }
         let totpData = try TOTPData(uri: data.totpUri)
-
-        await MainActor.run {
-            clipboardManager.copy(text: totpData.code, bannerMessage: "")
-        }
+        clipboardManager.copy(text: totpData.code, bannerMessage: "")
         logger.trace("Copied TOTP token \(itemContent.debugDescription)")
 
         let content = UNMutableNotificationContent()
