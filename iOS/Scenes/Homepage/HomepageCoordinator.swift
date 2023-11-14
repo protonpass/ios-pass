@@ -150,9 +150,8 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
 
         apiManager.credentialFinishedUpdating
-            .removeDuplicates()
-            .sink { [weak self] finishedUpdating in
-                guard let self, finishedUpdating else { return }
+            .sink { [weak self] _ in
+                guard let self else { return }
                 refresh()
                 sendAllEventsIfApplicable()
                 eventLoop.start()

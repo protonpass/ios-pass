@@ -41,7 +41,7 @@ import UIKit
 
 protocol APIManagerProtocol {
     var sessionWasInvalidated: PassthroughSubject<Void, Never> { get }
-    var credentialFinishedUpdating: CurrentValueSubject<Bool, Never> { get }
+    var credentialFinishedUpdating: PassthroughSubject<Void, Never> { get }
 
     func startCredentialUpdate()
 }
@@ -61,7 +61,7 @@ final class APIManager: APIManagerProtocol {
     private var cancellables = Set<AnyCancellable>()
 
     let sessionWasInvalidated: PassthroughSubject<Void, Never> = .init()
-    let credentialFinishedUpdating: CurrentValueSubject<Bool, Never> = .init(false)
+    let credentialFinishedUpdating: PassthroughSubject<Void, Never> = .init()
 
     init() {
         let trustKitDelegate = PassTrustKitDelegate()
@@ -133,7 +133,6 @@ final class APIManager: APIManagerProtocol {
     func startCredentialUpdate() {
         appData.invalidateCachedUserData()
         if let userData = appData.getUserData() {
-            credentialFinishedUpdating.send(false)
             apiService.authDelegate?.onSessionObtaining(credential: userData.getCredential)
         }
     }
@@ -203,7 +202,7 @@ extension APIManager: AuthHelperDelegate {
         } else {
             appData.setUnauthCredential(authCredential)
         }
-        credentialFinishedUpdating.send(true)
+        credentialFinishedUpdating.send()
     }
 }
 
