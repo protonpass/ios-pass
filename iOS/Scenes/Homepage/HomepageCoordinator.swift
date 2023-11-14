@@ -65,7 +65,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\UseCasesContainer.updateItemsWithLastUsedTime) private var updateItemsWithLastUsedTime
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
 
     // Use cases
@@ -157,7 +156,6 @@ private extension HomepageCoordinator {
                 eventLoop.start()
                 eventLoop.forceSync()
                 refreshAccess()
-                refreshItems()
                 refreshFeatureFlags()
             }
             .store(in: &cancellables)
@@ -207,17 +205,6 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    func refreshItems() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await updateItemsWithLastUsedTime()
             } catch {
                 logger.error(error)
             }
