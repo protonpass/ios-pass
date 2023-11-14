@@ -148,7 +148,8 @@ public extension TelemetrySchedulerProtocol {
         }
     }
 
-    /// We are setting this function as part of the main actor as it has influence on Preference that seems to trigger an ui update.
+    /// We are setting this function as part of the main actor as it has influence on Preference that seems to
+    /// trigger an ui update.
     /// We saw crash as the update what not executed from the main thread.
     /// This is an attend to mitigate this issue
     @MainActor
