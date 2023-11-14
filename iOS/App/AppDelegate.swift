@@ -147,7 +147,7 @@ private extension AppDelegate {
         backgroundTask?.cancel()
         let states = apiManager.credentialFinishedUpdating.values
         backgroundTask = Task { [weak self] in
-            for await state in states where state == true {
+            for await _ in states {
                 guard let self else {
                     task.setTaskCompleted(success: true)
                     return
