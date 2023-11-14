@@ -100,6 +100,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
 
     let urls: [URL]
     private var vaults = [Vault]()
@@ -111,14 +112,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     init(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.serviceIdentifiers = serviceIdentifiers
-        urls = serviceIdentifiers.compactMap { serviceIdentifier in
-            // ".domain" means in app context where identifiers don't have protocol,
-            // so we manually add https as protocol otherwise URL comparison would not work without protocol.
-            let id = serviceIdentifier
-                .type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
-            return URL(string: id)
-        }
-
+        urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         setup()
     }
 }
