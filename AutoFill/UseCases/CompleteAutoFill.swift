@@ -80,6 +80,9 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: ASPasswordCredential,
                  itemContent: ItemContent) async throws {
+        defer {
+            resetFactory()
+        }
         do {
             if quickTypeBar {
                 try await telemetryRepository.addNewEvent(type: .autofillTriggeredFromSource)
@@ -112,7 +115,6 @@ private extension CompleteAutoFill {
     func update(item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
         Task { [weak self] in
             guard let self else { return }
-            defer { resetFactory() }
             do {
                 try await updateLastUseTimeAndReindex(item: item,
                                                       date: .now,
