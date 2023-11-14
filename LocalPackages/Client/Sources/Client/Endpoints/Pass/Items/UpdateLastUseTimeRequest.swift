@@ -24,4 +24,8 @@ public struct UpdateLastUseTimeRequest: Encodable {
     enum CodingKeys: String, CodingKey {
         case lastUseTime = "LastUseTime"
     }
+
+    public init(lastUseTime: Int) {
+        self.lastUseTime = lastUseTime
+    }
 }

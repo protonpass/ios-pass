@@ -21,26 +21,25 @@
 import AuthenticationServices
 import Client
 import Core
+import Entities
+import UseCases
 
 protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
+                 identifiers: [ASCredentialServiceIdentifier],
                  credential: ASPasswordCredential,
-                 itemContent: ItemContent,
-                 upgradeChecker: UpgradeCheckerProtocol,
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws
+                 itemContent: ItemContent) async throws
 }
 
 extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
+                        identifiers: [ASCredentialServiceIdentifier],
                         credential: ASPasswordCredential,
-                        itemContent: ItemContent,
-                        upgradeChecker: UpgradeCheckerProtocol,
-                        telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
+                        itemContent: ItemContent) async throws {
         try await execute(quickTypeBar: quickTypeBar,
+                          identifiers: identifiers,
                           credential: credential,
-                          itemContent: itemContent,
-                          upgradeChecker: upgradeChecker,
-                          telemetryEventRepository: telemetryEventRepository)
+                          itemContent: itemContent)
     }
 }
 
@@ -48,23 +47,26 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let context: ASCredentialProviderExtensionContext
     private let logger: Logger
     private let logManager: LogManagerProtocol
+    private let telemetryRepository: TelemetryEventRepositoryProtocol
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
+    private let updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase
     private let resetFactory: ResetFactoryUseCase
-    private let itemRepository: ItemRepositoryProtocol
 
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
+         telemetryRepository: TelemetryEventRepositoryProtocol,
          clipboardManager: ClipboardManager,
-         itemRepository: ItemRepositoryProtocol,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
+         updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase,
          resetFactory: ResetFactoryUseCase) {
         self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager
-        self.itemRepository = itemRepository
+        self.telemetryRepository = telemetryRepository
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
+        self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.resetFactory = resetFactory
     }
 
@@ -75,18 +77,17 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
      and at this moment the autofill process is done and the extension is already closed, we have no way to tell users about the errors anyway
      */
     func execute(quickTypeBar: Bool,
+                 identifiers: [ASCredentialServiceIdentifier],
                  credential: ASPasswordCredential,
-                 itemContent: ItemContent,
-                 upgradeChecker: UpgradeCheckerProtocol,
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
+                 itemContent: ItemContent) async throws {
         defer {
             resetFactory()
         }
         do {
             if quickTypeBar {
-                try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
+                try await telemetryRepository.addNewEvent(type: .autofillTriggeredFromSource)
             } else {
-                try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
+                try await telemetryRepository.addNewEvent(type: .autofillTriggeredFromApp)
             }
             logger
                 .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugDescription)")
@@ -95,11 +96,11 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             }
             await logManager.saveAllLogs()
             try await copyTotpTokenAndNotify(itemContent: itemContent,
-                                             clipboardManager: clipboardManager,
-                                             upgradeChecker: upgradeChecker)
-            try await update(itemContent: itemContent)
-
-            await context.completeRequestAsync(credential: credential)
+                                             clipboardManager: clipboardManager)
+            context.completeRequest(withSelectedCredential: credential) { [weak self] _ in
+                guard let self else { return }
+                update(item: itemContent, identifiers: identifiers)
+            }
         } catch {
             // Do nothing but only log the errors
             logger.error(error)
@@ -111,19 +112,17 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
 }
 
 private extension CompleteAutoFill {
-    func update(itemContent: ItemContent) async throws {
-        logger.trace("Updating lastUseTime \(itemContent.debugDescription)")
-        try await itemRepository.saveLocally(lastUseTime: Date().timeIntervalSince1970, for: itemContent)
-        logger.info("Updated lastUseTime \(itemContent.debugDescription)")
-    }
-}
-
-private extension ASCredentialProviderExtensionContext {
-    @discardableResult
-    func completeRequestAsync(credential: ASPasswordCredential) async -> Bool {
-        await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
-            completeRequest(withSelectedCredential: credential) { result in
-                continuation.resume(returning: result)
+    func update(item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await updateLastUseTimeAndReindex(item: item,
+                                                      date: .now,
+                                                      identifiers: identifiers)
+                await logManager.saveAllLogs()
+            } catch {
+                logger.error(error)
+                await logManager.saveAllLogs()
             }
         }
     }
