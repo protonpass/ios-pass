@@ -90,19 +90,13 @@ extension AutoFillUseCaseContainer {
     }
 
     var updateLastUseTime: Factory<UpdateLastUseTimeUseCase> {
-        self { UpdateLastUseTime(apiService: AutoFillDataContainer.shared.apiServiceLite(),
-                                 userDataProvider: self.userDataProvider,
-                                 serverConfig: ProtonPassDoH(),
-                                 appVersion: SharedToolingContainer.shared.appVersion()) }
+        self { UpdateLastUseTime(apiService: SharedToolingContainer.shared.apiManager().apiService) }
     }
 
     var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
         self { UpdateLastUseTimeAndReindex(updateLastUseTime: self.updateLastUseTime(),
                                            reindexLoginItem: self.reindexLoginItem(),
-                                           unindexAllLoginItems: SharedUseCasesContainer.shared
-                                               .unindexAllLoginItems(),
-                                           databaseService: SharedServiceContainer.shared.databaseService(),
-                                           userDataProvider: self.userDataProvider,
+                                           wipeAllData: SharedUseCasesContainer.shared.wipeAllData(),
                                            logManager: self.logManager) }
     }
 }
