@@ -50,17 +50,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="LastUsedTimeEntity" representedClassName="LastUsedTimeEntity" syncable="YES">
-        <attribute name="itemId" attributeType="String"/>
-        <attribute name="lastUseTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="shareId" attributeType="String"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="itemId"/>
-                <constraint value="shareId"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
     <entity name="PublicKeyEntity" representedClassName="PublicKeyEntity" syncable="YES">
         <attribute name="email" attributeType="String"/>
         <attribute name="value" attributeType="String"/>

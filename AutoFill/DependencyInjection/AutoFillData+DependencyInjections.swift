@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import Client
 import Factory
 import UIKit
 
@@ -38,5 +39,9 @@ final class AutoFillDataContainer: SharedContainer, AutoRegistering {
 extension AutoFillDataContainer {
     var context: Factory<ASCredentialProviderExtensionContext> {
         self { fatalError("context not registered") }
+    }
+
+    var apiServiceLite: Factory<ApiServiceLiteProtocol> {
+        self { ApiServiceLite() }
     }
 }

@@ -299,33 +299,7 @@ extension LocalItemDatasourceTests {
      waitForExpectations(timeout: expectationTimeOut)
      }
      */
-    
-    func testLastUsedTimeItem() async throws {
-        let sharedId = "testSharedId"
-        let itemId = "testItemId"
-        // Given
-        let firstItem = LastUsedTimeItem(shareId: sharedId, itemId: itemId, lastUsedTime: 3)
-        try await sut.upsertLastUseTime(for: firstItem)
-        
-        // When
-        let items = try await sut.getAllLastUsedTimeItems()
-        XCTAssertEqual(items.count, 1)
 
-        let firstItemUpdate = LastUsedTimeItem(shareId: sharedId, itemId: itemId, lastUsedTime: 16)
-        try await sut.upsertLastUseTime(for: firstItemUpdate)
-        let secondItem = LastUsedTimeItem(shareId: sharedId + "2", itemId: itemId + "2", lastUsedTime: 123)
-        try await sut.upsertLastUseTime(for: secondItem)
-        
-        let newItems = try await sut.getAllLastUsedTimeItems()
-        XCTAssertEqual(newItems.count, 2)
-        XCTAssertEqual(newItems.first?.lastUsedTime, 16)
-        XCTAssertEqual(newItems.last?.lastUsedTime, 123)
-        
-        try await sut.removeAllLastUsedTimeItems()
-        let noItems = try await sut.getAllLastUsedTimeItems()
-        XCTAssertEqual(noItems.count, 0)
-    }
-    
     func testGetActiveLogInItems() async throws {
         // Given
         let givenShareId = String.random()
@@ -386,6 +360,31 @@ extension LocalItemDatasourceTests {
         
         // Then
         XCTAssertEqual(activeLogInItems.count, 4)
+    }
+
+    func testUpdateLastUseItems() async throws {
+        // Given
+        let givenShareId = String.random()
+        let item1 = try await sut.givenInsertedItem(shareId: givenShareId)
+        let item2 = try await sut.givenInsertedItem(shareId: givenShareId)
+        let item3 = try await sut.givenInsertedItem(shareId: givenShareId)
+
+        // When
+        let updatedItem1 = LastUseItem(itemID: item1.itemId, lastUseTime: 123)
+        let updatedItem2 = LastUseItem(itemID: item2.itemId, lastUseTime: 234)
+        let updatedItem3 = LastUseItem(itemID: item3.itemId, lastUseTime: 345)
+        try await sut.update(lastUseItems: [updatedItem1, updatedItem2, updatedItem3],
+                             shareId: givenShareId)
+
+        // Then
+        let retrievedItem1 = try await sut.getItem(shareId: givenShareId, itemId: item1.itemId)
+        XCTAssertEqual(retrievedItem1?.item.lastUseTime, 123)
+
+        let retrievedItem2 = try await sut.getItem(shareId: givenShareId, itemId: item2.itemId)
+        XCTAssertEqual(retrievedItem2?.item.lastUseTime, 234)
+
+        let retrievedItem3 = try await sut.getItem(shareId: givenShareId, itemId: item3.itemId)
+        XCTAssertEqual(retrievedItem3?.item.lastUseTime, 345)
     }
 }
 

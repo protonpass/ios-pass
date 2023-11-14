@@ -284,16 +284,6 @@ extension UseCasesContainer {
     }
 }
 
-// MARK: - Items
-
-extension UseCasesContainer {
-    var updateItemsWithLastUsedTime: Factory<UpdateItemsWithLastUsedTimeUseCase> {
-        self { UpdateItemsWithLastUsedTime(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
-                                           indexAllLoginItems: SharedUseCasesContainer.shared
-                                               .indexAllLoginItems()) }
-    }
-}
-
 extension UseCasesContainer {
     var getRustLibraryVersion: Factory<GetRustLibraryVersionUseCase> {
         self { GetRustLibraryVersion() }
