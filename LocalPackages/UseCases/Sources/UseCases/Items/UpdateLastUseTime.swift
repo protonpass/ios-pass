@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 import Entities
 import Foundation
 
@@ -49,10 +50,10 @@ public extension UpdateLastUseTimeUseCase {
 }
 
 public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
-    private let makeNetworkRequest: MakeNetworkRequestUseCase
+    private let apiService: ApiServiceLiteProtocol
 
-    public init(makeNetworkRequest: MakeNetworkRequestUseCase) {
-        self.makeNetworkRequest = makeNetworkRequest
+    public init(apiService: ApiServiceLiteProtocol) {
+        self.apiService = apiService
     }
 
     public func execute(baseUrl: String,
@@ -63,13 +64,14 @@ public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
                         date: Date) async throws -> UpdateLastUseTimeResult {
         let path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/lastuse"
         let body = UpdateLastUseTimeRequest(lastUseTime: Int(date.timeIntervalSince1970))
-        let code = try await makeNetworkRequest(baseUrl: baseUrl,
-                                                path: path,
-                                                method: .put,
-                                                appVersion: appVersion,
-                                                sessionId: sessionId,
-                                                accessToken: accessToken,
-                                                body: body)
+        let request = try URLUtils.makeUrlRequest(baseUrl: baseUrl,
+                                                  path: path,
+                                                  method: .put,
+                                                  appVersion: appVersion,
+                                                  sessionId: sessionId,
+                                                  accessToken: accessToken,
+                                                  body: body)
+        let code = try await apiService.execute(request: request)
         return switch code {
         case 401:
             .shouldRefreshAccessToken
