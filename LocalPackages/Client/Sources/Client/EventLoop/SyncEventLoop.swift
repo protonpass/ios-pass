@@ -94,6 +94,7 @@ public protocol SyncEventLoopProtocol {
     func start()
     func forceSync()
     func stop()
+    func reset()
 }
 
 public extension SyncEventLoop {
