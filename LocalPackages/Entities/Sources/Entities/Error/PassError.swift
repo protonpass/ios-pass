@@ -38,11 +38,11 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
     case unexpectedError
-    case unexpectedHttpStatusCode(Int?)
     case unexpectedLogout
     case unknownShareType
     case unmatchedRotationID(leftID: String, rightID: String)
-    case sharing(SharingErrorReason)
+    case sharing(SharingFailureReason)
+    case network(NetworkFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -76,8 +76,6 @@ public enum PassError: Error, CustomDebugStringConvertible {
             reason.debugDescription
         case .unexpectedError:
             "Unexpected error"
-        case let .unexpectedHttpStatusCode(statusCode):
-            "Unexpected HTTP status code \(String(describing: statusCode))"
         case .unknownShareType:
             "Unknown share type"
         case .unexpectedLogout:
@@ -85,6 +83,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
         case let .unmatchedRotationID(leftID, rightID):
             "Unmatched rotation IDs \"\(leftID)\" & \"\(rightID)\""
         case let .sharing(reason):
+            reason.debugDescription
+        case let .network(reason):
             reason.debugDescription
         }
     }

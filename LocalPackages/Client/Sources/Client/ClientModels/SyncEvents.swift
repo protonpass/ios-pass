@@ -30,6 +30,9 @@ public struct SyncEvents: Decodable {
     /// Deleted items
     public let deletedItemIDs: [String]
 
+    /// Items that have the last use time updated
+    public let lastUseItems: [LastUseItem]
+
     /// New key rotation value if there has been a key rotation
     public let newKeyRotation: Int?
 

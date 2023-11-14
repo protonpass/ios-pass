@@ -28,7 +28,6 @@ public enum Constants {
     public static let appStoreUrl = "itms-apps://itunes.apple.com/app/id6443490629"
     public static let existingUserSharingSignatureContext = "pass.invite.vault.existing-user"
     public static let newUserSharingSignatureContext = "pass.invite.vault.new-user"
-    public static let backgroundTaskIdentifier = "me.proton.pass.ios.db_lastUsedTimeUpdate"
 
     enum TotpBase {
         public static let timer: Double = 30.0
