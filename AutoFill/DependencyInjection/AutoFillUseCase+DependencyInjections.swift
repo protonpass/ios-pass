@@ -88,11 +88,7 @@ extension AutoFillUseCaseContainer {
                                 mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
 
-    var makeNetworkRequest: Factory<MakeNetworkRequestUseCase> {
-        self { MakeNetworkRequest(apiService: AutoFillDataContainer.shared.apiServiceLite()) }
-    }
-
     var updateLastUseTime: Factory<UpdateLastUseTimeUseCase> {
-        self { UpdateLastUseTime(makeNetworkRequest: self.makeNetworkRequest()) }
+        self { UpdateLastUseTime(apiService: AutoFillDataContainer.shared.apiServiceLite()) }
     }
 }
