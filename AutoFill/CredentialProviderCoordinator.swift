@@ -142,13 +142,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                         if Task.isCancelled {
                             cancelAutoFill(reason: .credentialIdentityNotFound)
                         }
-
                         try await completeAutoFill(quickTypeBar: true,
+                                                   identifiers: [credentialIdentity.serviceIdentifier],
                                                    credential: .init(user: data.username,
                                                                      password: data.password),
-                                                   itemContent: itemContent,
-                                                   upgradeChecker: upgradeChecker,
-                                                   telemetryEventRepository: telemetryEventRepository)
+                                                   itemContent: itemContent)
                     } else {
                         logger.error("Failed to autofill. Not log in item.")
                         cancelAutoFill(reason: .credentialIdentityNotFound)
@@ -177,10 +175,9 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 guard let self else { return }
 
                 try? await completeAutoFill(quickTypeBar: false,
+                                            identifiers: [credentialIdentity.serviceIdentifier],
                                             credential: credential,
-                                            itemContent: itemContent,
-                                            upgradeChecker: upgradeChecker,
-                                            telemetryEventRepository: telemetryEventRepository)
+                                            itemContent: itemContent)
             }
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
@@ -466,10 +463,9 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
             guard let self else { return }
             do {
                 try await completeAutoFill(quickTypeBar: false,
+                                           identifiers: serviceIdentifiers,
                                            credential: credential,
-                                           itemContent: itemContent,
-                                           upgradeChecker: upgradeChecker,
-                                           telemetryEventRepository: telemetryEventRepository)
+                                           itemContent: itemContent)
             } catch {
                 cancelAutoFill(reason: .failed)
             }

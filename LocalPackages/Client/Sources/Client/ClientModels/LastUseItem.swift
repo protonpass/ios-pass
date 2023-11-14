@@ -1,6 +1,6 @@
 //
-// ItemLastUsedTime.swift
-// Proton Pass - Created on 26/10/2023.
+// LastUseItem.swift
+// Proton Pass - Created on 13/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,17 +17,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-public struct LastUsedTimeItem: Codable, Hashable, Sendable {
-    public let shareId: String
-    public let itemId: String
-    public let lastUsedTime: Double
-
-    public init(shareId: String, itemId: String, lastUsedTime: Double) {
-        self.shareId = shareId
-        self.itemId = itemId
-        self.lastUsedTime = lastUsedTime
-    }
+public struct LastUseItem: Decodable {
+    let itemID: String
+    let lastUseTime: Int
 }

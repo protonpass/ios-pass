@@ -531,6 +531,12 @@ private extension SyncEventLoop {
                                                         shareId: shareId)
         }
 
+        if !events.lastUseItems.isEmpty {
+            hasNewEvents = true
+            logger.trace("Found \(events.lastUseItems.count) lastUseItem for share \(shareId)")
+            try await itemRepository.update(lastUseItems: events.lastUseItems, shareId: shareId)
+        }
+
         if events.newKeyRotation != nil {
             hasNewEvents = true
             logger.trace("Had new rotation ID for share \(shareId)")

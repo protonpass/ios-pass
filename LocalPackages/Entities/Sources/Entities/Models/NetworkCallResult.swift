@@ -1,7 +1,7 @@
 //
-// UpdateLastUseTimeRequest.swift
-// Proton Pass - Created on 16/12/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// NetworkCallResult.swift
+// Proton Pass - Created on 10/11/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,15 +17,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-public struct UpdateLastUseTimeRequest: Encodable {
-    public let lastUseTime: Int
+import Foundation
 
-    enum CodingKeys: String, CodingKey {
-        case lastUseTime = "LastUseTime"
-    }
-
-    public init(lastUseTime: Int) {
-        self.lastUseTime = lastUseTime
-    }
+public enum NetworkCallResult {
+    case successful
+    case shouldRefreshAccessToken
+    case shouldLogOut
 }

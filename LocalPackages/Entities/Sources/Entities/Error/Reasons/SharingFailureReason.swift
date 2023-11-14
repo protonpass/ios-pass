@@ -1,5 +1,5 @@
 //
-// SharingErrorReason.swift
+// SharingFailureReason.swift
 // Proton Pass - Created on 10/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,7 +22,7 @@
 import Foundation
 
 public extension PassError {
-    enum SharingErrorReason: CustomDebugStringConvertible, LocalizedError, Equatable {
+    enum SharingFailureReason: CustomDebugStringConvertible, LocalizedError, Equatable {
         case incompleteInformation
         case failedEncryptionKeysFetching
         case noPublicKeyAssociatedWithEmail(String)
