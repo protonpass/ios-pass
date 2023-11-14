@@ -64,14 +64,6 @@ public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
                                                   sessionId: credential.sessionID,
                                                   accessToken: credential.accessToken,
                                                   body: body)
-        let code = try await apiService.execute(request: request)
-        return switch code {
-        case 401:
-            .shouldRefreshAccessToken
-        case 400, 402...499:
-            .shouldLogOut
-        default:
-            .successful
-        }
+        return try await apiService.execute(request: request)
     }
 }

@@ -24,8 +24,7 @@ import Foundation
 import ProtonCoreEnvironment
 
 public protocol ApiServiceLiteProtocol {
-    /// Execute a request and return the HTTP code of the response
-    func execute(request: URLRequest) async throws -> Int
+    func execute(request: URLRequest) async throws -> NetworkCallResult
 }
 
 public final class ApiServiceLite: NSObject {
@@ -35,12 +34,19 @@ public final class ApiServiceLite: NSObject {
 }
 
 extension ApiServiceLite: ApiServiceLiteProtocol {
-    public func execute(request: URLRequest) async throws -> Int {
+    public func execute(request: URLRequest) async throws -> NetworkCallResult {
         let (_, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw PassError.network(.notHttpResponse)
         }
-        return httpResponse.statusCode
+        return switch httpResponse.statusCode {
+        case 401:
+            .shouldRefreshAccessToken
+        case 400, 402...499:
+            .shouldLogOut
+        default:
+            .successful
+        }
     }
 }
 
