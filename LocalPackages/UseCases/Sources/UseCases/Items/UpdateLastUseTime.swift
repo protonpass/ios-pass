@@ -24,52 +24,45 @@ import Core
 import Entities
 import Foundation
 
-public protocol UpdateLastUseTimeUseCase {
-    func execute(baseUrl: String,
-                 sessionId: String,
-                 accessToken: String,
-                 appVersion: String,
-                 item: ItemIdentifiable,
-                 date: Date) async throws -> UpdateLastUseTimeResult
+@preconcurrency import ProtonCoreDoh
+
+public protocol UpdateLastUseTimeUseCase: Sendable {
+    func execute(item: ItemIdentifiable, date: Date) async throws -> UpdateLastUseTimeResult
 }
 
 public extension UpdateLastUseTimeUseCase {
-    func callAsFunction(baseUrl: String,
-                        sessionId: String,
-                        accessToken: String,
-                        appVersion: String,
-                        item: ItemIdentifiable,
-                        date: Date) async throws -> UpdateLastUseTimeResult {
-        try await execute(baseUrl: baseUrl,
-                          sessionId: sessionId,
-                          accessToken: accessToken,
-                          appVersion: appVersion,
-                          item: item,
-                          date: date)
+    func callAsFunction(item: ItemIdentifiable, date: Date) async throws -> UpdateLastUseTimeResult {
+        try await execute(item: item, date: date)
     }
 }
 
 public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
     private let apiService: ApiServiceLiteProtocol
+    private let userDataProvider: UserDataProvider
+    private let serverConfig: ServerConfig
+    private let appVersion: String
 
-    public init(apiService: ApiServiceLiteProtocol) {
+    public init(apiService: ApiServiceLiteProtocol,
+                userDataProvider: UserDataProvider,
+                serverConfig: ServerConfig,
+                appVersion: String) {
         self.apiService = apiService
+        self.userDataProvider = userDataProvider
+        self.serverConfig = serverConfig
+        self.appVersion = appVersion
     }
 
-    public func execute(baseUrl: String,
-                        sessionId: String,
-                        accessToken: String,
-                        appVersion: String,
-                        item: ItemIdentifiable,
-                        date: Date) async throws -> UpdateLastUseTimeResult {
+    public func execute(item: ItemIdentifiable, date: Date) async throws -> UpdateLastUseTimeResult {
+        let credential = try userDataProvider.getUnwrappedUserData().credential
+        let baseUrl = serverConfig.defaultHost + serverConfig.defaultPath
         let path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/lastuse"
         let body = UpdateLastUseTimeRequest(lastUseTime: Int(date.timeIntervalSince1970))
         let request = try URLUtils.makeUrlRequest(baseUrl: baseUrl,
                                                   path: path,
                                                   method: .put,
                                                   appVersion: appVersion,
-                                                  sessionId: sessionId,
-                                                  accessToken: accessToken,
+                                                  sessionId: credential.sessionID,
+                                                  accessToken: credential.accessToken,
                                                   body: body)
         let code = try await apiService.execute(request: request)
         return switch code {
