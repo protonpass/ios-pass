@@ -27,11 +27,11 @@ import Foundation
 @preconcurrency import ProtonCoreDoh
 
 public protocol UpdateLastUseTimeUseCase: Sendable {
-    func execute(item: ItemIdentifiable, date: Date) async throws -> UpdateLastUseTimeResult
+    func execute(item: ItemIdentifiable, date: Date) async throws -> NetworkCallResult
 }
 
 public extension UpdateLastUseTimeUseCase {
-    func callAsFunction(item: ItemIdentifiable, date: Date) async throws -> UpdateLastUseTimeResult {
+    func callAsFunction(item: ItemIdentifiable, date: Date) async throws -> NetworkCallResult {
         try await execute(item: item, date: date)
     }
 }
@@ -52,7 +52,7 @@ public final class UpdateLastUseTime: UpdateLastUseTimeUseCase {
         self.appVersion = appVersion
     }
 
-    public func execute(item: ItemIdentifiable, date: Date) async throws -> UpdateLastUseTimeResult {
+    public func execute(item: ItemIdentifiable, date: Date) async throws -> NetworkCallResult {
         let credential = try userDataProvider.getUnwrappedUserData().credential
         let baseUrl = serverConfig.defaultHost + serverConfig.defaultPath
         let path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/lastuse"

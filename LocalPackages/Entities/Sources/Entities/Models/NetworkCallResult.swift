@@ -1,5 +1,5 @@
 //
-// UpdateLastUseTimeResult.swift
+// NetworkCallResult.swift
 // Proton Pass - Created on 10/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 
 import Foundation
 
-public enum UpdateLastUseTimeResult {
+public enum NetworkCallResult {
     case successful
     case shouldRefreshAccessToken
     case shouldLogOut

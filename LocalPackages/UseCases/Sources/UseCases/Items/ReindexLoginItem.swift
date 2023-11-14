@@ -77,28 +77,26 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
                     return false
                 }
                 let result = URLUtils.Matcher.compare(url, givenUrl, domainParser: parser)
-                switch result {
+                return switch result {
                 case .matched:
-                    return true
+                    true
                 case .notMatched:
-                    return false
+                    false
                 }
             }
             .contains(true)
 
-            return if isMatched {
-                .init(shareId: item.shareId,
-                      itemId: item.itemId,
-                      username: data.username,
-                      url: url,
-                      lastUseTime: Int64(lastUseTime.timeIntervalSince1970))
+            let lastUseTime = if isMatched {
+                Int64(lastUseTime.timeIntervalSince1970)
             } else {
-                .init(shareId: item.shareId,
-                      itemId: item.itemId,
-                      username: data.username,
-                      url: url,
-                      lastUseTime: item.item.lastUseTime ?? 0)
+                item.item.lastUseTime ?? 0
             }
+
+            return .init(shareId: item.shareId,
+                         itemId: item.itemId,
+                         username: data.username,
+                         url: url,
+                         lastUseTime: lastUseTime)
         }
         try await manager.insert(credentials: credentials)
     }
