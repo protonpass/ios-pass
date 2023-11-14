@@ -60,7 +60,7 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
             throw PassError.credentialProvider(.notLogInItem)
         }
 
-        // First we remove old index credentials
+        // First we remove existing indexed credentials
         let oldCredentials = data.urls.map { AutoFillCredential(shareId: item.shareId,
                                                                 itemId: item.item.itemID,
                                                                 username: data.username,
