@@ -46,6 +46,10 @@ private extension AutoFillUseCaseContainer {
     var context: ASCredentialProviderExtensionContext {
         AutoFillDataContainer.shared.context()
     }
+
+    var userDataProvider: UserDataProvider {
+        SharedDataContainer.shared.userDataProvider()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -56,7 +60,8 @@ extension AutoFillUseCaseContainer {
     var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(preferences: self.preferences,
                                       logManager: self.logManager,
-                                      notificationService: SharedServiceContainer.shared.notificationService()) }
+                                      notificationService: SharedServiceContainer.shared.notificationService(),
+                                      upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
 
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
@@ -68,14 +73,10 @@ extension AutoFillUseCaseContainer {
     var completeAutoFill: Factory<CompleteAutoFillUseCase> {
         self { CompleteAutoFill(context: self.context,
                                 logManager: self.logManager,
-                                appVersion: SharedToolingContainer.shared.appVersion(),
-                                userDataProvider: SharedDataContainer.shared.userDataProvider(),
+                                telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
-                                updateLastUseTime: self.updateLastUseTime(),
-                                reindexLoginItem: self.reindexLoginItem(),
-                                unindexAllLoginItems: SharedUseCasesContainer.shared.unindexAllLoginItems(),
-                                databaseService: SharedServiceContainer.shared.databaseService(),
+                                updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                 resetFactory: self.resetFactory()) }
     }
 
@@ -89,6 +90,19 @@ extension AutoFillUseCaseContainer {
     }
 
     var updateLastUseTime: Factory<UpdateLastUseTimeUseCase> {
-        self { UpdateLastUseTime(apiService: AutoFillDataContainer.shared.apiServiceLite()) }
+        self { UpdateLastUseTime(apiService: AutoFillDataContainer.shared.apiServiceLite(),
+                                 userDataProvider: self.userDataProvider,
+                                 serverConfig: ProtonPassDoH(),
+                                 appVersion: SharedToolingContainer.shared.appVersion()) }
+    }
+
+    var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
+        self { UpdateLastUseTimeAndReindex(updateLastUseTime: self.updateLastUseTime(),
+                                           reindexLoginItem: self.reindexLoginItem(),
+                                           unindexAllLoginItems: SharedUseCasesContainer.shared
+                                               .unindexAllLoginItems(),
+                                           databaseService: SharedServiceContainer.shared.databaseService(),
+                                           userDataProvider: self.userDataProvider,
+                                           logManager: self.logManager) }
     }
 }

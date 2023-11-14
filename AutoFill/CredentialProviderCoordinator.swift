@@ -146,9 +146,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                                                    identifiers: [credentialIdentity.serviceIdentifier],
                                                    credential: .init(user: data.username,
                                                                      password: data.password),
-                                                   itemContent: itemContent,
-                                                   upgradeChecker: upgradeChecker,
-                                                   telemetryEventRepository: telemetryEventRepository)
+                                                   itemContent: itemContent)
                     } else {
                         logger.error("Failed to autofill. Not log in item.")
                         cancelAutoFill(reason: .credentialIdentityNotFound)
@@ -179,9 +177,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 try? await completeAutoFill(quickTypeBar: false,
                                             identifiers: [credentialIdentity.serviceIdentifier],
                                             credential: credential,
-                                            itemContent: itemContent,
-                                            upgradeChecker: upgradeChecker,
-                                            telemetryEventRepository: telemetryEventRepository)
+                                            itemContent: itemContent)
             }
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
@@ -469,9 +465,7 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
                 try await completeAutoFill(quickTypeBar: false,
                                            identifiers: serviceIdentifiers,
                                            credential: credential,
-                                           itemContent: itemContent,
-                                           upgradeChecker: upgradeChecker,
-                                           telemetryEventRepository: telemetryEventRepository)
+                                           itemContent: itemContent)
             } catch {
                 cancelAutoFill(reason: .failed)
             }
