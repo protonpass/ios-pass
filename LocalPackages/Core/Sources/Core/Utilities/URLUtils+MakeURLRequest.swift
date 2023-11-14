@@ -33,7 +33,7 @@ public extension URLUtils {
                                accessToken: String?,
                                body: Encodable?) throws -> URLRequest {
         guard var url = URL(string: baseUrl) else {
-            throw PassError.badUrlString(baseUrl)
+            throw PassError.network(.badUrlString(baseUrl))
         }
 
         url = if #available(iOS 16.0, *) {

@@ -60,6 +60,8 @@ extension CredentialManager: CredentialManagerProtocol {
         if state.supportsIncrementalUpdates {
             logger.trace("Non empty credential store. Removing \(credentials.count) credentials.")
             try await store.removeCredentialIdentities(domainCredentials)
+        } else {
+            logger.trace("Empty credential store. Nothing to remove.")
         }
     }
 
