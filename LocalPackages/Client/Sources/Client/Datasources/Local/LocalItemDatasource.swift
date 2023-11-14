@@ -46,7 +46,7 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     /// Trash or untrash items
     func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws
 
-    /// Bulk update lastUseTime
+    /// Bulk update `LastUseItem`
     func update(lastUseItems: [LastUseItem], shareId: String) async throws
 
     /// Permanently delete items
