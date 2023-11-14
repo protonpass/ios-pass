@@ -150,11 +150,4 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "flagsData", on: sut, hasType: .binaryData)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
-    
-    func testLastUsedTimeEntity() {
-        let sut = entity(byName: "LastUsedTimeEntity")
-        verifyAttribute(named: "itemId", on: sut, hasType: .string)
-        verifyAttribute(named: "shareId", on: sut, hasType: .string)
-        verifyAttribute(named: "lastUseTime", on: sut, hasType: .double)
-    }
 }
