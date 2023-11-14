@@ -38,7 +38,7 @@ extension ApiServiceLite: ApiServiceLiteProtocol {
     public func execute(request: URLRequest) async throws -> Int {
         let (_, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw PassError.notHttpResponse
+            throw PassError.network(.notHttpResponse)
         }
         return httpResponse.statusCode
     }
