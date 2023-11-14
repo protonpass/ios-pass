@@ -24,29 +24,22 @@ import Core
 import Entities
 import UseCases
 
-// swiftlint:disable function_parameter_count
 protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: ASPasswordCredential,
-                 itemContent: ItemContent,
-                 upgradeChecker: UpgradeCheckerProtocol,
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws
+                 itemContent: ItemContent) async throws
 }
 
 extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
                         identifiers: [ASCredentialServiceIdentifier],
                         credential: ASPasswordCredential,
-                        itemContent: ItemContent,
-                        upgradeChecker: UpgradeCheckerProtocol,
-                        telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
+                        itemContent: ItemContent) async throws {
         try await execute(quickTypeBar: quickTypeBar,
                           identifiers: identifiers,
                           credential: credential,
-                          itemContent: itemContent,
-                          upgradeChecker: upgradeChecker,
-                          telemetryEventRepository: telemetryEventRepository)
+                          itemContent: itemContent)
     }
 }
 
@@ -54,38 +47,26 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let context: ASCredentialProviderExtensionContext
     private let logger: Logger
     private let logManager: LogManagerProtocol
-    private let appVersion: String
-    private let userDataProvider: UserDataProvider
+    private let telemetryRepository: TelemetryEventRepositoryProtocol
     private let clipboardManager: ClipboardManager
     private let copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase
-    private let updateLastUseTime: UpdateLastUseTimeUseCase
-    private let reindexLoginItem: ReindexLoginItemUseCase
-    private let unindexAllLoginItems: UnindexAllLoginItemsUseCase
-    private let databaseService: DatabaseServiceProtocol
+    private let updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase
     private let resetFactory: ResetFactoryUseCase
 
     init(context: ASCredentialProviderExtensionContext,
          logManager: LogManagerProtocol,
-         appVersion: String,
-         userDataProvider: UserDataProvider,
+         telemetryRepository: TelemetryEventRepositoryProtocol,
          clipboardManager: ClipboardManager,
          copyTotpTokenAndNotify: CopyTotpTokenAndNotifyUseCase,
-         updateLastUseTime: UpdateLastUseTimeUseCase,
-         reindexLoginItem: ReindexLoginItemUseCase,
-         unindexAllLoginItems: UnindexAllLoginItemsUseCase,
-         databaseService: DatabaseServiceProtocol,
+         updateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase,
          resetFactory: ResetFactoryUseCase) {
         self.context = context
         logger = .init(manager: logManager)
         self.logManager = logManager
-        self.appVersion = appVersion
-        self.userDataProvider = userDataProvider
+        self.telemetryRepository = telemetryRepository
         self.clipboardManager = clipboardManager
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
-        self.updateLastUseTime = updateLastUseTime
-        self.reindexLoginItem = reindexLoginItem
-        self.unindexAllLoginItems = unindexAllLoginItems
-        self.databaseService = databaseService
+        self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.resetFactory = resetFactory
     }
 
@@ -98,14 +79,12 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: ASPasswordCredential,
-                 itemContent: ItemContent,
-                 upgradeChecker: UpgradeCheckerProtocol,
-                 telemetryEventRepository: TelemetryEventRepositoryProtocol?) async throws {
+                 itemContent: ItemContent) async throws {
         do {
             if quickTypeBar {
-                try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromSource)
+                try await telemetryRepository.addNewEvent(type: .autofillTriggeredFromSource)
             } else {
-                try await telemetryEventRepository?.addNewEvent(type: .autofillTriggeredFromApp)
+                try await telemetryRepository.addNewEvent(type: .autofillTriggeredFromApp)
             }
             logger
                 .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugDescription)")
@@ -114,8 +93,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             }
             await logManager.saveAllLogs()
             try await copyTotpTokenAndNotify(itemContent: itemContent,
-                                             clipboardManager: clipboardManager,
-                                             upgradeChecker: upgradeChecker)
+                                             clipboardManager: clipboardManager)
             context.completeRequest(withSelectedCredential: credential) { [weak self] _ in
                 guard let self else { return }
                 update(item: itemContent, identifiers: identifiers)
@@ -136,36 +114,14 @@ private extension CompleteAutoFill {
             guard let self else { return }
             defer { resetFactory() }
             do {
-                let credential = try userDataProvider.getUnwrappedUserData().credential
-                let doh = ProtonPassDoH()
-                let baseUrl = doh.defaultHost + doh.defaultPath
-                let now = Date()
-                let result = try await updateLastUseTime(baseUrl: baseUrl,
-                                                         sessionId: credential.sessionID,
-                                                         accessToken: credential.accessToken,
-                                                         appVersion: appVersion,
-                                                         item: item,
-                                                         date: now)
-                switch result {
-                case .successful:
-                    logger.info("Updated lastUseTime \(item.debugDescription)")
-                    try await reindexLoginItem(item: item,
-                                               identifiers: identifiers,
-                                               lastUseTime: now)
-                case .shouldRefreshAccessToken:
-                    logger.info("TODO: refresh access token")
-                case .shouldLogOut:
-                    logger
-                        .error("Token is expired while updating lastUseTime \(item.debugDescription). Logging out.")
-                    userDataProvider.setUserData(nil)
-                    databaseService.resetContainer()
-                    try await unindexAllLoginItems()
-                }
+                try await updateLastUseTimeAndReindex(item: item,
+                                                      date: .now,
+                                                      identifiers: identifiers)
+                await logManager.saveAllLogs()
             } catch {
                 logger.error(error)
+                await logManager.saveAllLogs()
             }
         }
     }
 }
-
-// swiftlint:enable function_parameter_count
