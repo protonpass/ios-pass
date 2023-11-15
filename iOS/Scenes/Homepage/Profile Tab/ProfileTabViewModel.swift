@@ -113,6 +113,7 @@ extension ProfileTabViewModel {
         router.present(for: .upgradeFlow)
     }
 
+    @MainActor
     func refreshPlan() async {
         do {
             // First get local plan to optimistically display it

@@ -58,6 +58,8 @@ final class APIManager: APIManagerProtocol {
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
+    private var forceUpdatingCredentials = false
+
     private var cancellables = Set<AnyCancellable>()
 
     let sessionWasInvalidated: PassthroughSubject<Void, Never> = .init()
@@ -133,6 +135,7 @@ final class APIManager: APIManagerProtocol {
     func startCredentialUpdate() {
         appData.invalidateCachedUserData()
         if let userData = appData.getUserData() {
+            forceUpdatingCredentials = true
             apiService.authDelegate?.onSessionObtaining(credential: userData.getCredential)
         }
     }
@@ -202,7 +205,10 @@ extension APIManager: AuthHelperDelegate {
         } else {
             appData.setUnauthCredential(authCredential)
         }
-        credentialFinishedUpdating.send()
+        if forceUpdatingCredentials {
+            forceUpdatingCredentials = false
+            credentialFinishedUpdating.send()
+        }
     }
 }
 
