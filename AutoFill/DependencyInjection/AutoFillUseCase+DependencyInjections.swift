@@ -89,14 +89,8 @@ extension AutoFillUseCaseContainer {
                                 mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
 
-    var updateLastUseTime: Factory<UpdateLastUseTimeUseCase> {
-        self { UpdateLastUseTime(apiService: SharedToolingContainer.shared.apiManager().apiService) }
-    }
-
     var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
-        self { UpdateLastUseTimeAndReindex(updateLastUseTime: self.updateLastUseTime(),
-                                           reindexLoginItem: self.reindexLoginItem(),
-                                           wipeAllData: SharedUseCasesContainer.shared.wipeAllData(),
-                                           logManager: self.logManager) }
+        self { UpdateLastUseTimeAndReindex(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                           reindexLoginItem: self.reindexLoginItem()) }
     }
 }
