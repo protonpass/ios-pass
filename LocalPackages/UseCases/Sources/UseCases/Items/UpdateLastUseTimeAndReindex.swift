@@ -19,20 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+#if canImport(AuthenticationServices)
 import AuthenticationServices
 import Client
 import Core
 import Entities
 import Foundation
-import UseCases
 
-protocol UpdateLastUseTimeAndReindexUseCase {
+public protocol UpdateLastUseTimeAndReindexUseCase {
     func execute(item: ItemContent,
                  date: Date,
                  identifiers: [ASCredentialServiceIdentifier]) async throws
 }
 
-extension UpdateLastUseTimeAndReindexUseCase {
+public extension UpdateLastUseTimeAndReindexUseCase {
     func callAsFunction(item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
@@ -40,30 +40,22 @@ extension UpdateLastUseTimeAndReindexUseCase {
     }
 }
 
-final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase {
-    private let updateLastUseTime: UpdateLastUseTimeUseCase
+public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase {
+    private let itemRepository: ItemRepositoryProtocol
     private let reindexLoginItem: ReindexLoginItemUseCase
-    private let wipeAllData: WipeAllDataUseCase
-    private let logger: Logger
 
-    init(updateLastUseTime: UpdateLastUseTimeUseCase,
-         reindexLoginItem: ReindexLoginItemUseCase,
-         wipeAllData: WipeAllDataUseCase,
-         logManager: LogManagerProtocol) {
-        self.updateLastUseTime = updateLastUseTime
+    public init(itemRepository: ItemRepositoryProtocol,
+                reindexLoginItem: ReindexLoginItemUseCase) {
+        self.itemRepository = itemRepository
         self.reindexLoginItem = reindexLoginItem
-        self.wipeAllData = wipeAllData
-        logger = .init(manager: logManager)
     }
 
     public func execute(item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
-        do {
-            try await updateLastUseTime(item: item, date: date)
-            try await reindexLoginItem(item: item, identifiers: identifiers, lastUseTime: date)
-        } catch {
-            logger.error(error)
-        }
+        try await itemRepository.updateLastUseTime(item: item, date: date)
+        try await reindexLoginItem(item: item, identifiers: identifiers, lastUseTime: date)
     }
 }
+
+#endif

@@ -82,9 +82,16 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
 
         // Post init
-        apiManager.delegate = self
         AppearanceSettings.apply()
         setUpRouting()
+
+        apiManager.sessionWasInvalidated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                logOut()
+            }
+            .store(in: &cancellables)
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -606,14 +613,6 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
             guard let self else { return }
             context.completeExtensionConfigurationRequest()
         }
-    }
-}
-
-// MARK: APIManagerDelegate
-
-extension CredentialProviderCoordinator: APIManagerDelegate {
-    func appLoggedOutBecauseSessionWasInvalidated() {
-        logOut()
     }
 }
 
