@@ -54,7 +54,7 @@ final class APIManager: APIManagerProtocol {
     private let trustKitDelegate: TrustKitDelegate
 
     private(set) var apiService: APIService
-    private var authHelper: AuthHelper
+    private(set) var authHelper: AuthHelper
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
