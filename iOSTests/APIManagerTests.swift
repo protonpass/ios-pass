@@ -248,13 +248,13 @@ final class APIManagerTests: XCTestCase {
         let apiManager = givenApiManager()
 
         var sessionWasInvalidatedWasCalled = false
-        let imageConfigurationExpectation = expectation(description: "Image should be configured")
+        let imageConfigurationExpectation = expectation(description: "Session should be invalidated")
         sessionPublisher = apiManager.sessionWasInvalidated
-                        .sink { [weak self] _ in
-                            sessionWasInvalidatedWasCalled = true
-                        
-                            imageConfigurationExpectation.fulfill()
-                        }
+            .sink { [weak self] _ in
+                sessionWasInvalidatedWasCalled = true
+                imageConfigurationExpectation.fulfill()
+            }
+        
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
 
         wait(for: [imageConfigurationExpectation])
