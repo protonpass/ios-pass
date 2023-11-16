@@ -23,14 +23,16 @@ import Factory
 import XCTest
 
 final class PreferencesTests: XCTestCase {
-    var sut = Preferences()
+    var sut: Preferences!
 
     override func setUp() {
         super.setUp()
+        sut = Preferences()
     }
 
     override func tearDown() {
         sut.reset(isTests: true)
+        sut = nil
         super.tearDown()
     }
 

@@ -42,7 +42,7 @@ final class APIManagerTests: XCTestCase {
     var mainKeyProvider: MainKeyProviderMock!
     let unauthSessionKey = AppDataKey.unauthSessionCredentials.rawValue
     let userDataKey = AppDataKey.userData.rawValue
-    private var sessionPublisher:AnyCancellable?
+    private var sessionPublisher: AnyCancellable?
 
     let unauthSessionCredentials = AuthCredential(sessionID: "test_session_id",
                                                   accessToken: "test_access_token",
@@ -247,21 +247,18 @@ final class APIManagerTests: XCTestCase {
         mainKeyProvider.mainKeyStub.fixture = mainKey
         let apiManager = givenApiManager()
 
-        var sessionWasInvalidatedWasCalled = false
-        let imageConfigurationExpectation = expectation(description: "Session should be invalidated")
+        let sessionWasInvalidatedExpectation = expectation(description: "Session should be invalidated")
         sessionPublisher = apiManager.sessionWasInvalidated
             .sink { [weak self] _ in
-                sessionWasInvalidatedWasCalled = true
-                imageConfigurationExpectation.fulfill()
+                sessionWasInvalidatedExpectation.fulfill()
             }
         
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
 
-        wait(for: [imageConfigurationExpectation])
-        
+        wait(for: [sessionWasInvalidatedExpectation], timeout: 3)
+
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
-        XCTAssertTrue(sessionWasInvalidatedWasCalled)
     }
 
     func testAPIServiceAuthCredentialsUpdateSetsNewUnauthCredentials() throws {
