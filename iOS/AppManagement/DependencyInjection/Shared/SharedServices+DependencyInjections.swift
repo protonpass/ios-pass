@@ -26,15 +26,6 @@ final class SharedServiceContainer: SharedContainer, AutoRegistering {
     static let shared = SharedServiceContainer()
     let manager = ContainerManager()
 
-    func reset() async throws {
-        databaseService().resetContainer()
-        clipboardManager().clean()
-        syncEventLoop().reset()
-        await vaultsManager().reset()
-        vaultSyncEventStream().value = .initialization
-        try await credentialManager().removeAllCredentials()
-    }
-
     func autoRegister() {
         manager.defaultScope = .singleton
     }
