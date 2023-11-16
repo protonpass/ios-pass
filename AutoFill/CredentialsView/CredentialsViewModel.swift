@@ -76,7 +76,7 @@ extension ItemSearchResult: CredentialItem {
     var itemTitle: String { highlightableTitle.fullText }
 }
 
-final class CredentialsViewModel: ObservableObject, PullToRefreshable {
+final class CredentialsViewModel: ObservableObject {
     @Published private(set) var state = CredentialsViewState.loading
     @Published private(set) var results: CredentialsFetchResult?
     @Published private(set) var planType: Plan.PlanType?
@@ -95,7 +95,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) private(set) var syncEventLoop
+    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -123,6 +123,17 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 extension CredentialsViewModel {
     func cancel() {
         delegate?.credentialsViewModelWantsToCancel()
+    }
+
+    func sync() async {
+        do {
+            let hasNewEvents = try await eventSynchronizer.sync()
+            if hasNewEvents {
+                fetchItems()
+            }
+        } catch {
+            state = .error(error)
+        }
     }
 
     func fetchItems() {
@@ -288,17 +299,6 @@ private extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func setup() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                try await syncEventLoop.fullSync()
-                fetchItems()
-            } catch {
-                logger.error(error)
-            }
-        }
         fetchItems()
 
         $query
@@ -466,14 +466,6 @@ private extension CredentialsViewModel {
 extension CredentialsViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
-    }
-}
-
-// MARK: - SyncEventLoopPullToRefreshDelegate
-
-extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
-    func pullToRefreshShouldStopRefreshing() {
-        stopRefreshing()
     }
 }
 
