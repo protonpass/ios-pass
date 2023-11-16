@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public enum LoggerConsolePrintOption: Sendable {
@@ -86,18 +87,23 @@ public extension Logger {
     }
 
     @discardableResult
-    func error(_ error: Error,
+    func error(_ error: some Error,
                timestamp: TimeInterval = Date().timeIntervalSince1970,
                file: String = #file,
                function: String = #function,
                line: UInt = #line,
                column: UInt = #column) -> LogEntry {
-        self.error(String(describing: error),
-                   timestamp: timestamp,
-                   file: file,
-                   function: function,
-                   line: line,
-                   column: column)
+        let message = if let passError = error as? PassError {
+            passError.localizedDebugDescription
+        } else {
+            error.localizedDescription
+        }
+        return self.error(message,
+                          timestamp: timestamp,
+                          file: file,
+                          function: function,
+                          line: line,
+                          column: column)
     }
 
     @discardableResult
