@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import UIKit
@@ -91,7 +92,12 @@ final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
         banner.show(at: .top, on: container.topMostViewController)
     }
 
-    func displayTopErrorMessage(_ error: Error) {
-        displayTopErrorMessage(error.localizedDescription)
+    func displayTopErrorMessage(_ error: some Error) {
+        let message = if let passError = error as? PassError {
+            passError.localizedDebugDescription
+        } else {
+            error.localizedDescription
+        }
+        displayTopErrorMessage(message)
     }
 }
