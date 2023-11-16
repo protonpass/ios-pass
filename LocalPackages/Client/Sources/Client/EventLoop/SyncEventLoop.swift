@@ -77,6 +77,7 @@ public protocol SyncEventLoopActionProtocol {
     func start()
     func stop()
     func forceSync()
+    func fullSync() async throws
     func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
     func removeAdditionalTask(label: String)
 }
@@ -223,6 +224,19 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
     public func removeAdditionalTask(label: String) {
         additionalTasks.removeAll(where: { $0.label == label })
     }
+
+    public func fullSync() async throws {
+        try await sync()
+
+        // Execute additional tasks and record failures in a different delegate callback
+        // So up to this point, the event loop is considered successful
+        for task in additionalTasks {
+            if Task.isCancelled {
+                return
+            }
+            try await task()
+        }
+    }
 }
 
 /*
@@ -317,6 +331,7 @@ private extension SyncEventLoop {
     }
 
     /// Return `true` if new events found
+    @discardableResult
     func sync() async throws -> Bool {
         // Need to sync 3 operations in 2 steps:
         // 1. Create & update sync
@@ -365,12 +380,16 @@ private extension SyncEventLoop {
                                                            returning: Bool.self) { taskGroup in
             taskGroup.addTask { [weak self] in
                 guard let self else { return false }
+                try Task.checkCancellation()
+
                 return try await syncCreateAndUpdateEvents(localShares: localShares,
                                                            remoteShares: remoteShares)
             }
 
             taskGroup.addTask { [weak self] in
                 guard let self else { return false }
+                try Task.checkCancellation()
+
                 return try await syncDeleteEvents(localShares: localShares,
                                                   remoteShares: remoteShares)
             }
@@ -420,13 +439,13 @@ private extension SyncEventLoop {
                         logger.debug("New share \(remoteShare.shareID)")
                         hasNewEvents = true
                         let shareId = remoteShare.shareID
-                        if Task.isCancelled {
-                            return false
-                        }
 
                         do {
+                            try Task.checkCancellation()
                             _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
+                            try Task.checkCancellation()
                             try await shareRepository.upsertShares([remoteShare])
+                            try Task.checkCancellation()
                             try await itemRepository.refreshItems(shareId: shareId)
                         } catch {
                             if let passError = error as? PassError,
@@ -458,6 +477,7 @@ private extension SyncEventLoop {
                     guard let self else { return false }
                     let shareId = localShare.share.shareID
                     if !remoteShares.contains(where: { $0.shareID == shareId }) {
+                        try Task.checkCancellation()
                         // We can blindly remove the local share and its items from the database
                         // but better to double check by asking the server
                         // and compare with a known error code "DISABLED_SHARE: 300004"
@@ -471,13 +491,9 @@ private extension SyncEventLoop {
                                responseError.responseCode == 300_004 {
                                 // Confirmed that the vault is really deleted
                                 // safe to delete it locally
-                                if Task.isCancelled {
-                                    return false
-                                }
+                                try Task.checkCancellation()
                                 try await shareRepository.deleteShareLocally(shareId: shareId)
-                                if Task.isCancelled {
-                                    return false
-                                }
+                                try Task.checkCancellation()
                                 try await itemRepository.deleteAllItemsLocally(shareId: shareId)
                                 return true
                             }
@@ -497,15 +513,18 @@ private extension SyncEventLoop {
         let userId = try userDataProvider.getUserId()
         let shareId = share.shareID
         logger.trace("Syncing share \(shareId)")
+        try Task.checkCancellation()
         let lastEventId = try await shareEventIDRepository.getLastEventId(forceRefresh: false,
                                                                           userId: userId,
                                                                           shareId: shareId)
+        try Task.checkCancellation()
         let events = try await remoteSyncEventsDatasource.getEvents(shareId: shareId,
                                                                     lastEventId: lastEventId)
+
         try await shareEventIDRepository.upsertLastEventId(userId: userId,
                                                            shareId: shareId,
                                                            lastEventId: events.latestEventID)
-
+        try Task.checkCancellation()
         if events.fullRefresh {
             logger.info("Force full sync for share \(shareId)")
             hasNewEvents = true
@@ -513,37 +532,42 @@ private extension SyncEventLoop {
             return
         }
 
+        try Task.checkCancellation()
         if let updatedShare = events.updatedShare {
             hasNewEvents = true
             logger.trace("Found updated share \(shareId)")
             try await shareRepository.upsertShares([updatedShare])
         }
 
+        try Task.checkCancellation()
         if !events.updatedItems.isEmpty {
             hasNewEvents = true
             logger.trace("Found \(events.updatedItems.count) updated items for share \(shareId)")
             try await itemRepository.upsertItems(events.updatedItems, shareId: shareId)
         }
 
+        try Task.checkCancellation()
         if !events.deletedItemIDs.isEmpty {
             hasNewEvents = true
             logger.trace("Found \(events.deletedItemIDs.count) deleted items for share \(shareId)")
             try await itemRepository.deleteItemsLocally(itemIds: events.deletedItemIDs,
                                                         shareId: shareId)
         }
-
+        try Task.checkCancellation()
         if !events.lastUseItems.isEmpty {
             hasNewEvents = true
             logger.trace("Found \(events.lastUseItems.count) lastUseItem for share \(shareId)")
             try await itemRepository.update(lastUseItems: events.lastUseItems, shareId: shareId)
         }
 
+        try Task.checkCancellation()
         if events.newKeyRotation != nil {
             hasNewEvents = true
             logger.trace("Had new rotation ID for share \(shareId)")
             _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
         }
 
+        try Task.checkCancellation()
         if events.eventsPending {
             logger.trace("Still have more events for share \(shareId)")
             try await sync(share: share, hasNewEvents: &hasNewEvents)
