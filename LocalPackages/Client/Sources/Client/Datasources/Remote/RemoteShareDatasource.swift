@@ -42,7 +42,6 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
 
 public extension RemoteShareDatasourceProtocol {
     func getShares() async throws -> [Share] {
-        try Task.checkCancellation()
         let getSharesEndpoint = GetSharesEndpoint()
         let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
         return getSharesResponse.shares

@@ -188,7 +188,7 @@ private extension CredentialsView {
                 }
             }
             .listStyle(.plain)
-            .refreshable { await viewModel.forceSync() }
+            .refreshable { await viewModel.sync() }
             .animation(.default, value: results.matchedItems.hashValue)
             .animation(.default, value: results.notMatchedItems.hashValue)
             .overlay {
