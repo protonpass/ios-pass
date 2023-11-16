@@ -78,6 +78,7 @@ final class AppCoordinator {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
         appData.setUserData(nil)
+        appData.setCredentials(nil)
     }
 
     private func bindAppState() {
@@ -99,6 +100,7 @@ final class AppCoordinator {
                         // Only update userData when manually log in
                         // because otherwise we'd just rewrite the same userData object
                         appData.setUserData(userData)
+                        appData.setCredentials(userData.credential)
                     }
                     apiManager.sessionIsAvailable(authCredential: userData.credential,
                                                   scopes: userData.scopes)
@@ -114,7 +116,7 @@ final class AppCoordinator {
     func start() {
         if let userData = appData.getUserData() {
             appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: false))
-        } else if appData.getUnauthCredential() != nil {
+        } else if appData.getCredentials() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
