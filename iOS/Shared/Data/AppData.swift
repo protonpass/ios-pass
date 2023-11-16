@@ -41,22 +41,25 @@ enum AppDataKey: String {
     case userData
     case unauthSessionCredentials
     case symmetricKey
+    case currentCredential
 }
 
 final class AppData: UserDataProvider, SymmetricKeyProvider {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
-    private var userData: UserData? {
-        didSet {
-            cachedUserData = nil
-        }
-    }
+    private var userData: UserData?
+//    {
+    ////        didSet {
+    ////            cachedUserData = nil
+    ////        }
+//    }
 
-    @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
-    private var unauthSessionCredentials: AuthCredential? {
-        didSet {
-            cachedUnauthSessionCredentials = nil
-        }
-    }
+//    @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
+//    private var unauthSessionCredentials: AuthCredential?
+    ////    {
+    ////        didSet {
+    ////            cachedUnauthSessionCredentials = nil
+    ////        }
+    ////    }
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String? {
@@ -64,6 +67,9 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
             cachedSymmetricKey = nil
         }
     }
+
+    @LockedKeychainStorage(key: AppDataKey.currentCredential, defaultValue: nil)
+    private var currentCredential: AuthCredential?
 
     /// Reading from keychain is expensive so we cache & serve cached results until values are updated in keychain
     private var cachedUserData: UserData?
@@ -90,24 +96,39 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
     }
 
     func getUserData() -> UserData? {
-        if let cachedUserData {
-            return cachedUserData
-        }
-        cachedUserData = userData
-        return cachedUserData
+        userData
+//        if let cachedUserData {
+//            return cachedUserData
+//        }
+//        cachedUserData = userData
+//        return cachedUserData
     }
 
-    func setUnauthCredential(_ credential: AuthCredential?) {
-        unauthSessionCredentials = credential
+    func setCredentials(_ credential: AuthCredential?) {
+        currentCredential = credential
     }
 
-    func getUnauthCredential() -> AuthCredential? {
-        if let cachedUnauthSessionCredentials {
-            return cachedUnauthSessionCredentials
-        }
-        cachedUnauthSessionCredentials = unauthSessionCredentials
-        return cachedUnauthSessionCredentials
+    func getCredentials() -> AuthCredential? {
+        currentCredential
+//        if let cachedUserData {
+//            return cachedUserData
+//        }
+//        cachedUserData = userData
+//        return cachedUserData
     }
+
+//    func setUnauthCredential(_ credential: AuthCredential?) {
+//        unauthSessionCredentials = credential
+//    }
+//
+//    func getUnauthCredential() -> AuthCredential? {
+//        unauthSessionCredentials
+    ////        if let cachedUnauthSessionCredentials {
+    ////            return cachedUnauthSessionCredentials
+    ////        }
+    ////        cachedUnauthSessionCredentials = unauthSessionCredentials
+    ////        return cachedUnauthSessionCredentials
+//    }
 
     func invalidateCachedUserData() {
         cachedUserData = nil
@@ -115,6 +136,7 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
 
     func resetData() {
         setUserData(nil)
+        setCredentials(nil)
         removeSymmetricKey()
     }
 }

@@ -79,6 +79,7 @@ public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCa
                 logger
                     .error("Token is expired while updating lastUseTime \(item.debugDescription). Logging out.")
                 userDataProvider.setUserData(nil)
+                userDataProvider.setCredentials(nil)
                 databaseService.resetContainer()
                 try await unindexAllLoginItems()
             }
