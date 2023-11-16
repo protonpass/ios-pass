@@ -87,7 +87,7 @@ public enum SyncEventLoopSkipReason {
     case backOff
 }
 
-private let kThresholdRange = 5...15
+private let kThresholdRange = 55...60
 
 // sourcery: AutoMockable
 public protocol SyncEventLoopProtocol {
