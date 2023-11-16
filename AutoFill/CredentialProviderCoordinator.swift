@@ -53,7 +53,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -82,9 +82,16 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
 
         // Post init
-
         AppearanceSettings.apply()
         setUpRouting()
+
+        apiManager.sessionWasInvalidated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                logOut()
+            }
+            .store(in: &cancellables)
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -248,18 +255,11 @@ private extension CredentialProviderCoordinator {
             cancelAutoFill(reason: .userCanceled)
             return
         case .failedToAuthenticate:
-            Task { [weak self] in
+            logOut { [weak self] in
                 guard let self else { return }
-                defer { cancelAutoFill(reason: .failed) }
-                do {
-                    logger.trace("Authenticaion failed. Removing all credentials")
-                    userDataProvider.setUserData(nil)
-                    try await unindexAllLoginItems()
-                    logger.info("Removed all credentials after authentication failure")
-                } catch {
-                    logger.error(error)
-                }
+                cancelAutoFill(reason: .failed)
             }
+
         default:
             defaultHandler(error)
         }
@@ -267,6 +267,15 @@ private extension CredentialProviderCoordinator {
 
     func addNewEvent(type: TelemetryEventType) {
         addTelemetryEvent(with: type)
+    }
+
+    func logOut(completion: (() -> Void)? = nil) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            await wipeAllData(includingUnauthSession: false, isTests: false)
+            showNotLoggedInView()
+            completion?()
+        }
     }
 }
 
@@ -413,6 +422,10 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
 extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     func credentialsViewModelWantsToCancel() {
         cancelAutoFill(reason: .userCanceled)
+    }
+
+    func credentialsViewModelWantsToLogOut() {
+        logOut()
     }
 
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -596,8 +609,10 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     }
 
     func extensionSettingsViewModelWantsToLogOut() {
-        userDataProvider.setUserData(nil)
-        context.completeExtensionConfigurationRequest()
+        logOut { [weak self] in
+            guard let self else { return }
+            context.completeExtensionConfigurationRequest()
+        }
     }
 }
 

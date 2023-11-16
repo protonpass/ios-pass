@@ -30,6 +30,7 @@ import SwiftUI
 
 protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToCancel()
+    func credentialsViewModelWantsToLogOut()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
@@ -235,7 +236,7 @@ extension CredentialsViewModel {
 
     func handleAuthenticationFailure() {
         logger.error("Failed to locally authenticate. Logging out.")
-        display(error: PassError.credentialProvider(.failedToAuthenticate))
+        delegate?.credentialsViewModelWantsToLogOut()
     }
 
     func createLoginItem() {

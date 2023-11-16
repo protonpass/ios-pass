@@ -35,11 +35,18 @@ public struct UpdateLastUseTimeEndpoint: Endpoint {
     public var path: String
     public var method: HTTPMethod
     public var body: UpdateLastUseTimeRequest?
+    public var nonDefaultTimeout: TimeInterval?
 
     public init(shareId: String, itemId: String, lastUseTime: TimeInterval) {
         debugDescription = "Update item"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/lastuse"
         method = .put
         body = .init(lastUseTime: Int(lastUseTime))
+        // This endpoint is used in the AutoFill extension only
+        // We need to set a small timeout here for this specific request
+        // Because the autofill extension implicitly expects completion task to be quick
+        // long-running task will put the extension into a limbo state in which
+        // users can not interact with the extension anymore (select to autofill, cancel autofill...)
+        nonDefaultTimeout = 1
     }
 }
