@@ -184,6 +184,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
 extension SyncEventLoop: SyncEventLoopActionProtocol {
     /// Start looping
     public func start() {
+        stop()
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
