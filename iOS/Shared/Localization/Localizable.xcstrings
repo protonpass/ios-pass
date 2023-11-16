@@ -37,7 +37,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ caja fuerte"
+            "value" : "la caja fuerte %@"
           }
         },
         "es-419" : {
@@ -5730,13 +5730,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Administrateur"
+            "value" : "gérer (administrateur)"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "amministratore"
+            "value" : "gestire"
           }
         },
         "ja" : {
@@ -8641,7 +8641,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les alias"
+            "value" : "Alias"
           }
         },
         "it" : {
@@ -10963,7 +10963,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La sauvegarde automatique"
+            "value" : "Sauvegarde automatique"
           }
         },
         "it" : {
@@ -19673,13 +19673,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Modifier"
+            "value" : "modifier"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "modifica"
+            "value" : "modificare"
           }
         },
         "ja" : {
@@ -22567,7 +22567,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une fonctionnalité manquante"
+            "value" : "Demande de fonctionnalité"
           }
         },
         "it" : {
@@ -23473,7 +23473,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Перасыланне на"
+            "value" : "Перасылаецца на"
           }
         },
         "cs" : {
@@ -24207,7 +24207,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rendez-vous dans les Paramètres"
+            "value" : "Rendez-vous dans les réglages"
           }
         },
         "it" : {
@@ -36989,7 +36989,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Overte prosím pravosť"
+            "value" : "Prihláste sa, prosím"
           }
         },
         "sv" : {
@@ -38995,13 +38995,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Consulter"
+            "value" : "consulter"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "leggi"
+            "value" : "visualizzare"
           }
         },
         "ja" : {
@@ -39683,7 +39683,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ripeti il codice PIN"
+            "value" : "Conferma il codice PIN"
           }
         },
         "ja" : {
@@ -43441,7 +43441,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jaa käyttäjille"
+            "value" : "Jaa käyttäjälle"
           }
         },
         "fr" : {
@@ -45520,7 +45520,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La synchronisation"
+            "value" : "Synchronisation"
           }
         },
         "it" : {
