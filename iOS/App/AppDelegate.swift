@@ -65,6 +65,7 @@ private extension AppDelegate {
             options.enableFileIOTracing = true
             options.enableCoreDataTracing = true
             options.attachViewHierarchy = true // EXPERIMENTAL
+            options.environment = ProtonPassDoH().environment.name
         }
     }
 
