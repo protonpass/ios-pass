@@ -131,19 +131,19 @@ extension CredentialsViewModel {
                 return
             }
             do {
-                self.logger.trace("Loading log in items")
-                if case .error = self.state {
-                    self.state = .loading
+                logger.trace("Loading log in items")
+                if case .error = state {
+                    state = .loading
                 }
-                let plan = try await self.accessRepository.getPlan()
-                self.planType = plan.planType
+                let plan = try await accessRepository.getPlan()
+                planType = plan.planType
 
-                self.results = try await self.fetchCredentialsTask(plan: plan).value
-                self.state = .idle
-                self.logger.info("Loaded log in items")
+                results = try await fetchCredentialsTask(plan: plan).value
+                state = .idle
+                logger.info("Loaded log in items")
             } catch {
-                self.logger.error(error)
-                self.state = .error(error)
+                logger.error(error)
+                state = .error(error)
             }
         }
     }
@@ -288,8 +288,17 @@ private extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func setup() {
-        syncEventLoop.delegate = self
-        syncEventLoop.start()
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await syncEventLoop.fullSync()
+                fetchItems()
+            } catch {
+                logger.error(error)
+            }
+        }
         fetchItems()
 
         $query
@@ -465,55 +474,6 @@ extension CredentialsViewModel: SortTypeListViewModelDelegate {
 extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
     func pullToRefreshShouldStopRefreshing() {
         stopRefreshing()
-    }
-}
-
-// MARK: - SyncEventLoopDelegate
-
-extension CredentialsViewModel: SyncEventLoopDelegate {
-    func syncEventLoopDidStartLooping() {
-        logger.info("Started looping")
-    }
-
-    func syncEventLoopDidStopLooping() {
-        logger.info("Stopped looping")
-    }
-
-    func syncEventLoopDidBeginNewLoop() {
-        logger.info("Began new sync loop")
-    }
-
-    #warning("Handle no connection reason")
-    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
-        logger.info("Skipped sync loop \(reason)")
-    }
-
-    func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
-        if hasNewEvents {
-            logger.info("Has new events. Refreshing items")
-            fetchItems()
-        } else {
-            logger.info("Has no new events. Do nothing.")
-        }
-        // We're only interested in refreshing items just once when in autofill context
-        syncEventLoop.stop()
-    }
-
-    func syncEventLoopDidFailLoop(error: Error) {
-        // Silently fail & not show error to users
-        logger.error(error)
-    }
-
-    func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
-        logger.trace("Began executing additional task \(label)")
-    }
-
-    func syncEventLoopDidFinishAdditionalTask(label: String) {
-        logger.info("Finished executing additional task \(label)")
-    }
-
-    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
-        logger.error(message: "Failed to execute additional task \(label)", error: error)
     }
 }
 
