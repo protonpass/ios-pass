@@ -22,6 +22,7 @@
 @testable import Client
 import Combine
 import Core
+import Entities
 import Foundation
 import ProtonCoreNetworking
 import Reachability
@@ -56,5 +57,15 @@ final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoopProtoco
         invokedStop = true
         invokedStopCount += 1
         closureStop()
+    }
+    // MARK: - reset
+    var closureReset: () -> () = {}
+    var invokedReset = false
+    var invokedResetCount = 0
+
+    func reset() {
+        invokedReset = true
+        invokedResetCount += 1
+        closureReset()
     }
 }

@@ -89,20 +89,8 @@ extension AutoFillUseCaseContainer {
                                 mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
     }
 
-    var updateLastUseTime: Factory<UpdateLastUseTimeUseCase> {
-        self { UpdateLastUseTime(apiService: AutoFillDataContainer.shared.apiServiceLite(),
-                                 userDataProvider: self.userDataProvider,
-                                 serverConfig: ProtonPassDoH(),
-                                 appVersion: SharedToolingContainer.shared.appVersion()) }
-    }
-
     var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
-        self { UpdateLastUseTimeAndReindex(updateLastUseTime: self.updateLastUseTime(),
-                                           reindexLoginItem: self.reindexLoginItem(),
-                                           unindexAllLoginItems: SharedUseCasesContainer.shared
-                                               .unindexAllLoginItems(),
-                                           databaseService: SharedServiceContainer.shared.databaseService(),
-                                           userDataProvider: self.userDataProvider,
-                                           logManager: self.logManager) }
+        self { UpdateLastUseTimeAndReindex(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                           reindexLoginItem: self.reindexLoginItem()) }
     }
 }

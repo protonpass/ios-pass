@@ -52,11 +52,12 @@ final class AppCoordinator {
     private var cancellables = Set<AnyCancellable>()
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
-    private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+
+    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 
     init(window: UIWindow) {
         self.window = window
@@ -166,21 +167,10 @@ final class AppCoordinator {
     }
 
     private func wipeAllData(includingUnauthSession: Bool) {
-        logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
-        appData.resetData()
-        mainKeyProvider.wipeMainKey()
-        if includingUnauthSession {
-            apiManager.clearCredentials()
-        }
-        preferences.reset(isTests: isUITest)
         Task { @MainActor [weak self] in
             guard let self else { return }
-            do {
-                try await SharedServiceContainer.shared.reset()
-                SharedViewContainer.shared.reset()
-            } catch {
-                logger.error(error)
-            }
+            await wipeAllData(includingUnauthSession: includingUnauthSession, isTests: isUITest)
+            SharedViewContainer.shared.reset()
         }
     }
 }

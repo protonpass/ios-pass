@@ -82,6 +82,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws
 
+    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws
+
     @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
@@ -369,6 +371,15 @@ public extension ItemRepository {
         logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
         try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
         logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
+    }
+
+    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws {
+        logger.trace("Updating last use time \(item.debugDescription)")
+        let updatedItem = try await remoteDatasource.updateLastUseTime(shareId: item.shareId,
+                                                                       itemId: item.itemId,
+                                                                       lastUseTime: date.timeIntervalSince1970)
+        try await upsertItems([updatedItem], shareId: item.shareId)
+        logger.trace("Updated last use time \(item.debugDescription)")
     }
 
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
