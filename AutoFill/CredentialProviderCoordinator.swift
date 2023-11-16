@@ -254,6 +254,7 @@ private extension CredentialProviderCoordinator {
                 do {
                     logger.trace("Authenticaion failed. Removing all credentials")
                     userDataProvider.setUserData(nil)
+                    userDataProvider.setCredentials(nil)
                     try await unindexAllLoginItems()
                     logger.info("Removed all credentials after authentication failure")
                 } catch {
@@ -597,6 +598,8 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
 
     func extensionSettingsViewModelWantsToLogOut() {
         userDataProvider.setUserData(nil)
+        userDataProvider.setCredentials(nil)
+
         context.completeExtensionConfigurationRequest()
     }
 }
