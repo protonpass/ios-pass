@@ -180,7 +180,6 @@ extension SharedUseCasesContainer {
                            apiManager: SharedToolingContainer.shared.apiManager(),
                            preferences: self.preferences,
                            databaseService: SharedServiceContainer.shared.databaseService(),
-                           clipboardManager: SharedServiceContainer.shared.clipboardManager(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
                            vaultSyncEventStream: SharedServiceContainer.shared.vaultSyncEventStream(),
