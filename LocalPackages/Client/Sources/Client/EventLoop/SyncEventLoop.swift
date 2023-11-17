@@ -170,7 +170,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
 extension SyncEventLoop: SyncEventLoopActionProtocol {
     /// Start looping
     public func start() {
-        stop()
+        guard timer == nil else { return }
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
@@ -192,8 +192,10 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
 
     /// Stop looping
     public func stop() {
-        timer?.invalidate()
         ongoingTask?.cancel()
+        ongoingTask = nil
+        timer?.invalidate()
+        timer = nil
         delegate?.syncEventLoopDidStopLooping()
     }
 
