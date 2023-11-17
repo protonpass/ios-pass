@@ -26,7 +26,6 @@ import UIKit
 
 protocol ClipboardManagerProtocol: Sendable {
     func copy(text: String, bannerMessage: String)
-    func clean()
 }
 
 final class ClipboardManager: ClipboardManagerProtocol {
@@ -44,9 +43,5 @@ final class ClipboardManager: ClipboardManagerProtocol {
                                         localOnly: !preferences.shareClipboard,
                                         expirationDate: preferences.clipboardExpiration.expirationDate)
         bannerManager.displayBottomInfoMessage(bannerMessage)
-    }
-
-    func clean() {
-        UIPasteboard.general.items = []
     }
 }

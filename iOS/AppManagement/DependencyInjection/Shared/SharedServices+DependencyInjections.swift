@@ -46,17 +46,21 @@ extension SharedServiceContainer {
         self { CredentialManager(logManager: self.logManager) }
     }
 
+    var eventSynchronizer: Factory<EventSynchronizerProtocol> {
+        self { EventSynchronizer(shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                 itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                 shareKeyRepository: SharedRepositoryContainer.shared.shareKeyRepository(),
+                                 shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
+                                 remoteSyncEventsDatasource: SharedRepositoryContainer.shared
+                                     .remoteSyncEventsDatasource(),
+                                 userDataProvider: SharedDataContainer.shared.userDataProvider(),
+                                 logManager: self.logManager) }
+    }
+
     var syncEventLoop: Factory<SyncEventLoop> {
-        self {
-            .init(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
-                  userDataProvider: SharedDataContainer.shared.userDataProvider(),
-                  shareRepository: SharedRepositoryContainer.shared.shareRepository(),
-                  shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
-                  remoteSyncEventsDatasource: SharedRepositoryContainer.shared.remoteSyncEventsDatasource(),
-                  itemRepository: SharedRepositoryContainer.shared.itemRepository(),
-                  shareKeyRepository: SharedRepositoryContainer.shared.shareKeyRepository(),
-                  logManager: self.logManager)
-        }
+        self { .init(currentDateProvider: SharedToolingContainer.shared.currentDateProvider(),
+                     synchronizer: self.eventSynchronizer(),
+                     logManager: self.logManager) }
     }
 
     var clipboardManager: Factory<ClipboardManager> {
