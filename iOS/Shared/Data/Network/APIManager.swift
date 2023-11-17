@@ -135,7 +135,6 @@ final class APIManager: APIManagerProtocol {
     /// finished
     /// as it is async.
     func startCredentialUpdate() {
-        appData.invalidateCachedUserData()
         if let userData = appData.getUserData() {
             forceUpdatingCredentials = true
             apiService.authDelegate?.onSessionObtaining(credential: userData.getCredential)

@@ -36,7 +36,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let revokeCurrentSession = resolve(\UseCasesContainer.revokeCurrentSession)
+    private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
