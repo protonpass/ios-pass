@@ -173,6 +173,10 @@ extension SharedUseCasesContainer {
 // MARK: Data
 
 extension SharedUseCasesContainer {
+    var revokeCurrentSession: Factory<RevokeCurrentSessionUseCase> {
+        self { RevokeCurrentSession(apiService: SharedToolingContainer.shared.apiManager().apiService) }
+    }
+
     var wipeAllData: Factory<WipeAllDataUseCase> {
         self { WipeAllData(logManager: self.logManager,
                            appData: SharedDataContainer.shared.appData(),
