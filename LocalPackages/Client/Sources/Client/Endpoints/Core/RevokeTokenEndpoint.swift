@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Foundation
 import ProtonCoreNetworking
 
 public struct RevokeTokenEndpoint: Endpoint {
@@ -28,10 +29,12 @@ public struct RevokeTokenEndpoint: Endpoint {
     public var debugDescription: String
     public var path: String
     public var method: HTTPMethod
+    public var nonDefaultTimeout: TimeInterval?
 
     public init() {
         debugDescription = "Revoke a token when logging out"
         path = "/core/v4/auth"
         method = .delete
+        nonDefaultTimeout = 1
     }
 }
