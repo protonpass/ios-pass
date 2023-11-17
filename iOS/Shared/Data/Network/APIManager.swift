@@ -108,7 +108,7 @@ final class APIManager {
 
         setUpCore()
         fetchUnauthSessionIfNeeded()
-        useNewTokensWhenAppBackToForegound()
+//        useNewTokensWhenAppBackToForegound()
     }
 
     func sessionIsAvailable(authCredential: AuthCredential, scopes: Scopes) {
@@ -117,13 +117,15 @@ final class APIManager {
     }
 
     func clearCredentials() {
+        print("Woot cleared credential")
+
         appData.setCredentials(nil)
 //        appData.setUnauthCredential(nil)
-        apiService.setSessionUID(uid: "")
+//        apiService.setSessionUID(uid: "")
         // destroying and recreating AuthHelper to clear its cache
-        authHelper = PassAuthHelper(userDataProvider: appData)
-        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-        apiService.authDelegate = authHelper
+//        authHelper = PassAuthHelper(userDataProvider: appData)
+//        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
+//        apiService.authDelegate = authHelper
     }
 
     private static func setUpCertificatePinning(trustKitDelegate: TrustKitDelegate) {
@@ -186,6 +188,8 @@ final class APIManager {
 
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        print("Woot invalidated session UID \(sessionUID)")
+
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out.")
             appData.setUserData(nil)
@@ -195,7 +199,7 @@ extension APIManager: AuthHelperDelegate {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
         }
-//        clearCredentials()
+        clearCredentials()
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
@@ -323,7 +327,10 @@ public final class PassAuthHelper: AuthDelegate {
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
+        print("Woot session UID \(sessionUID)")
         if userDataProvider.getCredentials()?.sessionID == sessionUID {
+            print("Woot session credential \(userDataProvider.getCredentials()?.debug)")
+
             return userDataProvider.getCredentials()
         }
         return nil
@@ -420,6 +427,12 @@ public final class PassAuthHelper: AuthDelegate {
         delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
         authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
                                                                                isAuthenticatedSession: false)
+    }
+}
+
+extension AuthCredential {
+    var debug: String {
+        "session \(sessionID), token \(accessToken), refresh \(refreshToken), user \(userName)"
     }
 }
 
