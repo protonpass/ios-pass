@@ -65,6 +65,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -272,6 +273,7 @@ private extension CredentialProviderCoordinator {
     func logOut(completion: (() -> Void)? = nil) {
         Task { @MainActor [weak self] in
             guard let self else { return }
+            await revokeCurrentSession()
             await wipeAllData(includingUnauthSession: false, isTests: false)
             showNotLoggedInView()
             completion?()
