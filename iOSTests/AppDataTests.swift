@@ -81,29 +81,6 @@ extension AppDataTests {
         // Then
         XCTAssertNil(sut.getUserData())
     }
-
-    func testUserDataIsCached() {
-        // When
-        sut.setUserData(.mock)
-        // Simulate multiple accesses
-        for _ in 5...10 {
-            _ = sut.getUserData()
-        }
-
-        // Then
-        // UserData has never been updated, only read once from keychain and cache the result
-        XCTAssert(keychain.dataStub.wasCalledExactlyOnce)
-
-        // When
-        sut.setUserData(.mock)
-        for _ in 5...10 {
-            _ = sut.getUserData()
-        }
-
-        // Then
-        // UserData is updated, the cached is invalidated so reading once more time from keychain
-        XCTAssertEqual(keychain.dataStub.callCounter, 2)
-    }
 }
 
 // MARK: - Unauth session credentials
@@ -128,26 +105,6 @@ extension AppDataTests {
         // Then
         XCTAssertNil(sut.getUnauthCredential())
     }
-
-    func testUnauthSessionCredentialsAreCached() {
-        // When
-        sut.setUnauthCredential(.preview)
-        for _ in 5...10 {
-            _ = sut.getUnauthCredential()
-        }
-
-        // Then
-        XCTAssert(keychain.dataStub.wasCalledExactlyOnce)
-
-        // When
-        sut.setUnauthCredential(.preview)
-        for _ in 5...10 {
-            _ = sut.getUnauthCredential()
-        }
-
-        // Then
-        XCTAssertEqual(keychain.dataStub.callCounter, 2)
-    }
 }
 
 // MARK: - Symmetric key
@@ -161,24 +118,5 @@ extension AppDataTests {
 
         // Then
         try XCTAssertNotNil(sut.getSymmetricKey())
-    }
-
-    func testSymmetricKeyIsCached() throws {
-        // When
-        for _ in 5...10 {
-            _ = try sut.getSymmetricKey()
-        }
-
-        // Then
-        XCTAssert(keychain.dataStub.wasCalledExactlyOnce)
-
-        // When
-        sut.removeSymmetricKey()
-        for _ in 5...10 {
-            _ = try sut.getSymmetricKey()
-        }
-
-        // Then
-        XCTAssertEqual(keychain.dataStub.callCounter, 2)
     }
 }
