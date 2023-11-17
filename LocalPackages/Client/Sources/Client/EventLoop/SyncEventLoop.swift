@@ -87,7 +87,7 @@ public enum SyncEventLoopSkipReason {
     case backOff
 }
 
-private let kThresholdRange = 5...15
+private let kThresholdRange = 55...60
 
 // sourcery: AutoMockable
 public protocol SyncEventLoopProtocol {
@@ -131,32 +131,17 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
     private var ongoingTask: Task<Void, Error>?
 
     // Injected params
-    private let userDataProvider: UserDataProvider
-    private let shareRepository: ShareRepositoryProtocol
-    private let shareEventIDRepository: ShareEventIDRepositoryProtocol
-    private let remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol
-    private let itemRepository: ItemRepositoryProtocol
-    private let shareKeyRepository: ShareKeyRepositoryProtocol
+    private let synchronizer: EventSynchronizerProtocol
     private let logger: Logger
 
     public weak var delegate: SyncEventLoopDelegate?
     public weak var pullToRefreshDelegate: SyncEventLoopPullToRefreshDelegate?
 
     public init(currentDateProvider: CurrentDateProviderProtocol,
-                userDataProvider: UserDataProvider,
-                shareRepository: ShareRepositoryProtocol,
-                shareEventIDRepository: ShareEventIDRepositoryProtocol,
-                remoteSyncEventsDatasource: RemoteSyncEventsDatasourceProtocol,
-                itemRepository: ItemRepositoryProtocol,
-                shareKeyRepository: ShareKeyRepositoryProtocol,
+                synchronizer: EventSynchronizerProtocol,
                 logManager: LogManagerProtocol) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
-        self.userDataProvider = userDataProvider
-        self.shareRepository = shareRepository
-        self.shareEventIDRepository = shareEventIDRepository
-        self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
-        self.itemRepository = itemRepository
-        self.shareKeyRepository = shareKeyRepository
+        self.synchronizer = synchronizer
         logger = .init(manager: logManager)
     }
 
@@ -185,7 +170,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable {
 extension SyncEventLoop: SyncEventLoopActionProtocol {
     /// Start looping
     public func start() {
-        stop()
+        guard timer == nil else { return }
         delegate?.syncEventLoopDidStartLooping()
         timer = .scheduledTimer(withTimeInterval: 1,
                                 repeats: true) { [weak self] _ in
@@ -207,8 +192,10 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
 
     /// Stop looping
     public func stop() {
-        timer?.invalidate()
         ongoingTask?.cancel()
+        ongoingTask = nil
+        timer?.invalidate()
+        timer = nil
         delegate?.syncEventLoopDidStopLooping()
     }
 
@@ -224,25 +211,6 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
         additionalTasks.removeAll(where: { $0.label == label })
     }
 }
-
-/*
- Steps of a sync:
- 1. Fetch all shares from remote.
- 2. Compare recently fetched shares with local ones.
-    For each new share do the full sync procedure.
-    For each existing share, do the step 3 of the full sync procedure.
-
- Full sync procedure:
- 1. Get the last eventID from remote
- 2. Get the share data (keys, items...) and store in the local db
- 3. Get events from api using last eventID
-    a. Upsert `UpdatedItems`
-    b. Delete `DeletedItemIDs`
-    c. Labels (Post MVP)
-    d. If `NewRotationID` is not null. Refresh the keys of the share.
-    e. Upsert `LatestEventID` of the share.
-    f. If `EventsPending` is `true`. Repeat this step with the given `LatestEventID`.
- */
 
 // MARK: - Private APIs
 
@@ -285,7 +253,7 @@ private extension SyncEventLoop {
                         return
                     }
 
-                    let hasNewEvents = try await self.sync()
+                    let hasNewEvents = try await synchronizer.sync()
 
                     // Execute additional tasks and record failures in a different delegate callback
                     // So up to this point, the event loop is considered successful
@@ -313,240 +281,6 @@ private extension SyncEventLoop {
                     }
                 }
             }
-        }
-    }
-
-    /// Return `true` if new events found
-    func sync() async throws -> Bool {
-        // Need to sync 3 operations in 2 steps:
-        // 1. Create & update sync
-        // 2. Delete sync
-        if Task.isCancelled {
-            return false
-        }
-
-        let localShares = try await shareRepository.getShares()
-
-        if Task.isCancelled {
-            return false
-        }
-
-        let remoteShares = try await shareRepository.getRemoteShares()
-
-        if Task.isCancelled {
-            return false
-        }
-
-        var hasNewShareEvents = false
-        // This is used to respond to sharing modifications that are not tied to events in the BE
-        // making changes not visible to the user.
-        if !remoteShares.isLooselyEqual(to: localShares.map(\.share)) {
-            hasNewShareEvents = true
-
-            // Update local shares
-            let remainingLocalShares = localShares
-                .filter { remoteShares.map(\.shareID).contains($0.share.shareID) }
-            for share in remainingLocalShares {
-                // A work around for a Core Data bug that fails the updates of booleans & numbers
-                // We delete local shares instead of simply upserting and re-insert remote shares later on
-                try await shareRepository.deleteShareLocally(shareId: share.share.shareID)
-            }
-            try await shareRepository.upsertShares(remoteShares)
-
-            // Delete local shares if applicable
-            let deletedLocalShares = localShares
-                .filter { !remoteShares.map(\.shareID).contains($0.share.shareID) }
-            if !deletedLocalShares.isEmpty {
-                try await delete(shares: deletedLocalShares.map(\.share))
-            }
-        }
-
-        let hasNewEvents = try await withThrowingTaskGroup(of: Bool.self,
-                                                           returning: Bool.self) { taskGroup in
-            taskGroup.addTask { [weak self] in
-                guard let self else { return false }
-                return try await syncCreateAndUpdateEvents(localShares: localShares,
-                                                           remoteShares: remoteShares)
-            }
-
-            taskGroup.addTask { [weak self] in
-                guard let self else { return false }
-                return try await syncDeleteEvents(localShares: localShares,
-                                                  remoteShares: remoteShares)
-            }
-
-            return try await taskGroup.contains { $0 }
-        }
-
-        return hasNewEvents || hasNewShareEvents
-    }
-
-    func delete(shares: [Share]) async throws {
-        await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for share in shares {
-                taskGroup.addTask { [weak self] in
-                    guard let self else { return }
-                    let shareId = share.shareID
-
-                    if Task.isCancelled {
-                        return
-                    }
-                    try await shareRepository.deleteShareLocally(shareId: shareId)
-                    if Task.isCancelled {
-                        return
-                    }
-                    try await itemRepository.deleteAllItemsLocally(shareId: shareId)
-                }
-            }
-        }
-    }
-
-    /// Return `true` if new events found
-    func syncCreateAndUpdateEvents(localShares: [SymmetricallyEncryptedShare],
-                                   remoteShares: [Share]) async throws -> Bool {
-        // Compare remote shares against local shares
-        try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
-            for remoteShare in remoteShares {
-                // Task group returning `true` if new events found, `false` other wise
-                taskGroup.addTask { [weak self] in
-                    guard let self else { return false }
-                    var hasNewEvents = false
-                    if localShares.contains(where: { $0.share.shareID == remoteShare.shareID }) {
-                        // Existing share
-                        logger.trace("Existing share \(remoteShare.shareID)")
-                        try await sync(share: remoteShare, hasNewEvents: &hasNewEvents)
-                    } else {
-                        // New share
-                        logger.debug("New share \(remoteShare.shareID)")
-                        hasNewEvents = true
-                        let shareId = remoteShare.shareID
-                        if Task.isCancelled {
-                            return false
-                        }
-
-                        do {
-                            _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
-                            try await shareRepository.upsertShares([remoteShare])
-                            try await itemRepository.refreshItems(shareId: shareId)
-                        } catch {
-                            if let passError = error as? PassError,
-                               case let .crypto(reason) = passError,
-                               case .inactiveUserKey = reason {
-                                // Ignore the case where user key is inactive
-                                logger.warning(reason.debugDescription)
-                            } else {
-                                throw error
-                            }
-                        }
-                    }
-                    return hasNewEvents
-                }
-            }
-
-            return try await taskGroup.contains { $0 }
-        }
-    }
-
-    /// Return `true` if new events found
-    func syncDeleteEvents(localShares: [SymmetricallyEncryptedShare],
-                          remoteShares: [Share]) async throws -> Bool {
-        // Compare local shares against remote shares
-        try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
-            for localShare in localShares {
-                // Task group returning `true` if new events found, `false` other wise
-                taskGroup.addTask { [weak self] in
-                    guard let self else { return false }
-                    let shareId = localShare.share.shareID
-                    if !remoteShares.contains(where: { $0.shareID == shareId }) {
-                        // We can blindly remove the local share and its items from the database
-                        // but better to double check by asking the server
-                        // and compare with a known error code "DISABLED_SHARE: 300004"
-                        do {
-                            // Expect an error here so passing a dummy boolean
-                            logger.trace("Deleted share \(shareId)")
-                            var dummyBoolean = false
-                            try await sync(share: localShare.share, hasNewEvents: &dummyBoolean)
-                        } catch {
-                            if let responseError = error as? ResponseError,
-                               responseError.responseCode == 300_004 {
-                                // Confirmed that the vault is really deleted
-                                // safe to delete it locally
-                                if Task.isCancelled {
-                                    return false
-                                }
-                                try await shareRepository.deleteShareLocally(shareId: shareId)
-                                if Task.isCancelled {
-                                    return false
-                                }
-                                try await itemRepository.deleteAllItemsLocally(shareId: shareId)
-                                return true
-                            }
-                            throw error
-                        }
-                    }
-                    return false
-                }
-            }
-
-            return try await taskGroup.contains { $0 }
-        }
-    }
-
-    /// Sync a single share. Can be a recursion if share has many events
-    func sync(share: Share, hasNewEvents: inout Bool) async throws {
-        let userId = try userDataProvider.getUserId()
-        let shareId = share.shareID
-        logger.trace("Syncing share \(shareId)")
-        let lastEventId = try await shareEventIDRepository.getLastEventId(forceRefresh: false,
-                                                                          userId: userId,
-                                                                          shareId: shareId)
-        let events = try await remoteSyncEventsDatasource.getEvents(shareId: shareId,
-                                                                    lastEventId: lastEventId)
-        try await shareEventIDRepository.upsertLastEventId(userId: userId,
-                                                           shareId: shareId,
-                                                           lastEventId: events.latestEventID)
-
-        if events.fullRefresh {
-            logger.info("Force full sync for share \(shareId)")
-            hasNewEvents = true
-            try await itemRepository.refreshItems(shareId: shareId)
-            return
-        }
-
-        if let updatedShare = events.updatedShare {
-            hasNewEvents = true
-            logger.trace("Found updated share \(shareId)")
-            try await shareRepository.upsertShares([updatedShare])
-        }
-
-        if !events.updatedItems.isEmpty {
-            hasNewEvents = true
-            logger.trace("Found \(events.updatedItems.count) updated items for share \(shareId)")
-            try await itemRepository.upsertItems(events.updatedItems, shareId: shareId)
-        }
-
-        if !events.deletedItemIDs.isEmpty {
-            hasNewEvents = true
-            logger.trace("Found \(events.deletedItemIDs.count) deleted items for share \(shareId)")
-            try await itemRepository.deleteItemsLocally(itemIds: events.deletedItemIDs,
-                                                        shareId: shareId)
-        }
-
-        if !events.lastUseItems.isEmpty {
-            hasNewEvents = true
-            logger.trace("Found \(events.lastUseItems.count) lastUseItem for share \(shareId)")
-            try await itemRepository.update(lastUseItems: events.lastUseItems, shareId: shareId)
-        }
-
-        if events.newKeyRotation != nil {
-            hasNewEvents = true
-            logger.trace("Had new rotation ID for share \(shareId)")
-            _ = try await shareKeyRepository.refreshKeys(shareId: shareId)
-        }
-
-        if events.eventsPending {
-            logger.trace("Still have more events for share \(shareId)")
-            try await sync(share: share, hasNewEvents: &hasNewEvents)
         }
     }
 }

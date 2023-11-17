@@ -40,7 +40,9 @@ import SwiftUI
 import UIKit
 
 protocol APIManagerProtocol {
-    var sessionWasInvalidated: PassthroughSubject<Void, Never> { get }
+    typealias SessionUID = String
+
+    var sessionWasInvalidated: PassthroughSubject<SessionUID, Never> { get }
     var credentialFinishedUpdating: PassthroughSubject<Void, Never> { get }
 
     func startCredentialUpdate()
@@ -62,7 +64,7 @@ final class APIManager: APIManagerProtocol {
 
     private var cancellables = Set<AnyCancellable>()
 
-    let sessionWasInvalidated: PassthroughSubject<Void, Never> = .init()
+    let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
     let credentialFinishedUpdating: PassthroughSubject<Void, Never> = .init()
 
     init() {
@@ -190,7 +192,7 @@ extension APIManager: AuthHelperDelegate {
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out.")
             appData.setUserData(nil)
-            sessionWasInvalidated.send()
+            sessionWasInvalidated.send(sessionUID)
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()

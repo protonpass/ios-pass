@@ -21,6 +21,7 @@
 import Client
 import Core
 import Foundation
+import UIKit
 import UseCases
 
 protocol WipeAllDataUseCase {
@@ -40,7 +41,6 @@ final class WipeAllData: WipeAllDataUseCase {
     private let apiManager: APIManager
     private let preferences: Preferences
     private let databaseService: DatabaseServiceProtocol
-    private let clipboardManager: ClipboardManagerProtocol
     private let syncEventLoop: SyncEventLoopProtocol
     private let vaultsManager: VaultsManager
     private let vaultSyncEventStream: VaultSyncEventStream
@@ -52,7 +52,6 @@ final class WipeAllData: WipeAllDataUseCase {
          apiManager: APIManager,
          preferences: Preferences,
          databaseService: DatabaseServiceProtocol,
-         clipboardManager: ClipboardManagerProtocol,
          syncEventLoop: SyncEventLoopProtocol,
          vaultsManager: VaultsManager,
          vaultSyncEventStream: VaultSyncEventStream,
@@ -63,7 +62,6 @@ final class WipeAllData: WipeAllDataUseCase {
         self.apiManager = apiManager
         self.preferences = preferences
         self.databaseService = databaseService
-        self.clipboardManager = clipboardManager
         self.syncEventLoop = syncEventLoop
         self.vaultsManager = vaultsManager
         self.vaultSyncEventStream = vaultSyncEventStream
@@ -79,7 +77,7 @@ final class WipeAllData: WipeAllDataUseCase {
         }
         preferences.reset(isTests: isTests)
         databaseService.resetContainer()
-        clipboardManager.clean()
+        UIPasteboard.general.items = []
         syncEventLoop.reset()
         await vaultsManager.reset()
         vaultSyncEventStream.value = .initialization
