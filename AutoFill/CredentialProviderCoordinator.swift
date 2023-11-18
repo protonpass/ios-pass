@@ -53,7 +53,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     // Use cases
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
+    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -65,6 +65,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -82,9 +83,16 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
 
         // Post init
-
         AppearanceSettings.apply()
         setUpRouting()
+
+        apiManager.sessionWasInvalidated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                logOut()
+            }
+            .store(in: &cancellables)
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
@@ -142,13 +150,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                         if Task.isCancelled {
                             cancelAutoFill(reason: .credentialIdentityNotFound)
                         }
-
                         try await completeAutoFill(quickTypeBar: true,
+                                                   identifiers: [credentialIdentity.serviceIdentifier],
                                                    credential: .init(user: data.username,
                                                                      password: data.password),
-                                                   itemContent: itemContent,
-                                                   upgradeChecker: upgradeChecker,
-                                                   telemetryEventRepository: telemetryEventRepository)
+                                                   itemContent: itemContent)
                     } else {
                         logger.error("Failed to autofill. Not log in item.")
                         cancelAutoFill(reason: .credentialIdentityNotFound)
@@ -177,10 +183,9 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
                 guard let self else { return }
 
                 try? await completeAutoFill(quickTypeBar: false,
+                                            identifiers: [credentialIdentity.serviceIdentifier],
                                             credential: credential,
-                                            itemContent: itemContent,
-                                            upgradeChecker: upgradeChecker,
-                                            telemetryEventRepository: telemetryEventRepository)
+                                            itemContent: itemContent)
             }
         }
         showView(LockedCredentialView(preferences: preferences, viewModel: viewModel))
@@ -251,18 +256,11 @@ private extension CredentialProviderCoordinator {
             cancelAutoFill(reason: .userCanceled)
             return
         case .failedToAuthenticate:
-            Task { [weak self] in
+            logOut { [weak self] in
                 guard let self else { return }
-                defer { cancelAutoFill(reason: .failed) }
-                do {
-                    logger.trace("Authenticaion failed. Removing all credentials")
-                    userDataProvider.setUserData(nil)
-                    try await unindexAllLoginItems()
-                    logger.info("Removed all credentials after authentication failure")
-                } catch {
-                    logger.error(error)
-                }
+                cancelAutoFill(reason: .failed)
             }
+
         default:
             defaultHandler(error)
         }
@@ -270,6 +268,16 @@ private extension CredentialProviderCoordinator {
 
     func addNewEvent(type: TelemetryEventType) {
         addTelemetryEvent(with: type)
+    }
+
+    func logOut(completion: (() -> Void)? = nil) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            await revokeCurrentSession()
+            await wipeAllData(includingUnauthSession: false, isTests: false)
+            showNotLoggedInView()
+            completion?()
+        }
     }
 }
 
@@ -418,6 +426,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         cancelAutoFill(reason: .userCanceled)
     }
 
+    func credentialsViewModelWantsToLogOut() {
+        logOut()
+    }
+
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate) {
         guard let rootViewController else {
@@ -466,10 +478,9 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
             guard let self else { return }
             do {
                 try await completeAutoFill(quickTypeBar: false,
+                                           identifiers: serviceIdentifiers,
                                            credential: credential,
-                                           itemContent: itemContent,
-                                           upgradeChecker: upgradeChecker,
-                                           telemetryEventRepository: telemetryEventRepository)
+                                           itemContent: itemContent)
             } catch {
                 cancelAutoFill(reason: .failed)
             }
@@ -600,8 +611,10 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     }
 
     func extensionSettingsViewModelWantsToLogOut() {
-        userDataProvider.setUserData(nil)
-        context.completeExtensionConfigurationRequest()
+        logOut { [weak self] in
+            guard let self else { return }
+            context.completeExtensionConfigurationRequest()
+        }
     }
 }
 

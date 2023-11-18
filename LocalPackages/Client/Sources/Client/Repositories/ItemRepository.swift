@@ -80,6 +80,10 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func upsertItems(_ items: [ItemRevision], shareId: String) async throws
 
+    func update(lastUseItems: [LastUseItem], shareId: String) async throws
+
+    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws
+
     @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
@@ -103,15 +107,6 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     /// Get active log in items of all shares
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
-
-    /// Update the last use time of an item. Only log in items are concerned.
-    func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws
-
-    func saveLocally(lastUseTime: TimeInterval, for item: ItemIdentifiable) async throws
-
-    func getAllItemLastUsedTime() async throws -> [LastUsedTimeItem]
-    func removeAllLastUsedTimeItems() async throws
-    func update(items: [LastUsedTimeItem]) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -150,30 +145,7 @@ public final class ItemRepository: ItemRepositoryProtocol {
         logger.trace("Moved share \(currentShareId) to share \(toShareId)")
         return results
     }
-
-    public func saveLocally(lastUseTime: TimeInterval, for item: ItemIdentifiable) async throws {
-        logger.trace("Saving lastUsedTime \(item.debugDescription) to be updated in back ground task")
-        let lastUsedTime = LastUsedTimeItem(shareId: item.shareId, itemId: item.itemId, lastUsedTime: lastUseTime)
-        try await localDatasource.upsertLastUseTime(for: lastUsedTime)
-        logger.trace("Updated lastUsedTime \(item.debugDescription)")
-    }
-
-    public func getAllItemLastUsedTime() async throws -> [LastUsedTimeItem] {
-        try await localDatasource.getAllLastUsedTimeItems()
-    }
-
-    public func removeAllLastUsedTimeItems() async throws {
-        try await localDatasource.removeAllLastUsedTimeItems()
-    }
-
-    public func update(items: [LastUsedTimeItem]) async throws {
-        for item in items {
-            try await update(item: item, lastUseTime: item.lastUsedTime)
-        }
-    }
 }
-
-extension LastUsedTimeItem: ItemIdentifiable {}
 
 public extension ItemRepository {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
@@ -395,6 +367,21 @@ public extension ItemRepository {
         try await localDatasource.upsertItems(encryptedItems)
     }
 
+    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
+        logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
+        try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
+        logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
+    }
+
+    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws {
+        logger.trace("Updating last use time \(item.debugDescription)")
+        let updatedItem = try await remoteDatasource.updateLastUseTime(shareId: item.shareId,
+                                                                       itemId: item.itemId,
+                                                                       lastUseTime: date.timeIntervalSince1970)
+        try await upsertItems([updatedItem], shareId: item.shareId)
+        logger.trace("Updated last use time \(item.debugDescription)")
+    }
+
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Moving \(item.debugDescription) to share \(toShareId)")
         guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
@@ -448,18 +435,6 @@ public extension ItemRepository {
         let logInItems = try await localDatasource.getActiveLogInItems()
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
-    }
-
-    func update(item: ItemIdentifiable, lastUseTime: TimeInterval) async throws {
-        logger.trace("Updating lastUsedTime \(item.debugDescription)")
-        let updatedItem =
-            try await remoteDatasource.updateLastUseTime(shareId: item.shareId,
-                                                         itemId: item.itemId,
-                                                         lastUseTime: lastUseTime)
-        let encryptedUpdatedItem = try await symmetricallyEncrypt(itemRevision: updatedItem,
-                                                                  shareId: item.shareId)
-        try await localDatasource.upsertItems([encryptedUpdatedItem])
-        logger.trace("Updated lastUsedTime \(item.debugDescription)")
     }
 }
 
