@@ -31,7 +31,6 @@ import UIKit
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
-    @LazyInjected(\UseCasesContainer.updateItemsWithLastUsedTime) private var updateItemsWithLastUsedTime
 
     private var backgroundTask: Task<Void, Never>?
 
@@ -41,8 +40,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpCoreFeatureSwitches()
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
-        setUpBackgroundTask()
-
         return true
     }
 
@@ -54,10 +51,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        scheduleAppRefresh()
     }
 }
 
@@ -72,6 +65,7 @@ private extension AppDelegate {
             options.enableFileIOTracing = true
             options.enableCoreDataTracing = true
             options.attachViewHierarchy = true // EXPERIMENTAL
+            options.environment = ProtonPassDoH().environment.name
         }
     }
 
@@ -103,62 +97,6 @@ private extension AppDelegate {
     func setUpCoreFeatureSwitches() {
         if Bundle.main.isQaBuild {
             FeatureFactory.shared.enable(&.dynamicPlans)
-        }
-    }
-
-    func setUpBackgroundTask() {
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.backgroundTaskIdentifier,
-                                        using: nil) { task in
-            // Downcast the parameter to a processing task as this identifier is used for a processing request.
-            guard let processTask = task as? BGProcessingTask else {
-                task.setTaskCompleted(success: false)
-                return
-            }
-            self.handleUpdateLastUsedTime(task: processTask)
-        }
-    }
-}
-
-// MARK: - Scheduling Tasks
-
-private extension AppDelegate {
-    func scheduleAppRefresh() {
-        let request = BGProcessingTaskRequest(identifier: Constants.backgroundTaskIdentifier)
-        // Fetch no earlier than 15 minutes from now
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
-        request.requiresNetworkConnectivity = true
-
-        do {
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            print("Could not schedule database cleaning: \(error)")
-        }
-    }
-}
-
-// MARK: - Handling Launch for Tasks
-
-private extension AppDelegate {
-    func handleUpdateLastUsedTime(task: BGProcessingTask) {
-        scheduleAppRefresh()
-
-        backgroundTask?.cancel()
-        backgroundTask = Task { [weak self] in
-            guard let self else {
-                task.setTaskCompleted(success: true)
-                return
-            }
-            if Task.isCancelled {
-                task.setTaskCompleted(success: false)
-                return
-            }
-
-            do {
-                try await updateItemsWithLastUsedTime()
-                task.setTaskCompleted(success: true)
-            } catch {
-                task.setTaskCompleted(success: false)
-            }
         }
     }
 }

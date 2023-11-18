@@ -30,6 +30,7 @@ import SwiftUI
 
 protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToCancel()
+    func credentialsViewModelWantsToLogOut()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: SortTypeListViewModelDelegate)
     func credentialsViewModelWantsToCreateLoginItem(shareId: String, url: URL?)
@@ -75,7 +76,7 @@ extension ItemSearchResult: CredentialItem {
     var itemTitle: String { highlightableTitle.fullText }
 }
 
-final class CredentialsViewModel: ObservableObject, PullToRefreshable {
+final class CredentialsViewModel: ObservableObject {
     @Published private(set) var state = CredentialsViewState.loading
     @Published private(set) var results: CredentialsFetchResult?
     @Published private(set) var planType: Plan.PlanType?
@@ -94,12 +95,13 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedDataContainer.symmetricKeyProvider) private var symmetricKeyProvider
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) private(set) var syncEventLoop
+    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
 
     let urls: [URL]
     private var vaults = [Vault]()
@@ -111,14 +113,7 @@ final class CredentialsViewModel: ObservableObject, PullToRefreshable {
 
     init(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.serviceIdentifiers = serviceIdentifiers
-        urls = serviceIdentifiers.compactMap { serviceIdentifier in
-            // ".domain" means in app context where identifiers don't have protocol,
-            // so we manually add https as protocol otherwise URL comparison would not work without protocol.
-            let id = serviceIdentifier
-                .type == .domain ? "https://\(serviceIdentifier.identifier)" : serviceIdentifier.identifier
-            return URL(string: id)
-        }
-
+        urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         setup()
     }
 }
@@ -130,25 +125,36 @@ extension CredentialsViewModel {
         delegate?.credentialsViewModelWantsToCancel()
     }
 
+    func sync() async {
+        do {
+            let hasNewEvents = try await eventSynchronizer.sync()
+            if hasNewEvents {
+                fetchItems()
+            }
+        } catch {
+            state = .error(error)
+        }
+    }
+
     func fetchItems() {
         Task { @MainActor [weak self] in
             guard let self else {
                 return
             }
             do {
-                self.logger.trace("Loading log in items")
-                if case .error = self.state {
-                    self.state = .loading
+                logger.trace("Loading log in items")
+                if case .error = state {
+                    state = .loading
                 }
-                let plan = try await self.accessRepository.getPlan()
-                self.planType = plan.planType
+                let plan = try await accessRepository.getPlan()
+                planType = plan.planType
 
-                self.results = try await self.fetchCredentialsTask(plan: plan).value
-                self.state = .idle
-                self.logger.info("Loaded log in items")
+                results = try await fetchCredentialsTask(plan: plan).value
+                state = .idle
+                logger.info("Loaded log in items")
             } catch {
-                self.logger.error(error)
-                self.state = .error(error)
+                logger.error(error)
+                state = .error(error)
             }
         }
     }
@@ -241,7 +247,7 @@ extension CredentialsViewModel {
 
     func handleAuthenticationFailure() {
         logger.error("Failed to locally authenticate. Logging out.")
-        display(error: PassError.credentialProvider(.failedToAuthenticate))
+        delegate?.credentialsViewModelWantsToLogOut()
     }
 
     func createLoginItem() {
@@ -293,8 +299,6 @@ private extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func setup() {
-        syncEventLoop.delegate = self
-        syncEventLoop.start()
         fetchItems()
 
         $query
@@ -462,63 +466,6 @@ private extension CredentialsViewModel {
 extension CredentialsViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
-    }
-}
-
-// MARK: - SyncEventLoopPullToRefreshDelegate
-
-extension CredentialsViewModel: SyncEventLoopPullToRefreshDelegate {
-    func pullToRefreshShouldStopRefreshing() {
-        stopRefreshing()
-    }
-}
-
-// MARK: - SyncEventLoopDelegate
-
-extension CredentialsViewModel: SyncEventLoopDelegate {
-    func syncEventLoopDidStartLooping() {
-        logger.info("Started looping")
-    }
-
-    func syncEventLoopDidStopLooping() {
-        logger.info("Stopped looping")
-    }
-
-    func syncEventLoopDidBeginNewLoop() {
-        logger.info("Began new sync loop")
-    }
-
-    #warning("Handle no connection reason")
-    func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
-        logger.info("Skipped sync loop \(reason)")
-    }
-
-    func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
-        if hasNewEvents {
-            logger.info("Has new events. Refreshing items")
-            fetchItems()
-        } else {
-            logger.info("Has no new events. Do nothing.")
-        }
-        // We're only interested in refreshing items just once when in autofill context
-        syncEventLoop.stop()
-    }
-
-    func syncEventLoopDidFailLoop(error: Error) {
-        // Silently fail & not show error to users
-        logger.error(error)
-    }
-
-    func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
-        logger.trace("Began executing additional task \(label)")
-    }
-
-    func syncEventLoopDidFinishAdditionalTask(label: String) {
-        logger.info("Finished executing additional task \(label)")
-    }
-
-    func syncEventLoopDidFailedAdditionalTask(label: String, error: Error) {
-        logger.error(message: "Failed to execute additional task \(label)", error: error)
     }
 }
 

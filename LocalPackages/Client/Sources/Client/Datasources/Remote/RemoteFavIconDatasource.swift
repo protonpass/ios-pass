@@ -68,7 +68,7 @@ extension RemoteFavIconDatasourceProtocol {
                let favIconError = FavIconError(rawValue: protonCode) {
                 return .negative(.error(favIconError))
             }
-            throw PassError.unexpectedHttpStatusCode(dataResponse.httpCode)
+            throw PassError.network(.unexpectedHttpStatusCode(dataResponse.httpCode))
         }
     }
 }
