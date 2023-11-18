@@ -10,10 +10,6 @@
 	<string>$(IS_BETA_BUILD =
 	<key>MODULE</key>
 	<string>HOST_APP</string>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>me.proton.pass.ios.db_lastUsedTimeUpdate</string>
-	</array>
 	<key>GIT_COMMIT_HASH</key>
 	<string></string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -46,11 +42,6 @@
 			</array>
 		</dict>
 	</dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>processing</string>
-	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

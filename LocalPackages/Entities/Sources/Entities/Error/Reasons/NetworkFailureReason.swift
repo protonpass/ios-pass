@@ -1,6 +1,6 @@
 //
-// RevokeTokenEndpoint.swift
-// Proton Pass - Created on 07/11/2023.
+// NetworkFailureReason.swift
+// Proton Pass - Created on 14/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,21 +20,22 @@
 //
 
 import Foundation
-import ProtonCoreNetworking
 
-public struct RevokeTokenEndpoint: Endpoint {
-    public typealias Body = EmptyRequest
-    public typealias Response = CodeOnlyResponse
+public extension PassError {
+    enum NetworkFailureReason: CustomDebugStringConvertible, Sendable {
+        case unexpectedHttpStatusCode(Int?)
+        case notHttpResponse
+        case badUrlString(String)
 
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var nonDefaultTimeout: TimeInterval?
-
-    public init() {
-        debugDescription = "Revoke a token when logging out"
-        path = "/core/v4/auth"
-        method = .delete
-        nonDefaultTimeout = 1
+        public var debugDescription: String {
+            switch self {
+            case let .unexpectedHttpStatusCode(code):
+                "Unexpected HTTP status code \(String(describing: code))"
+            case .notHttpResponse:
+                "Not HTTP response"
+            case let .badUrlString(urlString):
+                "Bad URL \(urlString)"
+            }
+        }
     }
 }
