@@ -1,3 +1,12 @@
+## Version 1.5.7
+- Updated last used time of items right after autofilling instead of scheduling background tasks
+- Removed sync event loop in AutoFill extension. Only sync when the extension is launched or pulled to refresh.
+- Extended sync event loop threshold to 1 minute
+- More detailed error messages when showing to users and logging
+- Improved Sentry logging:
+    - Attached session UID when capturing logout events
+    - Customize `environment` value of events. Possible values: `production`, `black`, `scientist` & `custom`
+
 ## Version 1.5.6
 Others:
 - Send logout events to Sentry
