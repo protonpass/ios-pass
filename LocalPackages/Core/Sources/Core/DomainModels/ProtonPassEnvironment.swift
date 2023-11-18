@@ -65,6 +65,20 @@ public enum ProtonPassEnvironment {
             return customParams
         }
     }
+
+    /// Used for Sentry only
+    public var name: String {
+        switch self {
+        case .prod:
+            "production"
+        case .black:
+            "black"
+        case let .scientist(name):
+            "scientist_\(name)"
+        case .custom:
+            "custom"
+        }
+    }
 }
 
 public struct DoHParameters {

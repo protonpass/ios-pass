@@ -23,6 +23,7 @@ import Client
 import Core
 import Factory
 import Foundation
+import UseCases
 
 final class AutoFillUseCaseContainer: SharedContainer, AutoRegistering {
     static let shared = AutoFillUseCaseContainer()
@@ -45,13 +46,22 @@ private extension AutoFillUseCaseContainer {
     var context: ASCredentialProviderExtensionContext {
         AutoFillDataContainer.shared.context()
     }
+
+    var userDataProvider: UserDataProvider {
+        SharedDataContainer.shared.userDataProvider()
+    }
 }
 
 extension AutoFillUseCaseContainer {
+    var mapServiceIdentifierToURL: Factory<MapASCredentialServiceIdentifierToURLUseCase> {
+        self { MapASCredentialServiceIdentifierToURL() }
+    }
+
     var copyTotpTokenAndNotify: Factory<CopyTotpTokenAndNotifyUseCase> {
         self { CopyTotpTokenAndNotify(preferences: self.preferences,
                                       logManager: self.logManager,
-                                      notificationService: SharedServiceContainer.shared.notificationService()) }
+                                      notificationService: SharedServiceContainer.shared.notificationService(),
+                                      upgradeChecker: SharedServiceContainer.shared.upgradeChecker()) }
     }
 
     var cancelAutoFill: Factory<CancelAutoFillUseCase> {
@@ -63,13 +73,24 @@ extension AutoFillUseCaseContainer {
     var completeAutoFill: Factory<CompleteAutoFillUseCase> {
         self { CompleteAutoFill(context: self.context,
                                 logManager: self.logManager,
+                                telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
                                 clipboardManager: SharedServiceContainer.shared.clipboardManager(),
-                                itemRepository: SharedRepositoryContainer.shared.itemRepository(),
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
+                                updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                 resetFactory: self.resetFactory()) }
     }
 
     var resetFactory: Factory<ResetFactoryUseCase> {
         self { ResetFactory() }
+    }
+
+    var reindexLoginItem: Factory<ReindexLoginItemUseCase> {
+        self { ReindexLoginItem(manager: SharedServiceContainer.shared.credentialManager(),
+                                mapServiceIdentifierToUrl: self.mapServiceIdentifierToURL()) }
+    }
+
+    var updateLastUseTimeAndReindex: Factory<UpdateLastUseTimeAndReindexUseCase> {
+        self { UpdateLastUseTimeAndReindex(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                           reindexLoginItem: self.reindexLoginItem()) }
     }
 }

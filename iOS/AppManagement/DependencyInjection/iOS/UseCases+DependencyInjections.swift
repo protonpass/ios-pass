@@ -278,20 +278,6 @@ extension UseCasesContainer {
         self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
                                    authenticator: ServiceContainer.shared.authenticator()) }
     }
-
-    var revokeCurrentSession: Factory<RevokeCurrentSessionUseCase> {
-        self { RevokeCurrentSession(apiService: self.apiService) }
-    }
-}
-
-// MARK: - Items
-
-extension UseCasesContainer {
-    var updateItemsWithLastUsedTime: Factory<UpdateItemsWithLastUsedTimeUseCase> {
-        self { UpdateItemsWithLastUsedTime(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
-                                           indexAllLoginItems: SharedUseCasesContainer.shared
-                                               .indexAllLoginItems()) }
-    }
 }
 
 extension UseCasesContainer {

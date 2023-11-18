@@ -42,6 +42,9 @@ struct CredentialsView: View {
                 .ignoresSafeArea()
             stateViews
         }
+        .task {
+            await viewModel.sync()
+        }
         .theme(preferences.theme)
         .localAuthentication(delayed: false,
                              onAuth: {},
@@ -188,7 +191,7 @@ private extension CredentialsView {
                 }
             }
             .listStyle(.plain)
-            .refreshable { await viewModel.forceSync() }
+            .refreshable { await viewModel.sync() }
             .animation(.default, value: results.matchedItems.hashValue)
             .animation(.default, value: results.notMatchedItems.hashValue)
             .overlay {

@@ -65,11 +65,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\UseCasesContainer.updateItemsWithLastUsedTime) private var updateItemsWithLastUsedTime
+    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
@@ -119,7 +120,6 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 logger.trace("Found new plan, refreshing credential database")
                 homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
-                profileTabViewModel?.refreshPlan()
             }
             .store(in: &cancellables)
 
@@ -145,12 +145,19 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.info("App goes back to foreground")
+                apiManager.startCredentialUpdate()
+            }
+            .store(in: &cancellables)
+
+        apiManager.credentialFinishedUpdating
+            .sink { [weak self] _ in
+                guard let self else { return }
                 refresh()
                 sendAllEventsIfApplicable()
                 eventLoop.start()
                 eventLoop.forceSync()
                 refreshAccess()
-                refreshItems()
+                refreshFeatureFlags()
             }
             .store(in: &cancellables)
     }
@@ -186,8 +193,7 @@ private extension HomepageCoordinator {
                                  },
                                  onFailure: { [weak self] in
                                      guard let self else { return }
-                                     logger.error("Failed to locally authenticate. Logging out.")
-                                     delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+                                     handleFailedLocalAuthentication()
                                  })
 
         start(with: homeView, secondaryView: placeholderView)
@@ -199,17 +205,6 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await accessRepository.refreshAccess()
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    func refreshItems() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await updateItemsWithLastUsedTime()
             } catch {
                 logger.error(error)
             }
@@ -607,6 +602,17 @@ private extension HomepageCoordinator {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
+    }
+
+    func handleFailedLocalAuthentication() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            logger.error("Failed to locally authenticate. Logging out.")
+            showLoadingHud()
+            await revokeCurrentSession()
+            hideLoadingHud()
+            delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+        }
     }
 
     // MARK: - UI Helper presentation functions
