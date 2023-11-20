@@ -106,14 +106,12 @@ final class AppCoordinator {
 
                 case let .loggedIn(userData, manualLogIn):
                     logger.info("Logged in manual \(manualLogIn)")
-                    if manualLogIn {
+                    if manualLogIn, let userData {
                         // Only update userData when manually log in
                         // because otherwise we'd just rewrite the same userData object
                         appData.setUserData(userData)
                         appData.setCredentials(userData.credential)
                     }
-                    apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                                  scopes: userData.scopes)
                     showHomeScene(manualLogIn: manualLogIn)
 
                 case .undefined:
@@ -124,10 +122,8 @@ final class AppCoordinator {
     }
 
     func start() {
-        if let userData = appData.getUserData() {
-            appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: false))
-        } else if appData.getCredentials() != nil {
-            appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
+        if appData.getCredentials() != nil {
+            appStateObserver.updateAppState(.loggedIn(userData: nil, manualLogIn: false))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
         }
