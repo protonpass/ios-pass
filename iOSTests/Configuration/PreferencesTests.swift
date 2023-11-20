@@ -22,20 +22,12 @@ import Factory
 @testable import Proton_Pass
 import XCTest
 
-private extension SharedToolingContainer {
-    func setUpMocks() {
-        Scope.singleton.reset()
-        self.keychain.register { KeychainMainkeyProviderMock() }
-    }
-}
-
 final class PreferencesTests: XCTestCase {
     var sut: Preferences!
 
     override func setUp() {
         super.setUp()
-        SharedToolingContainer.shared.setUpMocks()
-        sut = .init()
+        sut = Preferences()
     }
 
     override func tearDown() {
