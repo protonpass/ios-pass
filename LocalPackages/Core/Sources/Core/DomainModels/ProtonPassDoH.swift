@@ -25,6 +25,7 @@ import ProtonCoreDoh
 public let kSharedUserDefaults = UserDefaults(suiteName: Constants.appGroup)!
 
 public final class ProtonPassDoH: DoH, ServerConfig {
+    public let environment: ProtonPassEnvironment
     public let signupDomain: String
     public let captchaHost: String
     public let humanVerificationV3Host: String
@@ -72,6 +73,7 @@ public final class ProtonPassDoH: DoH, ServerConfig {
             environment = .prod
         }
 
+        self.environment = environment
         let params = environment.parameters
         signupDomain = params.signupDomain
         captchaHost = params.captchaHost

@@ -1,6 +1,6 @@
 //
-// NetworkCallResult.swift
-// Proton Pass - Created on 10/11/2023.
+// Error+Extensions.swift
+// Proton Pass - Created on 14/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,8 +21,9 @@
 
 import Foundation
 
-public enum NetworkCallResult {
-    case successful
-    case shouldRefreshAccessToken
-    case shouldLogOut
+public extension Error where Self: CustomDebugStringConvertible {
+    /// Concatenate `localizedDescription` & `debugDescription`
+    var localizedDebugDescription: String {
+        "\(localizedDescription) \(debugDescription)"
+    }
 }

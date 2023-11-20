@@ -47,7 +47,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
-    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
 
@@ -114,18 +113,16 @@ extension ProfileTabViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    func refreshPlan() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                // First get local plan to optimistically display it
-                // and then try to refresh the plan to have it updated
-                self.plan = try await self.accessRepository.getPlan()
-                self.plan = try await self.accessRepository.refreshAccess().plan
-            } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
-            }
+    @MainActor
+    func refreshPlan() async {
+        do {
+            // First get local plan to optimistically display it
+            // and then try to refresh the plan to have it updated
+            plan = try await accessRepository.getPlan()
+            plan = try await accessRepository.refreshAccess().plan
+        } catch {
+            logger.error(error)
+            router.display(element: .displayErrorBanner(error))
         }
     }
 
@@ -180,8 +177,6 @@ private extension ProfileTabViewModel {
     func refresh() {
         updateAutoFillAvalability()
         updateSecuritySettings()
-        refreshPlan()
-        refreshFeatureFlags()
     }
 
     func updateSecuritySettings() {
@@ -214,7 +209,7 @@ private extension ProfileTabViewModel {
     func updateAutoFillAvalability() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            self.autoFillEnabled = await self.credentialManager.isAutoFillEnabled
+            autoFillEnabled = await credentialManager.isAutoFillEnabled
         }
     }
 

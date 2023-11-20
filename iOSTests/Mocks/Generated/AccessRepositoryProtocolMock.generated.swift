@@ -25,8 +25,26 @@ import Core
 import Entities
 
 final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryProtocol {
-    var didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
-
+    // MARK: - didUpdateToNewPlan
+    var invokedDidUpdateToNewPlanSetter = false
+    var invokedDidUpdateToNewPlanSetterCount = 0
+    var invokedDidUpdateToNewPlan: PassthroughSubject<Void, Never>?
+    var invokedDidUpdateToNewPlanList = [PassthroughSubject<Void, Never>?]()
+    var invokedDidUpdateToNewPlanGetter = false
+    var invokedDidUpdateToNewPlanGetterCount = 0
+    var stubbedDidUpdateToNewPlan: PassthroughSubject<Void, Never>!
+    var didUpdateToNewPlan: PassthroughSubject<Void, Never> {
+        set {
+            invokedDidUpdateToNewPlanSetter = true
+            invokedDidUpdateToNewPlanSetterCount += 1
+            invokedDidUpdateToNewPlan = newValue
+            invokedDidUpdateToNewPlanList.append(newValue)
+        } get {
+            invokedDidUpdateToNewPlanGetter = true
+            invokedDidUpdateToNewPlanGetterCount += 1
+            return stubbedDidUpdateToNewPlan
+        }
+    }
     // MARK: - getAccess
     var getAccessThrowableError: Error?
     var closureGetAccess: () -> () = {}

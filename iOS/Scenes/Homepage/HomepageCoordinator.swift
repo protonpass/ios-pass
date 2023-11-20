@@ -65,6 +65,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Lazily initialised properties
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
@@ -118,7 +119,6 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 logger.trace("Found new plan, refreshing credential database")
                 homepageTabDelegete?.homepageTabShouldRefreshTabIcons()
-                profileTabViewModel?.refreshPlan()
             }
             .store(in: &cancellables)
 
@@ -144,11 +144,19 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.info("App goes back to foreground")
+                apiManager.startCredentialUpdate()
+            }
+            .store(in: &cancellables)
+
+        apiManager.credentialFinishedUpdating
+            .sink { [weak self] _ in
+                guard let self else { return }
                 refresh()
                 sendAllEventsIfApplicable()
                 eventLoop.start()
                 eventLoop.forceSync()
                 refreshAccess()
+                refreshFeatureFlags()
             }
             .store(in: &cancellables)
     }
