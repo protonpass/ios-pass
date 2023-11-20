@@ -3825,7 +3825,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sekretny TOTP"
+            "value" : "Sekret TOTP"
           }
         },
         "pt" : {
@@ -4802,7 +4802,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dodaj sekretny TOTP"
+            "value" : "Dodaj sekret TOTP"
           }
         },
         "pt" : {
@@ -4962,7 +4962,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Priať predponu"
+            "value" : "Pridať predponu"
           }
         },
         "sv" : {
@@ -54896,7 +54896,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Áno, odhlás ma"
+            "value" : "Áno, odhlásiť ma"
           }
         },
         "sv" : {

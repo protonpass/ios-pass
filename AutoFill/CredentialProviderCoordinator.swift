@@ -41,7 +41,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let preferences = resolve(\SharedToolingContainer.preferences)
 
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -65,6 +65,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -95,19 +96,17 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let userData = userDataProvider.getUserData() else {
+        guard credentialProvider.getCredentials() != nil else {
             showNotLoggedInView()
             return
         }
 
-        apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                      scopes: userData.scopes)
         showCredentialsView(serviceIdentifiers: serviceIdentifiers)
         addNewEvent(type: .autofillDisplay)
     }
 
     func configureExtension() {
-        guard userDataProvider.getUserData() != nil else {
+        guard credentialProvider.getCredentials() != nil else {
             let notLoggedInView = NotLoggedInView { [context] in
                 context.completeExtensionConfigurationRequest()
             }
@@ -272,8 +271,8 @@ private extension CredentialProviderCoordinator {
     func logOut(completion: (() -> Void)? = nil) {
         Task { @MainActor [weak self] in
             guard let self else { return }
+            await revokeCurrentSession()
             await wipeAllData(includingUnauthSession: false, isTests: false)
- 			userDataProvider.setCredentials(nil)
             showNotLoggedInView()
             completion?()
         }
@@ -612,7 +611,7 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     func extensionSettingsViewModelWantsToLogOut() {
         logOut { [weak self] in
             guard let self else { return }
-			userDataProvider.setCredentials(nil)
+            credentialProvider.setCredentials(nil)
             context.completeExtensionConfigurationRequest()
         }
     }

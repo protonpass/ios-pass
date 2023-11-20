@@ -278,10 +278,6 @@ extension UseCasesContainer {
         self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
                                    authenticator: ServiceContainer.shared.authenticator()) }
     }
-
-    var revokeCurrentSession: Factory<RevokeCurrentSessionUseCase> {
-        self { RevokeCurrentSession(apiService: self.apiService) }
-    }
 }
 
 extension UseCasesContainer {
