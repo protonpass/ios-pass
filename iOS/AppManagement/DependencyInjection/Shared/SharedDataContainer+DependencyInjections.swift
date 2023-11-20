@@ -49,6 +49,10 @@ extension SharedDataContainer {
         self { self.appData() }
     }
 
+    var credentialProvider: Factory<CredentialProvider> {
+        self { self.appData() }
+    }
+
     var symmetricKeyProvider: Factory<SymmetricKeyProvider> {
         self { self.appData() }
     }

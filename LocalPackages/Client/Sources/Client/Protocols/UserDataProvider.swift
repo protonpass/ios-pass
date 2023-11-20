@@ -27,9 +27,6 @@ import ProtonCoreNetworking
 public protocol UserDataProvider: Sendable {
     func getUserData() -> UserData?
     func setUserData(_ userData: UserData?)
-
-    func setCredentials(_ credential: AuthCredential?)
-    func getCredentials() -> AuthCredential?
 }
 
 public extension UserDataProvider {
@@ -46,4 +43,10 @@ public extension UserDataProvider {
         }
         return userData
     }
+}
+
+// sourcery: AutoMockable
+public protocol CredentialProvider: Sendable {
+    func setCredentials(_ credential: AuthCredential?)
+    func getCredentials() -> AuthCredential?
 }

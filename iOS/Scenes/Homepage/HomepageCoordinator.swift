@@ -70,6 +70,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Use cases
     private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
 
     // References
     private weak var profileTabViewModel: ProfileTabViewModel?
@@ -192,8 +193,7 @@ private extension HomepageCoordinator {
                                  },
                                  onFailure: { [weak self] in
                                      guard let self else { return }
-                                     logger.error("Failed to locally authenticate. Logging out.")
-                                     delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+                                     handleFailedLocalAuthentication()
                                  })
 
         start(with: homeView, secondaryView: placeholderView)
@@ -602,6 +602,17 @@ private extension HomepageCoordinator {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
+    }
+
+    func handleFailedLocalAuthentication() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            logger.error("Failed to locally authenticate. Logging out.")
+            showLoadingHud()
+            await revokeCurrentSession()
+            hideLoadingHud()
+            delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+        }
     }
 
     // MARK: - UI Helper presentation functions
