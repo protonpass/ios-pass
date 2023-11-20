@@ -44,47 +44,22 @@ enum AppDataKey: String {
     case currentCredential
 }
 
-final class AppData: UserDataProvider, SymmetricKeyProvider {
+extension UserData: @unchecked Sendable {}
+
+final class AppData: UserDataProvider, CredentialProvider, SymmetricKeyProvider {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
-//    {
-    ////        didSet {
-    ////            cachedUserData = nil
-    ////        }
-//    }
-
-//    @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
-//    private var unauthSessionCredentials: AuthCredential?
-    ////    {
-    ////        didSet {
-    ////            cachedUnauthSessionCredentials = nil
-    ////        }
-    ////    }
-
-    @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
-    private var symmetricKey: String? {
-        didSet {
-            cachedSymmetricKey = nil
-        }
-    }
 
     @LockedKeychainStorage(key: AppDataKey.currentCredential, defaultValue: nil)
-    private var currentCredential: AuthCredential?
+    private var credential: AuthCredential?
 
-    /// Reading from keychain is expensive so we cache & serve cached results until values are updated in keychain
-    private var cachedUserData: UserData?
-    private var cachedUnauthSessionCredentials: AuthCredential?
-    private var cachedSymmetricKey: SymmetricKey?
+    @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
+    private var symmetricKey: String?
 
     init() {}
 
     func getSymmetricKey() throws -> SymmetricKey {
-        if let cachedSymmetricKey {
-            return cachedSymmetricKey
-        }
-        let symmetricKey = try getOrCreateSymmetricKey()
-        cachedSymmetricKey = symmetricKey
-        return symmetricKey
+        try getOrCreateSymmetricKey()
     }
 
     func removeSymmetricKey() {
@@ -97,41 +72,14 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
 
     func getUserData() -> UserData? {
         userData
-//        if let cachedUserData {
-//            return cachedUserData
-//        }
-//        cachedUserData = userData
-//        return cachedUserData
     }
 
-    func setCredentials(_ credential: AuthCredential?) {
-        currentCredential = credential
+    func setCredentials(_ newCredential: AuthCredential?) {
+        credential = newCredential
     }
 
     func getCredentials() -> AuthCredential? {
-        currentCredential
-//        if let cachedUserData {
-//            return cachedUserData
-//        }
-//        cachedUserData = userData
-//        return cachedUserData
-    }
-
-//    func setUnauthCredential(_ credential: AuthCredential?) {
-//        unauthSessionCredentials = credential
-//    }
-//
-//    func getUnauthCredential() -> AuthCredential? {
-//        unauthSessionCredentials
-    ////        if let cachedUnauthSessionCredentials {
-    ////            return cachedUnauthSessionCredentials
-    ////        }
-    ////        cachedUnauthSessionCredentials = unauthSessionCredentials
-    ////        return cachedUnauthSessionCredentials
-//    }
-
-    func invalidateCachedUserData() {
-        cachedUserData = nil
+        credential
     }
 
     func resetData() {
