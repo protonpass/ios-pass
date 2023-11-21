@@ -42,9 +42,9 @@ struct CredentialsView: View {
                 .ignoresSafeArea()
             stateViews
         }
-        .task {
-            await viewModel.sync()
-        }
+//        .task {
+//            await viewModel.sync()
+//        }
         .theme(preferences.theme)
         .localAuthentication(delayed: false,
                              onAuth: {},

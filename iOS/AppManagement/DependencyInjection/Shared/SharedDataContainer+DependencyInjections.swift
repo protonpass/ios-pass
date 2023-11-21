@@ -45,7 +45,7 @@ extension SharedDataContainer {
         self { AppData() }
     }
 
-    var userDataProvider: Factory<UserDataProvider> {
+    var userDataProvider: Factory<FullDataProvider> {
         self { self.appData() }
     }
 

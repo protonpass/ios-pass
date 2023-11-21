@@ -45,7 +45,7 @@ protocol APIManagerProtocol {
     var sessionWasInvalidated: PassthroughSubject<SessionUID, Never> { get }
     var credentialFinishedUpdating: PassthroughSubject<Void, Never> { get }
 
-    func startCredentialUpdate()
+//    func startCredentialUpdate()
 }
 
 final class APIManager: APIManagerProtocol {
@@ -65,7 +65,7 @@ final class APIManager: APIManagerProtocol {
     private var cancellables = Set<AnyCancellable>()
 
     let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
-    let credentialFinishedUpdating: PassthroughSubject<Void, Never> = .init()
+//    let credentialFinishedUpdating: PassthroughSubject<Void, Never> = .init()
 
     init() {
         let trustKitDelegate = PassTrustKitDelegate()
@@ -122,26 +122,28 @@ final class APIManager: APIManagerProtocol {
 
     func clearCredentials() {
         print("Woot cleared credential")
-
+        appData.setUserData(nil)
         appData.setCredentials(nil)
-//        appData.setUnauthCredential(nil)
-//        apiService.setSessionUID(uid: "")
-        // destroying and recreating AuthHelper to clear its cache
-//        authHelper = PassAuthHelper(userDataProvider: appData)
-//        authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
-//        apiService.authDelegate = authHelper
+        apiService.setSessionUID(uid: "")
     }
-
-    /// Function that start the credential update process
-    /// You will need to register to the `credentialFinishedUpdating` publisher to know when the process if
-    /// finished
-    /// as it is async.
-    func startCredentialUpdate() {
-        if let credential = appData.getCredentials() {
-            forceUpdatingCredentials = true
-            apiService.authDelegate?.onSessionObtaining(credential: Credential(credential))
-        }
-    }
+//
+//    /// Function that start the credential update process
+//    /// You will need to register to the `credentialFinishedUpdating` publisher to know when the process if
+//    /// finished
+//    /// as it is async.
+//    func startCredentialUpdate() {
+//        credentialFinishedUpdating.send()
+//        // appData.invalidateCachedUserData()
+////        if appData.getCredentials() {
+////            credentialFinishedUpdating.send()
+//        ////            forceUpdatingCredentials = true
+//        ////            apiService.authDelegate?.onSessionObtaining(credential:  Credential(credentials))
+////        }
+////        if let userData = appData.getUserData() {
+////            forceUpdatingCredentials = true
+////            apiService.authDelegate?.onSessionObtaining(credential: userData.getCredential)
+////        }
+//    }
 }
 
 // MARK: - Utils
@@ -172,19 +174,6 @@ private extension APIManager {
             }
         }
     }
-
-//    // Create a new instance of UserData with everything copied except credential
-//    func update(userData: UserData, authCredential: AuthCredential) {
-//        let updatedUserData = UserData(credential: authCredential,
-//                                       user: userData.user,
-//                                       salts: userData.salts,
-//                                       passphrases: userData.passphrases,
-//                                       addresses: userData.addresses,
-//                                       scopes: userData.scopes)
-//        appData.setUserData(updatedUserData)
-//        appData.setCredentials(authCredential)
-    ////        appData.setUnauthCredential(nil)
-//    }
 }
 
 // MARK: - AuthHelperDelegate
@@ -192,26 +181,20 @@ private extension APIManager {
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
         print("Woot invalidated session UID \(sessionUID)")
+        clearCredentials()
 
         if isAuthenticatedSession {
             logger.info("Authenticated session is invalidated. Logging out.")
-            appData.setUserData(nil)
-            appData.setCredentials(nil)
             sessionWasInvalidated.send(sessionUID)
         } else {
             logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
             fetchUnauthSessionIfNeeded()
         }
-        clearCredentials()
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
         appData.setCredentials(authCredential)
-        if forceUpdatingCredentials {
-            forceUpdatingCredentials = false
-            credentialFinishedUpdating.send()
-        }
     }
 }
 
@@ -290,14 +273,3 @@ private class PassTrustKitDelegate: TrustKitDelegate {
         }
     }
 }
-
-//extension UserData {
-//    func copy(with newAuthCredential: AuthCredential) -> UserData {
-//        UserData(credential: newAuthCredential,
-//                 user: user,
-//                 salts: salts,
-//                 passphrases: passphrases,
-//                 addresses: addresses,
-//                 scopes: scopes)
-//    }
-//}
