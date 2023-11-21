@@ -90,9 +90,9 @@ extension SharedToolingContainer {
 
     var appVersion: Factory<String> {
         self { "ios-pass@\(Bundle.main.fullAppVersionName)" }
-//            .onArg(PassModule.autoFillExtension) {
-//                "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
-//            }
+            .onArg(PassModule.autoFillExtension) {
+                "ios-pass-autofill-extension@\(Bundle.main.fullAppVersionName)"
+            }
     }
 
     var apiManager: Factory<APIManager> {
