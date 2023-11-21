@@ -43,9 +43,6 @@ protocol APIManagerProtocol {
     typealias SessionUID = String
 
     var sessionWasInvalidated: PassthroughSubject<SessionUID, Never> { get }
-    var credentialFinishedUpdating: PassthroughSubject<Void, Never> { get }
-
-//    func startCredentialUpdate()
 }
 
 final class APIManager: APIManagerProtocol {
@@ -65,7 +62,6 @@ final class APIManager: APIManagerProtocol {
     private var cancellables = Set<AnyCancellable>()
 
     let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
-//    let credentialFinishedUpdating: PassthroughSubject<Void, Never> = .init()
 
     init() {
         let trustKitDelegate = PassTrustKitDelegate()
@@ -126,24 +122,6 @@ final class APIManager: APIManagerProtocol {
         appData.setCredentials(nil)
         apiService.setSessionUID(uid: "")
     }
-//
-//    /// Function that start the credential update process
-//    /// You will need to register to the `credentialFinishedUpdating` publisher to know when the process if
-//    /// finished
-//    /// as it is async.
-//    func startCredentialUpdate() {
-//        credentialFinishedUpdating.send()
-//        // appData.invalidateCachedUserData()
-////        if appData.getCredentials() {
-////            credentialFinishedUpdating.send()
-//        ////            forceUpdatingCredentials = true
-//        ////            apiService.authDelegate?.onSessionObtaining(credential:  Credential(credentials))
-////        }
-////        if let userData = appData.getUserData() {
-////            forceUpdatingCredentials = true
-////            apiService.authDelegate?.onSessionObtaining(credential: userData.getCredential)
-////        }
-//    }
 }
 
 // MARK: - Utils
