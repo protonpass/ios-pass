@@ -80,6 +80,10 @@ extension SharedServiceContainer {
         self { VaultSyncEventStream(.initialization) }
     }
 
+    var corruptedSessionEventStream: Factory<CorruptedSessionEventStream> {
+        self { CorruptedSessionEventStream() }
+    }
+
     var upgradeChecker: Factory<UpgradeCheckerProtocol> {
         self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                               counter: self.vaultsManager(),

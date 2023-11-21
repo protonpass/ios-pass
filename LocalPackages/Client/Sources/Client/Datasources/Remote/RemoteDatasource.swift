@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreNetworking
 import ProtonCoreServices
 
 public let kDefaultPageSize = 100
@@ -31,20 +32,51 @@ public protocol RemoteDatasourceProtocol {
 
 public class RemoteDatasource: RemoteDatasourceProtocol {
     private let apiService: APIService
+    private let eventStream: CorruptedSessionEventStream
 
-    public init(apiService: APIService) {
+    public init(apiService: APIService, eventStream: CorruptedSessionEventStream) {
         self.apiService = apiService
+        self.eventStream = eventStream
     }
 
     public func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        try await apiService.exec(endpoint: endpoint)
+        do {
+            return try await apiService.exec(endpoint: endpoint)
+        } catch {
+            throw streamAndReturn(error: error)
+        }
     }
 
     public func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
-        try await apiService.exec(endpoint: endpoint, files: files)
+        do {
+            return try await apiService.exec(endpoint: endpoint, files: files)
+        } catch {
+            throw streamAndReturn(error: error)
+        }
     }
 
     public func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        try await apiService.execExpectingData(endpoint: endpoint)
+        do {
+            return try await apiService.execExpectingData(endpoint: endpoint)
+        } catch {
+            throw streamAndReturn(error: error)
+        }
+    }
+}
+
+private extension RemoteDatasource {
+    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
+    func streamAndReturn(error: Error) -> Error {
+        if let responseError = error as? ResponseError {
+            switch responseError.httpCode {
+            case 400:
+                eventStream.send(.validSessionButBadAccessSecret)
+            case 403:
+                eventStream.send(.unauthSessionMakingAuthRequests)
+            default:
+                break
+            }
+        }
+        return error
     }
 }
