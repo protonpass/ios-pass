@@ -243,8 +243,8 @@ extension CreateEditAliasViewModel {
 
                 if case let .edit(itemContent) = mode {
                     let alias =
-                        try await aliasRepository.getAliasDetailsTask(shareId: shareId,
-                                                                      itemId: itemContent.item.itemID).value
+                        try await aliasRepository.getAliasDetails(shareId: shareId,
+                                                                  itemId: itemContent.item.itemID)
                     aliasEmail = alias.email
                     self.alias = alias
                     mailboxSelection?.selectedMailboxes = alias.mailboxes
