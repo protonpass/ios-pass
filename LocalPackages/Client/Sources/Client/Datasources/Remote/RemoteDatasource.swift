@@ -18,18 +18,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import ProtonCoreServices
 
 public let kDefaultPageSize = 100
 
-public protocol RemoteDatasourceProtocol: AnyObject {
-    var apiService: APIService { get }
+public protocol RemoteDatasourceProtocol {
+    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response
+    func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response
+    func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse
 }
 
 public class RemoteDatasource: RemoteDatasourceProtocol {
-    public let apiService: APIService
+    private let apiService: APIService
 
     public init(apiService: APIService) {
         self.apiService = apiService
+    }
+
+    public func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
+        try await apiService.exec(endpoint: endpoint)
+    }
+
+    public func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
+        try await apiService.exec(endpoint: endpoint, files: files)
+    }
+
+    public func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
+        try await apiService.execExpectingData(endpoint: endpoint)
     }
 }
