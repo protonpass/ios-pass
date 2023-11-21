@@ -23,6 +23,8 @@ import Entities
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
+public typealias FullDataProvider = CredentialProvider & UserDataProvider
+
 // sourcery: AutoMockable
 public protocol UserDataProvider: Sendable {
     func getUserData() -> UserData?
