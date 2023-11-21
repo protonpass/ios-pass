@@ -34,127 +34,173 @@ public protocol AuthManagerProtocol {
 }
 
 public final class AuthManager: FullAuthManagerProtocol {
-    private let credentialProvider: CredentialProvider
+    private let credentialProvider: Atomic<CredentialProvider>
 
     public private(set) weak var delegate: AuthHelperDelegate?
+    // swiftlint:disable:next identifier_name
     public weak var authSessionInvalidatedDelegateForLoginAndSignup: AuthSessionInvalidatedDelegate?
+    private var delegateExecutor: CompletionBlockExecutor?
 
     init(credentialProvider: CredentialProvider) {
-        self.credentialProvider = credentialProvider
+        self.credentialProvider = .init(credentialProvider)
     }
 
     public func setUpDelegate(_ delegate: AuthHelperDelegate,
                               callingItOn executor: CompletionBlockExecutor? = nil) {
-//        if let executor {
-//            delegateExecutor = executor
-//        } else {
-//            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos: .userInitiated)
-//            delegateExecutor = .asyncExecutor(dispatchQueue: dispatchQueue)
-//        }
+        if let executor {
+            delegateExecutor = executor
+        } else {
+            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos: .userInitiated)
+            delegateExecutor = .asyncExecutor(dispatchQueue: dispatchQueue)
+        }
         self.delegate = delegate
     }
 
     public func credential(sessionUID: String) -> Credential? {
-        guard let authCredential = credentialProvider.getCredentials() else {
-            return nil
+        credentialProvider.transform { credentialProvider in
+            guard let authCredential = credentialProvider.getCredentials() else {
+                return nil
+            }
+            guard authCredential.sessionID == sessionUID else {
+                PMLog.error("Asked for wrong credentials. It's a programmers error and should be investigated")
+                return nil
+            }
+            return Credential(authCredential)
         }
-
-        return Credential(authCredential)
     }
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
-        print("Woot session UID \(sessionUID)")
-        if credentialProvider.getCredentials()?.sessionID == sessionUID {
-            print("Woot session credential \(credentialProvider.getCredentials()?.debug)")
-
-            return credentialProvider.getCredentials()
+        credentialProvider.transform { credentialProvider in
+            guard let authCredential = credentialProvider.getCredentials() else {
+                return nil
+            }
+            guard authCredential.sessionID == sessionUID else {
+                PMLog.error("Asked for wrong credentials. It's a programmers error and should be investigated")
+                return nil
+            }
+            return authCredential
         }
-        return nil
     }
 
     public func onUpdate(credential: Credential, sessionUID: String) {
-        guard let authCredential = credentialProvider.getCredentials() else {
-            credentialProvider.setCredentials(AuthCredential(credential))
-            return
-        }
-        guard authCredential.sessionID == sessionUID else {
-            PMLog
-                .error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
-            return
-        }
+        credentialProvider.mutate { credentialProviderUpdated in
+            guard let authCredential = credentialProviderUpdated.getCredentials() else {
+                credentialProviderUpdated.setCredentials(AuthCredential(credential))
+                return
+            }
 
-        let updatedAuth = authCredential.updatedKeepingKeyAndPasswordDataIntact(credential: credential)
-        var updatedCredentials = credential
-//        if updatedCredentials.scopes.isEmpty {
-//            updatedCredentials.scopes = existingCredentials.1.scopes
-//        }
-//        userDataProvider.setUserData(userDataProvider.getUserData()?.copy(with: updatedAuth))
-        credentialProvider.setCredentials(updatedAuth)
-        delegate?.credentialsWereUpdated(authCredential: updatedAuth, credential: updatedCredentials,
-                                         for: sessionUID)
+            guard authCredential.sessionID == sessionUID else {
+                PMLog
+                    .error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
+                return
+            }
+
+            // we don't nil out the key and password to avoid loosing this information unintentionaly
+            let updatedAuth = authCredential.updatedKeepingKeyAndPasswordDataIntact(credential:
+                credential)
+            var updatedCredentials = credential
+            //
+            // if there's no update in scopes, assume the same scope as previously
+            //                    if updatedCredentials.scopes.isEmpty {
+            //                        updatedCredentials.scopes = existingCredentials.1.scopes
+            //                    }
+            //
+            //                    credentialsToBeUpdated = (updatedAuth, updatedCredentials)
+            credentialProviderUpdated.setCredentials(updatedAuth)
+
+            guard let delegate, let delegateExecutor else { return }
+            delegateExecutor.execute {
+                delegate.credentialsWereUpdated(authCredential: updatedAuth, 
+                                                credential: updatedCredentials,
+                                                for: sessionUID)
+            }
+        }
     }
 
     public func onSessionObtaining(credential: Credential) {
-        let authCredentials = AuthCredential(credential)
-        credentialProvider.setCredentials(authCredentials)
-        delegate?.credentialsWereUpdated(authCredential: authCredentials,
-                                         credential: credential,
-                                         for: credential.UID)
+        credentialProvider.mutate { credentialProvider in
+            let sessionUID = credential.UID
+            let newCredentials = AuthCredential(credential)
+
+            credentialProvider.setCredentials(newCredentials)
+
+            guard let delegate, let delegateExecutor else { return }
+            delegateExecutor.execute {
+                delegate.credentialsWereUpdated(authCredential: newCredentials, 
+                                                credential: credential,
+                                                for: sessionUID)
+            }
+        }
     }
 
     public func onAdditionalCredentialsInfoObtained(sessionUID: String,
                                                     password: String?,
                                                     salt: String?,
                                                     privateKey: String?) {
-        guard let authCredential = credentialProvider.getCredentials() else {
-            return
-        }
-        guard authCredential.sessionID == sessionUID else {
-            PMLog
-                .error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
-            return
-        }
+        credentialProvider.mutate { credentialProvider in
+            guard let authCredential = credentialProvider.getCredentials() else {
+                return
+            }
+            guard authCredential.sessionID == sessionUID else {
+                PMLog
+                    .error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
+                return
+            }
 
-        if let password {
-            authCredential.update(password: password)
+            if let password {
+                authCredential.update(password: password)
+            }
+            let saltToUpdate = salt ?? authCredential.passwordKeySalt
+            let privateKeyToUpdate = privateKey ?? authCredential.privateKey
+            authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
+            credentialProvider.setCredentials(authCredential)
+
+            guard let delegate, let delegateExecutor else { return }
+            delegateExecutor.execute {
+                delegate.credentialsWereUpdated(authCredential: authCredential,
+                                                credential: Credential(authCredential), for: sessionUID)
+            }
         }
-        let saltToUpdate = salt ?? authCredential.passwordKeySalt
-        let privateKeyToUpdate = privateKey ?? authCredential.privateKey
-        authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-        credentialProvider.setCredentials(authCredential)
-        guard let delegate else { return }
-        delegate.credentialsWereUpdated(authCredential: authCredential,
-                                        credential: Credential(authCredential),
-                                        for: sessionUID)
     }
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
-        guard let authCredential = credentialProvider.getCredentials() else {
-            return
+        credentialProvider.mutate { credentialProvider in
+            guard let authCredential = credentialProvider.getCredentials() else {
+                return
+            }
+            guard authCredential.sessionID == sessionUID else {
+                PMLog
+                    .error("Asked for logout of wrong session. It's a programmers error and should be investigated")
+                return
+            }
+            credentialProvider.setCredentials(nil)
+
+            delegateExecutor?.execute { [weak self] in
+                self?.delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
+            }
+            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
+                                                                                   isAuthenticatedSession: true)
         }
-        guard authCredential.sessionID == sessionUID else {
-            PMLog.error("Asked for logout of wrong session. It's a programmers error and should be investigated")
-            return
-        }
-        credentialProvider.setCredentials(nil)
-        delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
-        authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
-                                                                               isAuthenticatedSession: true)
     }
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
-        guard let authCredential = credentialProvider.getCredentials() else {
-            return
+        credentialProvider.mutate { credentialProvider in
+            guard let authCredential = credentialProvider.getCredentials() else {
+                return
+            }
+            guard authCredential.sessionID == sessionUID else {
+                PMLog
+                    .error("Asked for erasing the credentials of a wrong session. It's a programmers error and should be investigated")
+                return
+            }
+            credentialProvider.setCredentials(nil)
+
+            delegateExecutor?.execute { [weak self] in
+                self?.delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
+            }
+            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
+                                                                                   isAuthenticatedSession: false)
         }
-        guard authCredential.sessionID == sessionUID else {
-            PMLog
-                .error("Asked for erasing the credentials of a wrong session. It's a programmers error and should be investigated")
-            return
-        }
-        credentialProvider.setCredentials(nil)
-        delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
-        authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
-                                                                               isAuthenticatedSession: false)
     }
 }
 

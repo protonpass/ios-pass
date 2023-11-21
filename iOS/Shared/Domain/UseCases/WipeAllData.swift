@@ -72,9 +72,8 @@ final class WipeAllData: WipeAllDataUseCase {
         logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
         appData.resetData()
         mainKeyProvider.wipeMainKey()
-        if includingUnauthSession {
-            apiManager.clearCredentials()
-        }
+        apiManager.clearCredentials()
+
         preferences.reset(isTests: isTests)
         databaseService.resetContainer()
         UIPasteboard.general.items = []
