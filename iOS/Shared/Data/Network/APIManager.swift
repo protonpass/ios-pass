@@ -51,9 +51,9 @@ final class APIManager: APIManagerProtocol {
     private let appData = resolve(\SharedDataContainer.appData)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let trustKitDelegate: TrustKitDelegate
+    let authHelper: FullAuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
 
     private(set) var apiService: APIService
-    private(set) var authHelper: FullAuthManagerProtocol
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
@@ -80,7 +80,6 @@ final class APIManager: APIManagerProtocol {
             apiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
                                                                      challengeParametersProvider: challengeProvider)
         }
-        authHelper = AuthManager(credentialProvider: appData)
         self.apiService = apiService
         authHelper.setUpDelegate(self, callingItOn: .immediateExecutor)
         self.apiService.authDelegate = authHelper
@@ -117,7 +116,6 @@ final class APIManager: APIManagerProtocol {
     }
 
     func clearCredentials() {
-        print("Woot cleared credential")
         appData.setUserData(nil)
         appData.setCredentials(nil)
         apiService.setSessionUID(uid: "")
