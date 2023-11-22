@@ -46,6 +46,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let corruptedSessionEventStream = resolve(\SharedServiceContainer.corruptedSessionEventStream)
 
     private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
@@ -89,6 +90,14 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
+                guard let self else { return }
+                logOut()
+            }
+            .store(in: &cancellables)
+
+        corruptedSessionEventStream
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] reason in
                 guard let self else { return }
                 logOut()
             }

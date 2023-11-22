@@ -18,11 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
 public let kDefaultPageSize = 100
+
+public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason, Never>
 
 public protocol RemoteDatasourceProtocol {
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response
@@ -67,12 +71,16 @@ public class RemoteDatasource: RemoteDatasourceProtocol {
 private extension RemoteDatasource {
     /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
     func streamAndReturn(error: Error) -> Error {
-        if let responseError = error as? ResponseError {
-            switch responseError.httpCode {
+        if let responseError = error as? ResponseError,
+           let httpCode = responseError.httpCode {
+            let sessionId = apiService.sessionUID
+            switch httpCode {
             case 400:
-                eventStream.send(.validSessionButBadAccessSecret)
+                eventStream.send(.validSessionButBadAccessSecret(sessionId))
             case 403:
-                eventStream.send(.unauthSessionMakingAuthRequests)
+                eventStream.send(.unauthSessionMakingAuthRequests(sessionId))
+            case 400...499:
+                eventStream.send(.unknown(sessionId, httpCode))
             default:
                 break
             }
