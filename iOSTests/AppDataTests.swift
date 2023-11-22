@@ -85,25 +85,25 @@ extension AppDataTests {
 
 // MARK: - Unauth session credentials
 extension AppDataTests {
-    func testUnauthSessionCredentialsNilByDefault() {
-        XCTAssertNil(sut.getUnauthCredential())
+    func testSessionCredentialsNilByDefault() {
+        XCTAssertNil(sut.getCredentials())
     }
 
-    func testUpdateUnauthSessionCredentials() throws {
+    func testUpdateSessionCredentials() throws {
         // Given
         let givenCredentials = AuthCredential.preview
 
         // When
-        sut.setUnauthCredential(givenCredentials)
+        sut.setCredentials(givenCredentials)
 
         // Then
-        try XCTAssertEqual(sut.getUnauthCredential()?.sessionID, givenCredentials.sessionID)
+        try XCTAssertEqual(sut.getCredentials()?.sessionID, givenCredentials.sessionID)
 
         // When
-        sut.setUnauthCredential(nil)
+        sut.setCredentials(nil)
 
         // Then
-        XCTAssertNil(sut.getUnauthCredential())
+        XCTAssertNil(sut.getCredentials())
     }
 }
 
