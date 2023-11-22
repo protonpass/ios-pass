@@ -18,15 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
-import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
 public let kDefaultPageSize = 100
-
-public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason, Never>
 
 public protocol RemoteDatasourceProtocol {
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response

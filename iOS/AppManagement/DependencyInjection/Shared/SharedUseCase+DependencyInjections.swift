@@ -190,7 +190,7 @@ extension SharedUseCasesContainer {
                            databaseService: SharedServiceContainer.shared.databaseService(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                           vaultSyncEventStream: SharedServiceContainer.shared.vaultSyncEventStream(),
+                           vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 }

@@ -56,7 +56,7 @@ final class AppCoordinator {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let corruptedSessionEventStream = resolve(\SharedServiceContainer.corruptedSessionEventStream)
+    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 
