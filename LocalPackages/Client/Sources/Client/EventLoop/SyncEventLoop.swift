@@ -217,7 +217,6 @@ extension SyncEventLoop: SyncEventLoopActionProtocol {
 private extension SyncEventLoop {
     /// The repeated task of the timer
     func timerTask() {
-        print("zog start loop")
         do {
             try makeReachabilityIfNecessary()
         } catch {

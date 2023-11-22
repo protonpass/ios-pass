@@ -26,7 +26,7 @@ import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
-private extension LockedKeychainStorage {
+public extension LockedKeychainStorage {
     /// Conveniently initialize with injected `keychain`, `mainKeyProvider` & `logManager`
     init(key: any RawRepresentable<String>, defaultValue: Value) {
         self.init(key: key.rawValue,
@@ -39,14 +39,13 @@ private extension LockedKeychainStorage {
 
 enum AppDataKey: String {
     case userData
-    case unauthSessionCredentials
     case symmetricKey
     case currentCredential
 }
 
 extension UserData: @unchecked Sendable {}
 
-final class AppData: UserDataProvider, CredentialProvider, SymmetricKeyProvider {
+final class AppData: UserDataProvider, CredentialProvider, SymmetricKeyProvider, ResetingPrototocol {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
 

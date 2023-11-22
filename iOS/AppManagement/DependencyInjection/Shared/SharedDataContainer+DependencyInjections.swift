@@ -41,7 +41,11 @@ extension SharedDataContainer {
         self { LoginMethodFlow() }
     }
 
-    var appData: Factory<AppData> {
+    var fullDataProvider: Factory<FullDataProvider> {
+        self { self.appData() }
+    }
+
+    var appData: Factory<FullDataProvider> {
         self { AppData() }
     }
 
