@@ -24,11 +24,12 @@ import ProtonCoreServices
 import XCTest
 
 final class RemoteFavIconDatasourceTests: XCTestCase {
-    var sut: RemoteFavIconDatasourceProtocol!
+    var sut: RemoteFavIconDatasource!
 
     override func setUp() {
         super.setUp()
-        sut = RemoteFavIconDatasource(apiService: PMAPIService.dummyService())
+        sut = RemoteFavIconDatasource(apiService: PMAPIService.dummyService(), 
+                                      eventStream: .init())
     }
 
     override func tearDown() {
