@@ -156,7 +156,6 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        print("Woot invalidated session UID \(sessionUID)")
         clearCredentials()
 
         if isAuthenticatedSession {
