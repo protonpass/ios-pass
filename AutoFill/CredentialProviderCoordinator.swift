@@ -48,7 +48,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let corruptedSessionEventStream = resolve(\SharedServiceContainer.corruptedSessionEventStream)
+    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
