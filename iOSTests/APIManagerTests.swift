@@ -81,7 +81,7 @@ final class APIManagerTests: XCTestCase {
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() {
 
         // GIVEN
-        SharedDataContainer.shared.appData().resetData()
+        SharedDataContainer.shared.fullDataProvider().resetData()
 
         // WHEN
         let apiManager = givenApiManager()
@@ -93,7 +93,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceIsCreatedWithSessionIfUnauthSessionIsPersisted() throws {
         // GIVEN
-        SharedDataContainer.shared.appData().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
         
         // WHEN
         let apiManager = givenApiManager()
@@ -107,7 +107,7 @@ final class APIManagerTests: XCTestCase {
     func testAPIServiceIsCreatedWithSessionIfAuthSessionIsPersisted() throws {
         // GIVEN
 
-        SharedDataContainer.shared.appData().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
 
         // WHEN
         let apiManager = givenApiManager()
@@ -124,7 +124,7 @@ final class APIManagerTests: XCTestCase {
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForUnauthSession() throws {
         // GIVEN
 
-        SharedDataContainer.shared.appData().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
         
         let apiManager = givenApiManager()
         // WHEN
@@ -139,7 +139,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForAuthSession() throws {
         // GIVEN
-        SharedDataContainer.shared.appData().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
 
         let apiManager = givenApiManager()
 
@@ -155,7 +155,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceClearCredentialsClearsAPIServiceAndUnauthSessionStorage() throws {
         // GIVEN
-        SharedDataContainer.shared.appData().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
 
         let apiManager = givenApiManager()
 
@@ -169,7 +169,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceUnauthSessionInvalidationClearsCredentials() throws {
         // GIVEN
-        SharedDataContainer.shared.appData().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
 
         let apiManager = givenApiManager()
 
@@ -181,7 +181,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceAuthSessionInvalidationClearsCredentialsAndLogsOut() throws {
         // GIVEN
-        SharedDataContainer.shared.appData().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
 
         let apiManager = givenApiManager()
 
@@ -201,7 +201,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceAuthCredentialsUpdateSetsNewUnauthCredentials() throws {
         // GIVEN
-        SharedDataContainer.shared.appData().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
 
         let apiManager = givenApiManager()
 
@@ -235,7 +235,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceAuthCredentialsUpdateUpdatesAuthSession() throws {
         // GIVEN
-        SharedDataContainer.shared.appData().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
 
         let apiManager = givenApiManager()
 
