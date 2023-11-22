@@ -76,14 +76,6 @@ extension SharedServiceContainer {
         self { VaultsManager() }
     }
 
-    var vaultSyncEventStream: Factory<VaultSyncEventStream> {
-        self { VaultSyncEventStream(.initialization) }
-    }
-
-    var corruptedSessionEventStream: Factory<CorruptedSessionEventStream> {
-        self { CorruptedSessionEventStream() }
-    }
-
     var upgradeChecker: Factory<UpgradeCheckerProtocol> {
         self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                               counter: self.vaultsManager(),

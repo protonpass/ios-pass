@@ -26,7 +26,7 @@ import Foundation
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var isDoneSynching = false
-    private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
+    private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private var cancellables = Set<AnyCancellable>()
 

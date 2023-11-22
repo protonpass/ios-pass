@@ -18,10 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import Foundation
 
 // All the models related to vault sync progress feature
-public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
 
 /// Object to track events when fetching items for vaults
 public struct GetRemoteItemsProgress {
