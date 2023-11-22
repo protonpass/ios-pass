@@ -85,6 +85,10 @@ extension SharedUseCasesContainer {
         self { AddTelemetryEvent(repository: SharedRepositoryContainer.shared.telemetryEventRepository(),
                                  logManager: self.logManager) }
     }
+
+    var setUpSentry: Factory<SetUpSentryUseCase> {
+        self { SetUpSentry() }
+    }
 }
 
 // MARK: AutoFill

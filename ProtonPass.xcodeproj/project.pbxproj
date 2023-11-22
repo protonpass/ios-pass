@@ -418,7 +418,6 @@
 		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20632AA7454400457CA3 /* MBProgressHUD */; };
-		5B8D20672AA7456200457CA3 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20662AA7456200457CA3 /* Sentry */; };
 		5B8D209D2AA748ED00457CA3 /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D209C2AA748ED00457CA3 /* Client */; };
 		5B8D209F2AA748F700457CA3 /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D209E2AA748F700457CA3 /* Client */; };
 		5B8D20A12AA7490200457CA3 /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20A02AA7490200457CA3 /* Client */; };
@@ -943,7 +942,6 @@
 				5B8D20A42AA74A4600457CA3 /* Core in Frameworks */,
 				353518292AE14FB700574991 /* Screens in Frameworks */,
 				356A34C82978630100969BA2 /* CodeScanner in Frameworks */,
-				5B8D20672AA7456200457CA3 /* Sentry in Frameworks */,
 				57D3314B2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion in Frameworks */,
 				5B1453672A6033F60048B022 /* Entities in Frameworks */,
 				5B8D209D2AA748ED00457CA3 /* Client in Frameworks */,
@@ -2113,7 +2111,6 @@
 				5B1453662A6033F60048B022 /* Entities */,
 				35ABE1292AA08275001E20F9 /* DocScanner */,
 				5B8D20632AA7454400457CA3 /* MBProgressHUD */,
-				5B8D20662AA7456200457CA3 /* Sentry */,
 				5B8D209C2AA748ED00457CA3 /* Client */,
 				5B8D20A32AA74A4600457CA3 /* Core */,
 				5B8D20AA2AA74B5E00457CA3 /* DesignSystem */,
@@ -2243,7 +2240,6 @@
 				5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */,
 				35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */,
 				5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
-				5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */,
 				57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */,
 				575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */,
@@ -4810,14 +4806,6 @@
 				version = 1.2.0;
 			};
 		};
-		5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
-			requirement = {
-				kind = exactVersion;
-				version = 8.11.0;
-			};
-		};
 		5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ProtonMail/apple-fusion";
@@ -4959,11 +4947,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
 			productName = MBProgressHUD;
-		};
-		5B8D20662AA7456200457CA3 /* Sentry */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5B8D20652AA7456200457CA3 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
-			productName = Sentry;
 		};
 		5B8D209C2AA748ED00457CA3 /* Client */ = {
 			isa = XCSwiftPackageProductDependency;
