@@ -82,7 +82,7 @@ private extension SharedRepositoryContainer {
     }
 
     var corruptedSessionEventStream: CorruptedSessionEventStream {
-        SharedServiceContainer.shared.corruptedSessionEventStream()
+        SharedDataStreamContainer.shared.corruptedSessionEventStream()
     }
 }
 

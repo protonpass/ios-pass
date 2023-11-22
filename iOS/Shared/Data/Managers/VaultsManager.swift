@@ -39,7 +39,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
+    private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private var loginMethod = resolve(\SharedDataContainer.loginMethod)
     private var symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
