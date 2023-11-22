@@ -52,7 +52,7 @@ final class AppCoordinator {
     private var cancellables = Set<AnyCancellable>()
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
-    private let appData = resolve(\SharedDataContainer.appData)
+    private let dataProvider = resolve(\SharedDataContainer.fullDataProvider)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -87,8 +87,8 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
-        appData.setUserData(nil)
-        appData.setCredentials(nil)
+        dataProvider.setUserData(nil)
+        dataProvider.setCredentials(nil)
     }
 
     private func bindAppState() {
@@ -109,8 +109,8 @@ final class AppCoordinator {
                     if manualLogIn, let userData {
                         // Only update userData when manually log in
                         // because otherwise we'd just rewrite the same userData object
-                        appData.setUserData(userData)
-                        appData.setCredentials(userData.credential)
+                        dataProvider.setUserData(userData)
+                        dataProvider.setCredentials(userData.credential)
                     }
                     showHomeScene(manualLogIn: manualLogIn)
 
@@ -122,7 +122,7 @@ final class AppCoordinator {
     }
 
     func start() {
-        if appData.getCredentials() != nil {
+        if dataProvider.getCredentials() != nil {
             appStateObserver.updateAppState(.loggedIn(userData: nil, manualLogIn: false))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))

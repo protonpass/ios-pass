@@ -30,7 +30,7 @@ final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
 
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let dataProvider = resolve(\SharedDataContainer.fullDataProvider)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let payments: Payments
     private var paymentsUI: PaymentsUI?
@@ -143,15 +143,15 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var isSignedIn: Bool {
-        userDataProvider.getCredentials()?.isForUnauthenticatedSession == false
+        dataProvider.getCredentials()?.isForUnauthenticatedSession == false
     }
 
     var activeUsername: String? {
-        userDataProvider.getUserData()?.user.name
+        dataProvider.getUserData()?.user.name
     }
 
     var userId: String? {
-        userDataProvider.getUserData()?.user.ID
+        dataProvider.getUserData()?.user.ID
     }
 }
 

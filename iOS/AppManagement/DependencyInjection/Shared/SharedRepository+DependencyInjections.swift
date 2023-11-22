@@ -78,7 +78,7 @@ private extension SharedRepositoryContainer {
     }
 
     var userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider {
-        SharedDataContainer.shared.appData()
+        SharedDataContainer.shared.fullDataProvider()
     }
 }
 
@@ -180,7 +180,7 @@ extension SharedRepositoryContainer {
     var featureFlagsRepository: Factory<FeatureFlagsRepositoryProtocol> {
         self {
             FeatureFlagsRepository(configuration: FeatureFlagsConfiguration(userId: SharedDataContainer.shared
-                                       .appData().getUserData()?.user.ID ?? "",
+                                       .userDataProvider().getUserData()?.user.ID ?? "",
                 currentBUFlags: FeatureFlagType.self),
             localDatasource: LocalFeatureFlagsDatasource(databaseService: self.databaseService),
             remoteDatasource: DefaultRemoteDatasource(apiService: self.apiService))
