@@ -142,7 +142,6 @@ final class AppCoordinator {
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         homepageCoordinator = nil
-        print("woot reason to logout \(reason)")
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
             handle(logOutReason: reason)
@@ -191,7 +190,7 @@ private extension AppCoordinator {
         guard corruptedSessionStream == nil else {
             return
         }
-        
+
         corruptedSessionStream = corruptedSessionEventStream
             .removeDuplicates()
             .compactMap { $0 }
@@ -201,7 +200,7 @@ private extension AppCoordinator {
                 captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
             }
     }
-    
+
     func stopStream() {
         corruptedSessionEventStream.send(nil)
         corruptedSessionStream?.cancel()
