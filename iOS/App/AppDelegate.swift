@@ -32,8 +32,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
 
-    private var backgroundTask: Task<Void, Never>?
-
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         injectDefaultCryptoImplementation()
