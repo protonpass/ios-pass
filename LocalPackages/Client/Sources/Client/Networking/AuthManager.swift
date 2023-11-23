@@ -55,7 +55,7 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func credential(sessionUID: String) -> Credential? {
         credentialProvider.transform { credentialProvider in
-            guard let authCredential = credentialProvider.getCredentials() else {
+            guard let authCredential = credentialProvider.getCredential() else {
                 return nil
             }
             guard authCredential.sessionID == sessionUID else {
@@ -68,7 +68,7 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
         credentialProvider.transform { credentialProvider in
-            guard let authCredential = credentialProvider.getCredentials() else {
+            guard let authCredential = credentialProvider.getCredential() else {
                 return nil
             }
             guard authCredential.sessionID == sessionUID else {
@@ -81,8 +81,8 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func onUpdate(credential: Credential, sessionUID: String) {
         credentialProvider.mutate { credentialProviderUpdated in
-            guard let authCredential = credentialProviderUpdated.getCredentials() else {
-                credentialProviderUpdated.setCredentials(AuthCredential(credential))
+            guard let authCredential = credentialProviderUpdated.getCredential() else {
+                credentialProviderUpdated.setCredential(AuthCredential(credential))
                 return
             }
 
@@ -96,7 +96,7 @@ public final class AuthManager: AuthManagerProtocol {
             let updatedAuth = authCredential.updatedKeepingKeyAndPasswordDataIntact(credential:
                 credential)
 
-            credentialProviderUpdated.setCredentials(updatedAuth)
+            credentialProviderUpdated.setCredential(updatedAuth)
 
             guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
@@ -112,7 +112,7 @@ public final class AuthManager: AuthManagerProtocol {
             let sessionUID = credential.UID
             let newCredentials = AuthCredential(credential)
 
-            credentialProvider.setCredentials(newCredentials)
+            credentialProvider.setCredential(newCredentials)
 
             guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
@@ -128,7 +128,7 @@ public final class AuthManager: AuthManagerProtocol {
                                                     salt: String?,
                                                     privateKey: String?) {
         credentialProvider.mutate { credentialProvider in
-            guard let authCredential = credentialProvider.getCredentials() else {
+            guard let authCredential = credentialProvider.getCredential() else {
                 return
             }
             guard authCredential.sessionID == sessionUID else {
@@ -143,7 +143,7 @@ public final class AuthManager: AuthManagerProtocol {
             let saltToUpdate = salt ?? authCredential.passwordKeySalt
             let privateKeyToUpdate = privateKey ?? authCredential.privateKey
             authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-            credentialProvider.setCredentials(authCredential)
+            credentialProvider.setCredential(authCredential)
 
             guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
@@ -156,7 +156,7 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
         credentialProvider.mutate { credentialProvider in
-            guard let authCredential = credentialProvider.getCredentials() else {
+            guard let authCredential = credentialProvider.getCredential() else {
                 return
             }
             guard authCredential.sessionID == sessionUID else {
@@ -164,7 +164,7 @@ public final class AuthManager: AuthManagerProtocol {
                     .error("Asked for logout of wrong session. It should be investigated")
                 return
             }
-            credentialProvider.setCredentials(nil)
+            credentialProvider.setCredential(nil)
 
             delegateExecutor?.execute { [weak self] in
                 guard let self else {
@@ -179,7 +179,7 @@ public final class AuthManager: AuthManagerProtocol {
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
         credentialProvider.mutate { credentialProvider in
-            guard let authCredential = credentialProvider.getCredentials() else {
+            guard let authCredential = credentialProvider.getCredential() else {
                 return
             }
             guard authCredential.sessionID == sessionUID else {
@@ -187,7 +187,7 @@ public final class AuthManager: AuthManagerProtocol {
                     .error("Asked for erasing the credentials of a wrong session. It should be investigated")
                 return
             }
-            credentialProvider.setCredentials(nil)
+            credentialProvider.setCredential(nil)
 
             delegateExecutor?.execute { [weak self] in
                 guard let self else {

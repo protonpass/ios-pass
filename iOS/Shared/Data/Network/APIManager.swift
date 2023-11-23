@@ -68,7 +68,7 @@ final class APIManager: APIManagerProtocol {
         let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
-        if let credential = appData.getCredentials() {
+        if let credential = appData.getCredential() {
             apiService = PMAPIService.createAPIService(doh: doh,
                                                        sessionUID: credential.sessionID,
                                                        challengeParametersProvider: challengeProvider)
@@ -108,7 +108,7 @@ final class APIManager: APIManagerProtocol {
 
     func clearCredentials() {
         appData.setUserData(nil)
-        appData.setCredentials(nil)
+        appData.setCredential(nil)
         apiService.setSessionUID(uid: "")
     }
 }
@@ -160,7 +160,7 @@ extension APIManager: AuthHelperDelegate {
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
-        appData.setCredentials(authCredential)
+        appData.setCredential(authCredential)
     }
 }
 
