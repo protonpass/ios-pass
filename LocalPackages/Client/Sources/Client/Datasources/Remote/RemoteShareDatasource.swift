@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteShareDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
     func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos]
@@ -40,34 +40,36 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func transferVaultOwnership(vaultShareId: String, request: TransferOwnershipVaultRequest) async throws -> Bool
 }
 
-public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol {
-    public func getShares() async throws -> [Share] {
+public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol {}
+
+public extension RemoteShareDatasource {
+    func getShares() async throws -> [Share] {
         let getSharesEndpoint = GetSharesEndpoint()
         let getSharesResponse = try await exec(endpoint: getSharesEndpoint)
         return getSharesResponse.shares
     }
 
-    public func getShare(shareId: String) async throws -> Share {
+    func getShare(shareId: String) async throws -> Share {
         let endpoint = GetShareEndpoint(shareId: shareId)
         let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
-    public func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos] {
+    func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos] {
         let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
         let response = try await exec(endpoint: endpoint)
         return response.shares
     }
 
-    public func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos {
+    func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos {
         let endpoint = GetUserInformationForShareEndpoint(for: shareId, and: userId)
         let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
-    public func updateUserSharePermission(shareId: String,
-                                          userId: String,
-                                          request: UserSharePermissionRequest) async throws -> Bool {
+    func updateUserSharePermission(shareId: String,
+                                   userId: String,
+                                   request: UserSharePermissionRequest) async throws -> Bool {
         let endpoint = UpdateUserSharePermissionsEndpoint(shareId: shareId,
                                                           userId: userId,
                                                           request: request)
@@ -75,38 +77,37 @@ public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourc
         return response.isSuccessful
     }
 
-    public func deleteUserShare(shareId: String,
-                                userId: String) async throws -> Bool {
+    func deleteUserShare(shareId: String, userId: String) async throws -> Bool {
         let endpoint = DeleteUserShareEndpoint(for: shareId, and: userId)
         let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
     }
 
-    public func deleteShare(shareId: String) async throws -> Bool {
+    func deleteShare(shareId: String) async throws -> Bool {
         let endpoint = DeleteShareEndpoint(for: shareId)
         let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
     }
 
-    public func createVault(request: CreateVaultRequest) async throws -> Share {
+    func createVault(request: CreateVaultRequest) async throws -> Share {
         let endpoint = CreateVaultEndpoint(request: request)
         let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
-    public func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share {
+    func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share {
         let endpoint = UpdateVaultEndpoint(shareId: shareId, request: request)
         let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
-    public func deleteVault(shareId: String) async throws {
+    func deleteVault(shareId: String) async throws {
         let endpoint = DeleteVaultEndpoint(shareId: shareId)
         _ = try await exec(endpoint: endpoint)
     }
 
-    public func transferVaultOwnership(vaultShareId: String,
-                                       request: TransferOwnershipVaultRequest) async throws -> Bool {
+    func transferVaultOwnership(vaultShareId: String,
+                                request: TransferOwnershipVaultRequest) async throws -> Bool {
         let endpoint = TransferOwnershipVaultEndpoint(vaultShareId: vaultShareId, request: request)
         let response = try await exec(endpoint: endpoint)
         return response.isSuccessful

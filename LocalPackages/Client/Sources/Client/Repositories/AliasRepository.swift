@@ -32,26 +32,23 @@ public protocol AliasRepositoryProtocol {
 }
 
 public actor AliasRepository: AliasRepositoryProtocol {
-    public let remoteDatasouce: RemoteAliasDatasourceProtocol
+    private let remoteDatasouce: RemoteAliasDatasourceProtocol
 
     public init(remoteDatasouce: RemoteAliasDatasourceProtocol) {
         self.remoteDatasouce = remoteDatasouce
     }
+}
 
-    public init(apiService: APIService,
-                eventStream: CorruptedSessionEventStream) {
-        remoteDatasouce = RemoteAliasDatasource(apiService: apiService, eventStream: eventStream)
-    }
-
-    public func getAliasOptions(shareId: String) async throws -> AliasOptions {
+public extension AliasRepository {
+    func getAliasOptions(shareId: String) async throws -> AliasOptions {
         try await remoteDatasouce.getAliasOptions(shareId: shareId)
     }
 
-    public func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
         try await remoteDatasouce.getAliasDetails(shareId: shareId, itemId: itemId)
     }
 
-    public func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
+    func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         try await remoteDatasouce.changeMailboxes(shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
     }
 }

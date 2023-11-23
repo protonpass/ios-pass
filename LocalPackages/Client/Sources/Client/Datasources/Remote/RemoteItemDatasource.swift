@@ -1,5 +1,5 @@
 //
-// RemoteItemRevisionDatasource.swift
+// RemoteItemDatasource.swift
 // Proton Pass - Created on 16/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol RemoteItemRevisionDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteItemDatasourceProtocol {
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision]
     func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision
@@ -36,9 +36,11 @@ public protocol RemoteItemRevisionDatasourceProtocol: RemoteDatasourceProtocol {
     func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision]
 }
 
-public final class RemoteItemRevisionDatasource: RemoteDatasource, RemoteItemRevisionDatasourceProtocol {
-    public func getItemRevisions(shareId: String,
-                                 eventStream: VaultSyncEventStream?) async throws -> [ItemRevision] {
+public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
+
+public extension RemoteItemDatasource {
+    func getItemRevisions(shareId: String,
+                          eventStream: VaultSyncEventStream?) async throws -> [ItemRevision] {
         var itemRevisions = [ItemRevision]()
         var sinceToken: String?
         while true {
@@ -59,49 +61,49 @@ public final class RemoteItemRevisionDatasource: RemoteDatasource, RemoteItemRev
         return itemRevisions
     }
 
-    public func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
+    func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
         let endpoint = CreateItemEndpoint(shareId: shareId, request: request)
         let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    public func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
+    func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
         let endpoint = CreateCustomAliasEndpoint(shareId: shareId, request: request)
         let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    public func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
+    func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
         async throws -> CreateAliasAndAnotherItemResponse.Bundle {
         let endpoint = CreateAliasAndAnotherItemEndpoint(shareId: shareId, request: request)
         let response = try await exec(endpoint: endpoint)
         return response.bundle
     }
 
-    public func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
         let endpoint = TrashItemsEndpoint(shareId: shareId, items: items)
         let response = try await exec(endpoint: endpoint)
         return response.items
     }
 
-    public func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
         let endpoint = UntrashItemsEndpoint(shareId: shareId, items: items)
         let response = try await exec(endpoint: endpoint)
         return response.items
     }
 
-    public func deleteItemRevisions(_ items: [ItemRevision],
-                                    shareId: String,
-                                    skipTrash: Bool) async throws {
+    func deleteItemRevisions(_ items: [ItemRevision],
+                             shareId: String,
+                             skipTrash: Bool) async throws {
         let endpoint = DeleteItemsEndpoint(shareId: shareId,
                                            items: items,
                                            skipTrash: skipTrash)
         _ = try await exec(endpoint: endpoint)
     }
 
-    public func updateItem(shareId: String,
-                           itemId: String,
-                           request: UpdateItemRequest) async throws -> ItemRevision {
+    func updateItem(shareId: String,
+                    itemId: String,
+                    request: UpdateItemRequest) async throws -> ItemRevision {
         let endpoint = UpdateItemEndpoint(shareId: shareId,
                                           itemId: itemId,
                                           request: request)
@@ -109,9 +111,9 @@ public final class RemoteItemRevisionDatasource: RemoteDatasource, RemoteItemRev
         return response.item
     }
 
-    public func updateLastUseTime(shareId: String,
-                                  itemId: String,
-                                  lastUseTime: TimeInterval) async throws -> ItemRevision {
+    func updateLastUseTime(shareId: String,
+                           itemId: String,
+                           lastUseTime: TimeInterval) async throws -> ItemRevision {
         let endpoint = UpdateLastUseTimeEndpoint(shareId: shareId,
                                                  itemId: itemId,
                                                  lastUseTime: lastUseTime)
@@ -119,15 +121,15 @@ public final class RemoteItemRevisionDatasource: RemoteDatasource, RemoteItemRev
         return response.revision
     }
 
-    public func move(itemId: String,
-                     fromShareId: String,
-                     request: MoveItemRequest) async throws -> ItemRevision {
+    func move(itemId: String,
+              fromShareId: String,
+              request: MoveItemRequest) async throws -> ItemRevision {
         let endpoint = MoveItemEndpoint(request: request, itemId: itemId, fromShareId: fromShareId)
         let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    public func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
+    func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
         let endpoint = MoveItemsEndpoint(request: request, fromShareId: fromShareId)
         let response = try await exec(endpoint: endpoint)
         return response.items

@@ -43,12 +43,14 @@ public enum FavIconError: Int, CaseIterable {
     case failedToFind = 2_902
 }
 
-public protocol RemoteFavIconDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteFavIconDatasourceProtocol {
     func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult
 }
 
-public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatasourceProtocol {
-    public func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult {
+public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatasourceProtocol {}
+
+public extension RemoteFavIconDatasource {
+    func fetchFavIcon(for domain: String) async throws -> FavIconFetchResult {
         let endpoint = GetLogoEndpoint(domain: domain)
         let response = try await execExpectingData(endpoint: endpoint)
         return try handle(dataResponse: response)

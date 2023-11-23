@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalShareKeyDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalShareKeyDatasourceProtocol {
     /// Get keys of a share
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
@@ -31,7 +31,9 @@ public protocol LocalShareKeyDatasourceProtocol: LocalDatasourceProtocol {
     func removeAllKeys(shareId: String) async throws
 }
 
-public extension LocalShareKeyDatasourceProtocol {
+public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol {}
+
+public extension LocalShareKeyDatasource {
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ShareKeyEntity.fetchRequest()
@@ -58,5 +60,3 @@ public extension LocalShareKeyDatasourceProtocol {
                           context: taskContext)
     }
 }
-
-public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol {}

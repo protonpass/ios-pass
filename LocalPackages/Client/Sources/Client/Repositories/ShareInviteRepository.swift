@@ -52,8 +52,8 @@ public protocol ShareInviteRepositoryProtocol {
 }
 
 public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
-    public let remoteDataSource: RemoteShareInviteDatasourceProtocol
-    public let logger: Logger
+    private let remoteDataSource: RemoteShareInviteDatasourceProtocol
+    private let logger: Logger
 
     public init(remoteDataSource: RemoteShareInviteDatasourceProtocol,
                 logManager: LogManagerProtocol) {

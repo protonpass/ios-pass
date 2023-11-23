@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalShareEventIDDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalShareEventIDDatasourceProtocol {
     /// Get last event ID of a share
     func getLastEventId(userId: String, shareId: String) async throws -> String?
 
@@ -31,7 +31,9 @@ public protocol LocalShareEventIDDatasourceProtocol: LocalDatasourceProtocol {
     func removeAllEntries(userId: String) async throws
 }
 
-public extension LocalShareEventIDDatasourceProtocol {
+public final class LocalShareEventIDDatasource: LocalDatasource, LocalShareEventIDDatasourceProtocol {}
+
+public extension LocalShareEventIDDatasource {
     func getLastEventId(userId: String, shareId: String) async throws -> String? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ShareEventIDEntity.fetchRequest()
@@ -64,5 +66,3 @@ public extension LocalShareEventIDDatasourceProtocol {
                           context: taskContext)
     }
 }
-
-public final class LocalShareEventIDDatasource: LocalDatasource, LocalShareEventIDDatasourceProtocol {}
