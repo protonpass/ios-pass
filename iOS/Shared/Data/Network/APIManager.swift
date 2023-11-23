@@ -48,10 +48,10 @@ protocol APIManagerProtocol {
 final class APIManager: APIManagerProtocol {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
-    private let dataProvider = resolve(\SharedDataContainer.fullDataProvider)
+    private let dataProvider = resolve(\SharedDataContainer.appData)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let trustKitDelegate: TrustKitDelegate
-    let authHelper: FullAuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
+    let authHelper: AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
 
     private(set) var apiService: APIService
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?

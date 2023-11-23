@@ -30,7 +30,7 @@ final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, Error>
 
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let dataProvider = resolve(\SharedDataContainer.fullDataProvider)
+    private let dataProvider = resolve(\SharedDataContainer.appData)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let payments: Payments
     private var paymentsUI: PaymentsUI?

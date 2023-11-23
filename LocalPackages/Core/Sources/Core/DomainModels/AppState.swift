@@ -33,8 +33,8 @@ public enum LogOutReason {
 
 public enum AppState {
     case loggedOut(LogOutReason)
-    /// `manualLogIn` to tell if the app uses existing `UserData` from last session or not
-    case loggedIn(userData: UserData?, manualLogIn: Bool)
+    case manuallyLoggedIn(UserData)
+    case alreadyLoggedIn
     case undefined
 }
 
