@@ -113,7 +113,6 @@ final class AppCoordinator {
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
                     showHomeScene(manualLogIn: false)
-
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
@@ -129,6 +128,8 @@ final class AppCoordinator {
     func start() {
         if appData.isAuthenticated {
             appStateObserver.updateAppState(.alreadyLoggedIn)
+        } else if appData.getCredentials() != nil {
+            appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
         }
