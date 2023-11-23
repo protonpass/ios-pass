@@ -40,16 +40,10 @@ public actor PublicKeyRepository: PublicKeyRepositoryProtocol {
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
         logger = .init(manager: logManager)
     }
+}
 
-    public init(databaseService: DatabaseServiceProtocol,
-                apiService: APIService,
-                logManager: LogManagerProtocol) {
-        localPublicKeyDatasource = LocalPublicKeyDatasource(databaseService: databaseService)
-        remotePublicKeyDatasource = RemotePublicKeyDatasource(apiService: apiService)
-        logger = .init(manager: logManager)
-    }
-
-    public func getPublicKeys(email: String) async throws -> [PublicKey] {
+public extension PublicKeyRepository {
+    func getPublicKeys(email: String) async throws -> [PublicKey] {
         logger.trace("Getting public keys for email \(email)")
         let localPublicKeys = try await localPublicKeyDatasource.getPublicKeys(email: email)
 
