@@ -26,7 +26,7 @@ import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
-private extension LockedKeychainStorage {
+public extension LockedKeychainStorage {
     /// Conveniently initialize with injected `keychain`, `mainKeyProvider` & `logManager`
     init(key: any RawRepresentable<String>, defaultValue: Value) {
         self.init(key: key.rawValue,
@@ -39,16 +39,18 @@ private extension LockedKeychainStorage {
 
 enum AppDataKey: String {
     case userData
-    case unauthSessionCredentials
     case symmetricKey
+    case currentCredential
 }
 
-final class AppData: UserDataProvider, SymmetricKeyProvider {
+extension UserData: @unchecked Sendable {}
+
+final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
 
-    @LockedKeychainStorage(key: AppDataKey.unauthSessionCredentials, defaultValue: nil)
-    private var unauthSessionCredentials: AuthCredential?
+    @LockedKeychainStorage(key: AppDataKey.currentCredential, defaultValue: nil)
+    private var credential: AuthCredential?
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
@@ -71,16 +73,17 @@ final class AppData: UserDataProvider, SymmetricKeyProvider {
         userData
     }
 
-    func setUnauthCredential(_ credential: AuthCredential?) {
-        unauthSessionCredentials = credential
+    func setCredentials(_ newCredential: AuthCredential?) {
+        credential = newCredential
     }
 
-    func getUnauthCredential() -> AuthCredential? {
-        unauthSessionCredentials
+    func getCredentials() -> AuthCredential? {
+        credential
     }
 
     func resetData() {
         setUserData(nil)
+        setCredentials(nil)
         removeSymmetricKey()
     }
 }

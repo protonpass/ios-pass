@@ -145,13 +145,6 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.info("App goes back to foreground")
-                apiManager.startCredentialUpdate()
-            }
-            .store(in: &cancellables)
-
-        apiManager.credentialFinishedUpdating
-            .sink { [weak self] _ in
-                guard let self else { return }
                 refresh()
                 sendAllEventsIfApplicable()
                 eventLoop.start()
@@ -987,7 +980,6 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToDeleteAccount() {
-        let apiManager = resolve(\SharedToolingContainer.apiManager)
         let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
