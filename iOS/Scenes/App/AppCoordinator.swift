@@ -111,13 +111,13 @@ final class AppCoordinator {
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
-                    startStream()
+                    connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: false)
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
                     appData.setCredentials(userData.credential)
-                    startStream()
+                    connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: true)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -186,7 +186,7 @@ final class AppCoordinator {
 // MARK: - Utils
 
 private extension AppCoordinator {
-    func startStream() {
+    func connectToCorruptedSessionStream() {
         guard corruptedSessionStream == nil else {
             return
         }
