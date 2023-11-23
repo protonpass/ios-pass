@@ -1,7 +1,7 @@
 //
-// RemoteSyncEventsDatasource.swift
-// Proton Pass - Created on 27/10/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// SharedDataStreams+DependencyInjections.swift
+// Proton Pass - Created on 22/11/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,14 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteSyncEventsDatasourceProtocol: RemoteDatasourceProtocol {
-    func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents
+import Client
+import Factory
+
+final class SharedDataStreamContainer: SharedContainer, AutoRegistering {
+    static let shared = SharedDataStreamContainer()
+    let manager = ContainerManager()
+
+    func autoRegister() {
+        manager.defaultScope = .singleton
+    }
 }
 
-public final class RemoteSyncEventsDatasource: RemoteDatasource, RemoteSyncEventsDatasourceProtocol {
-    public func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents {
-        let endpoint = GetEventsEndpoint(shareId: shareId, lastEventId: lastEventId)
-        let response = try await exec(endpoint: endpoint)
-        return response.events
+extension SharedDataStreamContainer {
+    var vaultSyncEventStream: Factory<VaultSyncEventStream> {
+        self { VaultSyncEventStream(.initialization) }
+    }
+
+    var corruptedSessionEventStream: Factory<CorruptedSessionEventStream> {
+        self { CorruptedSessionEventStream() }
     }
 }

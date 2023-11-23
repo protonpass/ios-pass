@@ -18,18 +18,69 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+import ProtonCoreNetworking
 import ProtonCoreServices
 
 public let kDefaultPageSize = 100
 
-public protocol RemoteDatasourceProtocol: AnyObject {
-    var apiService: APIService { get }
+public protocol RemoteDatasourceProtocol {
+    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response
+    func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response
+    func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse
 }
 
 public class RemoteDatasource: RemoteDatasourceProtocol {
-    public let apiService: APIService
+    private let apiService: APIService
+    private let eventStream: CorruptedSessionEventStream
 
-    public init(apiService: APIService) {
+    public init(apiService: APIService, eventStream: CorruptedSessionEventStream) {
         self.apiService = apiService
+        self.eventStream = eventStream
+    }
+
+    public func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
+        do {
+            return try await apiService.exec(endpoint: endpoint)
+        } catch {
+            throw streamAndReturn(error: error)
+        }
+    }
+
+    public func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response {
+        do {
+            return try await apiService.exec(endpoint: endpoint, files: files)
+        } catch {
+            throw streamAndReturn(error: error)
+        }
+    }
+
+    public func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
+        do {
+            return try await apiService.execExpectingData(endpoint: endpoint)
+        } catch {
+            throw streamAndReturn(error: error)
+        }
+    }
+}
+
+private extension RemoteDatasource {
+    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
+    func streamAndReturn(error: Error) -> Error {
+        if let responseError = error as? ResponseError,
+           let httpCode = responseError.httpCode {
+            let sessionId = apiService.sessionUID
+            switch httpCode {
+            case 400:
+                eventStream.send(.validSessionButBadAccessSecret(sessionId))
+            case 403:
+                eventStream.send(.unauthSessionMakingAuthRequests(sessionId))
+            case 400...499:
+                eventStream.send(.unknown(sessionId, httpCode))
+            default:
+                break
+            }
+        }
+        return error
     }
 }

@@ -85,6 +85,10 @@ extension SharedUseCasesContainer {
         self { AddTelemetryEvent(repository: SharedRepositoryContainer.shared.telemetryEventRepository(),
                                  logManager: self.logManager) }
     }
+
+    var setUpSentry: Factory<SetUpSentryUseCase> {
+        self { SetUpSentry() }
+    }
 }
 
 // MARK: AutoFill
@@ -186,7 +190,7 @@ extension SharedUseCasesContainer {
                            databaseService: SharedServiceContainer.shared.databaseService(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                           vaultSyncEventStream: SharedServiceContainer.shared.vaultSyncEventStream(),
+                           vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 }

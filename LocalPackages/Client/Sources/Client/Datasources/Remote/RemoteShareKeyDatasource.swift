@@ -22,15 +22,15 @@ public protocol RemoteShareKeyDatasourceProtocol: RemoteDatasourceProtocol {
     func getKeys(shareId: String) async throws -> [ShareKey]
 }
 
-public extension RemoteShareKeyDatasourceProtocol {
-    func getKeys(shareId: String) async throws -> [ShareKey] {
+public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {
+    public func getKeys(shareId: String) async throws -> [ShareKey] {
         var keys = [ShareKey]()
         var page = 0
         while true {
             let endpoint = GetShareKeysEndpoint(shareId: shareId,
                                                 page: page,
                                                 pageSize: kDefaultPageSize)
-            let response = try await apiService.exec(endpoint: endpoint)
+            let response = try await exec(endpoint: endpoint)
 
             keys += response.shareKeys.keys
             if response.shareKeys.total < kDefaultPageSize {
@@ -42,5 +42,3 @@ public extension RemoteShareKeyDatasourceProtocol {
         return keys
     }
 }
-
-public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {}

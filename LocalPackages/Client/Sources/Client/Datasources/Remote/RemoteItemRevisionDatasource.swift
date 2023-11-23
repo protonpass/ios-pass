@@ -36,15 +36,16 @@ public protocol RemoteItemRevisionDatasourceProtocol: RemoteDatasourceProtocol {
     func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision]
 }
 
-public extension RemoteItemRevisionDatasourceProtocol {
-    func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision] {
+public final class RemoteItemRevisionDatasource: RemoteDatasource, RemoteItemRevisionDatasourceProtocol {
+    public func getItemRevisions(shareId: String,
+                                 eventStream: VaultSyncEventStream?) async throws -> [ItemRevision] {
         var itemRevisions = [ItemRevision]()
         var sinceToken: String?
         while true {
             let endpoint = GetItemsEndpoint(shareId: shareId,
                                             sinceToken: sinceToken,
                                             pageSize: kDefaultPageSize)
-            let response = try await apiService.exec(endpoint: endpoint)
+            let response = try await exec(endpoint: endpoint)
 
             itemRevisions += response.items.revisionsData
             sinceToken = response.items.lastToken
@@ -58,73 +59,77 @@ public extension RemoteItemRevisionDatasourceProtocol {
         return itemRevisions
     }
 
-    func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
+    public func createItem(shareId: String, request: CreateItemRequest) async throws -> ItemRevision {
         let endpoint = CreateItemEndpoint(shareId: shareId, request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
+    public func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> ItemRevision {
         let endpoint = CreateCustomAliasEndpoint(shareId: shareId, request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
+    public func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
         async throws -> CreateAliasAndAnotherItemResponse.Bundle {
         let endpoint = CreateAliasAndAnotherItemEndpoint(shareId: shareId, request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.bundle
     }
 
-    func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+    public func trashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
         let endpoint = TrashItemsEndpoint(shareId: shareId, items: items)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.items
     }
 
-    func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
+    public func untrashItemRevisions(_ items: [ItemRevision], shareId: String) async throws -> [ModifiedItem] {
         let endpoint = UntrashItemsEndpoint(shareId: shareId, items: items)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.items
     }
 
-    func deleteItemRevisions(_ items: [ItemRevision], shareId: String, skipTrash: Bool) async throws {
+    public func deleteItemRevisions(_ items: [ItemRevision],
+                                    shareId: String,
+                                    skipTrash: Bool) async throws {
         let endpoint = DeleteItemsEndpoint(shareId: shareId,
                                            items: items,
                                            skipTrash: skipTrash)
-        _ = try await apiService.exec(endpoint: endpoint)
+        _ = try await exec(endpoint: endpoint)
     }
 
-    func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> ItemRevision {
+    public func updateItem(shareId: String,
+                           itemId: String,
+                           request: UpdateItemRequest) async throws -> ItemRevision {
         let endpoint = UpdateItemEndpoint(shareId: shareId,
                                           itemId: itemId,
                                           request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    func updateLastUseTime(shareId: String,
-                           itemId: String,
-                           lastUseTime: TimeInterval) async throws -> ItemRevision {
+    public func updateLastUseTime(shareId: String,
+                                  itemId: String,
+                                  lastUseTime: TimeInterval) async throws -> ItemRevision {
         let endpoint = UpdateLastUseTimeEndpoint(shareId: shareId,
                                                  itemId: itemId,
                                                  lastUseTime: lastUseTime)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.revision
     }
 
-    func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> ItemRevision {
+    public func move(itemId: String,
+                     fromShareId: String,
+                     request: MoveItemRequest) async throws -> ItemRevision {
         let endpoint = MoveItemEndpoint(request: request, itemId: itemId, fromShareId: fromShareId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
+    public func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
         let endpoint = MoveItemsEndpoint(request: request, fromShareId: fromShareId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.items
     }
 }
-
-public final class RemoteItemRevisionDatasource: RemoteDatasource, RemoteItemRevisionDatasourceProtocol {}
