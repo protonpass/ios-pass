@@ -71,7 +71,7 @@ final class AppCoordinator {
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             isUITest = true
-            wipeAllData(includingUnauthSession: true)
+            resetAllData()
         }
 
         apiManager.sessionWasInvalidated
@@ -107,8 +107,9 @@ final class AppCoordinator {
                 switch appState {
                 case let .loggedOut(reason):
                     logger.info("Logged out \(reason)")
-                    let shouldWipeUnauthSession = reason != .noAuthSessionButUnauthSessionAvailable
-                    wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
+                    if reason != .noAuthSessionButUnauthSessionAvailable {
+                        resetAllData()
+                    }
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
@@ -172,10 +173,10 @@ final class AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    private func wipeAllData(includingUnauthSession: Bool) {
+    private func resetAllData() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            await wipeAllData(includingUnauthSession: includingUnauthSession, isTests: isUITest)
+            await wipeAllData(isTests: isUITest)
             SharedViewContainer.shared.reset()
         }
     }
