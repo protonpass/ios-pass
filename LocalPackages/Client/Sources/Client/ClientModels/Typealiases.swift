@@ -1,7 +1,7 @@
 //
-// RemoteSyncEventsDatasource.swift
-// Proton Pass - Created on 27/10/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Typealiases.swift
+// Proton Pass - Created on 22/11/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,15 +17,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-public protocol RemoteSyncEventsDatasourceProtocol: RemoteDatasourceProtocol {
-    func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents
-}
+import Combine
+import Entities
 
-public final class RemoteSyncEventsDatasource: RemoteDatasource, RemoteSyncEventsDatasourceProtocol {
-    public func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents {
-        let endpoint = GetEventsEndpoint(shareId: shareId, lastEventId: lastEventId)
-        let response = try await exec(endpoint: endpoint)
-        return response.events
-    }
-}
+public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
+public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason, Never>
