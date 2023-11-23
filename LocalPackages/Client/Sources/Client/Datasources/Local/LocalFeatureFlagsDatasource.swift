@@ -25,9 +25,10 @@ enum FeatureFlagError: Error {
     case couldNotEncodeFlags
 }
 
-public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalDatasourceProtocol,
-    LocalFeatureFlagsProtocol {
-    public func getFeatureFlags(userId: String) async throws -> FeatureFlags? {
+public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalFeatureFlagsProtocol {}
+
+public extension LocalFeatureFlagsDatasource {
+    func getFeatureFlags(userId: String) async throws -> FeatureFlags? {
         let taskContext = newTaskContext(type: .fetch)
 
         let fetchRequest = FeatureFlagsEntity.fetchRequest()
@@ -37,7 +38,7 @@ public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalDatasource
         return entities.compactMap { $0.toFeatureFlags() }.first
     }
 
-    public func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
+    func upsertFlags(_ flags: FeatureFlags, userId: String) async throws {
         let encoder = JSONEncoder()
         guard let flagsData = try? encoder.encode(flags.flags) else {
             throw FeatureFlagError.couldNotEncodeFlags
@@ -53,14 +54,14 @@ public final class LocalFeatureFlagsDatasource: LocalDatasource, LocalDatasource
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 
-    public func cleanAllFlags() async {
+    func cleanAllFlags() async {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
         _ = try? await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                                context: taskContext)
     }
 
-    public func cleanFlags(for userId: String) async {
+    func cleanFlags(for userId: String) async {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FeatureFlagsEntity")
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
