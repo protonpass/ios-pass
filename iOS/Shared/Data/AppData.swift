@@ -81,13 +81,6 @@ final class AppData: AppDataProtocol {
         credential
     }
 
-    var isAuthenticated: Bool {
-        guard let credential else {
-            return false
-        }
-        return !credential.isForUnauthenticatedSession
-    }
-
     func resetData() {
         setUserData(nil)
         setCredentials(nil)
