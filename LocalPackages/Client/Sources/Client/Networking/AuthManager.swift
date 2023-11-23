@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Foundation
 import ProtonCoreAuthentication
 import ProtonCoreLog
@@ -39,7 +38,7 @@ public final class AuthManager: AuthManagerProtocol {
     public weak var authSessionInvalidatedDelegateForLoginAndSignup: AuthSessionInvalidatedDelegate?
     private var delegateExecutor: CompletionBlockExecutor?
 
-    init(credentialProvider: CredentialProvider) {
+    public init(credentialProvider: CredentialProvider) {
         self.credentialProvider = .init(credentialProvider)
     }
 
