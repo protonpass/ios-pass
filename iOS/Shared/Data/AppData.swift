@@ -45,7 +45,7 @@ enum AppDataKey: String {
 
 extension UserData: @unchecked Sendable {}
 
-final class AppData: UserDataProvider, CredentialProvider, SymmetricKeyProvider, Resettable {
+final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
 
