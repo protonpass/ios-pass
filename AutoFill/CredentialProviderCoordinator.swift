@@ -291,8 +291,6 @@ private extension CredentialProviderCoordinator {
                     }
                 }
             }
-            credentialProvider.setCredentials(nil)
-
             await revokeCurrentSession()
             await wipeAllData(includingUnauthSession: false, isTests: false)
             showNotLoggedInView()
