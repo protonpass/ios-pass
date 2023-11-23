@@ -107,7 +107,7 @@ final class APIManagerTests: XCTestCase {
     func testAPIServiceIsCreatedWithSessionIfAuthSessionIsPersisted() throws {
         // GIVEN
 
-        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
         // WHEN
         let apiManager = givenApiManager()
@@ -124,8 +124,8 @@ final class APIManagerTests: XCTestCase {
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForUnauthSession() throws {
         // GIVEN
 
-        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
-        
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
+
         let apiManager = givenApiManager()
         // WHEN
         apiManager.authHelper.onUpdate(credential: Credential(unauthSessionCredentials), sessionUID: unauthSessionCredentials.sessionID)
@@ -139,7 +139,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForAuthSession() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
 
         let apiManager = givenApiManager()
 
@@ -154,7 +154,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceClearCredentialsClearsAPIServiceAndUnauthSessionStorage() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
         let apiManager = givenApiManager()
 
@@ -168,7 +168,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceUnauthSessionInvalidationClearsCredentials() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
 
         let apiManager = givenApiManager()
 
@@ -181,14 +181,14 @@ final class APIManagerTests: XCTestCase {
     
     func testAPIServiceShouldAlwayGetTheLastAuthCredentialsFromKeychain() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
 
         let apiManager = givenApiManager()
 
         XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
                        Credential(unauthSessionCredentials))
         
-        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
         XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
                        Credential(userData.credential))
@@ -196,7 +196,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceAuthSessionInvalidationClearsCredentialsAndLogsOut() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
         let apiManager = givenApiManager()
 
@@ -216,7 +216,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceAuthCredentialsUpdateSetsNewUnauthCredentials() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
 
         let apiManager = givenApiManager()
 
@@ -250,7 +250,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceAuthCredentialsUpdateUpdatesAuthSession() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
         let apiManager = givenApiManager()
 
