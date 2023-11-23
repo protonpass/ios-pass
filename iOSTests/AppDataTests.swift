@@ -48,7 +48,7 @@ final class AppDataTests: XCTestCase {
         Scope.singleton.reset()
         SharedToolingContainer.shared.keychain.register { self.keychain }
         SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
-        sut = AppData()
+        sut = AppData(module: .hostApp)
     }
 
     override func tearDown() {
@@ -91,16 +91,16 @@ extension AppDataTests {
 
     func testUpdateSessionCredentials() throws {
         // Given
-        let givenCredentials = AuthCredential.preview
+        let givenCredential = AuthCredential.preview
 
         // When
-        sut.setCredentials(givenCredentials)
+        sut.setCredential(givenCredential)
 
         // Then
-        try XCTAssertEqual(sut.getCredential()?.sessionID, givenCredentials.sessionID)
+        try XCTAssertEqual(sut.getCredential()?.sessionID, givenCredential.sessionID)
 
         // When
-        sut.setCredentials(nil)
+        sut.setCredential(nil)
 
         // Then
         XCTAssertNil(sut.getCredential())

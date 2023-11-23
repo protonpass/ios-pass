@@ -35,7 +35,6 @@ import XCTest
 final class APIManagerTests: XCTestCase {
     var credentialProvider: CredentialProvider!
     var mainKeyProvider: MainKeyProviderMock!
-    let currentCredential = AppDataKey.currentCredential.rawValue
     private var sessionPublisher: AnyCancellable?
 
     let unauthSessionCredentials = AuthCredential(sessionID: "test_session_id",
@@ -93,7 +92,7 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceIsCreatedWithSessionIfUnauthSessionIsPersisted() throws {
         // GIVEN
-        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
         
         // WHEN
         let apiManager = givenApiManager()
