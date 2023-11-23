@@ -52,7 +52,7 @@ final class AppCoordinator {
     private var cancellables = Set<AnyCancellable>()
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
-    private let dataProvider = resolve(\SharedDataContainer.appData)
+    private let appData = resolve(\SharedDataContainer.appData)
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
@@ -94,8 +94,8 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
-        dataProvider.setUserData(nil)
-        dataProvider.setCredentials(nil)
+        appData.setUserData(nil)
+        appData.setCredentials(nil)
     }
 
     private func bindAppState() {
@@ -116,8 +116,8 @@ final class AppCoordinator {
 
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
-                    dataProvider.setUserData(userData)
-                    dataProvider.setCredentials(userData.credential)
+                    appData.setUserData(userData)
+                    appData.setCredentials(userData.credential)
                     showHomeScene(manualLogIn: true)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -127,7 +127,7 @@ final class AppCoordinator {
     }
 
     func start() {
-        if dataProvider.isAuthenticated {
+        if appData.isAuthenticated {
             appStateObserver.updateAppState(.alreadyLoggedIn)
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))

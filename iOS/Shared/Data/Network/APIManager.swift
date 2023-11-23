@@ -48,7 +48,7 @@ protocol APIManagerProtocol {
 final class APIManager: APIManagerProtocol {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appVer = resolve(\SharedToolingContainer.appVersion)
-    private let dataProvider = resolve(\SharedDataContainer.appData)
+    private let appData = resolve(\SharedDataContainer.appData)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let trustKitDelegate: TrustKitDelegate
     let authHelper: AuthManagerProtocol = resolve(\SharedToolingContainer.authManager)
@@ -68,7 +68,7 @@ final class APIManager: APIManagerProtocol {
         let apiService: PMAPIService
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
-        if let credential = dataProvider.getCredentials() {
+        if let credential = appData.getCredentials() {
             apiService = PMAPIService.createAPIService(doh: doh,
                                                        sessionUID: credential.sessionID,
                                                        challengeParametersProvider: challengeProvider)
@@ -112,8 +112,8 @@ final class APIManager: APIManagerProtocol {
     }
 
     func clearCredentials() {
-        dataProvider.setUserData(nil)
-        dataProvider.setCredentials(nil)
+        appData.setUserData(nil)
+        appData.setCredentials(nil)
         apiService.setSessionUID(uid: "")
     }
 }
@@ -165,7 +165,7 @@ extension APIManager: AuthHelperDelegate {
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
         logger.info("Session credentials are updated")
-        dataProvider.setCredentials(authCredential)
+        appData.setCredentials(authCredential)
     }
 }
 
