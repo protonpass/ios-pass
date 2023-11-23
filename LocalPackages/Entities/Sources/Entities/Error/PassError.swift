@@ -31,6 +31,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
+    case corruptedSession(CorruptedSessionReason)
     case crypto(CryptoFailureReason)
     case errorExpected
     case itemNotFound(ItemIdentifiable)
@@ -61,6 +62,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
         case .corruptedEncryptedContent:
             "Corrupted encrypted content"
         case let .corruptedUserData(reason):
+            reason.debugDescription
+        case let .corruptedSession(reason):
             reason.debugDescription
         case let .crypto(reason):
             reason.debugDescription
