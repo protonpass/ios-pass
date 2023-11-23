@@ -1,6 +1,6 @@
 //
-// Typealiases.swift
-// Proton Pass - Created on 22/11/2023.
+// CredentialProvider.swift
+// Proton Pass - Created on 23/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,10 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
-import Entities
+import ProtonCoreNetworking
 
-public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
-public typealias AppDataProtocol = CredentialProvider & Resettable & UserDataSymmetricKeyProvider
-public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
-public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
+public protocol CredentialProvider {
+    func getCredential() -> AuthCredential?
+    func setCredential(_ credential: AuthCredential?)
+
+    var isAuthenticated: Bool { get }
+
+    // Should be removed after session forking
+    func migrateToSeparatedCredentials()
+}
+
+public extension CredentialProvider {
+    var isAuthenticated: Bool {
+        guard let credential = getCredential() else {
+            return false
+        }
+        return !credential.isForUnauthenticatedSession
+    }
+}
