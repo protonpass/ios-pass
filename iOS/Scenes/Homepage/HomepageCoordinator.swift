@@ -145,7 +145,6 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.info("App goes back to foreground")
-//                apiManager.startCredentialUpdate()
                 refresh()
                 sendAllEventsIfApplicable()
                 eventLoop.start()
@@ -154,18 +153,6 @@ private extension HomepageCoordinator {
                 refreshFeatureFlags()
             }
             .store(in: &cancellables)
-//
-//        apiManager.credentialFinishedUpdating
-//            .sink { [weak self] _ in
-//                guard let self else { return }
-//                refresh()
-//                sendAllEventsIfApplicable()
-//                eventLoop.start()
-//                eventLoop.forceSync()
-//                refreshAccess()
-//                refreshFeatureFlags()
-//            }
-//            .store(in: &cancellables)
     }
 
     func start() {

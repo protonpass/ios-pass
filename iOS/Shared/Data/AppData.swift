@@ -45,7 +45,7 @@ enum AppDataKey: String {
 
 extension UserData: @unchecked Sendable {}
 
-final class AppData: UserDataProvider, CredentialProvider, SymmetricKeyProvider, ResetingPrototocol {
+final class AppData: UserDataProvider, CredentialProvider, SymmetricKeyProvider, Resettable {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
 
@@ -79,6 +79,13 @@ final class AppData: UserDataProvider, CredentialProvider, SymmetricKeyProvider,
 
     func getCredentials() -> AuthCredential? {
         credential
+    }
+
+    var isAuthenticated: Bool {
+        guard let credential else {
+            return false
+        }
+        return !credential.isForUnauthenticatedSession
     }
 
     func resetData() {

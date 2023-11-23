@@ -36,7 +36,7 @@ extension WipeAllDataUseCase {
 
 final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
-    private let appData: FullDataProvider
+    private let appData: AppDataProtocol
     private let mainKeyProvider: MainKeyProvider
     private let apiManager: APIManager
     private let preferences: Preferences
@@ -47,7 +47,7 @@ final class WipeAllData: WipeAllDataUseCase {
     private let credentialManager: CredentialManagerProtocol
 
     init(logManager: LogManagerProtocol,
-         appData: FullDataProvider,
+         appData: AppDataProtocol,
          mainKeyProvider: MainKeyProvider,
          apiManager: APIManager,
          preferences: Preferences,

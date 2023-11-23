@@ -96,7 +96,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard credentialProvider.getCredentials() != nil else {
+        guard credentialProvider.isAuthenticated else {
             showNotLoggedInView()
             return
         }
@@ -106,7 +106,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func configureExtension() {
-        guard credentialProvider.getCredentials() != nil else {
+        guard credentialProvider.isAuthenticated else {
             let notLoggedInView = NotLoggedInView { [context] in
                 context.completeExtensionConfigurationRequest()
             }
