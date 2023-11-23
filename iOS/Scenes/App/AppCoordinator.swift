@@ -56,6 +56,7 @@ final class AppCoordinator {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
 
@@ -76,12 +77,18 @@ final class AppCoordinator {
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] sessionUID in
-                SentrySDK.capture(error: PassError.unexpectedLogout) { scope in
-                    scope.setTag(value: sessionUID, key: "sessionUID")
-                }
-                // swiftlint:disable:next discouraged_optional_self
-                self?.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
-            }.store(in: &cancellables)
+                guard let self else { return }
+                captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
+            }
+            .store(in: &cancellables)
+
+        corruptedSessionEventStream
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] reason in
+                guard let self else { return }
+                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
+            }
+            .store(in: &cancellables)
     }
 
     private func clearUserDataInKeychainIfFirstRun() {
@@ -192,6 +199,13 @@ private extension AppCoordinator {
         default:
             break
         }
+    }
+
+    func captureErrorAndLogOut(_ error: Error, sessionId: String) {
+        SentrySDK.capture(error: error) { scope in
+            scope.setTag(value: sessionId, key: "sessionUID")
+        }
+        appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
     }
 }
 
