@@ -24,13 +24,7 @@ import ProtonCoreServices
 
 public let kDefaultPageSize = 100
 
-public protocol RemoteDatasourceProtocol {
-    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response
-    func exec<E: Endpoint>(endpoint: E, files: [String: URL]) async throws -> E.Response
-    func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse
-}
-
-public class RemoteDatasource: RemoteDatasourceProtocol {
+public class RemoteDatasource {
     private let apiService: APIService
     private let eventStream: CorruptedSessionEventStream
 

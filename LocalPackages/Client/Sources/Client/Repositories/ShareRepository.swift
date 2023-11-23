@@ -90,11 +90,11 @@ public extension ShareRepositoryProtocol {
 }
 
 public actor ShareRepository: ShareRepositoryProtocol {
-    public let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
-    public let localDatasource: LocalShareDatasourceProtocol
-    public let remoteDatasouce: RemoteShareDatasourceProtocol
-    public let passKeyManager: PassKeyManagerProtocol
-    public let logger: Logger
+    private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
+    private let localDatasource: LocalShareDatasourceProtocol
+    private let remoteDatasouce: RemoteShareDatasourceProtocol
+    private let passKeyManager: PassKeyManagerProtocol
+    private let logger: Logger
 
     public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
                 localDatasource: LocalShareDatasourceProtocol,

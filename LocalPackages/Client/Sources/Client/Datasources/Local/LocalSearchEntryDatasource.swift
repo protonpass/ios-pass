@@ -21,7 +21,7 @@
 import CoreData
 import Entities
 
-public protocol LocalSearchEntryDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalSearchEntryDatasourceProtocol {
     /// Get entries of all vaults if `shareId` is `null`
     func getAllEntries(shareId: String?) async throws -> [SearchEntry]
     func upsert(item: ItemIdentifiable, date: Date) async throws
@@ -29,7 +29,9 @@ public protocol LocalSearchEntryDatasourceProtocol: LocalDatasourceProtocol {
     func remove(item: ItemIdentifiable) async throws
 }
 
-public extension LocalSearchEntryDatasourceProtocol {
+public final class LocalSearchEntryDatasource: LocalDatasource, LocalSearchEntryDatasourceProtocol {}
+
+public extension LocalSearchEntryDatasource {
     func getAllEntries(shareId: String?) async throws -> [SearchEntry] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = SearchEntryEntity.fetchRequest()
@@ -69,5 +71,3 @@ public extension LocalSearchEntryDatasourceProtocol {
                           context: taskContext)
     }
 }
-
-public final class LocalSearchEntryDatasource: LocalDatasource, LocalSearchEntryDatasourceProtocol {}
