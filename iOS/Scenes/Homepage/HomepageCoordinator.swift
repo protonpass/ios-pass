@@ -980,7 +980,6 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToDeleteAccount() {
-        let apiManager = resolve(\SharedToolingContainer.apiManager)
         let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
