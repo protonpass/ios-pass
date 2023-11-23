@@ -23,7 +23,7 @@ import Entities
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
-public typealias FullDataProvider = CredentialProvider & ResetingPrototocol & SymmetricKeyProvider &
+public typealias AppDataProtocol = CredentialProvider & Resettable & SymmetricKeyProvider &
     UserDataProvider
 
 // sourcery: AutoMockable
@@ -52,9 +52,11 @@ public extension UserDataProvider {
 public protocol CredentialProvider: Sendable {
     func setCredentials(_ credential: AuthCredential?)
     func getCredentials() -> AuthCredential?
+
+    var isAuthenticated: Bool { get }
 }
 
 // sourcery: AutoMockable
-public protocol ResetingPrototocol: Sendable {
+public protocol Resettable: Sendable {
     func resetData()
 }

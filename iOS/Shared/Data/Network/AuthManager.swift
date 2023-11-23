@@ -26,14 +26,12 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUtilities
 
-typealias FullAuthManagerProtocol = AuthDelegate & AuthManagerProtocol
-
-public protocol AuthManagerProtocol {
+public protocol AuthManagerProtocol: AuthDelegate {
     func setUpDelegate(_ delegate: AuthHelperDelegate,
                        callingItOn executor: CompletionBlockExecutor?)
 }
 
-public final class AuthManager: FullAuthManagerProtocol {
+public final class AuthManager: AuthManagerProtocol {
     private let credentialProvider: Atomic<CredentialProvider>
 
     public private(set) weak var delegate: AuthHelperDelegate?
@@ -98,20 +96,13 @@ public final class AuthManager: FullAuthManagerProtocol {
             // we don't nil out the key and password to avoid loosing this information unintentionaly
             let updatedAuth = authCredential.updatedKeepingKeyAndPasswordDataIntact(credential:
                 credential)
-            var updatedCredentials = credential
-            //
-            // if there's no update in scopes, assume the same scope as previously
-            //                    if updatedCredentials.scopes.isEmpty {
-            //                        updatedCredentials.scopes = existingCredentials.1.scopes
-            //                    }
-            //
-            //                    credentialsToBeUpdated = (updatedAuth, updatedCredentials)
+
             credentialProviderUpdated.setCredentials(updatedAuth)
 
             guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: updatedAuth,
-                                                credential: updatedCredentials,
+                                                credential: credential,
                                                 for: sessionUID)
             }
         }
@@ -208,11 +199,5 @@ public final class AuthManager: FullAuthManagerProtocol {
             authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID,
                                                                                    isAuthenticatedSession: false)
         }
-    }
-}
-
-extension AuthCredential {
-    var debug: String {
-        "session \(sessionID), token \(accessToken), refresh \(refreshToken), user \(userName)"
     }
 }

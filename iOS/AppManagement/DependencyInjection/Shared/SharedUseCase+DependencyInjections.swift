@@ -179,7 +179,7 @@ extension SharedUseCasesContainer {
 
     var wipeAllData: Factory<WipeAllDataUseCase> {
         self { WipeAllData(logManager: self.logManager,
-                           appData: SharedDataContainer.shared.fullDataProvider(),
+                           appData: SharedDataContainer.shared.appData(),
                            mainKeyProvider: SharedToolingContainer.shared.mainKeyProvider(),
                            apiManager: SharedToolingContainer.shared.apiManager(),
                            preferences: self.preferences,

@@ -81,7 +81,7 @@ final class APIManagerTests: XCTestCase {
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() {
 
         // GIVEN
-        SharedDataContainer.shared.fullDataProvider().resetData()
+        SharedDataContainer.shared.appData().resetData()
 
         // WHEN
         let apiManager = givenApiManager()
@@ -177,6 +177,22 @@ final class APIManagerTests: XCTestCase {
         
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
+    }
+    
+    
+    func testAPIServiceShouldAlwayGetTheLastAuthCredentialsFromKeychain() throws {
+        // GIVEN
+        SharedDataContainer.shared.credentialProvider().setCredentials(unauthSessionCredentials)
+
+        let apiManager = givenApiManager()
+
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
+                       Credential(unauthSessionCredentials))
+        
+        SharedDataContainer.shared.credentialProvider().setCredentials(userData.credential)
+
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
+                       Credential(userData.credential))
     }
 
     func testAPIServiceAuthSessionInvalidationClearsCredentialsAndLogsOut() throws {
