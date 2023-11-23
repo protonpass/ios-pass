@@ -21,7 +21,7 @@
 
 import Combine
 
-public enum CorruptedSessionReason: CustomDebugStringConvertible {
+public enum CorruptedSessionReason: CustomDebugStringConvertible, Equatable {
     public typealias SessionUID = String
     public typealias HTTPCode = Int
 
