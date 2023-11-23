@@ -42,7 +42,7 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Self-initialized properties
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
 
@@ -64,7 +64,6 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\SharedRepositoryContainer.telemetryEventRepository) private var telemetryEventRepository
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
@@ -108,19 +107,17 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     func start(with serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        guard let userData = userDataProvider.getUserData() else {
+        guard credentialProvider.isAuthenticated else {
             showNotLoggedInView()
             return
         }
 
-        apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                      scopes: userData.scopes)
         showCredentialsView(serviceIdentifiers: serviceIdentifiers)
         addNewEvent(type: .autofillDisplay)
     }
 
     func configureExtension() {
-        guard userDataProvider.getUserData() != nil else {
+        guard credentialProvider.isAuthenticated else {
             let notLoggedInView = NotLoggedInView { [context] in
                 context.completeExtensionConfigurationRequest()
             }
@@ -295,7 +292,7 @@ private extension CredentialProviderCoordinator {
                 }
             }
             await revokeCurrentSession()
-            await wipeAllData(includingUnauthSession: false, isTests: false)
+            await wipeAllData(isTests: false)
             showNotLoggedInView()
             completion?()
         }

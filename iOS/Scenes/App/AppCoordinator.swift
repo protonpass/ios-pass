@@ -71,7 +71,7 @@ final class AppCoordinator {
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             isUITest = true
-            wipeAllData(includingUnauthSession: true)
+            resetAllData()
         }
 
         apiManager.sessionWasInvalidated
@@ -95,6 +95,7 @@ final class AppCoordinator {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
         appData.setUserData(nil)
+        appData.setCredentials(nil)
     }
 
     private func bindAppState() {
@@ -106,21 +107,18 @@ final class AppCoordinator {
                 switch appState {
                 case let .loggedOut(reason):
                     logger.info("Logged out \(reason)")
-                    let shouldWipeUnauthSession = reason != .noAuthSessionButUnauthSessionAvailable
-                    wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
-                    showWelcomeScene(reason: reason)
-
-                case let .loggedIn(userData, manualLogIn):
-                    logger.info("Logged in manual \(manualLogIn)")
-                    if manualLogIn {
-                        // Only update userData when manually log in
-                        // because otherwise we'd just rewrite the same userData object
-                        appData.setUserData(userData)
+                    if reason != .noAuthSessionButUnauthSessionAvailable {
+                        resetAllData()
                     }
-                    apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                                  scopes: userData.scopes)
-                    showHomeScene(manualLogIn: manualLogIn)
-
+                    showWelcomeScene(reason: reason)
+                case .alreadyLoggedIn:
+                    logger.info("Already logged in")
+                    showHomeScene(manualLogIn: false)
+                case let .manuallyLoggedIn(userData):
+                    logger.info("Logged in manual")
+                    appData.setUserData(userData)
+                    appData.setCredentials(userData.credential)
+                    showHomeScene(manualLogIn: true)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
@@ -129,9 +127,9 @@ final class AppCoordinator {
     }
 
     func start() {
-        if let userData = appData.getUserData() {
-            appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: false))
-        } else if appData.getUnauthCredential() != nil {
+        if appData.isAuthenticated {
+            appStateObserver.updateAppState(.alreadyLoggedIn)
+        } else if appData.getCredentials() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
@@ -175,10 +173,10 @@ final class AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
-    private func wipeAllData(includingUnauthSession: Bool) {
+    private func resetAllData() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            await wipeAllData(includingUnauthSession: includingUnauthSession, isTests: isUITest)
+            await wipeAllData(isTests: isUITest)
             SharedViewContainer.shared.reset()
         }
     }
@@ -217,7 +215,7 @@ private extension AppCoordinator {
 
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
-        appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
+        appStateObserver.updateAppState(.manuallyLoggedIn(userData))
     }
 }
 

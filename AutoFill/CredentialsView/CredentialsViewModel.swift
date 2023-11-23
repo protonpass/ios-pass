@@ -108,9 +108,6 @@ final class CredentialsViewModel: ObservableObject {
 
     weak var delegate: CredentialsViewModelDelegate?
 
-    /// `PullToRefreshable` conformance
-    var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-
     init(serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         self.serviceIdentifiers = serviceIdentifiers
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
@@ -329,10 +326,6 @@ private extension CredentialsViewModel {
                 notMatchedItemInformation = nil
             }
             .store(in: &cancellables)
-    }
-
-    func display(error: Error) {
-        router.display(element: .displayErrorBanner(error))
     }
 }
 
