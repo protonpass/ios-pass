@@ -291,6 +291,8 @@ private extension CredentialProviderCoordinator {
                     }
                 }
             }
+            credentialProvider.setCredentials(nil)
+
             await revokeCurrentSession()
             await wipeAllData(includingUnauthSession: false, isTests: false)
             showNotLoggedInView()
@@ -631,7 +633,6 @@ extension CredentialProviderCoordinator: ExtensionSettingsViewModelDelegate {
     func extensionSettingsViewModelWantsToLogOut() {
         logOut { [weak self] in
             guard let self else { return }
-            credentialProvider.setCredentials(nil)
             context.completeExtensionConfigurationRequest()
         }
     }

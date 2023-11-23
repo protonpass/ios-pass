@@ -56,6 +56,15 @@ public protocol CredentialProvider: Sendable {
     var isAuthenticated: Bool { get }
 }
 
+public extension CredentialProvider {
+    var isAuthenticated: Bool {
+        guard let credential = getCredentials() else {
+            return false
+        }
+        return !credential.isForUnauthenticatedSession
+    }
+}
+
 // sourcery: AutoMockable
 public protocol Resettable: Sendable {
     func resetData()
