@@ -143,7 +143,7 @@ extension PaymentsManager: StoreKitManagerDelegate {
     }
 
     var isSignedIn: Bool {
-        appData.getCredentials()?.isForUnauthenticatedSession == false
+        appData.isAuthenticated
     }
 
     var activeUsername: String? {

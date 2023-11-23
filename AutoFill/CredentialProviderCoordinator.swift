@@ -292,7 +292,7 @@ private extension CredentialProviderCoordinator {
                 }
             }
             await revokeCurrentSession()
-            await wipeAllData(includingUnauthSession: false, isTests: false)
+            await wipeAllData(isTests: false)
             showNotLoggedInView()
             completion?()
         }
