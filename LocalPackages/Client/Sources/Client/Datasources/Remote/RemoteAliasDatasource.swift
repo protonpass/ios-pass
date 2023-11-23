@@ -27,26 +27,24 @@ public protocol RemoteAliasDatasourceProtocol: RemoteDatasourceProtocol {
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 }
 
-public extension RemoteAliasDatasourceProtocol {
-    func getAliasOptions(shareId: String) async throws -> AliasOptions {
+public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {
+    public func getAliasOptions(shareId: String) async throws -> AliasOptions {
         let endpoint = GetAliasOptionsEndpoint(shareId: shareId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.options
     }
 
-    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+    public func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
         let endpoint = GetAliasDetailsEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.alias
     }
 
-    func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
+    public func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         let endpoint = ChangeMailboxesEndpoint(shareId: shareId,
                                                itemId: itemId,
                                                mailboxIDs: mailboxIDs)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.alias
     }
 }
-
-public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
