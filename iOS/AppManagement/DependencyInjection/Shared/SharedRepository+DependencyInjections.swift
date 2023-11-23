@@ -78,7 +78,7 @@ private extension SharedRepositoryContainer {
     }
 
     var userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider {
-        SharedDataContainer.shared.fullDataProvider()
+        SharedDataContainer.shared.appData()
     }
 }
 
