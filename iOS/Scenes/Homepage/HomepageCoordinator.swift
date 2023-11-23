@@ -92,9 +92,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
         setUpRouting()
         finalizeInitialization()
-        vaultsManager.refresh()
         start()
-        eventLoop.start()
+        synchroniseData()
         refreshAccess()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
@@ -191,6 +190,18 @@ private extension HomepageCoordinator {
 
         start(with: homeView, secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+    }
+
+    func synchroniseData() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await vaultsManager.asyncRefresh()
+                eventLoop.start()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 
     func refreshAccess() {
