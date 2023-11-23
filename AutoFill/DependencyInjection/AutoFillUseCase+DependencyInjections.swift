@@ -46,10 +46,6 @@ private extension AutoFillUseCaseContainer {
     var context: ASCredentialProviderExtensionContext {
         AutoFillDataContainer.shared.context()
     }
-
-    var userDataProvider: UserDataProvider {
-        SharedDataContainer.shared.userDataProvider()
-    }
 }
 
 extension AutoFillUseCaseContainer {
