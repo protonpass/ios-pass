@@ -22,8 +22,10 @@ public protocol RemoteTelemetryEventDatasourceProtocol {
     func send(events: [EventInfo]) async throws
 }
 
-public final class RemoteTelemetryEventDatasource: RemoteDatasource, RemoteTelemetryEventDatasourceProtocol {
-    public func send(events: [EventInfo]) async throws {
+public final class RemoteTelemetryEventDatasource: RemoteDatasource, RemoteTelemetryEventDatasourceProtocol {}
+
+public extension RemoteTelemetryEventDatasource {
+    func send(events: [EventInfo]) async throws {
         let endpoint = SendEventsEndpoint(events: events)
         _ = try await exec(endpoint: endpoint)
     }

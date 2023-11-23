@@ -26,7 +26,7 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-private let kBatchPageSize = 99
+private let kBatchPageSize = 100
 
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get all items (both active & trashed)
@@ -116,17 +116,17 @@ public extension ItemRepositoryProtocol {
 }
 
 // swiftlint: disable discouraged_optional_self
-public final class ItemRepository: ItemRepositoryProtocol {
+public actor ItemRepository: ItemRepositoryProtocol {
     private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
     private let localDatasource: LocalItemDatasourceProtocol
-    private let remoteDatasource: RemoteItemRevisionDatasourceProtocol
+    private let remoteDatasource: RemoteItemDatasourceProtocol
     private let shareEventIDRepository: ShareEventIDRepositoryProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let logger: Logger
 
     public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
                 localDatasource: LocalItemDatasourceProtocol,
-                remoteDatasource: RemoteItemRevisionDatasourceProtocol,
+                remoteDatasource: RemoteItemDatasourceProtocol,
                 shareEventIDRepository: ShareEventIDRepositoryProtocol,
                 passKeyManager: PassKeyManagerProtocol,
                 logManager: LogManagerProtocol) {
@@ -136,14 +136,6 @@ public final class ItemRepository: ItemRepositoryProtocol {
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
-    }
-
-    public func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
-        logger.trace("Moving current share \(currentShareId) to share \(toShareId)")
-        let oldEncryptedItems = try await getItems(shareId: currentShareId, state: .active)
-        let results = try await parallelMove(oldEncryptedItems: oldEncryptedItems, to: toShareId)
-        logger.trace("Moved share \(currentShareId) to share \(toShareId)")
-        return results
     }
 }
 
@@ -428,6 +420,14 @@ public extension ItemRepository {
         try await localDatasource.upsertItems(newEncryptedItems)
 
         return newEncryptedItems
+    }
+
+    func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
+        logger.trace("Moving current share \(currentShareId) to share \(toShareId)")
+        let oldEncryptedItems = try await getItems(shareId: currentShareId, state: .active)
+        let results = try await parallelMove(oldEncryptedItems: oldEncryptedItems, to: toShareId)
+        logger.trace("Moved share \(currentShareId) to share \(toShareId)")
+        return results
     }
 
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {

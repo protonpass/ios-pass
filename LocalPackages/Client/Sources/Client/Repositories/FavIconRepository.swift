@@ -56,12 +56,12 @@ public protocol FavIconRepositoryProtocol {
 public final class FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    public let datasource: RemoteFavIconDatasourceProtocol
+    private let datasource: RemoteFavIconDatasourceProtocol
     /// URL to the folder that contains cached fav icons
-    public let containerUrl: URL
-    public let cacheExpirationDays: Int
+    private let containerUrl: URL
+    private let cacheExpirationDays: Int
     public let settings: FavIconSettings
-    public let symmetricKeyProvider: SymmetricKeyProvider
+    private let symmetricKeyProvider: SymmetricKeyProvider
 
     public init(datasource: RemoteFavIconDatasourceProtocol,
                 containerUrl: URL,

@@ -33,6 +33,29 @@ final class RepositoryContainer: SharedContainer, AutoRegistering {
     }
 }
 
+// MARK: - Computed properties
+
+private extension RepositoryContainer {
+    var apiService: APIService {
+        SharedToolingContainer.shared.apiManager().apiService
+    }
+
+    var corruptedSessionEventStream: CorruptedSessionEventStream {
+        SharedDataStreamContainer.shared.corruptedSessionEventStream()
+    }
+
+    var logManager: LogManagerProtocol {
+        SharedToolingContainer.shared.logManager()
+    }
+}
+
+private extension RepositoryContainer {
+    var remoteInviteDatasource: Factory<RemoteInviteDatasourceProtocol> {
+        self { RemoteInviteDatasource(apiService: self.apiService,
+                                      eventStream: self.corruptedSessionEventStream) }
+    }
+}
+
 extension RepositoryContainer {
     var reportRepository: Factory<ReportRepositoryProtocol> {
         self { ReportRepository(apiService: self.apiService,
@@ -41,21 +64,7 @@ extension RepositoryContainer {
     }
 
     var inviteRepository: Factory<InviteRepositoryProtocol> {
-        self {
-            InviteRepository(remoteInviteDatasource: RemoteInviteDatasource(apiService: self.apiService),
-                             logManager: self.logManager)
-        }
-    }
-}
-
-// MARK: - Computed properties
-
-private extension RepositoryContainer {
-    var apiService: APIService {
-        SharedToolingContainer.shared.apiManager().apiService
-    }
-
-    var logManager: LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
+        self { InviteRepository(remoteInviteDatasource: self.remoteInviteDatasource(),
+                                logManager: self.logManager) }
     }
 }
