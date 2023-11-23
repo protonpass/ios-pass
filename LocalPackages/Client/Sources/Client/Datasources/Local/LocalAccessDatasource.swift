@@ -20,12 +20,14 @@
 
 import Entities
 
-public protocol LocalAccessDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalAccessDatasourceProtocol {
     func getAccess(userId: String) async throws -> Access?
     func upsert(access: Access, userId: String) async throws
 }
 
-public extension LocalAccessDatasourceProtocol {
+public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol {}
+
+public extension LocalAccessDatasource {
     func getAccess(userId: String) async throws -> Access? {
         let taskContext = newTaskContext(type: .fetch)
 
@@ -46,5 +48,3 @@ public extension LocalAccessDatasourceProtocol {
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }
-
-public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol {}
