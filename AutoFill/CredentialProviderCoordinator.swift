@@ -98,6 +98,8 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
             .store(in: &cancellables)
 
         corruptedSessionEventStream
+            .removeDuplicates()
+            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] reason in
                 guard let self else { return }

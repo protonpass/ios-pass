@@ -59,6 +59,7 @@ final class AppCoordinator {
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
+    private var corruptedSessionStream: AnyCancellable?
 
     init(window: UIWindow) {
         self.window = window
@@ -81,14 +82,11 @@ final class AppCoordinator {
                 captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
             }
             .store(in: &cancellables)
+    }
 
-        corruptedSessionEventStream
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] reason in
-                guard let self else { return }
-                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
-            }
-            .store(in: &cancellables)
+    deinit {
+        corruptedSessionStream?.cancel()
+        corruptedSessionStream = nil
     }
 
     private func clearUserDataInKeychainIfFirstRun() {
@@ -113,11 +111,13 @@ final class AppCoordinator {
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
+                    connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: false)
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
                     appData.setCredentials(userData.credential)
+                    connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: true)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -145,6 +145,7 @@ final class AppCoordinator {
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
             handle(logOutReason: reason)
+            stopStream()
         }
     }
 
@@ -179,6 +180,31 @@ final class AppCoordinator {
             await wipeAllData(isTests: isUITest)
             SharedViewContainer.shared.reset()
         }
+    }
+}
+
+// MARK: - Utils
+
+private extension AppCoordinator {
+    func connectToCorruptedSessionStream() {
+        guard corruptedSessionStream == nil else {
+            return
+        }
+
+        corruptedSessionStream = corruptedSessionEventStream
+            .removeDuplicates()
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] reason in
+                guard let self else { return }
+                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
+            }
+    }
+
+    func stopStream() {
+        corruptedSessionEventStream.send(nil)
+        corruptedSessionStream?.cancel()
+        corruptedSessionStream = nil
     }
 }
 
