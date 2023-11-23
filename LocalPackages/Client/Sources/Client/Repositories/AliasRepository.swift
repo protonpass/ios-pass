@@ -25,36 +25,10 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public protocol AliasRepositoryProtocol {
-    var remoteDatasouce: RemoteAliasDatasourceProtocol { get }
-
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     @discardableResult
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
-}
-
-public extension AliasRepositoryProtocol {
-    func getAliasOptions(shareId: String) async throws -> AliasOptions {
-        try await remoteDatasouce.getAliasOptions(shareId: shareId)
-    }
-
-    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
-        try await remoteDatasouce.getAliasDetails(shareId: shareId, itemId: itemId)
-    }
-
-    func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
-        try await remoteDatasouce.changeMailboxes(shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
-    }
-}
-
-// MARK: - Public supporting tasks
-
-public extension AliasRepositoryProtocol {
-    func getAliasDetailsTask(shareId: String, itemId: String) -> Task<Alias, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await getAliasDetails(shareId: shareId, itemId: itemId)
-        }
-    }
 }
 
 public actor AliasRepository: AliasRepositoryProtocol {
@@ -64,7 +38,20 @@ public actor AliasRepository: AliasRepositoryProtocol {
         self.remoteDatasouce = remoteDatasouce
     }
 
-    public init(apiService: APIService) {
-        remoteDatasouce = RemoteAliasDatasource(apiService: apiService)
+    public init(apiService: APIService,
+                eventStream: CorruptedSessionEventStream) {
+        remoteDatasouce = RemoteAliasDatasource(apiService: apiService, eventStream: eventStream)
+    }
+
+    public func getAliasOptions(shareId: String) async throws -> AliasOptions {
+        try await remoteDatasouce.getAliasOptions(shareId: shareId)
+    }
+
+    public func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+        try await remoteDatasouce.getAliasDetails(shareId: shareId, itemId: itemId)
+    }
+
+    public func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
+        try await remoteDatasouce.changeMailboxes(shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
     }
 }

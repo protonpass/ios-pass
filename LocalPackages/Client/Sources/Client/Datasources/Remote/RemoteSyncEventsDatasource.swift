@@ -22,12 +22,10 @@ public protocol RemoteSyncEventsDatasourceProtocol: RemoteDatasourceProtocol {
     func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents
 }
 
-public extension RemoteSyncEventsDatasourceProtocol {
-    func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents {
+public final class RemoteSyncEventsDatasource: RemoteDatasource, RemoteSyncEventsDatasourceProtocol {
+    public func getEvents(shareId: String, lastEventId: String) async throws -> SyncEvents {
         let endpoint = GetEventsEndpoint(shareId: shareId, lastEventId: lastEventId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.events
     }
 }
-
-public final class RemoteSyncEventsDatasource: RemoteDatasource, RemoteSyncEventsDatasourceProtocol {}
