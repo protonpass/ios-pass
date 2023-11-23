@@ -18,12 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public protocol RemoteShareKeyDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteShareKeyDatasourceProtocol {
     func getKeys(shareId: String) async throws -> [ShareKey]
 }
 
-public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {
-    public func getKeys(shareId: String) async throws -> [ShareKey] {
+public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {}
+
+public extension RemoteShareKeyDatasource {
+    func getKeys(shareId: String) async throws -> [ShareKey] {
         var keys = [ShareKey]()
         var page = 0
         while true {

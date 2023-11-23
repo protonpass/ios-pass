@@ -21,7 +21,7 @@
 import CoreData
 import Entities
 
-public protocol LocalTelemetryEventDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalTelemetryEventDatasourceProtocol {
     /// - Parameters:
     ///   - count: the maximum number of events
     func getOldestEvents(count: Int, userId: String) async throws -> [TelemetryEvent]
@@ -36,7 +36,9 @@ public protocol LocalTelemetryEventDatasourceProtocol: LocalDatasourceProtocol {
     func removeAllEvents(userId: String) async throws
 }
 
-public extension LocalTelemetryEventDatasourceProtocol {
+public final class LocalTelemetryEventDatasource: LocalDatasource, LocalTelemetryEventDatasourceProtocol {}
+
+public extension LocalTelemetryEventDatasource {
     func getOldestEvents(count: Int, userId: String) async throws -> [TelemetryEvent] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = TelemetryEventEntity.fetchRequest()
@@ -92,5 +94,3 @@ public extension LocalTelemetryEventDatasourceProtocol {
                           context: taskContext)
     }
 }
-
-public final class LocalTelemetryEventDatasource: LocalDatasource, LocalTelemetryEventDatasourceProtocol {}

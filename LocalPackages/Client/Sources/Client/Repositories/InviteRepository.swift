@@ -27,8 +27,6 @@ import ProtonCoreLogin
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 
-    // MARK: - Invites
-
     func getPendingInvitesForUser() async throws -> [UserInvite]
     func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool
 
@@ -50,8 +48,6 @@ public actor InviteRepository: InviteRepositoryProtocol {
         logger = .init(manager: logManager)
     }
 }
-
-// MARK: - Invites
 
 public extension InviteRepository {
     func getPendingInvitesForUser() async throws -> [UserInvite] {

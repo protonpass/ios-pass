@@ -117,9 +117,9 @@ private extension SharedRepositoryContainer {
         self { LocalItemDatasource(databaseService: self.databaseService) }
     }
 
-    var remoteItemDatasource: Factory<RemoteItemRevisionDatasourceProtocol> {
-        self { RemoteItemRevisionDatasource(apiService: self.apiService,
-                                            eventStream: self.corruptedSessionEventStream) }
+    var remoteItemDatasource: Factory<RemoteItemDatasourceProtocol> {
+        self { RemoteItemDatasource(apiService: self.apiService,
+                                    eventStream: self.corruptedSessionEventStream) }
     }
 
     var localAccessDatasource: Factory<LocalAccessDatasourceProtocol> {
@@ -145,7 +145,8 @@ private extension SharedRepositoryContainer {
     }
 
     var remotePublicKeyDatasource: Factory<RemotePublicKeyDatasourceProtocol> {
-        self { RemotePublicKeyDatasource(apiService: self.apiService) }
+        self { RemotePublicKeyDatasource(apiService: self.apiService,
+                                         eventStream: self.corruptedSessionEventStream) }
     }
 
     var remoteShareInviteDatasource: Factory<RemoteShareInviteDatasourceProtocol> {

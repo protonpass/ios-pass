@@ -24,10 +24,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public protocol ShareEventIDRepositoryProtocol {
-    var localDatasource: LocalShareEventIDDatasourceProtocol { get }
-    var remoteDatasource: RemoteShareEventIDDatasourceProtocol { get }
-    var logger: Logger { get }
-
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
     @discardableResult
     func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String
@@ -35,9 +31,9 @@ public protocol ShareEventIDRepositoryProtocol {
 }
 
 public actor ShareEventIDRepository: ShareEventIDRepositoryProtocol {
-    public let localDatasource: LocalShareEventIDDatasourceProtocol
-    public let remoteDatasource: RemoteShareEventIDDatasourceProtocol
-    public let logger: Logger
+    private let localDatasource: LocalShareEventIDDatasourceProtocol
+    private let remoteDatasource: RemoteShareEventIDDatasourceProtocol
+    private let logger: Logger
 
     public init(localDatasource: LocalShareEventIDDatasourceProtocol,
                 remoteDatasource: RemoteShareEventIDDatasourceProtocol,
@@ -46,10 +42,12 @@ public actor ShareEventIDRepository: ShareEventIDRepositoryProtocol {
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
     }
+}
 
-    public func getLastEventId(forceRefresh: Bool,
-                               userId: String,
-                               shareId: String) async throws -> String {
+public extension ShareEventIDRepository {
+    func getLastEventId(forceRefresh: Bool,
+                        userId: String,
+                        shareId: String) async throws -> String {
         if forceRefresh {
             logger.trace("Force refreshing last event id of share \(shareId) of user \(userId)")
             return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
@@ -64,9 +62,9 @@ public actor ShareEventIDRepository: ShareEventIDRepositoryProtocol {
         return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
     }
 
-    public func upsertLastEventId(userId: String,
-                                  shareId: String,
-                                  lastEventId: String) async throws {
+    func upsertLastEventId(userId: String,
+                           shareId: String,
+                           lastEventId: String) async throws {
         try await localDatasource.upsertLastEventId(userId: userId,
                                                     shareId: shareId,
                                                     lastEventId: lastEventId)

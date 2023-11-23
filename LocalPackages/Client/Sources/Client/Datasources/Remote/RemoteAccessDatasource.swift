@@ -24,8 +24,10 @@ public protocol RemoteAccessDatasourceProtocol {
     func getAccess() async throws -> Access
 }
 
-public final class RemoteAccessDatasource: RemoteDatasource, RemoteAccessDatasourceProtocol {
-    public func getAccess() async throws -> Access {
+public final class RemoteAccessDatasource: RemoteDatasource, RemoteAccessDatasourceProtocol {}
+
+public extension RemoteAccessDatasource {
+    func getAccess() async throws -> Access {
         let endpoint = CheckAccessEndpoint()
         let response = try await exec(endpoint: endpoint)
         return response.access
