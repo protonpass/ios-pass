@@ -57,10 +57,6 @@ final class APIManager: APIManagerProtocol {
     private(set) var forceUpgradeHelper: ForceUpgradeHelper?
     private(set) var humanHelper: HumanCheckHelper?
 
-    private var forceUpdatingCredentials = false
-
-    private var cancellables = Set<AnyCancellable>()
-
     let sessionWasInvalidated: PassthroughSubject<SessionUID, Never> = .init()
 
     init() {

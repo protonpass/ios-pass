@@ -36,10 +36,6 @@ final class SharedRepositoryContainer: SharedContainer, AutoRegistering {
     func autoRegister() {
         manager.defaultScope = .singleton
     }
-
-    func reset() {
-        manager.reset()
-    }
 }
 
 // MARK: - Computed properties
