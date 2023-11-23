@@ -40,7 +40,9 @@ public extension LockedKeychainStorage {
 enum AppDataKey: String {
     case userData
     case symmetricKey
-    case currentCredential
+    case hostAppCredential
+    case autofillExtensionCredential
+    case unauthCredential
 }
 
 extension UserData: @unchecked Sendable {}
@@ -49,47 +51,25 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
 
-    @LockedKeychainStorage(key: AppDataKey.currentCredential, defaultValue: nil)
-    private var credential: AuthCredential?
-
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
 
-    init() {}
+    @LockedKeychainStorage(key: AppDataKey.hostAppCredential, defaultValue: nil)
+    private var hostAppCredential: AuthCredential?
+
+    @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
+    private var autofillExtensionCredential: AuthCredential?
+
+    @LockedKeychainStorage(key: AppDataKey.unauthCredential, defaultValue: nil)
+    private var unauthCredential: AuthCredential?
+
+    private let module: PassModule
+
+    init(module: PassModule) {
+        self.module = module
+    }
 
     func getSymmetricKey() throws -> SymmetricKey {
-        try getOrCreateSymmetricKey()
-    }
-
-    func removeSymmetricKey() {
-        symmetricKey = nil
-    }
-
-    func setUserData(_ userData: UserData?) {
-        self.userData = userData
-    }
-
-    func getUserData() -> UserData? {
-        userData
-    }
-
-    func setCredentials(_ newCredential: AuthCredential?) {
-        credential = newCredential
-    }
-
-    func getCredentials() -> AuthCredential? {
-        credential
-    }
-
-    func resetData() {
-        setUserData(nil)
-        setCredentials(nil)
-        removeSymmetricKey()
-    }
-}
-
-private extension AppData {
-    func getOrCreateSymmetricKey() throws -> SymmetricKey {
         if let symmetricKey {
             guard let symmetricKeyData = try symmetricKey.base64Decode() else {
                 throw PassError.failedToGetOrCreateSymmetricKey
@@ -99,6 +79,82 @@ private extension AppData {
             let randomData = try Data.random()
             symmetricKey = randomData.encodeBase64()
             return .init(data: randomData)
+        }
+    }
+
+    func removeSymmetricKey() {
+        symmetricKey = nil
+    }
+
+    func setUserData(_ userData: UserData?) {
+        self.userData = userData
+        // Should be removed after session forking
+        useCredentialInUserDataForBothAppAndExtension()
+    }
+
+    func getUserData() -> UserData? {
+        userData
+    }
+
+    func getCredential() -> AuthCredential? {
+        if userData != nil {
+            switch module {
+            case .hostApp:
+                assert(hostAppCredential != nil, "Expect not nil hostAppCredential")
+                return hostAppCredential
+            case .autoFillExtension:
+                assert(autofillExtensionCredential != nil, "Expect not nil autofillExtensionCredential")
+                return autofillExtensionCredential
+            case .keyboardExtension:
+                fatalError("Not applicable")
+            }
+        } else {
+            return unauthCredential
+        }
+    }
+
+    func setCredential(_ credential: AuthCredential?) {
+        if userData != nil {
+            switch module {
+            case .hostApp:
+                assert(hostAppCredential != nil, "Expect not nil hostAppCredential")
+                hostAppCredential = credential
+                // Should be removed after session forking
+                autofillExtensionCredential = credential
+
+            case .autoFillExtension:
+                assert(autofillExtensionCredential != nil, "Expect not nil autofillExtensionCredential")
+                autofillExtensionCredential = credential
+                // Should be removed after session forking
+                hostAppCredential = credential
+
+            case .keyboardExtension:
+                fatalError("Not applicable")
+            }
+        } else {
+            unauthCredential = credential
+        }
+    }
+
+    func resetData() {
+        userData = nil
+        symmetricKey = nil
+        hostAppCredential = nil
+        autofillExtensionCredential = nil
+        unauthCredential = nil
+    }
+
+    // Should be removed after session forking
+    func migrateToSeparatedCredentials() {
+        useCredentialInUserDataForBothAppAndExtension()
+    }
+}
+
+private extension AppData {
+    func useCredentialInUserDataForBothAppAndExtension() {
+        if let userData {
+            hostAppCredential = userData.credential
+            autofillExtensionCredential = userData.credential
         }
     }
 }
