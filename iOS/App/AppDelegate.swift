@@ -25,12 +25,12 @@ import Factory
 import ProtonCoreCryptoGoImplementation
 import ProtonCoreCryptoGoInterface
 import ProtonCoreFeatureSwitch
-import Sentry
 import UIKit
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let getRustLibraryVersion = resolve(\UseCasesContainer.getRustLibraryVersion)
+    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
 
     private var backgroundTask: Task<Void, Never>?
 
@@ -38,7 +38,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         injectDefaultCryptoImplementation()
         setUpCoreFeatureSwitches()
-        setUpSentry()
+        setUpSentry(bundle: .main)
         setUpDefaultValuesForSettingsBundle()
         return true
     }
@@ -55,20 +55,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 private extension AppDelegate {
-    func setUpSentry() {
-        SentrySDK.start { options in
-            options.dsn = Bundle.main.plistString(for: .sentryDSN, in: .prod)
-            if ProcessInfo.processInfo.environment["me.proton.pass.SentryDebug"] == "1" {
-                options.debug = true
-            }
-            options.enableAppHangTracking = true
-            options.enableFileIOTracing = true
-            options.enableCoreDataTracing = true
-            options.attachViewHierarchy = true // EXPERIMENTAL
-            options.environment = ProtonPassDoH().environment.name
-        }
-    }
-
     func setUpDefaultValuesForSettingsBundle() {
         let appVersionKey = "pref_app_version"
         kSharedUserDefaults.register(defaults: [appVersionKey: "-"])

@@ -32,6 +32,7 @@ import ProtonCoreAuthentication
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
+import Sentry
 import SwiftUI
 
 public final class CredentialProviderCoordinator: DeinitPrintable {
@@ -43,9 +44,11 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
 
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private let context = resolve(\AutoFillDataContainer.context)
     private weak var rootViewController: UIViewController?
@@ -83,14 +86,23 @@ public final class CredentialProviderCoordinator: DeinitPrintable {
         self.rootViewController = rootViewController
 
         // Post init
+        setUpSentry(bundle: .main)
         AppearanceSettings.apply()
         setUpRouting()
 
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] sessionUID in
                 guard let self else { return }
-                logOut()
+                logOut(error: PassError.unexpectedLogout, sessionId: sessionUID)
+            }
+            .store(in: &cancellables)
+
+        corruptedSessionEventStream
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] reason in
+                guard let self else { return }
+                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
             }
             .store(in: &cancellables)
     }
@@ -270,9 +282,18 @@ private extension CredentialProviderCoordinator {
         addTelemetryEvent(with: type)
     }
 
-    func logOut(completion: (() -> Void)? = nil) {
+    func logOut(error: Error? = nil,
+                sessionId: String? = nil,
+                completion: (() -> Void)? = nil) {
         Task { @MainActor [weak self] in
             guard let self else { return }
+            if let error {
+                SentrySDK.capture(error: error) { scope in
+                    if let sessionId {
+                        scope.setTag(value: sessionId, key: "sessionUID")
+                    }
+                }
+            }
             await revokeCurrentSession()
             await wipeAllData(includingUnauthSession: false, isTests: false)
             showNotLoggedInView()
