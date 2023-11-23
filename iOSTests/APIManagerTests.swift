@@ -128,7 +128,7 @@ final class APIManagerTests: XCTestCase {
         
         let apiManager = givenApiManager()
         // WHEN
-        apiManager.sessionIsAvailable(authCredential: unauthSessionCredentials, scopes: .empty)
+        apiManager.authHelper.onUpdate(credential: Credential(unauthSessionCredentials), sessionUID: unauthSessionCredentials.sessionID)
         
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
@@ -144,8 +144,7 @@ final class APIManagerTests: XCTestCase {
         let apiManager = givenApiManager()
 
         // WHEN
-        apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                      scopes: userData.scopes)
+        apiManager.authHelper.onUpdate(credential: Credential(userData.credential), sessionUID: userData.credential.sessionID)
 
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")

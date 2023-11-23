@@ -106,11 +106,6 @@ final class APIManager: APIManagerProtocol {
         fetchUnauthSessionIfNeeded()
     }
 
-    func sessionIsAvailable(authCredential: AuthCredential, scopes: Scopes) {
-        apiService.setSessionUID(uid: authCredential.sessionID)
-        apiService.authDelegate?.onSessionObtaining(credential: Credential(authCredential, scopes: scopes))
-    }
-
     func clearCredentials() {
         appData.setUserData(nil)
         appData.setCredentials(nil)

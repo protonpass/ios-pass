@@ -145,7 +145,7 @@ extension SharedToolingContainer {
 
 extension SharedToolingContainer {
     var authManager: Factory<AuthManagerProtocol> {
-        self { AuthManager(credentialProvider: SharedDataContainer.shared.appData()) }
+        self { AuthManager(credentialProvider: SharedDataContainer.shared.credentialProvider()) }
     }
 
     /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
