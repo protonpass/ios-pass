@@ -30,9 +30,10 @@ final class PreferencesTests: XCTestCase {
         sut = Preferences()
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
+        await sut.reset(isTests: true)
         sut = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     func testQuickTypeBarEnabledByDefault() {
