@@ -35,16 +35,7 @@ final class SharedToolingContainer: SharedContainer, AutoRegistering {
     let manager = ContainerManager()
 
     private init() {
-        let key = "ProtonPass"
-        switch Bundle.main.infoDictionary?["MODULE"] as? String {
-        case "AUTOFILL_EXTENSION":
-            FactoryContext.setArg(PassModule.autoFillExtension, forKey: key)
-        case "KEYBOARD_EXTENSION":
-            FactoryContext.setArg(PassModule.keyboardExtension, forKey: key)
-        default:
-            // Default to host app
-            break
-        }
+        Self.setUpContext()
     }
 
     func autoRegister() {

@@ -31,6 +31,10 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()
     let manager = ContainerManager()
 
+    init() {
+        Self.setUpContext()
+    }
+
     func autoRegister() {
         manager.defaultScope = .singleton
     }
@@ -42,7 +46,9 @@ extension SharedDataContainer {
     }
 
     var appData: Factory<AppDataProtocol> {
-        self { AppData() }
+        self { AppData(module: .hostApp) }
+            .onArg(PassModule.autoFillExtension) { AppData(module: .autoFillExtension) }
+            .onArg(PassModule.keyboardExtension) { AppData(module: .keyboardExtension) }
     }
 
     var userDataProvider: Factory<UserDataProvider> {

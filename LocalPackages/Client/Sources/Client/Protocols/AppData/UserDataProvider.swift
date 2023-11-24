@@ -1,6 +1,6 @@
 //
-// UserDataSymmetricKeyProvider.swift
-// Proton Pass - Created on 06/11/2023.
+// UserDataProvider.swift
+// Proton Pass - Created on 03/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,6 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import SwiftUI
+import Entities
+import ProtonCoreLogin
 
-public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
+// sourcery: AutoMockable
+public protocol UserDataProvider: Sendable {
+    func getUserData() -> UserData?
+    func setUserData(_ userData: UserData?)
+}
+
+public extension UserDataProvider {
+    func getUserId() throws -> String {
+        guard let userData = getUserData() else {
+            throw PassError.noUserData
+        }
+        return userData.user.ID
+    }
+
+    func getUnwrappedUserData() throws -> UserData {
+        guard let userData = getUserData() else {
+            throw PassError.noUserData
+        }
+        return userData
+    }
+}
