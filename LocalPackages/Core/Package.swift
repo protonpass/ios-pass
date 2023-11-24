@@ -11,7 +11,11 @@ var platforms: [SupportedPlatform] = [
 ]
 
 let settings: [SwiftSetting] = [
-  .enableExperimentalFeature("StrictConcurrency")
+  .enableExperimentalFeature("StrictConcurrency"),
+  .enableExperimentalFeature("ForwardTrailingClosures"),
+  .enableExperimentalFeature("ExistentialAny"),
+  .enableExperimentalFeature("ImplicitOpenExistentials"),
+  .enableExperimentalFeature("BareSlashRegexLiterals")
 ]
 
 let package = Package(name: "Core",

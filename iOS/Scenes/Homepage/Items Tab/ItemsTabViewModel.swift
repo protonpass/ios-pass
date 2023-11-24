@@ -100,10 +100,15 @@ private extension ItemsTabViewModel {
             .store(in: &cancellables)
 
         // Show the progress if after 5 seconds after logging in and items are not yet loaded
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else { return }
-            if loginMethod.isManualLogIn(),
+            try? await Task.sleep(seconds: 5)
+
+            if await loginMethod.isManualLogIn(),
                case .loading = vaultsManager.state {
+                if Task.isCancelled {
+                    return
+                }
                 shouldShowSyncProgress = true
             }
         }
