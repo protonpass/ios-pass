@@ -18,12 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import CryptoKit
-import Entities
-import ProtonCoreDataModel
-import ProtonCoreLogin
-
 public struct ItemRevisionsPaginated: Decodable {
     public let total: Int
     public let lastToken: String?
@@ -60,36 +54,21 @@ public struct ItemRevision: Decodable, Equatable, Sendable, Hashable {
 
     /// Enum representation of `state`
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
-}
 
-public extension ItemRevision {
-    func getContentProtobuf(vaultKey: DecryptedShareKey) throws -> ItemContentProtobuf {
-        guard vaultKey.keyRotation == keyRotation else {
-            throw PassError.crypto(.unmatchedKeyRotation(lhsKey: vaultKey.keyRotation,
-                                                         rhsKey: keyRotation))
-        }
-
-        #warning("Handle this")
-        guard let itemKey else {
-            throw PassError.crypto(.failedToDecryptContent)
-        }
-
-        guard let itemKeyData = try itemKey.base64Decode() else {
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-
-        let decryptedItemKeyData = try AES.GCM.open(itemKeyData,
-                                                    key: vaultKey.keyData,
-                                                    associatedData: .itemKey)
-
-        guard let contentData = try content.base64Decode() else {
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-
-        let decryptedContentData = try AES.GCM.open(contentData,
-                                                    key: decryptedItemKeyData,
-                                                    associatedData: .itemContent)
-
-        return try ItemContentProtobuf(data: decryptedContentData)
+    public init(itemID: String, revision: Int64, contentFormatVersion: Int64, keyRotation: Int64, content: String,
+                itemKey: String?, state: Int64, aliasEmail: String?, createTime: Int64, modifyTime: Int64,
+                lastUseTime: Int64?, revisionTime: Int64) {
+        self.itemID = itemID
+        self.revision = revision
+        self.contentFormatVersion = contentFormatVersion
+        self.keyRotation = keyRotation
+        self.content = content
+        self.itemKey = itemKey
+        self.state = state
+        self.aliasEmail = aliasEmail
+        self.createTime = createTime
+        self.modifyTime = modifyTime
+        self.lastUseTime = lastUseTime
+        self.revisionTime = revisionTime
     }
 }

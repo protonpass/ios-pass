@@ -21,32 +21,31 @@
 //
 
 import Client
-import UseCases
 
-protocol RefreshInvitationsUseCase: Sendable {
+public protocol RefreshInvitationsUseCase: Sendable {
     func execute() async throws
 }
 
-extension RefreshInvitationsUseCase {
+public extension RefreshInvitationsUseCase {
     func callAsFunction() async throws {
         try await execute()
     }
 }
 
-final class RefreshInvitations: RefreshInvitationsUseCase {
+public final class RefreshInvitations: RefreshInvitationsUseCase {
     private let inviteRepository: InviteRepositoryProtocol
     private let accessRepository: AccessRepositoryProtocol
     private let getFeatureFlagStatus: GetFeatureFlagStatusUseCase
 
-    init(inviteRepository: InviteRepositoryProtocol,
-         accessRepository: AccessRepositoryProtocol,
-         getFeatureFlagStatus: GetFeatureFlagStatusUseCase) {
+    public init(inviteRepository: InviteRepositoryProtocol,
+                accessRepository: AccessRepositoryProtocol,
+                getFeatureFlagStatus: GetFeatureFlagStatusUseCase) {
         self.inviteRepository = inviteRepository
         self.accessRepository = accessRepository
         self.getFeatureFlagStatus = getFeatureFlagStatus
     }
 
-    func execute() async throws {
+    public func execute() async throws {
         guard await getFeatureFlagStatus(with: FeatureFlagType.passSharingV1) else { return }
         await inviteRepository.refreshInvites()
     }

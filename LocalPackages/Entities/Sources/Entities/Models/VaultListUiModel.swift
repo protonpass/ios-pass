@@ -1,5 +1,5 @@
 //
-// MoveItemEndpoint.swift
+// VaultListUiModel.swift
 // Proton Pass - Created on 29/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,28 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import ProtonCoreNetworking
-import ProtonCoreServices
+public struct VaultListUiModel: Hashable {
+    public let vault: Vault
+    public let itemCount: Int
 
-public struct MoveItemResponse: Decodable {
-    let code: Int
-    let item: ItemRevision
+    public init(vault: Vault, itemCount: Int) {
+        self.vault = vault
+        self.itemCount = itemCount
+    }
+
+    public init(vaultContent: VaultContentUiModel) {
+        vault = vaultContent.vault
+        itemCount = vaultContent.items.count
+    }
 }
 
-public struct MoveItemEndpoint: Endpoint {
-    public typealias Body = MoveItemRequest
-    public typealias Response = MoveItemResponse
-
-    public var debugDescription: String
-    public var path: String
-    public var method: HTTPMethod
-    public var body: MoveItemRequest?
-
-    public init(request: MoveItemRequest, itemId: String, fromShareId: String) {
-        debugDescription = "Move item"
-        path = "/pass/v1/share/\(fromShareId)/item/\(itemId)/share"
-        method = .put
-        body = request
+extension VaultListUiModel: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.vault.shareId == rhs.vault.shareId
     }
 }

@@ -1,6 +1,6 @@
 //
-// SearchEntryUiModel.swift
-// Proton Pass - Created on 17/03/2023.
+// SymmetricallyEncryptedItem+Extensions.swift
+// Proton Pass - Created on 24/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,32 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import CryptoKit
 import Entities
 
-struct SearchEntryUiModel: ItemIdentifiable {
-    let itemId: String
-    let shareId: String
-    let type: ItemContentType
-    let title: String
-    let url: String?
-    let description: String?
-}
-
-extension SearchEntryUiModel: Identifiable {
-    var id: String { itemId + shareId }
-}
-
-extension SearchEntryUiModel: ItemThumbnailable {}
-
-extension SearchEntryUiModel: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.shareId == rhs.shareId && lhs.itemId == rhs.itemId
-    }
-}
-
-extension SymmetricallyEncryptedItem {
+public extension SymmetricallyEncryptedItem {
     func toSearchEntryUiModel(_ symmetricKey: SymmetricKey) throws -> SearchEntryUiModel {
         let itemContent = try getItemContent(symmetricKey: symmetricKey)
 

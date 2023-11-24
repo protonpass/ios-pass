@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 
 public protocol GetMainVaultUseCase: Sendable {
     func execute() async -> Vault?

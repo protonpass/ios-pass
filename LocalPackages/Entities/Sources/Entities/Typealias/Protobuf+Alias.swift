@@ -1,6 +1,6 @@
 //
-// VaultLabel.swift
-// Proton Pass - Created on 13/04/2023.
+// Protobuf+Alias.swift
+// Proton Pass - Created on 24/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,24 +18,5 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import Entities
-import SwiftUI
-
-struct VaultLabel: View {
-    let vault: Vault
-
-    var body: some View {
-        Label(title: {
-            Text(vault.name)
-                .font(.footnote)
-        }, icon: {
-            Image(uiImage: vault.displayPreferences.icon.icon.smallImage)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 12, height: 12)
-        })
-        .foregroundColor(Color(uiColor: PassColor.textWeak))
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
+public typealias ItemContentProtobuf = ProtonPassItemV1_Item
+public typealias ProtobufableItemContentProtocol = ItemContentProtocol & Protobufable
