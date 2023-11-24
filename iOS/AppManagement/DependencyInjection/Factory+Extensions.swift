@@ -29,6 +29,7 @@ extension FactoryContext {
         setArg(arg.rawValue, forKey: key)
     }
 
+    // periphery:ignore
     /// Overload of `removeArg(forKey:)`  to make it more flexible
     /// by taking `key` as `any RawRepresentable<String>` instead of `String`
     static func removeArg(forKey key: any RawRepresentable<String>) {
