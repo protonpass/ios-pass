@@ -23,30 +23,19 @@ import Combine
 
 public enum CorruptedSessionReason: CustomDebugStringConvertible, Equatable {
     public typealias SessionUID = String
-    public typealias HTTPCode = Int
 
     case unauthSessionMakingAuthRequests(SessionUID)
-    case validSessionButBadAccessSecret(SessionUID)
-    case unknown(SessionUID, HTTPCode)
 
     public var debugDescription: String {
         switch self {
         case .unauthSessionMakingAuthRequests:
             "Corrupted session - unauth session making auth requests"
-        case .validSessionButBadAccessSecret:
-            "Corrupted session - valid session but bad access secret"
-        case let .unknown(_, code):
-            "Corrupted session with HTTP code \(code)"
         }
     }
 
     public var sessionId: String {
         switch self {
         case let .unauthSessionMakingAuthRequests(sessionId):
-            sessionId
-        case let .validSessionButBadAccessSecret(sessionId):
-            sessionId
-        case let .unknown(sessionId, _):
             sessionId
         }
     }
