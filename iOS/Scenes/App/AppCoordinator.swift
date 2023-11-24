@@ -123,7 +123,6 @@ final class AppCoordinator {
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
-                    appData.setCredential(userData.credential)
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: true)
                 case .undefined:
