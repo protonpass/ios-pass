@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import Entities
 
 extension ShareKey {
     static func random(keyRotation: Int64? = nil) -> ShareKey {

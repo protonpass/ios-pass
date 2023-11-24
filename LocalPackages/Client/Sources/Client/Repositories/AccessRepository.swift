@@ -42,7 +42,7 @@ public actor AccessRepository: AccessRepositoryProtocol {
     private let userDataProvider: UserDataProvider
     private let logger: Logger
 
-    public nonisolated let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
+    public let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: LocalAccessDatasourceProtocol,
                 remoteDatasource: RemoteAccessDatasourceProtocol,

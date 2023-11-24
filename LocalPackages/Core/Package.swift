@@ -10,6 +10,10 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
+let settings: [SwiftSetting] = [
+  .enableExperimentalFeature("StrictConcurrency")
+]
+
 let package = Package(name: "Core",
                       platforms: platforms,
                       products: [
@@ -44,7 +48,9 @@ let package = Package(name: "Core",
                                   ],
                                   resources: [
                                       .process("Resources")
-                                  ]),
+                                  ]
+//                                  ,swiftSettings: settings
+                                 ),
                           .testTarget(name: "CoreTests",
                                       dependencies: [
                                           "Core",

@@ -22,6 +22,16 @@ import CryptoKit
 import Entities
 
 public extension SymmetricallyEncryptedItem {
+    /// Symmetrically decrypt and return decrypted item content
+    func getItemContent(symmetricKey: SymmetricKey) throws -> ItemContent {
+        let contentProtobuf = try ItemContentProtobuf(base64: encryptedContent, symmetricKey: symmetricKey)
+        return .init(shareId: shareId,
+                     item: item,
+                     contentProtobuf: contentProtobuf)
+    }
+}
+
+public extension SymmetricallyEncryptedItem {
     func toSearchEntryUiModel(_ symmetricKey: SymmetricKey) throws -> SearchEntryUiModel {
         let itemContent = try getItemContent(symmetricKey: symmetricKey)
 

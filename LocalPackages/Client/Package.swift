@@ -10,6 +10,10 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
+let settings: [SwiftSetting] = [
+  .enableExperimentalFeature("StrictConcurrency")
+]
+
 let package = Package(name: "Client",
                       platforms: platforms,
                       products: [
@@ -47,7 +51,9 @@ let package = Package(name: "Client",
                                       .product(name: "Reachability", package: "Reachability.swift"),
                                       .product(name: "Macro", package: "Macro")
                                   ],
-                                  resources: [.process("Resources")]),
+                                  resources: [.process("Resources")]
+//                                  ,swiftSettings: settings
+                                 ),
                           .testTarget(name: "ClientTests",
                                       dependencies: ["Client"])
                       ])

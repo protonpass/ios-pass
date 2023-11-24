@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 import Foundation
 
 /// Empty credential database and index all existing login items
