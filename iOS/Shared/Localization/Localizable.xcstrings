@@ -198,7 +198,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "decriptato al %@%%..."
+            "value" : "Decrittografato al %@%%"
           }
         },
         "ja" : {
@@ -4338,7 +4338,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un registro es un tipo de archivo que nos muestra las acciones que ha realizado y que le han conducido a un error. Solo los usaremos para ayudar a nuestros ingenieros a solucionar los errores."
+            "value" : "Un registro es un tipo de archivo que nos muestra las acciones que ha realizado y que le han conducido a un error. Solo los usaremos para ayudar a nuestros ingenieros a resolver los errores."
           }
         },
         "fi" : {
@@ -39386,13 +39386,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar el alias"
+            "value" : "Borrar el alias"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar el alias"
+            "value" : "Borrar el alias"
           }
         },
         "fi" : {
@@ -39528,7 +39528,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar campo"
+            "value" : "Borrar el campo"
           }
         },
         "fi" : {
@@ -39540,7 +39540,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supprimer le champ"
+            "value" : "Retirer le champ"
           }
         },
         "it" : {
