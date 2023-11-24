@@ -22,29 +22,28 @@
 
 import Client
 import Entities
-import UseCases
 
-protocol SetShareInviteVaultUseCase {
+public protocol SetShareInviteVaultUseCase {
     func execute(with vault: SharingVaultData)
 }
 
-extension SetShareInviteVaultUseCase {
+public extension SetShareInviteVaultUseCase {
     func callAsFunction(with vault: SharingVaultData) {
         execute(with: vault)
     }
 }
 
-final class SetShareInviteVault: SetShareInviteVaultUseCase {
+public final class SetShareInviteVault: SetShareInviteVaultUseCase {
     private let shareInviteService: ShareInviteServiceProtocol
     private let getVaultItemCount: GetVaultItemCountUseCase
 
-    init(shareInviteService: ShareInviteServiceProtocol,
-         getVaultItemCount: GetVaultItemCountUseCase) {
+    public init(shareInviteService: ShareInviteServiceProtocol,
+                getVaultItemCount: GetVaultItemCountUseCase) {
         self.shareInviteService = shareInviteService
         self.getVaultItemCount = getVaultItemCount
     }
 
-    func execute(with vault: SharingVaultData) {
+    public func execute(with vault: SharingVaultData) {
         shareInviteService.setCurrentSelectedVault(with: vault)
         switch vault {
         case let .existing(createdVault):

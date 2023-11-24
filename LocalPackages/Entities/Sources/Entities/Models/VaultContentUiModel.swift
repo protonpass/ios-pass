@@ -1,7 +1,7 @@
 //
-// ShareKey.swift
-// Proton Pass - Created on 19/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// VaultContentUiModel.swift
+// Proton Pass - Created on 03/10/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,16 +18,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+public struct VaultContentUiModel: Hashable {
+    public let vault: Vault
+    /// `Active` items only
+    public let items: [ItemUiModel]
 
-public struct ShareKey: Decodable, Hashable, Equatable {
-    public let createTime: Int64
-    public let key: String
-    public let keyRotation: Int64
-    public let userKeyID: String
+    public var itemCount: Int {
+        items.count
+    }
+
+    public init(vault: Vault, items: [ItemUiModel]) {
+        self.vault = vault
+        self.items = items
+    }
 }
 
-public struct ShareKeys: Decodable {
-    let total: Int
-    let keys: [ShareKey]
+public extension [VaultContentUiModel] {
+    mutating func sortAlphabetically() {
+        sort(by: { $0.vault.name < $1.vault.name })
+    }
 }
