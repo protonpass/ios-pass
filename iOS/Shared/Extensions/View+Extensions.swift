@@ -1,5 +1,5 @@
 //
-// View+ScannerSheet.swift
+// View+Extensions.swift
 // Proton Pass - Created on 30/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -23,12 +23,33 @@ import Core
 import DocScanner
 import SwiftUI
 
+// MARK: - Doc & credit card scanner View extension
+
 extension View {
     func scannerSheet(isPresented: Binding<Bool>,
                       interpreter: ScanInterpreting,
                       resultStream: PassthroughSubject<ScanResult?, Error>) -> some View {
         sheet(isPresented: isPresented) {
             DocScanner(with: interpreter, resultStream: resultStream)
+        }
+    }
+}
+
+extension View {
+    func theme(_ theme: Theme) -> some View {
+        modifier(ThemeModifier(theme: theme))
+            .animation(.default, value: theme)
+    }
+}
+
+private struct ThemeModifier: ViewModifier {
+    let theme: Theme
+
+    func body(content: Content) -> some View {
+        if let colorScheme = theme.colorScheme {
+            content.environment(\.colorScheme, colorScheme)
+        } else {
+            content
         }
     }
 }

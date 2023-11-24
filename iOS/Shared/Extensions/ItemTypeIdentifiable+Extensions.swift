@@ -1,7 +1,6 @@
 //
-//
-// UpdateCachedInvitations.swift
-// Proton Pass - Created on 01/08/2023.
+// ItemTypeIdentifiable+Extensions.swift
+// Proton Pass - Created on 24/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,28 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Client
+import Entities
+import Macro
 
-protocol UpdateCachedInvitationsUseCase: Sendable {
-    func execute(for inviteToken: String) async
-}
-
-extension UpdateCachedInvitationsUseCase {
-    func callAsFunction(for inviteToken: String) async {
-        await execute(for: inviteToken)
-    }
-}
-
-final class UpdateCachedInvitations: UpdateCachedInvitationsUseCase {
-    private let repository: InviteRepositoryProtocol
-
-    init(repository: InviteRepositoryProtocol) {
-        self.repository = repository
-    }
-
-    func execute(for inviteToken: String) async {
-        await repository.removeCachedInvite(containing: inviteToken)
+extension ItemTypeIdentifiable {
+    var trashMessage: String {
+        switch type {
+        case .login:
+            #localized("Login moved to trash")
+        case .alias:
+            #localized("Alias \"%@\" will stop forwarding emails to your mailbox", aliasEmail ?? "")
+        case .creditCard:
+            #localized("Credit card moved to trash")
+        case .note:
+            #localized("Note moved to trash")
+        }
     }
 }

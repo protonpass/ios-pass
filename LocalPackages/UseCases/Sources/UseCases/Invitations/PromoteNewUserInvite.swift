@@ -22,33 +22,33 @@ import Client
 import Entities
 import ProtonCoreLogin
 
-protocol PromoteNewUserInviteUseCase: Sendable {
+public protocol PromoteNewUserInviteUseCase: Sendable {
     func execute(vault: Vault, inviteId: String, email: String) async throws
 }
 
-extension PromoteNewUserInviteUseCase {
+public extension PromoteNewUserInviteUseCase {
     func callAsFunction(vault: Vault, inviteId: String, email: String) async throws {
         try await execute(vault: vault, inviteId: inviteId, email: email)
     }
 }
 
-final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
+public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
     private let publicKeyRepository: PublicKeyRepositoryProtocol
     private let passKeyManager: PassKeyManagerProtocol
     private let shareInviteRepository: ShareInviteRepositoryProtocol
     private let userDataProvider: UserDataProvider
 
-    init(publicKeyRepository: PublicKeyRepositoryProtocol,
-         passKeyManager: PassKeyManagerProtocol,
-         shareInviteRepository: ShareInviteRepositoryProtocol,
-         userDataProvider: UserDataProvider) {
+    public init(publicKeyRepository: PublicKeyRepositoryProtocol,
+                passKeyManager: PassKeyManagerProtocol,
+                shareInviteRepository: ShareInviteRepositoryProtocol,
+                userDataProvider: UserDataProvider) {
         self.publicKeyRepository = publicKeyRepository
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
         self.userDataProvider = userDataProvider
     }
 
-    func execute(vault: Vault, inviteId: String, email: String) async throws {
+    public func execute(vault: Vault, inviteId: String, email: String) async throws {
         let userData = try userDataProvider.getUnwrappedUserData()
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {

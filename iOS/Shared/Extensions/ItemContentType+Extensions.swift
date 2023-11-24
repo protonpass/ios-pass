@@ -1,5 +1,5 @@
 //
-// ItemContent+UIRelatedProperties.swift
+// ItemContentType+Extensions.swift
 // Proton Pass - Created on 08/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -207,21 +207,6 @@ extension ItemContentType {
             #localized("Credit card updated")
         case .note:
             #localized("Note updated")
-        }
-    }
-}
-
-extension ItemTypeIdentifiable {
-    var trashMessage: String {
-        switch type {
-        case .login:
-            #localized("Login moved to trash")
-        case .alias:
-            #localized("Alias \"%@\" will stop forwarding emails to your mailbox", aliasEmail ?? "")
-        case .creditCard:
-            #localized("Credit card moved to trash")
-        case .note:
-            #localized("Note moved to trash")
         }
     }
 }

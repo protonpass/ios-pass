@@ -22,7 +22,6 @@ import Client
 import Core
 import Foundation
 import UIKit
-import UseCases
 
 protocol WipeAllDataUseCase {
     func execute(isTests: Bool) async
