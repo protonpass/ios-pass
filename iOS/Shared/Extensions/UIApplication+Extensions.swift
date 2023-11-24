@@ -1,5 +1,5 @@
 //
-// UIApplication+OpenSettings.swift
+// UIApplication+Extensions.swift
 // Proton Pass - Created on 08/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //

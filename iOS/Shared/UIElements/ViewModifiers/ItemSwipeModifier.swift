@@ -1,5 +1,5 @@
 //
-// View+ItemSwipeModifier.swift
+// ItemSwipeModifier.swift
 // Proton Pass - Created on 28/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
