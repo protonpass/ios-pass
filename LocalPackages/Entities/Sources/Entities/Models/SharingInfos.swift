@@ -18,15 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Entities
 
-enum SharingVaultData {
+public enum SharingVaultData {
     case existing(Vault)
     case new(VaultProtobuf, ItemContent)
 }
 
-extension SharingVaultData {
+public extension SharingVaultData {
     var name: String {
         switch self {
         case let .existing(vault):
@@ -55,23 +54,32 @@ extension SharingVaultData {
     }
 }
 
-struct SharingInfos {
-    let vault: SharingVaultData?
-    let email: String?
-    let role: ShareRole?
+public struct SharingInfos {
+    public let vault: SharingVaultData?
+    public let email: String?
+    public let role: ShareRole?
     /// No public keys means external user
-    let receiverPublicKeys: [PublicKey]?
-    let itemsNum: Int?
+    public let receiverPublicKeys: [PublicKey]?
+    public let itemsNum: Int?
 
-    var vaultName: String? {
+    public var vaultName: String? {
         vault?.name
     }
 
-    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
+    public var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
         vault?.displayPreferences ?? .init()
     }
 
-    var shared: Bool {
+    public var shared: Bool {
         vault?.shared ?? false
+    }
+
+    public init(vault: SharingVaultData?, email: String?, role: ShareRole?, receiverPublicKeys: [PublicKey]?,
+                itemsNum: Int?) {
+        self.vault = vault
+        self.email = email
+        self.role = role
+        self.receiverPublicKeys = receiverPublicKeys
+        self.itemsNum = itemsNum
     }
 }

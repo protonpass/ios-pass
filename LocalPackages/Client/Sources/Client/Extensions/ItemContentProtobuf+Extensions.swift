@@ -1,6 +1,6 @@
 //
-// VaultContentUiModel.swift
-// Proton Pass - Created on 03/10/2023.
+// ItemContentProtobuf+Extensions.swift
+// Proton Pass - Created on 24/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,25 +18,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import Entities
+import Foundation
 
-public struct VaultContentUiModel: Hashable {
-    public let vault: Vault
-    /// `Active` items only
-    public let items: [ItemUiModel]
+// MARK: - Symmetric encryption/decryption
 
-    public var itemCount: Int {
-        items.count
+public extension ItemContentProtobuf {
+    /// Symmetrically encrypt and base 64 the binary data
+    func encrypt(symmetricKey: SymmetricKey) throws -> String {
+        let clearData = try data()
+        let cypherData = try symmetricKey.encrypt(clearData)
+        return cypherData.base64EncodedString()
     }
 
-    public init(vault: Vault, items: [ItemUiModel]) {
-        self.vault = vault
-        self.items = items
-    }
-}
-
-public extension [VaultContentUiModel] {
-    mutating func sortAlphabetically() {
-        sort(by: { $0.vault.name < $1.vault.name })
+    init(base64: String, symmetricKey: SymmetricKey) throws {
+        guard let cypherData = try base64.base64Decode() else {
+            throw PassError.crypto(.failedToBase64Decode)
+        }
+        let clearData = try symmetricKey.decrypt(cypherData)
+        try self.init(data: clearData)
     }
 }

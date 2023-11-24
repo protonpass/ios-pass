@@ -1,7 +1,7 @@
 //
-// VaultListUiModel.swift
-// Proton Pass - Created on 29/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// VaultProtobuf.swift
+// Proton Pass - Created on 12/07/2022.
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,22 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
+import Foundation
 
-struct VaultListUiModel: Hashable {
-    let vault: Vault
-    let itemCount: Int
-}
+public typealias VaultProtobuf = ProtonPassVaultV1_Vault
 
-extension VaultListUiModel: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.vault.shareId == rhs.vault.shareId
+public extension VaultProtobuf {
+    init(data: Data) throws {
+        self = try VaultProtobuf(serializedData: data)
     }
-}
 
-extension VaultListUiModel {
-    init(vaultContent: VaultContentUiModel) {
-        vault = vaultContent.vault
-        itemCount = vaultContent.items.count
+    init(name: String,
+         description: String,
+         color: ProtonPassVaultV1_VaultColor,
+         icon: ProtonPassVaultV1_VaultIcon) {
+        self.init()
+        self.name = name
+        description_p = description
+        display.color = color
+        display.icon = icon
+    }
+
+    func data() throws -> Data {
+        try serializedData()
     }
 }

@@ -20,33 +20,32 @@
 
 import Client
 import Entities
-import UseCases
 
 // sourcery: AutoMockable
-protocol CreateAndMoveItemToNewVaultUseCase: Sendable {
+public protocol CreateAndMoveItemToNewVaultUseCase: Sendable {
     func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault
 }
 
-extension CreateAndMoveItemToNewVaultUseCase {
+public extension CreateAndMoveItemToNewVaultUseCase {
     func callAsFunction(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         try await execute(vault: vault, itemContent: itemContent)
     }
 }
 
-final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase {
+public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase {
     private let createVault: CreateVaultUseCase
     private let moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase
     private let vaultsManager: VaultsManagerProtocol
 
-    init(createVault: CreateVaultUseCase,
-         moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase,
-         vaultsManager: VaultsManagerProtocol) {
+    public init(createVault: CreateVaultUseCase,
+                moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase,
+                vaultsManager: VaultsManagerProtocol) {
         self.createVault = createVault
         self.moveItemsBetweenVaults = moveItemsBetweenVaults
         self.vaultsManager = vaultsManager
     }
 
-    func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
+    public func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         do {
             if let vault = try await createVault(with: vault) {
                 try await moveItemsBetweenVaults(movingContext: .item(itemContent,

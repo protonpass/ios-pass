@@ -887,7 +887,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         }
     }
 
-    func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
+    func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
     }
 }
@@ -1232,7 +1232,7 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 // MARK: - SearchViewModelDelegate
 
 extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
+    func searchViewModelWantsToViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: true)
         addNewEvent(type: .searchClick)
     }
