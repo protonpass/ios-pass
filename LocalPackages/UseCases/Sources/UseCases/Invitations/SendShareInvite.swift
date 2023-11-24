@@ -26,20 +26,19 @@ import CryptoKit
 import Entities
 import ProtonCoreCrypto
 import ProtonCoreLogin
-import UseCases
 
 /// Make an invitation and return the shared `Vault`
-protocol SendVaultShareInviteUseCase: Sendable {
+public protocol SendVaultShareInviteUseCase: Sendable {
     func execute(with infos: SharingInfos) async throws -> Vault
 }
 
-extension SendVaultShareInviteUseCase {
+public extension SendVaultShareInviteUseCase {
     func callAsFunction(with infos: SharingInfos) async throws -> Vault {
         try await execute(with: infos)
     }
 }
 
-final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
+public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
     private let createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase
     private let makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase
     private let shareInviteService: ShareInviteServiceProtocol
@@ -48,13 +47,13 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
     private let userDataProvider: UserDataProvider
     private let syncEventLoop: SyncEventLoopProtocol
 
-    init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
-         makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase,
-         shareInviteService: ShareInviteServiceProtocol,
-         passKeyManager: PassKeyManagerProtocol,
-         shareInviteRepository: ShareInviteRepositoryProtocol,
-         userDataProvider: UserDataProvider,
-         syncEventLoop: SyncEventLoopProtocol) {
+    public init(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase,
+                makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase,
+                shareInviteService: ShareInviteServiceProtocol,
+                passKeyManager: PassKeyManagerProtocol,
+                shareInviteRepository: ShareInviteRepositoryProtocol,
+                userDataProvider: UserDataProvider,
+                syncEventLoop: SyncEventLoopProtocol) {
         self.createAndMoveItemToNewVault = createAndMoveItemToNewVault
         self.makeUnsignedSignatureForVaultSharing = makeUnsignedSignatureForVaultSharing
         self.shareInviteService = shareInviteService
@@ -64,7 +63,7 @@ final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCa
         self.syncEventLoop = syncEventLoop
     }
 
-    func execute(with infos: SharingInfos) async throws -> Vault {
+    public func execute(with infos: SharingInfos) async throws -> Vault {
         guard let role = infos.role else {
             throw PassError.sharing(.incompleteInformation)
         }

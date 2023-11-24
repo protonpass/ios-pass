@@ -27,32 +27,31 @@ import Entities
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreLogin
-import UseCases
 
-protocol DecodeShareVaultInformationUseCase: Sendable {
+public protocol DecodeShareVaultInformationUseCase: Sendable {
     func execute(with userInvite: UserInvite) async throws -> VaultProtobuf
 }
 
-extension DecodeShareVaultInformationUseCase {
+public extension DecodeShareVaultInformationUseCase {
     func callAsFunction(with userInvite: UserInvite) async throws -> VaultProtobuf {
         try await execute(with: userInvite)
     }
 }
 
-final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultInformationUseCase {
+public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultInformationUseCase {
     private let userDataProvider: UserDataProvider
     private let getEmailPublicKey: GetEmailPublicKeyUseCase
     private let updateUserAddresses: UpdateUserAddressesUseCase
 
-    init(userDataProvider: UserDataProvider,
-         getEmailPublicKey: GetEmailPublicKeyUseCase,
-         updateUserAddresses: UpdateUserAddressesUseCase) {
+    public init(userDataProvider: UserDataProvider,
+                getEmailPublicKey: GetEmailPublicKeyUseCase,
+                updateUserAddresses: UpdateUserAddressesUseCase) {
         self.userDataProvider = userDataProvider
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses
     }
 
-    func execute(with userInvite: UserInvite) async throws -> VaultProtobuf {
+    public func execute(with userInvite: UserInvite) async throws -> VaultProtobuf {
         let userData = try userDataProvider.getUnwrappedUserData()
         guard let vaultData = userInvite.vaultData,
               let intermediateVaultKey = userInvite.keys
