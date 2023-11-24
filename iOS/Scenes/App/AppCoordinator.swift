@@ -53,13 +53,13 @@ final class AppCoordinator {
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let appData = resolve(\SharedDataContainer.appData)
-    private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
-
-    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private var corruptedSessionStream: AnyCancellable?
+
+    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
 
     init(window: UIWindow) {
         self.window = window
@@ -67,6 +67,7 @@ final class AppCoordinator {
 
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
+        migrateToSeparatedCredentialsIfNeeded()
         bindAppState()
 
         // if ui test reset everything
@@ -93,7 +94,13 @@ final class AppCoordinator {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
         appData.setUserData(nil)
-        appData.setCredentials(nil)
+        appData.setCredential(nil)
+    }
+
+    private func migrateToSeparatedCredentialsIfNeeded() {
+        guard !preferences.didMigrateToSeparatedCredentials else { return }
+        preferences.didMigrateToSeparatedCredentials = true
+        appData.migrateToSeparatedCredentials()
     }
 
     private func bindAppState() {
@@ -116,7 +123,6 @@ final class AppCoordinator {
                 case let .manuallyLoggedIn(userData):
                     logger.info("Logged in manual")
                     appData.setUserData(userData)
-                    appData.setCredentials(userData.credential)
                     connectToCorruptedSessionStream()
                     showHomeScene(manualLogIn: true)
                 case .undefined:
@@ -129,7 +135,7 @@ final class AppCoordinator {
     func start() {
         if appData.isAuthenticated {
             appStateObserver.updateAppState(.alreadyLoggedIn)
-        } else if appData.getCredentials() != nil {
+        } else if appData.getCredential() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))

@@ -48,10 +48,7 @@ private extension KeychainStorage {
 final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol {
     deinit { print(deinitMessage) }
 
-    init() {
-        migrateToKeychain()
-        migrateToPINSupport()
-    }
+    init() {}
 
     // MARK: Non sensitive prefs
 
@@ -82,11 +79,8 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @AppStorage(Key.createdItemsCount.rawValue, store: kSharedUserDefaults)
     var createdItemsCount = 0
 
-    @AppStorage(Key.didMigrateToKeychain.rawValue, store: kSharedUserDefaults)
-    var didMigrateToKeychain = false
-
-    @AppStorage(Key.didMigrateToPINSupport.rawValue, store: kSharedUserDefaults)
-    var didMigrateToPINSupport = false
+    @AppStorage(Key.didMigrateToSeparatedCredentials.rawValue, store: kSharedUserDefaults)
+    var didMigrateToSeparatedCredentials = false
 
     // MARK: Sensitive prefs
 
@@ -139,42 +133,6 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
 }
 
 private extension Preferences {
-    func migrateToKeychain() {
-        guard !didMigrateToKeychain else { return }
-
-        failedAttemptCount = kSharedUserDefaults.integer(forKey: Key.failedAttemptCount.rawValue)
-
-        let appLockTimeRawValue = kSharedUserDefaults.integer(forKey: Key.appLockTime.rawValue)
-        appLockTime = .init(rawValue: appLockTimeRawValue) ?? .twoMinutes
-
-        let clipboardExpirationRawValue =
-            kSharedUserDefaults.integer(forKey: Key.clipboardExpiration.rawValue)
-        clipboardExpiration = .init(rawValue: clipboardExpirationRawValue) ?? .oneMinute
-
-        shareClipboard = kSharedUserDefaults.bool(forKey: Key.shareClipboard.rawValue)
-
-        let dismissedBannerIdsString =
-            kSharedUserDefaults.string(forKey: Key.dismissedBannerIds.rawValue)
-        dismissedBannerIds = dismissedBannerIdsString?.components(separatedBy: ",") ?? []
-
-        didMigrateToKeychain = true
-    }
-
-    func migrateToPINSupport() {
-        guard !didMigrateToPINSupport else { return }
-
-        let biometricAuthenticationEnabled =
-            kSharedUserDefaults.bool(forKey: Key.biometricAuthenticationEnabled.rawValue)
-
-        if biometricAuthenticationEnabled {
-            localAuthenticationMethod = .biometric
-        }
-
-        didMigrateToPINSupport = true
-    }
-}
-
-private extension Preferences {
     enum Key: String {
         case quickTypeBar
         case automaticallyCopyTotpCode
@@ -194,10 +152,8 @@ private extension Preferences {
         case isFirstRun
         case createdItemsCount
 
-        // Temporary keys, can be removed several versions after 1.0.3
-        case didMigrateToKeychain
-        case didMigrateToPINSupport
-        case biometricAuthenticationEnabled
+        // Temporary keys, can be removed several versions after 1.5.7
+        case didMigrateToSeparatedCredentials
     }
 }
 
