@@ -65,12 +65,8 @@ private extension RemoteDatasource {
            let httpCode = responseError.httpCode {
             let sessionId = apiService.sessionUID
             switch httpCode {
-            case 400:
-                eventStream.send(.validSessionButBadAccessSecret(sessionId))
             case 403:
                 eventStream.send(.unauthSessionMakingAuthRequests(sessionId))
-            case 400...499:
-                eventStream.send(.unknown(sessionId, httpCode))
             default:
                 break
             }
