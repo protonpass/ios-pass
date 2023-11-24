@@ -31,6 +31,7 @@ protocol ItemContextMenuHandlerDelegate: AnyObject {
 
 final class ItemContextMenuHandler {
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
+    @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
@@ -74,9 +75,9 @@ extension ItemContextMenuHandler {
                     restore(item)
                 }
 
-                clipboardManager.bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                                        dismissButtonTitle: #localized("Undo"),
-                                                                        onDismiss: undoBlock)
+                bannerManager.displayBottomInfoMessage(item.trashMessage,
+                                                       dismissButtonTitle: #localized("Undo"),
+                                                       onDismiss: undoBlock)
                 router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 logger.error(error)
@@ -93,7 +94,7 @@ extension ItemContextMenuHandler {
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.untrashItems([encryptedItem])
-                clipboardManager.bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
+                bannerManager.displayBottomSuccessMessage(item.type.restoreMessage)
                 router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
             } catch {
                 logger.error(error)
@@ -110,7 +111,7 @@ extension ItemContextMenuHandler {
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getEncryptedItem(for: item)
                 try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
-                clipboardManager.bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
+                bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
                 router.display(element: .successMessage(config: .refresh(with: .delete(item.type))))
             } catch {
                 logger.error(error)
@@ -210,6 +211,6 @@ private extension ItemContextMenuHandler {
     }
 
     func handleError(_ error: Error) {
-        clipboardManager.bannerManager.displayTopErrorMessage(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 }
