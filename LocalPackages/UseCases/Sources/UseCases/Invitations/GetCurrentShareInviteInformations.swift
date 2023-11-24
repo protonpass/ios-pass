@@ -24,24 +24,24 @@ import Client
 import Entities
 
 // sourcery: AutoMockable
-protocol GetCurrentShareInviteInformationsUseCase {
+public protocol GetCurrentShareInviteInformationsUseCase {
     func execute() -> SharingInfos
 }
 
-extension GetCurrentShareInviteInformationsUseCase {
+public extension GetCurrentShareInviteInformationsUseCase {
     func callAsFunction() -> SharingInfos {
         execute()
     }
 }
 
-final class GetCurrentShareInviteInformations: GetCurrentShareInviteInformationsUseCase {
+public final class GetCurrentShareInviteInformations: GetCurrentShareInviteInformationsUseCase {
     private let shareInviteService: ShareInviteServiceProtocol
 
-    init(shareInviteService: ShareInviteServiceProtocol) {
+    public init(shareInviteService: ShareInviteServiceProtocol) {
         self.shareInviteService = shareInviteService
     }
 
-    func execute() -> SharingInfos {
+    public func execute() -> SharingInfos {
         let vault = shareInviteService.currentSelectedVault
         let email = shareInviteService.currentDestinationUserEmail
         let role = shareInviteService.currentUserRole

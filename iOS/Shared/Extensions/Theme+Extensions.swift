@@ -1,7 +1,6 @@
 //
-//
-// ResetFactory.swift
-// Proton Pass - Created on 06/10/2023.
+// Theme+Extensions.swift
+// Proton Pass - Created on 07/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,24 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Factory
+import Core
+import SwiftUI
 
-public protocol ResetFactoryUseCase: Sendable {
-    func execute()
-}
-
-extension ResetFactoryUseCase {
-    func callAsFunction() {
-        execute()
-    }
-}
-
-final class ResetFactory: ResetFactoryUseCase {
-    init() {}
-
-    func execute() {
-        SharedViewContainer.shared.reset()
+extension Theme {
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .dark:
+            .dark
+        case .light:
+            .light
+        case .matchSystem:
+            nil
+        }
     }
 }

@@ -23,24 +23,24 @@
 import Client
 import Entities
 
-protocol SetShareInviteUserEmailAndKeysUseCase {
+public protocol SetShareInviteUserEmailAndKeysUseCase {
     func execute(with email: String, and publicKeys: [PublicKey]?)
 }
 
-extension SetShareInviteUserEmailAndKeysUseCase {
+public extension SetShareInviteUserEmailAndKeysUseCase {
     func callAsFunction(with email: String, and publicKeys: [PublicKey]?) {
         execute(with: email, and: publicKeys)
     }
 }
 
-final class SetShareInviteUserEmailAndKeys: SetShareInviteUserEmailAndKeysUseCase {
+public final class SetShareInviteUserEmailAndKeys: SetShareInviteUserEmailAndKeysUseCase {
     private let shareInviteService: ShareInviteServiceProtocol
 
-    init(shareInviteService: ShareInviteServiceProtocol) {
+    public init(shareInviteService: ShareInviteServiceProtocol) {
         self.shareInviteService = shareInviteService
     }
 
-    func execute(with email: String, and publicKeys: [PublicKey]?) {
+    public func execute(with email: String, and publicKeys: [PublicKey]?) {
         shareInviteService.setCurrentDestinationUserEmail(with: email)
         if let publicKeys {
             shareInviteService.setReceiverPublicKeys(with: publicKeys)

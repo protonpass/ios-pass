@@ -1,6 +1,6 @@
 //
-// View+Theme.swift
-// Proton Pass - Created on 07/03/2023.
+// URL+Extensions.swift
+// Proton Pass - Created on 16/04/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,36 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import SwiftUI
+import Foundation
 
-private struct ThemeModifier: ViewModifier {
-    let theme: Theme
-
-    func body(content: Content) -> some View {
-        if let colorScheme = theme.colorScheme {
-            content.environment(\.colorScheme, colorScheme)
-        } else {
-            content
+extension URL {
+    static func favIconsContainerURL() -> URL {
+        guard let fileContainer = FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
+            fatalError("Can not create folder for fav icons")
         }
-    }
-}
-
-extension View {
-    func theme(_ theme: Theme) -> some View {
-        modifier(ThemeModifier(theme: theme))
-            .animation(.default, value: theme)
-    }
-}
-
-extension Theme {
-    var colorScheme: ColorScheme? {
-        switch self {
-        case .dark:
-            .dark
-        case .light:
-            .light
-        case .matchSystem:
-            nil
-        }
+        return fileContainer.appendingPathComponent("FavIcons", isDirectory: true)
     }
 }

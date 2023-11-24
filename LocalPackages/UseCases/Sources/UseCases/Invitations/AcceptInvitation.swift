@@ -27,37 +27,36 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import UseCases
 
 @preconcurrency import ProtonCoreLogin
 
-protocol AcceptInvitationUseCase: Sendable {
+public protocol AcceptInvitationUseCase: Sendable {
     func execute(with userInvite: UserInvite) async throws -> Bool
 }
 
-extension AcceptInvitationUseCase {
+public extension AcceptInvitationUseCase {
     func callAsFunction(with userInvite: UserInvite) async throws -> Bool {
         try await execute(with: userInvite)
     }
 }
 
-final class AcceptInvitation: AcceptInvitationUseCase {
+public final class AcceptInvitation: AcceptInvitationUseCase {
     private let repository: InviteRepositoryProtocol
     private let userDataProvider: UserDataProvider
     private let getEmailPublicKey: GetEmailPublicKeyUseCase
     private let updateUserAddresses: UpdateUserAddressesUseCase
 
-    init(repository: InviteRepositoryProtocol,
-         userDataProvider: UserDataProvider,
-         getEmailPublicKey: GetEmailPublicKeyUseCase,
-         updateUserAddresses: UpdateUserAddressesUseCase) {
+    public init(repository: InviteRepositoryProtocol,
+                userDataProvider: UserDataProvider,
+                getEmailPublicKey: GetEmailPublicKeyUseCase,
+                updateUserAddresses: UpdateUserAddressesUseCase) {
         self.repository = repository
         self.userDataProvider = userDataProvider
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses
     }
 
-    func execute(with userInvite: UserInvite) async throws -> Bool {
+    public func execute(with userInvite: UserInvite) async throws -> Bool {
         let encrytedKeys = try await encryptKeys(userInvite: userInvite)
         return try await repository.acceptInvite(with: userInvite.inviteToken, and: encrytedKeys)
     }
