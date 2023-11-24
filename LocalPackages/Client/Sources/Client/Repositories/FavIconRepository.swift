@@ -24,7 +24,7 @@ import Entities
 import Foundation
 import ProtonCoreServices
 
-public struct FavIcon: Hashable {
+public struct FavIcon: Hashable, Sendable {
     public let domain: String
     public let data: Data
     public let isFromCache: Bool

@@ -31,7 +31,6 @@ final class PreferencesTests: XCTestCase {
     }
 
     override func tearDown() {
-        sut.reset(isTests: true)
         sut = nil
         super.tearDown()
     }
@@ -40,10 +39,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(sut.quickTypeBar)
     }
 
-    func testQuickTypeBarEnabledAfterResetting() {
+    func testQuickTypeBarEnabledAfterResetting() async {
         sut.quickTypeBar = false
         XCTAssertFalse(sut.quickTypeBar)
-        sut.reset()
+        await sut.reset()
         XCTAssertTrue(sut.quickTypeBar)
     }
 
@@ -51,10 +50,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.automaticallyCopyTotpCode)
     }
 
-    func testAutomaticallyCopyTotpCodeDisabledAfterResetting() {
+    func testAutomaticallyCopyTotpCodeDisabledAfterResetting() async {
         sut.automaticallyCopyTotpCode = true
         XCTAssertTrue(sut.automaticallyCopyTotpCode)
-        sut.reset()
+        await sut.reset()
         XCTAssertFalse(sut.automaticallyCopyTotpCode)
     }
 
@@ -62,12 +61,12 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.failedAttemptCount, 0)
     }
 
-    func testFailedAttempCountZeroAfterResetting() {
+    func testFailedAttempCountZeroAfterResetting() async {
         sut.failedAttemptCount = 1
         XCTAssertEqual(sut.failedAttemptCount, 1)
         sut.failedAttemptCount = 2
         XCTAssertEqual(sut.failedAttemptCount, 2)
-        sut.reset()
+        await sut.reset()
         XCTAssertEqual(sut.failedAttemptCount, 0)
     }
 
@@ -75,10 +74,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.localAuthenticationMethod, .none)
     }
 
-    func testLocalAuthenticationMethodIsNoneAfterResetting() {
+    func testLocalAuthenticationMethodIsNoneAfterResetting() async {
         sut.localAuthenticationMethod = .pin
         XCTAssertEqual(sut.localAuthenticationMethod, .pin)
-        sut.reset()
+        await sut.reset()
         XCTAssertEqual(sut.localAuthenticationMethod, .none)
     }
 
@@ -86,10 +85,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(sut.fallbackToPasscode)
     }
 
-    func testFallbackToPasscodeAfterResetting() {
+    func testFallbackToPasscodeAfterResetting() async {
         sut.fallbackToPasscode = false
         XCTAssertFalse(sut.fallbackToPasscode)
-        sut.reset()
+        await sut.reset()
         XCTAssertTrue(sut.fallbackToPasscode)
     }
 
@@ -97,11 +96,11 @@ final class PreferencesTests: XCTestCase {
         XCTAssertNil(sut.pinCode)
     }
 
-    func testPinCodeIsNilAfterResetting() {
+    func testPinCodeIsNilAfterResetting() async {
         let pinCode = String.random()
         sut.pinCode = pinCode
         XCTAssertEqual(sut.pinCode, pinCode)
-        sut.reset()
+        await sut.reset()
         XCTAssertNil(sut.pinCode)
     }
 
@@ -109,10 +108,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.appLockTime, .twoMinutes)
     }
 
-    func testAppLockTimeIsTwoMinutesAfterResetting() {
+    func testAppLockTimeIsTwoMinutesAfterResetting() async {
         sut.appLockTime = .fourHours
         XCTAssertEqual(sut.appLockTime, .fourHours)
-        sut.reset()
+        await sut.reset()
         XCTAssertEqual(sut.appLockTime, .twoMinutes)
     }
 
@@ -120,17 +119,17 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.onboarded)
     }
 
-    func testOnboardJustOnce() {
+    func testOnboardJustOnce() async {
         sut.onboarded = true
         XCTAssertTrue(sut.onboarded)
-        sut.reset()
+        await sut.reset()
         XCTAssertTrue(sut.onboarded)
     }
 
-    func testOnboardOnEveryUITestCase() {
+    func testOnboardOnEveryUITestCase() async {
         sut.onboarded = true
         XCTAssertTrue(sut.onboarded)
-        sut.reset(isTests: true)
+        await sut.reset(isTests: true)
         XCTAssertFalse(sut.onboarded)
     }
 
@@ -138,12 +137,12 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.theme, .dark)
     }
 
-    func testThemeIsDarkAfterResetting() {
+    func testThemeIsDarkAfterResetting() async {
         sut.theme = .light
         XCTAssertEqual(sut.theme, .light)
         sut.theme = .matchSystem
         XCTAssertEqual(sut.theme, .matchSystem)
-        sut.reset()
+        await sut.reset()
         XCTAssertEqual(sut.theme, .dark)
     }
 
@@ -151,12 +150,12 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.browser, .systemDefault)
     }
 
-    func testBrowserIsSystemDefaultAfterResetting() {
+    func testBrowserIsSystemDefaultAfterResetting() async {
         sut.browser = .inAppSafari
         XCTAssertEqual(sut.browser, .inAppSafari)
         sut.browser = .safari
         XCTAssertEqual(sut.browser, .safari)
-        sut.reset()
+        await sut.reset()
         XCTAssertEqual(sut.browser, .systemDefault)
     }
 
@@ -164,10 +163,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.clipboardExpiration, .oneMinute)
     }
 
-    func testClipboardExpiresAfterOneMinuteAfterResetting() {
+    func testClipboardExpiresAfterOneMinuteAfterResetting() async {
         sut.clipboardExpiration = .fifteenSeconds
         XCTAssertEqual(sut.clipboardExpiration, .fifteenSeconds)
-        sut.reset()
+        await sut.reset()
         XCTAssertEqual(sut.clipboardExpiration, .oneMinute)
     }
 
@@ -175,18 +174,20 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(sut.shareClipboard)
     }
 
-    func testDoNotShareClipboardAfterResetting() {
+    func testDoNotShareClipboardAfterResetting() async {
         sut.shareClipboard = true
         XCTAssertTrue(sut.shareClipboard)
-        sut.reset()
+        await sut.reset()
         XCTAssertFalse(sut.shareClipboard)
     }
 
+    @MainActor
     func testTelemetryThresholdNilByDefault() {
         XCTAssertNil(sut.telemetryThreshold)
     }
 
-    func testTelemetryThresholdNilAfterResetting() {
+    @MainActor
+    func testTelemetryThresholdNilAfterResetting() async {
         let date = Date.now
         sut.telemetryThreshold = date.timeIntervalSince1970
         XCTAssertEqual(sut.telemetryThreshold, date.timeIntervalSince1970)
@@ -198,10 +199,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(sut.displayFavIcons)
     }
 
-    func testDisplayFavIconsEnabledAfterResetting() {
+    func testDisplayFavIconsEnabledAfterResetting() async {
         sut.displayFavIcons = false
         XCTAssertFalse(sut.displayFavIcons)
-        sut.reset()
+        await sut.reset()
         XCTAssertTrue(sut.displayFavIcons)
     }
 
@@ -226,10 +227,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(sut.dismissedBannerIds.isEmpty)
     }
 
-    func testDismissedBannerIdsIsEmptyAfterResetting() {
+    func testDismissedBannerIdsIsEmptyAfterResetting() async {
         sut.dismissedBannerIds.append(.random())
         XCTAssertFalse(sut.dismissedBannerIds.isEmpty)
-        sut.reset()
+        await sut.reset()
         XCTAssertTrue(sut.dismissedBannerIds.isEmpty)
     }
 
@@ -237,10 +238,10 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(sut.isFirstRun)
     }
 
-    func testNoMoreFirstRunAfterResetting() {
+    func testNoMoreFirstRunAfterResetting() async {
         sut.isFirstRun = false
         XCTAssertFalse(sut.isFirstRun)
-        sut.reset()
+        await sut.reset()
         XCTAssertFalse(sut.isFirstRun)
     }
 
@@ -248,13 +249,13 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.createdItemsCount, 0)
     }
 
-    func testCreatedItemsCountNotChangedAfterResetting() {
+    func testCreatedItemsCountNotChangedAfterResetting() async {
         sut.createdItemsCount += 1
         XCTAssertEqual(sut.createdItemsCount, 1)
         sut.createdItemsCount += 1
         XCTAssertEqual(sut.createdItemsCount, 2)
         sut.createdItemsCount += 1
-        sut.reset()
+        await sut.reset()
         XCTAssertEqual(sut.createdItemsCount, 3)
     }
 }

@@ -343,7 +343,7 @@ private extension ShareRepository {
 
     /// Symmetrically encrypt but return `nil` when encounting inactive user key instead of throwing
     /// We don't want to throw errors and stop the whole decryption process when we find an inactive user key
-    func symmetricallyEncryptNullable(_ share: Share) async throws -> SymmetricallyEncryptedShare? {
+    @Sendable func symmetricallyEncryptNullable(_ share: Share) async throws -> SymmetricallyEncryptedShare? {
         do {
             return try await symmetricallyEncrypt(share)
         } catch {

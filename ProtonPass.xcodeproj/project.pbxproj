@@ -425,13 +425,13 @@
 		5BD4A8FE2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
 		5BD4A8FF2B10C48B00C44C08 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
 		5BD4A9002B10C4A000C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
+		5BD4A9082B10E6E300C44C08 /* CredentialsFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */; };
 		5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */; };
 		5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */; };
 		5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */; };
-		5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */; };
 		5BFFB5052A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */; };
 		5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
 		5BFFB5132A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
@@ -808,13 +808,13 @@
 		5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelAutoFill.swift; sourceTree = "<group>"; };
 		5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetFactory.swift; sourceTree = "<group>"; };
 		5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemTypeIdentifiable+Extensions.swift"; sourceTree = "<group>"; };
+		5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
 		5BFD5D052AE145E70025185B /* Screens */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Screens; path = LocalPackages/Screens; sourceTree = "<group>"; };
 		5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClipboardExpiration+Extensions.swift"; sourceTree = "<group>"; };
 		5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalAuthenticationMethodUiModel+Extensions.swift"; sourceTree = "<group>"; };
 		5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialSearchResultView.swift; sourceTree = "<group>"; };
 		5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCredentialItemRow.swift; sourceTree = "<group>"; };
-		5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
 		5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnmatchedItemAlertOptions.swift; sourceTree = "<group>"; };
 		5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCodeScannerView.swift; sourceTree = "<group>"; };
 		5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedUseCase+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -989,18 +989,11 @@
 		3544F5E228E2341900834CA4 /* AutoFill */ = {
 			isa = PBXGroup;
 			children = (
-				5BFFB5012A58035A00C2D1F9 /* Models */,
-				5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */,
-				354B24792A77E8010060EDF7 /* DependencyInjection */,
-				354B24742A77DA570060EDF7 /* UseCases */,
+				5BD4A90A2B10EBFA00C44C08 /* Shared */,
+				5BD4A9042B10E39900C44C08 /* Scenes */,
 				352866BF28E30662000630E2 /* AutoFillDebug-Black.entitlements */,
 				352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */,
 				3544F5E328E2341900834CA4 /* CredentialProviderViewController.swift */,
-				3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */,
-				3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */,
-				355751F42907FB3200268116 /* LockedCredentialView.swift */,
-				355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */,
-				3520F36028E31AF20053A606 /* NotLoggedInView.swift */,
 				3544F5E528E2341900834CA4 /* MainInterface.storyboard */,
 				3544F5E828E2341900834CA4 /* Info.plist */,
 				3544F5E928E2341900834CA4 /* AutoFill.entitlements */,
@@ -1165,6 +1158,7 @@
 		3562BCF129BDBF0B00564508 /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
+				35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */,
 				3571B59329BF1321008D4350 /* HighlightText.swift */,
 				35702C962A1E80660089B539 /* LimitedVaultOperationsBanner.swift */,
 				3552272D29DC9EAC00B9607E /* SearchBar.swift */,
@@ -1490,15 +1484,13 @@
 		35F8CCFE29B617510017DBC6 /* Homepage */ = {
 			isa = PBXGroup;
 			children = (
-				35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */,
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				355C138829DB71D800264CD0 /* HomepageTabbarView.swift */,
-				35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */,
-				357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */,
 				35603A0029B6587C00021BFB /* Create & Edit Items */,
 				356650D72AAF606500BFF4F3 /* Full Sync Progress */,
 				3565622529BA760800C43F72 /* Item Detail */,
 				3569B2A229B7888B0070830B /* Items Tab */,
+				5BD4A9032B10E30E00C44C08 /* ItemTypeList */,
 				3569B2A729B7D2030070830B /* Profile Tab */,
 				3562BCF129BDBF0B00564508 /* Supporting Views */,
 			);
@@ -1797,6 +1789,62 @@
 			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
+		5BD4A9032B10E30E00C44C08 /* ItemTypeList */ = {
+			isa = PBXGroup;
+			children = (
+				35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */,
+				357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */,
+			);
+			path = ItemTypeList;
+			sourceTree = "<group>";
+		};
+		5BD4A9042B10E39900C44C08 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */,
+				5BD4A9092B10EBB700C44C08 /* NotLoggedIn */,
+				5BD4A9062B10E3CE00C44C08 /* ExtensionSettings */,
+				5BD4A9052B10E3BB00C44C08 /* LockedCredential */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		5BD4A9052B10E3BB00C44C08 /* LockedCredential */ = {
+			isa = PBXGroup;
+			children = (
+				355751F42907FB3200268116 /* LockedCredentialView.swift */,
+				355751F72907FC8D00268116 /* LockedCredentialViewModel.swift */,
+			);
+			path = LockedCredential;
+			sourceTree = "<group>";
+		};
+		5BD4A9062B10E3CE00C44C08 /* ExtensionSettings */ = {
+			isa = PBXGroup;
+			children = (
+				3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */,
+				3560844629DDA23C001F7487 /* ExtensionSettingsViewModel.swift */,
+			);
+			path = ExtensionSettings;
+			sourceTree = "<group>";
+		};
+		5BD4A9092B10EBB700C44C08 /* NotLoggedIn */ = {
+			isa = PBXGroup;
+			children = (
+				3520F36028E31AF20053A606 /* NotLoggedInView.swift */,
+			);
+			path = NotLoggedIn;
+			sourceTree = "<group>";
+		};
+		5BD4A90A2B10EBFA00C44C08 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5BFFB5012A58035A00C2D1F9 /* Models */,
+				354B24792A77E8010060EDF7 /* DependencyInjection */,
+				354B24742A77DA570060EDF7 /* UseCases */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		5BE5BDEB2A4C753A007CBE1B /* Bug Report */ = {
 			isa = PBXGroup;
 			children = (
@@ -1836,7 +1884,7 @@
 		5BFFB5012A58035A00C2D1F9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5BFFB5022A58039400C2D1F9 /* CredentialsFetchResult.swift */,
+				5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */,
 				5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */,
 			);
 			path = Models;
@@ -2450,7 +2498,6 @@
 				359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */,
 				3561C9FA29E6E70200D6E518 /* VaultIcon.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
-				5BFFB5032A58039400C2D1F9 /* CredentialsFetchResult.swift in Sources */,
 				358C68292A681379006E720F /* Preferences+LocalAuthentication.swift in Sources */,
 				5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */,
 				35AC9A5D2A0BDB7D00FBCEEC /* EditCustomFieldSections.swift in Sources */,
@@ -2467,6 +2514,7 @@
 				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
 				3559BAA62A5B32600020E172 /* AppLockTime.swift in Sources */,
 				354E9AA92A4459C700AD2B9A /* BiometricAuthenticationView.swift in Sources */,
+				5BD4A9082B10E6E300C44C08 /* CredentialsFetchResult.swift in Sources */,
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,

@@ -1,6 +1,6 @@
 //
-// SymmetricallyEncryptedShare.swift
-// Proton Pass - Created on 10/04/2023.
+// SymmetricallyEncryptedItem.swift
+// Proton Pass - Created on 24/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,13 +18,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+/// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
+public struct SymmetricallyEncryptedItem: Equatable, Sendable {
+    /// ID of the share that the item belongs to
+    public let shareId: String
 
-/// `Share` with its symmetrically encrypted key by an application-wide symmetric key
-public struct SymmetricallyEncryptedShare: Hashable, Sendable {
+    /// Original item revision object as returned by the server
+    public let item: ItemRevision
+
     /// Symmetrically encrypted content in base 64 format
-    public let encryptedContent: String?
+    public let encryptedContent: String
 
-    /// Original `Share` object as returned by the server
-    public let share: Share
+    /// Whether the item is type log in or not
+    public let isLogInItem: Bool
+
+    public init(shareId: String, item: ItemRevision, encryptedContent: String, isLogInItem: Bool) {
+        self.shareId = shareId
+        self.item = item
+        self.encryptedContent = encryptedContent
+        self.isLogInItem = isLogInItem
+    }
 }

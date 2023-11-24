@@ -1065,13 +1065,13 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        Task {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
             let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
-            }
+            bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
         }
     }
 }

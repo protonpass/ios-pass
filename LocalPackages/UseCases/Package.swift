@@ -10,6 +10,10 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
+let settings: [SwiftSetting] = [
+  .enableExperimentalFeature("StrictConcurrency")
+]
+
 let package = Package(name: "UseCases",
                       platforms: platforms,
                       products: [
@@ -41,7 +45,9 @@ let package = Package(name: "UseCases",
                                       .product(name: "Sentry", package: "sentry-cocoa"),
                                       .product(name: "ProtonCoreFeatureFlags", package: "protoncore")
                                   ],
-                                  resources: []),
+                                  resources: []
+//                                  ,swiftSettings: settings
+                                 ),
                           .testTarget(name: "UseCasesTests",
                                       dependencies: ["UseCases"],
                                       path: "Tests")

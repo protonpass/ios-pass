@@ -53,52 +53,6 @@ extension UserData: Codable {
     }
 }
 
-extension AuthCredential: Codable {
-    private enum CodingKeys: String, CodingKey {
-        case sessionID
-        case accessToken
-        case refreshToken
-        case userID
-        case userName
-        case privateKey
-        case passwordKeySalt
-        case mailboxpassword
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(sessionID, forKey: .sessionID)
-        try container.encode(accessToken, forKey: .accessToken)
-        try container.encode(refreshToken, forKey: .refreshToken)
-        try container.encode(userID, forKey: .userID)
-        try container.encode(userName, forKey: .userName)
-        try container.encode(privateKey, forKey: .privateKey)
-        try container.encode(passwordKeySalt, forKey: .passwordKeySalt)
-        try container.encode(mailboxpassword, forKey: .mailboxpassword)
-    }
-
-    public convenience init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let sessionID = try container.decode(String.self, forKey: .sessionID)
-        let accessToken = try container.decode(String.self, forKey: .accessToken)
-        let refreshToken = try container.decode(String.self, forKey: .refreshToken)
-        let userID = try container.decode(String.self, forKey: .userID)
-        let userName = try container.decode(String.self, forKey: .userName)
-        let privateKey = try container.decodeIfPresent(String.self, forKey: .privateKey)
-        let passwordKeySalt = try container.decodeIfPresent(String.self, forKey: .passwordKeySalt)
-        let mailboxpassword = try container.decodeIfPresent(String.self, forKey: .mailboxpassword) ?? ""
-
-        self.init(sessionID: sessionID,
-                  accessToken: accessToken,
-                  refreshToken: refreshToken,
-                  userName: userName,
-                  userID: userID,
-                  privateKey: privateKey,
-                  passwordKeySalt: passwordKeySalt)
-        self.mailboxpassword = mailboxpassword
-    }
-}
-
 public extension UserData {
     static var preview: UserData {
         let credential = AuthCredential(sessionID: .random(),
