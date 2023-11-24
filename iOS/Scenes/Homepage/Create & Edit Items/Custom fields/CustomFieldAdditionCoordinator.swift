@@ -21,6 +21,7 @@
 import Client
 import Core
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import SwiftUI

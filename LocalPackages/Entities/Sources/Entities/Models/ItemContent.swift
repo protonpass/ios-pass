@@ -1,5 +1,5 @@
 //
-// ItemContentProtocol.swift
+// ItemContent.swift
 // Proton Pass - Created on 09/08/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,25 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import CryptoKit
-import Entities
 import Foundation
-
-extension ItemContentType: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        switch self {
-        case .login:
-            "login"
-        case .alias:
-            "alias"
-        case .note:
-            "note"
-        case .creditCard:
-            "creditCard"
-        }
-    }
-}
 
 public enum ItemContentData: Sendable, Equatable, Hashable {
     case alias
@@ -95,149 +77,11 @@ public struct CreditCardData: Sendable, Equatable, Hashable {
     }
 }
 
-public enum CustomFieldType: CaseIterable, Equatable, Sendable {
-    case text, totp, hidden
-}
-
-public struct CustomField: Equatable, Hashable, Sendable {
-    public let title: String
-    public let type: CustomFieldType
-    public var content: String
-
-    public init(title: String, type: CustomFieldType, content: String) {
-        self.title = title
-        self.type = type
-        self.content = content
-    }
-
-    init(from extraField: ProtonPassItemV1_ExtraField) {
-        title = extraField.fieldName
-        switch extraField.content {
-        case let .text(extraText):
-            type = .text
-            content = extraText.content
-
-        case let .totp(extraTotp):
-            type = .totp
-            content = extraTotp.totpUri
-
-        case let .hidden(extraHidden):
-            type = .hidden
-            content = extraHidden.content
-
-        default:
-            type = .text
-            content = ""
-        }
-    }
-}
-
 public protocol ItemContentProtocol {
     var name: String { get }
     var note: String { get }
     var contentData: ItemContentData { get }
     var customFields: [CustomField] { get }
-}
-
-public typealias ItemContentProtobuf = ProtonPassItemV1_Item
-public typealias ProtobufableItemContentProtocol = ItemContentProtocol & Protobufable
-
-extension ItemContentProtobuf: ProtobufableItemContentProtocol {
-    public var name: String { metadata.name }
-    public var note: String { metadata.note }
-    public var uuid: String { metadata.itemUuid }
-
-    public var contentData: ItemContentData {
-        switch content.content {
-        case .alias:
-            .alias
-
-        case .note:
-            .note
-
-        case let .creditCard(data):
-            .creditCard(.init(cardholderName: data.cardholderName,
-                              type: data.cardType,
-                              number: data.number,
-                              verificationNumber: data.verificationNumber,
-                              expirationDate: data.expirationDate,
-                              pin: data.pin))
-
-        case let .login(data):
-            .login(.init(username: data.username,
-                         password: data.password,
-                         totpUri: data.totpUri,
-                         urls: data.urls))
-        case .none:
-            .note
-        }
-    }
-
-    public var customFields: [CustomField] { extraFields.map { .init(from: $0) } }
-
-    public func data() throws -> Data {
-        try serializedData()
-    }
-
-    public init(data: Data) throws {
-        self = try ItemContentProtobuf(serializedData: data)
-    }
-
-    public init(name: String,
-                note: String,
-                itemUuid: String,
-                data: ItemContentData,
-                customFields: [CustomField]) {
-        metadata = .init()
-        metadata.itemUuid = itemUuid
-        metadata.name = name
-        metadata.note = note
-
-        switch data {
-        case .alias:
-            content.alias = .init()
-
-        case let .login(logInData):
-            content.login = .init()
-            content.login.username = logInData.username
-            content.login.password = logInData.password
-            content.login.totpUri = logInData.totpUri
-            content.login.urls = logInData.urls
-
-        case let .creditCard(data):
-            content.creditCard = .init()
-            content.creditCard.cardholderName = data.cardholderName
-            content.creditCard.cardType = data.type
-            content.creditCard.number = data.number
-            content.creditCard.verificationNumber = data.verificationNumber
-            content.creditCard.expirationDate = data.expirationDate
-            content.creditCard.pin = data.pin
-
-        case .note:
-            content.note = .init()
-        }
-
-        extraFields = customFields.map { customField in
-            var extraField = ProtonPassItemV1_ExtraField()
-            extraField.fieldName = customField.title
-
-            switch customField.type {
-            case .text:
-                extraField.text = .init()
-                extraField.text.content = customField.content
-
-            case .totp:
-                extraField.totp = .init()
-                extraField.totp.totpUri = customField.content
-
-            case .hidden:
-                extraField.hidden = .init()
-                extraField.hidden.content = customField.content
-            }
-
-            return extraField
-        }
-    }
 }
 
 public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable {
@@ -292,21 +136,101 @@ extension ItemContent: ItemThumbnailable {
     }
 }
 
-// MARK: - Symmetric encryption/decryption
+extension ItemContentProtobuf: ProtobufableItemContentProtocol {
+    public var name: String { metadata.name }
+    public var note: String { metadata.note }
+    public var uuid: String { metadata.itemUuid }
 
-public extension ItemContentProtobuf {
-    /// Symmetrically encrypt and base 64 the binary data
-    func encrypt(symmetricKey: SymmetricKey) throws -> String {
-        let clearData = try data()
-        let cypherData = try symmetricKey.encrypt(clearData)
-        return cypherData.base64EncodedString()
+    public var contentData: ItemContentData {
+        switch content.content {
+        case .alias:
+            .alias
+
+        case .note:
+            .note
+
+        case let .creditCard(data):
+            .creditCard(.init(cardholderName: data.cardholderName,
+                              type: data.cardType,
+                              number: data.number,
+                              verificationNumber: data.verificationNumber,
+                              expirationDate: data.expirationDate,
+                              pin: data.pin))
+
+        case let .login(data):
+            .login(.init(username: data.username,
+                         password: data.password,
+                         totpUri: data.totpUri,
+                         urls: data.urls))
+        case .none:
+            .note
+        }
     }
 
-    init(base64: String, symmetricKey: SymmetricKey) throws {
-        guard let cypherData = try base64.base64Decode() else {
-            throw PassError.crypto(.failedToBase64Decode)
+    public var customFields: [CustomField] { extraFields.map { .init(from: $0) } }
+
+    public func data() throws -> Data {
+        try serializedData()
+    }
+
+    public init(data: Data) throws {
+        self = try ItemContentProtobuf(serializedData: data)
+    }
+
+    public init(name: String,
+                note: String,
+                itemUuid: String,
+                data: ItemContentData,
+                customFields: [CustomField]) {
+        self.init()
+        metadata = .init()
+        metadata.itemUuid = itemUuid
+        metadata.name = name
+        metadata.note = note
+
+        switch data {
+        case .alias:
+            content.alias = .init()
+
+        case let .login(logInData):
+            content.login = .init()
+            content.login.username = logInData.username
+            content.login.password = logInData.password
+            content.login.totpUri = logInData.totpUri
+            content.login.urls = logInData.urls
+
+        case let .creditCard(data):
+            content.creditCard = .init()
+            content.creditCard.cardholderName = data.cardholderName
+            content.creditCard.cardType = data.type
+            content.creditCard.number = data.number
+            content.creditCard.verificationNumber = data.verificationNumber
+            content.creditCard.expirationDate = data.expirationDate
+            content.creditCard.pin = data.pin
+
+        case .note:
+            content.note = .init()
         }
-        let clearData = try symmetricKey.decrypt(cypherData)
-        try self.init(data: clearData)
+
+        extraFields = customFields.map { customField in
+            var extraField = ProtonPassItemV1_ExtraField()
+            extraField.fieldName = customField.title
+
+            switch customField.type {
+            case .text:
+                extraField.text = .init()
+                extraField.text.content = customField.content
+
+            case .totp:
+                extraField.totp = .init()
+                extraField.totp.totpUri = customField.content
+
+            case .hidden:
+                extraField.hidden = .init()
+                extraField.hidden.content = customField.content
+            }
+
+            return extraField
+        }
     }
 }

@@ -18,11 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Combine
 import Entities
 
-protocol ShareInviteServiceProtocol {
+public protocol ShareInviteServiceProtocol {
     var currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> { get }
     var currentSelectedVaultItems: Int? { get }
     var currentDestinationUserEmail: String? { get }
@@ -37,12 +36,14 @@ protocol ShareInviteServiceProtocol {
     func resetShareInviteInformations()
 }
 
-final class ShareInviteService: ShareInviteServiceProtocol {
-    private(set) var currentSelectedVault = CurrentValueSubject<SharingVaultData?, Never>(nil)
-    private(set) var currentSelectedVaultItems: Int?
-    private(set) var currentDestinationUserEmail: String?
-    private(set) var currentUserRole: ShareRole?
-    private(set) var receiverPublicKeys: [PublicKey]?
+public final class ShareInviteService: ShareInviteServiceProtocol {
+    public private(set) var currentSelectedVault = CurrentValueSubject<SharingVaultData?, Never>(nil)
+    public private(set) var currentSelectedVaultItems: Int?
+    public private(set) var currentDestinationUserEmail: String?
+    public private(set) var currentUserRole: ShareRole?
+    public private(set) var receiverPublicKeys: [PublicKey]?
+
+    public init() {}
 
     public func setCurrentSelectedVault(with vault: SharingVaultData) {
         currentSelectedVault.send(vault)
