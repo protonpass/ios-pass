@@ -1,6 +1,6 @@
 //
-// Typealiases.swift
-// Proton Pass - Created on 22/11/2023.
+// Resettable.swift
+// Proton Pass - Created on 23/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,10 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
-import Entities
+import Foundation
 
-public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
-public typealias AppDataProtocol = CredentialProvider & Resettable & UserDataSymmetricKeyProvider
-public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
-public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
+public protocol Resettable: Sendable {
+    func resetData()
+}
