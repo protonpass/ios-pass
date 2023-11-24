@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -8,6 +8,10 @@ var platforms: [SupportedPlatform] = [
     .iOS(.v15),
     .tvOS(.v15),
     .watchOS(.v8)
+]
+
+let settings: [SwiftSetting] = [
+  .enableExperimentalFeature("StrictConcurrency")
 ]
 
 let package = Package(name: "Entities",
@@ -32,7 +36,8 @@ let package = Package(name: "Entities",
                           .target(name: "Entities",
                                   dependencies: [
                                     .product(name: "SwiftProtobuf", package: "swift-protobuf"),
-                                  ]),
+                                  ],
+                                  swiftSettings: settings),
                           .testTarget(name: "EntitiesTests",
                                       dependencies: ["Entities"])
                       ])

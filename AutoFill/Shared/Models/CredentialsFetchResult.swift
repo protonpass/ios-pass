@@ -22,13 +22,23 @@ import Client
 import Entities
 import Foundation
 
-struct CredentialsFetchResult: Equatable {
-    let vaults: [Vault]
-    let searchableItems: [SearchableItem]
-    let matchedItems: [ItemUiModel]
-    let notMatchedItems: [ItemUiModel]
+public struct CredentialsFetchResult: Equatable, Sendable {
+    public let vaults: [Vault]
+    public let searchableItems: [SearchableItem]
+    public let matchedItems: [ItemUiModel]
+    public let notMatchedItems: [ItemUiModel]
 
-    var isEmpty: Bool {
+    public var isEmpty: Bool {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
+    }
+
+    public init(vaults: [Vault],
+                searchableItems: [SearchableItem],
+                matchedItems: [ItemUiModel],
+                notMatchedItems: [ItemUiModel]) {
+        self.vaults = vaults
+        self.searchableItems = searchableItems
+        self.matchedItems = matchedItems
+        self.notMatchedItems = notMatchedItems
     }
 }

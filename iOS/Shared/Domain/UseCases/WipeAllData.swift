@@ -72,7 +72,7 @@ final class WipeAllData: WipeAllDataUseCase {
         appData.resetData()
         mainKeyProvider.wipeMainKey()
         apiManager.clearCredentials()
-        preferences.reset(isTests: isTests)
+        await preferences.reset(isTests: isTests)
         databaseService.resetContainer()
         UIPasteboard.general.items = []
         syncEventLoop.reset()

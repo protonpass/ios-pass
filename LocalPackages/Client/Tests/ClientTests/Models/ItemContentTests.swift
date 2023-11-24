@@ -20,6 +20,7 @@
 
 @testable import Client
 import CryptoKit
+import Entities
 import XCTest
 
 final class ItemContentTests: XCTestCase {

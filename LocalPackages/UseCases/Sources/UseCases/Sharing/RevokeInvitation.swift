@@ -19,7 +19,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
-@preconcurrency import Client
+
+import Client
 
 public protocol RevokeInvitationUseCase: Sendable {
     func execute(with shareId: String, and inviteId: String) async throws

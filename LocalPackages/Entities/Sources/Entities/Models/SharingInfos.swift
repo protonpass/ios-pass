@@ -18,9 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-
-public enum SharingVaultData {
+public enum SharingVaultData: Sendable {
     case existing(Vault)
     case new(VaultProtobuf, ItemContent)
 }
@@ -54,7 +52,7 @@ public extension SharingVaultData {
     }
 }
 
-public struct SharingInfos {
+public struct SharingInfos: Sendable {
     public let vault: SharingVaultData?
     public let email: String?
     public let role: ShareRole?
