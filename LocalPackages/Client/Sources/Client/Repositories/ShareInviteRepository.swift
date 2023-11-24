@@ -29,7 +29,7 @@ public enum InviteeData {
 }
 
 // sourcery: AutoMockable
-public protocol ShareInviteRepositoryProtocol {
+public protocol ShareInviteRepositoryProtocol: Sendable {
     func getAllPendingInvites(shareId: String) async throws -> ShareInvites
 
     func sendInvite(shareId: String,
