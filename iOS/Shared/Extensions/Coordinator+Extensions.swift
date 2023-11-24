@@ -1,5 +1,5 @@
 //
-// Coordinator+ShowFullScreen.swift
+// Coordinator+Extensions.swift
 // Proton Pass - Created on 13/12/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import MBProgressHUD
 import SwiftUI
 
 extension Coordinator {
@@ -32,5 +33,19 @@ extension Coordinator {
                 userInterfaceStyle: userInterfaceStyle,
                 animated: true,
                 dismissible: true)
+    }
+}
+
+extension Coordinator {
+    func showLoadingHud(_ view: UIView? = nil) {
+        let view = view ?? topMostViewController.view
+        guard let view else { return }
+        MBProgressHUD.showAdded(to: view, animated: true)
+    }
+
+    func hideLoadingHud(_ view: UIView? = nil) {
+        let view = view ?? topMostViewController.view
+        guard let view else { return }
+        MBProgressHUD.hide(for: view, animated: true)
     }
 }

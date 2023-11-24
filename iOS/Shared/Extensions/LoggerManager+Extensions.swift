@@ -1,5 +1,5 @@
 //
-// LoggerManager+Initializer.swift
+// LoggerManager+Extensions.swift
 // Proton Pass - Created on 04/01/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
