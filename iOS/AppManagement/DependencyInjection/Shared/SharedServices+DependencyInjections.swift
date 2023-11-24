@@ -63,7 +63,7 @@ extension SharedServiceContainer {
                      logManager: self.logManager) }
     }
 
-    var clipboardManager: Factory<ClipboardManager> {
+    var clipboardManager: Factory<ClipboardManagerProtocol> {
         self { ClipboardManager(bannerManager: SharedViewContainer.shared.bannerManager(),
                                 preferences: SharedToolingContainer.shared.preferences()) }
     }
