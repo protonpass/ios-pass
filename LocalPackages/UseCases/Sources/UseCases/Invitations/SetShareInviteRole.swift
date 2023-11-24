@@ -1,6 +1,7 @@
 //
-// UserData+Extensions.swift
-// Proton Pass - Created on 09/10/2023.
+//
+// SetShareInviteRole.swift
+// Proton Pass - Created on 20/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,14 +18,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
+import Client
 import Entities
-import ProtonCoreDataModel
-import ProtonCoreLogin
-import UseCases
 
-extension UserData {
-    func address(for email: String) -> Address? {
-        addresses.first(where: { $0.email == email })
+public protocol SetShareInviteRoleUseCase {
+    func execute(with role: ShareRole)
+}
+
+public extension SetShareInviteRoleUseCase {
+    func callAsFunction(with role: ShareRole) {
+        execute(with: role)
+    }
+}
+
+public final class SetShareInviteRole: SetShareInviteRoleUseCase {
+    private let shareInviteService: ShareInviteServiceProtocol
+
+    public init(shareInviteService: ShareInviteServiceProtocol) {
+        self.shareInviteService = shareInviteService
+    }
+
+    public func execute(with role: ShareRole) {
+        shareInviteService.setCurrentUserRole(with: role)
     }
 }

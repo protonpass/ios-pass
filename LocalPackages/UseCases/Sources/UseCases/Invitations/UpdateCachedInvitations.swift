@@ -1,6 +1,7 @@
 //
-// URLExtensions.swift
-// Proton Pass - Created on 16/04/2023.
+//
+// UpdateCachedInvitations.swift
+// Proton Pass - Created on 01/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,16 +18,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Core
-import Foundation
+import Client
 
-extension URL {
-    static func favIconsContainerURL() -> URL {
-        guard let fileContainer = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Can not create folder for fav icons")
-        }
-        return fileContainer.appendingPathComponent("FavIcons", isDirectory: true)
+public protocol UpdateCachedInvitationsUseCase: Sendable {
+    func execute(for inviteToken: String) async
+}
+
+public extension UpdateCachedInvitationsUseCase {
+    func callAsFunction(for inviteToken: String) async {
+        await execute(for: inviteToken)
+    }
+}
+
+public final class UpdateCachedInvitations: UpdateCachedInvitationsUseCase {
+    private let repository: InviteRepositoryProtocol
+
+    public init(repository: InviteRepositoryProtocol) {
+        self.repository = repository
+    }
+
+    public func execute(for inviteToken: String) async {
+        await repository.removeCachedInvite(containing: inviteToken)
     }
 }
