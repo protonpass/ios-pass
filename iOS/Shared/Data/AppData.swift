@@ -40,9 +40,9 @@ public extension LockedKeychainStorage {
 enum AppDataKey: String {
     case userData
     case symmetricKey
+    case mainCredential
     case hostAppCredential
     case autofillExtensionCredential
-    case unauthCredential
 }
 
 extension UserData: @unchecked Sendable {}
@@ -50,6 +50,9 @@ extension UserData: @unchecked Sendable {}
 final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
+
+    @LockedKeychainStorage(key: AppDataKey.mainCredential, defaultValue: nil)
+    private var mainCredential: AuthCredential?
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
@@ -59,9 +62,6 @@ final class AppData: AppDataProtocol {
 
     @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
     private var autofillExtensionCredential: AuthCredential?
-
-    @LockedKeychainStorage(key: AppDataKey.unauthCredential, defaultValue: nil)
-    private var unauthCredential: AuthCredential?
 
     private let module: PassModule
 
@@ -97,51 +97,43 @@ final class AppData: AppDataProtocol {
     }
 
     func getCredential() -> AuthCredential? {
-        if userData != nil {
-            switch module {
-            case .hostApp:
-                assert(hostAppCredential != nil, "Expect not nil hostAppCredential")
-                return hostAppCredential
-            case .autoFillExtension:
-                assert(autofillExtensionCredential != nil, "Expect not nil autofillExtensionCredential")
-                return autofillExtensionCredential
-            case .keyboardExtension:
-                fatalError("Not applicable")
-            }
-        } else {
-            return unauthCredential
+        switch module {
+        case .hostApp:
+            hostAppCredential ?? mainCredential
+        case .autoFillExtension:
+            autofillExtensionCredential ?? mainCredential
+        case .keyboardExtension:
+            fatalError("Not applicable")
         }
     }
 
     func setCredential(_ credential: AuthCredential?) {
-        if userData != nil {
-            switch module {
-            case .hostApp:
-                assert(hostAppCredential != nil, "Expect not nil hostAppCredential")
-                hostAppCredential = credential
-                // Should be removed after session forking
-                autofillExtensionCredential = credential
+        switch module {
+        case .hostApp:
+            hostAppCredential = credential
 
-            case .autoFillExtension:
-                assert(autofillExtensionCredential != nil, "Expect not nil autofillExtensionCredential")
-                autofillExtensionCredential = credential
-                // Should be removed after session forking
-                hostAppCredential = credential
+            // Should be removed after session forking
+            autofillExtensionCredential = credential
+            mainCredential = credential
 
-            case .keyboardExtension:
-                fatalError("Not applicable")
-            }
-        } else {
-            unauthCredential = credential
+        case .autoFillExtension:
+            autofillExtensionCredential = credential
+
+            // Should be removed after session forking
+            hostAppCredential = credential
+            mainCredential = credential
+
+        case .keyboardExtension:
+            fatalError("Not applicable")
         }
     }
 
     func resetData() {
         userData = nil
         symmetricKey = nil
+        mainCredential = nil
         hostAppCredential = nil
         autofillExtensionCredential = nil
-        unauthCredential = nil
     }
 
     // Should be removed after session forking
@@ -151,10 +143,13 @@ final class AppData: AppDataProtocol {
 }
 
 private extension AppData {
+    // Should be removed after session forking
     func useCredentialInUserDataForBothAppAndExtension() {
         if let userData {
-            hostAppCredential = userData.credential
-            autofillExtensionCredential = userData.credential
+            let credential = userData.credential
+            mainCredential = credential
+            hostAppCredential = credential
+            autofillExtensionCredential = credential
         }
     }
 }
