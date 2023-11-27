@@ -21,29 +21,6 @@
 import CryptoKit
 import Entities
 
-/// ItemRevision with its symmetrically encrypted content by an application-wide symmetric key
-public struct SymmetricallyEncryptedItem: Equatable, Sendable {
-    /// ID of the share that the item belongs to
-    public let shareId: String
-
-    /// Original item revision object as returned by the server
-    public let item: ItemRevision
-
-    /// Symmetrically encrypted content in base 64 format
-    public let encryptedContent: String
-
-    /// Whether the item is type log in or not
-    public let isLogInItem: Bool
-
-    /// Symmetrically decrypt and return decrypted item content
-    public func getItemContent(symmetricKey: SymmetricKey) throws -> ItemContent {
-        let contentProtobuf = try ItemContentProtobuf(base64: encryptedContent, symmetricKey: symmetricKey)
-        return .init(shareId: shareId,
-                     item: item,
-                     contentProtobuf: contentProtobuf)
-    }
-}
-
 /// Item with associated match score. Used in autofill context
 public struct ScoredSymmetricallyEncryptedItem {
     public let item: SymmetricallyEncryptedItem

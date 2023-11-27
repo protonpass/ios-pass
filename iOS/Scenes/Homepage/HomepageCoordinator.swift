@@ -887,7 +887,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         }
     }
 
-    func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
+    func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
     }
 }
@@ -1065,13 +1065,13 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        Task {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
             let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
-            }
+            bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
         }
     }
 }
@@ -1232,7 +1232,7 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 // MARK: - SearchViewModelDelegate
 
 extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
+    func searchViewModelWantsToViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: true)
         addNewEvent(type: .searchClick)
     }

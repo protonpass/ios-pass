@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+
+@preconcurrency import Combine
 import Core
 import CryptoKit
 import Entities
@@ -41,8 +42,8 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private var loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private var symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private var isRefreshing = false
 
     // Use cases

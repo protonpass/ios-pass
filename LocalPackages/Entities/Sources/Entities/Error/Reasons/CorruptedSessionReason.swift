@@ -21,7 +21,7 @@
 
 import Combine
 
-public enum CorruptedSessionReason: CustomDebugStringConvertible, Equatable {
+public enum CorruptedSessionReason: CustomDebugStringConvertible, Equatable, Sendable {
     public typealias SessionUID = String
 
     case unauthSessionMakingAuthRequests(SessionUID)

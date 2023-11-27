@@ -21,7 +21,7 @@
 import Foundation
 
 public struct LocalizedAlertError: LocalizedError {
-    private let underlyingError: LocalizedError
+    private let underlyingError: any LocalizedError
 
     public var errorDescription: String? {
         underlyingError.errorDescription
@@ -31,8 +31,8 @@ public struct LocalizedAlertError: LocalizedError {
         underlyingError.recoverySuggestion
     }
 
-    public init?(error: Error?) {
-        guard let localizedError = error as? LocalizedError else { return nil }
+    public init?(error: (any Error)?) {
+        guard let localizedError = error as? (any LocalizedError) else { return nil }
         underlyingError = localizedError
     }
 }
