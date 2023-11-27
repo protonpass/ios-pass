@@ -10,8 +10,14 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
-let settings: [SwiftSetting] = [
-  .enableExperimentalFeature("StrictConcurrency")
+let swiftSettings: [SwiftSetting] = [
+   .enableUpcomingFeature("BareSlashRegexLiterals"),
+   .enableUpcomingFeature("ConciseMagicFile"),
+   .enableUpcomingFeature("ExistentialAny"),
+   .enableUpcomingFeature("ForwardTrailingClosures"),
+   .enableUpcomingFeature("ImplicitOpenExistentials"),
+   .enableUpcomingFeature("StrictConcurrency"),
+   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
 ]
 
 let package = Package(name: "Entities",
@@ -26,7 +32,7 @@ let package = Package(name: "Entities",
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
                           // .package(url: /* package url */, from: "1.0.0"),
-                        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.0.0")
+                        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.25.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -37,7 +43,7 @@ let package = Package(name: "Entities",
                                   dependencies: [
                                     .product(name: "SwiftProtobuf", package: "swift-protobuf"),
                                   ],
-                                  swiftSettings: settings),
+                                  swiftSettings: swiftSettings),
                           .testTarget(name: "EntitiesTests",
                                       dependencies: ["Entities"])
                       ])

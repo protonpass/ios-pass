@@ -10,12 +10,14 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
-let settings: [SwiftSetting] = [
-  .enableExperimentalFeature("StrictConcurrency"),
-  .enableExperimentalFeature("ForwardTrailingClosures"),
-  .enableExperimentalFeature("ExistentialAny"),
-  .enableExperimentalFeature("ImplicitOpenExistentials"),
-  .enableExperimentalFeature("BareSlashRegexLiterals")
+let swiftSettings: [SwiftSetting] = [
+//   .enableUpcomingFeature("BareSlashRegexLiterals"),
+//   .enableUpcomingFeature("ConciseMagicFile"),
+//   .enableUpcomingFeature("ExistentialAny"),
+//   .enableUpcomingFeature("ForwardTrailingClosures"),
+//   .enableUpcomingFeature("ImplicitOpenExistentials"),
+//   .enableUpcomingFeature("StrictConcurrency=targeted"),
+//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
 ]
 
 let package = Package(name: "Core",
@@ -52,8 +54,8 @@ let package = Package(name: "Core",
                                   ],
                                   resources: [
                                       .process("Resources")
-                                  ]
-//                                  ,swiftSettings: settings
+                                  ],
+                                  swiftSettings: swiftSettings
                                  ),
                           .testTarget(name: "CoreTests",
                                       dependencies: [
