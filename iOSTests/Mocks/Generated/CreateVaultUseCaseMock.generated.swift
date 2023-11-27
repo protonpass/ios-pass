@@ -21,6 +21,7 @@
 
 @testable import UseCases
 import Client
+import Entities
 
 final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCase {
     // MARK: - execute

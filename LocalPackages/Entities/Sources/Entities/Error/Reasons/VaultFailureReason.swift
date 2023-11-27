@@ -22,7 +22,7 @@
 import Foundation
 
 public extension PassError {
-    enum VaultFailureReason: CustomDebugStringConvertible {
+    enum VaultFailureReason: CustomDebugStringConvertible, Sendable {
         case canNotDeleteLastVault
         case noSelectedVault
         case vaultNotEmpty(String)

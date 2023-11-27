@@ -34,7 +34,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case corruptedSession(CorruptedSessionReason)
     case crypto(CryptoFailureReason)
     case errorExpected
-    case itemNotFound(ItemIdentifiable)
+    case itemNotFound(any ItemIdentifiable)
     case keysNotFound(shareID: String)
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
