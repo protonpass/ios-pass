@@ -22,6 +22,7 @@ import Client
 import Core
 import CryptoKit
 import Entities
+import Factory
 import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
@@ -63,10 +64,13 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
     private var autofillExtensionCredential: AuthCredential?
 
+    private let preferences = resolve(\SharedToolingContainer.preferences)
+
     private let module: PassModule
 
     init(module: PassModule) {
         self.module = module
+        migrateToSeparatedCredentialsIfNeccessary()
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
@@ -137,7 +141,9 @@ final class AppData: AppDataProtocol {
     }
 
     // Should be removed after session forking
-    func migrateToSeparatedCredentials() {
+    func migrateToSeparatedCredentialsIfNeccessary() {
+        guard !preferences.didMigrateToSeparatedCredentials else { return }
+        preferences.didMigrateToSeparatedCredentials = true
         useCredentialInUserDataForBothAppAndExtension()
     }
 }
