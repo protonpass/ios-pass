@@ -28,6 +28,8 @@
 		353518292AE14FB700574991 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 353518282AE14FB700574991 /* Screens */; };
 		3535182B2AE14FBD00574991 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 3535182A2AE14FBD00574991 /* Screens */; };
 		35363D442B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35363D432B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift */; };
+		35363D462B14F24B00846179 /* CredentialsMigrationStateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35363D452B14F24B00846179 /* CredentialsMigrationStateProvider.swift */; };
+		35363D472B14F24B00846179 /* CredentialsMigrationStateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35363D452B14F24B00846179 /* CredentialsMigrationStateProvider.swift */; };
 		353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */; };
 		353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E229EAE9D900A3255E /* QAFeaturesView.swift */; };
 		353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E629EAEE6F00A3255E /* OnboardSection.swift */; };
@@ -549,6 +551,7 @@
 		352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOSDebug-Black.entitlements"; sourceTree = "<group>"; };
 		352866BF28E30662000630E2 /* AutoFillDebug-Black.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AutoFillDebug-Black.entitlements"; sourceTree = "<group>"; };
 		35363D432B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsMigrationStateProviderMock.generated.swift; sourceTree = "<group>"; };
+		35363D452B14F24B00846179 /* CredentialsMigrationStateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsMigrationStateProvider.swift; sourceTree = "<group>"; };
 		353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbacksSection.swift; sourceTree = "<group>"; };
 		353739E229EAE9D900A3255E /* QAFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAFeaturesView.swift; sourceTree = "<group>"; };
 		353739E629EAEE6F00A3255E /* OnboardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardSection.swift; sourceTree = "<group>"; };
@@ -1786,6 +1789,7 @@
 		5B8256D12A4B25B300BCEE6D /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				35363D452B14F24B00846179 /* CredentialsMigrationStateProvider.swift */,
 				5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */,
 				5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */,
 			);
@@ -2527,6 +2531,7 @@
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,
+				35363D472B14F24B00846179 /* CredentialsMigrationStateProvider.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */,
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
@@ -2684,6 +2689,7 @@
 				359EB88E2A20CFE0009588A9 /* InfoBannerViewStack.swift in Sources */,
 				35AC9A652A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift in Sources */,
 				5BFE87782AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift in Sources */,
+				35363D462B14F24B00846179 /* CredentialsMigrationStateProvider.swift in Sources */,
 				5B503FD42A4C7ED900E6681C /* BugReportViewModel.swift in Sources */,
 				37BE837029954C6000E42C89 /* APIManager.swift in Sources */,
 				3553C22C296575540087518A /* LoggerManager+Initializer.swift in Sources */,
