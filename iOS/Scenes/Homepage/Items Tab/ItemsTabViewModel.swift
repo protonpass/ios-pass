@@ -106,9 +106,6 @@ private extension ItemsTabViewModel {
 
             if await loginMethod.isManualLogIn(),
                case .loading = vaultsManager.state {
-                if Task.isCancelled {
-                    return
-                }
                 shouldShowSyncProgress = true
             }
         }

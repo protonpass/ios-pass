@@ -31,7 +31,7 @@ public struct SearchEntry: Hashable, Sendable {
         self.time = time
     }
 
-    public init(item: ItemIdentifiable, date: Date = .now) {
+    public init(item: any ItemIdentifiable, date: Date = .now) {
         itemID = item.itemId
         shareID = item.shareId
         time = Int64(date.timeIntervalSince1970)
