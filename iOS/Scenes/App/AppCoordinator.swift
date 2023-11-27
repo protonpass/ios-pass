@@ -67,7 +67,6 @@ final class AppCoordinator {
 
         isUITest = false
         clearUserDataInKeychainIfFirstRun()
-        migrateToSeparatedCredentialsIfNeeded()
         bindAppState()
 
         // if ui test reset everything
@@ -95,12 +94,6 @@ final class AppCoordinator {
         preferences.isFirstRun = false
         appData.setUserData(nil)
         appData.setCredential(nil)
-    }
-
-    private func migrateToSeparatedCredentialsIfNeeded() {
-        guard !preferences.didMigrateToSeparatedCredentials else { return }
-        preferences.didMigrateToSeparatedCredentials = true
-        appData.migrateToSeparatedCredentials()
     }
 
     private func bindAppState() {
