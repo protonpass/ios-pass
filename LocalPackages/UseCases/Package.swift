@@ -10,8 +10,14 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
-let settings: [SwiftSetting] = [
-  .enableExperimentalFeature("StrictConcurrency")
+let swiftSettings: [SwiftSetting] = [
+//   .enableUpcomingFeature("BareSlashRegexLiterals"),
+//   .enableUpcomingFeature("ConciseMagicFile"),
+//   .enableUpcomingFeature("ExistentialAny"),
+//   .enableUpcomingFeature("ForwardTrailingClosures"),
+//   .enableUpcomingFeature("ImplicitOpenExistentials"),
+//   .enableUpcomingFeature("StrictConcurrency"),
+//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
 ]
 
 let package = Package(name: "UseCases",
@@ -45,8 +51,8 @@ let package = Package(name: "UseCases",
                                       .product(name: "Sentry", package: "sentry-cocoa"),
                                       .product(name: "ProtonCoreFeatureFlags", package: "protoncore")
                                   ],
-                                  resources: []
-//                                  ,swiftSettings: settings
+                                  resources: [],
+                                  swiftSettings: swiftSettings
                                  ),
                           .testTarget(name: "UseCasesTests",
                                       dependencies: ["UseCases"],

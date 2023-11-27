@@ -10,8 +10,14 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
-let settings: [SwiftSetting] = [
-  .enableExperimentalFeature("StrictConcurrency")
+let swiftSettings: [SwiftSetting] = [
+//   .enableUpcomingFeature("BareSlashRegexLiterals"),
+//   .enableUpcomingFeature("ConciseMagicFile"),
+//   .enableUpcomingFeature("ExistentialAny"),
+//   .enableUpcomingFeature("ForwardTrailingClosures"),
+//   .enableUpcomingFeature("ImplicitOpenExistentials"),
+//   .enableUpcomingFeature("StrictConcurrency=targeted"),
+//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
 ]
 
 let package = Package(name: "Client",
@@ -51,8 +57,8 @@ let package = Package(name: "Client",
                                       .product(name: "Reachability", package: "Reachability.swift"),
                                       .product(name: "Macro", package: "Macro")
                                   ],
-                                  resources: [.process("Resources")]
-//                                  ,swiftSettings: settings
+                                  resources: [.process("Resources")],
+                                  swiftSettings: swiftSettings
                                  ),
                           .testTarget(name: "ClientTests",
                                       dependencies: ["Client"])
