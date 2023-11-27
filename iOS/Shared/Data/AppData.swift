@@ -63,10 +63,14 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
     private var autofillExtensionCredential: AuthCredential?
 
+    private let migrationStateProvider: CredentialsMigrationStateProvider
+
     private let module: PassModule
 
-    init(module: PassModule) {
+    init(module: PassModule, migrationStateProvider: CredentialsMigrationStateProvider) {
         self.module = module
+        self.migrationStateProvider = migrationStateProvider
+        migrateToSeparatedCredentialsIfNeccessary()
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
@@ -137,7 +141,9 @@ final class AppData: AppDataProtocol {
     }
 
     // Should be removed after session forking
-    func migrateToSeparatedCredentials() {
+    func migrateToSeparatedCredentialsIfNeccessary() {
+        guard migrationStateProvider.shouldMigrateToSeparatedCredentials() else { return }
+        migrationStateProvider.markAsMigratedToSeparatedCredentials()
         useCredentialInUserDataForBothAppAndExtension()
     }
 }

@@ -20,6 +20,7 @@
 
 @testable import Proton_Pass
 import Factory
+import ProtonCoreKeymaker
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import XCTest
@@ -28,6 +29,7 @@ final class AppDataTests: XCTestCase {
     var keychainData: [String: Data] = [:]
     var keychain: KeychainMock!
     var mainKeyProvider: MainKeyProviderMock!
+    var migrationStateProvider: CredentialsMigrationStateProviderMock!
     var sut: AppData!
 
     override func setUp() {
@@ -45,17 +47,55 @@ final class AppDataTests: XCTestCase {
 
         mainKeyProvider = MainKeyProviderMock()
         mainKeyProvider.mainKeyStub.fixture = Array(repeating: .zero, count: 32)
+        let migrationStateProviderMock = CredentialsMigrationStateProviderMock()
+        migrationStateProviderMock.stubbedShouldMigrateToSeparatedCredentialsResult = false
+        migrationStateProvider = migrationStateProviderMock
         Scope.singleton.reset()
         SharedToolingContainer.shared.keychain.register { self.keychain }
         SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
-        sut = AppData(module: .hostApp)
+        sut = AppData(module: .hostApp, migrationStateProvider: migrationStateProvider)
     }
 
     override func tearDown() {
         keychain = nil
         mainKeyProvider = nil
+        migrationStateProvider = nil
         sut = nil
         super.tearDown()
+    }
+}
+
+extension AppDataTests {
+    func testSeparatedCredentialsMigration() throws {
+        // Given
+        let givenUserData = UserData.mock
+        let data = try JSONEncoder().encode(givenUserData)
+        let lockedData = try Locked<Data>(clearValue: data, with: mainKeyProvider.mainKey!)
+        let cypherdata = lockedData.encryptedValue
+        keychain.set(cypherdata, forKey: AppDataKey.userData.rawValue)
+
+        // When
+        // Get credential when not yet migrated
+        let credential = sut.getCredential()
+
+        // Then
+        XCTAssertNil(credential)
+
+        // When
+        // Do the migration
+        migrationStateProvider.stubbedShouldMigrateToSeparatedCredentialsResult = true
+        migrationStateProvider.closureMarkAsMigratedToSeparatedCredentials = {
+            self.migrationStateProvider.stubbedShouldMigrateToSeparatedCredentialsResult = false
+        }
+        sut = .init(module: .hostApp, migrationStateProvider: migrationStateProvider)
+        let migratedCredential = sut.getCredential()
+
+        // Then
+        XCTAssertNotNil(migratedCredential)
+        XCTAssertEqual(migratedCredential?.sessionID, givenUserData.credential.sessionID)
+        XCTAssertEqual(migratedCredential?.accessToken, givenUserData.credential.accessToken)
+        XCTAssertEqual(migratedCredential?.refreshToken, givenUserData.credential.refreshToken)
+        XCTAssertFalse(migrationStateProvider.shouldMigrateToSeparatedCredentials())
     }
 }
 
@@ -97,7 +137,7 @@ extension AppDataTests {
         sut.setCredential(givenCredential)
 
         // Then
-        try XCTAssertEqual(sut.getCredential()?.sessionID, givenCredential.sessionID)
+        XCTAssertEqual(sut.getCredential()?.sessionID, givenCredential.sessionID)
 
         // When
         sut.setCredential(nil)
