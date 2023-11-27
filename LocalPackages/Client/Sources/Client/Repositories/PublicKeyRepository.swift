@@ -24,7 +24,7 @@ import Entities
 import ProtonCoreServices
 
 // sourcery: AutoMockable
-public protocol PublicKeyRepositoryProtocol {
+public protocol PublicKeyRepositoryProtocol: Sendable {
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }
 

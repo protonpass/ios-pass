@@ -46,7 +46,7 @@ enum ItemSquircleThumbnailSize {
     }
 }
 
-struct ItemSquircleThumbnail: View, Sendable {
+struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
     private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
@@ -121,13 +121,11 @@ struct ItemSquircleThumbnail: View, Sendable {
             image = nil
         }
 
-        Task {
+        Task { @MainActor in
             do {
                 if let favIcon = try await repository.getIcon(for: url),
-                   let image = UIImage(data: favIcon.data) {
-                    await MainActor.run {
-                        self.image = image
-                    }
+                   let newImage = UIImage(data: favIcon.data) {
+                    image = newImage
                 }
             } catch {
                 print(error)

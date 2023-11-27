@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 
 public protocol GetVaultContentForVaultUseCase: Sendable {
     func execute(for vault: Vault) -> VaultContentUiModel

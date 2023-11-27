@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 
 // sourcery: AutoMockable
 public protocol CreateVaultUseCase: Sendable {

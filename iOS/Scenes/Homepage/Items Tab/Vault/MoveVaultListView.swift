@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Entities
 import Macro
 import SwiftUI
 
