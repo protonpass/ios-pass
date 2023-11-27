@@ -25,7 +25,7 @@ public protocol LogManagerProtocol: Actor {
 
     func log(entry: LogEntry)
     func getLogEntries() async throws -> [LogEntry]
-    func removeAllLogs() async
+    func removeAllLogs()
     func saveAllLogs()
     func toggleLogging(shouldLog: Bool)
 }
@@ -114,8 +114,7 @@ public extension LogManager {
         return entries
     }
 
-    @Sendable
-    func removeAllLogs() async {
+    func removeAllLogs() {
         guard fileExists else {
             return
         }
