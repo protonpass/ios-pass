@@ -469,7 +469,7 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("2FA secret (TOTP)")
-                    .sectionTitleText()
+                    .sectionTitleText(isValid: viewModel.totpUriErrorMessage.isEmpty)
 
                 SensitiveTextField(text: $viewModel.totpUri,
                                    placeholder: #localized("Add 2FA secret"),
@@ -481,6 +481,10 @@ private extension CreateEditLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                if !viewModel.totpUriErrorMessage.isEmpty {
+                    InvalidInputLabel(viewModel.totpUriErrorMessage)
+                }
 
                 if #unavailable(iOS 16) {
                     if focusedField == .totp {
@@ -502,6 +506,7 @@ private extension CreateEditLoginView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: focusedField)
+        .animation(.default, value: viewModel.totpUriErrorMessage.isEmpty)
         .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
             NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
         }
