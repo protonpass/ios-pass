@@ -45,6 +45,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var password = ""
     private var originalTotpUri = ""
     @Published var totpUri = ""
+    @Published private(set) var totpUriErrorMessage = ""
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
     @Published var note = ""
@@ -126,19 +127,25 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return #localized("Create & AutoFill")
     }
 
-    override func generateItemContent() throws -> ItemContentProtobuf {
-        let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
-        let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
-                                                            editedUri: totpUri)
-        let logInData = ItemContentData.login(.init(username: username,
-                                                    password: password,
-                                                    totpUri: sanitizedTotpUri,
-                                                    urls: sanitizedUrls))
-        return ItemContentProtobuf(name: title,
-                                   note: note,
-                                   itemUuid: UUID().uuidString,
-                                   data: logInData,
-                                   customFields: customFieldUiModels.map(\.customField))
+    @MainActor
+    override func generateItemContent() -> ItemContentProtobuf? {
+        do {
+            let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
+            let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
+                                                                editedUri: totpUri)
+            let logInData = ItemContentData.login(.init(username: username,
+                                                        password: password,
+                                                        totpUri: sanitizedTotpUri,
+                                                        urls: sanitizedUrls))
+            return ItemContentProtobuf(name: title,
+                                       note: note,
+                                       itemUuid: UUID().uuidString,
+                                       data: logInData,
+                                       customFields: customFieldUiModels.map(\.customField))
+        } catch {
+            totpUriErrorMessage = #localized("Invalid TOTP URI")
+            return nil
+        }
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
@@ -299,6 +306,15 @@ private extension CreateEditLoginViewModel {
                     aliasCreationLiteInfo = nil
                     username = ""
                 }
+            }
+            .store(in: &cancellables)
+
+        $totpUri
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                totpUriErrorMessage = ""
             }
             .store(in: &cancellables)
     }
