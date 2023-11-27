@@ -181,6 +181,13 @@ extension SharedUseCasesContainer {
         self { RevokeCurrentSession(apiService: SharedToolingContainer.shared.apiManager().apiService) }
     }
 
+    var deleteLocalDataBeforeFullSync: Factory<DeleteLocalDataBeforeFullSyncUseCase> {
+        self { DeleteLocalDataBeforeFullSync(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                             shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                             shareKeyRepository: SharedRepositoryContainer.shared
+                                                 .shareKeyRepository()) }
+    }
+
     var wipeAllData: Factory<WipeAllDataUseCase> {
         self { WipeAllData(logManager: self.logManager,
                            appData: SharedDataContainer.shared.appData(),

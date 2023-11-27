@@ -47,6 +47,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+    private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -217,9 +218,8 @@ extension VaultsManager {
     func fullSync() async throws {
         vaultSyncEventStream.send(.started)
 
-        // 1. Delete all local items & shares
-        try await itemRepository.deleteAllItemsLocally()
-        try await shareRepository.deleteAllSharesLocally()
+        // 1. Delete all local data
+        try await deleteLocalDataBeforeFullSync()
 
         // 2. Get all remote shares and their items
         let remoteShares = try await shareRepository.getRemoteShares(eventStream: vaultSyncEventStream)
