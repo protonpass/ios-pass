@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 import Factory
 import ProtonCoreLogin
 import SwiftUI
@@ -152,7 +153,7 @@ private extension CreateEditItemCoordinator {
     func presentGeneratePasswordView(mode: GeneratePasswordViewMode,
                                      generatePasswordViewModelDelegate: GeneratePasswordViewModelDelegate?) {
         assert(delegate != nil, "delegate is not set")
-        guard let delegate else { return }
+        guard delegate != nil else { return }
         Task { @MainActor [weak self] in
             guard let self else { return }
             let coordinator =

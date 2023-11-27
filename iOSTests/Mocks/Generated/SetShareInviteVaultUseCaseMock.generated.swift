@@ -22,6 +22,7 @@
 @testable import Proton_Pass
 import Client
 import UseCases
+import Entities
 
 final class SetShareInviteVaultUseCaseMock: @unchecked Sendable, SetShareInviteVaultUseCase {
     // MARK: - execute

@@ -20,7 +20,7 @@
 
 import Entities
 
-@preconcurrency import PassRustCore
+import PassRustCore
 
 public protocol ParseTotpUriUseCase: Sendable {
     func execute(_ uri: String) throws -> Entities.TotpComponents

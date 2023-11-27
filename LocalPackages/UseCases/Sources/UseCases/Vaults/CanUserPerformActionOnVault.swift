@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 
 public protocol CanUserPerformActionOnVaultUseCase: Sendable {
     func execute(for vault: Vault) -> Bool

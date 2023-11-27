@@ -10,6 +10,16 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
+let swiftSettings: [SwiftSetting] = [
+//   .enableUpcomingFeature("BareSlashRegexLiterals"),
+//   .enableUpcomingFeature("ConciseMagicFile"),
+//   .enableUpcomingFeature("ExistentialAny"),
+//   .enableUpcomingFeature("ForwardTrailingClosures"),
+//   .enableUpcomingFeature("ImplicitOpenExistentials"),
+//   .enableUpcomingFeature("StrictConcurrency=targeted"),
+//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
+]
+
 let package = Package(name: "Client",
                       platforms: platforms,
                       products: [
@@ -21,7 +31,6 @@ let package = Package(name: "Client",
                       dependencies: [
                           .package(url: "https://github.com/ashleymills/Reachability.swift",
                                    branch: "master"),
-                          .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.0.0"),
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Entities", path: "../Entities"),
                           .package(name: "Macro", path: "../Macro"),
@@ -46,10 +55,11 @@ let package = Package(name: "Client",
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "Reachability", package: "Reachability.swift"),
-                                      .product(name: "SwiftProtobuf", package: "swift-protobuf"),
                                       .product(name: "Macro", package: "Macro")
                                   ],
-                                  resources: [.process("Resources")]),
+                                  resources: [.process("Resources")],
+                                  swiftSettings: swiftSettings
+                                 ),
                           .testTarget(name: "ClientTests",
                                       dependencies: ["Client"])
                       ])

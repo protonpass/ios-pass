@@ -22,7 +22,7 @@ import CryptoKit
 import Entities
 import ProtonCoreKeyManager
 
-public struct UpdateItemRequest {
+public struct UpdateItemRequest: Sendable {
     /// RotationID used to encrypt the item contents
     public let keyRotation: Int64
 

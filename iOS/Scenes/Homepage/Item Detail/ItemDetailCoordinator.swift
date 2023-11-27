@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 import Factory
 import SwiftUI
 import UIKit

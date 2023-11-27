@@ -67,7 +67,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @AppStorage(Key.browser.rawValue, store: kSharedUserDefaults)
     var browser: Browser = .systemDefault
 
-    @AppStorage(Key.telemetryThreshold.rawValue, store: kSharedUserDefaults)
+    @MainActor @AppStorage(Key.telemetryThreshold.rawValue, store: kSharedUserDefaults)
     var telemetryThreshold: TimeInterval?
 
     @AppStorage(Key.displayFavIcons.rawValue, store: kSharedUserDefaults)
@@ -109,6 +109,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @KeychainStorage(key: Key.dismissedBannerIds, defaultValue: [])
     var dismissedBannerIds: [String]
 
+    @MainActor
     func reset(isTests: Bool = false) {
         quickTypeBar = true
         automaticallyCopyTotpCode = false
@@ -160,8 +161,8 @@ private extension Preferences {
 // MARK: - TelemetryThresholdProviderProtocol
 
 extension Preferences: TelemetryThresholdProviderProtocol {
-    func getThreshold() -> TimeInterval? { telemetryThreshold }
-    func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
+    @MainActor func getThreshold() -> TimeInterval? { telemetryThreshold }
+    @MainActor func setThreshold(_ threshold: TimeInterval?) { telemetryThreshold = threshold }
 }
 
 // MARK: - FavIconSettings
