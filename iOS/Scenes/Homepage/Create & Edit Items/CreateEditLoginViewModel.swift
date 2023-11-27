@@ -128,7 +128,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     @MainActor
-    override func generateItemContent() throws -> ItemContentProtobuf? {
+    override func generateItemContent() -> ItemContentProtobuf? {
         do {
             let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
             let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
