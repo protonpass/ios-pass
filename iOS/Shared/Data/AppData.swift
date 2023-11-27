@@ -22,7 +22,6 @@ import Client
 import Core
 import CryptoKit
 import Entities
-import Factory
 import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
@@ -158,21 +157,5 @@ private extension AppData {
             hostAppCredential = credential
             autofillExtensionCredential = credential
         }
-    }
-}
-
-// sourcery: AutoMockable
-protocol CredentialsMigrationStateProvider {
-    func shouldMigrateToSeparatedCredentials() -> Bool
-    func markAsMigratedToSeparatedCredentials()
-}
-
-extension Preferences: CredentialsMigrationStateProvider {
-    func shouldMigrateToSeparatedCredentials() -> Bool {
-        !didMigrateToSeparatedCredentials
-    }
-
-    func markAsMigratedToSeparatedCredentials() {
-        didMigrateToSeparatedCredentials = true
     }
 }
