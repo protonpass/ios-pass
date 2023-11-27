@@ -66,7 +66,7 @@ final class BugReportViewModel: ObservableObject {
 
     func send() {
         assert(object != nil, "An object must be selected")
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else { return }
             isSending = true
             do {
