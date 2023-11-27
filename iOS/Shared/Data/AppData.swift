@@ -161,6 +161,7 @@ private extension AppData {
     }
 }
 
+// sourcery: AutoMockable
 protocol CredentialsMigrationStateProvider {
     func shouldMigrateToSeparatedCredentials() -> Bool
     func markAsMigratedToSeparatedCredentials()

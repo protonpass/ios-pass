@@ -27,6 +27,7 @@
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
 		353518292AE14FB700574991 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 353518282AE14FB700574991 /* Screens */; };
 		3535182B2AE14FBD00574991 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 3535182A2AE14FBD00574991 /* Screens */; };
+		35363D442B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35363D432B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift */; };
 		353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */; };
 		353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E229EAE9D900A3255E /* QAFeaturesView.swift */; };
 		353739E729EAEE6F00A3255E /* OnboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353739E629EAEE6F00A3255E /* OnboardSection.swift */; };
@@ -547,6 +548,7 @@
 		352866BC28E2DCB5000630E2 /* CredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
 		352866BE28E3065A000630E2 /* iOSDebug-Black.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOSDebug-Black.entitlements"; sourceTree = "<group>"; };
 		352866BF28E30662000630E2 /* AutoFillDebug-Black.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AutoFillDebug-Black.entitlements"; sourceTree = "<group>"; };
+		35363D432B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsMigrationStateProviderMock.generated.swift; sourceTree = "<group>"; };
 		353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbacksSection.swift; sourceTree = "<group>"; };
 		353739E229EAE9D900A3255E /* QAFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAFeaturesView.swift; sourceTree = "<group>"; };
 		353739E629EAEE6F00A3255E /* OnboardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardSection.swift; sourceTree = "<group>"; };
@@ -1981,6 +1983,7 @@
 				35A70A882ADD768000CF317F /* AccessRepositoryProtocolMock.generated.swift */,
 				35704EB72AD574D700044716 /* CreateAndMoveItemToNewVaultUseCaseMock.generated.swift */,
 				35704EB62AD574D700044716 /* CreateVaultUseCaseMock.generated.swift */,
+				35363D432B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift */,
 				58EF35837CBB33B2918BE438 /* ExtractLogsToFileUseCaseMock.generated.swift */,
 				5BA664012A8133C00049EA68 /* GetCurrentShareInviteInformationsUseCaseMock.generated.swift */,
 				5BA664022A8133C00049EA68 /* GetFeatureFlagStatusUseCaseMock.generated.swift */,
@@ -2591,6 +2594,7 @@
 				38B435A52B1BD4BF8C07F7BF /* PassKeyManagerProtocolMock.generated.swift in Sources */,
 				259F729CCBEEEE2AFB240FB5 /* PublicKeyRepositoryProtocolMock.generated.swift in Sources */,
 				5179844D85D43BF233B6DA2B /* SyncEventLoopProtocolMock.generated.swift in Sources */,
+				35363D442B14D53A00846179 /* CredentialsMigrationStateProviderMock.generated.swift in Sources */,
 				35A70A892ADD768000CF317F /* AccessRepositoryProtocolMock.generated.swift in Sources */,
 				259190BB067B27301D6F6A53 /* CreateVaultUseCaseMock.generated.swift in Sources */,
 				A5914524D391C371AEB4FD57 /* CreateVaultUseCaseMock.generated.swift in Sources */,

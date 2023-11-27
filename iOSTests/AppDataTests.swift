@@ -28,6 +28,7 @@ final class AppDataTests: XCTestCase {
     var keychainData: [String: Data] = [:]
     var keychain: KeychainMock!
     var mainKeyProvider: MainKeyProviderMock!
+    var migrationStateProvider: CredentialsMigrationStateProvider!
     var sut: AppData!
 
     override func setUp() {
@@ -45,15 +46,19 @@ final class AppDataTests: XCTestCase {
 
         mainKeyProvider = MainKeyProviderMock()
         mainKeyProvider.mainKeyStub.fixture = Array(repeating: .zero, count: 32)
+        let migrationStateProviderMock = CredentialsMigrationStateProviderMock()
+        migrationStateProviderMock.stubbedShouldMigrateToSeparatedCredentialsResult = false
+        migrationStateProvider = migrationStateProviderMock
         Scope.singleton.reset()
         SharedToolingContainer.shared.keychain.register { self.keychain }
         SharedToolingContainer.shared.mainKeyProvider.register { self.mainKeyProvider }
-        sut = AppData(module: .hostApp)
+        sut = AppData(module: .hostApp, migrationStateProvider: migrationStateProvider)
     }
 
     override func tearDown() {
         keychain = nil
         mainKeyProvider = nil
+        migrationStateProvider = nil
         sut = nil
         super.tearDown()
     }
