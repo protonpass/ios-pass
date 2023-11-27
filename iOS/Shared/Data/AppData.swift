@@ -64,12 +64,13 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
     private var autofillExtensionCredential: AuthCredential?
 
-    private let preferences = resolve(\SharedToolingContainer.preferences)
+    private let migrationStateProvider: CredentialsMigrationStateProvider
 
     private let module: PassModule
 
-    init(module: PassModule) {
+    init(module: PassModule, migrationStateProvider: CredentialsMigrationStateProvider) {
         self.module = module
+        self.migrationStateProvider = migrationStateProvider
         migrateToSeparatedCredentialsIfNeccessary()
     }
 
@@ -142,8 +143,8 @@ final class AppData: AppDataProtocol {
 
     // Should be removed after session forking
     func migrateToSeparatedCredentialsIfNeccessary() {
-        guard !preferences.didMigrateToSeparatedCredentials else { return }
-        preferences.didMigrateToSeparatedCredentials = true
+        guard migrationStateProvider.shouldMigrateToSeparatedCredentials() else { return }
+        migrationStateProvider.markAsMigratedToSeparatedCredentials()
         useCredentialInUserDataForBothAppAndExtension()
     }
 }
@@ -157,5 +158,20 @@ private extension AppData {
             hostAppCredential = credential
             autofillExtensionCredential = credential
         }
+    }
+}
+
+protocol CredentialsMigrationStateProvider {
+    func shouldMigrateToSeparatedCredentials() -> Bool
+    func markAsMigratedToSeparatedCredentials()
+}
+
+extension Preferences: CredentialsMigrationStateProvider {
+    func shouldMigrateToSeparatedCredentials() -> Bool {
+        !didMigrateToSeparatedCredentials
+    }
+
+    func markAsMigratedToSeparatedCredentials() {
+        didMigrateToSeparatedCredentials = true
     }
 }
