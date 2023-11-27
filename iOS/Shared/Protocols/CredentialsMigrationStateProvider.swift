@@ -1,6 +1,6 @@
 //
-// CredentialProvider.swift
-// Proton Pass - Created on 23/11/2023.
+// CredentialsMigrationStateProvider.swift
+// Proton Pass - Created on 27/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,25 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import ProtonCoreNetworking
+import Foundation
 
-public protocol CredentialProvider {
-    func getCredential() -> AuthCredential?
-    func setCredential(_ credential: AuthCredential?)
-
-    var isAuthenticated: Bool { get }
-
-    // Should be removed after session forking
-    func migrateToSeparatedCredentialsIfNeccessary()
+// sourcery: AutoMockable
+protocol CredentialsMigrationStateProvider {
+    func shouldMigrateToSeparatedCredentials() -> Bool
+    func markAsMigratedToSeparatedCredentials()
 }
 
-public extension CredentialProvider {
-    var isAuthenticated: Bool {
-        guard let credential = getCredential() else {
-            return false
-        }
-        return !credential.isForUnauthenticatedSession
+extension Preferences: CredentialsMigrationStateProvider {
+    func shouldMigrateToSeparatedCredentials() -> Bool {
+        !didMigrateToSeparatedCredentials
+    }
+
+    func markAsMigratedToSeparatedCredentials() {
+        didMigrateToSeparatedCredentials = true
     }
 }
