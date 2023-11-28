@@ -41,6 +41,10 @@ struct GeneratePasswordView: View {
                     .frame(maxHeight: .infinity, alignment: .center)
                     .animationsDisabled()
 
+                Label(viewModel.strength.title, systemImage: viewModel.strength.iconName)
+                    .font(.headline)
+                    .foregroundStyle(viewModel.strength.color)
+
                 passwordTypeRow
                 PassDivider()
 
