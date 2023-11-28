@@ -70,6 +70,7 @@ final class AppData: AppDataProtocol {
     init(module: PassModule, migrationStateProvider: CredentialsMigrationStateProvider) {
         self.module = module
         self.migrationStateProvider = migrationStateProvider
+        migrateToSeparatedCredentialsIfNeccessary()
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
