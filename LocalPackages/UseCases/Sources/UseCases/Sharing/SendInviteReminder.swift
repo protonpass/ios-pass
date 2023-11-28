@@ -33,9 +33,9 @@ public extension SendInviteReminderUseCase {
 }
 
 public final class SendInviteReminder: SendInviteReminderUseCase {
-    private let shareInviteRepository: ShareInviteRepositoryProtocol
+    private let shareInviteRepository: any ShareInviteRepositoryProtocol
 
-    public init(shareInviteRepository: ShareInviteRepositoryProtocol) {
+    public init(shareInviteRepository: any ShareInviteRepositoryProtocol) {
         self.shareInviteRepository = shareInviteRepository
     }
 

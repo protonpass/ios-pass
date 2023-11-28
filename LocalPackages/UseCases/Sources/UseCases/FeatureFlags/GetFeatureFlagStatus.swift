@@ -36,13 +36,13 @@ public extension GetFeatureFlagStatusUseCase {
 }
 
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
-    private let featureFlagsRepository: FeatureFlagsRepositoryProtocol
-    private let userDataProvider: UserDataProvider
+    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
+    private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
-    public init(repository: FeatureFlagsRepositoryProtocol,
-                userDataProvider: UserDataProvider,
-                logManager: LogManagerProtocol) {
+    public init(repository: any FeatureFlagsRepositoryProtocol,
+                userDataProvider: any UserDataProvider,
+                logManager: any LogManagerProtocol) {
         featureFlagsRepository = repository
         self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)

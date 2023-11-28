@@ -34,12 +34,12 @@ public extension CanUserPerformActionOnVaultUseCase {
 }
 
 public final class CanUserPerformActionOnVault: @unchecked Sendable, CanUserPerformActionOnVaultUseCase {
-    private let accessRepository: AccessRepositoryProtocol
-    private let vaultsManager: VaultsManagerProtocol
+    private let accessRepository: any AccessRepositoryProtocol
+    private let vaultsManager: any VaultsManagerProtocol
     private var isFreeUser = true
 
-    public init(accessRepository: AccessRepositoryProtocol,
-                vaultsManager: VaultsManagerProtocol) {
+    public init(accessRepository: any AccessRepositoryProtocol,
+                vaultsManager: any VaultsManagerProtocol) {
         self.accessRepository = accessRepository
         self.vaultsManager = vaultsManager
         setUp()
