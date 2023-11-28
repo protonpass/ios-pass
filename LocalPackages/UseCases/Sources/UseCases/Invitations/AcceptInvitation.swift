@@ -40,15 +40,15 @@ public extension AcceptInvitationUseCase {
 }
 
 public final class AcceptInvitation: AcceptInvitationUseCase {
-    private let repository: InviteRepositoryProtocol
-    private let userDataProvider: UserDataProvider
-    private let getEmailPublicKey: GetEmailPublicKeyUseCase
-    private let updateUserAddresses: UpdateUserAddressesUseCase
+    private let repository: any InviteRepositoryProtocol
+    private let userDataProvider: any UserDataProvider
+    private let getEmailPublicKey: any GetEmailPublicKeyUseCase
+    private let updateUserAddresses: any UpdateUserAddressesUseCase
 
-    public init(repository: InviteRepositoryProtocol,
-                userDataProvider: UserDataProvider,
-                getEmailPublicKey: GetEmailPublicKeyUseCase,
-                updateUserAddresses: UpdateUserAddressesUseCase) {
+    public init(repository: any InviteRepositoryProtocol,
+                userDataProvider: any UserDataProvider,
+                getEmailPublicKey: any GetEmailPublicKeyUseCase,
+                updateUserAddresses: any UpdateUserAddressesUseCase) {
         self.repository = repository
         self.userDataProvider = userDataProvider
         self.getEmailPublicKey = getEmailPublicKey

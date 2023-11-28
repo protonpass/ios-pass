@@ -37,11 +37,11 @@ public extension CreateVaultUseCase {
 }
 
 public final class CreateVault: CreateVaultUseCase {
-    private let vaultsManager: VaultsManagerProtocol
-    private let repository: ShareRepositoryProtocol
+    private let vaultsManager: any VaultsManagerProtocol
+    private let repository: any ShareRepositoryProtocol
 
-    public init(vaultsManager: VaultsManagerProtocol,
-                repository: ShareRepositoryProtocol) {
+    public init(vaultsManager: any VaultsManagerProtocol,
+                repository: any ShareRepositoryProtocol) {
         self.vaultsManager = vaultsManager
         self.repository = repository
     }

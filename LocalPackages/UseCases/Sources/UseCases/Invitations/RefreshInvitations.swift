@@ -33,13 +33,13 @@ public extension RefreshInvitationsUseCase {
 }
 
 public final class RefreshInvitations: RefreshInvitationsUseCase {
-    private let inviteRepository: InviteRepositoryProtocol
-    private let accessRepository: AccessRepositoryProtocol
-    private let getFeatureFlagStatus: GetFeatureFlagStatusUseCase
+    private let inviteRepository: any InviteRepositoryProtocol
+    private let accessRepository: any AccessRepositoryProtocol
+    private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
 
-    public init(inviteRepository: InviteRepositoryProtocol,
-                accessRepository: AccessRepositoryProtocol,
-                getFeatureFlagStatus: GetFeatureFlagStatusUseCase) {
+    public init(inviteRepository: any InviteRepositoryProtocol,
+                accessRepository: any AccessRepositoryProtocol,
+                getFeatureFlagStatus: any GetFeatureFlagStatusUseCase) {
         self.inviteRepository = inviteRepository
         self.accessRepository = accessRepository
         self.getFeatureFlagStatus = getFeatureFlagStatus

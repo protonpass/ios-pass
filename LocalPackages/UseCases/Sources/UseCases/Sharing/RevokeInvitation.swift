@@ -33,9 +33,9 @@ public extension RevokeInvitationUseCase {
 }
 
 public final class RevokeInvitation: RevokeInvitationUseCase {
-    private let shareInviteRepository: ShareInviteRepositoryProtocol
+    private let shareInviteRepository: any ShareInviteRepositoryProtocol
 
-    public init(shareInviteRepository: ShareInviteRepositoryProtocol) {
+    public init(shareInviteRepository: any ShareInviteRepositoryProtocol) {
         self.shareInviteRepository = shareInviteRepository
     }
 

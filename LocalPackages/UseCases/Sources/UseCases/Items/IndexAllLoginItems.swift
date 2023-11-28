@@ -38,21 +38,21 @@ public extension IndexAllLoginItemsUseCase {
 }
 
 public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
-    private let itemRepository: ItemRepositoryProtocol
-    private let shareRepository: ShareRepositoryProtocol
-    private let accessRepository: AccessRepositoryProtocol
-    private let credentialManager: CredentialManagerProtocol
-    private let preferences: PreferencesProtocol
-    private let mapLoginItem: MapLoginItemUseCase
+    private let itemRepository: any ItemRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
+    private let accessRepository: any AccessRepositoryProtocol
+    private let credentialManager: any CredentialManagerProtocol
+    private let preferences: any PreferencesProtocol
+    private let mapLoginItem: any MapLoginItemUseCase
     private let logger: Logger
 
-    public init(itemRepository: ItemRepositoryProtocol,
-                shareRepository: ShareRepositoryProtocol,
-                accessRepository: AccessRepositoryProtocol,
-                credentialManager: CredentialManagerProtocol,
-                preferences: PreferencesProtocol,
-                mapLoginItem: MapLoginItemUseCase,
-                logManager: LogManagerProtocol) {
+    public init(itemRepository: any ItemRepositoryProtocol,
+                shareRepository: any ShareRepositoryProtocol,
+                accessRepository: any AccessRepositoryProtocol,
+                credentialManager: any CredentialManagerProtocol,
+                preferences: any PreferencesProtocol,
+                mapLoginItem: any MapLoginItemUseCase,
+                logManager: any LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
