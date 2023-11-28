@@ -39,6 +39,6 @@ public struct GetLogoEndpoint: Endpoint {
         path = "/core/v4/images/logo"
         method = .get
         let host = URL(string: domain)?.host ?? domain
-        parameters = ["Domain": host, "Size": 64, "Mode": "dark"]
+        parameters = ["Domain": host, "Size": 32, "Mode": "dark"]
     }
 }
