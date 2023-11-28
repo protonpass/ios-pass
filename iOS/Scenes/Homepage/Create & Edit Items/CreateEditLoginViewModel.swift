@@ -43,6 +43,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
+    @Published var passwordStrength: PasswordStrength?
     private var originalTotpUri = ""
     @Published var totpUri = ""
     @Published private(set) var totpUriErrorMessage = ""
@@ -70,8 +71,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+
+    var passwordRowTitle: String {
+        #localized("Password • %@", passwordStrength?.title ?? "Weak")
+    }
 
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
@@ -319,6 +325,15 @@ private extension CreateEditLoginViewModel {
             .sink { [weak self] _ in
                 guard let self else { return }
                 totpUriErrorMessage = ""
+            }
+            .store(in: &cancellables)
+
+        $password
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] passwordValue in
+                guard let self else { return }
+                passwordStrength = getPasswordStrength(password: passwordValue)
             }
             .store(in: &cancellables)
     }
