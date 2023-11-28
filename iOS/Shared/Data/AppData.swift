@@ -70,7 +70,6 @@ final class AppData: AppDataProtocol {
     init(module: PassModule, migrationStateProvider: CredentialsMigrationStateProvider) {
         self.module = module
         self.migrationStateProvider = migrationStateProvider
-        migrateToSeparatedCredentialsIfNeccessary()
     }
 
     func getSymmetricKey() throws -> SymmetricKey {
@@ -101,11 +100,12 @@ final class AppData: AppDataProtocol {
     }
 
     func getCredential() -> AuthCredential? {
+        migrateToSeparatedCredentialsIfNeccessary()
         switch module {
         case .hostApp:
-            hostAppCredential ?? mainCredential
+            return hostAppCredential ?? mainCredential
         case .autoFillExtension:
-            autofillExtensionCredential ?? mainCredential
+            return autofillExtensionCredential ?? mainCredential
         case .keyboardExtension:
             fatalError("Not applicable")
         }
