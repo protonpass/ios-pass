@@ -46,11 +46,14 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
+    @Published private(set) var passwordStrength: PasswordStrength?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private(set) var totpManager: TOTPManager
     @Published private var aliasItem: SymmetricallyEncryptedItem?
 
     var isAlias: Bool { aliasItem != nil }
+
+    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
@@ -76,6 +79,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             note = itemContent.note
             username = data.username
             password = data.password
+            passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
             totpManager.bind(uri: data.totpUri)
             getAliasItem(username: data.username)
