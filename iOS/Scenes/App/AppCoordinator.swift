@@ -123,6 +123,15 @@ final class AppCoordinator {
                 }
             }
             .store(in: &cancellables)
+
+        preferences
+            .objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self else { return }
+                window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+            }
+            .store(in: &cancellables)
     }
 
     func start() {
@@ -167,6 +176,7 @@ final class AppCoordinator {
     private func animateUpdateRootViewController(_ newRootViewController: UIViewController,
                                                  completion: (() -> Void)? = nil) {
         window.rootViewController = newRootViewController
+        window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         UIView.transition(with: window,
                           duration: 0.35,
                           options: .transitionCrossDissolve,
