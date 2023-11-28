@@ -75,19 +75,24 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     override func bindValues() {
         if case let .login(data) = itemContent.contentData {
-            name = itemContent.name
-            note = itemContent.note
-            username = data.username
-            password = data.password
-            passwordStrength = getPasswordStrength(password: password)
-            urls = data.urls
-            totpManager.bind(uri: data.totpUri)
-            getAliasItem(username: data.username)
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    return
+                }
+                name = itemContent.name
+                note = itemContent.note
+                username = data.username
+                password = data.password
+                passwordStrength = getPasswordStrength(password: password)
+                urls = data.urls
+                totpManager.bind(uri: data.totpUri)
+                getAliasItem(username: data.username)
 
-            if !data.totpUri.isEmpty {
-                checkTotpState()
-            } else {
-                totpTokenState = .allowed
+                if !data.totpUri.isEmpty {
+                    checkTotpState()
+                } else {
+                    totpTokenState = .allowed
+                }
             }
         } else {
             fatalError("Expecting login type")

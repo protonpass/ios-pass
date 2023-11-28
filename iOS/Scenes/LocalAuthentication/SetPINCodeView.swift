@@ -29,8 +29,8 @@ struct SetPINCodeView: View {
     @FocusState private var isFocused: Bool
     @StateObject private var viewModel: SetPINCodeViewModel
 
-    init(onSet: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(onSet: onSet))
+    init() {
+        _viewModel = .init(wrappedValue: .init())
     }
 
     var body: some View {

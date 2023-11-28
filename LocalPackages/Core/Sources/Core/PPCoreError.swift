@@ -21,7 +21,7 @@
 import Foundation
 
 /// Proton Pass core module related errors.
-public enum PPCoreError: Error, CustomDebugStringConvertible {
+public enum PPCoreError: Error, CustomDebugStringConvertible, Sendable {
     case biometryTypeNotInitialized
     case failedToConvertBase64StringToData(String)
     case failedToRandomizeData
@@ -42,7 +42,7 @@ public enum PPCoreError: Error, CustomDebugStringConvertible {
 }
 
 public extension PPCoreError {
-    enum TOTPDataCurruptionReason: CustomDebugStringConvertible {
+    enum TOTPDataCurruptionReason: CustomDebugStringConvertible, Sendable {
         case unsupportedOTP
         case failedToDecodeSecret
         case failedToInitializeTOTPObject
