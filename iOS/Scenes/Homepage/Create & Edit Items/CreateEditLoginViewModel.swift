@@ -76,7 +76,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     var passwordRowTitle: String {
-        #localized("Password • %@", passwordStrength?.title ?? "Weak")
+        #localized("Password") + " • " + (passwordStrength ?? .weak).title
     }
 
     override init(mode: ItemMode,

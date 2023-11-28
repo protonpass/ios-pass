@@ -35755,10 +35755,6 @@
         }
       }
     },
-    "Password • %@" : {
-      "comment" : "Title set in view displaying the strength of the password",
-      "extractionState" : "manual"
-    },
     "Password copied" : {
       "extractionState" : "manual",
       "localizations" : {
