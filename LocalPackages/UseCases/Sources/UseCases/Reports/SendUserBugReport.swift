@@ -61,9 +61,9 @@ public extension SendUserBugReportUseCase {
 }
 
 public final class SendUserBugReport: SendUserBugReportUseCase {
-    private let reportRepository: ReportRepositoryProtocol
-    private let extractLogsToFile: ExtractLogsToFileUseCase
-    private let getLogEntries: GetLogEntriesUseCase
+    private let reportRepository: any ReportRepositoryProtocol
+    private let extractLogsToFile: any ExtractLogsToFileUseCase
+    private let getLogEntries: any GetLogEntriesUseCase
 
     /**
      Initializes a new instance of `SendUserBugReport` with the specified dependencies.
@@ -73,9 +73,9 @@ public final class SendUserBugReport: SendUserBugReportUseCase {
        - extractLogsToFile: The use case responsible for extracting logs to a file.
        - getLogEntries: The use case responsible for retrieving log entries.
      */
-    public init(reportRepository: ReportRepositoryProtocol,
-                extractLogsToFile: ExtractLogsToFileUseCase,
-                getLogEntries: GetLogEntriesUseCase) {
+    public init(reportRepository: any ReportRepositoryProtocol,
+                extractLogsToFile: any ExtractLogsToFileUseCase,
+                getLogEntries: any GetLogEntriesUseCase) {
         self.reportRepository = reportRepository
         self.extractLogsToFile = extractLogsToFile
         self.getLogEntries = getLogEntries

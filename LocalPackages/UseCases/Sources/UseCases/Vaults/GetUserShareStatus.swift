@@ -40,13 +40,13 @@ public enum UserShareStatus {
 }
 
 public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUseCase {
-    private let accessRepository: AccessRepositoryProtocol
-    private let getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase
+    private let accessRepository: any AccessRepositoryProtocol
+    private let getFeatureFlagStatusUseCase: any GetFeatureFlagStatusUseCase
     private var isFreeUser = true
     private var sharingFeatureFlagIsOpen = false
 
-    public init(getFeatureFlagStatusUseCase: GetFeatureFlagStatusUseCase,
-                accessRepository: AccessRepositoryProtocol) {
+    public init(getFeatureFlagStatusUseCase: any GetFeatureFlagStatusUseCase,
+                accessRepository: any AccessRepositoryProtocol) {
         self.accessRepository = accessRepository
         self.getFeatureFlagStatusUseCase = getFeatureFlagStatusUseCase
         setUp()

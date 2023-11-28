@@ -33,13 +33,13 @@ public extension CreateAndMoveItemToNewVaultUseCase {
 }
 
 public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase {
-    private let createVault: CreateVaultUseCase
-    private let moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase
-    private let vaultsManager: VaultsManagerProtocol
+    private let createVault: any CreateVaultUseCase
+    private let moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase
+    private let vaultsManager: any VaultsManagerProtocol
 
-    public init(createVault: CreateVaultUseCase,
-                moveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase,
-                vaultsManager: VaultsManagerProtocol) {
+    public init(createVault: any CreateVaultUseCase,
+                moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase,
+                vaultsManager: any VaultsManagerProtocol) {
         self.createVault = createVault
         self.moveItemsBetweenVaults = moveItemsBetweenVaults
         self.vaultsManager = vaultsManager
