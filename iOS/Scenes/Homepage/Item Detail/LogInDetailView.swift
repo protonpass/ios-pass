@@ -199,6 +199,15 @@ struct LogInDetailView: View {
 
             Spacer()
 
+            if let passwordStrength = viewModel.passwordStrength {
+                Label { Text(passwordStrength.title)
+                    .font(.caption)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                } icon: { Image(systemName: passwordStrength.iconName)
+                    .foregroundColor(passwordStrength.color)
+                }
+            }
+
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
                              iconColor: viewModel.itemContent.type.normMajor2Color,
