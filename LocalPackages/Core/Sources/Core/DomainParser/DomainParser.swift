@@ -8,7 +8,7 @@
 import Foundation
 
 enum DomainParserError: Error {
-    case parsingError(details: Error?)
+    case parsingError(details: (any Error)?)
 }
 
 /// Uses the public suffix list

@@ -41,14 +41,17 @@ final class SecuritySettingsCoordinator {
 // MARK: - Public APIs
 
 extension SecuritySettingsCoordinator {
+    @MainActor
     func editMethod() {
         showListOfAvailableMethods()
     }
 
+    @MainActor
     func editAppLockTime() {
         showListOfAppLockTimes()
     }
 
+    @MainActor
     func editPINCode() {
         verifyAndThenUpdatePIN()
     }
@@ -57,6 +60,7 @@ extension SecuritySettingsCoordinator {
 // MARK: - Private APIs
 
 private extension SecuritySettingsCoordinator {
+    @MainActor
     func showListOfAvailableMethods() {
         do {
             let methods = try getMethods(policy: enablingPolicy)
@@ -76,6 +80,7 @@ private extension SecuritySettingsCoordinator {
         }
     }
 
+    @MainActor
     func updateMethod(_ newMethod: LocalAuthenticationMethod) {
         let currentMethod = preferences.localAuthenticationMethod
         switch (currentMethod, newMethod) {
@@ -112,6 +117,7 @@ private extension SecuritySettingsCoordinator {
         }
     }
 
+    @MainActor
     func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod,
                                                   policy: LAPolicy,
                                                   allowFailure: Bool) {
@@ -166,6 +172,7 @@ private extension SecuritySettingsCoordinator {
         }
     }
 
+    @MainActor
     func showListOfAppLockTimes() {
         let view = EditAppLockTimeView(selectedAppLockTime: preferences.appLockTime,
                                        onSelect: { [weak self] newTime in
@@ -184,18 +191,10 @@ private extension SecuritySettingsCoordinator {
     }
 
     func definePINCodeAndChangeToPINMethod() {
-        let view = SetPINCodeView { [weak self] pinCode in
-            guard let self else { return }
-            preferences.localAuthenticationMethod = .pin
-            preferences.pinCode = pinCode
-            delegate?.childCoordinatorWantsToDisplayBanner(bannerOption: .success(#localized("PIN code set")),
-                                                           presentationOption: .dismissTopViewController)
-        }
-        delegate?.childCoordinatorWantsToPresent(view: view,
-                                                 viewOption: .sheet,
-                                                 presentationOption: .dismissTopViewController)
+        router.present(for: .pinCode)
     }
 
+    @MainActor
     func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }
@@ -225,6 +224,7 @@ private extension SecuritySettingsCoordinator {
                                                  presentationOption: .dismissTopViewController)
     }
 
+    @MainActor
     func verifyAndThenUpdatePIN() {
         let successHandler: () -> Void = { [weak self] in
             guard let self else { return }

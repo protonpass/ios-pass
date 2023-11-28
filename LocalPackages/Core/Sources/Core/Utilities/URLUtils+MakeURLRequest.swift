@@ -31,7 +31,7 @@ public extension URLUtils {
                                appVersion: String,
                                sessionId: String,
                                accessToken: String?,
-                               body: Encodable?) throws -> URLRequest {
+                               body: (any Encodable)?) throws -> URLRequest {
         guard var url = URL(string: baseUrl) else {
             throw PassError.network(.badUrlString(baseUrl))
         }
