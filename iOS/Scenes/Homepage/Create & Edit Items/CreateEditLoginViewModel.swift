@@ -43,7 +43,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
-    @Published var passwordStrength: PasswordStrength?
+    @Published private(set) var passwordStrength: PasswordStrength?
     private var originalTotpUri = ""
     @Published var totpUri = ""
     @Published private(set) var totpUriErrorMessage = ""
