@@ -160,15 +160,15 @@ final class PreferencesTests: XCTestCase {
         XCTAssertEqual(sut.browser, .systemDefault)
     }
 
-    func testClipboardExpiresAfterOneMinuteByDefault() {
-        XCTAssertEqual(sut.clipboardExpiration, .oneMinute)
+    func testClipboardExpiresAfterTwoMinuteByDefault() {
+        XCTAssertEqual(sut.clipboardExpiration, .twoMinutes)
     }
 
-    func testClipboardExpiresAfterOneMinuteAfterResetting() async {
+    func testClipboardExpiresAfterTwoMinuteAfterResetting() async {
         sut.clipboardExpiration = .fifteenSeconds
         XCTAssertEqual(sut.clipboardExpiration, .fifteenSeconds)
         await sut.reset()
-        XCTAssertEqual(sut.clipboardExpiration, .oneMinute)
+        XCTAssertEqual(sut.clipboardExpiration, .twoMinutes)
     }
 
     func testDoNotShareClipboardByDefault() {
