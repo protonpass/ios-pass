@@ -232,6 +232,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         totpUri = UIPasteboard.general.string ?? ""
     }
 
+    func pastePasswordFromClipboard() {
+        password = UIPasteboard.general.string ?? ""
+    }
+
     func openCodeScanner() {
         Task { @MainActor [weak self] in
             guard let self else { return }

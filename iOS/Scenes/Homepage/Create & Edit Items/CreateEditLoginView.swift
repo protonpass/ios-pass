@@ -247,10 +247,24 @@ private extension CreateEditLoginView {
     }
 
     var passwordTextFieldToolbar: some View {
-        Button(action: viewModel.generatePassword) {
+        ScrollView(.horizontal) {
             HStack {
-                toolbarIcon(uiImage: IconProvider.arrowsRotate)
-                Text("Generate password")
+                Button(action: viewModel.pastePasswordFromClipboard) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.squares)
+                        Text("Paste from clipboard")
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+
+                PassDivider()
+
+                Button(action: viewModel.generatePassword) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.arrowsRotate)
+                        Text("Generate password")
+                    }
+                }
             }
         }
         .animationsDisabled()
