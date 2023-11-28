@@ -99,7 +99,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
     @KeychainStorage(key: Key.appLockTime, defaultValue: .twoMinutes)
     var appLockTime: AppLockTime
 
-    @KeychainStorage(key: Key.clipboardExpiration, defaultValue: .oneMinute)
+    @KeychainStorage(key: Key.clipboardExpiration, defaultValue: .twoMinutes)
     var clipboardExpiration: ClipboardExpiration
 
     @KeychainStorage(key: Key.shareClipboard, defaultValue: false)
@@ -120,7 +120,7 @@ final class Preferences: ObservableObject, DeinitPrintable, PreferencesProtocol 
         appLockTime = .twoMinutes
         theme = .dark
         browser = .systemDefault
-        clipboardExpiration = .oneMinute
+        clipboardExpiration = .twoMinutes
         shareClipboard = false
         telemetryThreshold = nil
         displayFavIcons = true
