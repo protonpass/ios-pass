@@ -38,11 +38,11 @@ extension PasswordStrength {
     var iconName: String {
         switch self {
         case .vulnerable:
-            "xmark.shield"
+            "xmark.shield.fill"
         case .weak:
-            "exclamationmark.shield"
+            "exclamationmark.shield.fill"
         case .strong:
-            "checkmark.shield"
+            "checkmark.shield.fill"
         }
     }
 
