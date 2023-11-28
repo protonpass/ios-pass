@@ -87,7 +87,6 @@ extension AppDataTests {
         migrationStateProvider.closureMarkAsMigratedToSeparatedCredentials = {
             self.migrationStateProvider.stubbedShouldMigrateToSeparatedCredentialsResult = false
         }
-        sut = .init(module: .hostApp, migrationStateProvider: migrationStateProvider)
         let migratedCredential = sut.getCredential()
 
         // Then
