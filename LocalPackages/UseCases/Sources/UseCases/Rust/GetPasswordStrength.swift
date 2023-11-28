@@ -24,24 +24,24 @@ import Entities
 
 @preconcurrency import PassRustCore
 
-protocol GetPasswordStrengthUseCase: Sendable {
+public protocol GetPasswordStrengthUseCase: Sendable {
     func execute(password: String) -> PasswordStrength
 }
 
-extension GetPasswordStrengthUseCase {
+public extension GetPasswordStrengthUseCase {
     func callAsFunction(password: String) -> PasswordStrength {
         execute(password: password)
     }
 }
 
-final class GetPasswordStrength: GetPasswordStrengthUseCase {
+public final class GetPasswordStrength: GetPasswordStrengthUseCase {
     private let passwordScorer: any PasswordScorerProtocol
 
-    init(passwordScorer: any PasswordScorerProtocol) {
+    public init(passwordScorer: any PasswordScorerProtocol = PasswordScorer()) {
         self.passwordScorer = passwordScorer
     }
 
-    func execute(password: String) -> PasswordStrength {
+    public func execute(password: String) -> PasswordStrength {
         switch passwordScorer.checkScore(password: password) {
         case .dangerous, .veryDangerous:
             .vulnerable

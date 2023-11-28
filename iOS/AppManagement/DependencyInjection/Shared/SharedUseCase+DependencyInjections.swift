@@ -158,7 +158,7 @@ extension SharedUseCasesContainer {
     }
 }
 
-// MARK: Password generator
+// MARK: Password Utils
 
 extension SharedUseCasesContainer {
     var generatePassword: Factory<GeneratePasswordUseCase> {
@@ -171,6 +171,10 @@ extension SharedUseCasesContainer {
 
     var generatePassphrase: Factory<GeneratePassphraseUseCase> {
         self { GeneratePassphrase() }
+    }
+
+    var getPasswordStrength: Factory<GetPasswordStrengthUseCase> {
+        self { GetPasswordStrength() }
     }
 }
 
