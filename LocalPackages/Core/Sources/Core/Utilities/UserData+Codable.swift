@@ -32,7 +32,7 @@ extension UserData: Codable {
         case scopes
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         try self.init(credential: container.decode(AuthCredential.self, forKey: .credential),
                       user: container.decode(User.self, forKey: .user),
@@ -42,7 +42,7 @@ extension UserData: Codable {
                       scopes: container.decode([String].self, forKey: .scopes))
     }
 
-    public func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(credential, forKey: .credential)
         try container.encode(user, forKey: .user)
