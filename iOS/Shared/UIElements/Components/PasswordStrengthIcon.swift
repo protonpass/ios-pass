@@ -23,7 +23,7 @@ import SwiftUI
 
 struct PasswordStrengthIcon: View {
     let strength: PasswordStrength
-    var width: CGFloat = 20
+    var width: CGFloat = 18
 
     var body: some View {
         Image(systemName: strength.iconName)
