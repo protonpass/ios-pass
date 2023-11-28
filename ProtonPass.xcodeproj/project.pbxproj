@@ -426,6 +426,10 @@
 		5BD4A8FF2B10C48B00C44C08 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
 		5BD4A9002B10C4A000C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
 		5BD4A9082B10E6E300C44C08 /* CredentialsFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */; };
+		5BD4A90C2B15F18100C44C08 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
+		5BD4A90D2B15F33700C44C08 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
+		5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
+		5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */; };
@@ -809,6 +813,8 @@
 		5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetFactory.swift; sourceTree = "<group>"; };
 		5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemTypeIdentifiable+Extensions.swift"; sourceTree = "<group>"; };
 		5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
+		5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PasswordStrength+Extensions.swift"; sourceTree = "<group>"; };
+		5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthIcon.swift; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
 		5BFD5D052AE145E70025185B /* Screens */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Screens; path = LocalPackages/Screens; sourceTree = "<group>"; };
 		5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClipboardExpiration+Extensions.swift"; sourceTree = "<group>"; };
@@ -1601,6 +1607,7 @@
 				356FBD472949246A0063978C /* Coordinator+Extensions.swift */,
 				3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */,
 				5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */,
+				5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1777,6 +1784,7 @@
 			isa = PBXGroup;
 			children = (
 				5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */,
+				5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2455,6 +2463,7 @@
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
 				354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
+				5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */,
 				5BD4A8FC2B10C1B900C44C08 /* ResetFactory.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
 				5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */,
@@ -2532,6 +2541,7 @@
 				5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */,
 				5BD4A9002B10C4A000C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,
+				5BD4A90D2B15F33700C44C08 /* PasswordStrength+Extensions.swift in Sources */,
 				3552273129DCAE2E00B9607E /* SortTypeListView.swift in Sources */,
 				350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */,
 				354E9AA32A44435E00AD2B9A /* View+LocalAuthentication.swift in Sources */,
@@ -2637,6 +2647,7 @@
 				35AC9A682A0C16FE00FBCEEC /* EditCustomFieldView.swift in Sources */,
 				5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
+				5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */,
 				356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */,
 				355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
@@ -2705,6 +2716,7 @@
 				35E5070E286FB5A400A3F6EA /* AppCoordinator.swift in Sources */,
 				5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
+				5BD4A90C2B15F18100C44C08 /* PasswordStrength+Extensions.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
 				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				356B830E29C339110084488A /* SortTypeButton.swift in Sources */,

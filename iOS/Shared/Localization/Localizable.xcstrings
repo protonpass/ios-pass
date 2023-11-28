@@ -44920,6 +44920,10 @@
         }
       }
     },
+    "Strong" : {
+      "comment" : "Title describing a strong password",
+      "extractionState" : "manual"
+    },
     "Subscription plan" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -53696,6 +53700,10 @@
         }
       }
     },
+    "Vulnerable" : {
+      "comment" : "Title describing a vulnerable password",
+      "extractionState" : "manual"
+    },
     "We are downloading and decrypting your items." : {
       "localizations" : {
         "be" : {
@@ -53831,6 +53839,10 @@
           }
         }
       }
+    },
+    "Weak" : {
+      "comment" : "Title describing a weak password",
+      "extractionState" : "manual"
     },
     "Website" : {
       "localizations" : {
