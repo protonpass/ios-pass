@@ -34,8 +34,8 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
     deinit { print(deinitMessage) }
 
     private let theme = resolve(\SharedToolingContainer.theme)
-    weak var rootViewController: UIViewController!
-    let delegate: CustomFieldAdditionDelegate
+    weak var rootViewController: UIViewController?
+    weak var delegate: CustomFieldAdditionDelegate?
 
     init(rootViewController: UIViewController, delegate: CustomFieldAdditionDelegate) {
         self.rootViewController = rootViewController
@@ -45,21 +45,23 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
     func start() {
         let view = CustomFieldTypesView { [weak self] type in
             guard let self else { return }
-            rootViewController.topMostViewController.dismiss(animated: true) { [weak self] in
+            rootViewController?.topMostViewController.dismiss(animated: true) { [weak self] in
                 guard let self else { return }
                 let alert = makeAlert(for: type)
-                rootViewController.topMostViewController.present(alert, animated: true)
+                rootViewController?.topMostViewController.present(alert, animated: true)
             }
         }
         let viewController = UIHostingController(rootView: view)
 
         let customHeight = Int(OptionRowHeight.short.value) * CustomFieldType.allCases.count
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
+        if let rootViewController {
+            viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                         parentViewController: rootViewController)
+        }
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
-        rootViewController.topMostViewController.present(viewController, animated: true)
+        rootViewController?.topMostViewController.present(viewController, animated: true)
     }
 }
 
@@ -76,10 +78,11 @@ private extension CustomFieldAdditionCoordinator {
             textField.addAction(action, for: .editingChanged)
         }
 
-        let addAction = UIAlertAction(title: #localized("Add"), style: .default) { [type, delegate] _ in
-            delegate.customFieldAdded(.init(title: alert.textFields?.first?.text ?? "",
-                                            type: type,
-                                            content: ""))
+        let addAction = UIAlertAction(title: #localized("Add"), style: .default) { [weak self] _ in
+            guard let self else { return }
+            delegate?.customFieldAdded(.init(title: alert.textFields?.first?.text ?? "",
+                                             type: type,
+                                             content: ""))
         }
         addAction.isEnabled = false
         alert.addAction(addAction)
