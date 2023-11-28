@@ -423,11 +423,16 @@ private extension CreateEditLoginView {
 
     var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key)
+            if let passwordStrength = viewModel.passwordStrength {
+                PasswordStrengthIcon(strength: passwordStrength)
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.key)
+            }
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Password")
-                    .sectionTitleText()
+                Text(viewModel.passwordRowTitle)
+                    .font(.footnote)
+                    .foregroundColor(viewModel.passwordStrength?.color ?? PassColor.signalDanger.toColor)
 
                 SensitiveTextField(text: $viewModel.password,
                                    placeholder: #localized("Add password"),
@@ -460,6 +465,7 @@ private extension CreateEditLoginView {
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.password.isEmpty)
         .animation(.default, value: focusedField)
+        .animation(.default, value: viewModel.passwordStrength)
         .id(passwordID)
     }
 
