@@ -46,7 +46,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var urls: [String] = []
     @Published private(set) var password = ""
     @Published private(set) var note = ""
-    @Published var passwordStrength: PasswordStrength?
+    @Published private(set) var passwordStrength: PasswordStrength?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private(set) var totpManager: TOTPManager
     @Published private var aliasItem: SymmetricallyEncryptedItem?
