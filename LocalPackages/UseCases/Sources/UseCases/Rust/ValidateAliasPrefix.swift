@@ -33,9 +33,9 @@ public extension ValidateAliasPrefixUseCase {
 }
 
 public final class ValidateAliasPrefix: ValidateAliasPrefixUseCase {
-    private let validator: AliasPrefixValidatorProtocol
+    private let validator: any AliasPrefixValidatorProtocol
 
-    public init(validator: AliasPrefixValidatorProtocol = AliasPrefixValidator()) {
+    public init(validator: any AliasPrefixValidatorProtocol = AliasPrefixValidator()) {
         self.validator = validator
     }
 

@@ -31,9 +31,9 @@ public extension SaveAllLogsUseCase {
 }
 
 public final class SaveAllLogs: SaveAllLogsUseCase {
-    private let logManager: LogManagerProtocol
+    private let logManager: any LogManagerProtocol
 
-    public init(logManager: LogManagerProtocol) {
+    public init(logManager: any LogManagerProtocol) {
         self.logManager = logManager
     }
 
