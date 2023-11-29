@@ -22,6 +22,7 @@ import Combine
 import SwiftUI
 import UIKit
 
+@MainActor
 public protocol CoordinatorProtocol: AnyObject {
     var rootViewController: UIViewController { get }
 

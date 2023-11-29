@@ -37,13 +37,13 @@ public extension DeleteLocalDataBeforeFullSyncUseCase {
 }
 
 public final class DeleteLocalDataBeforeFullSync: DeleteLocalDataBeforeFullSyncUseCase {
-    private let itemRepository: ItemRepositoryProtocol
-    private let shareRepository: ShareRepositoryProtocol
-    private let shareKeyRepository: ShareKeyRepositoryProtocol
+    private let itemRepository: any ItemRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
+    private let shareKeyRepository: any ShareKeyRepositoryProtocol
 
-    public init(itemRepository: ItemRepositoryProtocol,
-                shareRepository: ShareRepositoryProtocol,
-                shareKeyRepository: ShareKeyRepositoryProtocol) {
+    public init(itemRepository: any ItemRepositoryProtocol,
+                shareRepository: any ShareRepositoryProtocol,
+                shareKeyRepository: any ShareKeyRepositoryProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.shareKeyRepository = shareKeyRepository

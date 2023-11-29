@@ -35,9 +35,9 @@ public extension GetPendingUserInvitationsUseCase {
 }
 
 public final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
-    private let repository: InviteRepositoryProtocol
+    private let repository: any InviteRepositoryProtocol
 
-    public init(repository: InviteRepositoryProtocol) {
+    public init(repository: any InviteRepositoryProtocol) {
         self.repository = repository
     }
 

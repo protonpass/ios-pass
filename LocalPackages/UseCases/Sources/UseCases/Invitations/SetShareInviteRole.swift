@@ -34,9 +34,9 @@ public extension SetShareInviteRoleUseCase {
 }
 
 public final class SetShareInviteRole: SetShareInviteRoleUseCase {
-    private let shareInviteService: ShareInviteServiceProtocol
+    private let shareInviteService: any ShareInviteServiceProtocol
 
-    public init(shareInviteService: ShareInviteServiceProtocol) {
+    public init(shareInviteService: any ShareInviteServiceProtocol) {
         self.shareInviteService = shareInviteService
     }
 

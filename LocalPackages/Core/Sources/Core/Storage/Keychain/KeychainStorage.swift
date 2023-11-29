@@ -41,13 +41,13 @@ import ProtonCoreKeymaker
 public struct KeychainStorage<Value: Codable> {
     private let key: String
     private var defaultValue: Value
-    private let keychain: KeychainProtocol
+    private let keychain: any KeychainProtocol
     private let logger: Logger
 
     public init(key: String,
                 defaultValue: Value,
-                keychain: KeychainProtocol,
-                logManager: LogManagerProtocol) {
+                keychain: any KeychainProtocol,
+                logManager: any LogManagerProtocol) {
         self.key = key
         self.defaultValue = defaultValue
         self.keychain = keychain
@@ -91,7 +91,7 @@ public struct KeychainStorage<Value: Codable> {
             // Check if the newValue is nil or not
             // If nil, remove the data from keychain
             // If not nil, serialize and save to keychain
-            if let optional = newValue as? AnyOptional, optional.isNil {
+            if let optional = newValue as? (any AnyOptional), optional.isNil {
                 // Set to nil => remove from keychain
                 keychain.remove(forKey: key)
             } else {

@@ -34,6 +34,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable)
 }
 
+@MainActor
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published var moreInfoSectionExpanded = false

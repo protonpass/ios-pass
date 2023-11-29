@@ -22,7 +22,7 @@ import Foundation
 
 // swiftlint:disable identifier_name
 // https://gist.github.com/wilg/47a04c8f5083a6938da6087f77333784
-public extension Collection {
+public extension Collection where Element: Sendable {
     func parallelMap<T: Sendable>(parallelism requestedParallelism: Int? = nil,
                                   _ transform: @escaping @Sendable (Element) async throws -> T) async rethrows
         -> [T] {
@@ -42,8 +42,9 @@ public extension Collection {
             func submitNext() async throws {
                 if i == self.endIndex { return }
 
-                group.addTask { [submitted, i] in
-                    let value = try await transform(self[i])
+                let element = self[i]
+                group.addTask { [submitted, element] in
+                    let value = try await transform(element)
                     return (submitted, value)
                 }
                 submitted += 1
@@ -69,7 +70,7 @@ public extension Collection {
     }
 
     func parallelEach(parallelism requestedParallelism: Int? = nil,
-                      _ work: @escaping (Element) async throws -> Void) async rethrows {
+                      _ work: @escaping @Sendable (Element) async throws -> Void) async rethrows {
         _ = try await parallelMap {
             try await work($0)
         }

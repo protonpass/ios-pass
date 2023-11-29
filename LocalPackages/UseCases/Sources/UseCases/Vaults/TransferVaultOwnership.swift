@@ -34,9 +34,9 @@ public extension TransferVaultOwnershipUseCase {
 }
 
 public final class TransferVaultOwnership: TransferVaultOwnershipUseCase {
-    private let repository: ShareRepositoryProtocol
+    private let repository: any ShareRepositoryProtocol
 
-    public init(repository: ShareRepositoryProtocol) {
+    public init(repository: any ShareRepositoryProtocol) {
         self.repository = repository
     }
 

@@ -38,11 +38,11 @@ public extension UpdateUserAddressesUseCase {
 }
 
 public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
-    private let userDataProvider: UserDataProvider
-    private let authenticator: AuthenticatorInterface
+    private let userDataProvider: any UserDataProvider
+    private let authenticator: any AuthenticatorInterface
 
-    public init(userDataProvider: UserDataProvider,
-                authenticator: AuthenticatorInterface) {
+    public init(userDataProvider: any UserDataProvider,
+                authenticator: any AuthenticatorInterface) {
         self.userDataProvider = userDataProvider
         self.authenticator = authenticator
     }
