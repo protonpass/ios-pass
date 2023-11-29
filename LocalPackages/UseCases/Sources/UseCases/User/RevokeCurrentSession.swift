@@ -35,9 +35,9 @@ public extension RevokeCurrentSessionUseCase {
 }
 
 public final class RevokeCurrentSession: RevokeCurrentSessionUseCase {
-    private let apiService: APIService
+    private let apiService: any APIService
 
-    public init(apiService: APIService) {
+    public init(apiService: any APIService) {
         self.apiService = apiService
     }
 

@@ -33,9 +33,9 @@ public extension RevokeUserShareAccessUseCase {
 }
 
 public final class RevokeUserShareAccess: RevokeUserShareAccessUseCase {
-    private let repository: ShareRepositoryProtocol
+    private let repository: any ShareRepositoryProtocol
 
-    public init(repository: ShareRepositoryProtocol) {
+    public init(repository: any ShareRepositoryProtocol) {
         self.repository = repository
     }
 

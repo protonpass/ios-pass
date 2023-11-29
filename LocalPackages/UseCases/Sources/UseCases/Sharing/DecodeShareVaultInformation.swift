@@ -39,13 +39,13 @@ public extension DecodeShareVaultInformationUseCase {
 }
 
 public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShareVaultInformationUseCase {
-    private let userDataProvider: UserDataProvider
-    private let getEmailPublicKey: GetEmailPublicKeyUseCase
-    private let updateUserAddresses: UpdateUserAddressesUseCase
+    private let userDataProvider: any UserDataProvider
+    private let getEmailPublicKey: any GetEmailPublicKeyUseCase
+    private let updateUserAddresses: any UpdateUserAddressesUseCase
 
-    public init(userDataProvider: UserDataProvider,
-                getEmailPublicKey: GetEmailPublicKeyUseCase,
-                updateUserAddresses: UpdateUserAddressesUseCase) {
+    public init(userDataProvider: any UserDataProvider,
+                getEmailPublicKey: any GetEmailPublicKeyUseCase,
+                updateUserAddresses: any UpdateUserAddressesUseCase) {
         self.userDataProvider = userDataProvider
         self.getEmailPublicKey = getEmailPublicKey
         self.updateUserAddresses = updateUserAddresses

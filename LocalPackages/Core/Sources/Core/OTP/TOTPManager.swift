@@ -102,7 +102,7 @@ public extension OTPComponents.Algorithm {
     }
 }
 
-public final class TOTPManager: DeinitPrintable, ObservableObject {
+public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
     private var timer: Timer?
     private let logger: Logger
     private var timeInterval: Double = Constants.TotpBase.timer
@@ -112,12 +112,13 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
     /// The current `URI` whether it's valid or not
     public private(set) var uri = ""
 
-    public init(logManager: LogManagerProtocol) {
+    public init(logManager: any LogManagerProtocol) {
         logger = .init(manager: logManager)
     }
 
     deinit {
         timer?.invalidate()
+        timer = nil
         print(deinitMessage)
     }
 
@@ -130,13 +131,16 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
 
     public func reset() {
         timer?.invalidate()
+        timer = nil
         uri = ""
         state = .empty
     }
 
+    @MainActor
     public func bind(uri: String) {
         self.uri = uri
         timer?.invalidate()
+        timer = nil
         state = .loading
         guard !uri.isEmpty else {
             state = .empty
@@ -182,7 +186,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject {
                               issuer: issuer ?? "",
                               generator: tokenGenerator)
 
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self, username, issuer] _ in
                 guard let self else { return }
                 calculate(token: token, username: username, issuer: issuer)
             }
@@ -218,3 +222,5 @@ private extension Generator {
                       digits: Constants.TotpBase.digit)
     }
 }
+
+extension Token: @unchecked Sendable {}

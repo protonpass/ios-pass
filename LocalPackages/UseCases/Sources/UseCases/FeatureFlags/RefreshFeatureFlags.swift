@@ -32,13 +32,13 @@ public extension RefreshFeatureFlagsUseCase {
 }
 
 public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase {
-    private let repository: FeatureFlagsRepositoryProtocol
-    private let userDataProvider: UserDataProvider
+    private let repository: any FeatureFlagsRepositoryProtocol
+    private let userDataProvider: any UserDataProvider
     private let logger: Logger
 
-    public init(repository: FeatureFlagsRepositoryProtocol,
-                userDataProvider: UserDataProvider,
-                logManager: LogManagerProtocol) {
+    public init(repository: any FeatureFlagsRepositoryProtocol,
+                userDataProvider: any UserDataProvider,
+                logManager: any LogManagerProtocol) {
         self.repository = repository
         self.userDataProvider = userDataProvider
         logger = .init(manager: logManager)

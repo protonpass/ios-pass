@@ -37,9 +37,9 @@ public extension UpdateUserShareRoleUseCase {
 }
 
 public final class UpdateUserShareRole: UpdateUserShareRoleUseCase {
-    private let repository: ShareRepositoryProtocol
+    private let repository: any ShareRepositoryProtocol
 
-    public init(repository: ShareRepositoryProtocol) {
+    public init(repository: any ShareRepositoryProtocol) {
         self.repository = repository
     }
 

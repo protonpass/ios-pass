@@ -26,7 +26,7 @@ import Entities
 import Factory
 import Macro
 
-final class MoveVaultListViewModel: ObservableObject, DeinitPrintable, Sendable {
+final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)

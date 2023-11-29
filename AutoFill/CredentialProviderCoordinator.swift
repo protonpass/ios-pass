@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 import Client
 import Combine
 import Core
@@ -35,6 +35,7 @@ import ProtonCoreServices
 import Sentry
 import SwiftUI
 
+@MainActor
 public final class CredentialProviderCoordinator: DeinitPrintable {
     deinit {
         print(deinitMessage)

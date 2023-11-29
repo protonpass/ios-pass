@@ -34,11 +34,11 @@ public extension SetShareInviteVaultUseCase {
 }
 
 public final class SetShareInviteVault: SetShareInviteVaultUseCase {
-    private let shareInviteService: ShareInviteServiceProtocol
-    private let getVaultItemCount: GetVaultItemCountUseCase
+    private let shareInviteService: any ShareInviteServiceProtocol
+    private let getVaultItemCount: any GetVaultItemCountUseCase
 
-    public init(shareInviteService: ShareInviteServiceProtocol,
-                getVaultItemCount: GetVaultItemCountUseCase) {
+    public init(shareInviteService: any ShareInviteServiceProtocol,
+                getVaultItemCount: any GetVaultItemCountUseCase) {
         self.shareInviteService = shareInviteService
         self.getVaultItemCount = getVaultItemCount
     }

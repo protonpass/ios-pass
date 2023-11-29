@@ -64,9 +64,9 @@ public extension ExtractLogsToFileUseCase {
  The ExtractLogsToFile class is an implementation of the `ExtractLogsToFileUseCase protocol. It provides functionality for extracting log entries to a file.
  */
 public final class ExtractLogsToFile: ExtractLogsToFileUseCase {
-    private let logFormatter: LogFormatterProtocol
+    private let logFormatter: any LogFormatterProtocol
 
-    public init(logFormatter: LogFormatterProtocol) {
+    public init(logFormatter: any LogFormatterProtocol) {
         self.logFormatter = logFormatter
     }
 

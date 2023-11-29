@@ -112,17 +112,18 @@ private extension CreditCardDetailView {
                 UpsellableDetailText(text: viewModel.cardholderName,
                                      placeholder: #localized("Empty"),
                                      shouldUpgrade: false,
-                                     upgradeTextColor: tintColor,
-                                     onUpgrade: viewModel.upgrade)
+                                     upgradeTextColor: tintColor) {
+                    viewModel.upgrade()
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyCardholderName)
+            .onTapGesture { viewModel.copyCardholderName() }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .contextMenu {
             if !viewModel.isFreeUser, !viewModel.cardholderName.isEmpty {
-                Button(action: viewModel.copyCardholderName) {
+                Button { viewModel.copyCardholderName() } label: {
                     Text("Copy")
                 }
 
@@ -151,12 +152,12 @@ private extension CreditCardDetailView {
                     placeholder: #localized("Empty"),
                     shouldUpgrade: viewModel.isFreeUser,
                     upgradeTextColor: tintColor,
-                    onUpgrade: viewModel.upgrade)
+                    onUpgrade: { viewModel.upgrade() })
                     .animation(.default, value: isShowingCardNumber)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyCardNumber)
+            .onTapGesture { viewModel.copyCardNumber() }
 
             Spacer()
 
@@ -180,7 +181,7 @@ private extension CreditCardDetailView {
                     Text(isShowingCardNumber ? "Conceal" : "Reveal")
                 })
 
-                Button(action: viewModel.copyCardNumber) {
+                Button { viewModel.copyCardNumber() } label: {
                     Text("Copy")
                 }
             }
@@ -203,11 +204,11 @@ private extension CreditCardDetailView {
                     placeholder: #localized("Empty"),
                     shouldUpgrade: false,
                     upgradeTextColor: tintColor,
-                    onUpgrade: viewModel.upgrade)
+                    onUpgrade: { viewModel.upgrade() })
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyVerificationNumber)
+            .onTapGesture { viewModel.copyVerificationNumber() }
             .animation(.default, value: isShowingVerificationNumber)
 
             Spacer()
@@ -232,7 +233,7 @@ private extension CreditCardDetailView {
                     Text(isShowingVerificationNumber ? "Conceal" : "Reveal")
                 })
 
-                Button(action: viewModel.copyVerificationNumber) {
+                Button { viewModel.copyVerificationNumber() } label: {
                     Text("Copy")
                 }
             }
@@ -254,7 +255,7 @@ private extension CreditCardDetailView {
                     placeholder: nil,
                     shouldUpgrade: false,
                     upgradeTextColor: tintColor,
-                    onUpgrade: viewModel.upgrade)
+                    onUpgrade: { viewModel.upgrade() })
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
@@ -296,8 +297,9 @@ private extension CreditCardDetailView {
                 UpsellableDetailText(text: viewModel.expirationDate,
                                      placeholder: nil,
                                      shouldUpgrade: false,
-                                     upgradeTextColor: tintColor,
-                                     onUpgrade: viewModel.upgrade)
+                                     upgradeTextColor: tintColor) {
+                    viewModel.upgrade()
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }

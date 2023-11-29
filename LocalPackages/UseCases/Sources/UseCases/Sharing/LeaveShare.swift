@@ -33,13 +33,13 @@ public extension LeaveShareUseCase {
 }
 
 public final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
-    private let repository: ShareRepositoryProtocol
-    private let itemRepository: ItemRepositoryProtocol
-    private let vaultManager: VaultsManagerProtocol
+    private let repository: any ShareRepositoryProtocol
+    private let itemRepository: any ItemRepositoryProtocol
+    private let vaultManager: any VaultsManagerProtocol
 
-    public init(repository: ShareRepositoryProtocol,
-                itemRepository: ItemRepositoryProtocol,
-                vaultManager: VaultsManagerProtocol) {
+    public init(repository: any ShareRepositoryProtocol,
+                itemRepository: any ItemRepositoryProtocol,
+                vaultManager: any VaultsManagerProtocol) {
         self.repository = repository
         self.itemRepository = itemRepository
         self.vaultManager = vaultManager

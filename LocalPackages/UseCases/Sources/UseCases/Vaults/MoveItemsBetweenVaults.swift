@@ -34,9 +34,9 @@ public extension MoveItemsBetweenVaultsUseCase {
 }
 
 public final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
-    private let repository: ItemRepositoryProtocol
+    private let repository: any ItemRepositoryProtocol
 
-    public init(repository: ItemRepositoryProtocol) {
+    public init(repository: any ItemRepositoryProtocol) {
         self.repository = repository
     }
 

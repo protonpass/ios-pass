@@ -33,11 +33,11 @@ public extension GetCurrentSelectedShareIdUseCase {
 }
 
 public final class GetCurrentSelectedShareId: GetCurrentSelectedShareIdUseCase {
-    private let vaultsManager: VaultsManagerProtocol
-    private let getMainVault: GetMainVaultUseCase
+    private let vaultsManager: any VaultsManagerProtocol
+    private let getMainVault: any GetMainVaultUseCase
 
-    public init(vaultsManager: VaultsManagerProtocol,
-                getMainVault: GetMainVaultUseCase) {
+    public init(vaultsManager: any VaultsManagerProtocol,
+                getMainVault: any GetMainVaultUseCase) {
         self.vaultsManager = vaultsManager
         self.getMainVault = getMainVault
     }

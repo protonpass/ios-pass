@@ -50,10 +50,11 @@ struct CreateEditAliasView: View {
                     content
 
                 case let .error(error):
-                    RetryableErrorView(errorMessage: error.localizedDescription,
-                                       onRetry: viewModel.getAliasAndAliasOptions)
-                        .padding()
-                        .toolbar { closeButtonToolbar }
+                    RetryableErrorView(errorMessage: error.localizedDescription) {
+                        viewModel.getAliasAndAliasOptions()
+                    }
+                    .padding()
+                    .toolbar { closeButtonToolbar }
                 }
             }
             .background(Color(uiColor: PassColor.backgroundNorm))
@@ -89,7 +90,7 @@ struct CreateEditAliasView: View {
                                                selectedVault: viewModel.selectedVault,
                                                itemContentType: viewModel.itemContentType(),
                                                isEditMode: viewModel.mode.isEditMode,
-                                               onChangeVault: viewModel.changeVault,
+                                               onChangeVault: { viewModel.changeVault() },
                                                onSubmit: {
                                                    if case .create = viewModel.mode, isShowingAdvancedOptions {
                                                        focusedField = .prefix
@@ -112,7 +113,7 @@ struct CreateEditAliasView: View {
                                                 suffixSelection: suffixSelection,
                                                 prefixError: viewModel.prefixError,
                                                 onSubmitPrefix: { focusedField = .note },
-                                                onSelectSuffix: viewModel.showSuffixSelection)
+                                                onSelectSuffix: { viewModel.showSuffixSelection() })
                         } else {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                                 .padding(.vertical)
@@ -122,7 +123,7 @@ struct CreateEditAliasView: View {
                     if let mailboxSelection = viewModel.mailboxSelection {
                         MailboxSection(mailboxSelection: mailboxSelection,
                                        mode: viewModel.mode.isEditMode ? .edit : .create)
-                            .onTapGesture(perform: viewModel.showMailboxSelection)
+                            .onTapGesture { viewModel.showMailboxSelection() }
                     }
 
                     NoteEditSection(note: $viewModel.note,
@@ -179,9 +180,9 @@ struct CreateEditAliasView: View {
                                           dismiss()
                                       }
                                   },
-                                  onUpgrade: viewModel.upgrade,
-                                  onScan: viewModel.openScanner,
-                                  onSave: viewModel.save)
+                                  onUpgrade: { viewModel.upgrade() },
+                                  onScan: { viewModel.openScanner() },
+                                  onSave: { viewModel.save() })
         }
     }
 
