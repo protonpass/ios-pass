@@ -1,6 +1,6 @@
 //
-// Typealiases.swift
-// Proton Pass - Created on 22/11/2023.
+// UnpinItemEndpoint.swift
+// Proton Pass - Created on 29/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,13 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Combine
-import Entities
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-// sourcery: AutoMockable
-public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
-public typealias AppDataProtocol = CredentialProvider & Resettable & UserDataSymmetricKeyProvider
-public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
-public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
+public struct UnpinItemEndpoint: Endpoint {
+    public typealias Body = EmptyRequest
+    public typealias Response = PinItemResponse
+
+    public var debugDescription: String
+    public var path: String
+    public var method: HTTPMethod
+
+    public init(shareId: String, itemId: String) {
+        debugDescription = "Pin item"
+        path = "/pass/v1/share/\(shareId)/item/\(itemId)/pin"
+        method = .delete
+    }
+}

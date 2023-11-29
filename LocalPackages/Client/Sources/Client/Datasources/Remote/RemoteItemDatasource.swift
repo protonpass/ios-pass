@@ -21,6 +21,7 @@
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol RemoteItemDatasourceProtocol {
     /// Get all item revisions of a share
     func getItemRevisions(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [ItemRevision]
@@ -35,6 +36,8 @@ public protocol RemoteItemDatasourceProtocol {
     func updateLastUseTime(shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> ItemRevision
     func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> ItemRevision
     func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision]
+    func pin(shareId: String, itemId: String) async throws -> ItemRevision
+    func unpin(shareId: String, itemId: String) async throws -> ItemRevision
 }
 
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
@@ -134,5 +137,17 @@ public extension RemoteItemDatasource {
         let endpoint = MoveItemsEndpoint(request: request, fromShareId: fromShareId)
         let response = try await exec(endpoint: endpoint)
         return response.items
+    }
+
+    func pin(shareId: String, itemId: String) async throws -> ItemRevision {
+        let endpoint = PinItemEndpoint(shareId: shareId, itemId: itemId)
+        let response = try await exec(endpoint: endpoint)
+        return response.item
+    }
+
+    func unpin(shareId: String, itemId: String) async throws -> ItemRevision {
+        let endpoint = UnpinItemEndpoint(shareId: shareId, itemId: itemId)
+        let response = try await exec(endpoint: endpoint)
+        return response.item
     }
 }
