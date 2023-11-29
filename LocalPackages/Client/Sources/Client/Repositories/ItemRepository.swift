@@ -107,6 +107,10 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     /// Get active log in items of all shares
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
+
+    func pinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem
+
+    func unpinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem
 }
 
 public extension ItemRepositoryProtocol {
@@ -435,6 +439,32 @@ public extension ItemRepository {
         let logInItems = try await localDatasource.getActiveLogInItems()
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
+    }
+}
+
+// MARK: - item Pinning functionalities
+
+public extension ItemRepository {
+    func pinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Pin item \(itemId) for share \(shareId)")
+        let pinItemRevision = try await remoteDatasource.pin(shareId: shareId, itemId: itemId)
+        logger.trace("Updating item \(pinItemRevision.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision, shareId: shareId)
+        try await localDatasource.upsertItems([encryptedItem])
+        logger.trace("Saved item \(pinItemRevision.itemID) to local database")
+
+        return encryptedItem
+    }
+
+    func unpinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Pin item \(itemId) for share \(shareId)")
+        let unpinItemRevision = try await remoteDatasource.unpin(shareId: shareId, itemId: itemId)
+        logger.trace("Updating item \(unpinItemRevision.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision, shareId: shareId)
+        try await localDatasource.upsertItems([encryptedItem])
+        logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
+
+        return encryptedItem
     }
 }
 

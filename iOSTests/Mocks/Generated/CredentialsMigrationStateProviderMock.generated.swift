@@ -20,14 +20,7 @@
 // swiftlint:disable all
 
 @testable import Proton_Pass
-import Client
-import Core
-import CryptoKit
-import Entities
-import Factory
 import Foundation
-import ProtonCoreLogin
-import ProtonCoreNetworking
 
 final class CredentialsMigrationStateProviderMock: @unchecked Sendable, CredentialsMigrationStateProvider {
     // MARK: - shouldMigrateToSeparatedCredentials
