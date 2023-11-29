@@ -21,6 +21,7 @@
 import CoreData
 import Entities
 
+// sourcery: AutoMockable
 public protocol LocalItemDatasourceProtocol {
     // Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
@@ -144,6 +145,7 @@ public extension LocalItemDatasource {
                                                 content: item.item.content,
                                                 itemKey: item.item.itemKey,
                                                 state: modifiedItem.state,
+                                                pinned: item.item.pinned,
                                                 aliasEmail: item.item.aliasEmail,
                                                 createTime: item.item.createTime,
                                                 modifyTime: modifiedItem.modifyTime,
