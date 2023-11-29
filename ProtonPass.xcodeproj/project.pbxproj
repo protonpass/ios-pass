@@ -68,8 +68,6 @@
 		354B247F2A77F2280060EDF7 /* CompleteAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */; };
 		354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		354B24822A781E370060EDF7 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
-		354B24842A7820120060EDF7 /* ItemTypeFilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24832A7820120060EDF7 /* ItemTypeFilterButton.swift */; };
-		354B24862A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */; };
 		354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */; };
 		354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E1A132A3B43D600519F58 /* CreditCardDetailViewModel.swift */; };
 		354E9A9C2A443D9700AD2B9A /* LocalAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */; };
@@ -560,8 +558,6 @@
 		354B247A2A77E81D0060EDF7 /* AutoFillData+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoFillData+DependencyInjections.swift"; sourceTree = "<group>"; };
 		354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteAutoFill.swift; sourceTree = "<group>"; };
 		354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilter.swift; sourceTree = "<group>"; };
-		354B24832A7820120060EDF7 /* ItemTypeFilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterButton.swift; sourceTree = "<group>"; };
-		354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeFilterOptionsView.swift; sourceTree = "<group>"; };
 		354E1A112A3B43C000519F58 /* CreditCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailView.swift; sourceTree = "<group>"; };
 		354E1A132A3B43D600519F58 /* CreditCardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailViewModel.swift; sourceTree = "<group>"; };
 		354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationView.swift; sourceTree = "<group>"; };
@@ -1218,8 +1214,6 @@
 			children = (
 				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
-				354B24832A7820120060EDF7 /* ItemTypeFilterButton.swift */,
-				354B24852A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift */,
 				355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
@@ -2821,7 +2815,6 @@
 				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URL+Extensions.swift in Sources */,
-				354B24842A7820120060EDF7 /* ItemTypeFilterButton.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				35533BBF29D618A200EC58DE /* AccountView.swift in Sources */,
 				354E9AA72A4458F400AD2B9A /* PinAuthenticationView.swift in Sources */,
@@ -2830,7 +2823,6 @@
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
-				354B24862A78E7A90060EDF7 /* ItemTypeFilterOptionsView.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				35E50716286FB61E00A3F6EA /* WelcomeCoordinator.swift in Sources */,
 				356650D92AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift in Sources */,
