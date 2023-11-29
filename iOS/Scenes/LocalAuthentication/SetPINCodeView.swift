@@ -27,11 +27,9 @@ import SwiftUI
 struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @StateObject private var viewModel: SetPINCodeViewModel
+    @StateObject private var viewModel: SetPINCodeViewModel = .init()
 
-    init() {
-        _viewModel = .init(wrappedValue: .init())
-    }
+    init() {}
 
     var body: some View {
         NavigationView {
