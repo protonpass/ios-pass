@@ -313,8 +313,8 @@ private extension HomepageCoordinator {
                     presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
                 case .vaultSelection:
                     createEditItemViewModelWantsToChangeVault()
-                case .pinCode:
-                    presentPinCodeView()
+                case .setPINCode:
+                    presentSetPINCodeView()
                 }
             }
             .store(in: &cancellables)
@@ -1087,12 +1087,10 @@ extension HomepageCoordinator: GeneratePasswordCoordinatorDelegate {
 }
 
 extension HomepageCoordinator {
-    func presentPinCodeView() {
-        let view = SetPINCodeView()
-
+    func presentSetPINCodeView() {
         dismissTopMostViewController { [weak self] in
             guard let self else { return }
-            present(view)
+            present(SetPINCodeView())
         }
     }
 }

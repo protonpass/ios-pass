@@ -191,7 +191,7 @@ private extension SecuritySettingsCoordinator {
     }
 
     func definePINCodeAndChangeToPINMethod() {
-        router.present(for: .pinCode)
+        router.present(for: .setPINCode)
     }
 
     @MainActor
