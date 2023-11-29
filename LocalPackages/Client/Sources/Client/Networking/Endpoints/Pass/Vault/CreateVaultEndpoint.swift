@@ -22,7 +22,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct CreateVaultResponse: Decodable {
-    let code: Int
     let share: Share
 }
 

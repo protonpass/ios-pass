@@ -22,8 +22,7 @@ import Entities
 import ProtonCoreNetworking
 
 public struct GetPublicKeysResponse: Decodable {
-    public let code: Int
-    public let address: PublicKeys
+    let address: PublicKeys
 }
 
 public struct GetPublicKeysEndpoint: Endpoint {

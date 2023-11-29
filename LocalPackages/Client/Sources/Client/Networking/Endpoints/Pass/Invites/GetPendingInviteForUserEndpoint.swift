@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetPendingInviteForUserResponse: Decodable {
-    let code: Int
     let invites: [UserInvite]
 }
 
