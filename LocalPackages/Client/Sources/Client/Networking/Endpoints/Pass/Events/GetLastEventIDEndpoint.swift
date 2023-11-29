@@ -22,7 +22,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetLastEventIDResponse: Decodable {
-    let code: Int
     let eventID: String
 }
 

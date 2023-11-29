@@ -21,7 +21,6 @@
 import ProtonCoreNetworking
 
 public struct GetShareResponse: Decodable {
-    let code: Int
     let share: Share
 }
 

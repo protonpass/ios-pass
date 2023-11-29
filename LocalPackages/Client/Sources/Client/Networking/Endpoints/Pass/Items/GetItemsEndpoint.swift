@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetItemsResponse: Decodable {
-    let code: Int
     let items: ItemRevisionsPaginated
 }
 
