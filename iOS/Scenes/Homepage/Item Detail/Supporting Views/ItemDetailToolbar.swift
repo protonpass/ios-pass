@@ -36,8 +36,9 @@ struct ItemDetailToolbar: ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: itemContentType.normMajor2Color,
-                         backgroundColor: itemContentType.normMinor1Color,
-                         action: viewModel.goBack)
+                         backgroundColor: itemContentType.normMinor1Color) {
+                viewModel.goBack()
+            }
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -48,32 +49,34 @@ struct ItemDetailToolbar: ToolbarContent {
                                        title: #localized("Edit"),
                                        titleColor: PassColor.textInvert,
                                        backgroundColor: itemContentType.normMajor1Color,
-                                       isDisabled: !viewModel.isAllowedToEdit,
-                                       action: viewModel.edit)
+                                       isDisabled: !viewModel.isAllowedToEdit) {
+                        viewModel.edit()
+                    }
 
                     if viewModel.isAllowedToShare {
                         CircleButton(icon: IconProvider.usersPlus,
                                      iconColor: itemContentType.normMajor2Color,
-                                     backgroundColor: itemContentType.normMinor1Color,
-                                     action: viewModel.share)
+                                     backgroundColor: itemContentType.normMinor1Color) {
+                            viewModel.share()
+                        }
                     }
 
                     Menu(content: {
-                        Button(action: viewModel.moveToAnotherVault,
-                               label: { Label(title: { Text("Move to another vault") },
-                                              icon: { Image(uiImage: IconProvider.folderArrowIn) }) })
+                        Button { viewModel.moveToAnotherVault() }
+                            label: { Label(title: { Text("Move to another vault") },
+                                           icon: { Image(uiImage: IconProvider.folderArrowIn) }) }
 
                         Divider()
 
                         if viewModel.itemContent.type == .note {
-                            Button(action: viewModel.copyNoteContent,
-                                   label: { Label(title: { Text("Copy note content") },
-                                                  icon: { Image(uiImage: IconProvider.note) }) })
+                            Button { viewModel.copyNoteContent() }
+                                label: { Label(title: { Text("Copy note content") },
+                                               icon: { Image(uiImage: IconProvider.note) }) }
                             Divider()
                         }
 
                         Button(role: .destructive,
-                               action: viewModel.moveToTrash,
+                               action: { viewModel.moveToTrash() },
                                label: { Label(title: { Text("Move to trash") },
                                               icon: { Image(uiImage: IconProvider.trash) }) })
                     }, label: {
@@ -86,9 +89,9 @@ struct ItemDetailToolbar: ToolbarContent {
 
             case .trashed:
                 Menu(content: {
-                    Button(action: viewModel.restore,
-                           label: { Label(title: { Text("Restore") },
-                                          icon: { Image(uiImage: IconProvider.clockRotateLeft) }) })
+                    Button { viewModel.restore() }
+                        label: { Label(title: { Text("Restore") },
+                                       icon: { Image(uiImage: IconProvider.clockRotateLeft) }) }
 
                     Divider()
 

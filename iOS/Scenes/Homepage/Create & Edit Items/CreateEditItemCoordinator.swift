@@ -36,6 +36,7 @@ typealias CreateEditItemDelegates =
     GeneratePasswordCoordinatorDelegate &
     GeneratePasswordViewModelDelegate
 
+@MainActor
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 

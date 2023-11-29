@@ -118,6 +118,7 @@ public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
 
     deinit {
         timer?.invalidate()
+        timer = nil
         print(deinitMessage)
     }
 
@@ -128,7 +129,6 @@ public final class TOTPManager: DeinitPrintable, ObservableObject, Sendable {
         return nil
     }
 
-    @MainActor
     public func reset() {
         timer?.invalidate()
         timer = nil
