@@ -30,10 +30,6 @@ public protocol LogManagerProtocol: Actor {
     func toggleLogging(shouldLog: Bool)
 }
 
-enum LogManagerError: Error {
-    case failedToSerializeLogEntry
-}
-
 public struct LogManagerConfig: Sendable {
     let maxLogLines: Int
     let dumpThreshold: Int

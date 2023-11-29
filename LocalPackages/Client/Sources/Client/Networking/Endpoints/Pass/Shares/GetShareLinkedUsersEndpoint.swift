@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct GetShareLinkedUsersResponse: Decodable {
-    let total: Int
     let shares: [UserShareInfos]
 }
 
