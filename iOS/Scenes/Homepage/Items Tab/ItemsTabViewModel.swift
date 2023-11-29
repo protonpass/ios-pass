@@ -29,8 +29,6 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
@@ -168,6 +166,10 @@ extension ItemsTabViewModel {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }
 
+    func enterBulkActionMode() {
+        print(#function)
+    }
+
     func createNewItem(type: ItemContentType) {
         delegate?.itemsTabViewModelWantsToCreateNewItem(type: type)
     }
@@ -204,11 +206,6 @@ extension ItemsTabViewModel {
         }
     }
 
-    func presentSortTypeList() {
-        delegate?.itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                              delegate: self)
-    }
-
     func viewDetail(of item: ItemUiModel) {
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -223,21 +220,9 @@ extension ItemsTabViewModel {
         }
     }
 
-    func showFilterOptions() {
-        router.present(for: .filterItems)
-    }
-
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
-    }
-}
-
-// MARK: - SortTypeListViewModelDelegate
-
-extension ItemsTabViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortType) {
-        selectedSortType = sortType
     }
 }
 

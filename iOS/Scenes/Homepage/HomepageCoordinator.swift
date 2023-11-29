@@ -279,8 +279,6 @@ private extension HomepageCoordinator {
                     presentSharingFlow(dismissal: dismissal)
                 case let .manageShareVault(vault, dismissal):
                     presentManageShareVault(with: vault, dismissal: dismissal)
-                case .filterItems:
-                    presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
@@ -392,16 +390,6 @@ private extension HomepageCoordinator {
         case .all:
             dismissAllViewControllers(animated: true, completion: completion)
         }
-    }
-
-    func presentItemFilterOptions() {
-        let view = ItemTypeFilterOptionsView()
-        let viewController = UIHostingController(rootView: view)
-        let height = ItemTypeFilterOptionsView.rowHeight * CGFloat(ItemTypeFilterOption.allCases.count) + 70
-        viewController.setDetentType(.customAndLarge(height),
-                                     parentViewController: rootViewController)
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 
     func presentAcceptRejectInvite(with invite: UserInvite) {
