@@ -53,12 +53,6 @@ public struct EventInfo: Encodable {
             case userTier = "user_tier"
         }
     }
-
-    init(measurementGroup: String, event: String, dimensions: Dimensions) {
-        self.measurementGroup = measurementGroup
-        self.event = event
-        self.dimensions = dimensions
-    }
 }
 
 public extension EventInfo {

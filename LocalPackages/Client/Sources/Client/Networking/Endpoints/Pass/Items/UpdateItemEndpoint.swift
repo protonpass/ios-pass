@@ -23,8 +23,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public struct UpdateItemResponse: Decodable {
-    public let code: Int
-    public let item: ItemRevision
+    let item: ItemRevision
 }
 
 public struct UpdateItemEndpoint: Endpoint {
