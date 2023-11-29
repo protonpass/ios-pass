@@ -101,11 +101,11 @@ struct AliasDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyAliasEmail)
+            .onTapGesture { viewModel.copyAliasEmail() }
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .contextMenu {
-            Button(action: viewModel.copyAliasEmail) {
+            Button { viewModel.copyAliasEmail() } label: {
                 Text("Copy")
             }
 

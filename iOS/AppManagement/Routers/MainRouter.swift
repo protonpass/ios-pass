@@ -74,7 +74,7 @@ enum SheetDestination: Equatable, Hashable {
     case shareVaultFromItemDetail(VaultListUiModel, ItemContent)
     case customizeNewVault(VaultProtobuf, ItemContent)
     case vaultSelection
-    case pinCode
+    case setPINCode
 }
 
 enum UIElementDisplay {
