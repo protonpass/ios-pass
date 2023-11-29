@@ -32,9 +32,9 @@ public extension UnindexAllLoginItemsUseCase {
 }
 
 public final class UnindexAllLoginItems: Sendable, UnindexAllLoginItemsUseCase {
-    private let manager: CredentialManagerProtocol
+    private let manager: any CredentialManagerProtocol
 
-    public init(manager: CredentialManagerProtocol) {
+    public init(manager: any CredentialManagerProtocol) {
         self.manager = manager
     }
 

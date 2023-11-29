@@ -35,9 +35,9 @@ public extension GetCurrentShareInviteInformationsUseCase {
 }
 
 public final class GetCurrentShareInviteInformations: GetCurrentShareInviteInformationsUseCase {
-    private let shareInviteService: ShareInviteServiceProtocol
+    private let shareInviteService: any ShareInviteServiceProtocol
 
-    public init(shareInviteService: ShareInviteServiceProtocol) {
+    public init(shareInviteService: any ShareInviteServiceProtocol) {
         self.shareInviteService = shareInviteService
     }
 

@@ -73,8 +73,9 @@ struct LogInDetailView: View {
                                             uiModels: viewModel.customFieldUiModels,
                                             isFreeUser: viewModel.isFreeUser,
                                             onSelectHiddenText: copyHiddenText,
-                                            onSelectTotpToken: copyTOTPToken,
-                                            onUpgrade: viewModel.upgrade)
+                                            onSelectTotpToken: copyTOTPToken) {
+                            viewModel.upgrade()
+                        }
 
                         ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent)
@@ -144,7 +145,7 @@ struct LogInDetailView: View {
                         .sectionContentText()
 
                     if viewModel.isAlias {
-                        Button(action: viewModel.showAliasDetail) {
+                        Button { viewModel.showAliasDetail() } label: {
                             Text("View alias")
                                 .font(.callout)
                                 .foregroundColor(Color(uiColor: viewModel.itemContent.type.normMajor2Color))
@@ -156,19 +157,19 @@ struct LogInDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyUsername)
+            .onTapGesture(perform: { viewModel.copyUsername() })
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .contextMenu {
-            Button(action: viewModel.copyUsername) {
+            Button { viewModel.copyUsername() } label: {
                 Text("Copy")
             }
 
-            Button(action: {
+            Button {
                 viewModel.showLarge(.text(viewModel.username))
-            }, label: {
+            } label: {
                 Text("Show large")
-            })
+            }
         }
     }
 
@@ -195,7 +196,7 @@ struct LogInDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyPassword)
+            .onTapGesture { viewModel.copyPassword() }
 
             Spacer()
 
@@ -227,11 +228,11 @@ struct LogInDetailView: View {
                 Text(isShowingPassword ? "Conceal" : "Reveal")
             })
 
-            Button(action: viewModel.copyPassword) {
+            Button { viewModel.copyPassword() } label: {
                 Text("Copy")
             }
 
-            Button(action: viewModel.showLargePassword) {
+            Button { viewModel.showLargePassword() } label: {
                 Text("Show large")
             }
         }
@@ -244,7 +245,7 @@ struct LogInDetailView: View {
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("2FA limit reached")
                     .sectionTitleText()
-                UpgradeButtonLite(action: viewModel.upgrade)
+                UpgradeButtonLite { viewModel.upgrade() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -275,7 +276,7 @@ struct LogInDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.copyTotpCode)
+            .onTapGesture { viewModel.copyTotpCode() }
 
             switch viewModel.totpManager.state {
             case let .valid(data):

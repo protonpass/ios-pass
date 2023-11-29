@@ -40,9 +40,9 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
     @Published var definedPIN = ""
     @Published var confirmedPIN = ""
 
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private var cancellables = Set<AnyCancellable>()
-    var onSet: (String) -> Void
 
     var theme: Theme { preferences.theme }
 
@@ -57,9 +57,7 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
         }
     }
 
-    init(onSet: @escaping (String) -> Void) {
-        self.onSet = onSet
-
+    init() {
         // Remove error as soon as users edit something
         Publishers
             .CombineLatest($definedPIN, $confirmedPIN)
@@ -80,7 +78,10 @@ extension SetPINCodeViewModel {
 
         case .confirmation:
             if confirmedPIN == definedPIN {
-                onSet(definedPIN)
+                preferences.localAuthenticationMethod = .pin
+                preferences.pinCode = definedPIN
+                router.display(element: .successMessage(#localized("PIN code set"),
+                                                        config: NavigationConfiguration(dismissBeforeShowing: true)))
             } else {
                 error = .notMatched
             }

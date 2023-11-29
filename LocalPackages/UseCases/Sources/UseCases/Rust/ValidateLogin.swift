@@ -45,9 +45,9 @@ extension ValidateLoginUseCase {
 }
 
 final class ValidateLogin: ValidateLoginUseCase {
-    private let validator: LoginValidatorProtocol
+    private let validator: any LoginValidatorProtocol
 
-    init(validator: LoginValidatorProtocol) {
+    init(validator: any LoginValidatorProtocol) {
         self.validator = validator
     }
 
