@@ -41,11 +41,11 @@ public extension UpdateLastUseTimeAndReindexUseCase {
 }
 
 public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase {
-    private let itemRepository: ItemRepositoryProtocol
-    private let reindexLoginItem: ReindexLoginItemUseCase
+    private let itemRepository: any ItemRepositoryProtocol
+    private let reindexLoginItem: any ReindexLoginItemUseCase
 
-    public init(itemRepository: ItemRepositoryProtocol,
-                reindexLoginItem: ReindexLoginItemUseCase) {
+    public init(itemRepository: any ItemRepositoryProtocol,
+                reindexLoginItem: any ReindexLoginItemUseCase) {
         self.itemRepository = itemRepository
         self.reindexLoginItem = reindexLoginItem
     }

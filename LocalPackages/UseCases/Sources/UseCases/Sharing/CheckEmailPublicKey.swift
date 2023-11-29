@@ -35,9 +35,9 @@ public extension GetEmailPublicKeyUseCase {
 }
 
 public final class GetEmailPublicKey: @unchecked Sendable, GetEmailPublicKeyUseCase {
-    private let publicKeyRepository: PublicKeyRepositoryProtocol
+    private let publicKeyRepository: any PublicKeyRepositoryProtocol
 
-    public init(publicKeyRepository: PublicKeyRepositoryProtocol) {
+    public init(publicKeyRepository: any PublicKeyRepositoryProtocol) {
         self.publicKeyRepository = publicKeyRepository
     }
 

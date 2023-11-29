@@ -29,6 +29,7 @@ protocol ItemDetailCoordinatorDelegate: AnyObject {
     func itemDetailCoordinatorWantsToPresent(view: any View, asSheet: Bool)
 }
 
+@MainActor
 final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 

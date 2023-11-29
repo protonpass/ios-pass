@@ -33,9 +33,9 @@ public extension ValidateEmailUseCase {
 }
 
 public final class ValidateEmail: ValidateEmailUseCase {
-    private let validator: EmailValidatorProtocol
+    private let validator: any EmailValidatorProtocol
 
-    public init(validator: EmailValidatorProtocol = EmailValidator()) {
+    public init(validator: any EmailValidatorProtocol = EmailValidator()) {
         self.validator = validator
     }
 

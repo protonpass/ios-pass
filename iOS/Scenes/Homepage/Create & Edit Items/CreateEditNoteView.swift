@@ -49,7 +49,7 @@ struct CreateEditNoteView: View {
                                                    selectedVault: viewModel.selectedVault,
                                                    itemContentType: viewModel.itemContentType(),
                                                    isEditMode: viewModel.mode.isEditMode,
-                                                   onChangeVault: viewModel.changeVault)
+                                                   onChangeVault: { viewModel.changeVault() })
                             .padding(.bottom, 18)
 
                         TextEditorWithPlaceholder(text: $viewModel.title,
@@ -98,8 +98,8 @@ struct CreateEditNoteView: View {
                                           }
                                       },
                                       onUpgrade: { /* Not applicable */ },
-                                      onScan: viewModel.openScanner,
-                                      onSave: viewModel.save)
+                                      onScan: { viewModel.openScanner() },
+                                      onSave: { viewModel.save() })
             }
         }
         .navigationViewStyle(.stack)

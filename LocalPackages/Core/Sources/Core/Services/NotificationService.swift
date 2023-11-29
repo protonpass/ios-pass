@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import UserNotifications
+
+@preconcurrency import UserNotifications
 
 public protocol LocalNotificationServiceProtocol {
     func requestNotificationPermission(with options: UNAuthorizationOptions)
@@ -34,12 +35,12 @@ public extension LocalNotificationServiceProtocol {
     }
 }
 
-public final class NotificationService: LocalNotificationServiceProtocol {
+public final class NotificationService: LocalNotificationServiceProtocol, Sendable {
     private let unUserNotificationCenter: UNUserNotificationCenter
     private var currentTimers: [String: Timer] = [:]
     private let logger: Logger
 
-    public init(logManager: LogManagerProtocol,
+    public init(logManager: any LogManagerProtocol,
                 unUserNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         self.unUserNotificationCenter = unUserNotificationCenter
         logger = .init(manager: logManager)
@@ -61,10 +62,10 @@ public final class NotificationService: LocalNotificationServiceProtocol {
         logger.info("Adding following timed notification: \(request.description), with removal delay: \(delay)")
 
         unUserNotificationCenter.add(request)
+        let id = request.identifier
         currentTimers[request.identifier] = .scheduledTimer(withTimeInterval: delay,
                                                             repeats: false) { [weak self] _ in
             guard let self else { return }
-            let id = request.identifier
             logger.info("Clearing notification with id: \(id)")
             unUserNotificationCenter.removeDeliveredNotifications(withIdentifiers: [id])
             stopTimer(with: id)
