@@ -20,8 +20,6 @@
 
 import Foundation
 
-private let kHttpHttpsSet: Set<String> = ["http", "https"]
-
 public extension URLUtils {
     /// Compare 2 URLs given a set of allowed schemes (protocols)
     enum Matcher {
