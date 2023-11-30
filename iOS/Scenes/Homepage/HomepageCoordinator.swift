@@ -158,6 +158,18 @@ private extension HomepageCoordinator {
         let itemsTabViewModel = ItemsTabViewModel()
         itemsTabViewModel.delegate = self
 
+        itemsTabViewModel.$isEditMode
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isEditMode in
+                guard let self else { return }
+                if isEditMode {
+                    homepageTabDelegete?.homepageTabShouldHideTabbar()
+                } else {
+                    homepageTabDelegete?.homepageTabShouldShowTabbar()
+                }
+            }
+            .store(in: &cancellables)
+
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
