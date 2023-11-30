@@ -252,6 +252,8 @@
 		35733B7D29CC5DB700052229 /* VaultIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7C29CC5DB700052229 /* VaultIcon.swift */; };
 		35733B7F29CC60D200052229 /* VaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35733B7E29CC60D200052229 /* VaultColor.swift */; };
 		3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */; };
+		357ABEAC2B18782E003D05C8 /* ItemsTabOptionsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEAB2B18782E003D05C8 /* ItemsTabOptionsButton.swift */; };
+		357ABEAE2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */; };
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
 		357E62702B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
 		357E62712B0E671300F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
@@ -687,6 +689,8 @@
 		35733B7E29CC60D200052229 /* VaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultColor.swift; sourceTree = "<group>"; };
 		3575EB5229FAB017000FFD53 /* AppLockTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTime.swift; sourceTree = "<group>"; };
 		3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAppLockTimeView.swift; sourceTree = "<group>"; };
+		357ABEAB2B18782E003D05C8 /* ItemsTabOptionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabOptionsButton.swift; sourceTree = "<group>"; };
+		357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabOptionsButtonViewModel.swift; sourceTree = "<group>"; };
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
 		357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataStreams+DependencyInjections.swift"; sourceTree = "<group>"; };
 		357ED8C42AC1C6F20019A0E9 /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = LocalPackages/Macro; sourceTree = "<group>"; };
@@ -1217,6 +1221,8 @@
 				355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
+				357ABEAB2B18782E003D05C8 /* ItemsTabOptionsButton.swift */,
+				357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */,
 				3565622329BA5C5900C43F72 /* SortTypeListView.swift */,
 				356B830D29C339110084488A /* SortTypeButton.swift */,
 				359EB8912A213A44009588A9 /* TrialDetailView.swift */,
@@ -2657,6 +2663,7 @@
 				5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */,
 				3552272E29DC9EAC00B9607E /* SearchBar.swift in Sources */,
 				5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */,
+				357ABEAE2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift in Sources */,
 				35533BC129D618B800EC58DE /* AccountViewModel.swift in Sources */,
 				354F769A28C87CD500EB2383 /* EmptyVaultView.swift in Sources */,
 				5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */,
@@ -2671,6 +2678,7 @@
 				3553C22C296575540087518A /* LoggerManager+Extensions.swift in Sources */,
 				356650D62AAF604D00BFF4F3 /* FullSyncProgressView.swift in Sources */,
 				354F769628C879AA00EB2383 /* NoteDetailView.swift in Sources */,
+				357ABEAC2B18782E003D05C8 /* ItemsTabOptionsButton.swift in Sources */,
 				354E1A142A3B43D600519F58 /* CreditCardDetailViewModel.swift in Sources */,
 				3559BAA02A5B32550020E172 /* Preferences.swift in Sources */,
 				35704EBF2AD577F900044716 /* ShareOrCreateNewVaultViewModel.swift in Sources */,

@@ -847,11 +847,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         present(viewController)
     }
 
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: SortTypeListViewModelDelegate) {
-        presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
-    }
-
     func itemsTabViewModelWantsToShowTrialDetail() {
         Task { @MainActor [weak self] in
             guard let self else { return }
