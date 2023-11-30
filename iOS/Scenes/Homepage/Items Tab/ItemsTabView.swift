@@ -70,10 +70,16 @@ struct ItemsTabView: View {
     @ViewBuilder
     private func vaultContent(_ items: [ItemUiModel]) -> some View {
         GeometryReader { proxy in
-            VStack {
-                topBar
+            VStack(spacing: 0) {
+                ItemsTabTopBar(isEditMode: $viewModel.isEditMode,
+                               onSearch: viewModel.search,
+                               onShowVaultList: viewModel.presentVaultList,
+                               onMove: viewModel.presentVaultListToMoveSelectedItems,
+                               onTrash: viewModel.trashSelectedItems,
+                               onRestore: viewModel.restoreSelectedItems,
+                               onPermanentlyDelete: viewModel.permanentlyDeleteSelectedItems)
 
-                if !viewModel.banners.isEmpty {
+                if !viewModel.banners.isEmpty, !viewModel.isEditMode {
                     InfoBannerViewStack(banners: viewModel.banners,
                                         dismiss: viewModel.dismiss(banner:),
                                         action: viewModel.handleAction(banner:))
@@ -103,57 +109,6 @@ struct ItemsTabView: View {
                 safeAreaInsets = proxy.safeAreaInsets
             }
         }
-    }
-
-    private var topBar: some View {
-        HStack {
-            switch viewModel.vaultsManager.vaultSelection {
-            case .all:
-                CircleButton(icon: PassIcon.brandPass,
-                             iconColor: VaultSelection.all.color,
-                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
-                             type: .big,
-                             action: viewModel.presentVaultList)
-                    .frame(width: kSearchBarHeight)
-
-            case let .precise(vault):
-                CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                             iconColor: vault.displayPreferences.color.color.color,
-                             backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
-                             action: viewModel.presentVaultList)
-                    .frame(width: kSearchBarHeight)
-
-            case .trash:
-                CircleButton(icon: IconProvider.trash,
-                             iconColor: VaultSelection.trash.color,
-                             backgroundColor: VaultSelection.trash.color.withAlphaComponent(0.16),
-                             action: viewModel.presentVaultList)
-                    .frame(width: kSearchBarHeight)
-            }
-
-            ZStack {
-                Color(uiColor: PassColor.backgroundStrong)
-                HStack {
-                    Image(uiImage: IconProvider.magnifier)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.vaultsManager.vaultSelection.searchBarPlacehoder)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
-                }
-                .foregroundColor(Color(uiColor: PassColor.textWeak))
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.search)
-
-            ItemsTabOptionsButton(onSelectItems: viewModel.enterBulkActionMode)
-        }
-        .padding(.horizontal)
-        .frame(height: kSearchBarHeight)
     }
 
     @ViewBuilder
