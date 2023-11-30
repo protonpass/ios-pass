@@ -19459,16 +19459,6 @@
         }
       }
     },
-    "Done" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Done"
-          }
-        }
-      }
-    },
     "Download all your items again to make sure you are in sync" : {
       "localizations" : {
         "be" : {
