@@ -29,12 +29,14 @@ struct ItemsTabOptionsButton: View {
 
     var body: some View {
         Menu(content: {
-            Button(action: onSelectItems) {
-                Label(title: {
-                    Text("Select items")
-                }, icon: {
-                    IconProvider.checkmarkCircle
-                })
+            if viewModel.selectable {
+                Button(action: onSelectItems) {
+                    Label(title: {
+                        Text("Select items")
+                    }, icon: {
+                        IconProvider.checkmarkCircle
+                    })
+                }
             }
 
             // Filter options
