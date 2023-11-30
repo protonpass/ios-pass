@@ -37,6 +37,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
+    @Published private(set) var isPinned = false
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
 
@@ -48,6 +49,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private(set) var itemContent: ItemContent {
         didSet {
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+            isPinned = itemContent.item.pinned
         }
     }
 
@@ -59,6 +61,8 @@ class BaseItemDetailViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let getUserShareStatus = resolve(\UseCasesContainer.getUserShareStatus)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
+    private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
+    private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
 
     @LazyInjected(\SharedServiceContainer.clipboardManager) private var clipboardManager
 
@@ -128,18 +132,18 @@ class BaseItemDetailViewModel: ObservableObject {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let shareId = self.itemContent.shareId
-                let itemId = self.itemContent.item.itemID
+                let shareId = itemContent.shareId
+                let itemId = itemContent.item.itemID
                 guard let updatedItemContent =
-                    try await self.itemRepository.getItemContent(shareId: shareId,
-                                                                 itemId: itemId) else {
+                    try await itemRepository.getItemContent(shareId: shareId,
+                                                            itemId: itemId) else {
                     return
                 }
-                self.itemContent = updatedItemContent
-                self.bindValues()
+                itemContent = updatedItemContent
+                bindValues()
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -152,6 +156,30 @@ class BaseItemDetailViewModel: ObservableObject {
         guard let vault else { return }
         router.present(for: .moveItemsBetweenVaults(currentVault: vault.vault,
                                                     singleItemToMove: itemContent))
+    }
+
+    func toggleItemPinning() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                logger.trace("beginning of pin/unpin of \(itemContent.debugDescription)")
+
+                let newItemState = if itemContent.item.pinned {
+                    try await unpinItem(shareId: itemContent.shareId, itemId: itemContent.itemId)
+                } else {
+                    try await pinItem(shareId: itemContent.shareId, itemId: itemContent.itemId)
+                }
+                updateItem(with: newItemState)
+                router.display(element: .successMessage(#localized("Item Successfully %@",
+                                                                   newItemState.item.pinMessage)))
+                logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 
     func copyNoteContent() {
@@ -238,10 +266,10 @@ private extension BaseItemDetailViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                self.isFreeUser = try await self.upgradeChecker.isFreeUser()
+                isFreeUser = try await upgradeChecker.isFreeUser()
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -257,5 +285,23 @@ private extension BaseItemDetailViewModel {
             }
             return item
         }
+    }
+
+    func updateItem(with item: SymmetricallyEncryptedItem) {
+        itemContent = itemContent.copy(with: item.item)
+    }
+}
+
+extension ItemRevision {
+    var pinTitle: String {
+        pinned ? "Unpin Item" : "Pin Item"
+    }
+
+    var pinIcon: String {
+        pinned ? "pin.slash" : "pin"
+    }
+
+    var pinMessage: String {
+        pinned ? "pinned" : "unpinned"
     }
 }

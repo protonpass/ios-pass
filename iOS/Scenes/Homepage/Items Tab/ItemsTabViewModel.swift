@@ -26,7 +26,6 @@ import Factory
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
-    func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
     func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -41,6 +40,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
+    @Published private(set) var pinnedItems: [ItemUiModel]?
     @Published private(set) var banners: [InfoBanner] = []
     @Published var shouldShowSyncProgress = false
     @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
@@ -60,6 +60,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
+    private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
@@ -83,6 +86,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
         getPendingUserInvitations()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
@@ -109,6 +113,17 @@ private extension ItemsTabViewModel {
                 shouldShowSyncProgress = true
             }
         }
+
+        getAllPinnedItems()
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] pinnedItems in
+                guard let self, let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else {
+                    return
+                }
+                self.pinnedItems = pinnedItems?.compactMap { try? $0.toItemUiModel(symmetricKey) }
+            }
+            .store(in: &cancellables)
     }
 
     func refreshBanners(_ invites: [UserInvite]? = nil) {
@@ -164,8 +179,13 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
-    func search() {
-        delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
+    func search(pinnedItems: Bool = false) {
+        if pinnedItems {
+            router.present(for: .search(SearchSelection(isPinned: true, vaultSelection: nil)))
+        } else {
+            router.present(for: .search(SearchSelection(isPinned: false,
+                                                        vaultSelection: vaultsManager.vaultSelection)))
+        }
     }
 
     func createNewItem(type: ItemContentType) {

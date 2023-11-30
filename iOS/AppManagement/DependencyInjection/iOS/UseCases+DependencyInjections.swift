@@ -267,6 +267,21 @@ extension UseCasesContainer {
     }
 }
 
+// MARK: - items
+
+extension UseCasesContainer {
+    var getAllPinnedItems: Factory<GetAllPinnedItemsUseCase> {
+        self { GetAllPinnedItems(itemRepository: SharedRepositoryContainer.shared.itemRepository()) }
+    }
+
+    var getSearchableItems: Factory<GetSearchableItemsUseCase> {
+        self { GetSearchableItems(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                  shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                  getAllPinnedItems: self.getAllPinnedItems(),
+                                  symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider()) }
+    }
+}
+
 // MARK: - User
 
 extension UseCasesContainer {

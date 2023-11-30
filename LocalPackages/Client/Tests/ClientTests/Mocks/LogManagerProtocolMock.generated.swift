@@ -22,7 +22,8 @@
 @testable import Core
 import Foundation
 
-final class LogManagerProtocolMock: @unchecked Sendable, LogManagerProtocol {
+ // Check if the protocol inherits from Actor
+actor LogManagerProtocolMock: LogManagerProtocol {
     // MARK: - shouldLog
     var invokedShouldLogSetter = false
     var invokedShouldLogSetterCount = 0

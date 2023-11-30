@@ -205,3 +205,17 @@ extension SharedUseCasesContainer {
                            credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 }
+
+// MARK: - Items
+
+extension SharedUseCasesContainer {
+    var pinItem: Factory<PinItemUseCase> {
+        self { PinItem(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                       logManager: self.logManager) }
+    }
+
+    var unpinItem: Factory<UnpinItemUseCase> {
+        self { UnpinItem(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                         logManager: self.logManager) }
+    }
+}

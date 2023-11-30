@@ -59,19 +59,19 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     // Injected properties
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
 
-    // Self-intialized properties
-    private(set) var vaultSelection: VaultSelection
+    private(set) var searchSelection: SearchSelection
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
     private var lastTask: Task<Void, Never>?
     private var filteringTask: Task<Void, Never>?
+    // TODO: check where all items is used for history
     private var allItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
@@ -80,10 +80,16 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: SearchViewModelDelegate?
 
-    var searchBarPlaceholder: String { vaultSelection.searchBarPlacehoder }
+    var searchBarPlaceholder: String {
+        searchSelection.vaultSelection?.searchBarPlacehoder ?? "Search In pinned Items"
+    }
 
-    init(vaultSelection: VaultSelection) {
-        self.vaultSelection = vaultSelection
+    var isTrash: Bool {
+        searchSelection.vaultSelection == .trash
+    }
+
+    init(searchSelection: SearchSelection) {
+        self.searchSelection = searchSelection
         setup()
     }
 }
@@ -97,19 +103,7 @@ private extension SearchViewModel {
                 state = .initializing
             }
 
-            let vaults = try await shareRepository.getVaults()
-
-            switch vaultSelection {
-            case .all:
-                allItems = try await itemRepository.getItems(state: .active)
-            case let .precise(vault):
-                allItems = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
-            case .trash:
-                allItems = try await itemRepository.getItems(state: .trashed)
-            }
-            searchableItems = try allItems.map { try SearchableItem(from: $0,
-                                                                    symmetricKey: getSymmetricKey(),
-                                                                    allVaults: vaults) }
+            searchableItems = try await getSearchableItems(for: searchSelection)
             try await refreshSearchHistory()
         } catch {
             state = .error(error)
@@ -118,6 +112,9 @@ private extension SearchViewModel {
 
     @MainActor
     func refreshSearchHistory() async throws {
+        guard let vaultSelection = searchSelection.vaultSelection else {
+            return
+        }
         var shareId: String?
         if case let .precise(vault) = vaultSelection {
             shareId = vault.shareId
@@ -148,15 +145,22 @@ private extension SearchViewModel {
 
     func doSearch(query: String) {
         lastSearchQuery = query
-        guard !query.isEmpty else {
-            if history.isEmpty {
-                state = .empty
-            } else {
-                state = .history(history)
+        if !searchSelection.isPinned {
+            guard !query.isEmpty else {
+                if history.isEmpty {
+                    state = .empty
+                } else {
+                    state = .history(history)
+                }
+                return
             }
-            return
+        } else {
+            if query.isEmpty {
+                results = searchableItems.toItemSearchResults
+                filterAndSortResults()
+                return
+            }
         }
-
         lastTask?.cancel()
         lastTask = Task { @MainActor [weak self] in
             guard let self else {
@@ -276,7 +280,10 @@ extension SearchViewModel {
     }
 
     func searchInAllVaults() {
-        vaultSelection = .all
+        guard !searchSelection.isPinned else {
+            return
+        }
+        searchSelection = SearchSelection(isPinned: false, vaultSelection: .all)
         refreshResults()
     }
 }

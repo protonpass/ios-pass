@@ -75,24 +75,27 @@ struct SearchView: View {
                                         onClearResults: viewModel.removeAllSearchHistory)
 
             case let .noResults(query):
-                switch viewModel.vaultSelection {
-                case .all:
+                if let vaultSelection = viewModel.searchSelection.vaultSelection {
+                    switch vaultSelection {
+                    case .all:
+                        NoSearchResultsInAllVaultView(query: query)
+                    case let .precise(vault):
+                        NoSearchResultsInPreciseVaultView(query: query,
+                                                          vaultName: vault.name,
+                                                          action: viewModel.searchInAllVaults)
+                    case .trash:
+                        NoSearchResultsInTrashView(query: query)
+                    }
+                } else {
                     NoSearchResultsInAllVaultView(query: query)
-                case let .precise(vault):
-                    NoSearchResultsInPreciseVaultView(query: query,
-                                                      vaultName: vault.name,
-                                                      action: viewModel.searchInAllVaults)
-                case .trash:
-                    NoSearchResultsInTrashView(query: query)
                 }
-
             case let .results(itemCount, results):
                 SearchResultsView(selectedType: $viewModel.selectedType,
                                   selectedSortType: $viewModel.selectedSortType,
                                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                   itemCount: itemCount,
                                   results: results,
-                                  isTrash: viewModel.vaultSelection == .trash,
+                                  isTrash: viewModel.isTrash,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) },

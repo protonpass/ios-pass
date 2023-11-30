@@ -315,6 +315,8 @@ private extension HomepageCoordinator {
                     createEditItemViewModelWantsToChangeVault()
                 case .setPINCode:
                     presentSetPINCodeView()
+                case let .search(selection):
+                    presentSearchScreen(selection)
                 }
             }
             .store(in: &cancellables)
@@ -524,6 +526,15 @@ private extension HomepageCoordinator {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
+    }
+
+    func presentSearchScreen(_ searchSelection: SearchSelection) {
+        let viewModel = SearchViewModel(searchSelection: searchSelection)
+        viewModel.delegate = self
+        searchViewModel = viewModel
+        let view = SearchView(viewModel: viewModel)
+        present(view)
+        addNewEvent(type: .searchTriggered)
     }
 
     func startUpgradeFlow() {
@@ -830,15 +841,6 @@ extension HomepageCoordinator: ItemTypeListViewModelDelegate {
 // MARK: - ItemsTabViewModelDelegate
 
 extension HomepageCoordinator: ItemsTabViewModelDelegate {
-    func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection) {
-        let viewModel = SearchViewModel(vaultSelection: vaultSelection)
-        viewModel.delegate = self
-        searchViewModel = viewModel
-        let view = SearchView(viewModel: viewModel)
-        present(view)
-        addNewEvent(type: .searchTriggered)
-    }
-
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType) {
         presentCreateItemView(for: type.type)
     }
