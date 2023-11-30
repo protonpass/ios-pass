@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import CoreData
 import CryptoKit
@@ -29,6 +30,8 @@ import ProtonCoreServices
 private let kBatchPageSize = 100
 
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
+    var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> { get }
+
     /// Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
 
@@ -128,6 +131,8 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let passKeyManager: PassKeyManagerProtocol
     private let logger: Logger
 
+    public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
+
     public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
                 localDatasource: LocalItemDatasourceProtocol,
                 remoteDatasource: RemoteItemDatasourceProtocol,
@@ -140,6 +145,10 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
+        Task { [weak self] in
+            let pinnedItems = try? await self?.localDatasource.getAllPinnedItems()
+            self?.currentlyPinnedItems.send(pinnedItems)
+        }
     }
 }
 
@@ -450,9 +459,12 @@ public extension ItemRepository {
         let pinItemRevision = try await remoteDatasource.pin(shareId: shareId, itemId: itemId)
         logger.trace("Updating item \(pinItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision, shareId: shareId)
+        // we are deleting the entity due to a bug in core data that doesn't take into account boolean updates
+        try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(pinItemRevision.itemID) to local database")
-
+        let pinnedItems = try await localDatasource.getAllPinnedItems() // getAllItems().filter(\.item.pinned)
+        currentlyPinnedItems.send(pinnedItems)
         return encryptedItem
     }
 
@@ -461,9 +473,12 @@ public extension ItemRepository {
         let unpinItemRevision = try await remoteDatasource.unpin(shareId: shareId, itemId: itemId)
         logger.trace("Updating item \(unpinItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision, shareId: shareId)
+        // we are deleting the entity due to a bug in core data that doesn't take into account boolean updates
+        try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
-
+        let pinnedItems = try await localDatasource.getAllPinnedItems()
+        currentlyPinnedItems.send(pinnedItems)
         return encryptedItem
     }
 }
