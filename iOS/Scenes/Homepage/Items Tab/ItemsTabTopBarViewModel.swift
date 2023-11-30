@@ -1,5 +1,5 @@
 //
-// ItemsTabOptionsButtonViewModel.swift
+// ItemsTabTopBarViewModel.swift
 // Proton Pass - Created on 30/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,45 +22,17 @@ import Client
 import Combine
 import Core
 import Factory
-import Foundation
 import SwiftUI
 
-@MainActor
-final class ItemsTabOptionsButtonViewModel: ObservableObject {
+final class ItemsTabTopBarViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private var cancellables = Set<AnyCancellable>()
 
-    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent
-
-    var selectedFilterOption: ItemTypeFilterOption {
-        vaultsManager.filterOption
-    }
-
-    var itemCount: ItemCount {
-        vaultsManager.itemCount
-    }
-
-    var selectable: Bool {
-        switch vaultsManager.vaultSelection {
-        case .all:
-            true
-        case let .precise(vault):
-            vault.canEdit
-        case .trash:
-            true
-        }
-    }
-
-    var highlighted: Bool {
-        vaultsManager.filterOption != .all
+    var vaultSelection: VaultSelection {
+        vaultsManager.vaultSelection
     }
 
     init() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
-    }
-
-    func updateFilterOption(_ option: ItemTypeFilterOption) {
-        vaultsManager.updateItemTypeFilterOption(option)
     }
 }
