@@ -109,6 +109,7 @@ private extension ItemsTabTopBar {
             HStack {
                 Button(action: {
                     isEditMode = false
+                    viewModel.deselectAllItems()
                 }, label: {
                     Text("Done")
                         .fontWeight(.bold)
