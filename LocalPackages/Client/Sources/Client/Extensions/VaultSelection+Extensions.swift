@@ -1,5 +1,5 @@
 //
-// VaultSelection.swift
+// VaultSelection+Extensions.swift
 // Proton Pass - Created on 04/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,12 +21,8 @@
 import Entities
 import Macro
 
-public enum VaultSelection {
-    case all
-    case precise(Vault)
-    case trash
-
-    public var searchBarPlacehoder: String {
+public extension VaultSelection {
+    var searchBarPlacehoder: String {
         switch self {
         case .all:
             #localized("Search in all vaults...")
@@ -34,41 +30,6 @@ public enum VaultSelection {
             #localized("Search in %@...", vault.name)
         case .trash:
             #localized("Search in Trash...")
-        }
-    }
-
-    public var shared: Bool {
-        if case let .precise(vault) = self {
-            return vault.shared
-        }
-        return false
-    }
-
-    public var preciseVault: Vault? {
-        if case let .precise(vault) = self {
-            return vault
-        }
-        return nil
-    }
-
-    public var showBadge: Bool {
-        if case let .precise(vault) = self {
-            vault.newUserInvitesReady > 0
-        } else {
-            false
-        }
-    }
-}
-
-extension VaultSelection: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.all, .all), (.trash, .trash):
-            true
-        case let (.precise(lhsVault), .precise(rhsVault)):
-            lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
-        default:
-            false
         }
     }
 }

@@ -124,10 +124,27 @@ extension SearchableItem {
                      lastUseTime: lastUseTime,
                      modifyTime: modifyTime)
     }
+
+    var toItemSearchResult: ItemSearchResult {
+        ItemSearchResult(shareId: shareId,
+                         itemId: itemId,
+                         type: type,
+                         aliasEmail: aliasEmail,
+                         title: .notMatched(name),
+                         detail: [.notMatched(note)],
+                         url: url,
+                         vault: vault,
+                         lastUseTime: lastUseTime,
+                         modifyTime: modifyTime)
+    }
 }
 
 public extension [SearchableItem] {
     func result(for term: String) -> [ItemSearchResult] {
         compactMap { $0.result(for: term) }
+    }
+
+    var toItemSearchResults: [ItemSearchResult] {
+        self.map(\.toItemSearchResult)
     }
 }

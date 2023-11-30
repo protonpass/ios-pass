@@ -214,7 +214,12 @@ import {{import}}
 import {{type.annotations.extraImport}}
 {% endif %}
 
+{% if "Actor" in type.inheritedTypes %} // Check if the protocol inherits from Actor
+actor {{ type.name }}Mock: {{ type.name }} {
+    {% else %}
 final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
+{% endif %}
+    
 {% for variable in type.allVariables|!definedInExtension %}
     {% call mockProtocolVariable variable %}
 {% endfor %}
@@ -228,6 +233,7 @@ final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
 // sourcery:end
 {% endif %}
 {% endfor %}
+
 
 {# 📒 Composition protocol mocking #}
 {% for type in types.protocolCompositions where type|annotated:"AutoMockable" %}
@@ -256,7 +262,11 @@ final class {{ type.name }}Mock: @unchecked Sendable, {{ type.name }} {
 import {{import}}
 {% endfor %}
 
+{% if "Actor" in type.inheritedTypes %} // Check if the protocol inherits from Actor
+actor  {{ type.name }}Mock: @unchecked Sendable, {% for inheritedType in type.inheritedTypes %}{{inheritedType}}{{ ', ' if not forloop.last }}{% endfor %} {
+    {% else %}
 final class {{ type.name }}Mock: @unchecked Sendable, {% for inheritedType in type.inheritedTypes %}{{inheritedType}}{{ ', ' if not forloop.last }}{% endfor %} {
+{% endif %}
     {% for inheritedType in type.composedTypes where inheritedType.kind == "protocol"%}
     // MARK: - ⚡️ {{inheritedType.name}}
     {% for variable in inheritedType.allVariables|!definedInExtension %}
