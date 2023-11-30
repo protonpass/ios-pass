@@ -31,6 +31,10 @@ final class ItemsTabTopBarViewModel: ObservableObject {
 
     @Published private(set) var actionsDisabled = true
 
+    var selectedItemsCount: Int {
+        currentSelectedItems.value.count
+    }
+
     var vaultSelection: VaultSelection {
         vaultsManager.vaultSelection
     }
