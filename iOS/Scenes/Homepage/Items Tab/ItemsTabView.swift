@@ -150,90 +150,10 @@ struct ItemsTabView: View {
             .contentShape(Rectangle())
             .onTapGesture(perform: viewModel.search)
 
-            optionsButton
+            ItemsTabOptionsButton(onSelectItems: viewModel.enterBulkActionMode)
         }
         .padding(.horizontal)
         .frame(height: kSearchBarHeight)
-    }
-
-    @ViewBuilder
-    private var optionsButton: some View {
-        Menu(content: {
-            Button(action: viewModel.enterBulkActionMode) {
-                Label(title: {
-                    Text("Select items")
-                }, icon: {
-                    IconProvider.checkmarkCircle
-                })
-            }
-
-            // Filter options
-            let selectedFilterOption = viewModel.vaultsManager.filterOption
-            let itemCount = viewModel.vaultsManager.itemCount
-            Menu(content: {
-                ForEach(ItemTypeFilterOption.allCases, id: \.self) { option in
-                    let uiModel = option.uiModel(from: itemCount)
-                    Button(action: {
-                        viewModel.vaultsManager.updateItemTypeFilterOption(option)
-                    }, label: {
-                        Label(title: {
-                            text(for: uiModel)
-                        }, icon: {
-                            if option == selectedFilterOption {
-                                Image(systemName: "checkmark")
-                            }
-                        })
-                    })
-                    // swiftformat:disable:next isEmpty
-                    .disabled(uiModel.count == 0) // swiftlint:disable:this empty_count
-                }
-            }, label: {
-                Label(title: {
-                    // Use Button to trick SwiftUI into rendering option with title and subtitle
-                    Button(action: {}, label: {
-                        Text("Show")
-                        text(for: selectedFilterOption.uiModel(from: itemCount))
-                    })
-                }, icon: {
-                    Image(uiImage: IconProvider.filter)
-                })
-            })
-
-            // Sort options
-            let selectedSortType = viewModel.selectedSortType
-            Menu(content: {
-                ForEach(SortType.allCases, id: \.self) { type in
-                    Button(action: {
-                        viewModel.selectedSortType = type
-                    }, label: {
-                        HStack {
-                            Text(type.title)
-                            Spacer()
-                            if type == selectedSortType {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    })
-                }
-            }, label: {
-                Label(title: {
-                    Button(action: {}, label: {
-                        Text("Sort By")
-                        Text(verbatim: selectedSortType.title)
-                    })
-                }, icon: {
-                    Image(uiImage: IconProvider.arrowDownArrowUp)
-                })
-            })
-        }, label: {
-            CircleButton(icon: IconProvider.threeDotsVertical,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: .clear)
-        })
-    }
-
-    private func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
-        Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
     }
 
     @ViewBuilder
