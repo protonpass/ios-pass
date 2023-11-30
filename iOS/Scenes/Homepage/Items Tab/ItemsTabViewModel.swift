@@ -40,6 +40,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var banners: [InfoBanner] = []
+    @Published var isEditMode = false
     @Published var shouldShowSyncProgress = false
     @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
         didSet {
@@ -166,7 +167,19 @@ extension ItemsTabViewModel {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }
 
-    func enterBulkActionMode() {
+    func presentVaultListToMoveSelectedItems() {
+        print(#function)
+    }
+
+    func trashSelectedItems() {
+        print(#function)
+    }
+
+    func restoreSelectedItems() {
+        print(#function)
+    }
+
+    func permanentlyDeleteSelectedItems() {
         print(#function)
     }
 

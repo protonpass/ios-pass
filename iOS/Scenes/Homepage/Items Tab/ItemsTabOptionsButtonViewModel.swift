@@ -41,6 +41,17 @@ final class ItemsTabOptionsButtonViewModel: ObservableObject {
         vaultsManager.itemCount
     }
 
+    var selectable: Bool {
+        switch vaultsManager.vaultSelection {
+        case .all:
+            true
+        case let .precise(vault):
+            vault.canEdit
+        case .trash:
+            true
+        }
+    }
+
     var highlighted: Bool {
         vaultsManager.filterOption != .all
     }
