@@ -119,28 +119,14 @@ private extension ItemsTabTopBar {
 
                 switch viewModel.vaultSelection {
                 case .all, .precise:
-                    Button(action: onMove) {
-                        Image(uiImage: IconProvider.folderArrowIn)
-                            .foregroundStyle(PassColor.textNorm.toColor)
-                    }
-                    .padding(.horizontal)
-
-                    Button(action: onTrash) {
-                        Image(uiImage: IconProvider.trash)
-                            .foregroundStyle(PassColor.textNorm.toColor)
-                    }
+                    button(action: onMove, icon: IconProvider.folderArrowIn)
+                        .padding(.horizontal)
+                    button(action: onTrash, icon: IconProvider.trash)
 
                 case .trash:
-                    Button(action: onRestore) {
-                        Image(uiImage: IconProvider.clockRotateLeft)
-                            .foregroundStyle(PassColor.textNorm.toColor)
-                    }
-                    .padding(.horizontal)
-
-                    Button(action: onTrash) {
-                        Image(uiImage: IconProvider.trashCross)
-                            .foregroundStyle(PassColor.textNorm.toColor)
-                    }
+                    button(action: onRestore, icon: IconProvider.clockRotateLeft)
+                        .padding(.horizontal)
+                    button(action: onPermanentlyDelete, icon: IconProvider.trashCross)
                 }
             }
             .padding(.horizontal)
@@ -149,5 +135,15 @@ private extension ItemsTabTopBar {
 
             PassDivider()
         }
+    }
+
+    func button(action: @escaping () -> Void, icon: UIImage) -> some View {
+        Button(action: action) {
+            Image(uiImage: icon)
+                .foregroundStyle(viewModel.actionsDisabled ?
+                    PassColor.textHint.toColor : PassColor.textNorm.toColor)
+        }
+        .disabled(viewModel.actionsDisabled)
+        .animation(.default, value: viewModel.actionsDisabled)
     }
 }

@@ -26,7 +26,10 @@ import SwiftUI
 
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private var cancellables = Set<AnyCancellable>()
+
+    @Published private(set) var actionsDisabled = true
 
     var vaultSelection: VaultSelection {
         vaultsManager.vaultSelection
@@ -34,5 +37,13 @@ final class ItemsTabTopBarViewModel: ObservableObject {
 
     init() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+        actionsDisabled = currentSelectedItems.value.isEmpty
+        currentSelectedItems
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] items in
+                guard let self else { return }
+                actionsDisabled = items.isEmpty
+            }
+            .store(in: &cancellables)
     }
 }
