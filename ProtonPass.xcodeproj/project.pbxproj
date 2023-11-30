@@ -256,6 +256,7 @@
 		357ABEAE2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */; };
 		357ABEB02B188A08003D05C8 /* ItemsTabTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEAF2B188A08003D05C8 /* ItemsTabTopBar.swift */; };
 		357ABEB22B188A30003D05C8 /* ItemsTabTopBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEB12B188A30003D05C8 /* ItemsTabTopBarViewModel.swift */; };
+		357ABEB42B18BB04003D05C8 /* DataStream+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEB32B18BB04003D05C8 /* DataStream+DependencyInjections.swift */; };
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
 		357E62702B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
 		357E62712B0E671300F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
@@ -695,6 +696,7 @@
 		357ABEAD2B187C5F003D05C8 /* ItemsTabOptionsButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabOptionsButtonViewModel.swift; sourceTree = "<group>"; };
 		357ABEAF2B188A08003D05C8 /* ItemsTabTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabTopBar.swift; sourceTree = "<group>"; };
 		357ABEB12B188A30003D05C8 /* ItemsTabTopBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabTopBarViewModel.swift; sourceTree = "<group>"; };
+		357ABEB32B18BB04003D05C8 /* DataStream+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataStream+DependencyInjections.swift"; sourceTree = "<group>"; };
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
 		357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataStreams+DependencyInjections.swift"; sourceTree = "<group>"; };
 		357ED8C42AC1C6F20019A0E9 /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = LocalPackages/Macro; sourceTree = "<group>"; };
@@ -1639,6 +1641,7 @@
 		5B229A6C2A8640130009103E /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				357ABEB32B18BB04003D05C8 /* DataStream+DependencyInjections.swift */,
 				5B503FDD2A4C846200E6681C /* Repository+DependencyInjections.swift */,
 				5B14538E2A6821D20048B022 /* Router+DependencyInjections.swift */,
 				359DB2A82A70435800549466 /* Service+DependencyInjections.swift */,
@@ -2808,6 +2811,7 @@
 				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
+				357ABEB42B18BB04003D05C8 /* DataStream+DependencyInjections.swift in Sources */,
 				354E9A9C2A443D9700AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
