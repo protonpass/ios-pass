@@ -47,3 +47,9 @@ final class ItemsTabTopBarViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 }
+
+extension ItemsTabTopBarViewModel {
+    func deselectAllItems() {
+        currentSelectedItems.send([])
+    }
+}
