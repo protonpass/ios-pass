@@ -111,10 +111,14 @@ private extension ItemsTabTopBar {
                     isEditMode = false
                     viewModel.deselectAllItems()
                 }, label: {
-                    Text("Done")
-                        .fontWeight(.bold)
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    Image(systemName: "arrow.left")
+                        .foregroundStyle(PassColor.textNorm.toColor)
                 })
+
+                if viewModel.selectedItemsCount > 0 {
+                    Text(verbatim: "\(viewModel.selectedItemsCount)")
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                }
 
                 Spacer()
 
@@ -127,10 +131,13 @@ private extension ItemsTabTopBar {
                 case .trash:
                     button(action: onRestore, icon: IconProvider.clockRotateLeft)
                         .padding(.horizontal)
-                    button(action: onPermanentlyDelete, icon: IconProvider.trashCross)
+                    button(action: onPermanentlyDelete,
+                           icon: IconProvider.trashCross,
+                           color: PassColor.signalDanger)
                 }
             }
             .padding(.horizontal)
+            .animation(.default, value: viewModel.selectedItemsCount > 0)
 
             Spacer()
 
@@ -138,11 +145,12 @@ private extension ItemsTabTopBar {
         }
     }
 
-    func button(action: @escaping () -> Void, icon: UIImage) -> some View {
+    func button(action: @escaping () -> Void,
+                icon: UIImage,
+                color: UIColor = PassColor.textNorm) -> some View {
         Button(action: action) {
             Image(uiImage: icon)
-                .foregroundStyle(viewModel.actionsDisabled ?
-                    PassColor.textHint.toColor : PassColor.textNorm.toColor)
+                .foregroundStyle(viewModel.actionsDisabled ? PassColor.textHint.toColor : color.toColor)
         }
         .disabled(viewModel.actionsDisabled)
         .animation(.default, value: viewModel.actionsDisabled)
