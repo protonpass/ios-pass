@@ -66,6 +66,8 @@ public protocol LocalItemDatasourceProtocol {
 
     /// Get all active log in items
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
 }
 
 public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}
@@ -74,6 +76,14 @@ public extension LocalItemDatasource {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "pinned = %d", true)
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }

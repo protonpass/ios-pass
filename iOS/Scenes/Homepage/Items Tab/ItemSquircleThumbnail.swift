@@ -25,10 +25,12 @@ import Factory
 import SwiftUI
 
 enum ItemSquircleThumbnailSize {
-    case regular, large
+    case small, regular, large
 
     var height: CGFloat {
         switch self {
+        case .small:
+            24
         case .regular:
             40
         case .large:
@@ -38,6 +40,8 @@ enum ItemSquircleThumbnailSize {
 
     var strokeWidth: CGFloat {
         switch self {
+        case .small:
+            1
         case .regular:
             2
         case .large:

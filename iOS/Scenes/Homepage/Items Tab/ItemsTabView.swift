@@ -75,9 +75,46 @@ struct ItemsTabView: View {
 
                 if !viewModel.banners.isEmpty {
                     InfoBannerViewStack(banners: viewModel.banners,
-                                        dismiss: viewModel.dismiss(banner:),
-                                        action: viewModel.handleAction(banner:))
+                                        dismiss: { viewModel.dismiss(banner: $0) },
+                                        action: { viewModel.handleAction(banner: $0) })
                         .padding([.horizontal, .top])
+                }
+
+                if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .center, spacing: 8) {
+                            ForEach(pinnedItems) { item in
+                                Button {
+                                    viewModel.viewDetail(of: item)
+                                } label: {
+                                    HStack(alignment: .center, spacing: 8) {
+                                        ItemSquircleThumbnail(data: item.thumbnailData(), size: .small)
+                                        Text(item.title)
+                                            .lineLimit(1)
+                                            .foregroundColor(PassColor.textNorm.toColor)
+                                            .padding(.trailing, 8)
+                                    }
+                                    .padding(8)
+                                    .frame(maxWidth: 164, alignment: .leading)
+                                    .background(item.type.normMinor1Color.toColor)
+                                    .cornerRadius(16)
+                                }
+                            }
+
+                            Button {
+                                viewModel.search(pinnedItems: true)
+                            } label: {
+                                Text("See all")
+                                    .foregroundColor(PassColor.textNorm.toColor)
+                                    .padding(.trailing, 8)
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
+                    }
+
+                    Divider()
                 }
 
                 if items.isEmpty {
@@ -148,7 +185,7 @@ struct ItemsTabView: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .contentShape(Rectangle())
-            .onTapGesture(perform: viewModel.search)
+            .onTapGesture { viewModel.search() }
         }
         .padding(.horizontal)
         .frame(height: kSearchBarHeight)
