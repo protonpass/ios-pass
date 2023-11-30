@@ -195,20 +195,33 @@ struct ItemsTabView: View {
     private func itemRow(for item: ItemUiModel) -> some View {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         Button(action: {
-            viewModel.viewDetail(of: item)
+            if viewModel.isEditMode {
+                viewModel.selectOrDeselect(item)
+            } else {
+                viewModel.viewDetail(of: item)
+            }
         }, label: {
-            GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
+            GeneralItemRow(thumbnailView: {
+                               if viewModel.isEditMode {
+                                   SquircleCheckbox(isChecked: viewModel.isSelected(item))
+                               } else {
+                                   ItemSquircleThumbnail(data: item.thumbnailData())
+                               }
+                           },
                            title: item.title,
                            description: item.description)
-                .itemContextMenu(item: item,
-                                 isTrashed: isTrashed,
-                                 onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
-                                 handler: viewModel.itemContextMenuHandler)
+                .if(!viewModel.isEditMode) { view in
+                    view.itemContextMenu(item: item,
+                                         isTrashed: isTrashed,
+                                         onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
+                                         handler: viewModel.itemContextMenuHandler)
+                }
         })
         .padding(.horizontal, 16)
         .frame(height: 64)
         .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                                     item: item,
+                                    isEditMode: viewModel.isEditMode,
                                     isTrashed: isTrashed,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,

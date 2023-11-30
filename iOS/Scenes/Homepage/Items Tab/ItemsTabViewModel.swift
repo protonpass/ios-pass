@@ -59,6 +59,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
+    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
@@ -82,6 +83,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
+        currentSelectedItems
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                objectWillChange.send()
+            }
+            .store(in: &cancellables)
+
         getPendingUserInvitations()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
@@ -167,6 +177,20 @@ extension ItemsTabViewModel {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }
 
+    func isSelected(_ item: ItemIdentifiable) -> Bool {
+        currentSelectedItems.value.contains(item)
+    }
+
+    func selectOrDeselect(_ item: ItemIdentifiable) {
+        var items = currentSelectedItems.value
+        if items.contains(item) {
+            items.removeAll(where: { $0.isSame(with: item) })
+        } else {
+            items.append(item)
+        }
+        currentSelectedItems.send(items)
+    }
+
     func presentVaultListToMoveSelectedItems() {
         print(#function)
     }
@@ -250,5 +274,11 @@ extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
 private extension [UserInvite] {
     var toInfoBanners: InfoBanner {
         .invite(self)
+    }
+}
+
+private extension [ItemIdentifiable] {
+    func contains(_ otherItem: ItemIdentifiable) -> Bool {
+        contains(where: { $0.isSame(with: otherItem) })
     }
 }
