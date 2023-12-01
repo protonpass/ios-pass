@@ -61,7 +61,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
 
@@ -71,8 +70,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var lastSearchQuery = ""
     private var lastTask: Task<Void, Never>?
     private var filteringTask: Task<Void, Never>?
-    // TODO: check where all items is used for history
-    private var allItems = [SymmetricallyEncryptedItem]()
     private var searchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
     private var results = [ItemSearchResult]()
@@ -310,10 +307,6 @@ private extension SearchViewModel {
                 filterAndSortResults()
             }
             .store(in: &cancellables)
-    }
-
-    func getSymmetricKey() throws -> SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
     }
 }
 
