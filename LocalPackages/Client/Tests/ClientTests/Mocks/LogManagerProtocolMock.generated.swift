@@ -46,13 +46,13 @@ actor LogManagerProtocolMock: LogManagerProtocol {
     }
     // MARK: - log
     var closureLog: () -> () = {}
-    var invokedLog = false
+    var invokedLogfunction = false
     var invokedLogCount = 0
     var invokedLogParameters: (entry: LogEntry, Void)?
     var invokedLogParametersList = [(entry: LogEntry, Void)]()
 
     func log(entry: LogEntry) {
-        invokedLog = true
+        invokedLogfunction = true
         invokedLogCount += 1
         invokedLogParameters = (entry, ())
         invokedLogParametersList.append((entry, ()))
@@ -61,12 +61,12 @@ actor LogManagerProtocolMock: LogManagerProtocol {
     // MARK: - getLogEntries
     var getLogEntriesThrowableError: Error?
     var closureGetLogEntries: () -> () = {}
-    var invokedGetLogEntries = false
+    var invokedGetLogEntriesfunction = false
     var invokedGetLogEntriesCount = 0
     var stubbedGetLogEntriesResult: [LogEntry]!
 
     func getLogEntries() async throws -> [LogEntry] {
-        invokedGetLogEntries = true
+        invokedGetLogEntriesfunction = true
         invokedGetLogEntriesCount += 1
         if let error = getLogEntriesThrowableError {
             throw error
@@ -76,33 +76,33 @@ actor LogManagerProtocolMock: LogManagerProtocol {
     }
     // MARK: - removeAllLogs
     var closureRemoveAllLogs: () -> () = {}
-    var invokedRemoveAllLogs = false
+    var invokedRemoveAllLogsfunction = false
     var invokedRemoveAllLogsCount = 0
 
     func removeAllLogs() {
-        invokedRemoveAllLogs = true
+        invokedRemoveAllLogsfunction = true
         invokedRemoveAllLogsCount += 1
         closureRemoveAllLogs()
     }
     // MARK: - saveAllLogs
     var closureSaveAllLogs: () -> () = {}
-    var invokedSaveAllLogs = false
+    var invokedSaveAllLogsfunction = false
     var invokedSaveAllLogsCount = 0
 
     func saveAllLogs() {
-        invokedSaveAllLogs = true
+        invokedSaveAllLogsfunction = true
         invokedSaveAllLogsCount += 1
         closureSaveAllLogs()
     }
     // MARK: - toggleLogging
     var closureToggleLogging: () -> () = {}
-    var invokedToggleLogging = false
+    var invokedToggleLoggingfunction = false
     var invokedToggleLoggingCount = 0
     var invokedToggleLoggingParameters: (shouldLog: Bool, Void)?
     var invokedToggleLoggingParametersList = [(shouldLog: Bool, Void)]()
 
     func toggleLogging(shouldLog: Bool) {
-        invokedToggleLogging = true
+        invokedToggleLoggingfunction = true
         invokedToggleLoggingCount += 1
         invokedToggleLoggingParameters = (shouldLog, ())
         invokedToggleLoggingParametersList.append((shouldLog, ()))

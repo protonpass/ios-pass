@@ -118,10 +118,13 @@ private extension ItemsTabViewModel {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] pinnedItems in
-                guard let self, let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else {
+                guard let self,
+                      let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
+                      let pinnedItems else {
                     return
                 }
-                self.pinnedItems = pinnedItems?.compactMap { try? $0.toItemUiModel(symmetricKey) }
+                let firstPinnedItems = Array(pinnedItems.prefix(7))
+                self.pinnedItems = firstPinnedItems.compactMap { try? $0.toItemUiModel(symmetricKey) }
             }
             .store(in: &cancellables)
     }

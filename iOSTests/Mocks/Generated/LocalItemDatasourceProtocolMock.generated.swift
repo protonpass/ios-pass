@@ -27,12 +27,12 @@ final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalItemDatas
     // MARK: - getAllItems
     var getAllItemsThrowableError: Error?
     var closureGetAllItems: () -> () = {}
-    var invokedGetAllItems = false
+    var invokedGetAllItemsfunction = false
     var invokedGetAllItemsCount = 0
     var stubbedGetAllItemsResult: [SymmetricallyEncryptedItem]!
 
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
-        invokedGetAllItems = true
+        invokedGetAllItemsfunction = true
         invokedGetAllItemsCount += 1
         if let error = getAllItemsThrowableError {
             throw error
@@ -58,47 +58,7 @@ final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalItemDatas
             throw error
         }
         closureGetItemsState()
-        return stubbedGetItemsItemStateResult
-    }
-    // MARK: - getItem
-    var getItemShareIdItemIdThrowableError: Error?
-    var closureGetItem: () -> () = {}
-    var invokedGetItem = false
-    var invokedGetItemCount = 0
-    var invokedGetItemParameters: (shareId: String, itemId: String)?
-    var invokedGetItemParametersList = [(shareId: String, itemId: String)]()
-    var stubbedGetItemResult: SymmetricallyEncryptedItem?
-
-    func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
-        invokedGetItem = true
-        invokedGetItemCount += 1
-        invokedGetItemParameters = (shareId, itemId)
-        invokedGetItemParametersList.append((shareId, itemId))
-        if let error = getItemShareIdItemIdThrowableError {
-            throw error
-        }
-        closureGetItem()
-        return stubbedGetItemResult
-    }
-    // MARK: - getAliasItem
-    var getAliasItemEmailThrowableError: Error?
-    var closureGetAliasItem: () -> () = {}
-    var invokedGetAliasItem = false
-    var invokedGetAliasItemCount = 0
-    var invokedGetAliasItemParameters: (email: String, Void)?
-    var invokedGetAliasItemParametersList = [(email: String, Void)]()
-    var stubbedGetAliasItemResult: SymmetricallyEncryptedItem?
-
-    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
-        invokedGetAliasItem = true
-        invokedGetAliasItemCount += 1
-        invokedGetAliasItemParameters = (email, ())
-        invokedGetAliasItemParametersList.append((email, ()))
-        if let error = getAliasItemEmailThrowableError {
-            throw error
-        }
-        closureGetAliasItem()
-        return stubbedGetAliasItemResult
+        return stubbedGetItemsStateResult
     }
     // MARK: - getItemsShareIdState
     var getItemsShareIdStateThrowableError: Error?
@@ -118,19 +78,59 @@ final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalItemDatas
             throw error
         }
         closureGetItemsShareIdState()
-        return stubbedGetItemsStringItemStateResult
+        return stubbedGetItemsShareIdStateResult
+    }
+    // MARK: - getItem
+    var getItemShareIdItemIdThrowableError: Error?
+    var closureGetItem: () -> () = {}
+    var invokedGetItemfunction = false
+    var invokedGetItemCount = 0
+    var invokedGetItemParameters: (shareId: String, itemId: String)?
+    var invokedGetItemParametersList = [(shareId: String, itemId: String)]()
+    var stubbedGetItemResult: SymmetricallyEncryptedItem?
+
+    func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
+        invokedGetItemfunction = true
+        invokedGetItemCount += 1
+        invokedGetItemParameters = (shareId, itemId)
+        invokedGetItemParametersList.append((shareId, itemId))
+        if let error = getItemShareIdItemIdThrowableError {
+            throw error
+        }
+        closureGetItem()
+        return stubbedGetItemResult
+    }
+    // MARK: - getAliasItem
+    var getAliasItemEmailThrowableError: Error?
+    var closureGetAliasItem: () -> () = {}
+    var invokedGetAliasItemfunction = false
+    var invokedGetAliasItemCount = 0
+    var invokedGetAliasItemParameters: (email: String, Void)?
+    var invokedGetAliasItemParametersList = [(email: String, Void)]()
+    var stubbedGetAliasItemResult: SymmetricallyEncryptedItem?
+
+    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
+        invokedGetAliasItemfunction = true
+        invokedGetAliasItemCount += 1
+        invokedGetAliasItemParameters = (email, ())
+        invokedGetAliasItemParametersList.append((email, ()))
+        if let error = getAliasItemEmailThrowableError {
+            throw error
+        }
+        closureGetAliasItem()
+        return stubbedGetAliasItemResult
     }
     // MARK: - getItemCount
     var getItemCountShareIdThrowableError: Error?
     var closureGetItemCount: () -> () = {}
-    var invokedGetItemCount = false
+    var invokedGetItemCountfunction = false
     var invokedGetItemCountCount = 0
     var invokedGetItemCountParameters: (shareId: String, Void)?
     var invokedGetItemCountParametersList = [(shareId: String, Void)]()
     var stubbedGetItemCountResult: Int!
 
     func getItemCount(shareId: String) async throws -> Int {
-        invokedGetItemCount = true
+        invokedGetItemCountfunction = true
         invokedGetItemCountCount += 1
         invokedGetItemCountParameters = (shareId, ())
         invokedGetItemCountParametersList.append((shareId, ()))
@@ -179,13 +179,13 @@ final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalItemDatas
     // MARK: - update
     var updateLastUseItemsShareIdThrowableError: Error?
     var closureUpdate: () -> () = {}
-    var invokedUpdate = false
+    var invokedUpdatefunction = false
     var invokedUpdateCount = 0
     var invokedUpdateParameters: (lastUseItems: [LastUseItem], shareId: String)?
     var invokedUpdateParametersList = [(lastUseItems: [LastUseItem], shareId: String)]()
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws {
-        invokedUpdate = true
+        invokedUpdatefunction = true
         invokedUpdateCount += 1
         invokedUpdateParameters = (lastUseItems, shareId)
         invokedUpdateParametersList.append((lastUseItems, shareId))
@@ -265,17 +265,33 @@ final class LocalItemDatasourceProtocolMock: @unchecked Sendable, LocalItemDatas
     // MARK: - getActiveLogInItems
     var getActiveLogInItemsThrowableError: Error?
     var closureGetActiveLogInItems: () -> () = {}
-    var invokedGetActiveLogInItems = false
+    var invokedGetActiveLogInItemsfunction = false
     var invokedGetActiveLogInItemsCount = 0
     var stubbedGetActiveLogInItemsResult: [SymmetricallyEncryptedItem]!
 
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {
-        invokedGetActiveLogInItems = true
+        invokedGetActiveLogInItemsfunction = true
         invokedGetActiveLogInItemsCount += 1
         if let error = getActiveLogInItemsThrowableError {
             throw error
         }
         closureGetActiveLogInItems()
         return stubbedGetActiveLogInItemsResult
+    }
+    // MARK: - getAllPinnedItems
+    var getAllPinnedItemsThrowableError: Error?
+    var closureGetAllPinnedItems: () -> () = {}
+    var invokedGetAllPinnedItemsfunction = false
+    var invokedGetAllPinnedItemsCount = 0
+    var stubbedGetAllPinnedItemsResult: [SymmetricallyEncryptedItem]!
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+        invokedGetAllPinnedItemsfunction = true
+        invokedGetAllPinnedItemsCount += 1
+        if let error = getAllPinnedItemsThrowableError {
+            throw error
+        }
+        closureGetAllPinnedItems()
+        return stubbedGetAllPinnedItemsResult
     }
 }

@@ -48,12 +48,12 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
     // MARK: - getAccess
     var getAccessThrowableError: Error?
     var closureGetAccess: () -> () = {}
-    var invokedGetAccess = false
+    var invokedGetAccessfunction = false
     var invokedGetAccessCount = 0
     var stubbedGetAccessResult: Access!
 
     func getAccess() async throws -> Access {
-        invokedGetAccess = true
+        invokedGetAccessfunction = true
         invokedGetAccessCount += 1
         if let error = getAccessThrowableError {
             throw error
@@ -64,12 +64,12 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
     // MARK: - getPlan
     var getPlanThrowableError: Error?
     var closureGetPlan: () -> () = {}
-    var invokedGetPlan = false
+    var invokedGetPlanfunction = false
     var invokedGetPlanCount = 0
     var stubbedGetPlanResult: Plan!
 
     func getPlan() async throws -> Plan {
-        invokedGetPlan = true
+        invokedGetPlanfunction = true
         invokedGetPlanCount += 1
         if let error = getPlanThrowableError {
             throw error
@@ -80,12 +80,12 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
     // MARK: - refreshAccess
     var refreshAccessThrowableError: Error?
     var closureRefreshAccess: () -> () = {}
-    var invokedRefreshAccess = false
+    var invokedRefreshAccessfunction = false
     var invokedRefreshAccessCount = 0
     var stubbedRefreshAccessResult: Access!
 
     func refreshAccess() async throws -> Access {
-        invokedRefreshAccess = true
+        invokedRefreshAccessfunction = true
         invokedRefreshAccessCount += 1
         if let error = refreshAccessThrowableError {
             throw error

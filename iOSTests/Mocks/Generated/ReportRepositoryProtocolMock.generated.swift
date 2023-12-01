@@ -28,14 +28,14 @@ final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryP
     // MARK: - sendBug
     var sendBugWithAndOptionalThrowableError: Error?
     var closureSendBug: () -> () = {}
-    var invokedSendBug = false
+    var invokedSendBugfunction = false
     var invokedSendBugCount = 0
     var invokedSendBugParameters: (title: String, description: String, logs: [String: URL])?
     var invokedSendBugParametersList = [(title: String, description: String, logs: [String: URL])]()
     var stubbedSendBugResult: Bool!
 
     func sendBug(with title: String, and description: String, optional logs: [String: URL]) async throws -> Bool {
-        invokedSendBug = true
+        invokedSendBugfunction = true
         invokedSendBugCount += 1
         invokedSendBugParameters = (title, description, logs)
         invokedSendBugParametersList.append((title, description, logs))
@@ -48,14 +48,14 @@ final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryP
     // MARK: - sendFeedback
     var sendFeedbackWithAndThrowableError: Error?
     var closureSendFeedback: () -> () = {}
-    var invokedSendFeedback = false
+    var invokedSendFeedbackfunction = false
     var invokedSendFeedbackCount = 0
     var invokedSendFeedbackParameters: (title: String, description: String)?
     var invokedSendFeedbackParametersList = [(title: String, description: String)]()
     var stubbedSendFeedbackResult: Bool!
 
     func sendFeedback(with title: String, and description: String) async throws -> Bool {
-        invokedSendFeedback = true
+        invokedSendFeedbackfunction = true
         invokedSendFeedbackCount += 1
         invokedSendFeedbackParameters = (title, description)
         invokedSendFeedbackParametersList.append((title, description))
