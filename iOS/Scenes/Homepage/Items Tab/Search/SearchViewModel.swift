@@ -121,14 +121,13 @@ private extension SearchViewModel {
         }
 
         let searchEntries = try await searchEntryDatasource.getAllEntries(shareId: shareId)
-        history = try searchEntries.compactMap { entry in
-            if let item = allItems.first(where: {
+        history = searchEntries.compactMap { entry in
+            guard let item = searchableItems.first(where: {
                 $0.shareId == entry.shareID && $0.itemId == entry.itemID
-            }) {
-                try item.toSearchEntryUiModel(getSymmetricKey())
-            } else {
-                nil
+            }) else {
+                return nil
             }
+            return item.toSearchEntryUiModel
         }
 
         switch state {

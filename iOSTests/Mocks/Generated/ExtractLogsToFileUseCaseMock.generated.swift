@@ -27,14 +27,14 @@ final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLogsToFile
     // MARK: - execute
     var executeForInThrowableError: Error?
     var closureExecute: () -> () = {}
-    var invokedExecute = false
+    var invokedExecutefunction = false
     var invokedExecuteCount = 0
     var invokedExecuteParameters: (entries: [LogEntry], fileName: String)?
     var invokedExecuteParametersList = [(entries: [LogEntry], fileName: String)]()
     var stubbedExecuteResult: URL?
 
     func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
-        invokedExecute = true
+        invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (entries, fileName)
         invokedExecuteParametersList.append((entries, fileName))

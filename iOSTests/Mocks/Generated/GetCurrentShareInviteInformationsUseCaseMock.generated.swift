@@ -26,12 +26,12 @@ import Entities
 final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable, GetCurrentShareInviteInformationsUseCase {
     // MARK: - execute
     var closureExecute: () -> () = {}
-    var invokedExecute = false
+    var invokedExecutefunction = false
     var invokedExecuteCount = 0
     var stubbedExecuteResult: SharingInfos!
 
     func execute() -> SharingInfos {
-        invokedExecute = true
+        invokedExecutefunction = true
         invokedExecuteCount += 1
         closureExecute()
         return stubbedExecuteResult

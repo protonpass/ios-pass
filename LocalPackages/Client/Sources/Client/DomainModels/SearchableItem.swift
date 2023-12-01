@@ -137,6 +137,15 @@ extension SearchableItem {
                          lastUseTime: lastUseTime,
                          modifyTime: modifyTime)
     }
+
+    public var toSearchEntryUiModel: SearchEntryUiModel {
+        SearchEntryUiModel(itemId: itemId,
+                           shareId: shareId,
+                           type: type,
+                           title: name,
+                           url: url,
+                           description: note)
+    }
 }
 
 public extension [SearchableItem] {

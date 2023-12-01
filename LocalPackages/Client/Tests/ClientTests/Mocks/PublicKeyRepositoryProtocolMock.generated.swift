@@ -29,14 +29,14 @@ final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicKeyRepos
     // MARK: - getPublicKeys
     var getPublicKeysEmailThrowableError: Error?
     var closureGetPublicKeys: () -> () = {}
-    var invokedGetPublicKeys = false
+    var invokedGetPublicKeysfunction = false
     var invokedGetPublicKeysCount = 0
     var invokedGetPublicKeysParameters: (email: String, Void)?
     var invokedGetPublicKeysParametersList = [(email: String, Void)]()
     var stubbedGetPublicKeysResult: [PublicKey]!
 
     func getPublicKeys(email: String) async throws -> [PublicKey] {
-        invokedGetPublicKeys = true
+        invokedGetPublicKeysfunction = true
         invokedGetPublicKeysCount += 1
         invokedGetPublicKeysParameters = (email, ())
         invokedGetPublicKeysParametersList.append((email, ()))

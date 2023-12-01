@@ -27,14 +27,14 @@ final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCase {
     // MARK: - execute
     var executeWithThrowableError: Error?
     var closureExecute: () -> () = {}
-    var invokedExecute = false
+    var invokedExecutefunction = false
     var invokedExecuteCount = 0
     var invokedExecuteParameters: (vault: VaultProtobuf, Void)?
     var invokedExecuteParametersList = [(vault: VaultProtobuf, Void)]()
     var stubbedExecuteResult: Vault?
 
     func execute(with vault: VaultProtobuf) async throws -> Vault? {
-        invokedExecute = true
+        invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (vault, ())
         invokedExecuteParametersList.append((vault, ()))

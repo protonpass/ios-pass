@@ -30,41 +30,41 @@ import Reachability
 final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoopProtocol {
     // MARK: - start
     var closureStart: () -> () = {}
-    var invokedStart = false
+    var invokedStartfunction = false
     var invokedStartCount = 0
 
     func start() {
-        invokedStart = true
+        invokedStartfunction = true
         invokedStartCount += 1
         closureStart()
     }
     // MARK: - forceSync
     var closureForceSync: () -> () = {}
-    var invokedForceSync = false
+    var invokedForceSyncfunction = false
     var invokedForceSyncCount = 0
 
     func forceSync() {
-        invokedForceSync = true
+        invokedForceSyncfunction = true
         invokedForceSyncCount += 1
         closureForceSync()
     }
     // MARK: - stop
     var closureStop: () -> () = {}
-    var invokedStop = false
+    var invokedStopfunction = false
     var invokedStopCount = 0
 
     func stop() {
-        invokedStop = true
+        invokedStopfunction = true
         invokedStopCount += 1
         closureStop()
     }
     // MARK: - reset
     var closureReset: () -> () = {}
-    var invokedReset = false
+    var invokedResetfunction = false
     var invokedResetCount = 0
 
     func reset() {
-        invokedReset = true
+        invokedResetfunction = true
         invokedResetCount += 1
         closureReset()
     }

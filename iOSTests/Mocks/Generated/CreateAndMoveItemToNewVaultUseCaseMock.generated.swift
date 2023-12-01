@@ -27,14 +27,14 @@ final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, CreateA
     // MARK: - execute
     var executeVaultItemContentThrowableError: Error?
     var closureExecute: () -> () = {}
-    var invokedExecute = false
+    var invokedExecutefunction = false
     var invokedExecuteCount = 0
     var invokedExecuteParameters: (vault: VaultProtobuf, itemContent: ItemContent)?
     var invokedExecuteParametersList = [(vault: VaultProtobuf, itemContent: ItemContent)]()
     var stubbedExecuteResult: Vault!
 
     func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
-        invokedExecute = true
+        invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (vault, itemContent)
         invokedExecuteParametersList.append((vault, itemContent))

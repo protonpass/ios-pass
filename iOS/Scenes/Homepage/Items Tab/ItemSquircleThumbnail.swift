@@ -56,10 +56,13 @@ struct ItemSquircleThumbnail: View {
     private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let data: ItemThumbnailData
     private let size: ItemSquircleThumbnailSize
+    private let alternativeBackground: Bool
 
-    init(data: ItemThumbnailData, size: ItemSquircleThumbnailSize = .regular) {
+    init(data: ItemThumbnailData, size: ItemSquircleThumbnailSize = .regular,
+         alternativeBackground: Bool = false) {
         self.data = data
         self.size = size
+        self.alternativeBackground = alternativeBackground
     }
 
     var body: some View {
@@ -67,13 +70,13 @@ struct ItemSquircleThumbnail: View {
         case let .icon(type):
             SquircleThumbnail(data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
                               tintColor: type.normMajor2Color,
-                              backgroundColor: type.normMinor1Color,
+                              backgroundColor: alternativeBackground ? type.normMinor2Color : type.normMinor1Color,
                               height: size.height)
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
                               tintColor: type.normMajor2Color,
-                              backgroundColor: type.normMinor1Color,
+                              backgroundColor: alternativeBackground ? type.normMinor2Color : type.normMinor1Color,
                               height: size.height)
 
         case let .favIcon(type, url, initials):
@@ -92,7 +95,8 @@ struct ItemSquircleThumbnail: View {
                 } else {
                     SquircleThumbnail(data: .initials(initials),
                                       tintColor: type.normMajor2Color,
-                                      backgroundColor: type.normMinor1Color,
+                                      backgroundColor: alternativeBackground ? type.normMinor2Color : type
+                                          .normMinor1Color,
                                       height: size.height)
                 }
             }

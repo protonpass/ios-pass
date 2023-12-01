@@ -27,14 +27,14 @@ import ProtonCoreFeatureFlags
 final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     // MARK: - execute
     var closureExecute: () -> () = {}
-    var invokedExecute = false
+    var invokedExecutefunction = false
     var invokedExecuteCount = 0
     var invokedExecuteParameters: (flag: any FeatureFlagTypeProtocol, Void)?
     var invokedExecuteParametersList = [(flag: any FeatureFlagTypeProtocol, Void)]()
     var stubbedExecuteResult: Bool!
 
     func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
-        invokedExecute = true
+        invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (flag, ())
         invokedExecuteParametersList.append((flag, ()))

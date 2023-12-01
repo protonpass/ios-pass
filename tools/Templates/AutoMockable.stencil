@@ -29,7 +29,7 @@
     {% endif %}
     {% if not method.isInitializer %}
     var closure{{ method.callName|upperFirstLetter }}: () -> () = {}
-    var invoked{{ method.callName|upperFirstLetter }} = false
+    var invoked{{ method.callName|upperFirstLetter }}function = false
     var invoked{{ method.callName|upperFirstLetter }}Count = 0
     {% endif %}
     {% if method.parameters.count == 1 %}
@@ -55,7 +55,7 @@
     }
 {% else %}
     func {{ method.name }}{% if method.isAsync %} async{% endif %}{% if method.throws %} throws{% endif %}{% if not method.returnTypeName.isVoid %} -> {{ method.returnTypeName }}{% endif %} {
-        invoked{{ method.callName|upperFirstLetter }} = true
+        invoked{{ method.callName|upperFirstLetter }}function = true
         invoked{{ method.callName|upperFirstLetter }}Count += 1
         {% if method.parameters.count == 1 %}
         {% if not method.parameters.0.typeName.isClosure or method.parameters.0.typeAttributes.escaping %}
@@ -154,7 +154,8 @@
         {% endif %}
         closure{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}()
         {% if not method.returnTypeName.isVoid %}
-        return stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.typeName|upperFirstLetter}}{% endfor %}Result
+        {# return stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.typeName|upperFirstLetter}}{% endfor %}Result #}
+        return stubbed{{ method.callName|upperFirstLetter }}{% for param in method.parameters %}{{param.name|upperFirstLetter}}{% endfor %}Result
         {% endif %}
     }
 {% endif %}
