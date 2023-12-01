@@ -26250,6 +26250,18 @@
         }
       }
     },
+    "Item Successfully %@" : {
+      "comment" : "Message that appears when user has pinned or unpin a item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item successfully %@"
+          }
+        }
+      }
+    },
     "Items" : {
       "localizations" : {
         "be" : {
@@ -42127,6 +42139,18 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Đã sao chép số CVV"
+          }
+        }
+      }
+    },
+    "See all" : {
+      "comment" : "Last button on the home page for pinned items. This will redirect the user to a search screen for pinned items",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
           }
         }
       }
