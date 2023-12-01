@@ -73,6 +73,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
 
     // References
+    private weak var itemsTabViewModel: ItemsTabViewModel?
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
@@ -170,6 +171,8 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
+        self.itemsTabViewModel = itemsTabViewModel
+
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
@@ -229,6 +232,7 @@ private extension HomepageCoordinator {
 
     func refresh() {
         vaultsManager.refresh()
+        itemsTabViewModel?.isEditMode = false
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
         createEditItemCoordinator?.refresh()
@@ -309,8 +313,8 @@ private extension HomepageCoordinator {
                                                 titleMode: mode)
                 case .autoFillInstructions:
                     present(AutoFillInstructionsView())
-                case let .moveItemsBetweenVaults(currentVault, itemToMove):
-                    itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
+                case let .moveItemsBetweenVaults(context):
+                    itemMoveBetweenVault(context: context)
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault, itemContent):
@@ -591,14 +595,12 @@ private extension HomepageCoordinator {
         }
     }
 
-    func itemMoveBetweenVault(currentVault: Vault, itemToMove: ItemContent?) {
+    func itemMoveBetweenVault(context: MovingContext) {
         let allVaults = vaultsManager.getAllEditableVaultContents()
         guard !allVaults.isEmpty else {
             return
         }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults,
-                                               currentVault: currentVault,
-                                               itemContent: itemToMove)
+        let viewModel = MoveVaultListViewModel(allVaults: allVaults, context: context)
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 

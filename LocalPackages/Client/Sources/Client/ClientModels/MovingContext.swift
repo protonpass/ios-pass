@@ -21,7 +21,34 @@
 import Entities
 import Foundation
 
-public enum MovingContext: Sendable {
-    case item(ItemIdentifiable, newShareId: String)
-    case vault(String, newShareId: String)
+public enum MovingContext: Sendable, Equatable, Hashable {
+    case singleItem(ItemTypeIdentifiable)
+    case allItems(Vault)
+    case selectedItems([ItemIdentifiable])
+}
+
+public extension MovingContext {
+    static func == (lhs: MovingContext, rhs: MovingContext) -> Bool {
+        switch (lhs, rhs) {
+        case let (.singleItem(lhsItem), .singleItem(rhsItem)):
+            lhsItem.isSame(with: rhsItem)
+        case let (.allItems(lhsVault), .allItems(rhsVault)):
+            lhsVault.shareId == rhsVault.shareId
+        case let (.selectedItems(lhsItems), .selectedItems(rhsItems)):
+            lhsItems.count == rhsItems.count
+        default:
+            false
+        }
+    }
+
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case let .singleItem(item):
+            hasher.combine(item.shareId + item.itemId)
+        case let .allItems(vault):
+            hasher.combine(vault.shareId)
+        case let .selectedItems(items):
+            hasher.combine(items.map { $0.shareId + $0.itemId })
+        }
+    }
 }

@@ -26,3 +26,4 @@ public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataP
 public typealias AppDataProtocol = CredentialProvider & Resettable & UserDataSymmetricKeyProvider
 public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
 public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
+public typealias ShareID = String
