@@ -26,12 +26,12 @@ final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider 
     // MARK: - getSymmetricKey
     var getSymmetricKeyThrowableError: Error?
     var closureGetSymmetricKey: () -> () = {}
-    var invokedGetSymmetricKey = false
+    var invokedGetSymmetricKeyfunction = false
     var invokedGetSymmetricKeyCount = 0
     var stubbedGetSymmetricKeyResult: SymmetricKey!
 
     func getSymmetricKey() throws -> SymmetricKey {
-        invokedGetSymmetricKey = true
+        invokedGetSymmetricKeyfunction = true
         invokedGetSymmetricKeyCount += 1
         if let error = getSymmetricKeyThrowableError {
             throw error
@@ -41,11 +41,11 @@ final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider 
     }
     // MARK: - removeSymmetricKey
     var closureRemoveSymmetricKey: () -> () = {}
-    var invokedRemoveSymmetricKey = false
+    var invokedRemoveSymmetricKeyfunction = false
     var invokedRemoveSymmetricKeyCount = 0
 
     func removeSymmetricKey() {
-        invokedRemoveSymmetricKey = true
+        invokedRemoveSymmetricKeyfunction = true
         invokedRemoveSymmetricKeyCount += 1
         closureRemoveSymmetricKey()
     }

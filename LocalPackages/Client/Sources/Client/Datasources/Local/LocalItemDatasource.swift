@@ -29,14 +29,14 @@ public protocol LocalItemDatasourceProtocol {
     // Get all items by state
     func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
+    /// Get items by state
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+
     /// Get a specific item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
-
-    /// Get items by state
-    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get total items of a share (both active and trashed ones)
     func getItemCount(shareId: String) async throws -> Int

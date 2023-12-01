@@ -29,14 +29,14 @@ final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, ShareEventI
     // MARK: - getLastEventId
     var getLastEventIdForceRefreshUserIdShareIdThrowableError: Error?
     var closureGetLastEventId: () -> () = {}
-    var invokedGetLastEventId = false
+    var invokedGetLastEventIdfunction = false
     var invokedGetLastEventIdCount = 0
     var invokedGetLastEventIdParameters: (forceRefresh: Bool, userId: String, shareId: String)?
     var invokedGetLastEventIdParametersList = [(forceRefresh: Bool, userId: String, shareId: String)]()
     var stubbedGetLastEventIdResult: String!
 
     func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String {
-        invokedGetLastEventId = true
+        invokedGetLastEventIdfunction = true
         invokedGetLastEventIdCount += 1
         invokedGetLastEventIdParameters = (forceRefresh, userId, shareId)
         invokedGetLastEventIdParametersList.append((forceRefresh, userId, shareId))
@@ -49,13 +49,13 @@ final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, ShareEventI
     // MARK: - upsertLastEventId
     var upsertLastEventIdUserIdShareIdLastEventIdThrowableError: Error?
     var closureUpsertLastEventId: () -> () = {}
-    var invokedUpsertLastEventId = false
+    var invokedUpsertLastEventIdfunction = false
     var invokedUpsertLastEventIdCount = 0
     var invokedUpsertLastEventIdParameters: (userId: String, shareId: String, lastEventId: String)?
     var invokedUpsertLastEventIdParametersList = [(userId: String, shareId: String, lastEventId: String)]()
 
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
-        invokedUpsertLastEventId = true
+        invokedUpsertLastEventIdfunction = true
         invokedUpsertLastEventIdCount += 1
         invokedUpsertLastEventIdParameters = (userId, shareId, lastEventId)
         invokedUpsertLastEventIdParametersList.append((userId, shareId, lastEventId))

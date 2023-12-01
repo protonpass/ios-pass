@@ -26,25 +26,25 @@ import ProtonCoreLogin
 final class UserDataProviderMock: @unchecked Sendable, UserDataProvider {
     // MARK: - getUserData
     var closureGetUserData: () -> () = {}
-    var invokedGetUserData = false
+    var invokedGetUserDatafunction = false
     var invokedGetUserDataCount = 0
     var stubbedGetUserDataResult: UserData?
 
     func getUserData() -> UserData? {
-        invokedGetUserData = true
+        invokedGetUserDatafunction = true
         invokedGetUserDataCount += 1
         closureGetUserData()
         return stubbedGetUserDataResult
     }
     // MARK: - setUserData
     var closureSetUserData: () -> () = {}
-    var invokedSetUserData = false
+    var invokedSetUserDatafunction = false
     var invokedSetUserDataCount = 0
     var invokedSetUserDataParameters: (userData: UserData?, Void)?
     var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
 
     func setUserData(_ userData: UserData?) {
-        invokedSetUserData = true
+        invokedSetUserDatafunction = true
         invokedSetUserDataCount += 1
         invokedSetUserDataParameters = (userData, ())
         invokedSetUserDataParametersList.append((userData, ()))
