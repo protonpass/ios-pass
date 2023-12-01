@@ -17,20 +17,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import CryptoKit
 
-final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider {
-    // MARK: - getSymmetricKey
-    var getSymmetricKeyThrowableError: Error?
-    var closureGetSymmetricKey: () -> () = {}
-    var invokedGetSymmetricKeyfunction = false
-    var invokedGetSymmetricKeyCount = 0
-    var stubbedGetSymmetricKeyResult: SymmetricKey!
+public final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider {
 
-    func getSymmetricKey() throws -> SymmetricKey {
+    public init() {}
+
+    // MARK: - getSymmetricKey
+    public var getSymmetricKeyThrowableError: Error?
+    public var closureGetSymmetricKey: () -> () = {}
+    public var invokedGetSymmetricKeyfunction = false
+    public var invokedGetSymmetricKeyCount = 0
+    public var stubbedGetSymmetricKeyResult: SymmetricKey!
+
+    public func getSymmetricKey() throws -> SymmetricKey {
         invokedGetSymmetricKeyfunction = true
         invokedGetSymmetricKeyCount += 1
         if let error = getSymmetricKeyThrowableError {
@@ -40,11 +42,11 @@ final class SymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider 
         return stubbedGetSymmetricKeyResult
     }
     // MARK: - removeSymmetricKey
-    var closureRemoveSymmetricKey: () -> () = {}
-    var invokedRemoveSymmetricKeyfunction = false
-    var invokedRemoveSymmetricKeyCount = 0
+    public var closureRemoveSymmetricKey: () -> () = {}
+    public var invokedRemoveSymmetricKeyfunction = false
+    public var invokedRemoveSymmetricKeyCount = 0
 
-    func removeSymmetricKey() {
+    public func removeSymmetricKey() {
         invokedRemoveSymmetricKeyfunction = true
         invokedRemoveSymmetricKeyCount += 1
         closureRemoveSymmetricKey()

@@ -17,24 +17,26 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Combine
 import Entities
-import ProtonCoreLogin
 import CryptoKit
+import ProtonCoreLogin
 
-final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider, UserDataProvider {
+public final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyProvider, UserDataProvider {
+
+    public init() {}
+
     // MARK: - ⚡️ SymmetricKeyProvider
     // MARK: - getSymmetricKey
-    var getSymmetricKeyThrowableError: Error?
-    var closureGetSymmetricKey: () -> () = {}
-    var invokedGetSymmetricKeyfunction = false
-    var invokedGetSymmetricKeyCount = 0
-    var stubbedGetSymmetricKeyResult: SymmetricKey!
+    public var getSymmetricKeyThrowableError: Error?
+    public var closureGetSymmetricKey: () -> () = {}
+    public var invokedGetSymmetricKeyfunction = false
+    public var invokedGetSymmetricKeyCount = 0
+    public var stubbedGetSymmetricKeyResult: SymmetricKey!
 
-    func getSymmetricKey() throws -> SymmetricKey {
+    public func getSymmetricKey() throws -> SymmetricKey {
         invokedGetSymmetricKeyfunction = true
         invokedGetSymmetricKeyCount += 1
         if let error = getSymmetricKeyThrowableError {
@@ -44,36 +46,36 @@ final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyP
         return stubbedGetSymmetricKeyResult
     }
     // MARK: - removeSymmetricKey
-    var closureRemoveSymmetricKey: () -> () = {}
-    var invokedRemoveSymmetricKeyfunction = false
-    var invokedRemoveSymmetricKeyCount = 0
+    public var closureRemoveSymmetricKey: () -> () = {}
+    public var invokedRemoveSymmetricKeyfunction = false
+    public var invokedRemoveSymmetricKeyCount = 0
 
-    func removeSymmetricKey() {
+    public func removeSymmetricKey() {
         invokedRemoveSymmetricKeyfunction = true
         invokedRemoveSymmetricKeyCount += 1
         closureRemoveSymmetricKey()
     }
     // MARK: - ⚡️ UserDataProvider
     // MARK: - getUserData
-    var closureGetUserData: () -> () = {}
-    var invokedGetUserDatafunction = false
-    var invokedGetUserDataCount = 0
-    var stubbedGetUserDataResult: UserData?
+    public var closureGetUserData: () -> () = {}
+    public var invokedGetUserDatafunction = false
+    public var invokedGetUserDataCount = 0
+    public var stubbedGetUserDataResult: UserData?
 
-    func getUserData() -> UserData? {
+    public func getUserData() -> UserData? {
         invokedGetUserDatafunction = true
         invokedGetUserDataCount += 1
         closureGetUserData()
         return stubbedGetUserDataResult
     }
     // MARK: - setUserData
-    var closureSetUserData: () -> () = {}
-    var invokedSetUserDatafunction = false
-    var invokedSetUserDataCount = 0
-    var invokedSetUserDataParameters: (userData: UserData?, Void)?
-    var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
+    public var closureSetUserData: () -> () = {}
+    public var invokedSetUserDatafunction = false
+    public var invokedSetUserDataCount = 0
+    public var invokedSetUserDataParameters: (userData: UserData?, Void)?
+    public var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
 
-    func setUserData(_ userData: UserData?) {
+    public func setUserData(_ userData: UserData?) {
         invokedSetUserDatafunction = true
         invokedSetUserDataCount += 1
         invokedSetUserDataParameters = (userData, ())

@@ -178,7 +178,7 @@ private extension ItemsTabView {
                                 .padding(.trailing, 8)
                         }
                         .padding(8)
-                        .frame(maxWidth: 164, alignment: .leading)
+                        .frame(maxWidth: 165, alignment: .leading)
                         .background(item.type.normMinor1Color.toColor)
                         .cornerRadius(16)
                     }

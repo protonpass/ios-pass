@@ -17,7 +17,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Combine
@@ -27,43 +26,46 @@ import Foundation
 import ProtonCoreNetworking
 import Reachability
 
-final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoopProtocol {
-    // MARK: - start
-    var closureStart: () -> () = {}
-    var invokedStartfunction = false
-    var invokedStartCount = 0
+public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoopProtocol {
 
-    func start() {
+    public init() {}
+
+    // MARK: - start
+    public var closureStart: () -> () = {}
+    public var invokedStartfunction = false
+    public var invokedStartCount = 0
+
+    public func start() {
         invokedStartfunction = true
         invokedStartCount += 1
         closureStart()
     }
     // MARK: - forceSync
-    var closureForceSync: () -> () = {}
-    var invokedForceSyncfunction = false
-    var invokedForceSyncCount = 0
+    public var closureForceSync: () -> () = {}
+    public var invokedForceSyncfunction = false
+    public var invokedForceSyncCount = 0
 
-    func forceSync() {
+    public func forceSync() {
         invokedForceSyncfunction = true
         invokedForceSyncCount += 1
         closureForceSync()
     }
     // MARK: - stop
-    var closureStop: () -> () = {}
-    var invokedStopfunction = false
-    var invokedStopCount = 0
+    public var closureStop: () -> () = {}
+    public var invokedStopfunction = false
+    public var invokedStopCount = 0
 
-    func stop() {
+    public func stop() {
         invokedStopfunction = true
         invokedStopCount += 1
         closureStop()
     }
     // MARK: - reset
-    var closureReset: () -> () = {}
-    var invokedResetfunction = false
-    var invokedResetCount = 0
+    public var closureReset: () -> () = {}
+    public var invokedResetfunction = false
+    public var invokedResetCount = 0
 
-    func reset() {
+    public func reset() {
         invokedResetfunction = true
         invokedResetCount += 1
         closureReset()

@@ -17,23 +17,26 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import UseCases
 import Client
 import Entities
 
-final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, CreateAndMoveItemToNewVaultUseCase {
-    // MARK: - execute
-    var executeVaultItemContentThrowableError: Error?
-    var closureExecute: () -> () = {}
-    var invokedExecutefunction = false
-    var invokedExecuteCount = 0
-    var invokedExecuteParameters: (vault: VaultProtobuf, itemContent: ItemContent)?
-    var invokedExecuteParametersList = [(vault: VaultProtobuf, itemContent: ItemContent)]()
-    var stubbedExecuteResult: Vault!
+public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable,
+    CreateAndMoveItemToNewVaultUseCase {
+    public init() {}
 
-    func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
+    // MARK: - execute
+
+    public var executeVaultItemContentThrowableError: Error?
+    public var closureExecute: () -> Void = {}
+    public var invokedExecutefunction = false
+    public var invokedExecuteCount = 0
+    public var invokedExecuteParameters: (vault: VaultProtobuf, itemContent: ItemContent)?
+    public var invokedExecuteParametersList = [(vault: VaultProtobuf, itemContent: ItemContent)]()
+    public var stubbedExecuteResult: Vault!
+
+    public func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (vault, itemContent)

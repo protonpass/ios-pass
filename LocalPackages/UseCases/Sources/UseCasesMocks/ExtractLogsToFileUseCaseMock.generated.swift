@@ -17,22 +17,32 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import UseCases
-import Client
-import Entities
+import Core
+import Foundation
 
-final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable, GetCurrentShareInviteInformationsUseCase {
+public final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLogsToFileUseCase {
+    public init() {}
+
     // MARK: - execute
-    var closureExecute: () -> () = {}
-    var invokedExecutefunction = false
-    var invokedExecuteCount = 0
-    var stubbedExecuteResult: SharingInfos!
 
-    func execute() -> SharingInfos {
+    public var executeForInThrowableError: Error?
+    public var closureExecute: () -> Void = {}
+    public var invokedExecutefunction = false
+    public var invokedExecuteCount = 0
+    public var invokedExecuteParameters: (entries: [LogEntry], fileName: String)?
+    public var invokedExecuteParametersList = [(entries: [LogEntry], fileName: String)]()
+    public var stubbedExecuteResult: URL?
+
+    public func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
         invokedExecutefunction = true
         invokedExecuteCount += 1
+        invokedExecuteParameters = (entries, fileName)
+        invokedExecuteParametersList.append((entries, fileName))
+        if let error = executeForInThrowableError {
+            throw error
+        }
         closureExecute()
         return stubbedExecuteResult
     }
