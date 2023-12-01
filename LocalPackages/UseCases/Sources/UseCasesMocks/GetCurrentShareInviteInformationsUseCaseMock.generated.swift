@@ -17,28 +17,26 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import UseCases
 import Client
+import Entities
 
-final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveItemsBetweenVaultsUseCase {
+public final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable,
+    GetCurrentShareInviteInformationsUseCase {
+    public init() {}
+
     // MARK: - execute
-    var executeMovingContextThrowableError: Error?
-    var closureExecute: () -> () = {}
-    var invokedExecutefunction = false
-    var invokedExecuteCount = 0
-    var invokedExecuteParameters: (movingContext: MovingContext, Void)?
-    var invokedExecuteParametersList = [(movingContext: MovingContext, Void)]()
 
-    func execute(movingContext: MovingContext) async throws {
+    public var closureExecute: () -> Void = {}
+    public var invokedExecutefunction = false
+    public var invokedExecuteCount = 0
+    public var stubbedExecuteResult: SharingInfos!
+
+    public func execute() -> SharingInfos {
         invokedExecutefunction = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (movingContext, ())
-        invokedExecuteParametersList.append((movingContext, ()))
-        if let error = executeMovingContextThrowableError {
-            throw error
-        }
         closureExecute()
+        return stubbedExecuteResult
     }
 }

@@ -17,23 +17,25 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Combine
 import Core
 import Entities
 
-final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryProtocol {
+public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryProtocol {
+
+    public init() {}
+
     // MARK: - didUpdateToNewPlan
-    var invokedDidUpdateToNewPlanSetter = false
-    var invokedDidUpdateToNewPlanSetterCount = 0
-    var invokedDidUpdateToNewPlan: PassthroughSubject<Void, Never>?
-    var invokedDidUpdateToNewPlanList = [PassthroughSubject<Void, Never>?]()
-    var invokedDidUpdateToNewPlanGetter = false
-    var invokedDidUpdateToNewPlanGetterCount = 0
-    var stubbedDidUpdateToNewPlan: PassthroughSubject<Void, Never>!
-    var didUpdateToNewPlan: PassthroughSubject<Void, Never> {
+    public var invokedDidUpdateToNewPlanSetter = false
+    public var invokedDidUpdateToNewPlanSetterCount = 0
+    public var invokedDidUpdateToNewPlan: PassthroughSubject<Void, Never>?
+    public var invokedDidUpdateToNewPlanList = [PassthroughSubject<Void, Never>?]()
+    public var invokedDidUpdateToNewPlanGetter = false
+    public var invokedDidUpdateToNewPlanGetterCount = 0
+    public var stubbedDidUpdateToNewPlan: PassthroughSubject<Void, Never>!
+    public var didUpdateToNewPlan: PassthroughSubject<Void, Never> {
         set {
             invokedDidUpdateToNewPlanSetter = true
             invokedDidUpdateToNewPlanSetterCount += 1
@@ -46,13 +48,13 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
         }
     }
     // MARK: - getAccess
-    var getAccessThrowableError: Error?
-    var closureGetAccess: () -> () = {}
-    var invokedGetAccessfunction = false
-    var invokedGetAccessCount = 0
-    var stubbedGetAccessResult: Access!
+    public var getAccessThrowableError: Error?
+    public var closureGetAccess: () -> () = {}
+    public var invokedGetAccessfunction = false
+    public var invokedGetAccessCount = 0
+    public var stubbedGetAccessResult: Access!
 
-    func getAccess() async throws -> Access {
+    public func getAccess() async throws -> Access {
         invokedGetAccessfunction = true
         invokedGetAccessCount += 1
         if let error = getAccessThrowableError {
@@ -62,13 +64,13 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
         return stubbedGetAccessResult
     }
     // MARK: - getPlan
-    var getPlanThrowableError: Error?
-    var closureGetPlan: () -> () = {}
-    var invokedGetPlanfunction = false
-    var invokedGetPlanCount = 0
-    var stubbedGetPlanResult: Plan!
+    public var getPlanThrowableError: Error?
+    public var closureGetPlan: () -> () = {}
+    public var invokedGetPlanfunction = false
+    public var invokedGetPlanCount = 0
+    public var stubbedGetPlanResult: Plan!
 
-    func getPlan() async throws -> Plan {
+    public func getPlan() async throws -> Plan {
         invokedGetPlanfunction = true
         invokedGetPlanCount += 1
         if let error = getPlanThrowableError {
@@ -78,13 +80,13 @@ final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepositoryP
         return stubbedGetPlanResult
     }
     // MARK: - refreshAccess
-    var refreshAccessThrowableError: Error?
-    var closureRefreshAccess: () -> () = {}
-    var invokedRefreshAccessfunction = false
-    var invokedRefreshAccessCount = 0
-    var stubbedRefreshAccessResult: Access!
+    public var refreshAccessThrowableError: Error?
+    public var closureRefreshAccess: () -> () = {}
+    public var invokedRefreshAccessfunction = false
+    public var invokedRefreshAccessCount = 0
+    public var stubbedRefreshAccessResult: Access!
 
-    func refreshAccess() async throws -> Access {
+    public func refreshAccess() async throws -> Access {
         invokedRefreshAccessfunction = true
         invokedRefreshAccessCount += 1
         if let error = refreshAccessThrowableError {

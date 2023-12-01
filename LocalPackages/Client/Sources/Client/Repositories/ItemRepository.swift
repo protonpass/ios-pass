@@ -114,6 +114,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     func pinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem
 
     func unpinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
 }
 
 public extension ItemRepositoryProtocol {
@@ -167,6 +169,10 @@ public extension ItemRepository {
 
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         try await localDatasource.getItem(shareId: shareId, itemId: itemId)
+    }
+
+    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+        try await localDatasource.getAllPinnedItems()
     }
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {

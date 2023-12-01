@@ -26,7 +26,9 @@ let package = Package(name: "Client",
                           // Products define the executables and libraries a package produces, and make them
                           // visible to other packages.
                           .library(name: "Client",
-                                   targets: ["Client"])
+                                   targets: ["Client"]),
+                          .library(name: "ClientMocks",
+                                   targets: ["ClientMocks"])
                       ],
                       dependencies: [
                           .package(url: "https://github.com/ashleymills/Reachability.swift",
@@ -60,6 +62,12 @@ let package = Package(name: "Client",
                                   resources: [.process("Resources")],
                                   swiftSettings: swiftSettings
                                  ),
+                          .target(
+                              name: "ClientMocks",
+                              dependencies: ["Client"]),
                           .testTarget(name: "ClientTests",
-                                      dependencies: ["Client"])
+                                      dependencies: ["Client",
+                                                     .product(name: "CoreMocks", package: "Core"),
+                                                     "ClientMocks"
+                                                    ])
                       ])

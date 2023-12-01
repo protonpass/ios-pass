@@ -17,31 +17,30 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import UseCases
-import Core
-import Foundation
+import Client
 
-final class ExtractLogsToFileUseCaseMock: @unchecked Sendable, ExtractLogsToFileUseCase {
+public final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveItemsBetweenVaultsUseCase {
+    public init() {}
+
     // MARK: - execute
-    var executeForInThrowableError: Error?
-    var closureExecute: () -> () = {}
-    var invokedExecutefunction = false
-    var invokedExecuteCount = 0
-    var invokedExecuteParameters: (entries: [LogEntry], fileName: String)?
-    var invokedExecuteParametersList = [(entries: [LogEntry], fileName: String)]()
-    var stubbedExecuteResult: URL?
 
-    func execute(for entries: [LogEntry], in fileName: String) async throws -> URL? {
+    public var executeMovingContextThrowableError: Error?
+    public var closureExecute: () -> Void = {}
+    public var invokedExecutefunction = false
+    public var invokedExecuteCount = 0
+    public var invokedExecuteParameters: (movingContext: MovingContext, Void)?
+    public var invokedExecuteParametersList = [(movingContext: MovingContext, Void)]()
+
+    public func execute(movingContext: MovingContext) async throws {
         invokedExecutefunction = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (entries, fileName)
-        invokedExecuteParametersList.append((entries, fileName))
-        if let error = executeForInThrowableError {
+        invokedExecuteParameters = (movingContext, ())
+        invokedExecuteParametersList.append((movingContext, ()))
+        if let error = executeMovingContextThrowableError {
             throw error
         }
         closureExecute()
-        return stubbedExecuteResult
     }
 }
