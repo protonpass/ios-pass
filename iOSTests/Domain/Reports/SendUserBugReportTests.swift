@@ -20,12 +20,14 @@
 
 import XCTest
 import UseCases
+import UseCasesMocks
+import ClientMocks
 @testable import Proton_Pass
 
 final class SendUserBugReportTests: XCTestCase {
     var sut: SendUserBugReportUseCase!
     var repositoryMock: ReportRepositoryProtocolMock!
-    var extractToFileMock: ExtractLogsToFileUseCaseMock!
+     var extractToFileMock: ExtractLogsToFileUseCaseMock!
     var getLogsMock: GetLogEntriesUseCaseMock!
     
     override func setUp() {
