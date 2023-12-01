@@ -58,7 +58,8 @@ struct ItemSquircleThumbnail: View {
     private let size: ItemSquircleThumbnailSize
     private let alternativeBackground: Bool
 
-    init(data: ItemThumbnailData, size: ItemSquircleThumbnailSize = .regular,
+    init(data: ItemThumbnailData,
+         size: ItemSquircleThumbnailSize = .regular,
          alternativeBackground: Bool = false) {
         self.data = data
         self.size = size
