@@ -329,6 +329,8 @@
 		57D3314B2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion in Frameworks */ = {isa = PBXBuildFile; productRef = 57D3314A2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion */; };
 		57F59FB02AE5C3EB002EFDFD /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 57F59FAF2AE5C3EB002EFDFD /* ProtonCoreForceUpgrade */; };
 		57F59FB22AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 57F59FB12AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation */; };
+		5B0783712B1A301C0006424C /* UseCasesMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0783702B1A301C0006424C /* UseCasesMocks */; };
+		5B0783732B1A33F90006424C /* ClientMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0783722B1A33F90006424C /* ClientMocks */; };
 		5B0C74F82A2F4B1200272CE8 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74F72A2F4B1200272CE8 /* Factory */; };
 		5B0C74FD2A2F606C00272CE8 /* SharedServices+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */; };
 		5B0C74FF2A2F617900272CE8 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0C74FE2A2F617900272CE8 /* Factory */; };
@@ -346,7 +348,6 @@
 		5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453AF2A69816C0048B022 /* SharingSummaryView.swift */; };
 		5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453B02A69816C0048B022 /* SharingSummaryViewModel.swift */; };
 		5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453C02A6EAD300048B022 /* SwiftUIRouter.swift */; };
-		5B1453CD2A7019D00048B022 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5B1453CC2A7019D00048B022 /* Entities */; };
 		5B1453CF2A7114530048B022 /* UserDataMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453CE2A7114530048B022 /* UserDataMock.swift */; };
 		5B1453D12A7114DB0048B022 /* SendShareInviteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453D02A7114DB0048B022 /* SendShareInviteTests.swift */; };
 		5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1453DF2A727EFF0048B022 /* AcceptRejectInviteView.swift */; };
@@ -854,7 +855,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				575D3C252AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */,
-				5B1453CD2A7019D00048B022 /* Entities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,6 +879,8 @@
 				354192842AC1CB9B001F2996 /* Macro in Frameworks */,
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
 				5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */,
+				5B0783712B1A301C0006424C /* UseCasesMocks in Frameworks */,
+				5B0783732B1A33F90006424C /* ClientMocks in Frameworks */,
 				5B8D20A42AA74A4600457CA3 /* Core in Frameworks */,
 				353518292AE14FB700574991 /* Screens in Frameworks */,
 				356A34C82978630100969BA2 /* CodeScanner in Frameworks */,
@@ -2015,7 +2017,6 @@
 			);
 			name = iOSTests;
 			packageProductDependencies = (
-				5B1453CC2A7019D00048B022 /* Entities */,
 				575D3C242AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore */,
 			);
 			productName = iOSTests;
@@ -2080,6 +2081,8 @@
 				57D3314A2AE5BEFD00F0EB17 /* ProtonCoreAccountDeletion */,
 				57F59FAF2AE5C3EB002EFDFD /* ProtonCoreForceUpgrade */,
 				57F59FB12AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation */,
+				5B0783702B1A301C0006424C /* UseCasesMocks */,
+				5B0783722B1A33F90006424C /* ClientMocks */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -4858,6 +4861,14 @@
 			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore" */;
 			productName = ProtonCoreCryptoGoImplementation;
 		};
+		5B0783702B1A301C0006424C /* UseCasesMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UseCasesMocks;
+		};
+		5B0783722B1A33F90006424C /* ClientMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ClientMocks;
+		};
 		5B0C74F72A2F4B1200272CE8 /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
@@ -4873,10 +4884,6 @@
 			productName = Entities;
 		};
 		5B1453782A6038FE0048B022 /* Entities */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Entities;
-		};
-		5B1453CC2A7019D00048B022 /* Entities */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Entities;
 		};
