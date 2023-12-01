@@ -17,7 +17,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Core
@@ -25,17 +24,20 @@ import CoreData
 import Entities
 import ProtonCoreServices
 
-final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicKeyRepositoryProtocol {
-    // MARK: - getPublicKeys
-    var getPublicKeysEmailThrowableError: Error?
-    var closureGetPublicKeys: () -> () = {}
-    var invokedGetPublicKeysfunction = false
-    var invokedGetPublicKeysCount = 0
-    var invokedGetPublicKeysParameters: (email: String, Void)?
-    var invokedGetPublicKeysParametersList = [(email: String, Void)]()
-    var stubbedGetPublicKeysResult: [PublicKey]!
+public final class PublicKeyRepositoryProtocolMock: @unchecked Sendable, PublicKeyRepositoryProtocol {
 
-    func getPublicKeys(email: String) async throws -> [PublicKey] {
+    public init() {}
+
+    // MARK: - getPublicKeys
+    public var getPublicKeysEmailThrowableError: Error?
+    public var closureGetPublicKeys: () -> () = {}
+    public var invokedGetPublicKeysfunction = false
+    public var invokedGetPublicKeysCount = 0
+    public var invokedGetPublicKeysParameters: (email: String, Void)?
+    public var invokedGetPublicKeysParametersList = [(email: String, Void)]()
+    public var stubbedGetPublicKeysResult: [PublicKey]!
+
+    public func getPublicKeys(email: String) async throws -> [PublicKey] {
         invokedGetPublicKeysfunction = true
         invokedGetPublicKeysCount += 1
         invokedGetPublicKeysParameters = (email, ())

@@ -17,24 +17,26 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Core
 import Foundation
 import ProtonCoreServices
 
-final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryProtocol {
-    // MARK: - sendBug
-    var sendBugWithAndOptionalThrowableError: Error?
-    var closureSendBug: () -> () = {}
-    var invokedSendBugfunction = false
-    var invokedSendBugCount = 0
-    var invokedSendBugParameters: (title: String, description: String, logs: [String: URL])?
-    var invokedSendBugParametersList = [(title: String, description: String, logs: [String: URL])]()
-    var stubbedSendBugResult: Bool!
+public final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryProtocol {
 
-    func sendBug(with title: String, and description: String, optional logs: [String: URL]) async throws -> Bool {
+    public init() {}
+
+    // MARK: - sendBug
+    public var sendBugWithAndOptionalThrowableError: Error?
+    public var closureSendBug: () -> () = {}
+    public var invokedSendBugfunction = false
+    public var invokedSendBugCount = 0
+    public var invokedSendBugParameters: (title: String, description: String, logs: [String: URL])?
+    public var invokedSendBugParametersList = [(title: String, description: String, logs: [String: URL])]()
+    public var stubbedSendBugResult: Bool!
+
+    public func sendBug(with title: String, and description: String, optional logs: [String: URL]) async throws -> Bool {
         invokedSendBugfunction = true
         invokedSendBugCount += 1
         invokedSendBugParameters = (title, description, logs)
@@ -46,15 +48,15 @@ final class ReportRepositoryProtocolMock: @unchecked Sendable, ReportRepositoryP
         return stubbedSendBugResult
     }
     // MARK: - sendFeedback
-    var sendFeedbackWithAndThrowableError: Error?
-    var closureSendFeedback: () -> () = {}
-    var invokedSendFeedbackfunction = false
-    var invokedSendFeedbackCount = 0
-    var invokedSendFeedbackParameters: (title: String, description: String)?
-    var invokedSendFeedbackParametersList = [(title: String, description: String)]()
-    var stubbedSendFeedbackResult: Bool!
+    public var sendFeedbackWithAndThrowableError: Error?
+    public var closureSendFeedback: () -> () = {}
+    public var invokedSendFeedbackfunction = false
+    public var invokedSendFeedbackCount = 0
+    public var invokedSendFeedbackParameters: (title: String, description: String)?
+    public var invokedSendFeedbackParametersList = [(title: String, description: String)]()
+    public var stubbedSendFeedbackResult: Bool!
 
-    func sendFeedback(with title: String, and description: String) async throws -> Bool {
+    public func sendFeedback(with title: String, and description: String) async throws -> Bool {
         invokedSendFeedbackfunction = true
         invokedSendFeedbackCount += 1
         invokedSendFeedbackParameters = (title, description)

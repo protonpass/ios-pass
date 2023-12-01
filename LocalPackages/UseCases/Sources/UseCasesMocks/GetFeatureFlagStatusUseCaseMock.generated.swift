@@ -17,30 +17,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import UseCases
 import Client
-import Entities
+import Core
+import ProtonCoreFeatureFlags
 
-final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCase {
+public final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
+    public init() {}
+
     // MARK: - execute
-    var executeWithThrowableError: Error?
-    var closureExecute: () -> () = {}
-    var invokedExecutefunction = false
-    var invokedExecuteCount = 0
-    var invokedExecuteParameters: (vault: VaultProtobuf, Void)?
-    var invokedExecuteParametersList = [(vault: VaultProtobuf, Void)]()
-    var stubbedExecuteResult: Vault?
 
-    func execute(with vault: VaultProtobuf) async throws -> Vault? {
+    public var closureExecute: () -> Void = {}
+    public var invokedExecutefunction = false
+    public var invokedExecuteCount = 0
+    public var invokedExecuteParameters: (flag: any FeatureFlagTypeProtocol, Void)?
+    public var invokedExecuteParametersList = [(flag: any FeatureFlagTypeProtocol, Void)]()
+    public var stubbedExecuteResult: Bool!
+
+    public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
         invokedExecutefunction = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (vault, ())
-        invokedExecuteParametersList.append((vault, ()))
-        if let error = executeWithThrowableError {
-            throw error
-        }
+        invokedExecuteParameters = (flag, ())
+        invokedExecuteParametersList.append((flag, ()))
         closureExecute()
         return stubbedExecuteResult
     }

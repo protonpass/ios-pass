@@ -17,33 +17,35 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Entities
 import ProtonCoreLogin
 
-final class UserDataProviderMock: @unchecked Sendable, UserDataProvider {
-    // MARK: - getUserData
-    var closureGetUserData: () -> () = {}
-    var invokedGetUserDatafunction = false
-    var invokedGetUserDataCount = 0
-    var stubbedGetUserDataResult: UserData?
+public final class UserDataProviderMock: @unchecked Sendable, UserDataProvider {
 
-    func getUserData() -> UserData? {
+    public init() {}
+
+    // MARK: - getUserData
+    public var closureGetUserData: () -> () = {}
+    public var invokedGetUserDatafunction = false
+    public var invokedGetUserDataCount = 0
+    public var stubbedGetUserDataResult: UserData?
+
+    public func getUserData() -> UserData? {
         invokedGetUserDatafunction = true
         invokedGetUserDataCount += 1
         closureGetUserData()
         return stubbedGetUserDataResult
     }
     // MARK: - setUserData
-    var closureSetUserData: () -> () = {}
-    var invokedSetUserDatafunction = false
-    var invokedSetUserDataCount = 0
-    var invokedSetUserDataParameters: (userData: UserData?, Void)?
-    var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
+    public var closureSetUserData: () -> () = {}
+    public var invokedSetUserDatafunction = false
+    public var invokedSetUserDataCount = 0
+    public var invokedSetUserDataParameters: (userData: UserData?, Void)?
+    public var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
 
-    func setUserData(_ userData: UserData?) {
+    public func setUserData(_ userData: UserData?) {
         invokedSetUserDatafunction = true
         invokedSetUserDataCount += 1
         invokedSetUserDataParameters = (userData, ())

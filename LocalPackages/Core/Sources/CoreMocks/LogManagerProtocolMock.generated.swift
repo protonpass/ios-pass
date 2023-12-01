@@ -17,22 +17,24 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Core
 import Foundation
 
  // Check if the protocol inherits from Actor
-actor LogManagerProtocolMock: LogManagerProtocol {
+public actor LogManagerProtocolMock: LogManagerProtocol {
+
+    public init() {}
+
     // MARK: - shouldLog
-    var invokedShouldLogSetter = false
-    var invokedShouldLogSetterCount = 0
-    var invokedShouldLog: Bool?
-    var invokedShouldLogList = [Bool?]()
-    var invokedShouldLogGetter = false
-    var invokedShouldLogGetterCount = 0
-    var stubbedShouldLog: Bool!
-    var shouldLog: Bool {
+    public var invokedShouldLogSetter = false
+    public var invokedShouldLogSetterCount = 0
+    public var invokedShouldLog: Bool?
+    public var invokedShouldLogList = [Bool?]()
+    public var invokedShouldLogGetter = false
+    public var invokedShouldLogGetterCount = 0
+    public var stubbedShouldLog: Bool!
+    public var shouldLog: Bool {
         set {
             invokedShouldLogSetter = true
             invokedShouldLogSetterCount += 1
@@ -45,13 +47,13 @@ actor LogManagerProtocolMock: LogManagerProtocol {
         }
     }
     // MARK: - log
-    var closureLog: () -> () = {}
-    var invokedLogfunction = false
-    var invokedLogCount = 0
-    var invokedLogParameters: (entry: LogEntry, Void)?
-    var invokedLogParametersList = [(entry: LogEntry, Void)]()
+    public var closureLog: () -> () = {}
+    public var invokedLogfunction = false
+    public var invokedLogCount = 0
+    public var invokedLogParameters: (entry: LogEntry, Void)?
+    public var invokedLogParametersList = [(entry: LogEntry, Void)]()
 
-    func log(entry: LogEntry) {
+    public func log(entry: LogEntry) {
         invokedLogfunction = true
         invokedLogCount += 1
         invokedLogParameters = (entry, ())
@@ -59,13 +61,13 @@ actor LogManagerProtocolMock: LogManagerProtocol {
         closureLog()
     }
     // MARK: - getLogEntries
-    var getLogEntriesThrowableError: Error?
-    var closureGetLogEntries: () -> () = {}
-    var invokedGetLogEntriesfunction = false
-    var invokedGetLogEntriesCount = 0
-    var stubbedGetLogEntriesResult: [LogEntry]!
+    public var getLogEntriesThrowableError: Error?
+    public var closureGetLogEntries: () -> () = {}
+    public var invokedGetLogEntriesfunction = false
+    public var invokedGetLogEntriesCount = 0
+    public var stubbedGetLogEntriesResult: [LogEntry]!
 
-    func getLogEntries() async throws -> [LogEntry] {
+    public func getLogEntries() async throws -> [LogEntry] {
         invokedGetLogEntriesfunction = true
         invokedGetLogEntriesCount += 1
         if let error = getLogEntriesThrowableError {
@@ -75,33 +77,33 @@ actor LogManagerProtocolMock: LogManagerProtocol {
         return stubbedGetLogEntriesResult
     }
     // MARK: - removeAllLogs
-    var closureRemoveAllLogs: () -> () = {}
-    var invokedRemoveAllLogsfunction = false
-    var invokedRemoveAllLogsCount = 0
+    public var closureRemoveAllLogs: () -> () = {}
+    public var invokedRemoveAllLogsfunction = false
+    public var invokedRemoveAllLogsCount = 0
 
-    func removeAllLogs() {
+    public func removeAllLogs() {
         invokedRemoveAllLogsfunction = true
         invokedRemoveAllLogsCount += 1
         closureRemoveAllLogs()
     }
     // MARK: - saveAllLogs
-    var closureSaveAllLogs: () -> () = {}
-    var invokedSaveAllLogsfunction = false
-    var invokedSaveAllLogsCount = 0
+    public var closureSaveAllLogs: () -> () = {}
+    public var invokedSaveAllLogsfunction = false
+    public var invokedSaveAllLogsCount = 0
 
-    func saveAllLogs() {
+    public func saveAllLogs() {
         invokedSaveAllLogsfunction = true
         invokedSaveAllLogsCount += 1
         closureSaveAllLogs()
     }
     // MARK: - toggleLogging
-    var closureToggleLogging: () -> () = {}
-    var invokedToggleLoggingfunction = false
-    var invokedToggleLoggingCount = 0
-    var invokedToggleLoggingParameters: (shouldLog: Bool, Void)?
-    var invokedToggleLoggingParametersList = [(shouldLog: Bool, Void)]()
+    public var closureToggleLogging: () -> () = {}
+    public var invokedToggleLoggingfunction = false
+    public var invokedToggleLoggingCount = 0
+    public var invokedToggleLoggingParameters: (shouldLog: Bool, Void)?
+    public var invokedToggleLoggingParametersList = [(shouldLog: Bool, Void)]()
 
-    func toggleLogging(shouldLog: Bool) {
+    public func toggleLogging(shouldLog: Bool) {
         invokedToggleLoggingfunction = true
         invokedToggleLoggingCount += 1
         invokedToggleLoggingParameters = (shouldLog, ())

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import ClientMocks
 import Combine
 import Core
 import Entities

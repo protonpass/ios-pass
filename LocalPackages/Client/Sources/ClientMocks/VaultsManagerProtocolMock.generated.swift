@@ -17,22 +17,24 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Combine
 import Entities
 
-final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtocol {
+public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtocol {
+
+    public init() {}
+
     // MARK: - currentVaults
-    var invokedCurrentVaultsSetter = false
-    var invokedCurrentVaultsSetterCount = 0
-    var invokedCurrentVaults: CurrentValueSubject<[Vault], Never>?
-    var invokedCurrentVaultsList = [CurrentValueSubject<[Vault], Never>?]()
-    var invokedCurrentVaultsGetter = false
-    var invokedCurrentVaultsGetterCount = 0
-    var stubbedCurrentVaults: CurrentValueSubject<[Vault], Never>!
-    var currentVaults: CurrentValueSubject<[Vault], Never> {
+    public var invokedCurrentVaultsSetter = false
+    public var invokedCurrentVaultsSetterCount = 0
+    public var invokedCurrentVaults: CurrentValueSubject<[Vault], Never>?
+    public var invokedCurrentVaultsList = [CurrentValueSubject<[Vault], Never>?]()
+    public var invokedCurrentVaultsGetter = false
+    public var invokedCurrentVaultsGetterCount = 0
+    public var stubbedCurrentVaults: CurrentValueSubject<[Vault], Never>!
+    public var currentVaults: CurrentValueSubject<[Vault], Never> {
         set {
             invokedCurrentVaultsSetter = true
             invokedCurrentVaultsSetterCount += 1
@@ -45,14 +47,14 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         }
     }
     // MARK: - vaultSelection
-    var invokedVaultSelectionSetter = false
-    var invokedVaultSelectionSetterCount = 0
-    var invokedVaultSelection: VaultSelection?
-    var invokedVaultSelectionList = [VaultSelection?]()
-    var invokedVaultSelectionGetter = false
-    var invokedVaultSelectionGetterCount = 0
-    var stubbedVaultSelection: VaultSelection!
-    var vaultSelection: VaultSelection {
+    public var invokedVaultSelectionSetter = false
+    public var invokedVaultSelectionSetterCount = 0
+    public var invokedVaultSelection: VaultSelection?
+    public var invokedVaultSelectionList = [VaultSelection?]()
+    public var invokedVaultSelectionGetter = false
+    public var invokedVaultSelectionGetterCount = 0
+    public var stubbedVaultSelection: VaultSelection!
+    public var vaultSelection: VaultSelection {
         set {
             invokedVaultSelectionSetter = true
             invokedVaultSelectionSetterCount += 1
@@ -65,14 +67,14 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         }
     }
     // MARK: - hasOnlyOneOwnedVault
-    var invokedHasOnlyOneOwnedVaultSetter = false
-    var invokedHasOnlyOneOwnedVaultSetterCount = 0
-    var invokedHasOnlyOneOwnedVault: Bool?
-    var invokedHasOnlyOneOwnedVaultList = [Bool?]()
-    var invokedHasOnlyOneOwnedVaultGetter = false
-    var invokedHasOnlyOneOwnedVaultGetterCount = 0
-    var stubbedHasOnlyOneOwnedVault: Bool!
-    var hasOnlyOneOwnedVault: Bool {
+    public var invokedHasOnlyOneOwnedVaultSetter = false
+    public var invokedHasOnlyOneOwnedVaultSetterCount = 0
+    public var invokedHasOnlyOneOwnedVault: Bool?
+    public var invokedHasOnlyOneOwnedVaultList = [Bool?]()
+    public var invokedHasOnlyOneOwnedVaultGetter = false
+    public var invokedHasOnlyOneOwnedVaultGetterCount = 0
+    public var stubbedHasOnlyOneOwnedVault: Bool!
+    public var hasOnlyOneOwnedVault: Bool {
         set {
             invokedHasOnlyOneOwnedVaultSetter = true
             invokedHasOnlyOneOwnedVaultSetterCount += 1
@@ -85,22 +87,22 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         }
     }
     // MARK: - refresh
-    var closureRefresh: () -> () = {}
-    var invokedRefreshfunction = false
-    var invokedRefreshCount = 0
+    public var closureRefresh: () -> () = {}
+    public var invokedRefreshfunction = false
+    public var invokedRefreshCount = 0
 
-    func refresh() {
+    public func refresh() {
         invokedRefreshfunction = true
         invokedRefreshCount += 1
         closureRefresh()
     }
     // MARK: - fullSync
-    var fullSyncThrowableError: Error?
-    var closureFullSync: () -> () = {}
-    var invokedFullSyncfunction = false
-    var invokedFullSyncCount = 0
+    public var fullSyncThrowableError: Error?
+    public var closureFullSync: () -> () = {}
+    public var invokedFullSyncfunction = false
+    public var invokedFullSyncCount = 0
 
-    func fullSync() async throws {
+    public func fullSync() async throws {
         invokedFullSyncfunction = true
         invokedFullSyncCount += 1
         if let error = fullSyncThrowableError {
@@ -109,14 +111,14 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         closureFullSync()
     }
     // MARK: - getItems
-    var closureGetItems: () -> () = {}
-    var invokedGetItemsfunction = false
-    var invokedGetItemsCount = 0
-    var invokedGetItemsParameters: (vault: Vault, Void)?
-    var invokedGetItemsParametersList = [(vault: Vault, Void)]()
-    var stubbedGetItemsResult: [ItemUiModel]!
+    public var closureGetItems: () -> () = {}
+    public var invokedGetItemsfunction = false
+    public var invokedGetItemsCount = 0
+    public var invokedGetItemsParameters: (vault: Vault, Void)?
+    public var invokedGetItemsParametersList = [(vault: Vault, Void)]()
+    public var stubbedGetItemsResult: [ItemUiModel]!
 
-    func getItems(for vault: Vault) -> [ItemUiModel] {
+    public func getItems(for vault: Vault) -> [ItemUiModel] {
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (vault, ())
@@ -125,14 +127,14 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         return stubbedGetItemsResult
     }
     // MARK: - getItemCount
-    var closureGetItemCount: () -> () = {}
-    var invokedGetItemCountfunction = false
-    var invokedGetItemCountCount = 0
-    var invokedGetItemCountParameters: (selection: Vault, Void)?
-    var invokedGetItemCountParametersList = [(selection: Vault, Void)]()
-    var stubbedGetItemCountResult: Int!
+    public var closureGetItemCount: () -> () = {}
+    public var invokedGetItemCountfunction = false
+    public var invokedGetItemCountCount = 0
+    public var invokedGetItemCountParameters: (selection: Vault, Void)?
+    public var invokedGetItemCountParametersList = [(selection: Vault, Void)]()
+    public var stubbedGetItemCountResult: Int!
 
-    func getItemCount(for selection: Vault) -> Int {
+    public func getItemCount(for selection: Vault) -> Int {
         invokedGetItemCountfunction = true
         invokedGetItemCountCount += 1
         invokedGetItemCountParameters = (selection, ())
@@ -141,26 +143,26 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         return stubbedGetItemCountResult
     }
     // MARK: - getAllVaults
-    var closureGetAllVaults: () -> () = {}
-    var invokedGetAllVaultsfunction = false
-    var invokedGetAllVaultsCount = 0
-    var stubbedGetAllVaultsResult: [Vault]!
+    public var closureGetAllVaults: () -> () = {}
+    public var invokedGetAllVaultsfunction = false
+    public var invokedGetAllVaultsCount = 0
+    public var stubbedGetAllVaultsResult: [Vault]!
 
-    func getAllVaults() -> [Vault] {
+    public func getAllVaults() -> [Vault] {
         invokedGetAllVaultsfunction = true
         invokedGetAllVaultsCount += 1
         closureGetAllVaults()
         return stubbedGetAllVaultsResult
     }
     // MARK: - vaultHasTrashedItems
-    var closureVaultHasTrashedItems: () -> () = {}
-    var invokedVaultHasTrashedItemsfunction = false
-    var invokedVaultHasTrashedItemsCount = 0
-    var invokedVaultHasTrashedItemsParameters: (vault: Vault, Void)?
-    var invokedVaultHasTrashedItemsParametersList = [(vault: Vault, Void)]()
-    var stubbedVaultHasTrashedItemsResult: Bool!
+    public var closureVaultHasTrashedItems: () -> () = {}
+    public var invokedVaultHasTrashedItemsfunction = false
+    public var invokedVaultHasTrashedItemsCount = 0
+    public var invokedVaultHasTrashedItemsParameters: (vault: Vault, Void)?
+    public var invokedVaultHasTrashedItemsParametersList = [(vault: Vault, Void)]()
+    public var stubbedVaultHasTrashedItemsResult: Bool!
 
-    func vaultHasTrashedItems(_ vault: Vault) -> Bool {
+    public func vaultHasTrashedItems(_ vault: Vault) -> Bool {
         invokedVaultHasTrashedItemsfunction = true
         invokedVaultHasTrashedItemsCount += 1
         invokedVaultHasTrashedItemsParameters = (vault, ())
@@ -169,14 +171,14 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         return stubbedVaultHasTrashedItemsResult
     }
     // MARK: - delete
-    var deleteVaultThrowableError: Error?
-    var closureDelete: () -> () = {}
-    var invokedDeletefunction = false
-    var invokedDeleteCount = 0
-    var invokedDeleteParameters: (vault: Vault, Void)?
-    var invokedDeleteParametersList = [(vault: Vault, Void)]()
+    public var deleteVaultThrowableError: Error?
+    public var closureDelete: () -> () = {}
+    public var invokedDeletefunction = false
+    public var invokedDeleteCount = 0
+    public var invokedDeleteParameters: (vault: Vault, Void)?
+    public var invokedDeleteParametersList = [(vault: Vault, Void)]()
 
-    func delete(vault: Vault) async throws {
+    public func delete(vault: Vault) async throws {
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (vault, ())
@@ -187,12 +189,12 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         closureDelete()
     }
     // MARK: - restoreAllTrashedItems
-    var restoreAllTrashedItemsThrowableError: Error?
-    var closureRestoreAllTrashedItems: () -> () = {}
-    var invokedRestoreAllTrashedItemsfunction = false
-    var invokedRestoreAllTrashedItemsCount = 0
+    public var restoreAllTrashedItemsThrowableError: Error?
+    public var closureRestoreAllTrashedItems: () -> () = {}
+    public var invokedRestoreAllTrashedItemsfunction = false
+    public var invokedRestoreAllTrashedItemsCount = 0
 
-    func restoreAllTrashedItems() async throws {
+    public func restoreAllTrashedItems() async throws {
         invokedRestoreAllTrashedItemsfunction = true
         invokedRestoreAllTrashedItemsCount += 1
         if let error = restoreAllTrashedItemsThrowableError {
@@ -201,12 +203,12 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         closureRestoreAllTrashedItems()
     }
     // MARK: - permanentlyDeleteAllTrashedItems
-    var permanentlyDeleteAllTrashedItemsThrowableError: Error?
-    var closurePermanentlyDeleteAllTrashedItems: () -> () = {}
-    var invokedPermanentlyDeleteAllTrashedItemsfunction = false
-    var invokedPermanentlyDeleteAllTrashedItemsCount = 0
+    public var permanentlyDeleteAllTrashedItemsThrowableError: Error?
+    public var closurePermanentlyDeleteAllTrashedItems: () -> () = {}
+    public var invokedPermanentlyDeleteAllTrashedItemsfunction = false
+    public var invokedPermanentlyDeleteAllTrashedItemsCount = 0
 
-    func permanentlyDeleteAllTrashedItems() async throws {
+    public func permanentlyDeleteAllTrashedItems() async throws {
         invokedPermanentlyDeleteAllTrashedItemsfunction = true
         invokedPermanentlyDeleteAllTrashedItemsCount += 1
         if let error = permanentlyDeleteAllTrashedItemsThrowableError {
@@ -215,24 +217,24 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
         closurePermanentlyDeleteAllTrashedItems()
     }
     // MARK: - getOldestOwnedVault
-    var closureGetOldestOwnedVault: () -> () = {}
-    var invokedGetOldestOwnedVaultfunction = false
-    var invokedGetOldestOwnedVaultCount = 0
-    var stubbedGetOldestOwnedVaultResult: Vault?
+    public var closureGetOldestOwnedVault: () -> () = {}
+    public var invokedGetOldestOwnedVaultfunction = false
+    public var invokedGetOldestOwnedVaultCount = 0
+    public var stubbedGetOldestOwnedVaultResult: Vault?
 
-    func getOldestOwnedVault() -> Vault? {
+    public func getOldestOwnedVault() -> Vault? {
         invokedGetOldestOwnedVaultfunction = true
         invokedGetOldestOwnedVaultCount += 1
         closureGetOldestOwnedVault()
         return stubbedGetOldestOwnedVaultResult
     }
     // MARK: - getFilteredItems
-    var closureGetFilteredItems: () -> () = {}
-    var invokedGetFilteredItemsfunction = false
-    var invokedGetFilteredItemsCount = 0
-    var stubbedGetFilteredItemsResult: [ItemUiModel]!
+    public var closureGetFilteredItems: () -> () = {}
+    public var invokedGetFilteredItemsfunction = false
+    public var invokedGetFilteredItemsCount = 0
+    public var stubbedGetFilteredItemsResult: [ItemUiModel]!
 
-    func getFilteredItems() -> [ItemUiModel] {
+    public func getFilteredItems() -> [ItemUiModel] {
         invokedGetFilteredItemsfunction = true
         invokedGetFilteredItemsCount += 1
         closureGetFilteredItems()
