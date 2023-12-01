@@ -68,7 +68,7 @@ enum SheetDestination: Equatable, Hashable {
     case suffixView(SuffixSelection)
     case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
-    case moveItemsBetweenVaults(currentVault: Vault, singleItemToMove: ItemContent?)
+    case moveItemsBetweenVaults(MovingContext)
     case fullSync
     case shareVaultFromItemDetail(VaultListUiModel, ItemContent)
     case customizeNewVault(VaultProtobuf, ItemContent)

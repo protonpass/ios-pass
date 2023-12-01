@@ -912,6 +912,28 @@
         }
       }
     },
+    "%lld items moved to vault « %@ »" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld item moved to vault « %2$@ »"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld items moved to vault « %2$@ »"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld member(s)" : {
       "extractionState" : "manual",
       "localizations" : {
