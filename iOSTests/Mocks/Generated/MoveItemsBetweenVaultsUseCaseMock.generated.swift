@@ -26,13 +26,13 @@ final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveItemsBet
     // MARK: - execute
     var executeMovingContextThrowableError: Error?
     var closureExecute: () -> () = {}
-    var invokedExecute = false
+    var invokedExecutefunction = false
     var invokedExecuteCount = 0
     var invokedExecuteParameters: (movingContext: MovingContext, Void)?
     var invokedExecuteParametersList = [(movingContext: MovingContext, Void)]()
 
     func execute(movingContext: MovingContext) async throws {
-        invokedExecute = true
+        invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (movingContext, ())
         invokedExecuteParametersList.append((movingContext, ()))

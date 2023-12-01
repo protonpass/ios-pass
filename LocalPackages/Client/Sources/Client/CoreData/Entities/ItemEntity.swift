@@ -101,6 +101,7 @@ extension ItemEntity {
         keyRotation = item.keyRotation
         lastUseTime = item.lastUseTime ?? 0
         modifyTime = item.modifyTime
+        pinned = item.pinned
         revision = item.revision
         revisionTime = item.revisionTime
         shareID = symmetricallyEncryptedItem.shareId

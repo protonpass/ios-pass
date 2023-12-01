@@ -25,23 +25,23 @@ import Foundation
 final class CredentialsMigrationStateProviderMock: @unchecked Sendable, CredentialsMigrationStateProvider {
     // MARK: - shouldMigrateToSeparatedCredentials
     var closureShouldMigrateToSeparatedCredentials: () -> () = {}
-    var invokedShouldMigrateToSeparatedCredentials = false
+    var invokedShouldMigrateToSeparatedCredentialsfunction = false
     var invokedShouldMigrateToSeparatedCredentialsCount = 0
     var stubbedShouldMigrateToSeparatedCredentialsResult: Bool!
 
     func shouldMigrateToSeparatedCredentials() -> Bool {
-        invokedShouldMigrateToSeparatedCredentials = true
+        invokedShouldMigrateToSeparatedCredentialsfunction = true
         invokedShouldMigrateToSeparatedCredentialsCount += 1
         closureShouldMigrateToSeparatedCredentials()
         return stubbedShouldMigrateToSeparatedCredentialsResult
     }
     // MARK: - markAsMigratedToSeparatedCredentials
     var closureMarkAsMigratedToSeparatedCredentials: () -> () = {}
-    var invokedMarkAsMigratedToSeparatedCredentials = false
+    var invokedMarkAsMigratedToSeparatedCredentialsfunction = false
     var invokedMarkAsMigratedToSeparatedCredentialsCount = 0
 
     func markAsMigratedToSeparatedCredentials() {
-        invokedMarkAsMigratedToSeparatedCredentials = true
+        invokedMarkAsMigratedToSeparatedCredentialsfunction = true
         invokedMarkAsMigratedToSeparatedCredentialsCount += 1
         closureMarkAsMigratedToSeparatedCredentials()
     }

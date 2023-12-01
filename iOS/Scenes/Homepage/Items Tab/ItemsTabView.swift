@@ -81,51 +81,12 @@ struct ItemsTabView: View {
                 }
 
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center, spacing: 8) {
-                            ForEach(pinnedItems) { item in
-                                Button {
-                                    viewModel.viewDetail(of: item)
-                                } label: {
-                                    HStack(alignment: .center, spacing: 8) {
-                                        ItemSquircleThumbnail(data: item.thumbnailData(), size: .small)
-                                        Text(item.title)
-                                            .lineLimit(1)
-                                            .foregroundColor(PassColor.textNorm.toColor)
-                                            .padding(.trailing, 8)
-                                    }
-                                    .padding(8)
-                                    .frame(maxWidth: 164, alignment: .leading)
-                                    .background(item.type.normMinor1Color.toColor)
-                                    .cornerRadius(16)
-                                }
-                            }
-
-                            Button {
-                                viewModel.search(pinnedItems: true)
-                            } label: {
-                                Text("See all")
-                                    .foregroundColor(PassColor.textNorm.toColor)
-                                    .padding(.trailing, 8)
-                            }
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                        .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
-                    }
-
+                    pinnedItemsView(with: pinnedItems)
                     Divider()
                 }
 
                 if items.isEmpty {
-                    switch viewModel.vaultsManager.vaultSelection {
-                    case .all, .precise:
-                        EmptyVaultView(onCreate: viewModel.createNewItem(type:))
-                            .padding(.bottom, safeAreaInsets.bottom)
-                    case .trash:
-                        EmptyTrashView()
-                            .padding(.bottom, safeAreaInsets.bottom)
-                    }
+                    emptyViews
                 } else {
                     itemList(items)
                     Spacer()
@@ -141,8 +102,12 @@ struct ItemsTabView: View {
             }
         }
     }
+}
 
-    private var topBar: some View {
+// MARK: - Top Bar
+
+private extension ItemsTabView {
+    var topBar: some View {
         HStack {
             switch viewModel.vaultsManager.vaultSelection {
             case .all:
@@ -190,9 +155,72 @@ struct ItemsTabView: View {
         .padding(.horizontal)
         .frame(height: kSearchBarHeight)
     }
+}
 
+// MARK: - Pinned Items
+
+private extension ItemsTabView {
+    func pinnedItemsView(with pinnedItems: [ItemUiModel]) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 8) {
+                ForEach(pinnedItems) { item in
+                    Button {
+                        viewModel.viewDetail(of: item)
+                    } label: {
+                        HStack(alignment: .center, spacing: 8) {
+                            ItemSquircleThumbnail(data: item.thumbnailData(),
+                                                  size: .small,
+                                                  alternativeBackground: true)
+                            Text(item.title)
+                                .font(.body)
+                                .lineLimit(1)
+                                .foregroundColor(PassColor.textNorm.toColor)
+                                .padding(.trailing, 8)
+                        }
+                        .padding(8)
+                        .frame(maxWidth: 164, alignment: .leading)
+                        .background(item.type.normMinor1Color.toColor)
+                        .cornerRadius(16)
+                    }
+                }
+
+                Button {
+                    viewModel.search(pinnedItems: true)
+                } label: {
+                    Text("See all")
+                        .font(.callout.weight(.medium))
+                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
+                        .padding(.trailing, 8)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
+        }
+    }
+}
+
+// MARK: - Empty View
+
+private extension ItemsTabView {
     @ViewBuilder
-    private func itemList(_ items: [ItemUiModel]) -> some View {
+    var emptyViews: some View {
+        switch viewModel.vaultsManager.vaultSelection {
+        case .all, .precise:
+            EmptyVaultView(onCreate: viewModel.createNewItem(type:))
+                .padding(.bottom, safeAreaInsets.bottom)
+        case .trash:
+            EmptyTrashView()
+                .padding(.bottom, safeAreaInsets.bottom)
+        }
+    }
+}
+
+// MARK: - Items list
+
+private extension ItemsTabView {
+    @ViewBuilder
+    func itemList(_ items: [ItemUiModel]) -> some View {
         HStack {
             ItemTypeFilterButton(itemCount: viewModel.vaultsManager.itemCount,
                                  selectedOption: viewModel.vaultsManager.filterOption,
@@ -220,7 +248,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
+    func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
                      content: {
                          section(for: result.today, headerTitle: #localized("Today"))
@@ -235,8 +263,8 @@ struct ItemsTabView: View {
                      onRefresh: viewModel.forceSync)
     }
 
-    private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
-                          direction: SortDirection) -> some View {
+    func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
+                  direction: SortDirection) -> some View {
         ScrollViewReader { proxy in
             ItemListView(safeAreaInsets: safeAreaInsets,
                          showScrollIndicators: false,
@@ -256,7 +284,7 @@ struct ItemsTabView: View {
         }
     }
 
-    private func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
+    func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
                      content: {
                          ForEach(result.buckets, id: \.monthYear) { bucket in
@@ -267,7 +295,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func section(for items: [ItemUiModel], headerTitle: String) -> some View {
+    func section(for items: [ItemUiModel], headerTitle: String) -> some View {
         if items.isEmpty {
             EmptyView()
         } else {
@@ -285,7 +313,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func itemRow(for item: ItemUiModel) -> some View {
+    func itemRow(for item: ItemUiModel) -> some View {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         Button(action: {
             viewModel.viewDetail(of: item)

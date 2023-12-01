@@ -86,22 +86,22 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     }
     // MARK: - refresh
     var closureRefresh: () -> () = {}
-    var invokedRefresh = false
+    var invokedRefreshfunction = false
     var invokedRefreshCount = 0
 
     func refresh() {
-        invokedRefresh = true
+        invokedRefreshfunction = true
         invokedRefreshCount += 1
         closureRefresh()
     }
     // MARK: - fullSync
     var fullSyncThrowableError: Error?
     var closureFullSync: () -> () = {}
-    var invokedFullSync = false
+    var invokedFullSyncfunction = false
     var invokedFullSyncCount = 0
 
     func fullSync() async throws {
-        invokedFullSync = true
+        invokedFullSyncfunction = true
         invokedFullSyncCount += 1
         if let error = fullSyncThrowableError {
             throw error
@@ -110,14 +110,14 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     }
     // MARK: - getItems
     var closureGetItems: () -> () = {}
-    var invokedGetItems = false
+    var invokedGetItemsfunction = false
     var invokedGetItemsCount = 0
     var invokedGetItemsParameters: (vault: Vault, Void)?
     var invokedGetItemsParametersList = [(vault: Vault, Void)]()
     var stubbedGetItemsResult: [ItemUiModel]!
 
     func getItems(for vault: Vault) -> [ItemUiModel] {
-        invokedGetItems = true
+        invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (vault, ())
         invokedGetItemsParametersList.append((vault, ()))
@@ -126,14 +126,14 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     }
     // MARK: - getItemCount
     var closureGetItemCount: () -> () = {}
-    var invokedGetItemCount = false
+    var invokedGetItemCountfunction = false
     var invokedGetItemCountCount = 0
     var invokedGetItemCountParameters: (selection: Vault, Void)?
     var invokedGetItemCountParametersList = [(selection: Vault, Void)]()
     var stubbedGetItemCountResult: Int!
 
     func getItemCount(for selection: Vault) -> Int {
-        invokedGetItemCount = true
+        invokedGetItemCountfunction = true
         invokedGetItemCountCount += 1
         invokedGetItemCountParameters = (selection, ())
         invokedGetItemCountParametersList.append((selection, ()))
@@ -142,26 +142,26 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     }
     // MARK: - getAllVaults
     var closureGetAllVaults: () -> () = {}
-    var invokedGetAllVaults = false
+    var invokedGetAllVaultsfunction = false
     var invokedGetAllVaultsCount = 0
     var stubbedGetAllVaultsResult: [Vault]!
 
     func getAllVaults() -> [Vault] {
-        invokedGetAllVaults = true
+        invokedGetAllVaultsfunction = true
         invokedGetAllVaultsCount += 1
         closureGetAllVaults()
         return stubbedGetAllVaultsResult
     }
     // MARK: - vaultHasTrashedItems
     var closureVaultHasTrashedItems: () -> () = {}
-    var invokedVaultHasTrashedItems = false
+    var invokedVaultHasTrashedItemsfunction = false
     var invokedVaultHasTrashedItemsCount = 0
     var invokedVaultHasTrashedItemsParameters: (vault: Vault, Void)?
     var invokedVaultHasTrashedItemsParametersList = [(vault: Vault, Void)]()
     var stubbedVaultHasTrashedItemsResult: Bool!
 
     func vaultHasTrashedItems(_ vault: Vault) -> Bool {
-        invokedVaultHasTrashedItems = true
+        invokedVaultHasTrashedItemsfunction = true
         invokedVaultHasTrashedItemsCount += 1
         invokedVaultHasTrashedItemsParameters = (vault, ())
         invokedVaultHasTrashedItemsParametersList.append((vault, ()))
@@ -171,13 +171,13 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     // MARK: - delete
     var deleteVaultThrowableError: Error?
     var closureDelete: () -> () = {}
-    var invokedDelete = false
+    var invokedDeletefunction = false
     var invokedDeleteCount = 0
     var invokedDeleteParameters: (vault: Vault, Void)?
     var invokedDeleteParametersList = [(vault: Vault, Void)]()
 
     func delete(vault: Vault) async throws {
-        invokedDelete = true
+        invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (vault, ())
         invokedDeleteParametersList.append((vault, ()))
@@ -189,11 +189,11 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     // MARK: - restoreAllTrashedItems
     var restoreAllTrashedItemsThrowableError: Error?
     var closureRestoreAllTrashedItems: () -> () = {}
-    var invokedRestoreAllTrashedItems = false
+    var invokedRestoreAllTrashedItemsfunction = false
     var invokedRestoreAllTrashedItemsCount = 0
 
     func restoreAllTrashedItems() async throws {
-        invokedRestoreAllTrashedItems = true
+        invokedRestoreAllTrashedItemsfunction = true
         invokedRestoreAllTrashedItemsCount += 1
         if let error = restoreAllTrashedItemsThrowableError {
             throw error
@@ -203,11 +203,11 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     // MARK: - permanentlyDeleteAllTrashedItems
     var permanentlyDeleteAllTrashedItemsThrowableError: Error?
     var closurePermanentlyDeleteAllTrashedItems: () -> () = {}
-    var invokedPermanentlyDeleteAllTrashedItems = false
+    var invokedPermanentlyDeleteAllTrashedItemsfunction = false
     var invokedPermanentlyDeleteAllTrashedItemsCount = 0
 
     func permanentlyDeleteAllTrashedItems() async throws {
-        invokedPermanentlyDeleteAllTrashedItems = true
+        invokedPermanentlyDeleteAllTrashedItemsfunction = true
         invokedPermanentlyDeleteAllTrashedItemsCount += 1
         if let error = permanentlyDeleteAllTrashedItemsThrowableError {
             throw error
@@ -216,24 +216,24 @@ final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtoco
     }
     // MARK: - getOldestOwnedVault
     var closureGetOldestOwnedVault: () -> () = {}
-    var invokedGetOldestOwnedVault = false
+    var invokedGetOldestOwnedVaultfunction = false
     var invokedGetOldestOwnedVaultCount = 0
     var stubbedGetOldestOwnedVaultResult: Vault?
 
     func getOldestOwnedVault() -> Vault? {
-        invokedGetOldestOwnedVault = true
+        invokedGetOldestOwnedVaultfunction = true
         invokedGetOldestOwnedVaultCount += 1
         closureGetOldestOwnedVault()
         return stubbedGetOldestOwnedVaultResult
     }
     // MARK: - getFilteredItems
     var closureGetFilteredItems: () -> () = {}
-    var invokedGetFilteredItems = false
+    var invokedGetFilteredItemsfunction = false
     var invokedGetFilteredItemsCount = 0
     var stubbedGetFilteredItemsResult: [ItemUiModel]!
 
     func getFilteredItems() -> [ItemUiModel] {
-        invokedGetFilteredItems = true
+        invokedGetFilteredItemsfunction = true
         invokedGetFilteredItemsCount += 1
         closureGetFilteredItems()
         return stubbedGetFilteredItemsResult

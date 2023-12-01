@@ -30,12 +30,12 @@ final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyP
     // MARK: - getSymmetricKey
     var getSymmetricKeyThrowableError: Error?
     var closureGetSymmetricKey: () -> () = {}
-    var invokedGetSymmetricKey = false
+    var invokedGetSymmetricKeyfunction = false
     var invokedGetSymmetricKeyCount = 0
     var stubbedGetSymmetricKeyResult: SymmetricKey!
 
     func getSymmetricKey() throws -> SymmetricKey {
-        invokedGetSymmetricKey = true
+        invokedGetSymmetricKeyfunction = true
         invokedGetSymmetricKeyCount += 1
         if let error = getSymmetricKeyThrowableError {
             throw error
@@ -45,36 +45,36 @@ final class UserDataSymmetricKeyProviderMock: @unchecked Sendable, SymmetricKeyP
     }
     // MARK: - removeSymmetricKey
     var closureRemoveSymmetricKey: () -> () = {}
-    var invokedRemoveSymmetricKey = false
+    var invokedRemoveSymmetricKeyfunction = false
     var invokedRemoveSymmetricKeyCount = 0
 
     func removeSymmetricKey() {
-        invokedRemoveSymmetricKey = true
+        invokedRemoveSymmetricKeyfunction = true
         invokedRemoveSymmetricKeyCount += 1
         closureRemoveSymmetricKey()
     }
     // MARK: - ⚡️ UserDataProvider
     // MARK: - getUserData
     var closureGetUserData: () -> () = {}
-    var invokedGetUserData = false
+    var invokedGetUserDatafunction = false
     var invokedGetUserDataCount = 0
     var stubbedGetUserDataResult: UserData?
 
     func getUserData() -> UserData? {
-        invokedGetUserData = true
+        invokedGetUserDatafunction = true
         invokedGetUserDataCount += 1
         closureGetUserData()
         return stubbedGetUserDataResult
     }
     // MARK: - setUserData
     var closureSetUserData: () -> () = {}
-    var invokedSetUserData = false
+    var invokedSetUserDatafunction = false
     var invokedSetUserDataCount = 0
     var invokedSetUserDataParameters: (userData: UserData?, Void)?
     var invokedSetUserDataParametersList = [(userData: UserData?, Void)]()
 
     func setUserData(_ userData: UserData?) {
-        invokedSetUserData = true
+        invokedSetUserDatafunction = true
         invokedSetUserDataCount += 1
         invokedSetUserDataParameters = (userData, ())
         invokedSetUserDataParametersList.append((userData, ()))
