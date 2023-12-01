@@ -17,7 +17,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-// swiftlint:disable all
 
 @testable import Client
 import Core
@@ -25,17 +24,20 @@ import CoreData
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, ShareEventIDRepositoryProtocol {
-    // MARK: - getLastEventId
-    var getLastEventIdForceRefreshUserIdShareIdThrowableError: Error?
-    var closureGetLastEventId: () -> () = {}
-    var invokedGetLastEventIdfunction = false
-    var invokedGetLastEventIdCount = 0
-    var invokedGetLastEventIdParameters: (forceRefresh: Bool, userId: String, shareId: String)?
-    var invokedGetLastEventIdParametersList = [(forceRefresh: Bool, userId: String, shareId: String)]()
-    var stubbedGetLastEventIdResult: String!
+public final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, ShareEventIDRepositoryProtocol {
 
-    func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String {
+    public init() {}
+
+    // MARK: - getLastEventId
+    public var getLastEventIdForceRefreshUserIdShareIdThrowableError: Error?
+    public var closureGetLastEventId: () -> () = {}
+    public var invokedGetLastEventIdfunction = false
+    public var invokedGetLastEventIdCount = 0
+    public var invokedGetLastEventIdParameters: (forceRefresh: Bool, userId: String, shareId: String)?
+    public var invokedGetLastEventIdParametersList = [(forceRefresh: Bool, userId: String, shareId: String)]()
+    public var stubbedGetLastEventIdResult: String!
+
+    public func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String {
         invokedGetLastEventIdfunction = true
         invokedGetLastEventIdCount += 1
         invokedGetLastEventIdParameters = (forceRefresh, userId, shareId)
@@ -47,14 +49,14 @@ final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, ShareEventI
         return stubbedGetLastEventIdResult
     }
     // MARK: - upsertLastEventId
-    var upsertLastEventIdUserIdShareIdLastEventIdThrowableError: Error?
-    var closureUpsertLastEventId: () -> () = {}
-    var invokedUpsertLastEventIdfunction = false
-    var invokedUpsertLastEventIdCount = 0
-    var invokedUpsertLastEventIdParameters: (userId: String, shareId: String, lastEventId: String)?
-    var invokedUpsertLastEventIdParametersList = [(userId: String, shareId: String, lastEventId: String)]()
+    public var upsertLastEventIdUserIdShareIdLastEventIdThrowableError: Error?
+    public var closureUpsertLastEventId: () -> () = {}
+    public var invokedUpsertLastEventIdfunction = false
+    public var invokedUpsertLastEventIdCount = 0
+    public var invokedUpsertLastEventIdParameters: (userId: String, shareId: String, lastEventId: String)?
+    public var invokedUpsertLastEventIdParametersList = [(userId: String, shareId: String, lastEventId: String)]()
 
-    func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
+    public func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
         invokedUpsertLastEventIdfunction = true
         invokedUpsertLastEventIdCount += 1
         invokedUpsertLastEventIdParameters = (userId, shareId, lastEventId)
