@@ -31,6 +31,7 @@ extension ItemRevision {
     static func random(itemId: String? = nil,
                        state: ItemState? = nil,
                        aliasEmail: String? = nil,
+                       pinned: Bool = false,
                        lastUseTime: Int64 = .random(in: 0...1_000_000),
                        modifyTime: Int64 = .random(in: 0...1_000_000)) -> ItemRevision {
         .init(itemID: itemId ?? .random(),
@@ -40,7 +41,7 @@ extension ItemRevision {
               content: .random(),
               itemKey: .random(),
               state: state?.rawValue ?? ItemState.random(), 
-              pinned: false,
+              pinned: pinned,
               aliasEmail: aliasEmail,
               createTime: .random(in: 0...1_000_000),
               modifyTime: modifyTime,
