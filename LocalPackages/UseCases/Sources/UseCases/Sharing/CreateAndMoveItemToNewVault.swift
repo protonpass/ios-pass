@@ -48,8 +48,8 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
     public func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         do {
             if let vault = try await createVault(with: vault) {
-                try await moveItemsBetweenVaults(movingContext: .item(itemContent,
-                                                                      newShareId: vault.shareId))
+                try await moveItemsBetweenVaults(context: .singleItem(itemContent),
+                                                 to: vault.shareId)
                 vaultsManager.refresh()
                 return vault
             } else {

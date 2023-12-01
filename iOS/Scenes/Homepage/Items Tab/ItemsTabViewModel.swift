@@ -177,11 +177,11 @@ extension ItemsTabViewModel {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }
 
-    func isSelected(_ item: ItemIdentifiable) -> Bool {
+    func isSelected(_ item: ItemTypeIdentifiable) -> Bool {
         currentSelectedItems.value.contains(item)
     }
 
-    func selectOrDeselect(_ item: ItemIdentifiable) {
+    func selectOrDeselect(_ item: ItemTypeIdentifiable) {
         var items = currentSelectedItems.value
         if items.contains(item) {
             items.removeAll(where: { $0.isSame(with: item) })
@@ -192,7 +192,8 @@ extension ItemsTabViewModel {
     }
 
     func presentVaultListToMoveSelectedItems() {
-        print(#function)
+        let items = currentSelectedItems.value
+        router.present(for: .moveItemsBetweenVaults(.selectedItems(items)))
     }
 
     func trashSelectedItems() {
@@ -277,8 +278,8 @@ private extension [UserInvite] {
     }
 }
 
-private extension [ItemIdentifiable] {
-    func contains(_ otherItem: ItemIdentifiable) -> Bool {
+private extension [ItemTypeIdentifiable] {
+    func contains(_ otherItem: ItemTypeIdentifiable) -> Bool {
         contains(where: { $0.isSame(with: otherItem) })
     }
 }
