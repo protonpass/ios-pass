@@ -912,6 +912,28 @@
         }
       }
     },
+    "%lld items moved to trash" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item moved to trash"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld items moved to trash"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld items moved to vault « %@ »" : {
       "localizations" : {
         "en" : {

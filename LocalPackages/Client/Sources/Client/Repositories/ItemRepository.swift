@@ -68,6 +68,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
+    func trashItems(_ items: [ItemIdentifiable]) async throws
+
     func deleteAlias(email: String) async throws
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
@@ -264,6 +266,29 @@ public extension ItemRepository {
                 logger.trace("Trashed \(batch.count) items for share \(shareId)")
             }
         }
+    }
+
+    func trashItems(_ items: [ItemIdentifiable]) async throws {
+        logger.trace("Trashing \(items.count) items")
+
+        let allItems = try await getAllItems()
+        let shareIds = Set(items.map(\.shareId))
+
+        for shareId in shareIds {
+            let itemIds = items
+                .filter { $0.shareId == shareId }
+                .map(\.itemId)
+
+            let matchedItems = allItems
+                .filter { $0.shareId == shareId }
+                .filter { item in
+                    itemIds.contains { $0 == item.itemId }
+                }
+
+            try await trashItems(matchedItems)
+        }
+
+        logger.trace("Trashed \(items.count) items")
     }
 
     func deleteAlias(email: String) async throws {
