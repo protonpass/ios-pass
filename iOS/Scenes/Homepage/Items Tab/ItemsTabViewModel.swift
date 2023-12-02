@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
@@ -60,6 +61,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
@@ -204,7 +206,21 @@ extension ItemsTabViewModel {
     }
 
     func trashSelectedItems() {
-        print(#function)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let items = currentSelectedItems.value
+                try await doTrashSelectedItems(items)
+                currentSelectedItems.send([])
+                let message = #localized("%lld items moved to trash", items.count)
+                router.display(element: .infosMessage(message, config: .dismissAndRefresh))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 
     func restoreSelectedItems() {
