@@ -83,10 +83,15 @@ enum UIElementDisplay {
     case infosMessage(String? = nil, config: NavigationConfiguration? = nil)
 }
 
+enum AlertDestination {
+    case bulkPermanentDeleteConfirmation(itemCount: Int)
+}
+
 final class MainUIKitSwiftUIRouter: Sendable {
     let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
+    let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
 
     func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
@@ -98,6 +103,10 @@ final class MainUIKitSwiftUIRouter: Sendable {
 
     func display(element: UIElementDisplay) {
         globalElementDisplay.send(element)
+    }
+
+    func alert(_ destination: AlertDestination) {
+        alertDestination.send(destination)
     }
 }
 
