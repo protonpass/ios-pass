@@ -74,6 +74,8 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
+    func untrashItems(_ items: [ItemIdentifiable]) async throws
+
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws
 
     func updateItem(oldItem: ItemRevision,
@@ -270,24 +272,10 @@ public extension ItemRepository {
 
     func trashItems(_ items: [ItemIdentifiable]) async throws {
         logger.trace("Trashing \(items.count) items")
-
-        let allItems = try await getAllItems()
-        let shareIds = Set(items.map(\.shareId))
-
-        for shareId in shareIds {
-            let itemIds = items
-                .filter { $0.shareId == shareId }
-                .map(\.itemId)
-
-            let matchedItems = allItems
-                .filter { $0.shareId == shareId }
-                .filter { item in
-                    itemIds.contains { $0 == item.itemId }
-                }
-
-            try await trashItems(matchedItems)
+        try await bulkAction(items: items) { [weak self] groupedItems, _ in
+            guard let self else { return }
+            try await trashItems(groupedItems)
         }
-
         logger.trace("Trashed \(items.count) items")
     }
 
@@ -317,6 +305,15 @@ public extension ItemRepository {
                 logger.trace("Untrashed \(batch.count) items for share \(shareId)")
             }
         }
+    }
+
+    func untrashItems(_ items: [ItemIdentifiable]) async throws {
+        logger.trace("Bulk restoring \(items.count) items")
+        try await bulkAction(items: items) { [weak self] groupedItems, _ in
+            guard let self else { return }
+            try await untrashItems(groupedItems)
+        }
+        logger.info("Bulk restored \(items.count) items")
     }
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws {
@@ -420,24 +417,12 @@ public extension ItemRepository {
 
     func move(items: [ItemIdentifiable], toShareId: String) async throws {
         logger.trace("Bulk moving \(items.count) items to share \(toShareId)")
-
-        // Get the list of Share ID
-        let shareIds = Set(items.map(\.shareId))
-
-        let allItems = try await getAllItems()
-        // Loop through each Share ID and do the move
-        for shareId in shareIds where shareId != toShareId {
-            let itemIds = items.filter { $0.shareId == shareId }.map(\.itemId)
-            let matchedItems = allItems
-                .filter { $0.shareId == shareId }
-                .filter { item in
-                    itemIds.contains(where: { $0 == item.itemId })
-                }
-            logger.debug("Bulk moving \(matchedItems.count) items from share \(shareId) to share \(toShareId)")
-            _ = try await move(oldEncryptedItems: matchedItems, toShareId: toShareId)
-            logger.debug("Bulk moved \(matchedItems.count) items from share \(shareId) to share \(toShareId)")
+        try await bulkAction(items: items) { [weak self] groupedItems, shareId in
+            guard let self else { return }
+            if shareId != toShareId {
+                _ = try await move(oldEncryptedItems: groupedItems, toShareId: toShareId)
+            }
         }
-
         logger.info("Bulk moved \(items.count) items to share \(toShareId)")
     }
 
@@ -576,6 +561,23 @@ private extension ItemRepository {
         try await localDatasource.upsertItems(newEncryptedItems)
 
         return newEncryptedItems
+    }
+
+    /// Group items by share and bulk actionning on those grouped items
+    func bulkAction(items: [ItemIdentifiable],
+                    action: ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
+        let shareIds = Set(items.map(\.shareId))
+
+        let allItems = try await getAllItems()
+        for shareId in shareIds {
+            let itemIds = items.filter { $0.shareId == shareId }.map(\.itemId)
+            let matchedItems = allItems
+                .filter { $0.shareId == shareId }
+                .filter { item in
+                    itemIds.contains(where: { $0 == item.itemId })
+                }
+            try await action(matchedItems, shareId)
+        }
     }
 }
 

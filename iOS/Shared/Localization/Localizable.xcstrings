@@ -40361,6 +40361,28 @@
         }
       }
     },
+    "Restored %lld items" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Restored %lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Restored %lld items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Results" : {
       "localizations" : {
         "be" : {

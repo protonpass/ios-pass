@@ -62,6 +62,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
+    private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
@@ -224,7 +225,21 @@ extension ItemsTabViewModel {
     }
 
     func restoreSelectedItems() {
-        print(#function)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let items = currentSelectedItems.value
+                try await doRestoreSelectedItems(items)
+                currentSelectedItems.send([])
+                let message = #localized("Restored %lld items", items.count)
+                router.display(element: .successMessage(message, config: .dismissAndRefresh))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 
     func permanentlyDeleteSelectedItems() {
