@@ -47,8 +47,7 @@ public final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
         case let .allItems(fromVault):
             try await repository.move(currentShareId: fromVault.shareId, toShareId: shareId)
         case let .selectedItems(items):
-            try? await Task.sleep(seconds: 2)
-            print("Move \(items.count) items to \(shareId)")
+            try await repository.move(items: items, toShareId: shareId)
         }
     }
 }
