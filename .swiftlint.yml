@@ -72,7 +72,7 @@ opt_in_rules:
   - first_where
   - flatmap_over_map_reduce
   - force_unwrapping
-  - function_default_parameter_at_end
+#  - function_default_parameter_at_end
   - ibinspectable_in_extension
   - identical_operands
   - implicit_return

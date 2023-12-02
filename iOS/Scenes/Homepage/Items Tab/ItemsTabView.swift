@@ -139,7 +139,7 @@ struct ItemsTabView: View {
                          section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
                          section(for: result.others, headerTitle: #localized("More than 90 days"))
                      },
-                     onRefresh: viewModel.forceSync)
+                     onRefresh: viewModel.forceSyncIfNotEditMode)
     }
 
     private func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
@@ -153,7 +153,7 @@ struct ItemsTabView: View {
                                      .id(bucket.letter.character)
                              }
                          },
-                         onRefresh: viewModel.forceSync)
+                         onRefresh: viewModel.forceSyncIfNotEditMode)
                 .overlay {
                     HStack {
                         Spacer()
@@ -170,7 +170,7 @@ struct ItemsTabView: View {
                              section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
                          }
                      },
-                     onRefresh: viewModel.forceSync)
+                     onRefresh: viewModel.forceSyncIfNotEditMode)
     }
 
     @ViewBuilder
