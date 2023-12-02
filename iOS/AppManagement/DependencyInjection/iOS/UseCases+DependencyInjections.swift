@@ -256,6 +256,10 @@ extension UseCasesContainer {
         self { TrashSelectedItems(repository: self.itemRepository) }
     }
 
+    var restoreSelectedItems: Factory<RestoreSelectedItemsUseCase> {
+        self { RestoreSelectedItems(repository: self.itemRepository) }
+    }
+
     var getVaultContentForVault: Factory<GetVaultContentForVaultUseCase> {
         self { GetVaultContentForVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
