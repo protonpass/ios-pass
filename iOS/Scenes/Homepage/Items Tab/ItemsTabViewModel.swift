@@ -173,6 +173,13 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
+    @Sendable
+    func forceSyncIfNotEditMode() async {
+        if !isEditMode {
+            await forceSync()
+        }
+    }
+
     func search() {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }
