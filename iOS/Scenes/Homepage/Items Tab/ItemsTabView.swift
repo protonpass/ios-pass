@@ -77,7 +77,7 @@ struct ItemsTabView: View {
                                onMove: viewModel.presentVaultListToMoveSelectedItems,
                                onTrash: viewModel.trashSelectedItems,
                                onRestore: viewModel.restoreSelectedItems,
-                               onPermanentlyDelete: viewModel.permanentlyDeleteSelectedItems)
+                               onPermanentlyDelete: viewModel.askForBulkPermanentDeleteConfirmation)
 
                 if !viewModel.banners.isEmpty, !viewModel.isEditMode {
                     InfoBannerViewStack(banners: viewModel.banners,

@@ -354,6 +354,18 @@ private extension HomepageCoordinator {
                 }
             }
             .store(in: &cancellables)
+
+        router
+            .alertDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .bulkPermanentDeleteConfirmation(itemCount):
+                    presentBulkPermanentDeleteConfirmation(itemCount: itemCount)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: - UI view presenting functions
@@ -528,6 +540,20 @@ private extension HomepageCoordinator {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
+    }
+
+    func presentBulkPermanentDeleteConfirmation(itemCount: Int) {
+        let title = #localized("Delete permanently?")
+        let message = #localized("You are going to delete %lld items irreversibly, are you sure?", itemCount)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: #localized("Delete"),
+                                         style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            itemsTabViewModel?.permanentlyDeleteSelectedItems()
+        }
+        alert.addAction(deleteAction)
+        alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
+        present(alert)
     }
 
     func startUpgradeFlow() {

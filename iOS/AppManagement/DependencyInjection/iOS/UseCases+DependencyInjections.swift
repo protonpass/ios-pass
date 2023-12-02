@@ -260,6 +260,10 @@ extension UseCasesContainer {
         self { RestoreSelectedItems(repository: self.itemRepository) }
     }
 
+    var permanentlyDeleteSelectedItems: Factory<PermanentlyDeleteSelectedItemsUseCase> {
+        self { PermanentlyDeleteSelectedItems(repository: self.itemRepository) }
+    }
+
     var getVaultContentForVault: Factory<GetVaultContentForVaultUseCase> {
         self { GetVaultContentForVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
     }
