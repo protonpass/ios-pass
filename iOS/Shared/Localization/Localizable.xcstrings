@@ -36095,6 +36095,28 @@
         }
       }
     },
+    "Permanently deleted %lld items" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Permanently deleted one item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Permanently deleted %lld items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Personal" : {
       "comment" : "The name of the default vault",
       "extractionState" : "manual",
@@ -55643,6 +55665,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn đang chuẩn bị tạo"
+          }
+        }
+      }
+    },
+    "You are going to delete %lld items irreversibly, are you sure?" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are going to delete one item irreversibly, are you sure?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "You are going to delete %lld items irreversibly, are you sure?"
+                }
+              }
+            }
           }
         }
       }

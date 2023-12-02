@@ -78,6 +78,9 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws
 
+    /// Permanently delete selected items
+    func delete(items: [ItemIdentifiable]) async throws
+
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
                     shareId: String) async throws
@@ -332,6 +335,15 @@ public extension ItemRepository {
                 logger.trace("Deleted \(batch.count) items for share \(shareId)")
             }
         }
+    }
+
+    func delete(items: [ItemIdentifiable]) async throws {
+        logger.trace("Bulk permanently deleting \(items.count) items")
+        try await bulkAction(items: items) { [weak self] groupedItems, _ in
+            guard let self else { return }
+            try await deleteItems(groupedItems, skipTrash: false)
+        }
+        logger.trace("Bulk permanently deleted \(items.count) items")
     }
 
     func deleteAllItemsLocally() async throws {

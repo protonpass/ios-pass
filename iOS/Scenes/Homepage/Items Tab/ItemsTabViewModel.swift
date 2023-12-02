@@ -63,6 +63,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
     private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
+    private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
@@ -243,7 +244,30 @@ extension ItemsTabViewModel {
     }
 
     func permanentlyDeleteSelectedItems() {
-        print(#function)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let items = currentSelectedItems.value
+                try await doPermanentlyDeleteSelectedItems(items)
+                currentSelectedItems.send([])
+                let message = #localized("Permanently deleted %lld items", items.count)
+                router.display(element: .infosMessage(message, config: .dismissAndRefresh))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func askForBulkPermanentDeleteConfirmation() {
+        let items = currentSelectedItems.value
+        guard !items.isEmpty else {
+            assertionFailure("No selected items to permanently delete")
+            return
+        }
+        router.alert(.bulkPermanentDeleteConfirmation(itemCount: items.count))
     }
 
     func createNewItem(type: ItemContentType) {
