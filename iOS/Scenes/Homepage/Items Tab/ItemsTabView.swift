@@ -181,7 +181,9 @@ struct ItemsTabView: View {
             Section(content: {
                 ForEach(items) { item in
                     itemRow(for: item)
-                        .plainListRow()
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(.init(top: 4, leading: -10, bottom: 4, trailing: -10))
+                        .listRowBackground(Color.clear)
                 }
             }, header: {
                 Text(headerTitle)
@@ -194,6 +196,8 @@ struct ItemsTabView: View {
     @ViewBuilder
     private func itemRow(for item: ItemUiModel) -> some View {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
+        let isSelectable = viewModel.isSelectable(item)
+        let isSelected = viewModel.isSelected(item)
         Button(action: {
             if viewModel.isEditMode {
                 viewModel.selectOrDeselect(item)
@@ -202,10 +206,16 @@ struct ItemsTabView: View {
             }
         }, label: {
             GeneralItemRow(thumbnailView: {
-                               if viewModel.isEditMode {
-                                   SquircleCheckbox(isChecked: viewModel.isSelected(item))
+                               if viewModel.isEditMode, isSelected {
+                                   SquircleCheckbox()
                                } else {
                                    ItemSquircleThumbnail(data: item.thumbnailData())
+                                       .onTapGesture {
+                                           if isSelectable {
+                                               viewModel.selectOrDeselect(item)
+                                               viewModel.isEditMode = true
+                                           }
+                                       }
                                }
                            },
                            title: item.title,
@@ -216,6 +226,10 @@ struct ItemsTabView: View {
                                          onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
                                          handler: viewModel.itemContextMenuHandler)
                 }
+                .padding(.horizontal)
+                .background(isSelected ? PassColor.interactionNormMinor1.toColor : .clear)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .animation(.default, value: isSelected)
         })
         .padding(.horizontal, 16)
         .frame(height: 64)
@@ -226,7 +240,7 @@ struct ItemsTabView: View {
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
-        .disabled(!viewModel.isSelectable(item))
+        .disabled(!isSelectable && viewModel.isEditMode)
     }
 }
 
