@@ -152,7 +152,6 @@
 		355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E33AD29C4AE8600402CAE /* SearchRecentResultsView.swift */; };
 		355E92782A59D2D500C22703 /* Factory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E92772A59D2D500C22703 /* Factory+Extensions.swift */; };
 		355E92792A59D70800C22703 /* Factory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E92772A59D2D500C22703 /* Factory+Extensions.swift */; };
-		355F05512A5C4807007DF053 /* KeychainMainkeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355F05502A5C4807007DF053 /* KeychainMainkeyProviderMock.swift */; };
 		3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		3560843F29DD7DE9001F7487 /* NoSearchResultsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830F29C343F70084488A /* NoSearchResultsViews.swift */; };
@@ -599,7 +598,6 @@
 		355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailMoreInfoSection.swift; sourceTree = "<group>"; };
 		355E33AD29C4AE8600402CAE /* SearchRecentResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRecentResultsView.swift; sourceTree = "<group>"; };
 		355E92772A59D2D500C22703 /* Factory+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Factory+Extensions.swift"; sourceTree = "<group>"; };
-		355F05502A5C4807007DF053 /* KeychainMainkeyProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMainkeyProviderMock.swift; sourceTree = "<group>"; };
 		356043F828ED6B54003BDDDC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		3560843929DD4909001F7487 /* AppearanceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettings.swift; sourceTree = "<group>"; };
 		3560844029DDA1C4001F7487 /* ExtensionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsView.swift; sourceTree = "<group>"; };
@@ -1870,7 +1868,6 @@
 			isa = PBXGroup;
 			children = (
 				84E10EABA5BC087B06289733 /* Generated */,
-				355F05502A5C4807007DF053 /* KeychainMainkeyProviderMock.swift */,
 				6699002D29A77197001033B6 /* KeychainMock.swift */,
 				5B503FF42A4E018500E6681C /* LogingManagerMock.swift */,
 				5B1453CE2A7114530048B022 /* UserDataMock.swift */,
@@ -2530,7 +2527,6 @@
 				5B503FF82A4E01D700E6681C /* GetLogsEntriesTests.swift in Sources */,
 				5B50400A2A52ED4800E6681C /* SendUserBugReportTests.swift in Sources */,
 				3559BA9C2A5B321E0020E172 /* PreferencesTests.swift in Sources */,
-				355F05512A5C4807007DF053 /* KeychainMainkeyProviderMock.swift in Sources */,
 				5B5040132A53114600E6681C /* ExtractLogsToFileTests.swift in Sources */,
 				575543F92AC30D3700565C19 /* FeatureFlagsTests.swift in Sources */,
 				1C9AA77B635A4599C2AA6036 /* CredentialsMigrationStateProviderMock.generated.swift in Sources */,

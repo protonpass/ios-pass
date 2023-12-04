@@ -97,6 +97,10 @@ struct ItemsTabView: View {
             .animation(.default, value: viewModel.vaultsManager.state)
             .animation(.default, value: viewModel.vaultsManager.filterOption)
             .animation(.default, value: viewModel.banners.count)
+            .animation(.default, value: viewModel.pinnedItems)
+            .task {
+                await viewModel.loadPinnedItems()
+            }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
             }
