@@ -1,3 +1,23 @@
+## Version 1.6.0
+Features:
+- Added password vulnerability score
+- Improved search precision
+
+Improvements:
+- Increased default clipboard expiration from 1 minute to 2 minutes
+- Added confirmation when deleting any vaults whether the vault is empty or not
+- Fixed alerts not matched theme settings
+- Reduced favicons size from 64 to 32
+- Showed inline TOTP URI error when creating and editing login items
+- Fixed occasional crashes when sending bug reports
+- Fixed occasional clipped note
+
+Others:
+- Log out when encountering 403 errors
+- Prepare for session forking by storing credentials separately (parent session, host application & AutoFill extension)
+- New implementation of `AuthDelegate` that no more relies on cached credential
+- Moved more use cases to UseCases package
+
 ## Version 1.5.7
 - Updated last used time of items right after autofilling instead of scheduling background tasks
 - Removed sync event loop in AutoFill extension. Only sync when the extension is launched or pulled to refresh.
