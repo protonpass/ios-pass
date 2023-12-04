@@ -10,6 +10,16 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
+let swiftSettings: [SwiftSetting] = [
+//   .enableUpcomingFeature("BareSlashRegexLiterals"),
+//   .enableUpcomingFeature("ConciseMagicFile"),
+//   .enableUpcomingFeature("ExistentialAny"),
+//   .enableUpcomingFeature("ForwardTrailingClosures"),
+//   .enableUpcomingFeature("ImplicitOpenExistentials"),
+//   .enableUpcomingFeature("StrictConcurrency"),
+//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
+]
+
 let package = Package(name: "UseCases",
                       platforms: platforms,
                       products: [
@@ -24,6 +34,7 @@ let package = Package(name: "UseCases",
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Client", path: "../Client"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
+                          .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "8.16.1"),
                           .package(url: "https://gitlab.protontech.ch/apple/shared/protoncore.git", exact: "14.0.1")
                       ],
                       targets: [
@@ -37,9 +48,12 @@ let package = Package(name: "UseCases",
                                       .product(name: "Client", package: "Client"),
                                       .product(name: "Core", package: "Core"),
                                       .product(name: "PassRustCore", package: "PassRustCore"),
+                                      .product(name: "Sentry", package: "sentry-cocoa"),
                                       .product(name: "ProtonCoreFeatureFlags", package: "protoncore")
                                   ],
-                                  resources: []),
+                                  resources: [],
+                                  swiftSettings: swiftSettings
+                                 ),
                           .testTarget(name: "UseCasesTests",
                                       dependencies: ["UseCases"],
                                       path: "Tests")

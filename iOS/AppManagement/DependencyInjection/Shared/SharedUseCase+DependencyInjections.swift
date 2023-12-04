@@ -85,6 +85,10 @@ extension SharedUseCasesContainer {
         self { AddTelemetryEvent(repository: SharedRepositoryContainer.shared.telemetryEventRepository(),
                                  logManager: self.logManager) }
     }
+
+    var setUpSentry: Factory<SetUpSentryUseCase> {
+        self { SetUpSentry() }
+    }
 }
 
 // MARK: AutoFill
@@ -154,7 +158,7 @@ extension SharedUseCasesContainer {
     }
 }
 
-// MARK: Password generator
+// MARK: Password Utils
 
 extension SharedUseCasesContainer {
     var generatePassword: Factory<GeneratePasswordUseCase> {
@@ -168,6 +172,10 @@ extension SharedUseCasesContainer {
     var generatePassphrase: Factory<GeneratePassphraseUseCase> {
         self { GeneratePassphrase() }
     }
+
+    var getPasswordStrength: Factory<GetPasswordStrengthUseCase> {
+        self { GetPasswordStrength() }
+    }
 }
 
 // MARK: Data
@@ -175,6 +183,13 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var revokeCurrentSession: Factory<RevokeCurrentSessionUseCase> {
         self { RevokeCurrentSession(apiService: SharedToolingContainer.shared.apiManager().apiService) }
+    }
+
+    var deleteLocalDataBeforeFullSync: Factory<DeleteLocalDataBeforeFullSyncUseCase> {
+        self { DeleteLocalDataBeforeFullSync(itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                                             shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                             shareKeyRepository: SharedRepositoryContainer.shared
+                                                 .shareKeyRepository()) }
     }
 
     var wipeAllData: Factory<WipeAllDataUseCase> {
@@ -186,7 +201,7 @@ extension SharedUseCasesContainer {
                            databaseService: SharedServiceContainer.shared.databaseService(),
                            syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                            vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                           vaultSyncEventStream: SharedServiceContainer.shared.vaultSyncEventStream(),
+                           vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
                            credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 }

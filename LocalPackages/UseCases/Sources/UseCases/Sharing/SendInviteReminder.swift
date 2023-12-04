@@ -20,7 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@preconcurrency import Client
+import Client
 
 public protocol SendInviteReminderUseCase: Sendable {
     func execute(with shareId: String, and inviteId: String) async throws

@@ -19,7 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+
+@preconcurrency import Combine
 import Core
 import CryptoKit
 import Entities
@@ -39,14 +40,15 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let vaultSyncEventStream = resolve(\SharedServiceContainer.vaultSyncEventStream)
+    private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private var loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private var symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
+    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private var isRefreshing = false
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
+    private let deleteLocalDataBeforeFullSync = resolve(\SharedUseCasesContainer.deleteLocalDataBeforeFullSync)
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -217,9 +219,8 @@ extension VaultsManager {
     func fullSync() async throws {
         vaultSyncEventStream.send(.started)
 
-        // 1. Delete all local items & shares
-        try await itemRepository.deleteAllItemsLocally()
-        try await shareRepository.deleteAllSharesLocally()
+        // 1. Delete all local data
+        try await deleteLocalDataBeforeFullSync()
 
         // 2. Get all remote shares and their items
         let remoteShares = try await shareRepository.getRemoteShares(eventStream: vaultSyncEventStream)

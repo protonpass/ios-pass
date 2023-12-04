@@ -21,7 +21,7 @@
 import Entities
 import Foundation
 
-public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteShareDatasourceProtocol {
     func getShares() async throws -> [Share]
     func getShare(shareId: String) async throws -> Share
     func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos]
@@ -40,49 +40,30 @@ public protocol RemoteShareDatasourceProtocol: RemoteDatasourceProtocol {
     func transferVaultOwnership(vaultShareId: String, request: TransferOwnershipVaultRequest) async throws -> Bool
 }
 
-public extension RemoteShareDatasourceProtocol {
+public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol {}
+
+public extension RemoteShareDatasource {
     func getShares() async throws -> [Share] {
         let getSharesEndpoint = GetSharesEndpoint()
-        let getSharesResponse = try await apiService.exec(endpoint: getSharesEndpoint)
+        let getSharesResponse = try await exec(endpoint: getSharesEndpoint)
         return getSharesResponse.shares
     }
 
     func getShare(shareId: String) async throws -> Share {
         let endpoint = GetShareEndpoint(shareId: shareId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
-    /*
-      Get users that have access to the whole vault, or item
-      Response:
-      ```json
-     {
-       "Shares": [
-         {
-           "ShareID": "AF39EF234BB==",
-           "UserName": "Leonard Nimoy",
-           "UserEmail": "leo@nimoy.com",
-           "TargetType": "1",
-           "TargetID": "DEFC342CA23==",
-           "Permission": "3",
-           "ExpireTime": "18332832",
-           "CreateTime": "18332832"
-         }
-       ],
-       "Total": "32",
-       "Code": 1000
-     }
-     ```*/
     func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos] {
         let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.shares
     }
 
     func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos {
         let endpoint = GetUserInformationForShareEndpoint(for: shareId, and: userId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
@@ -92,50 +73,43 @@ public extension RemoteShareDatasourceProtocol {
         let endpoint = UpdateUserSharePermissionsEndpoint(shareId: shareId,
                                                           userId: userId,
                                                           request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func deleteUserShare(shareId: String,
-                         userId: String) async throws -> Bool {
+    func deleteUserShare(shareId: String, userId: String) async throws -> Bool {
         let endpoint = DeleteUserShareEndpoint(for: shareId, and: userId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
     }
 
     func deleteShare(shareId: String) async throws -> Bool {
         let endpoint = DeleteShareEndpoint(for: shareId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
     }
-}
 
-// MARK: Vaults Utils
-
-public extension RemoteShareDatasourceProtocol {
     func createVault(request: CreateVaultRequest) async throws -> Share {
         let endpoint = CreateVaultEndpoint(request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
     func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share {
         let endpoint = UpdateVaultEndpoint(shareId: shareId, request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.share
     }
 
     func deleteVault(shareId: String) async throws {
         let endpoint = DeleteVaultEndpoint(shareId: shareId)
-        _ = try await apiService.exec(endpoint: endpoint)
+        _ = try await exec(endpoint: endpoint)
     }
 
     func transferVaultOwnership(vaultShareId: String,
                                 request: TransferOwnershipVaultRequest) async throws -> Bool {
         let endpoint = TransferOwnershipVaultEndpoint(vaultShareId: vaultShareId, request: request)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.isSuccessful
     }
 }
-
-public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol {}

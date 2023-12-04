@@ -22,21 +22,20 @@ import Client
 import Core
 import Foundation
 import UIKit
-import UseCases
 
 protocol WipeAllDataUseCase {
-    func execute(includingUnauthSession: Bool, isTests: Bool) async
+    func execute(isTests: Bool) async
 }
 
 extension WipeAllDataUseCase {
-    func callAsFunction(includingUnauthSession: Bool, isTests: Bool) async {
-        await execute(includingUnauthSession: includingUnauthSession, isTests: isTests)
+    func callAsFunction(isTests: Bool) async {
+        await execute(isTests: isTests)
     }
 }
 
 final class WipeAllData: WipeAllDataUseCase {
     private let logger: Logger
-    private let appData: AppData
+    private let appData: AppDataProtocol
     private let mainKeyProvider: MainKeyProvider
     private let apiManager: APIManager
     private let preferences: Preferences
@@ -47,7 +46,7 @@ final class WipeAllData: WipeAllDataUseCase {
     private let credentialManager: CredentialManagerProtocol
 
     init(logManager: LogManagerProtocol,
-         appData: AppData,
+         appData: AppDataProtocol,
          mainKeyProvider: MainKeyProvider,
          apiManager: APIManager,
          preferences: Preferences,
@@ -68,20 +67,18 @@ final class WipeAllData: WipeAllDataUseCase {
         self.credentialManager = credentialManager
     }
 
-    func execute(includingUnauthSession: Bool, isTests: Bool) async {
-        logger.info("Wiping all data, includingUnauthSession: \(includingUnauthSession)")
+    func execute(isTests: Bool) async {
+        logger.info("Wiping all data")
         appData.resetData()
         mainKeyProvider.wipeMainKey()
-        if includingUnauthSession {
-            apiManager.clearCredentials()
-        }
-        preferences.reset(isTests: isTests)
+        apiManager.clearCredentials()
+        await preferences.reset(isTests: isTests)
         databaseService.resetContainer()
         UIPasteboard.general.items = []
         syncEventLoop.reset()
         await vaultsManager.reset()
         vaultSyncEventStream.value = .initialization
         try? await credentialManager.removeAllCredentials()
-        logger.info("Wiped all data, includingUnauthSession: \(includingUnauthSession)")
+        logger.info("Wiped all data")
     }
 }

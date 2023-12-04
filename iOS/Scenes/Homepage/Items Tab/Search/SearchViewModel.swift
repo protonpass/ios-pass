@@ -163,16 +163,16 @@ private extension SearchViewModel {
                 return
             }
             let hashedQuery = query.sha256
-            self.logger.trace("Searching for \"\(hashedQuery)\"")
+            logger.trace("Searching for \"\(hashedQuery)\"")
             if Task.isCancelled {
                 return
             }
-            self.results = self.searchableItems.result(for: query)
+            results = searchableItems.result(for: query)
             if Task.isCancelled {
                 return
             }
-            self.filterAndSortResults()
-            self.logger.trace("Get \(self.results.count) result(s) for \"\(hashedQuery)\"")
+            filterAndSortResults()
+            logger.trace("Get \(self.results.count) result(s) for \"\(hashedQuery)\"")
         }
     }
 
@@ -188,7 +188,7 @@ private extension SearchViewModel {
             results
         }
         filteringTask?.cancel()
-        filteringTask = Task { [weak self] in
+        filteringTask = Task { @MainActor [weak self] in
             guard let self else {
                 return
             }
@@ -199,9 +199,7 @@ private extension SearchViewModel {
             if Task.isCancelled {
                 return
             }
-            await MainActor.run {
-                self.state = SearchViewState.results(ItemCount(items: self.results), filteredAndSortedResults)
-            }
+            state = SearchViewState.results(ItemCount(items: self.results), filteredAndSortedResults)
         }
     }
 
@@ -228,7 +226,7 @@ extension SearchViewModel {
         Task { @MainActor [weak self] in
             guard let self else { return }
             await indexItems()
-            doSearch(query: lastSearchQuery ?? "")
+            doSearch(query: lastSearchQuery)
         }
     }
 

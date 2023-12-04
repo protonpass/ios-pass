@@ -20,33 +20,26 @@
 
 import Combine
 import Core
+import Client
 import Factory
 @testable import Proton_Pass
 import ProtonCoreKeymaker
 import ProtonCoreLogin
 import ProtonCoreNetworking
+import ProtonCoreAuthentication
 import ProtonCoreTestingToolkitUnitTestsCore
+import CryptoKit
 import XCTest
 
-
-private extension SharedToolingContainer {
-    func setUpAPiMocks() {
-        Scope.singleton.reset()
-        self.keychain.register { KeychainMock() }
-        self.mainKeyProvider.register { MainKeyProviderMock() }
-    }
-}
-
+@MainActor
 final class APIManagerTests: XCTestCase {
-    var keychain: KeychainMock!
+    var credentialProvider: CredentialProvider!
     var mainKeyProvider: MainKeyProviderMock!
-    let unauthSessionKey = AppDataKey.unauthSessionCredentials.rawValue
-    let userDataKey = AppDataKey.userData.rawValue
     private var sessionPublisher: AnyCancellable?
 
     let unauthSessionCredentials = AuthCredential(sessionID: "test_session_id",
-                                                  accessToken: "test_access_token",
-                                                  refreshToken: "test_refresh_token",
+                                                  accessToken: "test_access_token_unauth",
+                                                  refreshToken: "test_refresh_token_unauth",
                                                   userName: "",
                                                   userID: "",
                                                   privateKey: nil,
@@ -82,30 +75,12 @@ final class APIManagerTests: XCTestCase {
         scopes: ["test_scope"]
     )
 
-    let mainKey: MainKey = Array(repeating: .zero, count: 32)
-
-    override func setUp() {
-        super.setUp()
-        SharedToolingContainer.shared.setUpAPiMocks()
-        SharedDataContainer.shared.appData.reset()
-        keychain = SharedToolingContainer.shared.keychain() as? KeychainMock
-        mainKeyProvider = SharedToolingContainer.shared.mainKeyProvider() as? MainKeyProviderMock
-    }
-
-    override func tearDown() {
-        mainKeyProvider = nil
-        keychain = nil
-        sessionPublisher?.cancel()
-        sessionPublisher = nil
-        super.tearDown()
-    }
-
     func givenApiManager() -> APIManager { .init() }
 
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() {
+
         // GIVEN
-        keychain.dataStub.bodyIs { _, _ in nil } // no session in keychain
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+        SharedDataContainer.shared.appData().resetData()
 
         // WHEN
         let apiManager = givenApiManager()
@@ -117,14 +92,8 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceIsCreatedWithSessionIfUnauthSessionIsPersisted() throws {
         // GIVEN
-        let unauthSessionCredentialsData = try JSONEncoder().encode(unauthSessionCredentials)
-        let lockedSession = try Locked<Data>(clearValue: unauthSessionCredentialsData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.unauthSessionKey else { return nil }
-            return lockedSession.encryptedValue // unauth session in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
-
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
+        
         // WHEN
         let apiManager = givenApiManager()
 
@@ -136,13 +105,8 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceIsCreatedWithSessionIfAuthSessionIsPersisted() throws {
         // GIVEN
-        let userDataData = try JSONEncoder().encode(userData)
-        let lockedSession = try Locked<Data>(clearValue: userDataData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.userDataKey else { return nil }
-            return lockedSession.encryptedValue // UserData in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
 
         // WHEN
         let apiManager = givenApiManager()
@@ -153,59 +117,44 @@ final class APIManagerTests: XCTestCase {
                        Credential(userData.credential))
     }
 
+    
+    
+   
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForUnauthSession() throws {
         // GIVEN
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
+
         let apiManager = givenApiManager()
-
         // WHEN
-        apiManager.sessionIsAvailable(authCredential: unauthSessionCredentials, scopes: .empty)
-
+        apiManager.authHelper.onUpdate(credential: Credential(unauthSessionCredentials), sessionUID: unauthSessionCredentials.sessionID)
+        
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
         XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
                        Credential(unauthSessionCredentials))
-        XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce)
-        XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
-                       AppDataKey.unauthSessionCredentials.rawValue)
     }
+
 
     func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForAuthSession() throws {
         // GIVEN
-        let userDataData = try JSONEncoder().encode(userData)
-        let lockedSession = try Locked<Data>(clearValue: userDataData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.userDataKey else { return nil }
-            return lockedSession.encryptedValue // auth session in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
+
         let apiManager = givenApiManager()
 
         // WHEN
-        apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                      scopes: userData.scopes)
+        apiManager.authHelper.onUpdate(credential: Credential(userData.credential), sessionUID: userData.credential.sessionID)
 
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "test_session_id")
         XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
-                       Credential(userData.credential, scopes: userData.scopes))
-        XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce) // setting auth session
-        XCTAssertEqual(keychain.setDataStub.lastArguments?.second,
-                       AppDataKey.userData.rawValue)
-        XCTAssertTrue(keychain.removeStub.wasCalledExactlyOnce) // removing unauth session
-        XCTAssertEqual(keychain.removeStub.lastArguments?.value,
-                       AppDataKey.unauthSessionCredentials.rawValue)
+                       Credential(userData.credential))
     }
 
     func testAPIServiceClearCredentialsClearsAPIServiceAndUnauthSessionStorage() throws {
         // GIVEN
-        let unauthSessionData = try JSONEncoder().encode(unauthSessionCredentials)
-        let lockedSession = try Locked<Data>(clearValue: unauthSessionData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.unauthSessionKey else { return nil }
-            return lockedSession.encryptedValue // auth session in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
+
         let apiManager = givenApiManager()
 
         // WHEN
@@ -214,20 +163,12 @@ final class APIManagerTests: XCTestCase {
         // THEN
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
-        XCTAssertTrue(keychain.removeStub.wasCalledExactlyOnce) // removing unauth session
-        XCTAssertEqual(keychain.removeStub.lastArguments?.value,
-                       AppDataKey.unauthSessionCredentials.rawValue)
     }
 
     func testAPIServiceUnauthSessionInvalidationClearsCredentials() throws {
         // GIVEN
-        let unauthSessionData = try JSONEncoder().encode(unauthSessionCredentials)
-        let lockedSession = try Locked<Data>(clearValue: unauthSessionData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.unauthSessionKey else { return nil }
-            return lockedSession.encryptedValue // auth session in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
+
         let apiManager = givenApiManager()
 
         apiManager.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: false)
@@ -235,16 +176,27 @@ final class APIManagerTests: XCTestCase {
         XCTAssertEqual(apiManager.apiService.sessionUID, "")
         XCTAssertNil(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID))
     }
+    
+    
+    func testAPIServiceShouldAlwayGetTheLastAuthCredentialsFromKeychain() throws {
+        // GIVEN
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
+
+        let apiManager = givenApiManager()
+
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
+                       Credential(unauthSessionCredentials))
+        
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
+
+        XCTAssertEqual(apiManager.authHelper.credential(sessionUID: apiManager.apiService.sessionUID),
+                       Credential(userData.credential))
+    }
 
     func testAPIServiceAuthSessionInvalidationClearsCredentialsAndLogsOut() throws {
         // GIVEN
-        let userDataData = try JSONEncoder().encode(userData)
-        let lockedSession = try Locked<Data>(clearValue: userDataData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.userDataKey else { return nil }
-            return lockedSession.encryptedValue // auth session in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
+
         let apiManager = givenApiManager()
 
         let sessionWasInvalidatedExpectation = expectation(description: "Session should be invalidated")
@@ -263,16 +215,11 @@ final class APIManagerTests: XCTestCase {
 
     func testAPIServiceAuthCredentialsUpdateSetsNewUnauthCredentials() throws {
         // GIVEN
-        let unauthSessionData = try JSONEncoder().encode(unauthSessionCredentials)
-        let lockedSession = try Locked<Data>(clearValue: unauthSessionData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.unauthSessionKey else { return nil }
-            return lockedSession.encryptedValue // auth session in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+        SharedDataContainer.shared.credentialProvider().setCredential(unauthSessionCredentials)
+
         let apiManager = givenApiManager()
 
-        let newUnauthCredentials = AuthCredential(sessionID: "new_test_session_id",
+        let newUnauthCredentials = AuthCredential(sessionID: "test_session_id",
                                                   accessToken: "new_test_access_token",
                                                   refreshToken: "new_test_refresh_token",
                                                   userName: "",
@@ -287,20 +234,12 @@ final class APIManagerTests: XCTestCase {
         )
 
         // THEN
-        XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce)
-        XCTAssertEqual(keychain.setDataStub.lastArguments?.second, unauthSessionKey)
-        let encryptedValue = try XCTUnwrap(keychain.setDataStub.lastArguments?.first)
-        let unlockedSessionData = try Locked<Data>(encryptedValue: encryptedValue)
-            .unlock(with: mainKey)
-        let unlockedSession = try JSONDecoder().decode(AuthCredential.self, from: unlockedSessionData)
 
-        /*
-         let newUnauthSessionData = try JSONEncoder().encode(newUnauthCredentials)
-         XCTAssertEqual(unlockedSessionData, newUnauthSessionData)
+        guard let unlockedSession = apiManager.authHelper.authCredential(sessionUID: unauthSessionCredentials.sessionID) else {
+            XCTFail("Should contain authCredential")
+            return
+        }
 
-         This no more works after upgrading to Xcode 15 and iOS 17
-         Work around by asserting field by field
-         */
         XCTAssertEqual(unlockedSession.accessToken, newUnauthCredentials.accessToken)
         XCTAssertEqual(unlockedSession.refreshToken, newUnauthCredentials.refreshToken)
         XCTAssertEqual(unlockedSession.sessionID, newUnauthCredentials.sessionID)
@@ -308,18 +247,13 @@ final class APIManagerTests: XCTestCase {
         XCTAssertEqual(unlockedSession.userID, newUnauthCredentials.userID)
     }
 
-    func testAPIServiceAuthCredentialsUpdateUpdatesAuthSesson() throws {
+    func testAPIServiceAuthCredentialsUpdateUpdatesAuthSession() throws {
         // GIVEN
-        let userDataData = try JSONEncoder().encode(userData)
-        let lockedSession = try Locked<Data>(clearValue: userDataData, with: mainKey)
-        keychain.dataStub.bodyIs { _, key in
-            guard key == self.userDataKey else { return nil }
-            return lockedSession.encryptedValue // auth session in keychain
-        }
-        mainKeyProvider.mainKeyStub.fixture = mainKey
+        SharedDataContainer.shared.credentialProvider().setCredential(userData.credential)
+
         let apiManager = givenApiManager()
 
-        let newUnauthCredentials = AuthCredential(sessionID: "new_test_session_id",
+        let newUnauthCredentials = AuthCredential(sessionID: "test_session_id",
                                                   accessToken: "new_test_access_token",
                                                   refreshToken: "new_test_refresh_token",
                                                   userName: "",
@@ -334,13 +268,10 @@ final class APIManagerTests: XCTestCase {
         )
 
         // THEN
-        XCTAssertTrue(keychain.setDataStub.wasCalledExactlyOnce)
-        XCTAssertEqual(keychain.setDataStub.lastArguments?.second, userDataKey)
-        let encryptedValue = try XCTUnwrap(keychain.setDataStub.lastArguments?.first)
-        let unlockedUserData = try Locked<Data>(encryptedValue: encryptedValue)
-            .unlock(with: mainKey)
-        let newUserData = try JSONDecoder().decode(UserData.self, from: unlockedUserData)
-        XCTAssertEqual(Credential(newUserData.credential), Credential(newUnauthCredentials))
-        XCTAssertEqual(newUserData.user, userData.user)
+        guard let newCredential = apiManager.authHelper.authCredential(sessionUID: userData.credential.sessionID) else {
+            XCTFail("Should contain authCredential")
+            return
+        }
+        XCTAssertEqual(Credential(newCredential), Credential(newUnauthCredentials))
     }
 }

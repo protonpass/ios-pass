@@ -35,8 +35,9 @@ public extension View {
 }
 
 public extension Text {
-    func sectionTitleText() -> Text {
-        font(.footnote).foregroundColor(Color(uiColor: PassColor.textWeak))
+    func sectionTitleText(isValid: Bool = true) -> Text {
+        font(.footnote)
+            .foregroundColor(Color(uiColor: isValid ? PassColor.textWeak : PassColor.signalDanger))
     }
 
     func sectionContentText() -> Text {

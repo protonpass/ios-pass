@@ -21,7 +21,7 @@
 import CoreData
 import Entities
 
-public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalItemDatasourceProtocol {
     // Get all items (both active & trashed)
     func getAllItems() async throws -> [SymmetricallyEncryptedItem]
 
@@ -67,7 +67,9 @@ public protocol LocalItemDatasourceProtocol: LocalDatasourceProtocol {
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 }
 
-public extension LocalItemDatasourceProtocol {
+public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}
+
+public extension LocalItemDatasource {
     func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
@@ -217,5 +219,3 @@ public extension LocalItemDatasourceProtocol {
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 }
-
-public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}

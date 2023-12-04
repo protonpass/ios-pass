@@ -22,6 +22,7 @@
 
 import Client
 import DesignSystem
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations

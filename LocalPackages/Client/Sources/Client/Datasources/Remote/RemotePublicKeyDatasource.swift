@@ -21,22 +21,16 @@
 import Entities
 import ProtonCoreServices
 
-/// Special repository that doesn't conform to `BaseRemoteDatasourceProtocol`
-/// because it doesn't need `AuthCredential`
 public protocol RemotePublicKeyDatasourceProtocol {
     func getPublicKeys(email: String) async throws -> [PublicKey]
 }
 
-public struct RemotePublicKeyDatasource: RemotePublicKeyDatasourceProtocol {
-    public let apiService: APIService
+public final class RemotePublicKeyDatasource: RemoteDatasource, RemotePublicKeyDatasourceProtocol {}
 
-    public init(apiService: APIService) {
-        self.apiService = apiService
-    }
-
-    public func getPublicKeys(email: String) async throws -> [PublicKey] {
+public extension RemotePublicKeyDatasource {
+    func getPublicKeys(email: String) async throws -> [PublicKey] {
         let endpoint = GetPublicKeysEndpoint(email: email)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.address.keys
     }
 }

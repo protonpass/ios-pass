@@ -52,16 +52,18 @@ public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
         self.apiService = apiService
         self.userDataProvider = userDataProvider
     }
+}
 
+public extension ReportRepository {
     /// Sends a user bug report
     /// - Parameters:
     ///   - title: The bug title
     ///   - description: The bug description
     ///   - logs: The last user logs
     /// - Returns: `True` if the bug was sent correctly or and `Error` if not
-    public func sendBug(with title: String,
-                        and description: String,
-                        optional logs: [String: URL]) async throws -> Bool {
+    func sendBug(with title: String,
+                 and description: String,
+                 optional logs: [String: URL]) async throws -> Bool {
         guard let userData = userDataProvider.getUserData() else {
             throw ReportRepositoryError.noUserData
         }
@@ -81,8 +83,7 @@ public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
     ///   - title: The feedback title
     ///   - description: The feedback description
     /// - Returns: `True` if the  feedback was sent correctly or and `Error` if not
-    public func sendFeedback(with title: String,
-                             and description: String) async throws -> Bool {
+    func sendFeedback(with title: String, and description: String) async throws -> Bool {
         let request = FeedbackRequest(with: title, and: description)
         let endpoint = FeedbackEndpoint(request: request)
         return try await apiService.exec(endpoint: endpoint).isSuccessful

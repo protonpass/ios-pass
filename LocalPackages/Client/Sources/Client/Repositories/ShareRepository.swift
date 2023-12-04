@@ -90,11 +90,11 @@ public extension ShareRepositoryProtocol {
 }
 
 public actor ShareRepository: ShareRepositoryProtocol {
-    public let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
-    public let localDatasource: LocalShareDatasourceProtocol
-    public let remoteDatasouce: RemoteShareDatasourceProtocol
-    public let passKeyManager: PassKeyManagerProtocol
-    public let logger: Logger
+    private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
+    private let localDatasource: LocalShareDatasourceProtocol
+    private let remoteDatasouce: RemoteShareDatasourceProtocol
+    private let passKeyManager: PassKeyManagerProtocol
+    private let logger: Logger
 
     public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
                 localDatasource: LocalShareDatasourceProtocol,
@@ -343,7 +343,7 @@ private extension ShareRepository {
 
     /// Symmetrically encrypt but return `nil` when encounting inactive user key instead of throwing
     /// We don't want to throw errors and stop the whole decryption process when we find an inactive user key
-    func symmetricallyEncryptNullable(_ share: Share) async throws -> SymmetricallyEncryptedShare? {
+    @Sendable func symmetricallyEncryptNullable(_ share: Share) async throws -> SymmetricallyEncryptedShare? {
         do {
             return try await symmetricallyEncrypt(share)
         } catch {

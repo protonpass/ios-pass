@@ -22,10 +22,12 @@ public protocol RemoteUserSettingsDatasourceProtocol {
     func getUserSettings() async throws -> UserSettings
 }
 
-public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol {
-    public func getUserSettings() async throws -> UserSettings {
+public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol {}
+
+public extension RemoteUserSettingsDatasource {
+    func getUserSettings() async throws -> UserSettings {
         let endpoint = GetUserSettingsEndpoint()
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.userSettings
     }
 }

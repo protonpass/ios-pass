@@ -25,15 +25,21 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public protocol AliasRepositoryProtocol {
-    var remoteDatasouce: RemoteAliasDatasourceProtocol { get }
-
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     @discardableResult
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 }
 
-public extension AliasRepositoryProtocol {
+public actor AliasRepository: AliasRepositoryProtocol {
+    private let remoteDatasouce: RemoteAliasDatasourceProtocol
+
+    public init(remoteDatasouce: RemoteAliasDatasourceProtocol) {
+        self.remoteDatasouce = remoteDatasouce
+    }
+}
+
+public extension AliasRepository {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
         try await remoteDatasouce.getAliasOptions(shareId: shareId)
     }
@@ -44,27 +50,5 @@ public extension AliasRepositoryProtocol {
 
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         try await remoteDatasouce.changeMailboxes(shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
-    }
-}
-
-// MARK: - Public supporting tasks
-
-public extension AliasRepositoryProtocol {
-    func getAliasDetailsTask(shareId: String, itemId: String) -> Task<Alias, Error> {
-        Task.detached(priority: .userInitiated) {
-            try await getAliasDetails(shareId: shareId, itemId: itemId)
-        }
-    }
-}
-
-public actor AliasRepository: AliasRepositoryProtocol {
-    public let remoteDatasouce: RemoteAliasDatasourceProtocol
-
-    public init(remoteDatasouce: RemoteAliasDatasourceProtocol) {
-        self.remoteDatasouce = remoteDatasouce
-    }
-
-    public init(apiService: APIService) {
-        remoteDatasouce = RemoteAliasDatasource(apiService: apiService)
     }
 }
