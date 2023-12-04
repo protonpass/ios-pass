@@ -34,6 +34,7 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
 
+@MainActor
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -79,6 +80,11 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     init() {
         setUp()
     }
+
+    func loadPinnedItems() async {
+        guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey() else { return }
+        pinnedItems = try? await getAllPinnedItems().compactMap { try? $0.toItemUiModel(symmetricKey) }
+    }
 }
 
 // MARK: - Private APIs
@@ -123,7 +129,7 @@ private extension ItemsTabViewModel {
                       let pinnedItems else {
                     return
                 }
-                let firstPinnedItems = Array(pinnedItems.prefix(7))
+                let firstPinnedItems = Array(pinnedItems.prefix(5))
                 self.pinnedItems = firstPinnedItems.compactMap { try? $0.toItemUiModel(symmetricKey) }
             }
             .store(in: &cancellables)
@@ -253,6 +259,22 @@ extension ItemsTabViewModel {
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
+    }
+}
+
+// MARK: - Pull to refresh
+
+extension ItemsTabViewModel {
+    @MainActor
+    @Sendable
+    func forceSync() async {
+        await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
+            guard let self else { return }
+            pullToRefreshContinuation = continuation
+            syncEventLoop.pullToRefreshDelegate = self
+            syncEventLoop.forceSync()
+        }
+        await itemRepository.refreshDataStream()
     }
 }
 

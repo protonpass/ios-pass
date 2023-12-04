@@ -30,7 +30,7 @@ public struct UnpinItemEndpoint: Endpoint {
     public var method: HTTPMethod
 
     public init(shareId: String, itemId: String) {
-        debugDescription = "Pin item"
+        debugDescription = "Unpin item"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/pin"
         method = .delete
     }
