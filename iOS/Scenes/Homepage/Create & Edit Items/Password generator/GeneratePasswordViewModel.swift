@@ -55,7 +55,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     let mode: GeneratePasswordViewMode
 
     @Published private(set) var password = ""
-    @Published private(set) var strength: PasswordStrength = .weak
+    @Published private(set) var strength: PasswordStrength = .vulnerable
 
     @AppStorage("passwordType", store: kSharedUserDefaults)
     private(set) var type: PasswordType = .memorable {
@@ -123,7 +123,7 @@ extension GeneratePasswordViewModel {
     func regenerate(forceRefresh: Bool = true) {
         do {
             defer {
-                strength = getPasswordStrength(password: password)
+                strength = getPasswordStrength(password: password) ?? .vulnerable
             }
 
             switch type {
