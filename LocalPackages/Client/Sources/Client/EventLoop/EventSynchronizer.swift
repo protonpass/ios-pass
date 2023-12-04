@@ -274,6 +274,7 @@ private extension EventSynchronizer {
             logger.info("Force full sync for share \(shareId)")
             hasNewEvents = true
             try await itemRepository.refreshItems(shareId: shareId)
+            await itemRepository.refreshDataStream()
             return
         }
 
@@ -289,6 +290,7 @@ private extension EventSynchronizer {
             hasNewEvents = true
             logger.trace("Found \(events.updatedItems.count) updated items for share \(shareId)")
             try await itemRepository.upsertItems(events.updatedItems, shareId: shareId)
+            await itemRepository.refreshDataStream()
         }
 
         try Task.checkCancellation()
@@ -298,6 +300,7 @@ private extension EventSynchronizer {
             try await itemRepository.deleteItemsLocally(itemIds: events.deletedItemIDs,
                                                         shareId: shareId)
         }
+
         try Task.checkCancellation()
         if !events.lastUseItems.isEmpty {
             hasNewEvents = true

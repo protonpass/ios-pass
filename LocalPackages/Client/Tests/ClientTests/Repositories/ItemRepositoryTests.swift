@@ -59,52 +59,12 @@ final class ItemRepositoryTests: XCTestCase {
     }
 }
 
-//public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
-//            localDatasource: LocalItemDatasourceProtocol,
-//            remoteDatasource: RemoteItemDatasourceProtocol,
-//            shareEventIDRepository: ShareEventIDRepositoryProtocol,
-//            passKeyManager: PassKeyManagerProtocol,
-//            logManager: LogManagerProtocol)
-
-
-//public actor ItemRepository: ItemRepositoryProtocol {
-//    private let userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider
-//    private let localDatasource: LocalItemDatasourceProtocol
-//    private let remoteDatasource: RemoteItemDatasourceProtocol
-//    private let shareEventIDRepository: ShareEventIDRepositoryProtocol
-//    private let passKeyManager: PassKeyManagerProtocol
-//    private let logger: Logger
-//
-//    public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
-//
-//    public init(userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider,
-//                localDatasource: LocalItemDatasourceProtocol,
-//                remoteDatasource: RemoteItemDatasourceProtocol,
-//                shareEventIDRepository: ShareEventIDRepositoryProtocol,
-//                passKeyManager: PassKeyManagerProtocol,
-//                logManager: LogManagerProtocol) {
-//        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
-//        self.localDatasource = localDatasource
-//        self.remoteDatasource = remoteDatasource
-//        self.shareEventIDRepository = shareEventIDRepository
-//        self.passKeyManager = passKeyManager
-//        logger = .init(manager: logManager)
-//        Task { [weak self] in
-//            let pinnedItems = try? await self?.localDatasource.getAllPinnedItems()
-//            self?.currentlyPinnedItems.send(pinnedItems)
-//        }
-//    }
-//}
-
 // MARK: - Pinned tests
 
 extension ItemRepositoryTests {
     
-    func testPinnedItem() async throws {
-        // Given
-//        let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
-//                                                    thresholdProvider: thresholdProvider)
-        
+    func testGetAllPinnedItem() async throws {
+        (localDatasource as? LocalItemDatasourceProtocolMock)?.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(item:.random(pinned: true)))
         sut = ItemRepository(userDataSymmetricKeyProvider: userDataSymmetricKeyProvider,
                              localDatasource: localDatasource,
                              remoteDatasource: remoteDatasource,
@@ -113,14 +73,10 @@ extension ItemRepositoryTests {
                              logManager: logManager)
         
         let pinnedItems = try await sut.getAllPinnedItems()
-        XCTAssertTrue(pinnedItems.isEmpty)
-//
-//        // When
-//        let sendResult = try await sut.sendAllEventsIfApplicable()
-//
-//        // Then
-//        XCTAssertNotNil(sut.scheduler.threshhold)
-//        XCTAssertEqual(sendResult, .thresholdNotReached)
+        XCTAssertFalse(pinnedItems.isEmpty)
+        XCTAssertEqual(pinnedItems.count, 10)
+        XCTAssertEqual(sut.currentlyPinnedItems.value?.count, 10)
+        XCTAssertTrue((localDatasource as? LocalItemDatasourceProtocolMock)!.invokedGetAllPinnedItemsfunction)
+        XCTAssertEqual((localDatasource as? LocalItemDatasourceProtocolMock)?.invokedGetAllPinnedItemsCount, 2)
     }
-
 }
