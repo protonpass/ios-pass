@@ -174,11 +174,16 @@ struct LogInDetailView: View {
 
     private var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
+            if let passwordStrength = viewModel.passwordStrength {
+                PasswordStrengthIcon(strength: passwordStrength)
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.key, color: iconTintColor)
+            }
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Password")
-                    .sectionTitleText()
+                Text(viewModel.passwordStrength.sectionTitle)
+                    .font(.footnote)
+                    .foregroundColor(viewModel.passwordStrength.sectionTitleColor)
 
                 if viewModel.password.isEmpty {
                     Text("Empty")
@@ -188,7 +193,7 @@ struct LogInDetailView: View {
                         Text(viewModel.coloredPasswordTexts)
                             .font(.body.monospaced())
                     } else {
-                        Text(String(repeating: "•", count: 20))
+                        Text(String(repeating: "•", count: 12))
                             .sectionContentText()
                     }
                 }
@@ -198,15 +203,6 @@ struct LogInDetailView: View {
             .onTapGesture(perform: viewModel.copyPassword)
 
             Spacer()
-
-            if let passwordStrength = viewModel.passwordStrength {
-                Label { Text(passwordStrength.title)
-                    .font(.caption)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                } icon: { Image(systemName: passwordStrength.iconName)
-                    .foregroundColor(passwordStrength.color)
-                }
-            }
 
             if !viewModel.password.isEmpty {
                 CircleButton(icon: isShowingPassword ? IconProvider.eyeSlash : IconProvider.eye,
