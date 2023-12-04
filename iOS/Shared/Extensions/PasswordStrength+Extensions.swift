@@ -57,3 +57,21 @@ extension PasswordStrength {
         }
     }
 }
+
+extension PasswordStrength? {
+    var sectionTitle: String {
+        if let self {
+            #localized("Password") + " • " + self.title
+        } else {
+            #localized("Password")
+        }
+    }
+
+    var sectionTitleColor: Color {
+        if let self {
+            self.color
+        } else {
+            PassColor.textWeak.toColor
+        }
+    }
+}
