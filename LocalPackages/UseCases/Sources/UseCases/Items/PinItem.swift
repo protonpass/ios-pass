@@ -25,12 +25,12 @@ import Core
 import Entities
 
 public protocol PinItemUseCase: Sendable {
-    func execute(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem
+    func execute(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
 }
 
 public extension PinItemUseCase {
-    func callAsFunction(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
-        try await execute(shareId: shareId, itemId: itemId)
+    func callAsFunction(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
+        try await execute(item: item)
     }
 }
 
@@ -44,8 +44,8 @@ public final class PinItem: PinItemUseCase {
         logger = .init(manager: logManager)
     }
 
-    public func execute(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Pinning item \(itemId)")
-        return try await itemRepository.pinItem(shareId: shareId, itemId: itemId)
+    public func execute(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Pinning item \(item.itemId)")
+        return try await itemRepository.pinItem(item: item)
     }
 }

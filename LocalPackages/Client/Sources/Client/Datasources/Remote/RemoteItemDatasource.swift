@@ -36,8 +36,8 @@ public protocol RemoteItemDatasourceProtocol {
     func updateLastUseTime(shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> ItemRevision
     func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> ItemRevision
     func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision]
-    func pin(shareId: String, itemId: String) async throws -> ItemRevision
-    func unpin(shareId: String, itemId: String) async throws -> ItemRevision
+    func pin(item: any ItemIdentifiable) async throws -> ItemRevision
+    func unpin(item: any ItemIdentifiable) async throws -> ItemRevision
 }
 
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
@@ -139,14 +139,14 @@ public extension RemoteItemDatasource {
         return response.items
     }
 
-    func pin(shareId: String, itemId: String) async throws -> ItemRevision {
-        let endpoint = PinItemEndpoint(shareId: shareId, itemId: itemId)
+    func pin(item: any ItemIdentifiable) async throws -> ItemRevision {
+        let endpoint = PinItemEndpoint(shareId: item.shareId, itemId: item.itemId)
         let response = try await exec(endpoint: endpoint)
         return response.item
     }
 
-    func unpin(shareId: String, itemId: String) async throws -> ItemRevision {
-        let endpoint = UnpinItemEndpoint(shareId: shareId, itemId: itemId)
+    func unpin(item: any ItemIdentifiable) async throws -> ItemRevision {
+        let endpoint = UnpinItemEndpoint(shareId: item.shareId, itemId: item.itemId)
         let response = try await exec(endpoint: endpoint)
         return response.item
     }

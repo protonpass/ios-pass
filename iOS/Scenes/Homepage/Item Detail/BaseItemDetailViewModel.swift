@@ -167,9 +167,9 @@ class BaseItemDetailViewModel: ObservableObject {
                 logger.trace("beginning of pin/unpin of \(itemContent.debugDescription)")
 
                 let newItemState = if itemContent.item.pinned {
-                    try await unpinItem(shareId: itemContent.shareId, itemId: itemContent.itemId)
+                    try await unpinItem(item: itemContent)
                 } else {
-                    try await pinItem(shareId: itemContent.shareId, itemId: itemContent.itemId)
+                    try await pinItem(item: itemContent)
                 }
                 updateItem(with: newItemState)
                 router.display(element: .successMessage(#localized("Item Successfully %@",

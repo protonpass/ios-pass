@@ -111,11 +111,13 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get active log in items of all shares
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 
-    func pinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem
+    func pinItem(item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
 
-    func unpinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem
+    func unpinItem(item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
+
+    func refreshDataStream() async
 }
 
 public extension ItemRepositoryProtocol {
@@ -148,8 +150,10 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
         Task { [weak self] in
-            let pinnedItems = try? await self?.localDatasource.getAllPinnedItems()
-            self?.currentlyPinnedItems.send(pinnedItems)
+            guard let self else {
+                return
+            }
+            await refreshDataStream()
         }
     }
 }
@@ -375,6 +379,10 @@ public extension ItemRepository {
         let encryptedItems = try await items.parallelMap { [weak self] in
             try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }.compactMap { $0 }
+        
+        //We are removing the items before insert due to the bug of non updating boolean variables on coredata entities causing us
+        // issues when following value like pinned status
+        try await localDatasource.deleteItems(encryptedItems)
         try await localDatasource.upsertItems(encryptedItems)
     }
 
@@ -460,11 +468,11 @@ public extension ItemRepository {
 // MARK: - item Pinning functionalities
 
 public extension ItemRepository {
-    func pinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Pin item \(itemId) for share \(shareId)")
-        let pinItemRevision = try await remoteDatasource.pin(shareId: shareId, itemId: itemId)
+    func pinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Pin item \(item.itemId) for share \(item.shareId)")
+        let pinItemRevision = try await remoteDatasource.pin(item: item)
         logger.trace("Updating item \(pinItemRevision.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision, shareId: shareId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision, shareId: item.shareId)
         // we are deleting the entity due to a bug in core data that doesn't take into account boolean updates
         try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
@@ -474,11 +482,11 @@ public extension ItemRepository {
         return encryptedItem
     }
 
-    func unpinItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Pin item \(itemId) for share \(shareId)")
-        let unpinItemRevision = try await remoteDatasource.unpin(shareId: shareId, itemId: itemId)
+    func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
+        logger.trace("Unpiin item \(item.itemId) for share \(item.shareId)")
+        let unpinItemRevision = try await remoteDatasource.unpin(item: item)
         logger.trace("Updating item \(unpinItemRevision.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision, shareId: shareId)
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision, shareId: item.shareId)
         // we are deleting the entity due to a bug in core data that doesn't take into account boolean updates
         try await localDatasource.deleteItems([encryptedItem])
         try await localDatasource.upsertItems([encryptedItem])
@@ -486,6 +494,15 @@ public extension ItemRepository {
         let pinnedItems = try await localDatasource.getAllPinnedItems()
         currentlyPinnedItems.send(pinnedItems)
         return encryptedItem
+    }
+}
+
+// MARK: - Refresh
+
+public extension ItemRepository {
+    func refreshDataStream() async {
+        let pinnedItems = try? await localDatasource.getAllPinnedItems()
+        currentlyPinnedItems.send(pinnedItems)
     }
 }
 

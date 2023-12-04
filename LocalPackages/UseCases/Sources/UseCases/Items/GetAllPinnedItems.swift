@@ -26,11 +26,16 @@ import Entities
 
 public protocol GetAllPinnedItemsUseCase: Sendable {
     func execute() -> CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>
+    func execute() async throws -> [SymmetricallyEncryptedItem]
 }
 
 public extension GetAllPinnedItemsUseCase {
     func callAsFunction() -> CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> {
         execute()
+    }
+
+    func callAsFunction() async throws -> [SymmetricallyEncryptedItem] {
+        try await execute()
     }
 }
 
@@ -43,5 +48,9 @@ public final class GetAllPinnedItems: GetAllPinnedItemsUseCase {
 
     public func execute() -> CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> {
         itemRepository.currentlyPinnedItems
+    }
+
+    public func execute() async throws -> [SymmetricallyEncryptedItem] {
+        try await itemRepository.getAllPinnedItems()
     }
 }

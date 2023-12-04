@@ -245,40 +245,40 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         return stubbedMoveFromShareIdRequestResult
     }
     // MARK: - pin
-    public var pinShareIdItemIdThrowableError: Error?
+    public var pinItemThrowableError: Error?
     public var closurePin: () -> () = {}
     public var invokedPinfunction = false
     public var invokedPinCount = 0
-    public var invokedPinParameters: (shareId: String, itemId: String)?
-    public var invokedPinParametersList = [(shareId: String, itemId: String)]()
+    public var invokedPinParameters: (item: any ItemIdentifiable, Void)?
+    public var invokedPinParametersList = [(item: any ItemIdentifiable, Void)]()
     public var stubbedPinResult: ItemRevision!
 
-    public func pin(shareId: String, itemId: String) async throws -> ItemRevision {
+    public func pin(item: any ItemIdentifiable) async throws -> ItemRevision {
         invokedPinfunction = true
         invokedPinCount += 1
-        invokedPinParameters = (shareId, itemId)
-        invokedPinParametersList.append((shareId, itemId))
-        if let error = pinShareIdItemIdThrowableError {
+        invokedPinParameters = (item, ())
+        invokedPinParametersList.append((item, ()))
+        if let error = pinItemThrowableError {
             throw error
         }
         closurePin()
         return stubbedPinResult
     }
     // MARK: - unpin
-    public var unpinShareIdItemIdThrowableError: Error?
+    public var unpinItemThrowableError: Error?
     public var closureUnpin: () -> () = {}
     public var invokedUnpinfunction = false
     public var invokedUnpinCount = 0
-    public var invokedUnpinParameters: (shareId: String, itemId: String)?
-    public var invokedUnpinParametersList = [(shareId: String, itemId: String)]()
+    public var invokedUnpinParameters: (item: any ItemIdentifiable, Void)?
+    public var invokedUnpinParametersList = [(item: any ItemIdentifiable, Void)]()
     public var stubbedUnpinResult: ItemRevision!
 
-    public func unpin(shareId: String, itemId: String) async throws -> ItemRevision {
+    public func unpin(item: any ItemIdentifiable) async throws -> ItemRevision {
         invokedUnpinfunction = true
         invokedUnpinCount += 1
-        invokedUnpinParameters = (shareId, itemId)
-        invokedUnpinParametersList.append((shareId, itemId))
-        if let error = unpinShareIdItemIdThrowableError {
+        invokedUnpinParameters = (item, ())
+        invokedUnpinParametersList.append((item, ()))
+        if let error = unpinItemThrowableError {
             throw error
         }
         closureUnpin()
