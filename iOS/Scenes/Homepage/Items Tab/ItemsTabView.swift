@@ -226,6 +226,7 @@ struct ItemsTabView: View {
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
+        .disabled(!viewModel.isSelectable(item))
     }
 }
 

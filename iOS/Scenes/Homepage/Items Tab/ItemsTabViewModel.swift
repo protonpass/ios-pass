@@ -192,6 +192,12 @@ extension ItemsTabViewModel {
         currentSelectedItems.value.contains(item)
     }
 
+    func isSelectable(_ item: ItemTypeIdentifiable) -> Bool {
+        guard isEditMode else { return true }
+        let editableVaults = vaultsManager.getAllEditableVaultContents()
+        return editableVaults.contains { $0.vault.shareId == item.shareId }
+    }
+
     func selectOrDeselect(_ item: ItemTypeIdentifiable) {
         var items = currentSelectedItems.value
         if items.contains(item) {
