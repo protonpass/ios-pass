@@ -22,6 +22,7 @@
 @testable import Proton_Pass
 import Client
 import Entities
+import UseCases
 
 final class GetCurrentShareInviteInformationsUseCaseMock: @unchecked Sendable, GetCurrentShareInviteInformationsUseCase {
     // MARK: - execute

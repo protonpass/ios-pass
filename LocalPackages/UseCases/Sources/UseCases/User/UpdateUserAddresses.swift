@@ -61,7 +61,6 @@ public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
                                    scopes: userdata.scopes)
 
         userDataProvider.setUserData(newUserData)
-
         return newAddresses
     }
 }

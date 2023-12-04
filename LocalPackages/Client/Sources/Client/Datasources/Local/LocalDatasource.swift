@@ -22,7 +22,7 @@ import CoreData
 
 public let kProtonPassContainerName = "ProtonPass"
 
-enum TaskContextType: String {
+public enum TaskContextType: String {
     case insert = "insertContext"
     case delete = "deleteContext"
     case fetch = "fetchContext"
@@ -52,14 +52,9 @@ public enum LocalDatasourceError: Error, CustomDebugStringConvertible {
     }
 }
 
-/// A base local datasource protocol that has CoreData common operations
-public protocol LocalDatasourceProtocol {
-    var container: NSPersistentContainer { get }
-}
-
 public class LocalDatasource {
     private let databaseService: DatabaseServiceProtocol
-    public var container: NSPersistentContainer {
+    private var container: NSPersistentContainer {
         databaseService.container
     }
 
@@ -71,7 +66,7 @@ public class LocalDatasource {
     }
 }
 
-extension LocalDatasourceProtocol {
+public extension LocalDatasource {
     /// Creates and configures a private queue context.
     func newTaskContext(type: TaskContextType,
                         transactionAuthor: String = #function) -> NSManagedObjectContext {
@@ -104,7 +99,7 @@ extension LocalDatasourceProtocol {
 
 // MARK: - Covenience core data methods
 
-extension LocalDatasourceProtocol {
+extension LocalDatasource {
     func execute(batchInsertRequest request: NSBatchInsertRequest,
                  context: NSManagedObjectContext) async throws {
         try await context.perform {
