@@ -190,7 +190,7 @@ struct LogInDetailView: View {
                         .placeholderText()
                 } else {
                     if isShowingPassword {
-                        Text(viewModel.coloredPasswordTexts)
+                        Text(viewModel.coloredPassword)
                             .font(.body.monospaced())
                     } else {
                         Text(String(repeating: "•", count: 12))
