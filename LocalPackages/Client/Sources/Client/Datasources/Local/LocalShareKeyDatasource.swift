@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalShareKeyDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalShareKeyDatasourceProtocol {
     /// Get keys of a share
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
@@ -29,9 +29,14 @@ public protocol LocalShareKeyDatasourceProtocol: LocalDatasourceProtocol {
 
     /// Remove all keys of a share
     func removeAllKeys(shareId: String) async throws
+
+    /// Remove all keys for all shares
+    func removeAllKeys() async throws
 }
 
-public extension LocalShareKeyDatasourceProtocol {
+public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol {}
+
+public extension LocalShareKeyDatasource {
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ShareKeyEntity.fetchRequest()
@@ -57,6 +62,11 @@ public extension LocalShareKeyDatasourceProtocol {
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
-}
 
-public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol {}
+    func removeAllKeys() async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ShareKeyEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+}

@@ -24,11 +24,12 @@ import ProtonCoreServices
 import XCTest
 
 final class RemoteFavIconDatasourceTests: XCTestCase {
-    var sut: RemoteFavIconDatasourceProtocol!
+    var sut: RemoteFavIconDatasource!
 
     override func setUp() {
         super.setUp()
-        sut = RemoteFavIconDatasource(apiService: PMAPIService.dummyService())
+        sut = RemoteFavIconDatasource(apiService: PMAPIService.dummyService(), 
+                                      eventStream: .init())
     }
 
     override func tearDown() {
@@ -56,7 +57,7 @@ extension RemoteFavIconDatasourceTests {
         }
     }
 
-    func testReturnNegativeWhenStatusCode200AndDataNil() async throws {
+    func testReturnNegativeWhenStatusCode200AndDataNil() throws {
         // Given
         let expectation = expectation(description: "Should be \"not exist\"")
         let givenDataResponse = DataResponse.random(statusCode: 200, protonCode: nil, data: nil)
@@ -79,7 +80,7 @@ extension RemoteFavIconDatasourceTests {
         wait(for: [expectation], timeout: 1)
     }
 
-    func testReturnNegativeWhenStatusCode204AndDataNil() async throws {
+    func testReturnNegativeWhenStatusCode204AndDataNil() throws {
         // Given
         let expectation = expectation(description: "Should be \"not exist\"")
         let givenDataResponse = DataResponse.random(statusCode: 204, protonCode: nil, data: nil)
@@ -126,7 +127,7 @@ extension RemoteFavIconDatasourceTests {
         }
     }
 
-    func testThrowErrorWhenHttpStatusCodeAndErrorsAreNotKnown() async throws {
+    func testThrowErrorWhenHttpStatusCodeAndErrorsAreNotKnown() throws {
         // Given
         let expectation = expectation(description: "Should throw an error")
         let givenDataResponse = DataResponse.random(statusCode: .random(in: 1_000...Int.max),

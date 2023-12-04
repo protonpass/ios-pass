@@ -27,3 +27,18 @@ public enum ItemContentType: Int, CaseIterable, Equatable, Sendable {
     case note = 2
     case creditCard = 3
 }
+
+extension ItemContentType: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .login:
+            "login"
+        case .alias:
+            "alias"
+        case .note:
+            "note"
+        case .creditCard:
+            "creditCard"
+        }
+    }
+}

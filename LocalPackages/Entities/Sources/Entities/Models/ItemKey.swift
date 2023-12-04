@@ -36,7 +36,7 @@ public struct ItemKey: Codable, Equatable, Hashable, Sendable {
     }
 
     // custom decoder
-    public init(from decoder: Decoder) throws {
+    public init(from decoder: any Decoder) throws {
         // keys that work with `JSONDecoder.KeyDecodingStrategy.decapitaliseFirstLetter`
         enum DecodingKeys: String, CodingKey {
             case key

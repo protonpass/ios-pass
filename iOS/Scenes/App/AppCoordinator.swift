@@ -53,11 +53,13 @@ final class AppCoordinator {
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let appData = resolve(\SharedDataContainer.appData)
-    private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
+    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
+    private var corruptedSessionStream: AnyCancellable?
 
-    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
+    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
 
     init(window: UIWindow) {
         self.window = window
@@ -70,24 +72,28 @@ final class AppCoordinator {
         // if ui test reset everything
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             isUITest = true
-            wipeAllData(includingUnauthSession: true)
+            resetAllData()
         }
 
         apiManager.sessionWasInvalidated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] sessionUID in
-                SentrySDK.capture(error: PassError.unexpectedLogout) { scope in
-                    scope.setTag(value: sessionUID, key: "sessionUID")
-                }
-                // swiftlint:disable:next discouraged_optional_self
-                self?.appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
-            }.store(in: &cancellables)
+                guard let self else { return }
+                captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
+            }
+            .store(in: &cancellables)
+    }
+
+    deinit {
+        corruptedSessionStream?.cancel()
+        corruptedSessionStream = nil
     }
 
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
         appData.setUserData(nil)
+        appData.setCredential(nil)
     }
 
     private func bindAppState() {
@@ -99,32 +105,39 @@ final class AppCoordinator {
                 switch appState {
                 case let .loggedOut(reason):
                     logger.info("Logged out \(reason)")
-                    let shouldWipeUnauthSession = reason != .noAuthSessionButUnauthSessionAvailable
-                    wipeAllData(includingUnauthSession: shouldWipeUnauthSession)
-                    showWelcomeScene(reason: reason)
-
-                case let .loggedIn(userData, manualLogIn):
-                    logger.info("Logged in manual \(manualLogIn)")
-                    if manualLogIn {
-                        // Only update userData when manually log in
-                        // because otherwise we'd just rewrite the same userData object
-                        appData.setUserData(userData)
+                    if reason != .noAuthSessionButUnauthSessionAvailable {
+                        resetAllData()
                     }
-                    apiManager.sessionIsAvailable(authCredential: userData.credential,
-                                                  scopes: userData.scopes)
-                    showHomeScene(manualLogIn: manualLogIn)
-
+                    showWelcomeScene(reason: reason)
+                case .alreadyLoggedIn:
+                    logger.info("Already logged in")
+                    connectToCorruptedSessionStream()
+                    showHomeScene(manualLogIn: false)
+                case let .manuallyLoggedIn(userData):
+                    logger.info("Logged in manual")
+                    appData.setUserData(userData)
+                    connectToCorruptedSessionStream()
+                    showHomeScene(manualLogIn: true)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
             }
             .store(in: &cancellables)
+
+        preferences
+            .objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self else { return }
+                window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+            }
+            .store(in: &cancellables)
     }
 
     func start() {
-        if let userData = appData.getUserData() {
-            appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: false))
-        } else if appData.getUnauthCredential() != nil {
+        if appData.isAuthenticated {
+            appStateObserver.updateAppState(.alreadyLoggedIn)
+        } else if appData.getCredential() != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
@@ -140,6 +153,7 @@ final class AppCoordinator {
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
             handle(logOutReason: reason)
+            stopStream()
         }
     }
 
@@ -162,18 +176,44 @@ final class AppCoordinator {
     private func animateUpdateRootViewController(_ newRootViewController: UIViewController,
                                                  completion: (() -> Void)? = nil) {
         window.rootViewController = newRootViewController
+        window.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
         UIView.transition(with: window,
                           duration: 0.35,
                           options: .transitionCrossDissolve,
                           animations: nil) { _ in completion?() }
     }
 
-    private func wipeAllData(includingUnauthSession: Bool) {
+    private func resetAllData() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            await wipeAllData(includingUnauthSession: includingUnauthSession, isTests: isUITest)
+            await wipeAllData(isTests: isUITest)
             SharedViewContainer.shared.reset()
         }
+    }
+}
+
+// MARK: - Utils
+
+private extension AppCoordinator {
+    func connectToCorruptedSessionStream() {
+        guard corruptedSessionStream == nil else {
+            return
+        }
+
+        corruptedSessionStream = corruptedSessionEventStream
+            .removeDuplicates()
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] reason in
+                guard let self else { return }
+                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
+            }
+    }
+
+    func stopStream() {
+        corruptedSessionEventStream.send(nil)
+        corruptedSessionStream?.cancel()
+        corruptedSessionStream = nil
     }
 }
 
@@ -197,13 +237,20 @@ private extension AppCoordinator {
             break
         }
     }
+
+    func captureErrorAndLogOut(_ error: Error, sessionId: String) {
+        SentrySDK.capture(error: error) { scope in
+            scope.setTag(value: sessionId, key: "sessionUID")
+        }
+        appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
+    }
 }
 
 // MARK: - WelcomeCoordinatorDelegate
 
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinator(didFinishWith userData: LoginData) {
-        appStateObserver.updateAppState(.loggedIn(userData: userData, manualLogIn: true))
+        appStateObserver.updateAppState(.manuallyLoggedIn(userData))
     }
 }
 

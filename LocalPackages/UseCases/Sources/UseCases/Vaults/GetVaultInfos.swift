@@ -22,6 +22,7 @@
 
 import Client
 import Combine
+import Entities
 
 public protocol GetVaultInfosUseCase: Sendable {
     func execute(for id: String) -> AnyPublisher<Vault?, Never>

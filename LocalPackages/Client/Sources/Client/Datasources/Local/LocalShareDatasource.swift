@@ -20,7 +20,7 @@
 
 import CoreData
 
-public protocol LocalShareDatasourceProtocol: LocalDatasourceProtocol {
+public protocol LocalShareDatasourceProtocol {
     func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare?
     func getAllShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
     func upsertShares(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws
@@ -28,7 +28,9 @@ public protocol LocalShareDatasourceProtocol: LocalDatasourceProtocol {
     func removeAllShares(userId: String) async throws
 }
 
-public extension LocalShareDatasourceProtocol {
+public final class LocalShareDatasource: LocalDatasource, LocalShareDatasourceProtocol {}
+
+public extension LocalShareDatasource {
     func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare? {
         let taskContext = newTaskContext(type: .fetch)
 
@@ -84,5 +86,3 @@ public extension LocalShareDatasourceProtocol {
                           context: taskContext)
     }
 }
-
-public final class LocalShareDatasource: LocalDatasource, LocalShareDatasourceProtocol {}

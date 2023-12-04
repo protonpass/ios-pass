@@ -21,6 +21,7 @@
 //
 
 import Client
+import Entities
 
 public protocol GetUserShareStatusUseCase: Sendable {
     func execute(for vault: Vault) -> UserShareStatus

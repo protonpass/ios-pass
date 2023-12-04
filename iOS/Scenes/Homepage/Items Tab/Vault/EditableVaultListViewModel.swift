@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Entities
 import Factory
 import Foundation
 import Macro
@@ -88,7 +89,8 @@ private extension EditableVaultListViewModel {
             .sink { [weak self] newState in
                 guard let self else { return }
                 state = newState
-            }.store(in: &cancellables)
+            }
+            .store(in: &cancellables)
     }
 
     func doDelete(vault: Vault) {
@@ -142,29 +144,23 @@ extension EditableVaultListViewModel {
     }
 
     func delete(vault: Vault) {
-        let itemCount = vaultsManager.getItemCount(for: .precise(vault))
-        let hasTrashedItems = vaultsManager.vaultHasTrashedItems(vault)
-        if itemCount == 0, !hasTrashedItems {
-            doDelete(vault: vault)
-        } else {
-            delegate?.editableVaultListViewModelWantsToConfirmDelete(vault: vault, delegate: self)
-        }
+        delegate?.editableVaultListViewModelWantsToConfirmDelete(vault: vault, delegate: self)
     }
 
     func restoreAllTrashedItems() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.loading = false }
+            defer { loading = false }
             do {
-                self.logger.trace("Restoring all trashed items")
-                self.loading = true
-                try await self.vaultsManager.restoreAllTrashedItems()
-                self.router.display(element: .successMessage(#localized("All items restored"),
-                                                             config: .refresh))
-                self.logger.info("Restored all trashed items")
+                logger.trace("Restoring all trashed items")
+                loading = true
+                try await vaultsManager.restoreAllTrashedItems()
+                router.display(element: .successMessage(#localized("All items restored"),
+                                                        config: .refresh))
+                logger.info("Restored all trashed items")
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -172,17 +168,17 @@ extension EditableVaultListViewModel {
     func emptyTrash() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            defer { self.loading = false }
+            defer { loading = false }
             do {
-                self.logger.trace("Emptying all trashed items")
-                self.loading = true
-                try await self.vaultsManager.permanentlyDeleteAllTrashedItems()
-                self.router.display(element: .infosMessage(#localized("All items permanently deleted"),
-                                                           config: .refresh))
-                self.logger.info("Emptied all trashed items")
+                logger.trace("Emptying all trashed items")
+                loading = true
+                try await vaultsManager.permanentlyDeleteAllTrashedItems()
+                router.display(element: .infosMessage(#localized("All items permanently deleted"),
+                                                      config: .refresh))
+                logger.info("Emptied all trashed items")
             } catch {
-                self.logger.error(error)
-                self.router.display(element: .displayErrorBanner(error))
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }

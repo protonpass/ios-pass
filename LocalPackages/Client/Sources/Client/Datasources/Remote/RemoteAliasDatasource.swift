@@ -21,22 +21,24 @@
 import Entities
 import Foundation
 
-public protocol RemoteAliasDatasourceProtocol: RemoteDatasourceProtocol {
+public protocol RemoteAliasDatasourceProtocol {
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 }
 
-public extension RemoteAliasDatasourceProtocol {
+public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
+
+public extension RemoteAliasDatasource {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
         let endpoint = GetAliasOptionsEndpoint(shareId: shareId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.options
     }
 
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
         let endpoint = GetAliasDetailsEndpoint(shareId: shareId, itemId: itemId)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.alias
     }
 
@@ -44,9 +46,7 @@ public extension RemoteAliasDatasourceProtocol {
         let endpoint = ChangeMailboxesEndpoint(shareId: shareId,
                                                itemId: itemId,
                                                mailboxIDs: mailboxIDs)
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await exec(endpoint: endpoint)
         return response.alias
     }
 }
-
-public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}

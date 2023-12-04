@@ -21,7 +21,7 @@
 
 import Foundation
 
-public enum ItemThumbnailData: Equatable {
+public enum ItemThumbnailData: Equatable, Sendable {
     case icon(type: ItemContentType)
     case initials(type: ItemContentType, initials: String)
     case favIcon(type: ItemContentType, url: String, initials: String)

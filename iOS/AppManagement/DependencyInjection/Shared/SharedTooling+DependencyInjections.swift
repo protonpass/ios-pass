@@ -35,16 +35,7 @@ final class SharedToolingContainer: SharedContainer, AutoRegistering {
     let manager = ContainerManager()
 
     private init() {
-        let key = "ProtonPass"
-        switch Bundle.main.infoDictionary?["MODULE"] as? String {
-        case "AUTOFILL_EXTENSION":
-            FactoryContext.setArg(PassModule.autoFillExtension, forKey: key)
-        case "KEYBOARD_EXTENSION":
-            FactoryContext.setArg(PassModule.keyboardExtension, forKey: key)
-        default:
-            // Default to host app
-            break
-        }
+        Self.setUpContext()
     }
 
     func autoRegister() {
@@ -109,6 +100,7 @@ extension SharedToolingContainer {
 
     var theme: Factory<Theme> {
         self { self.preferences().theme }
+            .unique
     }
 
     var currentDateProvider: Factory<CurrentDateProviderProtocol> {
@@ -141,9 +133,13 @@ extension SharedToolingContainer {
     }
 }
 
-// MARK: Local authentication
+// MARK: Authentication
 
 extension SharedToolingContainer {
+    var authManager: Factory<AuthManagerProtocol> {
+        self { AuthManager(credentialProvider: SharedDataContainer.shared.credentialProvider()) }
+    }
+
     /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
     var localAuthenticationEnablingPolicy: Factory<LAPolicy> {
         self { .deviceOwnerAuthentication }

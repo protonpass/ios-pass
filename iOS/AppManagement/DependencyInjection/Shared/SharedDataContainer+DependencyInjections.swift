@@ -31,8 +31,18 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()
     let manager = ContainerManager()
 
+    init() {
+        Self.setUpContext()
+    }
+
     func autoRegister() {
         manager.defaultScope = .singleton
+    }
+}
+
+private extension SharedDataContainer {
+    var migrationStateProvider: CredentialsMigrationStateProvider {
+        SharedToolingContainer.shared.preferences()
     }
 }
 
@@ -41,11 +51,20 @@ extension SharedDataContainer {
         self { LoginMethodFlow() }
     }
 
-    var appData: Factory<AppData> {
-        self { AppData() }
+    var appData: Factory<AppDataProtocol> {
+        self { AppData(module: .hostApp,
+                       migrationStateProvider: self.migrationStateProvider) }
+            .onArg(PassModule.autoFillExtension) { AppData(module: .autoFillExtension,
+                                                           migrationStateProvider: self.migrationStateProvider) }
+            .onArg(PassModule.keyboardExtension) { AppData(module: .keyboardExtension,
+                                                           migrationStateProvider: self.migrationStateProvider) }
     }
 
     var userDataProvider: Factory<UserDataProvider> {
+        self { self.appData() }
+    }
+
+    var credentialProvider: Factory<CredentialProvider> {
         self { self.appData() }
     }
 

@@ -29,7 +29,7 @@ public enum InviteeData {
 }
 
 // sourcery: AutoMockable
-public protocol ShareInviteRepositoryProtocol {
+public protocol ShareInviteRepositoryProtocol: Sendable {
     func getAllPendingInvites(shareId: String) async throws -> ShareInvites
 
     func sendInvite(shareId: String,
@@ -52,8 +52,8 @@ public protocol ShareInviteRepositoryProtocol {
 }
 
 public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
-    public let remoteDataSource: RemoteShareInviteDatasourceProtocol
-    public let logger: Logger
+    private let remoteDataSource: RemoteShareInviteDatasourceProtocol
+    private let logger: Logger
 
     public init(remoteDataSource: RemoteShareInviteDatasourceProtocol,
                 logManager: LogManagerProtocol) {

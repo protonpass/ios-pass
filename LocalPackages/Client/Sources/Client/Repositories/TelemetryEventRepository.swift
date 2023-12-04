@@ -44,14 +44,14 @@ public protocol TelemetryEventRepositoryProtocol {
 }
 
 public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
-    public let localDatasource: LocalTelemetryEventDatasourceProtocol
-    public let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
-    public let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
-    public let accessRepository: AccessRepositoryProtocol
-    public let eventCount: Int
-    public let logger: Logger
+    private let localDatasource: LocalTelemetryEventDatasourceProtocol
+    private let remoteDatasource: RemoteTelemetryEventDatasourceProtocol
+    private let remoteUserSettingsDatasource: RemoteUserSettingsDatasourceProtocol
+    private let accessRepository: AccessRepositoryProtocol
+    private let eventCount: Int
+    private let logger: Logger
     public let scheduler: TelemetrySchedulerProtocol
-    public let userDataProvider: UserDataProvider
+    private let userDataProvider: UserDataProvider
 
     public init(localDatasource: LocalTelemetryEventDatasourceProtocol,
                 remoteDatasource: RemoteTelemetryEventDatasourceProtocol,

@@ -247,10 +247,24 @@ private extension CreateEditLoginView {
     }
 
     var passwordTextFieldToolbar: some View {
-        Button(action: viewModel.generatePassword) {
+        ScrollView(.horizontal) {
             HStack {
-                toolbarIcon(uiImage: IconProvider.arrowsRotate)
-                Text("Generate password")
+                Button(action: viewModel.pastePasswordFromClipboard) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.squares)
+                        Text("Paste from clipboard")
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+
+                PassDivider()
+
+                Button(action: viewModel.generatePassword) {
+                    HStack {
+                        toolbarIcon(uiImage: IconProvider.arrowsRotate)
+                        Text("Generate password")
+                    }
+                }
             }
         }
         .animationsDisabled()
@@ -409,11 +423,16 @@ private extension CreateEditLoginView {
 
     var passwordRow: some View {
         HStack(spacing: kItemDetailSectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.key)
+            if let passwordStrength = viewModel.passwordStrength {
+                PasswordStrengthIcon(strength: passwordStrength)
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.key)
+            }
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
-                Text("Password")
-                    .sectionTitleText()
+                Text(viewModel.passwordRowTitle)
+                    .font(.footnote)
+                    .foregroundColor(viewModel.passwordStrength?.color ?? PassColor.signalDanger.toColor)
 
                 SensitiveTextField(text: $viewModel.password,
                                    placeholder: #localized("Add password"),
@@ -446,6 +465,7 @@ private extension CreateEditLoginView {
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: viewModel.password.isEmpty)
         .animation(.default, value: focusedField)
+        .animation(.default, value: viewModel.passwordStrength)
         .id(passwordID)
     }
 
@@ -469,7 +489,7 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: kItemDetailSectionPadding / 4) {
                 Text("2FA secret (TOTP)")
-                    .sectionTitleText()
+                    .sectionTitleText(isValid: viewModel.totpUriErrorMessage.isEmpty)
 
                 SensitiveTextField(text: $viewModel.totpUri,
                                    placeholder: #localized("Add 2FA secret"),
@@ -481,6 +501,10 @@ private extension CreateEditLoginView {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundColor(Color(uiColor: PassColor.textNorm))
+
+                if !viewModel.totpUriErrorMessage.isEmpty {
+                    InvalidInputLabel(viewModel.totpUriErrorMessage)
+                }
 
                 if #unavailable(iOS 16) {
                     if focusedField == .totp {
@@ -502,6 +526,7 @@ private extension CreateEditLoginView {
         }
         .padding(.horizontal, kItemDetailSectionPadding)
         .animation(.default, value: focusedField)
+        .animation(.default, value: viewModel.totpUriErrorMessage.isEmpty)
         .sheet(isPresented: $viewModel.isShowingNoCameraPermissionView) {
             NoCameraPermissionView(onOpenSettings: viewModel.openSettings)
         }
