@@ -76,7 +76,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
     var passwordRowTitle: String {
-        #localized("Password") + " • " + (passwordStrength ?? .weak).title
+        if let passwordStrength {
+            #localized("Password") + " • " + passwordStrength.title
+        } else {
+            #localized("Password")
+        }
     }
 
     override init(mode: ItemMode,
@@ -331,9 +335,9 @@ private extension CreateEditLoginViewModel {
         $password
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .sink { [weak self] passwordValue in
+            .sink { [weak self] password in
                 guard let self else { return }
-                passwordStrength = getPasswordStrength(password: passwordValue)
+                passwordStrength = password.isEmpty ? nil : getPasswordStrength(password: password)
             }
             .store(in: &cancellables)
     }
