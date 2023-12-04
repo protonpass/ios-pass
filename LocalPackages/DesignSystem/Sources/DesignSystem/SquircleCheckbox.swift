@@ -23,29 +23,13 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct SquircleCheckbox: View {
-    private let isChecked: Bool
     private let height: CGFloat
 
-    public init(isChecked: Bool, height: CGFloat = 40) {
-        self.isChecked = isChecked
+    public init(height: CGFloat = 40) {
         self.height = height
     }
 
     public var body: some View {
-        ZStack {
-            if isChecked {
-                checkedView
-            } else {
-                uncheckedView
-            }
-        }
-        .frame(width: height, height: height)
-        .animation(.default, value: isChecked)
-    }
-}
-
-private extension SquircleCheckbox {
-    var checkedView: some View {
         ZStack {
             Color(uiColor: PassColor.interactionNorm)
                 .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
@@ -56,15 +40,6 @@ private extension SquircleCheckbox {
                 .frame(width: height / 2)
                 .foregroundStyle(PassColor.textNorm.toColor)
         }
-    }
-}
-
-private extension SquircleCheckbox {
-    var uncheckedView: some View {
-        Color.clear
-            .overlay {
-                RoundedRectangle(cornerRadius: height / 2.5, style: .continuous)
-                    .strokeBorder(PassColor.inputBorderNorm.toColor, lineWidth: 2)
-            }
+        .frame(width: height, height: height)
     }
 }

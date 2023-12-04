@@ -111,12 +111,13 @@ private extension ItemsTabTopBar {
                     isEditMode = false
                     viewModel.deselectAllItems()
                 }, label: {
-                    Image(systemName: "arrow.left")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                 })
 
                 if viewModel.selectedItemsCount > 0 {
                     Text(verbatim: "\(viewModel.selectedItemsCount)")
+                        .font(.title3.bold())
                         .foregroundStyle(PassColor.textNorm.toColor)
                 }
 
