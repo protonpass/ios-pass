@@ -33,9 +33,8 @@ protocol GeneratePasswordViewModelUiDelegate: AnyObject {
 }
 
 enum PasswordUtils {
-    static func generateColoredPasswords(_ password: String) -> [Text] {
-        var texts = [Text]()
-        password.forEach { char in
+    static func generateColoredPassword(_ password: String) -> AttributedString {
+        let attributedChars = password.map { char in
             var color = Color(uiColor: PassColor.textNorm)
             if AllowedCharacter.digit.rawValue.contains(char) {
                 color = Color(uiColor: PassColor.loginInteractionNormMajor2)
@@ -43,9 +42,14 @@ enum PasswordUtils {
                 AllowedCharacter.separator.rawValue.contains(char) {
                 color = Color(uiColor: PassColor.aliasInteractionNormMajor2)
             }
-            texts.append(Text(String(char)).foregroundColor(color))
+            var attributedChar = AttributedString("\(char)")
+            attributedChar.foregroundColor = color
+            return attributedChar
         }
-        return texts
+        var attributedString = attributedChars.reduce(into: .init()) { $0 += $1 }
+        // Set an empty language id to trick SwiftUI into not adding hyphens for multiline passwords
+        attributedString.languageIdentifier = ""
+        return attributedString
     }
 }
 
@@ -101,7 +105,9 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     weak var delegate: GeneratePasswordViewModelDelegate?
     weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
 
-    var texts: [Text] { PasswordUtils.generateColoredPasswords(password) }
+    var coloredPassword: AttributedString {
+        PasswordUtils.generateColoredPassword(password)
+    }
 
     private var cachedWords = [String]()
 
