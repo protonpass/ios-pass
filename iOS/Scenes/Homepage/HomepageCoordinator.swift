@@ -92,9 +92,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
         setUpRouting()
         finalizeInitialization()
-        vaultsManager.refresh()
         start()
-        eventLoop.start()
+        synchroniseData()
         refreshAccess()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
@@ -145,13 +144,6 @@ private extension HomepageCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logger.info("App goes back to foreground")
-                apiManager.startCredentialUpdate()
-            }
-            .store(in: &cancellables)
-
-        apiManager.credentialFinishedUpdating
-            .sink { [weak self] _ in
-                guard let self else { return }
                 refresh()
                 sendAllEventsIfApplicable()
                 eventLoop.start()
@@ -198,6 +190,18 @@ private extension HomepageCoordinator {
 
         start(with: homeView, secondaryView: placeholderView)
         rootViewController.overrideUserInterfaceStyle = preferences.theme.userInterfaceStyle
+    }
+
+    func synchroniseData() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await vaultsManager.asyncRefresh()
+                eventLoop.start()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 
     func refreshAccess() {
@@ -883,7 +887,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
         }
     }
 
-    func itemsTabViewModelWantsViewDetail(of itemContent: Client.ItemContent) {
+    func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
     }
 }
@@ -987,7 +991,6 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToDeleteAccount() {
-        let apiManager = resolve(\SharedToolingContainer.apiManager)
         let accountDeletion = AccountDeletionService(api: apiManager.apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
@@ -1062,13 +1065,13 @@ extension HomepageCoordinator: SettingsViewModelDelegate {
     }
 
     func settingsViewModelWantsToClearLogs() {
-        Task {
+        Task { @MainActor [weak self] in
+            guard let self else {
+                return
+            }
             let modules = PassModule.allCases.map(LogManager.init)
             await modules.asyncForEach { await $0.removeAllLogs() }
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
-            }
+            bannerManager.displayBottomSuccessMessage(#localized("All logs cleared"))
         }
     }
 }
@@ -1229,7 +1232,7 @@ extension HomepageCoordinator: ItemContextMenuHandlerDelegate {
 // MARK: - SearchViewModelDelegate
 
 extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToViewDetail(of itemContent: Client.ItemContent) {
+    func searchViewModelWantsToViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: true)
         addNewEvent(type: .searchClick)
     }

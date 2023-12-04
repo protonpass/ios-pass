@@ -24,7 +24,8 @@ import Foundation
 // https://gist.github.com/wilg/47a04c8f5083a6938da6087f77333784
 public extension Collection {
     func parallelMap<T: Sendable>(parallelism requestedParallelism: Int? = nil,
-                                  _ transform: @escaping (Element) async throws -> T) async rethrows -> [T] {
+                                  _ transform: @escaping @Sendable (Element) async throws -> T) async rethrows
+        -> [T] {
         let defaultParallelism = 2
         let parallelism = requestedParallelism ?? defaultParallelism
 

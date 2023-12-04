@@ -55,6 +55,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     let mode: GeneratePasswordViewMode
 
     @Published private(set) var password = ""
+    @Published private(set) var strength: PasswordStrength = .weak
 
     @AppStorage("passwordType", store: kSharedUserDefaults)
     private(set) var type: PasswordType = .memorable {
@@ -107,6 +108,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private let generatePassword = resolve(\SharedUseCasesContainer.generatePassword)
     private let generateRandomWords = resolve(\SharedUseCasesContainer.generateRandomWords)
     private let generatePassphrase = resolve(\SharedUseCasesContainer.generatePassphrase)
+    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init(mode: GeneratePasswordViewMode) {
@@ -120,6 +122,10 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 extension GeneratePasswordViewModel {
     func regenerate(forceRefresh: Bool = true) {
         do {
+            defer {
+                strength = getPasswordStrength(password: password)
+            }
+
             switch type {
             case .random:
                 password = try generatePassword(length: Int(characterCount),

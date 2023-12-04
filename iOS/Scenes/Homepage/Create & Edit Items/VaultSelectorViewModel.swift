@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import Entities
 import Factory
 
 final class VaultSelectorViewModel: ObservableObject, DeinitPrintable {

@@ -10,6 +10,16 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
+let swiftSettings: [SwiftSetting] = [
+//   .enableUpcomingFeature("BareSlashRegexLiterals"),
+//   .enableUpcomingFeature("ConciseMagicFile"),
+//   .enableUpcomingFeature("ExistentialAny"),
+//   .enableUpcomingFeature("ForwardTrailingClosures"),
+//   .enableUpcomingFeature("ImplicitOpenExistentials"),
+//   .enableUpcomingFeature("StrictConcurrency=targeted"),
+//   .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks"])
+]
+
 let package = Package(name: "Core",
                       platforms: platforms,
                       products: [
@@ -44,7 +54,9 @@ let package = Package(name: "Core",
                                   ],
                                   resources: [
                                       .process("Resources")
-                                  ]),
+                                  ],
+                                  swiftSettings: swiftSettings
+                                 ),
                           .testTarget(name: "CoreTests",
                                       dependencies: [
                                           "Core",

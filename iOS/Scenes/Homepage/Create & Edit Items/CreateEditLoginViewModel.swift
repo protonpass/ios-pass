@@ -43,8 +43,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var title = ""
     @Published var username = ""
     @Published var password = ""
+    @Published private(set) var passwordStrength: PasswordStrength?
     private var originalTotpUri = ""
     @Published var totpUri = ""
+    @Published private(set) var totpUriErrorMessage = ""
     @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
     @Published var invalidURLs = [String]()
     @Published var note = ""
@@ -69,8 +71,13 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
     private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
 
     var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+
+    var passwordRowTitle: String {
+        #localized("Password") + " • " + (passwordStrength ?? .weak).title
+    }
 
     override init(mode: ItemMode,
                   upgradeChecker: UpgradeCheckerProtocol,
@@ -126,19 +133,25 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return #localized("Create & AutoFill")
     }
 
-    override func generateItemContent() throws -> ItemContentProtobuf {
-        let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
-        let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
-                                                            editedUri: totpUri)
-        let logInData = ItemContentData.login(.init(username: username,
-                                                    password: password,
-                                                    totpUri: sanitizedTotpUri,
-                                                    urls: sanitizedUrls))
-        return ItemContentProtobuf(name: title,
-                                   note: note,
-                                   itemUuid: UUID().uuidString,
-                                   data: logInData,
-                                   customFields: customFieldUiModels.map(\.customField))
+    @MainActor
+    override func generateItemContent() -> ItemContentProtobuf? {
+        do {
+            let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
+            let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
+                                                                editedUri: totpUri)
+            let logInData = ItemContentData.login(.init(username: username,
+                                                        password: password,
+                                                        totpUri: sanitizedTotpUri,
+                                                        urls: sanitizedUrls))
+            return ItemContentProtobuf(name: title,
+                                       note: note,
+                                       itemUuid: UUID().uuidString,
+                                       data: logInData,
+                                       customFields: customFieldUiModels.map(\.customField))
+        } catch {
+            totpUriErrorMessage = #localized("Invalid TOTP URI")
+            return nil
+        }
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
@@ -225,6 +238,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         totpUri = UIPasteboard.general.string ?? ""
     }
 
+    func pastePasswordFromClipboard() {
+        password = UIPasteboard.general.string ?? ""
+    }
+
     func openCodeScanner() {
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -299,6 +316,24 @@ private extension CreateEditLoginViewModel {
                     aliasCreationLiteInfo = nil
                     username = ""
                 }
+            }
+            .store(in: &cancellables)
+
+        $totpUri
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                totpUriErrorMessage = ""
+            }
+            .store(in: &cancellables)
+
+        $password
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] passwordValue in
+                guard let self else { return }
+                passwordStrength = getPasswordStrength(password: passwordValue)
             }
             .store(in: &cancellables)
     }
