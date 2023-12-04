@@ -193,7 +193,6 @@ extension ItemsTabViewModel {
     }
 
     func isSelectable(_ item: ItemTypeIdentifiable) -> Bool {
-        guard isEditMode else { return true }
         let editableVaults = vaultsManager.getAllEditableVaultContents()
         return editableVaults.contains { $0.vault.shareId == item.shareId }
     }
@@ -206,6 +205,9 @@ extension ItemsTabViewModel {
             items.append(item)
         }
         currentSelectedItems.send(items)
+        if items.isEmpty {
+            isEditMode = false
+        }
     }
 
     func presentVaultListToMoveSelectedItems() {
