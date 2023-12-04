@@ -35,15 +35,15 @@ protocol GeneratePasswordViewModelUiDelegate: AnyObject {
 enum PasswordUtils {
     static func generateColoredPassword(_ password: String) -> AttributedString {
         let attributedChars = password.map { char in
-            var color = Color(uiColor: PassColor.textNorm)
-            if AllowedCharacter.digit.rawValue.contains(char) {
-                color = Color(uiColor: PassColor.loginInteractionNormMajor2)
+            var attributedChar = AttributedString("\(char)")
+            attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
+                PassColor.loginInteractionNormMajor2
             } else if AllowedCharacter.special.rawValue.contains(char) ||
                 AllowedCharacter.separator.rawValue.contains(char) {
-                color = Color(uiColor: PassColor.aliasInteractionNormMajor2)
+                PassColor.aliasInteractionNormMajor2
+            } else {
+                PassColor.textNorm
             }
-            var attributedChar = AttributedString("\(char)")
-            attributedChar.foregroundColor = color
             return attributedChar
         }
         var attributedString = attributedChars.reduce(into: .init()) { $0 += $1 }
