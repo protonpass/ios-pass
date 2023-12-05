@@ -24,11 +24,11 @@ import Client
 import Entities
 
 public protocol GetSearchableItemsUseCase: Sendable {
-    func execute(for searchSelection: SearchSelection) async throws -> [SearchableItem]
+    func execute(for searchSelection: SearchMode) async throws -> [SearchableItem]
 }
 
 public extension GetSearchableItemsUseCase {
-    func callAsFunction(for searchSelection: SearchSelection) async throws -> [SearchableItem] {
+    func callAsFunction(for searchSelection: SearchMode) async throws -> [SearchableItem] {
         try await execute(for: searchSelection)
     }
 }
@@ -49,13 +49,15 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
-    public func execute(for searchSelection: SearchSelection) async throws -> [SearchableItem] {
+    public func execute(for searchSelection: SearchMode) async throws -> [SearchableItem] {
         let vaults = try await shareRepository.getVaults()
 
         var items: [SymmetricallyEncryptedItem] = []
-        if searchSelection.isPinned {
+
+        switch searchSelection {
+        case .pinned:
             items = try await getAllPinnedItems()
-        } else if let vaultSelection = searchSelection.vaultSelection {
+        case let .all(vaultSelection):
             switch vaultSelection {
             case .all:
                 items = try await itemRepository.getItems(state: .active)

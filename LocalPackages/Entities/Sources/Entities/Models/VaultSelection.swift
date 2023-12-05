@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum VaultSelection: Hashable {
+public enum VaultSelection: Hashable, Sendable {
     case all
     case precise(Vault)
     case trash

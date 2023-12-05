@@ -190,10 +190,9 @@ private extension ItemsTabViewModel {
 extension ItemsTabViewModel {
     func search(pinnedItems: Bool = false) {
         if pinnedItems {
-            router.present(for: .search(SearchSelection(isPinned: true, vaultSelection: nil)))
+            router.present(for: .search(.pinned))
         } else {
-            router.present(for: .search(SearchSelection(isPinned: false,
-                                                        vaultSelection: vaultsManager.vaultSelection)))
+            router.present(for: .search(.all(vaultsManager.vaultSelection)))
         }
     }
 

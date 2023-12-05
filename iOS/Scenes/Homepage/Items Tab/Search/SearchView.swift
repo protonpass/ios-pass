@@ -75,7 +75,7 @@ struct SearchView: View {
                                         onClearResults: viewModel.removeAllSearchHistory)
 
             case let .noResults(query):
-                if let vaultSelection = viewModel.searchSelection.vaultSelection {
+                if case let .all(vaultSelection) = viewModel.searchMode {
                     switch vaultSelection {
                     case .all:
                         NoSearchResultsInAllVaultView(query: query)
