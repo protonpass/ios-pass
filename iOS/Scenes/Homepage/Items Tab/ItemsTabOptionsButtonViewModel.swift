@@ -43,12 +43,10 @@ final class ItemsTabOptionsButtonViewModel: ObservableObject {
 
     var selectable: Bool {
         switch vaultsManager.vaultSelection {
-        case .all:
+        case .all, .trash:
             true
         case let .precise(vault):
             vault.canEdit
-        case .trash:
-            true
         }
     }
 

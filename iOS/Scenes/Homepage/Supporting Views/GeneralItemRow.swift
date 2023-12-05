@@ -56,8 +56,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(title)
-                        .foregroundColor((isEnabled ?
-                                PassColor.textNorm : PassColor.textWeak).toColor)
+                        .foregroundColor((isEnabled ? PassColor.textNorm : PassColor.textWeak).toColor)
                     if let secondaryTitle {
                         Text(secondaryTitle)
                             .foregroundColor((isEnabled ?

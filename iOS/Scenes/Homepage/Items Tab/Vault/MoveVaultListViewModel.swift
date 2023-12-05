@@ -74,8 +74,8 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func doMove() {
-        assert(selectedVault != nil, "Should have a selected vault")
         guard let selectedVault else {
+            assertionFailure("Should have a selected vault")
             return
         }
         Task { @MainActor [weak self] in
