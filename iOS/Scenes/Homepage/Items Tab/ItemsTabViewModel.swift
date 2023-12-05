@@ -23,14 +23,13 @@ import Combine
 import Core
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsToSearch(vaultSelection: VaultSelection)
     func itemsTabViewModelWantsToCreateNewItem(type: ItemContentType)
     func itemsTabViewModelWantsToPresentVaultList()
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: SortTypeListViewModelDelegate)
     func itemsTabViewModelWantsToShowTrialDetail()
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
@@ -42,6 +41,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var selectedSortType = SortType.mostRecent
 
     @Published private(set) var banners: [InfoBanner] = []
+    @Published var isEditMode = false
     @Published var shouldShowSyncProgress = false
     @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
         didSet {
@@ -60,6 +60,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let preferences = resolve(\SharedToolingContainer.preferences)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
+    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
+    private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
+    private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
@@ -83,6 +87,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
+
+        currentSelectedItems
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                objectWillChange.send()
+            }
+            .store(in: &cancellables)
+
         getPendingUserInvitations()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
@@ -159,13 +172,110 @@ private extension ItemsTabViewModel {
             router.display(element: .displayErrorBanner(error))
         }
     }
+
+    func selectOrDeselect(_ item: ItemIdentifiable) {
+        var items = currentSelectedItems.value
+        if items.contains(item) {
+            items.removeAll(where: { $0.isEqual(with: item) })
+        } else {
+            items.append(item)
+        }
+        currentSelectedItems.send(items)
+        if items.isEmpty {
+            isEditMode = false
+        }
+    }
 }
 
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
+    @Sendable
+    func forceSyncIfNotEditMode() async {
+        if !isEditMode {
+            await forceSync()
+        }
+    }
+
     func search() {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
+    }
+
+    func isSelected(_ item: ItemIdentifiable) -> Bool {
+        currentSelectedItems.value.contains(item)
+    }
+
+    func isSelectable(_ item: ItemIdentifiable) -> Bool {
+        let editableVaults = vaultsManager.getAllEditableVaultContents()
+        return editableVaults.contains { $0.vault.shareId == item.shareId }
+    }
+
+    func presentVaultListToMoveSelectedItems() {
+        let items = currentSelectedItems.value
+        router.present(for: .moveItemsBetweenVaults(.selectedItems(items)))
+    }
+
+    func trashSelectedItems() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let items = currentSelectedItems.value
+                try await doTrashSelectedItems(items)
+                currentSelectedItems.send([])
+                let message = #localized("%lld items moved to trash", items.count)
+                router.display(element: .infosMessage(message, config: .dismissAndRefresh))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func restoreSelectedItems() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let items = currentSelectedItems.value
+                try await doRestoreSelectedItems(items)
+                currentSelectedItems.send([])
+                let message = #localized("Restored %lld items", items.count)
+                router.display(element: .successMessage(message, config: .dismissAndRefresh))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func permanentlyDeleteSelectedItems() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let items = currentSelectedItems.value
+                try await doPermanentlyDeleteSelectedItems(items)
+                currentSelectedItems.send([])
+                let message = #localized("Permanently deleted %lld items", items.count)
+                router.display(element: .infosMessage(message, config: .dismissAndRefresh))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func askForBulkPermanentDeleteConfirmation() {
+        let items = currentSelectedItems.value
+        guard !items.isEmpty else {
+            assertionFailure("No selected items to permanently delete")
+            return
+        }
+        router.alert(.bulkPermanentDeleteConfirmation(itemCount: items.count))
     }
 
     func createNewItem(type: ItemContentType) {
@@ -204,12 +314,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func presentSortTypeList() {
-        delegate?.itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                              delegate: self)
-    }
-
-    func viewDetail(of item: ItemUiModel) {
+    func viewDetail(of item: ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -223,21 +328,24 @@ extension ItemsTabViewModel {
         }
     }
 
-    func showFilterOptions() {
-        router.present(for: .filterItems)
+    func handleSelection(_ item: ItemIdentifiable) {
+        if isEditMode {
+            selectOrDeselect(item)
+        } else {
+            viewDetail(of: item)
+        }
+    }
+
+    func handleThumbnailSelection(_ item: ItemIdentifiable) {
+        if isSelectable(item) {
+            selectOrDeselect(item)
+            isEditMode = true
+        }
     }
 
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)
-    }
-}
-
-// MARK: - SortTypeListViewModelDelegate
-
-extension ItemsTabViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortType) {
-        selectedSortType = sortType
     }
 }
 
@@ -252,5 +360,11 @@ extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
 private extension [UserInvite] {
     var toInfoBanners: InfoBanner {
         .invite(self)
+    }
+}
+
+private extension [ItemIdentifiable] {
+    func contains(_ otherItem: ItemIdentifiable) -> Bool {
+        contains(where: { $0.isEqual(with: otherItem) })
     }
 }

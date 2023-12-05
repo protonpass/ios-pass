@@ -73,6 +73,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
 
     // References
+    private weak var itemsTabViewModel: ItemsTabViewModel?
     private weak var profileTabViewModel: ProfileTabViewModel?
     private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
@@ -158,6 +159,20 @@ private extension HomepageCoordinator {
         let itemsTabViewModel = ItemsTabViewModel()
         itemsTabViewModel.delegate = self
 
+        itemsTabViewModel.$isEditMode
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isEditMode in
+                guard let self else { return }
+                if isEditMode {
+                    homepageTabDelegete?.homepageTabShouldHideTabbar()
+                } else {
+                    homepageTabDelegete?.homepageTabShouldShowTabbar()
+                }
+            }
+            .store(in: &cancellables)
+
+        self.itemsTabViewModel = itemsTabViewModel
+
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
         profileTabViewModel.delegate = self
         self.profileTabViewModel = profileTabViewModel
@@ -217,6 +232,7 @@ private extension HomepageCoordinator {
 
     func refresh() {
         vaultsManager.refresh()
+        itemsTabViewModel?.isEditMode = false
         searchViewModel?.refreshResults()
         itemDetailCoordinator?.refresh()
         createEditItemCoordinator?.refresh()
@@ -279,8 +295,6 @@ private extension HomepageCoordinator {
                     presentSharingFlow(dismissal: dismissal)
                 case let .manageShareVault(vault, dismissal):
                     presentManageShareVault(with: vault, dismissal: dismissal)
-                case .filterItems:
-                    presentItemFilterOptions()
                 case let .acceptRejectInvite(invite):
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
@@ -299,8 +313,8 @@ private extension HomepageCoordinator {
                                                 titleMode: mode)
                 case .autoFillInstructions:
                     present(AutoFillInstructionsView())
-                case let .moveItemsBetweenVaults(currentVault, itemToMove):
-                    itemMoveBetweenVault(currentVault: currentVault, itemToMove: itemToMove)
+                case let .moveItemsBetweenVaults(context):
+                    itemMoveBetweenVault(context: context)
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault, itemContent):
@@ -337,6 +351,18 @@ private extension HomepageCoordinator {
                     displaySuccessBanner(with: message, and: config)
                 case let .infosMessage(message, config):
                     displayInfoBanner(with: message, and: config)
+                }
+            }
+            .store(in: &cancellables)
+
+        router
+            .alertDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .bulkPermanentDeleteConfirmation(itemCount):
+                    presentBulkPermanentDeleteConfirmation(itemCount: itemCount)
                 }
             }
             .store(in: &cancellables)
@@ -392,16 +418,6 @@ private extension HomepageCoordinator {
         case .all:
             dismissAllViewControllers(animated: true, completion: completion)
         }
-    }
-
-    func presentItemFilterOptions() {
-        let view = ItemTypeFilterOptionsView()
-        let viewController = UIHostingController(rootView: view)
-        let height = ItemTypeFilterOptionsView.rowHeight * CGFloat(ItemTypeFilterOption.allCases.count) + 70
-        viewController.setDetentType(.customAndLarge(height),
-                                     parentViewController: rootViewController)
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 
     func presentAcceptRejectInvite(with invite: UserInvite) {
@@ -526,6 +542,20 @@ private extension HomepageCoordinator {
         present(viewController)
     }
 
+    func presentBulkPermanentDeleteConfirmation(itemCount: Int) {
+        let title = #localized("Delete permanently?")
+        let message = #localized("You are going to delete %lld items irreversibly, are you sure?", itemCount)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: #localized("Delete"),
+                                         style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            itemsTabViewModel?.permanentlyDeleteSelectedItems()
+        }
+        alert.addAction(deleteAction)
+        alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
+        present(alert)
+    }
+
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
@@ -591,14 +621,12 @@ private extension HomepageCoordinator {
         }
     }
 
-    func itemMoveBetweenVault(currentVault: Vault, itemToMove: ItemContent?) {
+    func itemMoveBetweenVault(context: MovingContext) {
         let allVaults = vaultsManager.getAllEditableVaultContents()
         guard !allVaults.isEmpty else {
             return
         }
-        let viewModel = MoveVaultListViewModel(allVaults: allVaults,
-                                               currentVault: currentVault,
-                                               itemContent: itemToMove)
+        let viewModel = MoveVaultListViewModel(allVaults: allVaults, context: context)
         let view = MoveVaultListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
@@ -857,11 +885,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController)
-    }
-
-    func itemsTabViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: SortTypeListViewModelDelegate) {
-        presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
     }
 
     func itemsTabViewModelWantsToShowTrialDetail() {

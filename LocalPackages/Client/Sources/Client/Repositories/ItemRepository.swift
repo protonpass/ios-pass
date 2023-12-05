@@ -68,11 +68,18 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func trashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
+    func trashItems(_ items: [ItemIdentifiable]) async throws
+
     func deleteAlias(email: String) async throws
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
+    func untrashItems(_ items: [ItemIdentifiable]) async throws
+
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws
+
+    /// Permanently delete selected items
+    func delete(items: [ItemIdentifiable]) async throws
 
     func updateItem(oldItem: ItemRevision,
                     newItemContent: ProtobufableItemContentProtocol,
@@ -87,9 +94,7 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     @discardableResult
     func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
-    @discardableResult
-    func move(oldEncryptedItems: [SymmetricallyEncryptedItem], toShareId: String) async throws
-        -> [SymmetricallyEncryptedItem]
+    func move(items: [ItemIdentifiable], toShareId: String) async throws
 
     @discardableResult
     func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem]
@@ -268,6 +273,15 @@ public extension ItemRepository {
         }
     }
 
+    func trashItems(_ items: [ItemIdentifiable]) async throws {
+        logger.trace("Trashing \(items.count) items")
+        try await bulkAction(items: items) { [weak self] groupedItems, _ in
+            guard let self else { return }
+            try await trashItems(groupedItems)
+        }
+        logger.info("Trashed \(items.count) items")
+    }
+
     func deleteAlias(email: String) async throws {
         logger.trace("Deleting alias item \(email)")
         guard let item = try await localDatasource.getAliasItem(email: email) else {
@@ -296,6 +310,15 @@ public extension ItemRepository {
         }
     }
 
+    func untrashItems(_ items: [ItemIdentifiable]) async throws {
+        logger.trace("Bulk restoring \(items.count) items")
+        try await bulkAction(items: items) { [weak self] groupedItems, _ in
+            guard let self else { return }
+            try await untrashItems(groupedItems)
+        }
+        logger.info("Bulk restored \(items.count) items")
+    }
+
     func deleteItems(_ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws {
         let count = items.count
         logger.trace("Deleting \(count) items")
@@ -312,6 +335,15 @@ public extension ItemRepository {
                 logger.trace("Deleted \(batch.count) items for share \(shareId)")
             }
         }
+    }
+
+    func delete(items: [ItemIdentifiable]) async throws {
+        logger.trace("Bulk permanently deleting \(items.count) items")
+        try await bulkAction(items: items) { [weak self] groupedItems, _ in
+            guard let self else { return }
+            try await deleteItems(groupedItems, skipTrash: false)
+        }
+        logger.info("Bulk permanently deleted \(items.count) items")
     }
 
     func deleteAllItemsLocally() async throws {
@@ -395,31 +427,15 @@ public extension ItemRepository {
         return newEncryptedItem
     }
 
-    func move(oldEncryptedItems: [SymmetricallyEncryptedItem],
-              toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
-        guard let fromSharedId = oldEncryptedItems.first?.shareId else {
-            throw PassError.unexpectedError
+    func move(items: [ItemIdentifiable], toShareId: String) async throws {
+        logger.trace("Bulk moving \(items.count) items to share \(toShareId)")
+        try await bulkAction(items: items) { [weak self] groupedItems, shareId in
+            guard let self else { return }
+            if shareId != toShareId {
+                _ = try await move(oldEncryptedItems: groupedItems, toShareId: toShareId)
+            }
         }
-
-        let oldItemsContent = try oldEncryptedItems
-            .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
-        let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
-
-        let request = try MoveItemsRequest(itemsContent: oldItemsContent,
-                                           destinationShareId: toShareId,
-                                           destinationShareKey: destinationShareKey)
-
-        let newItems = try await remoteDatasource.move(fromShareId: fromSharedId,
-                                                       request: request)
-
-        let newEncryptedItems = try await newItems
-            .parallelMap { [weak self] in
-                try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: toShareId)
-            }.compactMap { $0 }
-        try await localDatasource.deleteItems(oldEncryptedItems)
-        try await localDatasource.upsertItems(newEncryptedItems)
-
-        return newEncryptedItems
+        logger.info("Bulk moved \(items.count) items to share \(toShareId)")
     }
 
     func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
@@ -530,6 +546,45 @@ private extension ItemRepository {
         } catch {
             throw error
         }
+    }
+
+    func move(oldEncryptedItems: [SymmetricallyEncryptedItem],
+              toShareId: String) async throws -> [SymmetricallyEncryptedItem] {
+        guard let fromSharedId = oldEncryptedItems.first?.shareId else {
+            throw PassError.unexpectedError
+        }
+
+        let oldItemsContent = try oldEncryptedItems
+            .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
+        let destinationShareKey = try await passKeyManager.getLatestShareKey(shareId: toShareId)
+
+        let request = try MoveItemsRequest(itemsContent: oldItemsContent,
+                                           destinationShareId: toShareId,
+                                           destinationShareKey: destinationShareKey)
+
+        let newItems = try await remoteDatasource.move(fromShareId: fromSharedId,
+                                                       request: request)
+
+        let newEncryptedItems = try await newItems
+            .parallelMap { [weak self] in
+                try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: toShareId)
+            }.compactMap { $0 }
+        try await localDatasource.deleteItems(oldEncryptedItems)
+        try await localDatasource.upsertItems(newEncryptedItems)
+
+        return newEncryptedItems
+    }
+
+    /// Group items by share and bulk actionning on those grouped items
+    func bulkAction(items: [ItemIdentifiable],
+                    action: ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
+        let shouldInclude: (SymmetricallyEncryptedItem) -> Bool = { item in
+            items.contains(where: { $0.isEqual(with: item) })
+        }
+        let allItems = try await getAllItems()
+        try await allItems.groupAndBulkAction(by: \.shareId,
+                                              shouldInclude: shouldInclude,
+                                              action: action)
     }
 }
 

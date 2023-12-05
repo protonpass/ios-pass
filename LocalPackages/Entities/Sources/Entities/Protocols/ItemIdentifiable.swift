@@ -29,6 +29,12 @@ public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible {
 }
 
 public extension ItemIdentifiable {
+    func isEqual(with otherItem: any ItemIdentifiable) -> Bool {
+        shareId == otherItem.shareId && itemId == otherItem.itemId
+    }
+}
+
+public extension ItemIdentifiable {
     var debugDescription: String {
         "Item \(itemId) - Share \(shareId)"
     }
