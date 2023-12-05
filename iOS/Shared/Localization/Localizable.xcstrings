@@ -44199,9 +44199,6 @@
         }
       }
     },
-    "Sort by" : {
-
-    },
     "Sort By" : {
       "comment" : "Items filtering",
       "extractionState" : "manual",

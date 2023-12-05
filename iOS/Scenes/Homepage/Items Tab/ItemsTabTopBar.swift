@@ -49,6 +49,7 @@ struct ItemsTabTopBar: View {
 private extension ItemsTabTopBar {
     var viewModeView: some View {
         HStack {
+            // Vault selector button
             switch viewModel.vaultSelection {
             case .all:
                 CircleButton(icon: PassIcon.brandPass,
@@ -73,6 +74,7 @@ private extension ItemsTabTopBar {
                     .frame(width: kSearchBarHeight)
             }
 
+            // Search bar
             ZStack {
                 Color(uiColor: PassColor.backgroundStrong)
                 HStack {
@@ -93,9 +95,7 @@ private extension ItemsTabTopBar {
             .frame(height: kSearchBarHeight)
             .onTapGesture(perform: onSearch)
 
-            ItemsTabOptionsButton {
-                isEditMode = true
-            }
+            ItemsTabOptionsButton(isEditMode: $isEditMode)
         }
         .padding(.horizontal)
     }

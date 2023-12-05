@@ -24,19 +24,21 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemsTabOptionsButton: View {
+    @Binding var isEditMode: Bool
     @StateObject private var viewModel = ItemsTabOptionsButtonViewModel()
-    var onSelectItems: () -> Void
 
     var body: some View {
         Menu(content: {
             if viewModel.selectable {
-                Button(action: onSelectItems) {
+                Button(action: {
+                    isEditMode = true
+                }, label: {
                     Label(title: {
                         Text("Select items")
                     }, icon: {
                         IconProvider.checkmarkCircle
                     })
-                }
+                })
             }
 
             // Filter options
