@@ -1,6 +1,6 @@
 //
-// Typealiases.swift
-// Proton Pass - Created on 22/11/2023.
+// SquircleCheckbox.swift
+// Proton Pass - Created on 30/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,11 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
-import Entities
+import ProtonCoreUIFoundations
+import SwiftUI
 
-public typealias UserDataSymmetricKeyProvider = SymmetricKeyProvider & UserDataProvider
-public typealias AppDataProtocol = CredentialProvider & Resettable & UserDataSymmetricKeyProvider
-public typealias VaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>
-public typealias CorruptedSessionEventStream = PassthroughSubject<CorruptedSessionReason?, Never>
-public typealias ShareID = String
+public struct SquircleCheckbox: View {
+    private let height: CGFloat
+
+    public init(height: CGFloat = 40) {
+        self.height = height
+    }
+
+    public var body: some View {
+        ZStack {
+            Color(uiColor: PassColor.interactionNorm)
+                .clipShape(RoundedRectangle(cornerRadius: height / 2.5, style: .continuous))
+
+            Image(uiImage: IconProvider.checkmark)
+                .resizable()
+                .scaledToFit()
+                .frame(width: height / 2)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }
+        .frame(width: height, height: height)
+    }
+}

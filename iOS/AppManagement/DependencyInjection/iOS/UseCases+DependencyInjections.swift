@@ -47,6 +47,10 @@ private extension UseCasesContainer {
     var userDataProvider: UserDataProvider {
         SharedDataContainer.shared.userDataProvider()
     }
+
+    var itemRepository: ItemRepositoryProtocol {
+        SharedRepositoryContainer.shared.itemRepository()
+    }
 }
 
 // MARK: User report
@@ -128,7 +132,7 @@ extension UseCasesContainer {
 
     var leaveShare: Factory<LeaveShareUseCase> {
         self { LeaveShare(repository: SharedRepositoryContainer.shared.shareRepository(),
-                          itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+                          itemRepository: self.itemRepository,
                           vaultManager: SharedServiceContainer.shared.vaultsManager()) }
     }
 
@@ -245,7 +249,19 @@ extension UseCasesContainer {
     }
 
     var moveItemsBetweenVaults: Factory<MoveItemsBetweenVaultsUseCase> {
-        self { MoveItemsBetweenVaults(repository: SharedRepositoryContainer.shared.itemRepository()) }
+        self { MoveItemsBetweenVaults(repository: self.itemRepository) }
+    }
+
+    var trashSelectedItems: Factory<TrashSelectedItemsUseCase> {
+        self { TrashSelectedItems(repository: self.itemRepository) }
+    }
+
+    var restoreSelectedItems: Factory<RestoreSelectedItemsUseCase> {
+        self { RestoreSelectedItems(repository: self.itemRepository) }
+    }
+
+    var permanentlyDeleteSelectedItems: Factory<PermanentlyDeleteSelectedItemsUseCase> {
+        self { PermanentlyDeleteSelectedItems(repository: self.itemRepository) }
     }
 
     var getVaultContentForVault: Factory<GetVaultContentForVaultUseCase> {

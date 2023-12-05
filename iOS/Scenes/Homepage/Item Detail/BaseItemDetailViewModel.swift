@@ -149,9 +149,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToAnotherVault() {
-        guard let vault else { return }
-        router.present(for: .moveItemsBetweenVaults(currentVault: vault.vault,
-                                                    singleItemToMove: itemContent))
+        router.present(for: .moveItemsBetweenVaults(.singleItem(itemContent)))
     }
 
     func copyNoteContent() {
