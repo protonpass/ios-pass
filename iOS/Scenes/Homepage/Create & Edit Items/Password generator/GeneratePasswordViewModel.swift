@@ -33,19 +33,23 @@ protocol GeneratePasswordViewModelUiDelegate: AnyObject {
 }
 
 enum PasswordUtils {
-    static func generateColoredPasswords(_ password: String) -> [Text] {
-        var texts = [Text]()
-        password.forEach { char in
-            var color = Color(uiColor: PassColor.textNorm)
-            if AllowedCharacter.digit.rawValue.contains(char) {
-                color = Color(uiColor: PassColor.loginInteractionNormMajor2)
+    static func generateColoredPassword(_ password: String) -> AttributedString {
+        let attributedChars = password.map { char in
+            var attributedChar = AttributedString("\(char)")
+            attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
+                PassColor.loginInteractionNormMajor2
             } else if AllowedCharacter.special.rawValue.contains(char) ||
                 AllowedCharacter.separator.rawValue.contains(char) {
-                color = Color(uiColor: PassColor.aliasInteractionNormMajor2)
+                PassColor.aliasInteractionNormMajor2
+            } else {
+                PassColor.textNorm
             }
-            texts.append(Text(String(char)).foregroundColor(color))
+            return attributedChar
         }
-        return texts
+        var attributedString = attributedChars.reduce(into: .init()) { $0 += $1 }
+        // Set an empty language id to trick SwiftUI into not adding hyphens for multiline passwords
+        attributedString.languageIdentifier = ""
+        return attributedString
     }
 }
 
@@ -55,7 +59,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     let mode: GeneratePasswordViewMode
 
     @Published private(set) var password = ""
-    @Published private(set) var strength: PasswordStrength = .weak
+    @Published private(set) var strength: PasswordStrength = .vulnerable
 
     @AppStorage("passwordType", store: kSharedUserDefaults)
     private(set) var type: PasswordType = .memorable {
@@ -101,7 +105,9 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     weak var delegate: GeneratePasswordViewModelDelegate?
     weak var uiDelegate: GeneratePasswordViewModelUiDelegate?
 
-    var texts: [Text] { PasswordUtils.generateColoredPasswords(password) }
+    var coloredPassword: AttributedString {
+        PasswordUtils.generateColoredPassword(password)
+    }
 
     private var cachedWords = [String]()
 
@@ -123,7 +129,7 @@ extension GeneratePasswordViewModel {
     func regenerate(forceRefresh: Bool = true) {
         do {
             defer {
-                strength = getPasswordStrength(password: password)
+                strength = getPasswordStrength(password: password) ?? .vulnerable
             }
 
             switch type {
