@@ -163,17 +163,17 @@ class BaseItemDetailViewModel: ObservableObject {
             guard let self else {
                 return
             }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 logger.trace("beginning of pin/unpin of \(itemContent.debugDescription)")
-
+                router.display(element: .globalLoading(shouldShow: true))
                 let newItemState = if itemContent.item.pinned {
                     try await unpinItem(item: itemContent)
                 } else {
                     try await pinItem(item: itemContent)
                 }
                 updateItem(with: newItemState)
-                router.display(element: .successMessage(#localized("Item Successfully %@",
-                                                                   newItemState.item.pinMessage)))
+                router.display(element: .successMessage(newItemState.item.pinMessage))
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
             } catch {
                 logger.error(error)
@@ -294,7 +294,7 @@ private extension BaseItemDetailViewModel {
 
 extension ItemRevision {
     var pinTitle: String {
-        pinned ? "Unpin Item" : "Pin Item"
+        pinned ? #localized("Unpin item") : #localized("Pin item")
     }
 
     var pinIcon: String {
@@ -302,6 +302,6 @@ extension ItemRevision {
     }
 
     var pinMessage: String {
-        pinned ? "pinned" : "unpinned"
+        pinned ? #localized("Item Successfully pinned") : #localized("Item Successfully unpinned")
     }
 }

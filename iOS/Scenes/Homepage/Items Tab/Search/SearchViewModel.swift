@@ -24,6 +24,7 @@ import Core
 import CryptoKit
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 enum SearchViewState {
@@ -64,7 +65,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
 
-    private(set) var searchSelection: SearchSelection
+    private(set) var searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
@@ -78,15 +79,15 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: SearchViewModelDelegate?
 
     var searchBarPlaceholder: String {
-        searchSelection.vaultSelection?.searchBarPlacehoder ?? "Search In pinned Items"
+        searchMode.vaultSelection?.searchBarPlacehoder ?? #localized("Search In pinned Items")
     }
 
     var isTrash: Bool {
-        searchSelection.vaultSelection == .trash
+        searchMode.vaultSelection == .trash
     }
 
-    init(searchSelection: SearchSelection) {
-        self.searchSelection = searchSelection
+    init(searchMode: SearchMode) {
+        self.searchMode = searchMode
         setup()
     }
 }
@@ -100,7 +101,7 @@ private extension SearchViewModel {
                 state = .initializing
             }
 
-            searchableItems = try await getSearchableItems(for: searchSelection)
+            searchableItems = try await getSearchableItems(for: searchMode)
             try await refreshSearchHistory()
         } catch {
             state = .error(error)
@@ -109,7 +110,7 @@ private extension SearchViewModel {
 
     @MainActor
     func refreshSearchHistory() async throws {
-        guard let vaultSelection = searchSelection.vaultSelection else {
+        guard let vaultSelection = searchMode.vaultSelection else {
             return
         }
         var shareId: String?
@@ -141,19 +142,20 @@ private extension SearchViewModel {
 
     func doSearch(query: String) {
         lastSearchQuery = query
-        if !searchSelection.isPinned {
+        switch searchMode {
+        case .pinned:
+            if query.isEmpty {
+                results = searchableItems.toItemSearchResults
+                filterAndSortResults()
+                return
+            }
+        case .all:
             guard !query.isEmpty else {
                 if history.isEmpty {
                     state = .empty
                 } else {
                     state = .history(history)
                 }
-                return
-            }
-        } else {
-            if query.isEmpty {
-                results = searchableItems.toItemSearchResults
-                filterAndSortResults()
                 return
             }
         }
@@ -276,10 +278,10 @@ extension SearchViewModel {
     }
 
     func searchInAllVaults() {
-        guard !searchSelection.isPinned else {
+        guard searchMode != .pinned else {
             return
         }
-        searchSelection = SearchSelection(isPinned: false, vaultSelection: .all)
+        searchMode = .all(.all)
         refreshResults()
     }
 }
