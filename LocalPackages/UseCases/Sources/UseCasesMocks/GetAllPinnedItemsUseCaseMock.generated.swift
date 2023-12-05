@@ -20,27 +20,39 @@
 
 @testable import UseCases
 import Client
+import Combine
+import Entities
 
-public final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveItemsBetweenVaultsUseCase {
+public final class GetAllPinnedItemsUseCaseMock: @unchecked Sendable, GetAllPinnedItemsUseCase {
 
     public init() {}
 
     // MARK: - execute
-    public var executeMovingContextThrowableError: Error?
     public var closureExecute: () -> () = {}
-    public var invokedExecutefunction = false
+    public var invokedExecute = false
     public var invokedExecuteCount = 0
-    public var invokedExecuteParameters: (movingContext: MovingContext, Void)?
-    public var invokedExecuteParametersList = [(movingContext: MovingContext, Void)]()
+    public var stubbedExecuteResult: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>!
 
-    public func execute(movingContext: MovingContext) async throws {
-        invokedExecutefunction = true
+    public func execute() -> CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> {
+        invokedExecute = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (movingContext, ())
-        invokedExecuteParametersList.append((movingContext, ()))
-        if let error = executeMovingContextThrowableError {
+        closureExecute()
+        return stubbedExecuteResult
+    }
+    // MARK: - execute
+    public var executeThrowableError: Error?
+    public var closureExecuteAsync: () -> () = {}
+    public var invokedExecuteAsync = false
+    public var invokedExecuteAsyncCount = 0
+    public var stubbedExecuteAsyncResult: [SymmetricallyEncryptedItem]!
+
+    public func execute() async throws -> [SymmetricallyEncryptedItem] {
+        invokedExecuteAsync = true
+        invokedExecuteAsyncCount += 1
+        if let error = executeThrowableError {
             throw error
         }
-        closureExecute()
+        closureExecuteAsync()
+        return stubbedExecuteAsyncResult
     }
 }

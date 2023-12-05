@@ -1217,7 +1217,7 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
         showFullScreen(data: data, userInterfaceStyle: preferences.theme.userInterfaceStyle)
     }
 
-    func itemDetailViewModelDidMoveToTrash(item: ItemTypeIdentifiable) {
+    func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable) {
         refresh()
         dismissTopMostViewController(animated: true) { [weak self] in
             guard let self else { return }

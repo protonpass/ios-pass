@@ -1,6 +1,6 @@
 //
-// MovingContext.swift
-// Proton Pass - Created on 03/10/2023.
+// TestItem.swift
+// Proton Pass - Created on 05/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,9 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
-import Foundation
 
-public enum MovingContext: Sendable {
-    case item(any ItemIdentifiable, newShareId: String)
-    case vault(String, newShareId: String)
+struct TestItem: ItemIdentifiable {
+    var shareId: String
+    var itemId: String
 }

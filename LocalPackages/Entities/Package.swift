@@ -27,7 +27,9 @@ let package = Package(name: "Entities",
                           // Products define the executables and libraries a package produces, and make them
                           // visible to other packages.
                           .library(name: "Entities",
-                                   targets: ["Entities"])
+                                   targets: ["Entities"]),
+                          .library(name: "EntitiesMocks",
+                                   targets: ["EntitiesMocks"])
                       ],
                       dependencies: [
                           // Dependencies declare other packages that this package depends on.
@@ -44,6 +46,9 @@ let package = Package(name: "Entities",
                                     .product(name: "SwiftProtobuf", package: "swift-protobuf"),
                                   ],
                                   swiftSettings: swiftSettings),
+                          .target(
+                              name: "EntitiesMocks",
+                              dependencies: ["Entities"]),
                           .testTarget(name: "EntitiesTests",
                                       dependencies: ["Entities"])
                       ])
