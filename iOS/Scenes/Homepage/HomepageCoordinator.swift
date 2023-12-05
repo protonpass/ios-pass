@@ -1117,8 +1117,13 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     func createEditItemViewModelDidCreateItem(_ item: SymmetricallyEncryptedItem, type: ItemContentType) {
         addNewEvent(type: .create(type))
         dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(type.creationMessage)
+            // We have eventual crashes after creating items
+            // Looks like it's because the keyboard is not fully dismissed
+            // and in between we try to show a banner
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                guard let self else { return }
+                bannerManager.displayBottomInfoMessage(type.creationMessage)
+            }
         }
         vaultsManager.refresh()
         homepageTabDelegete?.homepageTabShouldChange(tab: .items)
