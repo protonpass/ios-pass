@@ -48,3 +48,20 @@ public extension Array where Element: Identifiable, Element: Equatable {
         return true
     }
 }
+
+public extension Array {
+    func groupAndBulkAction<T: Hashable>(by keyPath: KeyPath<Element, T>,
+                                         shouldInclude: (Element) -> Bool,
+                                         action: ([Element], T) async throws -> Void) async throws {
+        let groupedElements = Dictionary(grouping: self) { element in
+            element[keyPath: keyPath]
+        }
+
+        for (key, subElements) in groupedElements {
+            let matchedElements = subElements.filter(shouldInclude)
+            if !matchedElements.isEmpty {
+                try await action(matchedElements, key)
+            }
+        }
+    }
+}
