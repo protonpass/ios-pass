@@ -24,6 +24,7 @@ import Client
 import Combine
 import Entities
 
+// sourcery: AutoMockable
 public protocol GetAllPinnedItemsUseCase: Sendable {
     func execute() -> CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never>
     func execute() async throws -> [SymmetricallyEncryptedItem]

@@ -53,8 +53,8 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         let vaults = try await shareRepository.getVaults()
 
         var items: [SymmetricallyEncryptedItem] = []
-        if searchSelection.isPinned, let pinnedItems = getAllPinnedItems().value, !pinnedItems.isEmpty {
-            items = pinnedItems
+        if searchSelection.isPinned {
+            items = try await getAllPinnedItems()
         } else if let vaultSelection = searchSelection.vaultSelection {
             switch vaultSelection {
             case .all:

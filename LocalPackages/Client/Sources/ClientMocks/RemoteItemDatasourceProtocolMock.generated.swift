@@ -206,43 +206,43 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     }
     // MARK: - moveItemIdFromShareIdRequest
     public var moveItemIdFromShareIdRequestThrowableError: Error?
-    public var closureMoveItemIdFromShareIdRequest: () -> () = {}
-    public var invokedMoveItemIdFromShareIdRequest = false
-    public var invokedMoveItemIdFromShareIdRequestCount = 0
-    public var invokedMoveItemIdFromShareIdRequestParameters: (itemId: String, fromShareId: String, request: MoveItemRequest)?
-    public var invokedMoveItemIdFromShareIdRequestParametersList = [(itemId: String, fromShareId: String, request: MoveItemRequest)]()
-    public var stubbedMoveItemIdFromShareIdRequestResult: ItemRevision!
+    public var closureMoveItemIdFromShareIdRequestAsync: () -> () = {}
+    public var invokedMoveItemIdFromShareIdRequestAsync = false
+    public var invokedMoveItemIdFromShareIdRequestAsyncCount = 0
+    public var invokedMoveItemIdFromShareIdRequestAsyncParameters: (itemId: String, fromShareId: String, request: MoveItemRequest)?
+    public var invokedMoveItemIdFromShareIdRequestAsyncParametersList = [(itemId: String, fromShareId: String, request: MoveItemRequest)]()
+    public var stubbedMoveItemIdFromShareIdRequestAsyncResult: ItemRevision!
 
     public func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> ItemRevision {
-        invokedMoveItemIdFromShareIdRequest = true
-        invokedMoveItemIdFromShareIdRequestCount += 1
-        invokedMoveItemIdFromShareIdRequestParameters = (itemId, fromShareId, request)
-        invokedMoveItemIdFromShareIdRequestParametersList.append((itemId, fromShareId, request))
+        invokedMoveItemIdFromShareIdRequestAsync = true
+        invokedMoveItemIdFromShareIdRequestAsyncCount += 1
+        invokedMoveItemIdFromShareIdRequestAsyncParameters = (itemId, fromShareId, request)
+        invokedMoveItemIdFromShareIdRequestAsyncParametersList.append((itemId, fromShareId, request))
         if let error = moveItemIdFromShareIdRequestThrowableError {
             throw error
         }
-        closureMoveItemIdFromShareIdRequest()
-        return stubbedMoveItemIdFromShareIdRequestResult
+        closureMoveItemIdFromShareIdRequestAsync()
+        return stubbedMoveItemIdFromShareIdRequestAsyncResult
     }
     // MARK: - moveFromShareIdRequest
     public var moveFromShareIdRequestThrowableError: Error?
-    public var closureMoveFromShareIdRequest: () -> () = {}
-    public var invokedMoveFromShareIdRequest = false
-    public var invokedMoveFromShareIdRequestCount = 0
-    public var invokedMoveFromShareIdRequestParameters: (fromShareId: String, request: MoveItemsRequest)?
-    public var invokedMoveFromShareIdRequestParametersList = [(fromShareId: String, request: MoveItemsRequest)]()
-    public var stubbedMoveFromShareIdRequestResult: [ItemRevision]!
+    public var closureMoveFromShareIdRequestAsync: () -> () = {}
+    public var invokedMoveFromShareIdRequestAsync = false
+    public var invokedMoveFromShareIdRequestAsyncCount = 0
+    public var invokedMoveFromShareIdRequestAsyncParameters: (fromShareId: String, request: MoveItemsRequest)?
+    public var invokedMoveFromShareIdRequestAsyncParametersList = [(fromShareId: String, request: MoveItemsRequest)]()
+    public var stubbedMoveFromShareIdRequestAsyncResult: [ItemRevision]!
 
     public func move(fromShareId: String, request: MoveItemsRequest) async throws -> [ItemRevision] {
-        invokedMoveFromShareIdRequest = true
-        invokedMoveFromShareIdRequestCount += 1
-        invokedMoveFromShareIdRequestParameters = (fromShareId, request)
-        invokedMoveFromShareIdRequestParametersList.append((fromShareId, request))
+        invokedMoveFromShareIdRequestAsync = true
+        invokedMoveFromShareIdRequestAsyncCount += 1
+        invokedMoveFromShareIdRequestAsyncParameters = (fromShareId, request)
+        invokedMoveFromShareIdRequestAsyncParametersList.append((fromShareId, request))
         if let error = moveFromShareIdRequestThrowableError {
             throw error
         }
-        closureMoveFromShareIdRequest()
-        return stubbedMoveFromShareIdRequestResult
+        closureMoveFromShareIdRequestAsync()
+        return stubbedMoveFromShareIdRequestAsyncResult
     }
     // MARK: - pin
     public var pinItemThrowableError: Error?

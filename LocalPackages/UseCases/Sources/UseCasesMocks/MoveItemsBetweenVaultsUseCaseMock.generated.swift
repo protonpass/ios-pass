@@ -22,12 +22,12 @@
 import Client
 
 public final class MoveItemsBetweenVaultsUseCaseMock: @unchecked Sendable, MoveItemsBetweenVaultsUseCase {
+
     public init() {}
 
     // MARK: - execute
-
     public var executeMovingContextThrowableError: Error?
-    public var closureExecute: () -> Void = {}
+    public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (movingContext: MovingContext, Void)?

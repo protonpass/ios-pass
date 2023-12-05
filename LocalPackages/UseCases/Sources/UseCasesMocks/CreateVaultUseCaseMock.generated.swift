@@ -23,12 +23,12 @@ import Client
 import Entities
 
 public final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCase {
+
     public init() {}
 
     // MARK: - execute
-
     public var executeWithThrowableError: Error?
-    public var closureExecute: () -> Void = {}
+    public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (vault: VaultProtobuf, Void)?

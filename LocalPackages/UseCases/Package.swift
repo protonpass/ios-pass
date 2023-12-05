@@ -63,7 +63,8 @@ let package = Package(name: "UseCases",
                                       dependencies: ["UseCases",
                                                      "UseCasesMocks",
                                                      .product(name: "ClientMocks", package: "Client"),
-                                                     .product(name: "CoreMocks", package: "Core")
+                                                     .product(name: "CoreMocks", package: "Core"),
+                                                     .product(name: "EntitiesMocks", package: "Entities"),
                                                     ],
                                       path: "Tests")
                       ])

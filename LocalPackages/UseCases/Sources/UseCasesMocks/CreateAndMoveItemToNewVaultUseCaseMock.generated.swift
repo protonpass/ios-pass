@@ -22,14 +22,13 @@
 import Client
 import Entities
 
-public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable,
-    CreateAndMoveItemToNewVaultUseCase {
+public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, CreateAndMoveItemToNewVaultUseCase {
+
     public init() {}
 
     // MARK: - execute
-
     public var executeVaultItemContentThrowableError: Error?
-    public var closureExecute: () -> Void = {}
+    public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (vault: VaultProtobuf, itemContent: ItemContent)?

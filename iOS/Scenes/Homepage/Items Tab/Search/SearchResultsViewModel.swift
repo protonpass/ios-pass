@@ -23,7 +23,7 @@ import Entities
 import SwiftUI
 
 final class SearchResultsViewModel: ObservableObject {
-    @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
+    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
         didSet {
             if itemToBePermanentlyDeleted != nil {
                 showingPermanentDeletionAlert = true

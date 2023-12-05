@@ -22,6 +22,6 @@ import Entities
 import Foundation
 
 public enum MovingContext: Sendable {
-    case item(ItemIdentifiable, newShareId: String)
+    case item(any ItemIdentifiable, newShareId: String)
     case vault(String, newShareId: String)
 }

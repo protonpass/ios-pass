@@ -44,7 +44,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var pinnedItems: [ItemUiModel]?
     @Published private(set) var banners: [InfoBanner] = []
     @Published var shouldShowSyncProgress = false
-    @Published var itemToBePermanentlyDeleted: ItemTypeIdentifiable? {
+    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
         didSet {
             if itemToBePermanentlyDeleted != nil {
                 showingPermanentDeletionAlert = true
