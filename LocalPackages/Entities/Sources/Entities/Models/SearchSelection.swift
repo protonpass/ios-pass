@@ -20,12 +20,16 @@
 
 import Foundation
 
-public struct SearchSelection: Equatable, Hashable {
-    public let isPinned: Bool
-    public let vaultSelection: VaultSelection?
+public enum SearchMode: Equatable, Hashable, Sendable {
+    case pinned
+    case all(VaultSelection)
 
-    public init(isPinned: Bool, vaultSelection: VaultSelection? = nil) {
-        self.isPinned = isPinned
-        self.vaultSelection = vaultSelection
+    public var vaultSelection: VaultSelection? {
+        switch self {
+        case let .all(selection):
+            selection
+        default:
+            nil
+        }
     }
 }

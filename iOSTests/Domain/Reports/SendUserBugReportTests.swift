@@ -27,7 +27,7 @@ import ClientMocks
 final class SendUserBugReportTests: XCTestCase {
     var sut: SendUserBugReportUseCase!
     var repositoryMock: ReportRepositoryProtocolMock!
-     var extractToFileMock: ExtractLogsToFileUseCaseMock!
+    var extractToFileMock: ExtractLogsToFileUseCaseMock!
     var getLogsMock: GetLogEntriesUseCaseMock!
     
     override func setUp() {
