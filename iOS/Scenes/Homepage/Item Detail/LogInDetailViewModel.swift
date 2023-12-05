@@ -60,7 +60,9 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     weak var logInDetailViewModelDelegate: LogInDetailViewModelDelegate?
 
-    var coloredPasswordTexts: [Text] { PasswordUtils.generateColoredPasswords(password) }
+    var coloredPassword: AttributedString {
+        PasswordUtils.generateColoredPassword(password)
+    }
 
     override init(isShownAsSheet: Bool,
                   itemContent: ItemContent,
