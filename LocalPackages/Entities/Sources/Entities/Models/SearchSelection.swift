@@ -24,7 +24,7 @@ public struct SearchSelection: Equatable, Hashable {
     public let isPinned: Bool
     public let vaultSelection: VaultSelection?
 
-    public init(isPinned: Bool, vaultSelection: VaultSelection?) {
+    public init(isPinned: Bool, vaultSelection: VaultSelection? = nil) {
         self.isPinned = isPinned
         self.vaultSelection = vaultSelection
     }

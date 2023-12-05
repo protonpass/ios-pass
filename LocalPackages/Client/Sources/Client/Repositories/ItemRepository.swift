@@ -29,6 +29,7 @@ import ProtonCoreServices
 
 private let kBatchPageSize = 100
 
+// sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     var currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> { get }
 
@@ -85,10 +86,10 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
 
     func update(lastUseItems: [LastUseItem], shareId: String) async throws
 
-    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws
+    func updateLastUseTime(item: any ItemIdentifiable, date: Date) async throws
 
     @discardableResult
-    func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
+    func move(item: any ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
     func move(oldEncryptedItems: [SymmetricallyEncryptedItem], toShareId: String) async throws
@@ -111,9 +112,9 @@ public protocol ItemRepositoryProtocol: TOTPCheckerProtocol {
     /// Get active log in items of all shares
     func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
 
-    func pinItem(item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+    func pinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
 
-    func unpinItem(item: ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+    func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
 
@@ -379,8 +380,9 @@ public extension ItemRepository {
         let encryptedItems = try await items.parallelMap { [weak self] in
             try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: shareId)
         }.compactMap { $0 }
-        
-        //We are removing the items before insert due to the bug of non updating boolean variables on coredata entities causing us
+
+        // We are removing the items before insert due to the bug of non updating boolean variables on coredata
+        // entities causing us
         // issues when following value like pinned status
         try await localDatasource.deleteItems(encryptedItems)
         try await localDatasource.upsertItems(encryptedItems)
@@ -392,7 +394,7 @@ public extension ItemRepository {
         logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
     }
 
-    func updateLastUseTime(item: ItemIdentifiable, date: Date) async throws {
+    func updateLastUseTime(item: any ItemIdentifiable, date: Date) async throws {
         logger.trace("Updating last use time \(item.debugDescription)")
         let updatedItem = try await remoteDatasource.updateLastUseTime(shareId: item.shareId,
                                                                        itemId: item.itemId,
@@ -401,7 +403,7 @@ public extension ItemRepository {
         logger.trace("Updated last use time \(item.debugDescription)")
     }
 
-    func move(item: ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
+    func move(item: any ItemIdentifiable, toShareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Moving \(item.debugDescription) to share \(toShareId)")
         guard let oldEncryptedItem = try await getItem(shareId: item.shareId, itemId: item.itemId) else {
             throw PassError.itemNotFound(item)

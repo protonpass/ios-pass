@@ -230,7 +230,7 @@ extension SearchViewModel {
         }
     }
 
-    func viewDetail(of item: ItemIdentifiable) {
+    func viewDetail(of item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -246,7 +246,7 @@ extension SearchViewModel {
         }
     }
 
-    func removeFromHistory(_ item: ItemIdentifiable) {
+    func removeFromHistory(_ item: any ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {

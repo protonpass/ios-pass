@@ -19,6 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 struct UnmatchedItemAlertInformation {
-    let item: TitledItemIdentifiable
+    let item: any TitledItemIdentifiable
     let url: String
 }

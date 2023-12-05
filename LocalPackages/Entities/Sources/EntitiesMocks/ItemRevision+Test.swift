@@ -18,16 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
 import Entities
 
-extension ItemState {
+public extension ItemState {
     static func random() -> Int64 {
-        allCases.map(\.rawValue).randomElement() ?? Self.active.rawValue
+        allCases.map(\.rawValue).randomElement() ?? active.rawValue
     }
 }
 
-extension ItemRevision {
+public extension ItemRevision {
     static func random(itemId: String? = nil,
                        state: ItemState? = nil,
                        aliasEmail: String? = nil,

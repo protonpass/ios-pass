@@ -1,5 +1,5 @@
 //
-// SymmetricallyEncryptedItem.swift
+// SymmetricallyEncryptedItem+Test.swift
 // Proton Pass - Created on 20/09/2022.
 // Copyright (c) 2022 Proton Technologies AG
 //
@@ -18,10 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
 import Entities
 
-extension SymmetricallyEncryptedItem {
+public extension SymmetricallyEncryptedItem {
     static func random(shareId: String? = nil,
                        item: ItemRevision? = nil,
                        encryptedContent: String? = nil,

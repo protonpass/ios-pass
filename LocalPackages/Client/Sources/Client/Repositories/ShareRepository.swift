@@ -26,6 +26,7 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
 
+// sourcery: AutoMockable
 public protocol ShareRepositoryProtocol: Sendable {
     // MARK: - Shares
 

@@ -161,7 +161,7 @@ struct PermenentlyDeleteItemModifier: ViewModifier {
 }
 
 extension View {
-    func itemContextMenu(item: ItemTypeIdentifiable,
+    func itemContextMenu(item: any ItemTypeIdentifiable,
                          isTrashed: Bool,
                          onPermanentlyDelete: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
