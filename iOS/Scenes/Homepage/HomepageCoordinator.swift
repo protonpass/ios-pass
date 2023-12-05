@@ -528,8 +528,8 @@ private extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentSearchScreen(_ searchSelection: SearchSelection) {
-        let viewModel = SearchViewModel(searchSelection: searchSelection)
+    func presentSearchScreen(_ searchMode: SearchMode) {
+        let viewModel = SearchViewModel(searchMode: searchMode)
         viewModel.delegate = self
         searchViewModel = viewModel
         let view = SearchView(viewModel: viewModel)

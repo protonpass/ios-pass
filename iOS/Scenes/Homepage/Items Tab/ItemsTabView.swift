@@ -81,7 +81,9 @@ struct ItemsTabView: View {
                 }
 
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty {
-                    pinnedItemsView(with: pinnedItems)
+                    PinnedItemsView(pinnedItems: pinnedItems,
+                                    onSearch: { viewModel.search(pinnedItems: true) },
+                                    action: { item in viewModel.viewDetail(of: item) })
                     Divider()
                 }
 
@@ -161,49 +163,6 @@ private extension ItemsTabView {
     }
 }
 
-// MARK: - Pinned Items
-
-private extension ItemsTabView {
-    func pinnedItemsView(with pinnedItems: [ItemUiModel]) -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .center, spacing: 8) {
-                ForEach(pinnedItems) { item in
-                    Button {
-                        viewModel.viewDetail(of: item)
-                    } label: {
-                        HStack(alignment: .center, spacing: 8) {
-                            ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                  size: .small,
-                                                  alternativeBackground: true)
-                            Text(item.title)
-                                .font(.body)
-                                .lineLimit(1)
-                                .foregroundColor(PassColor.textNorm.toColor)
-                                .padding(.trailing, 8)
-                        }
-                        .padding(8)
-                        .frame(maxWidth: 165, alignment: .leading)
-                        .background(item.type.normMinor1Color.toColor)
-                        .cornerRadius(16)
-                    }
-                }
-
-                Button {
-                    viewModel.search(pinnedItems: true)
-                } label: {
-                    Text("See all")
-                        .font(.callout.weight(.medium))
-                        .foregroundColor(PassColor.interactionNormMajor2.toColor)
-                        .padding(.trailing, 8)
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
-        }
-    }
-}
-
 // MARK: - Empty View
 
 private extension ItemsTabView {
@@ -229,12 +188,12 @@ private extension ItemsTabView {
             ItemTypeFilterButton(itemCount: viewModel.vaultsManager.itemCount,
                                  selectedOption: viewModel.vaultsManager.filterOption,
                                  onSelect: viewModel.vaultsManager.updateItemTypeFilterOption,
-                                 onTap: viewModel.showFilterOptions)
+                                 onTap: { viewModel.showFilterOptions() })
 
             Spacer()
 
             SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                           action: viewModel.presentSortTypeList)
+                           action: { viewModel.presentSortTypeList() } )
         }
         .padding([.top, .horizontal])
 

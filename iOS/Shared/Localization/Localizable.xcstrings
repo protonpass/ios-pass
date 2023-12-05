@@ -26250,17 +26250,21 @@
         }
       }
     },
-    "Item Successfully %@" : {
-      "comment" : "Message that appears when user has pinned or unpin a item",
+    "Item Successfully pinned" : {
+      "comment" : "Message displayed to user after pinning an item",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item successfully %@"
+            "value" : "Item Successfully pinned"
           }
         }
       }
+    },
+    "Item Successfully unpinned" : {
+      "comment" : "Message displayed to user after unpinning an item",
+      "extractionState" : "manual"
     },
     "Items" : {
       "localizations" : {
@@ -36484,6 +36488,18 @@
         }
       }
     },
+    "Pin item" : {
+      "comment" : "Title for action to pin item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin item"
+          }
+        }
+      }
+    },
     "PIN number" : {
       "localizations" : {
         "be" : {
@@ -41317,6 +41333,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search in oldest 2 vaults"
+          }
+        }
+      }
+    },
+    "Search In pinned Items" : {
+      "comment" : "Pinned item search bar placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search in pinned Items"
           }
         }
       }
@@ -50709,6 +50737,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mở khóa bằng"
+          }
+        }
+      }
+    },
+    "Unpin item" : {
+      "comment" : "Title for action to unpin item",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin item"
           }
         }
       }
