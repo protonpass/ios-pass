@@ -172,6 +172,19 @@ private extension ItemsTabViewModel {
             router.display(element: .displayErrorBanner(error))
         }
     }
+
+    func selectOrDeselect(_ item: ItemIdentifiable) {
+        var items = currentSelectedItems.value
+        if items.contains(item) {
+            items.removeAll(where: { $0.isEqual(with: item) })
+        } else {
+            items.append(item)
+        }
+        currentSelectedItems.send(items)
+        if items.isEmpty {
+            isEditMode = false
+        }
+    }
 }
 
 // MARK: - Public APIs
@@ -195,19 +208,6 @@ extension ItemsTabViewModel {
     func isSelectable(_ item: ItemIdentifiable) -> Bool {
         let editableVaults = vaultsManager.getAllEditableVaultContents()
         return editableVaults.contains { $0.vault.shareId == item.shareId }
-    }
-
-    func selectOrDeselect(_ item: ItemIdentifiable) {
-        var items = currentSelectedItems.value
-        if items.contains(item) {
-            items.removeAll(where: { $0.isSame(with: item) })
-        } else {
-            items.append(item)
-        }
-        currentSelectedItems.send(items)
-        if items.isEmpty {
-            isEditMode = false
-        }
     }
 
     func presentVaultListToMoveSelectedItems() {
@@ -365,6 +365,6 @@ private extension [UserInvite] {
 
 private extension [ItemIdentifiable] {
     func contains(_ otherItem: ItemIdentifiable) -> Bool {
-        contains(where: { $0.isSame(with: otherItem) })
+        contains(where: { $0.isEqual(with: otherItem) })
     }
 }

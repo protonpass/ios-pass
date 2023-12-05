@@ -31,7 +31,7 @@ public extension MovingContext {
     static func == (lhs: MovingContext, rhs: MovingContext) -> Bool {
         switch (lhs, rhs) {
         case let (.singleItem(lhsItem), .singleItem(rhsItem)):
-            lhsItem.isSame(with: rhsItem)
+            lhsItem.isEqual(with: rhsItem)
         case let (.allItems(lhsVault), .allItems(rhsVault)):
             lhsVault.shareId == rhsVault.shareId
         case let (.selectedItems(lhsItems), .selectedItems(rhsItems)):
