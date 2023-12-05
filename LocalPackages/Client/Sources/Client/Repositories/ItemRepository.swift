@@ -279,7 +279,7 @@ public extension ItemRepository {
             guard let self else { return }
             try await trashItems(groupedItems)
         }
-        logger.trace("Trashed \(items.count) items")
+        logger.info("Trashed \(items.count) items")
     }
 
     func deleteAlias(email: String) async throws {
@@ -343,7 +343,7 @@ public extension ItemRepository {
             guard let self else { return }
             try await deleteItems(groupedItems, skipTrash: false)
         }
-        logger.trace("Bulk permanently deleted \(items.count) items")
+        logger.info("Bulk permanently deleted \(items.count) items")
     }
 
     func deleteAllItemsLocally() async throws {

@@ -44,7 +44,6 @@ public final class GetVaultContentForVault: GetVaultContentForVaultUseCase {
         guard let vault = vaultsManager.getAllVaults().first(where: { $0.shareId == shareId }) else {
             return nil
         }
-        return VaultContentUiModel(vault: vault,
-                                   items: vaultsManager.getItems(for: vault))
+        return VaultContentUiModel(vault: vault, items: vaultsManager.getItems(for: vault))
     }
 }
