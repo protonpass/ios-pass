@@ -29,7 +29,7 @@ public protocol ItemIdentifiable: Sendable, CustomDebugStringConvertible {
 }
 
 public extension ItemIdentifiable {
-    func isSame(with otherItem: any ItemIdentifiable) -> Bool {
+    func isEqual(with otherItem: any ItemIdentifiable) -> Bool {
         shareId == otherItem.shareId && itemId == otherItem.itemId
     }
 }
