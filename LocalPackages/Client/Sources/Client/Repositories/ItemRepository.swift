@@ -578,18 +578,13 @@ private extension ItemRepository {
     /// Group items by share and bulk actionning on those grouped items
     func bulkAction(items: [ItemIdentifiable],
                     action: ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {
-        let shareIds = Set(items.map(\.shareId))
-
-        let allItems = try await getAllItems()
-        for shareId in shareIds {
-            let itemIds = items.filter { $0.shareId == shareId }.map(\.itemId)
-            let matchedItems = allItems
-                .filter { $0.shareId == shareId }
-                .filter { item in
-                    itemIds.contains(where: { $0 == item.itemId })
-                }
-            try await action(matchedItems, shareId)
+        let shouldInclude: (SymmetricallyEncryptedItem) -> Bool = { item in
+            items.contains(where: { $0.isEqual(with: item) })
         }
+        let allItems = try await getAllItems()
+        try await allItems.groupAndBulkAction(by: \.shareId,
+                                              shouldInclude: shouldInclude,
+                                              action: action)
     }
 }
 
