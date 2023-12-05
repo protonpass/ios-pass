@@ -188,16 +188,16 @@ extension ItemsTabViewModel {
         delegate?.itemsTabViewModelWantsToSearch(vaultSelection: vaultsManager.vaultSelection)
     }
 
-    func isSelected(_ item: ItemTypeIdentifiable) -> Bool {
+    func isSelected(_ item: ItemIdentifiable) -> Bool {
         currentSelectedItems.value.contains(item)
     }
 
-    func isSelectable(_ item: ItemTypeIdentifiable) -> Bool {
+    func isSelectable(_ item: ItemIdentifiable) -> Bool {
         let editableVaults = vaultsManager.getAllEditableVaultContents()
         return editableVaults.contains { $0.vault.shareId == item.shareId }
     }
 
-    func selectOrDeselect(_ item: ItemTypeIdentifiable) {
+    func selectOrDeselect(_ item: ItemIdentifiable) {
         var items = currentSelectedItems.value
         if items.contains(item) {
             items.removeAll(where: { $0.isSame(with: item) })
@@ -314,7 +314,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func viewDetail(of item: ItemUiModel) {
+    func viewDetail(of item: ItemIdentifiable) {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -325,6 +325,21 @@ extension ItemsTabViewModel {
             } catch {
                 self.router.display(element: .displayErrorBanner(error))
             }
+        }
+    }
+
+    func handleSelection(_ item: ItemIdentifiable) {
+        if isEditMode {
+            selectOrDeselect(item)
+        } else {
+            viewDetail(of: item)
+        }
+    }
+
+    func handleThumbnailSelection(_ item: ItemIdentifiable) {
+        if isSelectable(item) {
+            selectOrDeselect(item)
+            isEditMode = true
         }
     }
 
@@ -348,8 +363,8 @@ private extension [UserInvite] {
     }
 }
 
-private extension [ItemTypeIdentifiable] {
-    func contains(_ otherItem: ItemTypeIdentifiable) -> Bool {
+private extension [ItemIdentifiable] {
+    func contains(_ otherItem: ItemIdentifiable) -> Bool {
         contains(where: { $0.isSame(with: otherItem) })
     }
 }
